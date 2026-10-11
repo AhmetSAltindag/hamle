@@ -32,7 +32,7 @@ def fixture():
     request['work_brief_sha256'] = 'b' * 64
     budget = {'verified': True, 'allowed': True, 'overrun_hold': False,
               'policy_id': 'synthetic-shared-budget-50', 'remaining_microdollars': 31_000_000,
-              'observed_at': stamp(-1), 'expires_at': '2026-10-12T23:59:59+03:00',
+              'observed_at': stamp(-1), 'expires_at': '2027-12-31T23:59:59+03:00',
               'evidence_ref': 'synthetic-fresh-budget-ledger'}
     issuer = {'verified': True, 'authenticated': True, 'actor': AHMET,
               'decision': 'grant_visible_stop_work_authority', 'evidence_ref': 'synthetic-human-grant-1',
@@ -150,8 +150,9 @@ class WorkAuthorityTests(unittest.TestCase):
 
     def test_budget_deadline_caps_two_business_day_grant(self):
         grant = self.request['work_authority_grant']
-        self.assertEqual(grant['expires_at'], '2026-10-12T20:59:59+00:00')
-        self.assertGreater(datetime.fromisoformat(grant['business_expires_at']), datetime.fromisoformat(grant['expires_at']))
+        # no end date on authority (Ahmet 2026-10-11): the grant ends with its 2-business-day window
+        self.assertLessEqual(datetime.fromisoformat(grant['expires_at']), datetime.fromisoformat(grant['business_expires_at']))
+        self.assertLessEqual(datetime.fromisoformat(grant['expires_at']), datetime.fromisoformat('2027-12-31T23:59:59+03:00'))
 
     def test_same_human_decision_replay_cannot_extend_authority(self):
         first = self.request['work_authority_grant']

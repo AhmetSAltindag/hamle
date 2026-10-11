@@ -496,7 +496,7 @@ class Slot(Base):
         h.ops.set_mode("stopped", "offline-test")
         r = live.run_chain_slot(h.ops, open_queue=never, build_deps=never, clock=h.clock)
         self.assertEqual(r["status"], "stopped")
-        late = lambda: datetime.fromisoformat("2026-10-13T09:00:30+03:00")
+        late = lambda: datetime.fromisoformat("2028-01-04T09:00:30+03:00")
         r = live.run_chain_slot(h.ops, open_queue=never, build_deps=never, clock=late)
         self.assertEqual((r["status"], r["reason"]), ("held", "authorization_expired"))
 
@@ -814,7 +814,7 @@ class ManualInternalRun(Base):
         h.ops.set_mode("stopped", "offline-test")
         self.assertEqual(self.manual(h)["status"], "stopped")
         h2 = self.harness()
-        h2.clock.now = datetime.fromisoformat("2026-10-13T00:00:01+03:00")
+        h2.clock.now = datetime.fromisoformat("2028-01-04T00:00:01+03:00")
         r = self.manual(h2)
         self.assertEqual((r["status"], r["reason"]), ("held", "authorization_expired"))
         h3 = self.harness()

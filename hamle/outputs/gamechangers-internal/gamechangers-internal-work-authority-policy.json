@@ -74,9 +74,9 @@
       "decision": "accept_visible_stop_work_authority",
       "evidence_ref": "claude project thread Hamle proje değerlendirmesi, Ahmet messages 2026-10-11T15:07:55Z and 17:05:21Z",
       "accepted_at": "2026-10-11T15:07:55+00:00",
-      "expires_at": "2026-10-12T23:59:59+03:00",
+      "expires_at": "2027-12-31T23:59:59+03:00",
       "source": "direct_user_answer_claude_project_thread",
-      "expiry_basis": "budget/authorization window 2026-10-12T23:59:59+03:00",
+      "expiry_basis": "budget/authorization window 2027-12-31T23:59:59+03:00",
       "policy_terms_sha256": "6c83b0beaa1e029510ecc2e05bd4958a460da48abb007f83da53a4120ead7477"
     }
   },

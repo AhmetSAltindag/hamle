@@ -15,6 +15,7 @@ import os
 import re
 import unicodedata
 
+from runtime_authority import AUTHORIZATION_DEADLINE
 from autonomy_policy import scope_digest
 from cloud_store import FirestoreBackend, OperationsStore, proposal_hash
 from cloud_providers import GoogleSecretManager
@@ -95,7 +96,7 @@ class InternalWorker:
             need(normalize(phrase) in text, 'internal_fixture_brief_mismatch')
         self.providers.verify_internal()
         now = self.clock()
-        expires = min(now + timedelta(hours=3), datetime.fromisoformat('2026-10-12T23:59:59+03:00'))
+        expires = min(now + timedelta(hours=3), datetime.fromisoformat(AUTHORIZATION_DEADLINE))
         brief = build_internal_brief(source, control['generation'], now.isoformat(), expires.isoformat())
         state = initialize_production(WORK, brief, mode='internal_pilot')
         state['internal_run'] = {'artifacts': {}, 'delivery': None, 'kind': 'technical_fixture_only',

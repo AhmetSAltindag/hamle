@@ -29,7 +29,7 @@ def accepted_policy(**changes):
     p.update(enabled=True, status="accepted")
     p["acceptance"] = {"verified": True, "authenticated": True, "actor": AHMET_MAIL,
                        "decision": "accept_visible_stop_work_authority", "evidence_ref": "SYNTHETIC-test-acceptance",
-                       "accepted_at": ACCEPTED_AT.isoformat(), "expires_at": "2026-10-12T23:59:59+03:00"}
+                       "accepted_at": ACCEPTED_AT.isoformat(), "expires_at": "2027-12-31T23:59:59+03:00"}
     p["acceptance"].update(changes)
     p["acceptance"]["policy_terms_sha256"] = policy_terms_digest(p)
     return p
@@ -68,14 +68,14 @@ class PreparedFile(unittest.TestCase):
         doc = load_policy_file()
         policy = enabled_policy(doc)
         self.assertEqual((doc["live_enabled"], policy["acceptance"]["actor"], policy["acceptance"]["expires_at"]),
-                         (True, AHMET_MAIL, "2026-10-12T23:59:59+03:00"))
+                         (True, AHMET_MAIL, "2027-12-31T23:59:59+03:00"))
         catalog, rubric = load_catalog(), load_rubric()
         scope = build_scope(catalog, rubric, rubric_policy(rubric, catalog), policy)
         validate_work_authority_policy(policy, scope, scope["services"][0],
                                        now=dt.fromisoformat("2026-10-12T09:00:00+03:00"))
         with self.assertRaises(Exception):
             validate_work_authority_policy(policy, scope, scope["services"][0],
-                                           now=dt.fromisoformat("2026-10-13T00:00:00+03:00"))
+                                           now=dt.fromisoformat("2028-01-04T00:00:00+03:00"))
 
 
 class Authority(Base):
@@ -96,9 +96,9 @@ class Authority(Base):
         self.assertEqual((grant["issuer_kind"], grant["actor"], grant["status"]),
                          ("accepted_brand_policy_derivation", AHMET_MAIL, "active"))
         self.assertEqual(grant["binding"]["source_message_id"], "a1")
-        # earliest of: 2 weekdays from mail (Wed), scope/rubric, policy acceptance, budget -> 12 Oct 23:59:59
+        # earliest of: 2 weekdays from mail (Wed), scope/rubric, policy acceptance, budget -> the business day
         self.assertEqual(datetime.fromisoformat(grant["expires_at"]),
-                         datetime.fromisoformat("2026-10-12T23:59:59+03:00"))
+                         datetime.fromisoformat(grant["business_expires_at"]))
         self.assertTrue(grant["business_expires_at"].startswith("2026-10-14T09:00:10"))
         h.tick()
         rec, _ = h.record()

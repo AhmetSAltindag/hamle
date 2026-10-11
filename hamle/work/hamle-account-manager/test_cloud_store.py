@@ -4,6 +4,7 @@ from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta, timezone
 import threading
 import unittest
+from runtime_authority import AUTHORIZATION_DEADLINE
 
 from cloud_store import OperationsStore, StoreError, action_id, proposal_hash, POLICY, LIMIT
 
@@ -37,7 +38,7 @@ class MemoryBackend:
 
 def budget_snapshot():
     return {"policy_id": POLICY, "limit_microdollars": LIMIT,
-            "expires_at": "2026-10-12T23:59:59+03:00", "overrun_hold": False,
+            "expires_at": "2027-12-31T23:59:59+03:00", "overrun_hold": False,
             "providers": {p: {"baseline_microdollars": 0, "paid_microdollars": 10_000_000 if p == "openai" else 0,
                                "billing_ready": p != "visual_generation"} for p in ("google_cloud", "openai", "visual_generation")},
             "reservations": [
@@ -227,9 +228,21 @@ class StoreTests(unittest.TestCase):
         self.fails("action_already_reserved_no_retry", lambda: self.store.claim_action(aid, "p1", "gmail_reply", p["proposal_hash"], "w", g))
         self.assertEqual(len(self.store.public_state()["actions"]), 1)
 
+    def test_extend_budget_expiry_moves_only_the_date_once(self):
+        b = self.backend.data["budget"]
+        b["expires_at"] = "2026-10-12T23:59:59+03:00"
+        before = {k: v for k, v in b.items() if k != "expires_at"}
+        r = self.store.extend_budget_expiry("test-evidence")
+        after = self.backend.data["budget"]
+        self.assertEqual((r["status"], after["expires_at"]), ("budget_expiry_extended", AUTHORIZATION_DEADLINE))
+        self.assertEqual({k: v for k, v in after.items() if k not in ("expires_at", "expiry_history")}, before)
+        self.assertEqual(self.store.extend_budget_expiry("test-evidence")["status"], "already_current")
+        self.backend.data["budget"]["expires_at"] = "2026-11-01T00:00:00+03:00"
+        self.fails("budget_expiry_unexpected", lambda: self.store.extend_budget_expiry("test-evidence"))
+
     def test_deadline_blocks_new_work_but_not_stop_or_evidence(self):
         _, _, lease = self.claimed(); self.store.begin_dispatch(lease, self.source)
-        self.now = datetime.fromisoformat("2026-10-13T00:00:00+03:00")
+        self.now = datetime.fromisoformat("2028-01-04T00:00:00+03:00")
         self.fails("authorization_expired", self.open)
         self.fails("authorization_expired", lambda: self.store.budget_reserve("late", "openai", 1))
         self.store.stop("subject")
@@ -365,7 +378,7 @@ class StoreTests(unittest.TestCase):
                       "2026-10-12T19:00:00+03:00"):
             self.now = datetime.fromisoformat(stamp)
             self.fails("outside_scheduled_window", lambda: self.store.claim_scheduled_slot(g))
-        self.now = datetime.fromisoformat("2026-10-13T08:30:00+03:00")
+        self.now = datetime.fromisoformat("2028-01-04T08:30:00+03:00")
         self.fails("authorization_expired", lambda: self.store.claim_scheduled_slot(g))
         self.assertFalse(any(key.startswith("slot-") for key in self.backend.data))
 

@@ -191,7 +191,7 @@ class WorkerTests(unittest.TestCase):
         self.assertEqual(sorted(r["status"] for r in results), ["held", "review_required"])
 
     def test_deadline_stops_before_source_read(self):
-        self.open(); self.now = datetime.fromisoformat("2026-10-13T00:00:00+03:00")
+        self.open(); self.now = datetime.fromisoformat("2028-01-04T00:00:00+03:00")
         self.assertEqual(self.run_worker()["reason"], "authorization_expired")
         self.assertEqual(set(self.calls.values()), {0})
 
@@ -302,7 +302,7 @@ class WorkerTests(unittest.TestCase):
         self.assertEqual(self.scheduled()["reason"], "outside_scheduled_window")
         self.monday(); self.now += timedelta(minutes=5)
         self.assertEqual(self.scheduled()["reason"], "outside_scheduled_window")
-        self.now = datetime.fromisoformat("2026-10-13T08:30:00+03:00")
+        self.now = datetime.fromisoformat("2028-01-04T08:30:00+03:00")
         self.assertEqual(self.scheduled()["reason"], "authorization_expired")
         self.monday(); self.store.stop("subject")
         self.assertEqual(self.scheduled()["status"], "stopped")

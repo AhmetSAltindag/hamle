@@ -20,7 +20,7 @@ class InternalPilotStateTests(unittest.TestCase):
         self.store = InternalPilotStore(self.ops)
         self.source = {"verified": True, "subject": PILOT_ID, "thread_id": "abcd12", "message_id": "abcd13",
                        "source_fingerprint": "a" * 64, "control_generation": self.generation,
-                       "captured_at": self.now.isoformat(), "expires_at": "2026-10-12T23:59:59+03:00",
+                       "captured_at": self.now.isoformat(), "expires_at": "2027-12-31T23:59:59+03:00",
                        "evidence_ref": "actual-mail-read-test"}
         self.state = {"work_id": "internal-production-test", "mode": "internal_pilot", "control": "active",
                       "status": "awaiting_production", "revision": 0,
@@ -82,7 +82,7 @@ class InternalPilotStateTests(unittest.TestCase):
             self.fails("pilot_source_capture_stale", lambda: self.store.initialize(self.state, source))
 
     def test_source_deadline_cannot_outlive_authorization(self):
-        source = copy.deepcopy(self.source); source["expires_at"] = "2026-10-13T00:00:00+03:00"
+        source = copy.deepcopy(self.source); source["expires_at"] = "2028-01-04T00:00:00+03:00"
         self.fails("pilot_expiry_invalid", lambda: self.store.initialize(self.state, source))
 
     def test_wrong_subject_or_unverified_source_rejected(self):
@@ -226,7 +226,7 @@ class InternalPilotStateTests(unittest.TestCase):
         self.assertEqual(self.ops.control()["mode"], "stopped")
 
     def test_after_expiry_evidence_can_be_saved_but_no_new_action(self):
-        row = self.begun(); self.now += timedelta(days=4)
+        row = self.begun(); self.now += timedelta(days=500)  # past AUTHORIZATION_DEADLINE
         self.store.record_receipt("create-main-task", self.receipt)
         self.assertEqual(self.finish()["state"], "verified")
         self.assertTrue(self.store.summary()["expired"])

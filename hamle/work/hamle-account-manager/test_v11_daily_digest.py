@@ -242,7 +242,7 @@ class Digest(Base):
         for when in ("2026-10-12T08:59:00+03:00", "2026-10-12T18:31:00+03:00", "2026-10-10T10:00:00+03:00"):
             self.now = datetime.fromisoformat(when)
             self.assertEqual(self.run_digest()["reason"], "outside_digest_window")
-        self.now = datetime.fromisoformat("2026-10-13T09:16:00+03:00")
+        self.now = datetime.fromisoformat("2028-01-04T09:16:00+03:00")
         self.assertEqual(self.run_digest()["reason"], "authorization_expired")
         self.assertEqual(self.gmail.calls, [])
 
@@ -603,7 +603,7 @@ class RealVolume(Base):
 class Runtime(unittest.TestCase):
     def test_single_deadline_value_drives_store_and_windows(self):
         import cloud_store
-        self.assertEqual(runtime_authority.AUTHORIZATION_DEADLINE, "2026-10-12T23:59:59+03:00")
+        self.assertEqual(runtime_authority.AUTHORIZATION_DEADLINE, "2027-12-31T23:59:59+03:00")
         self.assertEqual(cloud_store.DEADLINE, runtime_authority.deadline_timestamp())
         self.assertEqual(runtime_authority.window_minutes(runtime_authority.CHAIN_TICK_WINDOW), (555, 1110))
         self.assertEqual(runtime_authority.window_minutes(runtime_authority.SCHEDULED_REVIEW_WINDOW), (510, 1110))

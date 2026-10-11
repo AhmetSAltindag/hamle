@@ -418,14 +418,14 @@
     "live_confirmation_at": "2026-10-11T17:05:21+00:00",
     "live_confirmation": "hepsine evet (live tonight)",
     "evidence_ref": "claude project thread Hamle proje değerlendirmesi, Ahmet messages 2026-10-11T15:07:55Z and 17:05:21Z",
-    "expires_at": "2026-10-12T23:59:59+03:00",
+    "expires_at": "2027-12-31T23:59:59+03:00",
     "decision": "accept_internal_live_profile"
   },
   "budget": {
     "internal_live_cap_usd": 30,
     "internal_live_cap_microdollars": 30000000,
     "scope": "chain model-call holds/actuals (reservation keys chain-model-*) in the shared hamle_internal_v1 ledger; per-call 2 USD hold logic unchanged; shared ledger limit (50 USD) still applies",
-    "expires_at": "2026-10-12T23:59:59+03:00",
+    "expires_at": "2027-12-31T23:59:59+03:00",
     "accepted_by": "ahmet@gamechangers.com.tr",
     "accepted_at": "2026-10-11T15:07:55+00:00",
     "evidence_ref": "claude project thread Hamle proje değerlendirmesi, Ahmet messages 2026-10-11T15:07:55Z and 17:05:21Z"

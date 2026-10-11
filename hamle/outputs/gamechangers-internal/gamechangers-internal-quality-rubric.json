@@ -10,7 +10,7 @@
   "accepted_by": "ahmet@gamechangers.com.tr",
   "accepted_at": "2026-10-11T15:07:55+00:00",
   "evidence_ref": "claude project thread Hamle proje değerlendirmesi, Ahmet messages 2026-10-11T15:07:55Z and 17:05:21Z",
-  "expires_at": "2026-10-12T23:59:59+03:00",
+  "expires_at": "2027-12-31T23:59:59+03:00",
   "acceptance_required_from": "ahmet@gamechangers.com.tr",
   "acceptance_instructions": "DRAFT written offline 2026-10-11. To accept: Ahmet reviews weights/rules below, then set status=accepted, weights_status=accepted, verified=true, accepted_by=ahmet@gamechangers.com.tr, accepted_at=<ISO time with timezone>, evidence_ref=<where the decision is recorded>, rights_declaration.accepted=true. Any edit changes the policy digest; earlier assessments/approvals stop matching. While not accepted every submission is quality_held and the 3 managers are tagged.",
   "scope_note": "TECHNICAL conformance only, measured by v11_artifact_inspector on the actual downloaded bytes (file type, byte size, pixel dimensions, OCR literal text) against the brief. A score is NOT artistic, brand-design or copy quality. Internal Gamechangers works only; WAT/customers stay off.",

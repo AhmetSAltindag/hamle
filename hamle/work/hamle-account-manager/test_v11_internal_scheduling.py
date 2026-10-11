@@ -57,7 +57,7 @@ class InternalSchedulingTests(unittest.TestCase):
         result=self.run_slot(advance)
         self.assertEqual(result['status'],'held');self.assertEqual(result['reason'],'control_stopped_or_changed');self.assertIsNone(result['business_writes'])
     def test_weekend_expired_or_late_slots_do_not_start_pilot(self):
-        for stamp in ('2026-10-10T09:00:00+03:00','2026-10-12T09:07:00+03:00','2026-10-13T09:00:00+03:00'):
+        for stamp in ('2026-10-10T09:00:00+03:00','2026-10-12T09:07:00+03:00','2028-01-04T09:00:00+03:00'):
             self.now=datetime.fromisoformat(stamp);callback=Mock(side_effect=AssertionError('Not in window'))
             self.assertEqual(self.run_slot(callback)['status'],'held');callback.assert_not_called()
     def test_next_valid_slot_advances_once_again(self):

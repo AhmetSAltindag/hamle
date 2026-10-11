@@ -515,7 +515,7 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description="Hamle internal worker; dispatch requires an exact approved proposal")
     parser.add_argument("--mode", choices=("review", "scheduled_review", "verify", "dispatch", "track", "recover_followup",
                                            "chain_tick", "daily_digest", "basecamp_credential_review",
-                                           "reconcile_model_holds"), required=True)
+                                           "reconcile_model_holds", "extend_authorization"), required=True)
     parser.add_argument("--proposal-id")
     parser.add_argument("--work-id")
     parser.add_argument("--failure-evidence-sha256")
@@ -570,7 +570,10 @@ def main(argv=None):
             from basecamp_cloud_auth import access_token
             token = access_token(secrets, claim_refresh=store.claim_credential_refresh)
             return providers.verify_basecamp_internal(token)
-        if args.mode == "reconcile_model_holds":
+        if args.mode == "extend_authorization":
+            # Operator one-shot: Firestore budget expiry -> runtime_authority.AUTHORIZATION_DEADLINE.
+            result = store.extend_budget_expiry("ahmet-decision-3-2026-10-11-no-end-date")
+        elif args.mode == "reconcile_model_holds":
             from v11_chain_models import reconcile_not_sent
             result = reconcile_not_sent(store, args.cache_key, args.evidence)
         elif args.mode == "basecamp_credential_review":

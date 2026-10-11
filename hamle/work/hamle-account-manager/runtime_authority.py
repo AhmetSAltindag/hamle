@@ -9,7 +9,7 @@ That code change alone does NOT extend data-side expiries; see DATED_DATA below.
 from datetime import datetime
 
 AUTHORIZATION_START = "2026-10-09T00:00:00+03:00"
-AUTHORIZATION_DEADLINE = "2026-10-12T23:59:59+03:00"
+AUTHORIZATION_DEADLINE = "2027-12-31T23:59:59+03:00"  # Ahmet 2026-10-11: no end date; stop = "dur"
 
 # Istanbul local weekday windows "HH:MM" (inclusive slot starts), Mon-Fri.
 SCHEDULED_REVIEW_WINDOW = ("08:30", "18:30")  # unchanged legacy scheduled_review rule

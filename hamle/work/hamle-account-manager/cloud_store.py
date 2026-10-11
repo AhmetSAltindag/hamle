@@ -712,6 +712,28 @@ class OperationsStore:
         _require(isinstance(b, dict) and b.get("policy_id") == POLICY and b.get("limit_microdollars") == LIMIT, "budget_not_imported")
         return b
 
+    PREVIOUS_DEADLINE = "2026-10-12T23:59:59+03:00"
+
+    def extend_budget_expiry(self, evidence):
+        """Operator one-shot (Ahmet 2026-10-11, decision 3: no end date; stop with 'dur').
+
+        Moves the imported budget's expires_at from the previous deadline to the current
+        AUTHORIZATION_DEADLINE. Nothing else changes (limit, reservations, holds, stop state).
+        Idempotent: a budget already on the current deadline returns unchanged.
+        """
+        evidence = _label(evidence)
+        def op(tx, now):
+            b = self._budget(tx)
+            if b.get("expires_at") == AUTHORIZATION_DEADLINE:
+                return {"status": "already_current", "expires_at": AUTHORIZATION_DEADLINE, "business_writes": 0}
+            _require(b.get("expires_at") == self.PREVIOUS_DEADLINE, "budget_expiry_unexpected")
+            b["expires_at"] = AUTHORIZATION_DEADLINE
+            b.setdefault("expiry_history", []).append({"from": self.PREVIOUS_DEADLINE, "to": AUTHORIZATION_DEADLINE,
+                                                      "at": now, "evidence_ref": evidence})
+            tx.put("budget", b)
+            return {"status": "budget_expiry_extended", "expires_at": AUTHORIZATION_DEADLINE, "business_writes": 0}
+        return self._run(op)
+
     @staticmethod
     def _totals(b):
         spent = held = paid = committed = 0

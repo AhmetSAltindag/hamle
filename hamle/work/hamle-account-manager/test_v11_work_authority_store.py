@@ -180,7 +180,7 @@ class AuthorityStoreTests(unittest.TestCase):
         self.assertEqual(self.queue.get_work(self.wid)['mode'], 'takeover')
 
     def test_expired_budget_blocks_new_action_but_stop_remains_available(self):
-        self.install(); claim = self.claim(); self.now += timedelta(days=4)
+        self.install(); claim = self.claim(); self.now += timedelta(days=500)  # past AUTHORIZATION_DEADLINE
         with self.assertRaisesRegex(StoreError, 'authorization_expired'):
             self.begin(claim)
         self.assertEqual(self.stop()['work']['mode'], 'takeover')
