@@ -265,5 +265,21 @@ class CacheKey(unittest.TestCase):
         self.assertNotEqual(a, ts.route_fingerprint(route, ts.SPECIAL_PROMPT))
 
 
+class StreamedMessageJson(unittest.TestCase):
+    def test_streamed_final_message_is_serialized_in_json_mode(self):
+        import model
+        from test_anthropic_routing import message as msg
+        data = msg({"trends": []})
+
+        class Snapshot:  # SDK ParsedMessage: python-mode dict is not JSON-safe, to_json is
+            def to_dict(self):
+                return dict(data, junk=b"\x00")
+
+            def to_json(self):
+                return json.dumps(data)
+
+        self.assertEqual(model._message_json(Snapshot()), data)
+
+
 if __name__ == "__main__":
     unittest.main()

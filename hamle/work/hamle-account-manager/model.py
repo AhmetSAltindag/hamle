@@ -596,6 +596,15 @@ def _anthropic_status_code(exc):
 STREAM_READ_TIMEOUT = 120
 
 
+def _message_json(message):
+    """SDK message -> plain JSON dict. The streamed final message (ParsedMessage snapshot)
+    is not JSON-safe in python mode, so serialize in JSON mode and round-trip."""
+    to_json = getattr(message, "to_json", None)
+    if callable(to_json):
+        return json.loads(to_json())
+    return message.to_dict()  # plain fakes / dict-like objects
+
+
 class _StreamDeadline(Exception):
     """Wall-clock limit reached mid-stream; a charge is possible (transport_outcome_unknown)."""
 
@@ -642,9 +651,11 @@ def anthropic_send(api_key, route, kwargs, *, client=None):
               f"status={getattr(exc, 'status_code', None)} streamed={streamed}", file=sys.stderr, flush=True)
         raise ModelError(code) from None
     try:
-        data = message if isinstance(message, dict) else message.to_dict()
+        data = message if isinstance(message, dict) else _message_json(message)
         size = len(_encoded(data))
-    except Exception:
+    except Exception as exc:
+        print(f"anthropic_send_invalid_response class={type(exc).__module__}.{type(exc).__name__} "
+              f"streamed={streamed}", file=sys.stderr, flush=True)
         raise ModelError("invalid_response") from None
     if size > ANTHROPIC_MAX_RESPONSE_BYTES:
         raise ModelError("response_byte_limit")
