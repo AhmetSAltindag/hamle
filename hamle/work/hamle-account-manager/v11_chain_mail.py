@@ -497,6 +497,6 @@ class ChainMailReader:
                 "observed_at": observed_at, "automatic": False, "own_message": False, "human_takeover": False,
                 "sender": latest["from"], "to": to, "cc": cc, "origin": {"kind": "direct_email"},
                 "subject": subjects[latest["id"]]["subject"][:300], "text": plain[0],
-                "source_order": latest["time_ms"], "rfc_message_id": rfc[0].strip(),
+                "source_order": latest["time_ms"], "received_at_ms": latest["time_ms"], "rfc_message_id": rfc[0].strip(),
                 "attachments_fetched": False,
                 "has_attachments": any(i.get("is_attachment") for i in row["mime_inventory"])}

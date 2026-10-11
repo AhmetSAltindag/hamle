@@ -211,8 +211,10 @@ class Live:
         self.ops.initialize_control(); self.ops.initialize_budget(budget_snapshot())
         self.ops_gen = self.ops.resume_review_only("offline-test")["generation"]
         self.queue = QueueStore(InMemoryBackend(), clock=self.clock.ts)
+        self.clock.now = T0 - timedelta(minutes=5)  # queue opened before the synthetic mail (sent T0-20s)
         self.queue.initialize()
         self.queue_gen = self.queue.set_control("queue_open", actor="offline-test", expected_generation=0)["generation"]
+        self.clock.now = T0
         self.mailbox, self.account, self.models = Mailbox(self.clock), Account(self.clock), ModelTransport()
         self.rubric = rubric or accepted_rubric()
         self.evidence = []
@@ -637,8 +639,10 @@ class Persistence(Base):
         b, client = self.backend()
         h = Live()
         clock = h.clock
+        clock.now = T0 - timedelta(minutes=5)  # open before the synthetic mail, as in Live()
         q = live.open_cloud_queue(None, clock=clock.ts, backend=b)
         gen = q.set_control("queue_open", actor="t", expected_generation=0)["generation"]
+        clock.now = T0
         h.queue, h.queue_gen = q, gen
         h.deps = h.build()
         h.models.outputs["interpreter"].append(interpretation())

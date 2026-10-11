@@ -150,8 +150,15 @@ class Chain:
             report.update(status="held", reason="brand_profile_live_disabled")
             return report
         self.gen = control["generation"]
+        self._opened_ms = int(control["changed_at"] * 1000)
         sources = {}
-        for source in self.d.mail_reader() or []:
+        # Read mail first, then take the tick time: the reader stamps observed_at with its own
+        # clock, and intake freshness requires observed_at <= now.
+        mail = list(self.d.mail_reader() or [])
+        now = self.d.clock()
+        _need(isinstance(now, datetime) and now.tzinfo is not None, "clock_timezone_required")
+        self._now = now
+        for source in mail:
             self._ingest(source, sources)
         model_ok = self.d.budget_ok() is True
         if not model_ok:
@@ -178,6 +185,9 @@ class Chain:
             sender = contacts[source["sender"]]
             _need(sender.get("side") == "agency" and sender.get("can_request") is True, "sender_not_agency_requester")
             _need(type(source.get("source_order")) is int and source["source_order"] > 0, "source_order_missing")
+            received = source.get("received_at_ms")
+            _need(received is None or (type(received) is int and received >= self._opened_ms),
+                  "mail_before_queue_open")  # never pick up mail older than the current queue opening
             route = self._default_route()
             work = self.q.bind_work(brand_id=self.catalog["brand_id"], thread_id=source["thread_id"],
                                     account_id=self.catalog["basecamp"]["account_id"],

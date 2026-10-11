@@ -380,6 +380,35 @@ class DraftProfile(unittest.TestCase):
         self.assertEqual((b["assignee_ids"], b["subscriber_ids"]), ([AHMET], [AHMET, CANSU, OZGE]))
 
 
+class LiveClockOrder(unittest.TestCase):
+    def test_mail_observed_after_tick_start_is_fresh(self):
+        """Live order: the reader stamps observed_at after the tick began; it must still be fresh."""
+        h = Harness()
+        h.mail_in("t-1", "Merhaba Hamle, iç duyuru görseli lazım.")
+        h.inbox[-1]["observed_at"] = (NOW + timedelta(seconds=5)).isoformat()
+        times = iter([NOW, NOW + timedelta(seconds=6)])
+        h.deps.clock = lambda: next(times)
+        report = h.tick()
+        self.assertNotIn("email_snapshot_stale", [m["reason"] for m in report["ignored_mail"]])
+        self.assertEqual(len(h.world.posts(f"/todolists/{LIST}/todos.json")), 1)
+
+    def test_mail_received_before_queue_open_is_ignored(self):
+        h = Harness()
+        h.mail_in("t-old", "Eski deneme maili.")
+        h.inbox[-1]["received_at_ms"] = int(NOW.timestamp() * 1000) - 60_000
+        report = h.tick()
+        self.assertEqual([m["reason"] for m in report["ignored_mail"]], ["mail_before_queue_open"])
+        self.assertEqual(h.world.posts(f"/todolists/{LIST}/todos.json"), [])
+        self.assertEqual(h.calls["interpreter"], 0)
+
+    def test_mail_received_after_queue_open_is_processed(self):
+        h = Harness()
+        h.mail_in("t-new", "Merhaba Hamle, iç duyuru görseli lazım.")
+        h.inbox[-1]["received_at_ms"] = int(NOW.timestamp() * 1000)
+        h.tick()
+        self.assertEqual(len(h.world.posts(f"/todolists/{LIST}/todos.json")), 1)
+
+
 class EndToEnd(unittest.TestCase):
     def test_mail_task_question_answer_submission_94_delivery_same_thread(self):
         h = Harness()
