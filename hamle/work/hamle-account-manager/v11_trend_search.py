@@ -22,6 +22,7 @@ within the last 30 days (not in the future). Anything else is dropped, never rep
 from __future__ import annotations
 
 import copy
+import hashlib
 from datetime import date, timedelta
 from pathlib import Path
 import re
@@ -263,6 +264,21 @@ def anthropic_research(route, prompt_path, request_input, out_schema, *, api_key
     return {"output": {**value, "evidence": sorted(evidence)}, "receipt": result["receipt"]}
 
 
+def route_fingerprint(route, prompt_path):
+    """Research cache keys bind the exact route + prompt: a changed config/prompt is a new request.
+
+    An old 'unknown' outcome under a previous config stays held (cost pending) and is never
+    retried; only a genuinely different request under the new config can run.
+    """
+    try:
+        prompt = prompt_path.read_bytes()
+    except OSError:
+        prompt = b""
+    return {"model": route.model, "effort": route.effort, "max_tokens": route.max_tokens,
+            "timeout_seconds": route.timeout_seconds, "web_search": route.web_search,
+            "prompt_sha256": hashlib.sha256(prompt).hexdigest()}
+
+
 def _research_gate(ops, catalog, route):
     from v11_chain_live import budget_gate
     from v11_chain_models import ModelGate, internal_cap_microdollars
@@ -322,7 +338,7 @@ def trend_search_source(ops, load_key, catalog, cards, *, transport=None, routin
         _need(names, "trend_no_brand_cards")
         _need(budget_ok(), "model_budget_unavailable")
         request_input = {"today": day.isoformat(), "country": "TR", "platforms": list(PLATFORMS), "brands": brands}
-        output = gate().once("trend", source_digest("trend", request_input), lambda: call(request_input),
+        output = gate().once("trend", source_digest("trend", request_input, route_fingerprint(route, PROMPT)), lambda: call(request_input),
                              provider=route.provider, hold=hold)
         return sourced(output, day)
     return source
@@ -370,7 +386,7 @@ def special_days_research_source(ops, load_key, catalog, cards, *, routing=None,
         _need(budget_ok(), "model_budget_unavailable")
         request_input = {"today": day.isoformat(), "until": (day + timedelta(days=SPECIAL_HORIZON_DAYS)).isoformat(),
                          "country": "TR", "brands": brands}
-        output = gate().once("special_days", source_digest("special_days", request_input),
+        output = gate().once("special_days", source_digest("special_days", request_input, route_fingerprint(route, SPECIAL_PROMPT)),
                              lambda: anthropic_research(route, SPECIAL_PROMPT, request_input, special_days_schema(names),
                                                         api_key=key_for(load_key, "anthropic"), client=client,
                                                         code="invalid_special_days_schema"),
@@ -421,7 +437,7 @@ def new_business_research_source(ops, load_key, catalog, cards, *, routing=None,
         request_input = {"today": day.isoformat(), "country": "TR", "agency": "Gamechangers",
                          "current_clients": current, "served_sectors": sectors,
                          "wanted": f"{MIN_NEW_BUSINESS}-{MAX_NEW_BUSINESS}"}
-        output = gate().once("new_business", source_digest("new_business", request_input),
+        output = gate().once("new_business", source_digest("new_business", request_input, route_fingerprint(route, NEW_BUSINESS_PROMPT)),
                              lambda: anthropic_research(route, NEW_BUSINESS_PROMPT, request_input, new_business_schema(),
                                                         api_key=key_for(load_key, "anthropic"), client=client,
                                                         code="invalid_new_business_schema"),

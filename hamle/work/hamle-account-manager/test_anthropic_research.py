@@ -255,5 +255,15 @@ class Streaming(unittest.TestCase):
         self.assertEqual(err.exception.code, "transport_outcome_unknown")
 
 
+class CacheKey(unittest.TestCase):
+    def test_route_or_prompt_change_gives_a_new_research_key(self):
+        import dataclasses
+        route = model_routing.load().route("trend_radar")
+        a = ts.route_fingerprint(route, ts.PROMPT)
+        self.assertEqual(a, ts.route_fingerprint(route, ts.PROMPT))
+        self.assertNotEqual(a, ts.route_fingerprint(dataclasses.replace(route, effort="high"), ts.PROMPT))
+        self.assertNotEqual(a, ts.route_fingerprint(route, ts.SPECIAL_PROMPT))
+
+
 if __name__ == "__main__":
     unittest.main()
