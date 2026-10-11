@@ -25,24 +25,34 @@
     {
       "project_id": 40704530,
       "brand": "Bikaldi",
-      "sector": null,
-      "audience": null,
+      "sector": "kahve ve içecek karışımları / gıda",
+      "audience": "kahve ve hazır içecek tüketicileri",
       "main_platform": null,
-      "tags": [],
+      "tags": [
+        "gida",
+        "perakende",
+        "e-ticaret"
+      ],
       "status": "taslak",
       "verified": false,
-      "include_in_suggestions": true
+      "include_in_suggestions": true,
+      "sector_source": "web 2026-10-11 (https://www.bikaldi.com.tr/); Ahmet asked to check sites"
     },
     {
       "project_id": 43886681,
       "brand": "BWI",
-      "sector": null,
-      "audience": null,
+      "sector": "Brand Week Istanbul / pazarlama ve marka etkinliği (4-6 Kasım 2026, Haliç)",
+      "audience": "pazarlama, marka ve iletişim profesyonelleri",
       "main_platform": null,
-      "tags": [],
+      "tags": [
+        "etkinlik",
+        "pazarlama",
+        "b2b"
+      ],
       "status": "taslak",
       "verified": false,
-      "include_in_suggestions": true
+      "include_in_suggestions": true,
+      "sector_source": "web 2026-10-11 (https://halic.com/en/?p=13010); Ahmet asked to check sites"
     },
     {
       "project_id": 47875291,
@@ -103,14 +113,19 @@
     {
       "project_id": 48562916,
       "brand": "HAN Spaces",
-      "sector": null,
-      "audience": null,
+      "sector": "esnek ofis / coworking ve sanal ofis",
+      "audience": "girişimler, KOBİ'ler ve serbest çalışanlar",
       "main_platform": null,
-      "tags": [],
+      "tags": [
+        "ofis",
+        "b2b",
+        "girisim"
+      ],
       "status": "taslak",
       "verified": false,
       "include_in_suggestions": true,
-      "note": "clients on"
+      "note": "clients on",
+      "sector_source": "web 2026-10-11 (https://hanspaces.com/); Ahmet asked to check sites"
     },
     {
       "project_id": 40704547,
@@ -127,13 +142,18 @@
     {
       "project_id": 48639990,
       "brand": "Rabam",
-      "sector": null,
-      "audience": null,
+      "sector": "araç sahipleri için mobil uygulama / otomotiv hizmetleri",
+      "audience": "araç sahipleri",
       "main_platform": null,
-      "tags": [],
+      "tags": [
+        "otomotiv",
+        "mobilite",
+        "uygulama"
+      ],
       "status": "taslak",
       "verified": false,
-      "include_in_suggestions": true
+      "include_in_suggestions": true,
+      "sector_source": "web 2026-10-11 (https://apps.apple.com/us/app/rabam-all-about-your-car/id1571183769); Ahmet asked to check sites"
     },
     {
       "project_id": 40694338,

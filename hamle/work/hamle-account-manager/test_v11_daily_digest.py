@@ -433,7 +433,7 @@ class Sections(Base):
         rows = dd.special_days(self.calendar, self.cards, date(2026, 10, 26))
         names = [r["name"] for r in rows]
         self.assertTrue(any("Cumhuriyet" in n for n in names) and any("Cadılar" in n for n in names))
-        self.assertFalse(any(b["brand"] in ("Hamle İç Deneme", "New Biz", "Bikaldi") for r in rows for b in r["brands"]))
+        self.assertFalse(any(b["brand"] in ("Hamle İç Deneme", "New Biz", "Cacaonly") for r in rows for b in r["brands"]))
 
 
 class Preview(Base):

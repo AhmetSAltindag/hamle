@@ -49,7 +49,7 @@ class Provider(Base):
         self.assertEqual(item["properties"]["platform"]["enum"], ["instagram", "tiktok", "x"])
         self.assertIn("Altınmarka", item["properties"]["brand"]["enum"])
         self.assertNotIn("Hamle İç Deneme", item["properties"]["brand"]["enum"])
-        self.assertNotIn("Bikaldi", brands)  # no sector in the draft card -> not offered
+        self.assertIn("Bikaldi", brands)  # sector filled from its website (2026-10-11)
         chain = cm.build_request("digest", {"items": []})
         self.assertEqual((chain["tools"], chain["tool_choice"]), ([], "none"))
         with open(base.__file__, encoding="utf-8") as f:
