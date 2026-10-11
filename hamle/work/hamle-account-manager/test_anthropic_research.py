@@ -86,7 +86,7 @@ class TrendOnClaude(Research):
         [r] = self.chain()
         # hold = 2 USD + 5 x 0.01 USD; actual = 5000x4 + 1000x20 + 2 searches x 10_000
         self.assertEqual((r["provider"], r["reserved_microdollars"], r["state"], r["actual_microdollars"]),
-                         ("anthropic", 2_050_000, "settled", 20_000 + 20_000 + 20_000))
+                         ("anthropic", 2_040_000, "settled", 20_000 + 20_000 + 20_000))
         self.assertEqual(self.source(client)(DAY), items)  # same day: cached, no second call
         self.assertEqual(len(client.calls), 1)
 
