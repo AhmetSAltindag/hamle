@@ -188,7 +188,7 @@ class Config(Base):
         self.assertEqual(cfg["recipients"], [n + "@gamechangers.com.tr" for n in
                          ("ahmet", "cansu", "ozge", "baris", "berkay", "ipek", "esma")])
         self.assertEqual(cfg["excluded"], frozenset({47875291}))
-        self.assertIs(cfg["trend_search"], True)
+        self.assertIs(cfg["trend_search"], False)  # OFF until the research probe passes
 
     def test_excluded_projects_validated_and_skipped(self):
         for bad in ("47875291", [0], [True], ["1"]):

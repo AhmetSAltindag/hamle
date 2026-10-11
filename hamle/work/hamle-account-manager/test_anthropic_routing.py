@@ -120,8 +120,8 @@ class RoutingConfig(NoNetwork):
             self.assertEqual(r.route(role).web_search, {"type": "web_search_20260209", "max_uses": 4,
                                                         "fee_microdollars": 10_000})
         self.assertIsNone(r.route("chain_interpreter").web_search)
-        self.assertTrue(r.flag("monday_special_days_research_enabled"))
-        self.assertTrue(r.flag("new_business_research_enabled"))
+        self.assertFalse(r.flag("monday_special_days_research_enabled"))
+        self.assertFalse(r.flag("new_business_research_enabled"))
 
     def test_openai_stays_selectable_but_never_default_and_bad_files_fail_closed(self):
         doc = json.loads((ROOT / "outputs/gamechangers-internal/model-routing.json").read_text(encoding="utf-8"))

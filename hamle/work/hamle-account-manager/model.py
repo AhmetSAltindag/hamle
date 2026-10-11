@@ -8,6 +8,7 @@ from __future__ import annotations
 import copy
 import json
 import re
+import sys
 import time
 from datetime import datetime
 from fractions import Fraction
@@ -635,7 +636,11 @@ def anthropic_send(api_key, route, kwargs, *, client=None):
         else:
             message = client.messages.create(**kwargs)
     except Exception as exc:
-        raise ModelError(_anthropic_status_code(exc)) from None
+        code = _anthropic_status_code(exc)
+        # Job log: exception class and HTTP status only (never message text, request or key).
+        print(f"anthropic_send_failed code={code} class={type(exc).__module__}.{type(exc).__name__} "
+              f"status={getattr(exc, 'status_code', None)} streamed={streamed}", file=sys.stderr, flush=True)
+        raise ModelError(code) from None
     try:
         data = message if isinstance(message, dict) else message.to_dict()
         size = len(_encoded(data))

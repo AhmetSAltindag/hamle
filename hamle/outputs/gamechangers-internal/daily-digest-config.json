@@ -12,11 +12,11 @@
   ],
   "day_note": null,
   "basecamp_account_id": 5898865,
-  "trend_search_enabled": true,
+  "trend_search_enabled": false,
   "send_window_istanbul": "Mon-Fri, first run at/after 09:15 (runtime_authority.DAILY_DIGEST_WINDOW 09:15-18:30)",
   "rules": "recipients: only @gamechangers.com.tr agency addresses (any other domain refuses the whole digest); never customer addresses. day_note: optional plain text 'günün notu' (<= 2000 chars) or null.",
   "to_enable": "Ahmet fills recipients (e.g. [\"ahmet@gamechangers.com.tr\", \"cansu@gamechangers.com.tr\", \"ozge@gamechangers.com.tr\"]), optionally day_note, then sets enabled=true. The image reads work/hamle-account-manager/chain-profile/daily-digest-config.json, so a rebuild (package_chain_source.py) is needed after editing.",
-  "trend_search_rules": "trend_search_enabled=true (Ahmet's decision 1, 2026-10-11): one Claude Opus 5.5 web_search call per Istanbul day (v11_trend_search, role trend_radar, max_uses 5, 30 USD chain cap); only trends whose https URL is in the search sources and dated within 30 days are shown.",
+  "trend_search_rules": "OFF 2026-10-12 until the streaming research failure is fixed and probed; was trend_search_enabled=true (Ahmet's decision 1, 2026-10-11): one Claude Opus 5.5 web_search call per Istanbul day (v11_trend_search, role trend_radar, max_uses 5, 30 USD chain cap); only trends whose https URL is in the search sources and dated within 30 days are shown.",
   "excluded_project_ids": [
     47875291
   ],

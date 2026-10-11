@@ -146,7 +146,7 @@ class SpecialDays(Research):
                                                routing=routing(**flags), client=client)
 
     def test_flag_off_by_default_means_no_provider(self):
-        self.assertTrue(model_routing.load().flag("monday_special_days_research_enabled"))  # on per Ahmet 2026-10-11
+        self.assertFalse(model_routing.load().flag("monday_special_days_research_enabled"))  # OFF until the research probe passes (2026-10-12)
         self.assertIsNone(self.build(FakeClient(), monday_special_days_research_enabled=False))
         self.assertEqual((self.keys, self.chain()), ([], []))
 
@@ -176,7 +176,7 @@ class NewBusiness(Research):
                                                routing=routing(**flags), client=client)
 
     def test_flag_off_by_default_means_no_provider(self):
-        self.assertTrue(model_routing.load().flag("new_business_research_enabled"))  # on per Ahmet 2026-10-11
+        self.assertFalse(model_routing.load().flag("new_business_research_enabled"))  # OFF until the research probe passes (2026-10-12)
         self.assertIsNone(self.build(FakeClient(), new_business_research_enabled=False))
 
     def test_three_to_five_sourced_non_client_brands(self):

@@ -73,17 +73,19 @@
     {
       "project_id": 44320349,
       "brand": "Fenerium",
-      "sector": "spor taraftar ürünleri / perakende (taslak)",
-      "audience": "Fenerbahçe taraftarları (taslak)",
+      "sector": "Fenerbahçe resmi lisanslı ürün mağazası (perakende, e-ticaret, mobil uygulama)",
+      "audience": "Fenerbahçe taraftarları",
       "main_platform": "Instagram",
       "tags": [
-        "perakende",
         "spor",
+        "taraftar",
+        "perakende",
         "e-ticaret"
       ],
       "status": "taslak",
       "verified": false,
-      "include_in_suggestions": true
+      "include_in_suggestions": true,
+      "sector_source": "web 2026-10-11 (https://www.fanatik.com.tr/fenerbahce/fenerbahce-rekor-kirdi-resmi-siteden-aciklandi-2603553)"
     },
     {
       "project_id": 40704459,
@@ -158,31 +160,39 @@
     {
       "project_id": 40694338,
       "brand": "WAT Mobilite",
-      "sector": "mobilite (taslak)",
-      "audience": null,
+      "sector": "elektrikli araç şarj ağı işletmeciliği ve şarj çözümleri (Koç Topluluğu; WAT, Opet, Otokoç, Entek ortaklığı)",
+      "audience": "elektrikli araç sahipleri, filolar, işletmeler",
       "main_platform": "Instagram",
       "tags": [
-        "mobilite"
+        "mobilite",
+        "elektrikli-arac",
+        "enerji",
+        "b2b",
+        "b2c"
       ],
       "status": "taslak",
       "verified": false,
-      "include_in_suggestions": true
+      "include_in_suggestions": true,
+      "sector_source": "web 2026-10-11 (https://webrazzi.com/2022/07/04/koc-toplulugu-wat-mobilite-ile-elektrikli-arac-sarj-agi-isletmeciligi-alaninda-faaliyet-gosterecek/)"
     },
     {
       "project_id": 48917059,
       "brand": "ya da Multicosmetics",
-      "sector": "kozmetik (taslak)",
-      "audience": null,
+      "sector": "dermokozmetik / cilt bakımı (eczane kanalı)",
+      "audience": "hassas ciltliler, ebeveynler, eczane müşterileri",
       "main_platform": "Instagram",
       "tags": [
         "kozmetik",
-        "perakende",
+        "cilt-bakimi",
+        "eczane",
+        "bebek-cocuk",
         "e-ticaret"
       ],
       "status": "taslak",
       "verified": false,
       "include_in_suggestions": true,
-      "note": "clients on"
+      "note": "clients on",
+      "sector_source": "web 2026-10-11 (https://paradergi.com.tr/girisimcilik/2026/07/15/nevzat-aydindan-kozmetik-sirketi-ya-da-multicosmeticse-yatirim)"
     }
   ]
 }
