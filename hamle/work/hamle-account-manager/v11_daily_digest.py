@@ -54,6 +54,7 @@ MODEL_INPUT_BUDGET = 15_000
 NO_TRENDS = "Bugün doğrulanmış trend kaynağı alınamadı."
 WEEKDAYS = ("Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi", "Pazar")
 SHORT_DAYS = ("Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz")
+TITLE_DAYS = ("Pzt", "Salı", "Çarş", "Perş", "Cuma", "Cmt", "Paz")  # Ahmet 2026-10-11
 MARKS = {"action_on_us": "🔴", "waiting_client": "🟡", "looks_done": "🟢"}
 MORE_LINKS = 4
 LIMITS = {"today": 3, "overdue": 6, "trends": 4, "special": 3, "new_business": 5}  # worst case ~26 non-blank lines
@@ -427,6 +428,11 @@ def render(listing, *, day, day_note, overdue, trends, specials, classified, new
 
 
 
+def digest_title(day):
+    """Subject and heading, Ahmet's format: 'Hamle AI: 12 Ekim Pzt Günü Kısa Özeti'."""
+    return f"Hamle AI: {day.day} {MONTHS[day.month - 1]} {TITLE_DAYS[day.weekday()]} Günü Kısa Özeti"
+
+
 # ------------------------------------------------------------------ html (full width, Tahoma, titles are the links)
 FONT = "Tahoma,Verdana,Segoe,sans-serif"
 MONTHS = ("Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım",
@@ -500,8 +506,7 @@ def render_html(listing, *, day, day_note, overdue, trends, specials, classified
     counts = [f"Açık iş {len(items)}", f"Bugün teslim {len(due)}", f"Gecikmiş {len(overdue)} ({brands} marka)"]
     if classified:
         counts += [f"{MARKS[k]} {n}" for k, n in marks.items()]
-    out = [f'<div style="font-size:19px;font-weight:bold;margin:0 0 4px;">Hamle günlük özet — '
-           f'{day.day} {MONTHS[day.month - 1]} {day.year}, {WEEKDAYS[day.weekday()]}</div>',
+    out = [f'<div style="font-size:19px;font-weight:bold;margin:0 0 4px;">{_e(digest_title(day))}</div>',
            _p(_e(" · ".join(counts)), f"color:{GREY};")]
     if day_note:
         out.append(_p("<b>Günün notu:</b> " + _e(day_note[:300])))
@@ -797,7 +802,7 @@ def run_daily_digest(ops, *, config, reader_factory, writer, clock, window=DAILY
             if wait > 0:
                 sleep(min(wait, 20 * 60))
         payload = {"from": HAMLE, "to": list(recipients), "cc": [],
-                   "subject": f"{subject_prefix}Hamle günlük özet — {target.strftime('%d.%m.%Y')}", "body": body,
+                   "subject": subject_prefix + digest_title(target), "body": body,
                    "html": stats.pop("html")}
         sha = scope_digest(payload)
 

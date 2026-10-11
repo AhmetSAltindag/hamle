@@ -443,7 +443,7 @@ class Preview(Base):
         self.assertEqual((r["status"], r["key"], r["recipients"]), ("digest_sent", "daily-digest-preview-20261012", 1))
         msg = self.gmail.message()
         self.assertEqual(msg["To"], "ahmet@gamechangers.com.tr")
-        self.assertTrue(str(msg["Subject"]).startswith("[ÖNİZLEME] Hamle günlük özet"))
+        self.assertTrue(str(msg["Subject"]).startswith("[ÖNİZLEME] Hamle AI: "))
         self.assertEqual(self.ops.backend.data["daily-digest-preview-20261012"]["kind"], "daily_digest_preview")
         self.assertNotIn("daily-digest-20261012", self.ops.backend.data)
         self.assertEqual(self.run_digest(preview_to="ahmet@gamechangers.com.tr")["status"], "already_recorded")
@@ -490,7 +490,7 @@ class PreviewDay(Base):
         r = self.run_digest(preview_to="ahmet@gamechangers.com.tr", preview_day="2026-10-12")
         self.assertEqual((r["status"], r["key"]), ("digest_sent", "daily-digest-preview-20261012"), r)
         msg = self.gmail.message()
-        self.assertEqual(str(msg["Subject"]), "[ÖNİZLEME] Hamle günlük özet — 12.10.2026")
+        self.assertEqual(str(msg["Subject"]), "[ÖNİZLEME] Hamle AI: 12 Ekim Pzt Günü Kısa Özeti")
         text = msg.get_body(preferencelist=("plain",)).get_content()
         for needle in ("12.10.2026 Pazartesi", f"- Afiş · Hamle İç Deneme · @Ahmet · {APP}/buckets/1/todos/1001",
                        "Story · Hamle İç Deneme · @Ahmet @Cansu · 2 gün gecikme", "ÖZEL GÜNLER (14 gün)"):
@@ -514,7 +514,10 @@ class PreviewDay(Base):
         self.assertNotIn("max-width", page)
         self.assertIn(f'<a href="{APP}/buckets/1/todos/1001" style="color:#1a56db;text-decoration:none;'
                       f'font-weight:bold;">Afiş</a>', page)
-        self.assertIn("12 Ekim 2026, Pazartesi", page)
+        self.assertIn("Hamle AI: 12 Ekim Pzt Günü Kısa Özeti", page)
+        self.assertEqual([dd.digest_title(date(2026, 10, d)) for d in range(12, 17)],
+                         [f"Hamle AI: {d} Ekim {n} Günü Kısa Özeti" for d, n in
+                          zip(range(12, 17), ("Pzt", "Salı", "Çarş", "Perş", "Cuma"))])
         self.assertIn("⏰ Gecikenler", page)
         visible = re.sub(r"<[^>]+>", " ", page)
         self.assertNotIn("https://", visible)  # no raw URL text, only links
