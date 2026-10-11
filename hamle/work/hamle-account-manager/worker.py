@@ -515,7 +515,8 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description="Hamle internal worker; dispatch requires an exact approved proposal")
     parser.add_argument("--mode", choices=("review", "scheduled_review", "verify", "dispatch", "track", "recover_followup",
                                            "chain_tick", "daily_digest", "basecamp_credential_review",
-                                           "reconcile_model_holds", "extend_authorization"), required=True)
+                                           "reconcile_model_holds", "extend_authorization",
+                                           "research_probe"), required=True)
     parser.add_argument("--proposal-id")
     parser.add_argument("--work-id")
     parser.add_argument("--failure-evidence-sha256")
@@ -570,7 +571,23 @@ def main(argv=None):
             from basecamp_cloud_auth import access_token
             token = access_token(secrets, claim_refresh=store.claim_credential_refresh)
             return providers.verify_basecamp_internal(token)
-        if args.mode == "extend_authorization":
+        if args.mode == "research_probe":
+            # Operator one-shot: ONE trend-radar research call for today's Istanbul date through the
+            # normal budget gate and ledger (flag-independent), no mail, no Basecamp write. The result
+            # is cached under the same key the digest uses, so a same-day digest reuses it.
+            from zoneinfo import ZoneInfo
+            from v11_chain_live import load_catalog
+            from v11_daily_digest import load_brand_cards
+            from v11_trend_search import trend_search_source
+            keys = {"anthropic": lambda: providers.anthropic_key(secrets), "openai": lambda: providers.openai_key(secrets)}
+            day = datetime.now(ZoneInfo("Europe/Istanbul")).date()
+            try:
+                trends = trend_search_source(store, keys, load_catalog(), load_brand_cards())(day)
+                result = {"status": "research_probe_ok", "day": day.isoformat(), "trends": len(trends),
+                          "titles": [t.get("title") for t in trends][:5], "business_writes": 0}
+            except Exception as exc:
+                result = {"status": "held", "reason": _safe_error(exc), "day": day.isoformat(), "business_writes": 0}
+        elif args.mode == "extend_authorization":
             # Operator one-shot: Firestore budget expiry -> runtime_authority.AUTHORIZATION_DEADLINE.
             result = store.extend_budget_expiry("ahmet-decision-3-2026-10-11-no-end-date")
         elif args.mode == "reconcile_model_holds":
