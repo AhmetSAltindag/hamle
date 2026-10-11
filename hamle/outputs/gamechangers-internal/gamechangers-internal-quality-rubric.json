@@ -1,37 +1,65 @@
 {
   "schema_version": 1,
   "rubric_id": "gc-internal-technical-v1",
-  "version": "1-draft",
+  "version": "1-accepted",
   "brand_id": "gamechangers",
   "service_id": "gc_internal",
-  "status": "draft",
-  "weights_status": "draft_not_accepted",
-  "verified": false,
-  "accepted_by": null,
-  "accepted_at": null,
-  "evidence_ref": null,
+  "status": "accepted",
+  "weights_status": "accepted",
+  "verified": true,
+  "accepted_by": "ahmet@gamechangers.com.tr",
+  "accepted_at": "2026-10-11T15:07:55+00:00",
+  "evidence_ref": "claude project thread Hamle proje değerlendirmesi, Ahmet messages 2026-10-11T15:07:55Z and 17:05:21Z",
   "expires_at": "2026-10-12T23:59:59+03:00",
   "acceptance_required_from": "ahmet@gamechangers.com.tr",
   "acceptance_instructions": "DRAFT written offline 2026-10-11. To accept: Ahmet reviews weights/rules below, then set status=accepted, weights_status=accepted, verified=true, accepted_by=ahmet@gamechangers.com.tr, accepted_at=<ISO time with timezone>, evidence_ref=<where the decision is recorded>, rights_declaration.accepted=true. Any edit changes the policy digest; earlier assessments/approvals stop matching. While not accepted every submission is quality_held and the 3 managers are tagged.",
   "scope_note": "TECHNICAL conformance only, measured by v11_artifact_inspector on the actual downloaded bytes (file type, byte size, pixel dimensions, OCR literal text) against the brief. A score is NOT artistic, brand-design or copy quality. Internal Gamechangers works only; WAT/customers stay off.",
   "single_file_scope": "v1 assesses and delivers exactly one final file (brief with one final deliverable, quantity 1, image/png, image/jpeg, application/pdf or text/plain). Multi-file, video/animation, PSD/ZIP submissions are held for a human.",
-  "thresholds": {"human_min": "80", "candidate_min": "90"},
+  "thresholds": {
+    "human_min": "80",
+    "candidate_min": "90"
+  },
   "internal_revision_limit": 2,
-  "approval_actors": ["ozge@gamechangers.com.tr", "ahmet@gamechangers.com.tr", "cansu@gamechangers.com.tr"],
+  "approval_actors": [
+    "ozge@gamechangers.com.tr",
+    "ahmet@gamechangers.com.tr",
+    "cansu@gamechangers.com.tr"
+  ],
   "assessment_max_age_seconds": 3600,
   "approval_max_age_seconds": 3600,
-  "allowed_mime_types": ["image/png", "image/jpeg", "application/pdf", "text/plain"],
+  "allowed_mime_types": [
+    "image/png",
+    "image/jpeg",
+    "application/pdf",
+    "text/plain"
+  ],
   "approved_assets_ref": "gamechangers-internal-own-assets",
   "max_file_bytes": 2097152,
   "criteria": [
-    {"id": "file_format", "weight": "15", "description": "Dosya biçimi ve boyutu (MIME imzası brief biçimlerinden biri; bayt sınırı içinde)",
-     "measure": "inspector checks mime_type + size_bytes; both pass = 100, any fail = 0, unknown = unassessed"},
-    {"id": "dimensions", "weight": "25", "description": "Piksel ölçüsü brief ile birebir",
-     "measure": "inspector fact:width + fact:height vs brief width/height; score = passed/2*100. Brief without width/height = unassessed (hold, not a free 100)"},
-    {"id": "required_text", "weight": "40", "description": "Brief'te birebir istenen metinler dosyada (OCR / PDF / TXT)",
-     "measure": "literal match of each brief required_text (only literals that appear in the request mail); score = found/total*100. Brief without required_text = unassessed. OCR failure = unassessed"},
-    {"id": "brief_items", "weight": "20", "description": "Brief'teki çıktı türü ve adediyle teslim edilen dosya uyumu",
-     "measure": "exactly one supported file for the single final deliverable and kind matches (graphic->image, text->pdf/txt); 100 or 0"}
+    {
+      "id": "file_format",
+      "weight": "15",
+      "description": "Dosya biçimi ve boyutu (MIME imzası brief biçimlerinden biri; bayt sınırı içinde)",
+      "measure": "inspector checks mime_type + size_bytes; both pass = 100, any fail = 0, unknown = unassessed"
+    },
+    {
+      "id": "dimensions",
+      "weight": "25",
+      "description": "Piksel ölçüsü brief ile birebir",
+      "measure": "inspector fact:width + fact:height vs brief width/height; score = passed/2*100. Brief without width/height = unassessed (hold, not a free 100)"
+    },
+    {
+      "id": "required_text",
+      "weight": "40",
+      "description": "Brief'te birebir istenen metinler dosyada (OCR / PDF / TXT)",
+      "measure": "literal match of each brief required_text (only literals that appear in the request mail); score = found/total*100. Brief without required_text = unassessed. OCR failure = unassessed"
+    },
+    {
+      "id": "brief_items",
+      "weight": "20",
+      "description": "Brief'teki çıktı türü ve adediyle teslim edilen dosya uyumu",
+      "measure": "exactly one supported file for the single final deliverable and kind matches (graphic->image, text->pdf/txt); 100 or 0"
+    }
   ],
   "critical_checks": {
     "brand_identity": "OCR/text contains one of brand_literals -> passed; otherwise unassessed (human). Never failed by absence.",
@@ -40,8 +68,17 @@
     "rights_and_disclosure": "passed only when rights_declaration.accepted=true (internal work, Gamechangers-owned assets); otherwise unassessed",
     "internal_notes_excluded": "failed if any forbidden_literals is detected; otherwise passed by construction: delivery attaches only the producer's downloaded bytes with a fixed template body, never comment text"
   },
-  "brand_literals": ["Gamechangers", "GAMECHANGERS", "Game Changers"],
-  "forbidden_literals": ["TASLAK", "lorem ipsum", "iç not", "INTERNAL ONLY"],
+  "brand_literals": [
+    "Gamechangers",
+    "GAMECHANGERS",
+    "Game Changers"
+  ],
+  "forbidden_literals": [
+    "TASLAK",
+    "lorem ipsum",
+    "iç not",
+    "INTERNAL ONLY"
+  ],
   "rights_declaration": {
     "accepted": false,
     "text": "Gamechangers iç işlerinde kullanılan varlıklar Gamechangers'a aittir veya iç kullanım için onaylıdır."
@@ -57,5 +94,6 @@
     "Whether a brief without dimensions or required text may score those criteria as passed (currently unassessed -> hold).",
     "Brand identity rule: OCR brand literal or human (currently unassessed when no literal is detected).",
     "Rights declaration for internal assets."
-  ]
+  ],
+  "acceptance_note": "Accepted for internal live 2026-10-11. rights_declaration.accepted left FALSE: the separate rights decision was not explicitly confirmed in the recorded evidence (rights_and_disclosure stays unassessed -> submissions held for a human until set true)."
 }

@@ -16,7 +16,11 @@ ACCEPTED_AT = T0 - timedelta(hours=2)
 
 
 def prepared():
-    return load_policy_file()
+    """Pending copy (the on-disk policy was accepted by Ahmet on 2026-10-11)."""
+    doc = copy.deepcopy(load_policy_file())
+    doc.update(live_enabled=False, status="pending_ahmet_acceptance", accepted=False)
+    doc["work_authority_policy"].update(enabled=False, status="pending_ahmet_acceptance", acceptance=None)
+    return doc
 
 
 def accepted_policy(**changes):
@@ -55,6 +59,23 @@ class PreparedFile(unittest.TestCase):
         accepted_form = dict(copy.deepcopy(p), enabled=True, status="accepted")
         self.assertEqual(doc["policy_terms_sha256_when_accepted"], policy_terms_digest(accepted_form))
         self.assertIn("wat_mobilite ONLY", doc["modelled_on"])
+
+    def test_disk_policy_is_accepted_and_valid_in_the_real_scope(self):
+        from datetime import datetime as dt
+        from v11_chain_live import load_catalog
+        from v11_chain_quality import build_scope, load_rubric, rubric_policy
+        from v11_work_authority import validate_work_authority_policy
+        doc = load_policy_file()
+        policy = enabled_policy(doc)
+        self.assertEqual((doc["live_enabled"], policy["acceptance"]["actor"], policy["acceptance"]["expires_at"]),
+                         (True, AHMET_MAIL, "2026-10-12T23:59:59+03:00"))
+        catalog, rubric = load_catalog(), load_rubric()
+        scope = build_scope(catalog, rubric, rubric_policy(rubric, catalog), policy)
+        validate_work_authority_policy(policy, scope, scope["services"][0],
+                                       now=dt.fromisoformat("2026-10-12T09:00:00+03:00"))
+        with self.assertRaises(Exception):
+            validate_work_authority_policy(policy, scope, scope["services"][0],
+                                           now=dt.fromisoformat("2026-10-13T00:00:00+03:00"))
 
 
 class Authority(Base):

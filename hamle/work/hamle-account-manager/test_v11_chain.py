@@ -24,8 +24,17 @@ AHMET_MAIL = "ahmet@gamechangers.com.tr"
 SHIFT = QUALITY_NOW - NOW
 
 
-def draft_catalog():
+def disk_catalog():
     return json.loads(CATALOG.read_text(encoding="utf-8"))
+
+
+def draft_catalog():
+    """Closed copy (the on-disk file was accepted for internal live on 2026-10-11)."""
+    data = disk_catalog()
+    data.update(verified=False, live_enabled=False, provider_mutation_allowed_by_this_file=False, status="draft")
+    data["routes"][0].update(list_id=None, verified=False)
+    data["chain"]["agency_direct_request_counts_as_agreement"]["verified"] = False
+    return data
 
 
 def live_catalog():
@@ -323,6 +332,21 @@ class Harness:
 
     def actions(self):
         return self.queue.page(kind="action", limit=100)["items"]
+
+
+class AcceptedProfile(unittest.TestCase):
+    def test_disk_profile_is_accepted_internal_live_with_read_back_ids(self):
+        data = disk_catalog()
+        self.assertEqual((data["status"], data["verified"], data["live_enabled"],
+                          data["provider_mutation_allowed_by_this_file"]), ("accepted", True, True, True))
+        route = data["routes"][0]
+        self.assertEqual((route["list_id"], route["verified"], route["sequence_verified"]), (10393654435, True, False))
+        for pid in ("47470759", "48793256", "52096503"):
+            self.assertTrue(data["basecamp_people"][pid]["project_member"])
+        self.assertFalse(data["basecamp_people"]["47658175"]["project_member"])
+        self.assertEqual(data["budget"]["internal_live_cap_microdollars"], 30_000_000)
+        self.assertTrue(data["chain"]["agency_direct_request_counts_as_agreement"]["verified"])
+        self.assertEqual(data["brand_id"], "gamechangers")
 
 
 class DraftProfile(unittest.TestCase):

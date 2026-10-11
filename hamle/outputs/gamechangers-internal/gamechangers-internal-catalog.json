@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
   "brand_id": "gamechangers",
-  "version": "gc-internal-20261011-draft1",
-  "status": "draft",
-  "verified": false,
-  "verification_note": "DRAFT written offline on 2026-10-11. Top-level verified=false keeps plan_intake closed (catalog_unverified) until Ahmet reviews this file and the unconfirmed ids below are read back.",
-  "verification_ref": "draft: wat-planning-catalog.json people + cloud-v11-internal-20261010 readbacks",
-  "live_enabled": false,
-  "provider_mutation_allowed_by_this_file": false,
+  "version": "gc-internal-20261011-accepted1",
+  "status": "accepted",
+  "verified": true,
+  "verification_note": "Accepted by Ahmet for internal live (2026-10-11). Ids read back on Ahmet's Mac. Internal brand only; WAT/customers stay off.",
+  "verification_ref": "claude project thread Hamle proje değerlendirmesi, Ahmet messages 2026-10-11T15:07:55Z and 17:05:21Z + mac readback 2026-10-11 (~17:00Z, Hamle Basecamp identity 53358100)",
+  "live_enabled": true,
+  "provider_mutation_allowed_by_this_file": true,
   "verification_scope": "Gamechangers-internal requests only (scope 'internal live only', Monday 2026-10-12). No customer, WAT stays off.",
   "contacts": [
     {
@@ -29,7 +29,7 @@
       "agency_roles": [
         "principal"
       ],
-      "project_member_note": "observed member of 49184053"
+      "project_member_note": "member of 49184053 per mac readback 2026-10-11 (~17:00Z, Hamle Basecamp identity 53358100)"
     },
     {
       "name": "Cansu Akiş Kabil",
@@ -46,11 +46,11 @@
       "can_amend": true,
       "basecamp_verified": true,
       "basecamp_id": 48793256,
-      "project_member": false,
+      "project_member": true,
       "agency_roles": [
         "strategy_owner"
       ],
-      "project_member_note": "Identity verified in WAT project roster, but NOT observed as a member of internal project 49184053 (only Ahmet+Hamle observed 2026-10-10). Add to project and re-read members, then set project_member=true."
+      "project_member_note": "member of 49184053 per mac readback 2026-10-11 (~17:00Z, Hamle Basecamp identity 53358100)"
     },
     {
       "name": "Özge Yağmur",
@@ -67,11 +67,11 @@
       "can_amend": true,
       "basecamp_verified": true,
       "basecamp_id": 52096503,
-      "project_member": false,
+      "project_member": true,
       "agency_roles": [
         "social_manager"
       ],
-      "project_member_note": "Identity verified in WAT project roster, but NOT observed as a member of internal project 49184053 (only Ahmet+Hamle observed 2026-10-10). Add to project and re-read members, then set project_member=true."
+      "project_member_note": "member of 49184053 per mac readback 2026-10-11 (~17:00Z, Hamle Basecamp identity 53358100)"
     }
   ],
   "basecamp_people": {
@@ -94,15 +94,15 @@
         "gc_internal"
       ],
       "can_amend": true,
-      "verification_ref": "outputs/cloud-v11-internal-20261010/preflight-summary.json actual_basecamp_readback.member_ids=[47470759,53358100]",
-      "project_member_note": "Default producer for Monday (user decision 2026-10-11): only confirmed project member besides Hamle."
+      "verification_ref": "mac readback 2026-10-11 (~17:00Z, Hamle Basecamp identity 53358100): project 49184053 members 47470759,48793256,52096503,53358100",
+      "project_member_note": "member of 49184053 per mac readback 2026-10-11 (~17:00Z, Hamle Basecamp identity 53358100)"
     },
     "48793256": {
       "name": "Cansu Akiş Kabil",
       "basecamp_id": 48793256,
       "side": "agency",
       "basecamp_verified": true,
-      "project_member": false,
+      "project_member": true,
       "agency_roles": [
         "strategy_owner"
       ],
@@ -111,15 +111,15 @@
         "gc_internal"
       ],
       "can_amend": true,
-      "verification_ref": "outputs/wat-pilot-20261010/wat-planning-catalog.json basecamp_people (WAT project 40694338 roster)",
-      "project_member_note": "Identity verified in WAT project roster, but NOT observed as a member of internal project 49184053 (only Ahmet+Hamle observed 2026-10-10). Add to project and re-read members, then set project_member=true."
+      "verification_ref": "mac readback 2026-10-11 (~17:00Z, Hamle Basecamp identity 53358100): project 49184053 members 47470759,48793256,52096503,53358100",
+      "project_member_note": "member of 49184053 per mac readback 2026-10-11 (~17:00Z, Hamle Basecamp identity 53358100)"
     },
     "52096503": {
       "name": "Özge Yağmur",
       "basecamp_id": 52096503,
       "side": "agency",
       "basecamp_verified": true,
-      "project_member": false,
+      "project_member": true,
       "agency_roles": [
         "social_manager"
       ],
@@ -128,8 +128,8 @@
         "gc_internal"
       ],
       "can_amend": true,
-      "verification_ref": "outputs/wat-pilot-20261010/wat-planning-catalog.json basecamp_people (WAT project 40694338 roster)",
-      "project_member_note": "Identity verified in WAT project roster, but NOT observed as a member of internal project 49184053 (only Ahmet+Hamle observed 2026-10-10). Add to project and re-read members, then set project_member=true."
+      "verification_ref": "mac readback 2026-10-11 (~17:00Z, Hamle Basecamp identity 53358100): project 49184053 members 47470759,48793256,52096503,53358100",
+      "project_member_note": "member of 49184053 per mac readback 2026-10-11 (~17:00Z, Hamle Basecamp identity 53358100)"
     },
     "47658175": {
       "name": "Berkay Kayaköylü",
@@ -173,19 +173,26 @@
     "project_name": "Hamle — İç Deneme",
     "customer_visible": false,
     "verified": true,
-    "verification_ref": "cloud-v11-internal-20261010/preflight-internal-parent.json + preflight-summary.json (clients_enabled=false, visible_to_clients=false)",
+    "verification_ref": "mac readback 2026-10-11 (~17:00Z, Hamle Basecamp identity 53358100): project 49184053 clients disabled; todolist 10393654435 visible_to_clients=false",
     "todoset_id": 10384126975,
-    "todoset_name": "İş Listesi"
+    "todoset_name": "İş Listesi",
+    "member_ids_readback": [
+      47470759,
+      48793256,
+      52096503,
+      53358100
+    ],
+    "hamle_person_id": 53358100
   },
   "routes": [
     {
       "service_id": "gc_internal",
       "category_key": "internal",
       "category_name": "Hamle İç İşler",
-      "list_id": null,
-      "verified": false,
-      "verification_ref": "UNCONFIRMED",
-      "list_note": "No concrete Todolist id exists in the package. Earlier internal tasks (v11_internal_providers.PARENT) were created directly under Todoset 10384126975, but BrandTaskWriter and BasecampReader require a Todolist parent. Create (or pick) a Todolist inside Todoset 10384126975, read it back (type=Todolist, bucket 49184053, visible_to_clients=false), put its id here and set verified=true.",
+      "list_id": 10393654435,
+      "verified": true,
+      "verification_ref": "mac readback 2026-10-11 (~17:00Z, Hamle Basecamp identity 53358100): todolist 'Hamle İşleri' 10393654435 active, visible_to_clients=false, parent todoset 10384126975 (created by Hamle on Ahmet's approval)",
+      "list_note": "Todolist created by Hamle on Ahmet's approval and read back 2026-10-11.",
       "allowed_kinds": [
         "graphic",
         "animation",
@@ -257,7 +264,8 @@
             ]
           }
         ]
-      }
+      },
+      "list_name": "Hamle İşleri"
     }
   ],
   "terms": {
@@ -273,8 +281,8 @@
       "human_min": "80",
       "candidate_min": "90"
     },
-    "quality_policy_ref": null,
-    "quality_policy_note": "No accepted internal rubric exists for arbitrary internal works; the chain's injected assessor must return an accepted v11_quality_gate policy + assessment. Without it every submission is quality_held."
+    "quality_policy_ref": "gamechangers-internal-quality-rubric.json#gc-internal-technical-v1",
+    "quality_policy_note": "Internal technical rubric accepted by Ahmet 2026-10-11 (see rubric file; rights_declaration still false, see open items)."
   },
   "human_exceptions": {
     "commercial": [
@@ -298,14 +306,36 @@
     ],
     "agency_direct_request_counts_as_agreement": {
       "value": true,
-      "verified": false,
-      "note": "Proposal: a direct mail from a verified agency requester (Hamle in actual To/CC) is the brief agreement for internal works. Needs Ahmet's confirmation; while verified=false complete briefs hold as brief_agreement_unverified."
+      "verified": true,
+      "note": "Accepted by Ahmet: a clear mail from a verified agency requester (Hamle in actual To/CC) is the agreed brief for internal works.",
+      "accepted_at": "2026-10-11T15:07:55+00:00",
+      "evidence_ref": "claude project thread Hamle proje değerlendirmesi, Ahmet messages 2026-10-11T15:07:55Z and 17:05:21Z"
     },
     "context_note_placement": "separate internal Basecamp comment on the new task (v11_brand_task description is profile-derived and must not be changed)"
   },
   "work_authority": {
     "status": "internal_only",
     "customer_live_enabled": false,
-    "wat_live_enabled": false
+    "wat_live_enabled": false,
+    "internal_policy_file": "gamechangers-internal-work-authority-policy.json"
+  },
+  "acceptance": {
+    "actor": "ahmet@gamechangers.com.tr",
+    "source": "direct_user_answer_claude_project_thread",
+    "accepted_at": "2026-10-11T15:07:55+00:00",
+    "live_confirmation_at": "2026-10-11T17:05:21+00:00",
+    "live_confirmation": "hepsine evet (live tonight)",
+    "evidence_ref": "claude project thread Hamle proje değerlendirmesi, Ahmet messages 2026-10-11T15:07:55Z and 17:05:21Z",
+    "expires_at": "2026-10-12T23:59:59+03:00",
+    "decision": "accept_internal_live_profile"
+  },
+  "budget": {
+    "internal_live_cap_usd": 30,
+    "internal_live_cap_microdollars": 30000000,
+    "scope": "chain model-call holds/actuals (reservation keys chain-model-*) in the shared hamle_internal_v1 ledger; per-call 2 USD hold logic unchanged; shared ledger limit (50 USD) still applies",
+    "expires_at": "2026-10-12T23:59:59+03:00",
+    "accepted_by": "ahmet@gamechangers.com.tr",
+    "accepted_at": "2026-10-11T15:07:55+00:00",
+    "evidence_ref": "claude project thread Hamle proje değerlendirmesi, Ahmet messages 2026-10-11T15:07:55Z and 17:05:21Z"
   }
 }

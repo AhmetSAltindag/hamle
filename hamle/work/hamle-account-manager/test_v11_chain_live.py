@@ -42,6 +42,14 @@ MAIL = ("Merhaba Hamle, 1080x1080 PNG bir iç duyuru afişi lazım. Üzerinde 'Y
         "'Pazartesi' yazsın. Teslim 14 Ekim 17:00.")
 
 
+def draft_rubric():
+    """Closed copy (the on-disk rubric was accepted on 2026-10-11)."""
+    r = load_rubric()
+    r.update(status="draft", weights_status="draft_not_accepted", verified=False, accepted_by=None,
+             accepted_at=None, evidence_ref=None)
+    return r
+
+
 def accepted_rubric():
     r = load_rubric()
     r.update(status="accepted", weights_status="accepted", verified=True, accepted_by=r["acceptance_required_from"],
@@ -410,7 +418,7 @@ class EndToEnd(Base):
         self.assertEqual(h.gmail_posts(), [])
 
     def test_draft_rubric_holds_every_submission_and_tags_managers(self):
-        h = self.start(rubric=load_rubric())
+        h = self.start(rubric=draft_rubric())
         self.submit(h, 1080, 1080, "Gamechangers YENİ OFİS Kat 3 Pazartesi")
         h.tick()
         rec, _ = h.record()
@@ -655,15 +663,38 @@ class Persistence(Base):
 class Quality(Base):
     def test_draft_rubric_is_refused_and_accepted_copy_is_100_weighted(self):
         with self.assertRaises(ValueError) as got:
-            rubric_policy(load_rubric(), live_catalog())
+            rubric_policy(draft_rubric(), live_catalog())
         self.assertEqual(got.exception.code, "internal_rubric_not_accepted")
-        draft = load_rubric()
+        draft = draft_rubric()
         self.assertEqual((draft["weights_status"], draft["verified"]), ("draft_not_accepted", False))
         policy = rubric_policy(accepted_rubric(), live_catalog())
         self.assertEqual([c["id"] for c in policy["criteria"]],
                          ["file_format", "dimensions", "required_text", "brief_items"])
         self.assertEqual(policy["thresholds"], {"human_min": "80", "candidate_min": "90"})
         self.assertEqual(policy["internal_revision_limit"], 2)
+
+    def test_disk_rubric_is_accepted_but_rights_declaration_still_false(self):
+        r = load_rubric()
+        self.assertEqual((r["status"], r["weights_status"], r["verified"], r["accepted_by"]),
+                         ("accepted", "accepted", True, AHMET_MAIL))
+        self.assertFalse(r["rights_declaration"]["accepted"])
+        self.assertEqual(rubric_policy(r, live_catalog())["status"], "accepted")
+
+    def test_internal_live_cap_blocks_model_call_before_any_ledger_write(self):
+        from v11_chain_models import ChainModelError, chain_committed_microdollars
+        h = Live()
+        gate = ModelGate(ledger=h.ops, cache=h.queue, generation=h.ops_gen, cap_microdollars=3_000_000)
+        calls = []
+        gate.once("interpreter", "a" * 64, lambda: calls.append(1) or {"output": {}, "receipt": {
+            "response_id": "resp_x", "model": "gpt-6-astra", "reasoning_effort": "max",
+            "usage": {"input_tokens": 1, "output_tokens": 1, "total_tokens": 2}}})
+        self.assertEqual(chain_committed_microdollars(h.ops), 2_000_000)
+        with self.assertRaises(ChainModelError) as got:
+            gate.once("interpreter", "b" * 64, lambda: calls.append(2))
+        self.assertEqual(got.exception.code, "internal_live_budget_cap_reached")
+        self.assertEqual((calls, chain_committed_microdollars(h.ops)), ([1], 2_000_000))
+        self.assertFalse(live.budget_gate(h.ops, 2_000_000, 3_000_000)())
+        self.assertTrue(live.budget_gate(h.ops, 2_000_000, 30_000_000)())
 
     def test_fetcher_refuses_foreign_download_hosts(self):
         h = Live()

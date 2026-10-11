@@ -50,7 +50,10 @@ Known gaps
     scheduler-plan-20261012-chain.json (status local_plan_only_not_applied).
   - Image OCR needs tesseract (in the Dockerfile); without OCR required text and brand
     identity are unassessed -> held.
-  - Budget: 50 USD shared, 2 USD hold per model attempt kept until reconciliation.
+  - Budget: internal-live cap 30 USD (catalog budget.internal_live_cap_microdollars) on
+    chain model holds/actuals, inside the 50 USD shared ledger; 2 USD hold per attempt.
+  - 2026-10-11: Ahmet accepted catalog/agreement rule, rubric and work-authority policy
+    (rubric rights_declaration still false -> rights check unassessed -> held).
 
 Mac operator commands (from work/hamle-account-manager)
   python3 -B -m unittest test_v11_chain test_v11_chain_models test_v11_chain_mail test_v11_chain_live

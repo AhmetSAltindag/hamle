@@ -155,10 +155,14 @@ class ChainAuthorizer:
             return False
 
 
-def budget_gate(ops, reservation):
+def budget_gate(ops, reservation, cap_microdollars=None):
     def ok():
         try:
             status = ops.budget_status()
+            if cap_microdollars is not None:
+                from v11_chain_models import chain_committed_microdollars
+                if chain_committed_microdollars(ops) + reservation > cap_microdollars:
+                    return False
             return status["overrun_hold"] is False and status["remaining_microdollars"] >= reservation
         except Exception:
             return False
@@ -194,7 +198,7 @@ def build_live_deps(*, ops, ops_generation, queue, queue_generation, secrets, ca
     from v11_basecamp_reader import SessionGet
     from v11_brand_task import BrandTaskWriter
     from v11_chain_mail import ChainMailReader, GmailThreadReplyWriter, gmail_token_context
-    from v11_chain_models import MODEL_RESERVATION, ChainModels, ModelGate
+    from v11_chain_models import MODEL_RESERVATION, ChainModels, ModelGate, internal_cap_microdollars
     from v11_chain_quality import BasecampAttachmentFetcher, ChainQualityBridge
     from v11_chain_authority import ChainWorkAuthority, enabled_policy
 
@@ -213,7 +217,8 @@ def build_live_deps(*, ops, ops_generation, queue, queue_generation, secrets, ca
                                  work_authority_policy=work_policy)
     holder["quality"] = quality
     models = ChainModels(load_key=lambda: provider.openai_key(secrets),
-                         gate=ModelGate(ledger=ops, cache=queue, generation=ops_generation))
+                         gate=ModelGate(ledger=ops, cache=queue, generation=ops_generation,
+                                        cap_microdollars=internal_cap_microdollars(catalog)))
     session = provider._session()
     return ChainDeps(
         queue=queue, catalog=catalog, clock=clock,
@@ -226,7 +231,7 @@ def build_live_deps(*, ops, ops_generation, queue, queue_generation, secrets, ca
         mail_writer=mail,
         authorize=ChainAuthorizer(ops=ops, ops_generation=ops_generation, queue=queue,
                                   queue_generation=queue_generation, catalog=catalog, mail_writer=mail, clock=clock),
-        budget_ok=budget_gate(ops, MODEL_RESERVATION), worker_id="hamle-chain-cloud",
+        budget_ok=budget_gate(ops, MODEL_RESERVATION, internal_cap_microdollars(catalog)), worker_id="hamle-chain-cloud",
         intake_authority=lambda view, context: authority.on_intake(
             view, quality.scope(), {**context, "work_brief_sha256": quality.delivery_brief_sha256(view)})), session
 

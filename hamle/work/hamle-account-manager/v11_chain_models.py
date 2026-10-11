@@ -248,6 +248,19 @@ def source_digest(role, *parts):
     return hashlib.sha256(raw.encode("utf-8")).hexdigest()
 
 
+def chain_committed_microdollars(ledger):
+    """Chain model money already committed in the shared ledger (holds + settled actuals)."""
+    budget = ledger._run(lambda tx, _: ledger._budget(tx), allow_expired=True)
+    return sum((r.get("actual_microdollars") or 0) if r.get("state") == "settled" else r["reserved_microdollars"]
+               for r in budget["reservations"] if str(r.get("reservation_key", "")).startswith("chain-model-"))
+
+
+def internal_cap_microdollars(catalog):
+    value = (catalog.get("budget") or {}).get("internal_live_cap_microdollars")
+    _need(type(value) is int and 0 < value <= 50_000_000, "internal_live_budget_cap_missing")
+    return value
+
+
 class ModelGate:
     """Durable single model chance per (role, stable source digest).
 
@@ -255,8 +268,9 @@ class ModelGate:
     cache: v11_work_queue.QueueStore (chain records in the same Firestore backend).
     generation: current OperationsStore control generation (budget_begin fences it).
     """
-    def __init__(self, *, ledger, cache, generation, reservation=MODEL_RESERVATION):
+    def __init__(self, *, ledger, cache, generation, reservation=MODEL_RESERVATION, cap_microdollars=None):
         self.ledger, self.cache, self.generation, self.reservation = ledger, cache, generation, reservation
+        self.cap = cap_microdollars
         self.calls = 0
 
     def _get(self, key):
@@ -277,6 +291,9 @@ class ModelGate:
             _need(row.get("state") == "completed", "model_outcome_unknown_no_retry")
             return copy.deepcopy(row["output"])
         reservation = "chain-model-" + digest[:48]
+        if self.cap is not None:  # internal-live cap: checked before any ledger write or key load
+            _need(chain_committed_microdollars(self.ledger) + self.reservation <= self.cap,
+                  "internal_live_budget_cap_reached")
         self.ledger.budget_reserve(reservation, "openai", self.reservation)
         self.ledger.budget_begin(reservation, self.generation)  # non-replayable: second begin fails
         self._put(key, {"id": key, "kind": "chain_model_result", "role": role, "state": "started",
