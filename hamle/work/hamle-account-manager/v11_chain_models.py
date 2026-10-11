@@ -30,7 +30,8 @@ from model import ModelError
 HERE = Path(__file__).resolve().parent
 PROMPTS = {"interpreter": HERE / "chain_interpreter_prompt.txt",
            "classifier": HERE / "chain_classifier_prompt.txt",
-           "answerer": HERE / "chain_answerer_prompt.txt"}
+           "answerer": HERE / "chain_answerer_prompt.txt",
+           "digest": HERE / "chain_digest_prompt.txt"}
 # Same conservative per-attempt hold as worker.MODEL_RESERVATION (2 USD); the
 # shared ledger keeps it until billing reconciliation.
 MODEL_RESERVATION = 2_000_000
@@ -93,7 +94,12 @@ INTERPRETER_SCHEMA = _obj({
 CLASSIFIER_SCHEMA = _obj({"class": {"type": "string", "enum": list(CLASSES)}, "evidence": _str(300)})
 ANSWERER_SCHEMA = _obj({"answerable": {"type": "boolean"}, "answer": _nstr(2000),
                         "grounded_in": _arr({"type": "string", "enum": list(ANSWER_REFS)}, 4)})
-SCHEMAS = {"interpreter": INTERPRETER_SCHEMA, "classifier": CLASSIFIER_SCHEMA, "answerer": ANSWERER_SCHEMA}
+DIGEST_STATUSES = ("action_on_us", "waiting_client", "looks_done")
+DIGEST_SCHEMA = _obj({"items": _arr(_obj({"ref": _str(12),
+                                          "status": {"type": "string", "enum": list(DIGEST_STATUSES)},
+                                          "reason": _str(200), "action": _str(200)}), 40)})
+SCHEMAS = {"interpreter": INTERPRETER_SCHEMA, "classifier": CLASSIFIER_SCHEMA, "answerer": ANSWERER_SCHEMA,
+           "digest": DIGEST_SCHEMA}
 
 
 def validate(value, schema, code="invalid_model_output"):

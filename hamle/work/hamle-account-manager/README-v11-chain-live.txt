@@ -79,3 +79,11 @@ Weekday schedule + daily digest (2026-10-11, local plan only)
   Deadline: runtime_authority.AUTHORIZATION_DEADLINE is the single code value; extending it
   also needs the Firestore budget.expires_at, rubric/policy/catalog acceptance expiries and
   the scheduler IAM condition updated (runtime_authority.DATED_DATA).
+  Digest sections: BUGÜN / GECİKENLER (account overdue report, else per-project scan, plus
+  dated Card Table cards; up to 40 items' last 5 comments -> ONE strict-JSON "digest" call via
+  v11_chain_models under the 30 USD chain cap; no budget/model error -> unclassified list;
+  Hamle-assigned items listed only) / TREND RADARI (injected trend_source; no live provider
+  shipped because model.py pins tools=[] -> "Bugün doğrulanmış trend kaynağı alınamadı.") /
+  ÖZEL GÜNLER on Mondays (tr-special-days-2026.json + brand-cards.json, both "taslak").
+  Preview: --mode daily_digest --preview-to <one @gamechangers.com.tr address>; record key
+  daily-digest-preview-YYYYMMDD, never consumes the team send.

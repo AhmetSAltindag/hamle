@@ -1,0 +1,165 @@
+{
+  "schema_version": 1,
+  "kind": "hamle_brand_cards",
+  "version": "2026-10-11-taslak1",
+  "status": "taslak",
+  "verified": false,
+  "note": "TASLAK: Hamle'nin üyesi olduğu 12 Basecamp projesinden (Mac readback 2026-10-11) türetildi. Sektör/kitle/platform alanları tahmindir; Ahmet doğrulayana kadar verified=false. null = bilinmiyor (öneride kullanılmaz).",
+  "brands": [
+    {
+      "project_id": 40704523,
+      "brand": "Altınmarka",
+      "sector": "kuyumculuk / altın (taslak)",
+      "audience": null,
+      "main_platform": "Instagram",
+      "tags": [
+        "perakende",
+        "hediye"
+      ],
+      "status": "taslak",
+      "verified": false,
+      "include_in_suggestions": true
+    },
+    {
+      "project_id": 40704530,
+      "brand": "Bikaldi",
+      "sector": null,
+      "audience": null,
+      "main_platform": null,
+      "tags": [],
+      "status": "taslak",
+      "verified": false,
+      "include_in_suggestions": true
+    },
+    {
+      "project_id": 43886681,
+      "brand": "BWI",
+      "sector": null,
+      "audience": null,
+      "main_platform": null,
+      "tags": [],
+      "status": "taslak",
+      "verified": false,
+      "include_in_suggestions": true
+    },
+    {
+      "project_id": 47875291,
+      "brand": "Cacaonly",
+      "sector": "çikolata / gıda (taslak)",
+      "audience": null,
+      "main_platform": "Instagram",
+      "tags": [
+        "gida",
+        "hediye",
+        "perakende"
+      ],
+      "status": "taslak",
+      "verified": false,
+      "include_in_suggestions": true
+    },
+    {
+      "project_id": 44320349,
+      "brand": "Fenerium",
+      "sector": "spor taraftar ürünleri / perakende (taslak)",
+      "audience": "Fenerbahçe taraftarları (taslak)",
+      "main_platform": "Instagram",
+      "tags": [
+        "perakende",
+        "spor",
+        "e-ticaret"
+      ],
+      "status": "taslak",
+      "verified": false,
+      "include_in_suggestions": true
+    },
+    {
+      "project_id": 40704459,
+      "brand": "Gamechangers",
+      "sector": "reklam ajansı",
+      "audience": "markalar ve ekip",
+      "main_platform": "LinkedIn",
+      "tags": [
+        "ajans"
+      ],
+      "status": "taslak",
+      "verified": false,
+      "include_in_suggestions": true
+    },
+    {
+      "project_id": 49184053,
+      "brand": "Hamle İç Deneme",
+      "sector": "iç test projesi",
+      "audience": null,
+      "main_platform": null,
+      "tags": [],
+      "status": "taslak",
+      "verified": false,
+      "include_in_suggestions": false,
+      "note": "iç deneme; öneri yok"
+    },
+    {
+      "project_id": 48562916,
+      "brand": "HAN Spaces",
+      "sector": null,
+      "audience": null,
+      "main_platform": null,
+      "tags": [],
+      "status": "taslak",
+      "verified": false,
+      "include_in_suggestions": true,
+      "note": "clients on"
+    },
+    {
+      "project_id": 40704547,
+      "brand": "New Biz",
+      "sector": "iç yeni iş geliştirme",
+      "audience": null,
+      "main_platform": null,
+      "tags": [],
+      "status": "taslak",
+      "verified": false,
+      "include_in_suggestions": false,
+      "note": "iç proje; öneri yok"
+    },
+    {
+      "project_id": 48639990,
+      "brand": "Rabam",
+      "sector": null,
+      "audience": null,
+      "main_platform": null,
+      "tags": [],
+      "status": "taslak",
+      "verified": false,
+      "include_in_suggestions": true
+    },
+    {
+      "project_id": 40694338,
+      "brand": "WAT Mobilite",
+      "sector": "mobilite (taslak)",
+      "audience": null,
+      "main_platform": "Instagram",
+      "tags": [
+        "mobilite"
+      ],
+      "status": "taslak",
+      "verified": false,
+      "include_in_suggestions": true
+    },
+    {
+      "project_id": 48917059,
+      "brand": "ya da Multicosmetics",
+      "sector": "kozmetik (taslak)",
+      "audience": null,
+      "main_platform": "Instagram",
+      "tags": [
+        "kozmetik",
+        "perakende",
+        "e-ticaret"
+      ],
+      "status": "taslak",
+      "verified": false,
+      "include_in_suggestions": true,
+      "note": "clients on"
+    }
+  ]
+}

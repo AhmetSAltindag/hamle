@@ -1,26 +1,34 @@
 """Daily internal team digest mail (worker.py --mode daily_digest; NON-default).
 
 Once per Istanbul weekday, at the first run at/after 09:15 (runtime_authority.
-DAILY_DIGEST_WINDOW): read-only listing of OPEN Basecamp todos across the projects
-Hamle's Basecamp identity can see, then ONE plain Turkish mail from Hamle to the
-configured internal recipients (@gamechangers.com.tr only). No model call.
+DAILY_DIGEST_WINDOW), ONE plain Turkish mail (~25 lines, every item with its
+Basecamp link) from Hamle to the configured internal recipients (@gamechangers.com.tr):
 
-Durability (hamle_internal_v1, key daily-digest-YYYYMMDD):
-  claimed (lease, nothing sent yet; reclaimable after the lease)
-  -> sending (intent + payload digest recorded BEFORE the single POST)
-  -> sent (Sent-copy readback verified) | unknown (never resent, human reconciles)
-Gates: authorization deadline, global control review_open + generation (checked at
-claim and again in the sending transaction), budget overrun hold, config enabled.
+  BUGÜN        todos/cards due today: iş · marka · @kişi · link
+  GECİKENLER   overdue todos (account report /reports/todos/overdue.json, falling back
+               to the per-project scan) + dated Card Table cards; the last 5 comments
+               of up to 40 items are classified by ONE batched model call
+               (🔴 bizde / 🟡 müşteri bekleniyor, tarih kaymalı / ⚪ bitmiş görünüyor).
+               No budget or model error -> listed unclassified (never invented).
+               Items assigned to Hamle itself are listed only.
+  TREND RADARI only sourced trends from an injected trend_source (URL + date);
+               none -> "Bugün doğrulanmış trend kaynağı alınamadı."
+  ÖZEL GÜNLER  Mondays: today..+14 days from tr-special-days-2026.json + brand-card ideas.
+
+Hamle never changes dates or completes items; Basecamp access is GET-only.
+Durability (hamle_internal_v1): daily-digest-YYYYMMDD (team) / daily-digest-preview-
+YYYYMMDD (preview, never consumes the team send): claimed (lease) -> sending (intent
+before the single POST) -> sent (Sent-copy readback) | unknown (never resent).
 """
 from __future__ import annotations
 
 import base64
-from datetime import datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from email import policy
 from email.message import EmailMessage
 from email.parser import BytesParser
 from email.utils import getaddresses
-import hashlib
+import html
 import json
 from pathlib import Path
 import re
@@ -33,10 +41,20 @@ from runtime_authority import DAILY_DIGEST_WINDOW, deadline_timestamp, start_tim
 
 ISTANBUL = ZoneInfo("Europe/Istanbul")
 CONFIG_NAME = "daily-digest-config.json"
+CARDS_NAME = "brand-cards.json"
+CALENDAR_NAME = "tr-special-days-2026.json"
 INTERNAL = re.compile(r"[a-z0-9][a-z0-9._%+-]{0,63}@gamechangers\.com\.tr\Z")
 API = "https://3.basecampapi.com"
+APP = "https://3.basecamp.com"
+HAMLE_PERSON = 53358100
 LEASE_SECONDS = 600
+MAX_CLASSIFIED = 40
+MODEL_INPUT_BUDGET = 15_000
+NO_TRENDS = "Bugün doğrulanmış trend kaynağı alınamadı."
 WEEKDAYS = ("Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi", "Pazar")
+SHORT_DAYS = ("Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz")
+MARKS = {"action_on_us": "🔴", "waiting_client": "🟡", "looks_done": "⚪"}
+LIMITS = {"today": 3, "overdue": 6, "trends": 4, "special": 3}  # worst case ~26 non-blank lines
 
 
 class DigestError(ValueError):
@@ -50,15 +68,30 @@ def _need(ok, code):
         raise DigestError(code)
 
 
-# ------------------------------------------------------------------ config
-def load_config(path=None):
+def _load(name, path=None):
     root = Path(__file__).resolve().parents[2]
-    candidates = [Path(path)] if path else [Path(__file__).with_name("chain-profile") / CONFIG_NAME,
-                                            root / "outputs/gamechangers-internal" / CONFIG_NAME]
+    candidates = [Path(path)] if path else [Path(__file__).with_name("chain-profile") / name,
+                                            root / "outputs/gamechangers-internal" / name]
     for candidate in candidates:
         if candidate.is_file():
             return json.loads(candidate.read_text(encoding="utf-8"))
-    raise DigestError("digest_config_missing")
+    raise DigestError("digest_file_missing:" + name)
+
+
+def load_config(path=None):
+    return _load(CONFIG_NAME, path)
+
+
+def load_brand_cards(path=None):
+    return _load(CARDS_NAME, path)
+
+
+def load_calendar(path=None):
+    return _load(CALENDAR_NAME, path)
+
+
+def internal_address(value):
+    return isinstance(value, str) and INTERNAL.fullmatch(value) is not None and value != HAMLE
 
 
 def validate_config(cfg):
@@ -68,40 +101,57 @@ def validate_config(cfg):
     recipients = cfg.get("recipients")
     _need(isinstance(recipients, list) and len(recipients) <= 20, "digest_recipients_invalid")
     for r in recipients:
-        _need(isinstance(r, str) and INTERNAL.fullmatch(r) is not None and r != HAMLE,
-              "digest_recipient_not_internal_agency")
+        _need(internal_address(r), "digest_recipient_not_internal_agency")
     _need(len(set(recipients)) == len(recipients), "digest_recipients_duplicate")
     note = cfg.get("day_note")
     _need(note is None or (isinstance(note, str) and len(note) <= 2000
                            and not any(ord(c) < 32 and c not in "\n\t" for c in note)), "digest_day_note_invalid")
     _need(type(cfg.get("basecamp_account_id")) is int and cfg["basecamp_account_id"] > 0, "digest_account_invalid")
     return {"enabled": cfg["enabled"], "recipients": list(recipients),
-            "day_note": note.strip() if isinstance(note, str) and note.strip() else None,
+            "day_note": " ".join(note.split()) if isinstance(note, str) and note.strip() else None,
             "account_id": cfg["basecamp_account_id"]}
+
+
+def _plain(value, limit):
+    text = re.sub(r"<[^>]*>", " ", value if isinstance(value, str) else "")
+    return " ".join(html.unescape(text).split())[:limit]
 
 
 # ------------------------------------------------------------------ Basecamp read-only listing
 class BasecampDigestReader:
     """GET-only, allowlisted paths, page query only, no redirects, bounded pagination.
 
-    get(url) -> (payload, headers); production uses cloud_providers._session() with the
-    existing basecamp_cloud_auth token (same transport rules as v11_basecamp_reader.SessionGet).
+    get(url) -> (payload, headers). Production: cloud_providers._session() + the existing
+    basecamp_cloud_auth token, same transport rules as v11_basecamp_reader.SessionGet.
     """
-    def __init__(self, account_id, *, get, max_projects=30, max_lists=80, max_pages=10, max_todos=2000):
+    PATHS = (r"projects", r"reports/todos/overdue",
+             r"buckets/[1-9][0-9]*/todosets/[1-9][0-9]*/todolists",
+             r"buckets/[1-9][0-9]*/todolists/[1-9][0-9]*/todos",
+             r"buckets/[1-9][0-9]*/card_tables/[1-9][0-9]*",
+             r"buckets/[1-9][0-9]*/card_tables/lists/[1-9][0-9]*/cards",
+             r"buckets/[1-9][0-9]*/recordings/[1-9][0-9]*/comments")
+
+    def __init__(self, account_id, *, get, max_projects=30, max_lists=120, max_pages=10, max_items=3000,
+                 max_reads=600):
         self.account, self.get = account_id, get
-        self.max_projects, self.max_lists, self.max_pages, self.max_todos = max_projects, max_lists, max_pages, max_todos
-        self.pages = 0
+        self.max_projects, self.max_lists, self.max_pages = max_projects, max_lists, max_pages
+        self.max_items, self.max_reads = max_items, max_reads
+        self.reads = 0
 
     def _check(self, url):
         p = urlsplit(url)
-        a = str(self.account)
         _need(p.scheme == "https" and p.netloc == "3.basecampapi.com" and not p.fragment
-              and re.fullmatch(rf"/{a}/(?:projects|buckets/[1-9][0-9]*/todosets/[1-9][0-9]*/todolists"
-                               rf"|buckets/[1-9][0-9]*/todolists/[1-9][0-9]*/todos)\.json", p.path),
+              and re.fullmatch(rf"/{self.account}/(?:{'|'.join(self.PATHS)})\.json", p.path),
               "digest_url_out_of_scope")
         q = parse_qs(p.query, keep_blank_values=True)
         _need(not q or (set(q) == {"page"} and len(q["page"]) == 1 and re.fullmatch(r"[1-9][0-9]{0,3}", q["page"][0])),
               "digest_query_invalid")
+
+    def _fetch(self, url):
+        self._check(url)
+        self.reads += 1
+        _need(self.reads <= self.max_reads, "digest_read_budget_exceeded")
+        return self.get(url)
 
     @staticmethod
     def _next(headers):
@@ -116,13 +166,10 @@ class BasecampDigestReader:
         _need(len(nexts) <= 1, "digest_link_ambiguous")
         return nexts[0] if nexts else None
 
-    def _all(self, url):
+    def _all(self, url, max_pages=None):
         out, base = [], urlsplit(url).path
-        for _ in range(self.max_pages):
-            self._check(url)
-            self.pages += 1
-            _need(self.pages <= 400, "digest_read_budget_exceeded")
-            payload, headers = self.get(url)
+        for _ in range(max_pages or self.max_pages):
+            payload, headers = self._fetch(url)
             _need(isinstance(payload, list), "digest_payload_invalid")
             out.extend(payload)
             url = self._next(headers)
@@ -131,58 +178,226 @@ class BasecampDigestReader:
             _need(urlsplit(url).path == base, "digest_link_out_of_scope")
         raise DigestError("digest_pagination_unbounded")
 
+    def _one(self, url):
+        payload, _ = self._fetch(url)
+        _need(isinstance(payload, dict), "digest_payload_invalid")
+        return payload
+
+    def _app(self, row, pid, kind):
+        url = row.get("app_url")
+        if isinstance(url, str) and url.startswith(f"{APP}/{self.account}/buckets/{pid}/") and len(url) <= 300 \
+                and not any(c in url for c in " <>\"'"):
+            return url
+        return f"{APP}/{self.account}/buckets/{pid}/{'card_tables/cards' if kind == 'card' else 'todos'}/{row['id']}"
+
+    def _item(self, row, pid, project, kind):
+        _need(isinstance(row, dict) and type(row.get("id")) is int and row["id"] > 0, "digest_item_invalid")
+        people = [x for x in row.get("assignees") or [] if isinstance(x, dict)]
+        comments = row.get("comments_url")
+        expected = f"{API}/{self.account}/buckets/{pid}/recordings/{row['id']}/comments.json"
+        return {"kind": kind, "id": row["id"], "project_id": pid, "project": str(project)[:60],
+                "title": _plain(row.get("title") or row.get("content"), 110),
+                "due_on": row.get("due_on") if isinstance(row.get("due_on"), str)
+                and re.fullmatch(r"\d{4}-\d{2}-\d{2}", row["due_on"]) else None,
+                "assignees": sorted({_plain(x.get("name") or str(x.get("id")), 40) for x in people}),
+                "assignee_ids": sorted({x["id"] for x in people if type(x.get("id")) is int}),
+                "app_url": self._app(row, pid, kind),
+                "comments_url": expected if comments in (None, expected) else expected}
+
     def collect(self):
         a = self.account
         projects = [p for p in self._all(f"{API}/{a}/projects.json")
                     if isinstance(p, dict) and p.get("status") == "active"]
         _need(len(projects) <= self.max_projects, "digest_too_many_projects")
-        todos, lists = [], 0
+        items, lists = [], 0
         for project in projects:
-            pid = project.get("id")
+            pid, name = project.get("id"), project.get("name") or project.get("id")
             _need(type(pid) is int and pid > 0, "digest_project_invalid")
-            sets = [d for d in project.get("dock") or [] if isinstance(d, dict) and d.get("name") == "todoset"
-                    and d.get("enabled") is True]
-            for dock in sets:
-                tid = dock.get("id")
-                _need(type(tid) is int and tid > 0, "digest_todoset_invalid")
-                for tl in self._all(f"{API}/{a}/buckets/{pid}/todosets/{tid}/todolists.json"):
-                    lists += 1
-                    _need(lists <= self.max_lists, "digest_too_many_lists")
-                    lid = tl.get("id") if isinstance(tl, dict) else None
-                    _need(type(lid) is int and lid > 0, "digest_list_invalid")
-                    for t in self._all(f"{API}/{a}/buckets/{pid}/todolists/{lid}/todos.json"):
-                        if not isinstance(t, dict) or t.get("completed") is not False or t.get("status") != "active":
+            for dock in project.get("dock") or []:
+                if not isinstance(dock, dict) or dock.get("enabled") is not True:
+                    continue
+                did = dock.get("id")
+                if dock.get("name") == "todoset":
+                    _need(type(did) is int and did > 0, "digest_todoset_invalid")
+                    for tl in self._all(f"{API}/{a}/buckets/{pid}/todosets/{did}/todolists.json"):
+                        lists += 1
+                        _need(lists <= self.max_lists, "digest_too_many_lists")
+                        lid = tl.get("id") if isinstance(tl, dict) else None
+                        _need(type(lid) is int and lid > 0, "digest_list_invalid")
+                        for t in self._all(f"{API}/{a}/buckets/{pid}/todolists/{lid}/todos.json"):
+                            if isinstance(t, dict) and t.get("completed") is False and t.get("status") == "active":
+                                items.append(self._item(t, pid, name, "todo"))
+                elif dock.get("name") == "kanban_board":
+                    _need(type(did) is int and did > 0, "digest_card_table_invalid")
+                    table = self._one(f"{API}/{a}/buckets/{pid}/card_tables/{did}.json")
+                    for col in table.get("lists") or []:
+                        if not isinstance(col, dict) or str(col.get("type", "")).endswith(("DoneColumn", "NotNowColumn")):
                             continue
-                        todos.append({"project": str(project.get("name") or pid)[:80],
-                                      "title": str(t.get("title") or t.get("content") or "")[:120],
-                                      "due_on": t.get("due_on") if isinstance(t.get("due_on"), str) else None,
-                                      "assignees": sorted({str(x.get("name") or x.get("id"))[:60]
-                                                           for x in t.get("assignees") or [] if isinstance(x, dict)})})
-                        _need(len(todos) <= self.max_todos, "digest_too_many_todos")
-        return {"projects": len(projects), "todos": todos}
+                        lists += 1
+                        _need(lists <= self.max_lists, "digest_too_many_lists")
+                        cid = col.get("id")
+                        _need(type(cid) is int and cid > 0, "digest_column_invalid")
+                        for c in self._all(f"{API}/{a}/buckets/{pid}/card_tables/lists/{cid}/cards.json"):
+                            if isinstance(c, dict) and c.get("completed") is not True and c.get("status") == "active" \
+                                    and c.get("due_on"):
+                                items.append(self._item(c, pid, name, "card"))
+                _need(len(items) <= self.max_items, "digest_too_many_items")
+        return {"projects": len(projects), "items": items,
+                "project_names": {p["id"]: str(p.get("name") or p["id"])[:60] for p in projects}}
+
+    def overdue_report(self, project_names):
+        """Account-level overdue todo report; None when unavailable (caller falls back)."""
+        try:
+            payload = self._one(f"{API}/{self.account}/reports/todos/overdue.json")
+            rows = []
+            for key, value in payload.items():
+                _need(isinstance(value, list), "digest_report_invalid")
+                rows.extend(value)
+            out = []
+            for t in rows:
+                if not isinstance(t, dict) or t.get("completed") is not False:
+                    continue
+                pid = (t.get("bucket") or {}).get("id")
+                if type(pid) is not int:
+                    continue
+                out.append(self._item(t, pid, project_names.get(pid) or (t.get("bucket") or {}).get("name") or pid,
+                                      "todo"))
+            return out
+        except DigestError:
+            return None
+
+    def last_comments(self, item, n=5):
+        rows = self._all(item["comments_url"], max_pages=3)
+        rows = [r for r in rows if isinstance(r, dict)]
+        rows.sort(key=lambda r: str(r.get("created_at") or ""))
+        return [{"at": str(r.get("created_at") or "")[:10], "by": _plain((r.get("creator") or {}).get("name"), 40),
+                 "text": _plain(r.get("content"), 300)} for r in rows[-n:]]
+
+
+# ------------------------------------------------------------------ classification (ONE batched model call)
+def _model_input(items, comment_chars):
+    return {"today": None, "items": [{"ref": it["ref"], "title": it["title"][:90], "brand": it["project"][:40],
+                                      "days_overdue": it["days_overdue"],
+                                      "comments": [{"at": c["at"], "by": c["by"][:30], "text": c["text"][:comment_chars]}
+                                                   for c in it["comments"]]} for it in items]}
+
+
+def build_model_input(items, today):
+    for chars in (240, 160, 110, 70, 40, 20, 0):
+        value = _model_input(items, chars)
+        value["today"] = today.isoformat()
+        if len(json.dumps(value, ensure_ascii=False).encode("utf-8")) <= MODEL_INPUT_BUDGET:
+            return value
+    raise DigestError("digest_model_input_too_large")
+
+
+def apply_classification(items, output):
+    refs = {it["ref"]: it for it in items}
+    seen = set()
+    for row in (output or {}).get("items", []):
+        ref = row.get("ref")
+        if ref in refs and ref not in seen and row.get("status") in MARKS:
+            seen.add(ref)
+            refs[ref].update(status=row["status"], reason=_plain(row.get("reason"), 160),
+                             action=_plain(row.get("action"), 160))
+    return len(seen)
+
+
+# ------------------------------------------------------------------ trends / calendar
+def sourced_trends(raw, today, limit=5):
+    """Hard rule: keep only items with an https source URL and a real publication date."""
+    out = []
+    for t in raw or []:
+        try:
+            url, published = t.get("url"), t.get("published_at")
+            p = urlsplit(url)
+            day = date.fromisoformat(str(published)[:10])
+            if not (p.scheme == "https" and p.netloc and len(url) <= 300 and not any(c in url for c in " <>\"'")
+                    and today - timedelta(days=30) <= day <= today and _plain(t.get("title"), 120)):
+                continue
+            out.append({"title": _plain(t["title"], 120), "url": url, "published_at": day.isoformat(),
+                        "summary": _plain(t.get("summary"), 160)})
+        except Exception:
+            continue
+    return out[:limit]
+
+
+def _brands(cards):
+    return [b for b in (cards or {}).get("brands", []) if isinstance(b, dict) and b.get("include_in_suggestions")
+            and b.get("sector")]
+
+
+def special_days(calendar, cards, today, horizon=14):
+    end = today + timedelta(days=horizon)
+    rows = []
+    for d in (calendar or {}).get("days", []):
+        try:
+            day = date.fromisoformat(d["date"])
+        except Exception:
+            continue
+        if today <= day <= end:
+            tags = set(d.get("tags") or [])
+            fit = [b for b in _brands(cards) if "genel" in tags or tags & set(b.get("tags") or [])]
+            rows.append({"date": day, "name": d["name"], "verified": d.get("verified") is True,
+                         "note": d.get("note"), "brands": fit})
+    return rows
 
 
 # ------------------------------------------------------------------ text
-def render(listing, *, day, day_note):
-    todos = listing["todos"]
-    today = day.isoformat()
-    due = [t for t in todos if t["due_on"] == today]
-    overdue = [t for t in todos if t["due_on"] and t["due_on"] < today]
-    per = {}
-    for t in todos:
-        for name in t["assignees"] or ["(atanmamış)"]:
-            per[name] = per.get(name, 0) + 1
-    lines = [f"Günaydın,", "", f"{day.strftime('%d.%m.%Y')} {WEEKDAYS[day.weekday()]} iş özeti "
-             f"(Hamle'nin üyesi olduğu {listing['projects']} Basecamp projesi):", "",
-             f"Açık iş toplamı: {len(todos)}", f"Bugün teslim: {len(due)}", f"Gecikmiş: {len(overdue)}", "",
-             "Kişi başına açık iş:"]
-    lines += [f"- {name}: {n}" for name, n in sorted(per.items(), key=lambda kv: (-kv[1], kv[0]))] or ["- yok"]
-    if due:
-        lines += ["", "Bugün teslim olanlar:"]
-        lines += [f"- [{t['project']}] {t['title']} — {', '.join(t['assignees']) or 'atanmamış'}" for t in due[:40]]
+def render(listing, *, day, day_note, overdue, trends, specials, classified):
+    items = listing["items"]
+    today_iso = day.isoformat()
+    due = [t for t in items if t["due_on"] == today_iso]
+    lines = [f"Hamle günlük özet — {day.strftime('%d.%m.%Y')} {WEEKDAYS[day.weekday()]}",
+             f"Açık iş: {len(items)} · Bugün teslim: {len(due)} · Gecikmiş: {len(overdue)} "
+             f"({listing['projects']} proje)"]
     if day_note:
-        lines += ["", "Günün notu:", day_note]
-    lines += ["", "Bu özet Basecamp'ten salt-okunur alınmıştır; Hamle hiçbir işi değiştirmemiştir.", "", "Hamle"]
+        lines.append("Günün notu: " + day_note[:300])
+
+    def who(t):
+        return " ".join("@" + n for n in t["assignees"]) or "atanmamış"
+
+    lines += ["", "BUGÜN"]
+    lines += [f"- {t['title']} · {t['project']} · {who(t)} · {t['app_url']}" for t in due[:LIMITS['today']]] or ["- Bugün teslim iş yok."]
+    if len(due) > LIMITS["today"]:
+        lines.append(f"- … +{len(due) - LIMITS['today']} iş daha")
+
+    lines += ["", "GECİKENLER" + ("" if classified else " (sınıflandırılmadı: model bütçesi/yanıtı yok)")]
+    shown = sorted(overdue, key=lambda t: (-t["days_overdue"], t["title"]))[:LIMITS["overdue"]]
+    for t in shown:
+        mark = MARKS.get(t.get("status"), "•")
+        reason = t.get("reason") or ("Hamle'ye atanmış; yalnız listelendi." if t.get("hamle_assigned") else "sınıflandırılmadı")
+        action = f" Öneri: {t['action']}" if t.get("action") else ""
+        lines.append(f"{mark} {t['title']} · {t['project']} · {who(t)} · {t['days_overdue']} gün gecikme · "
+                     f"{reason}{action} · {t['app_url']}")
+    if not overdue:
+        lines.append("- Geciken iş yok.")
+    elif len(overdue) > len(shown):
+        lines.append(f"- … +{len(overdue) - len(shown)} geciken iş daha")
+
+    lines += ["", "TREND RADARI"]
+    if trends:
+        cards = [b for b in _brands(listing.get("cards")) if b.get("main_platform")]
+        for i, t in enumerate(trends[:LIMITS["trends"]]):
+            idea = ""
+            if cards:
+                b = cards[i % len(cards)]
+                idea = f" Uyarlama: {b['brand']} ({b['main_platform']}, taslak kart) için kendi ürün diliyle denenebilir."
+            lines.append(f"- {t['title']} ({t['published_at']}) · {t['url']}{idea}")
+    else:
+        lines.append(NO_TRENDS)
+
+    if specials is not None:
+        lines += ["", "ÖZEL GÜNLER (14 gün)"]
+        for s in specials[:LIMITS["special"]]:
+            names = ", ".join(f"{b['brand']} ({b['main_platform'] or '?'})" for b in s["brands"][:3]) or "uygun kart yok"
+            flag = "" if s["verified"] else " [tarih taslak]"
+            note = f" {s['note']}" if s.get("note") else ""
+            lines.append(f"- {s['date'].strftime('%d.%m')} {SHORT_DAYS[s['date'].weekday()]} · {s['name']}{flag} · "
+                         f"öneri: {names}{note}")
+        if not specials:
+            lines.append("- Önümüzdeki 14 günde takvimde özel gün yok.")
+    lines += ["", "Hamle tarih değiştirmez, iş kapatmaz; yalnızca öneri yazar. Basecamp salt-okunur okundu."]
     return "\n".join(lines)
 
 
@@ -241,27 +456,77 @@ class DigestMailWriter:
         return {"readback_sha256": scope_digest(payload)}
 
 
+# ------------------------------------------------------------------ assembly
+def build_digest(reader, *, day, day_note, classifier=None, trend_source=None, cards=None, calendar=None):
+    """Read-only listing + optional batched classification -> (body, stats)."""
+    listing = reader.collect()
+    listing["cards"] = cards
+    today_iso = day.isoformat()
+    report = reader.overdue_report(listing["project_names"])
+    todos = report if report is not None else [t for t in listing["items"] if t["kind"] == "todo"]
+    cards_due = [t for t in listing["items"] if t["kind"] == "card"]
+    overdue, seen = [], set()
+    for t in todos + cards_due:
+        if t["due_on"] and t["due_on"] < today_iso and (t["kind"], t["id"]) not in seen:
+            seen.add((t["kind"], t["id"]))
+            t = dict(t, days_overdue=(day - date.fromisoformat(t["due_on"])).days,
+                     hamle_assigned=HAMLE_PERSON in t["assignee_ids"])
+            overdue.append(t)
+    overdue.sort(key=lambda t: (-t["days_overdue"], t["project"], t["title"]))
+    candidates = [t for t in overdue if not t["hamle_assigned"]][:MAX_CLASSIFIED]
+    classified = 0
+    model_status = "not_called"
+    if candidates and classifier is not None:
+        try:
+            for i, t in enumerate(candidates):
+                t["ref"] = f"o{i + 1}"
+                t["comments"] = reader.last_comments(t)
+            output = classifier(build_model_input(candidates, day))
+            classified = apply_classification(candidates, output)
+            model_status = "classified"
+        except Exception as exc:  # no budget / model error / comment read failure -> unclassified list
+            for t in candidates:
+                for k in ("status", "reason", "action"):
+                    t.pop(k, None)
+            classified = 0
+            model_status = "unclassified:" + str(getattr(exc, "code", None) or type(exc).__name__)[:80]
+    trends = []
+    trend_status = "no_provider"
+    if trend_source is not None:
+        try:
+            trends = sourced_trends(trend_source(), day)
+            trend_status = f"{len(trends)}_sourced"
+        except Exception:
+            trend_status = "provider_failed"
+    specials = special_days(calendar, cards, day) if day.weekday() == 0 else None
+    body = render(listing, day=day, day_note=day_note, overdue=overdue, trends=trends, specials=specials,
+                  classified=classified > 0)
+    return body, {"open_items": len(listing["items"]), "overdue": len(overdue), "classified": classified,
+                  "model": model_status, "trends": trend_status, "overdue_source": "report" if report is not None else "scan"}
+
+
 # ------------------------------------------------------------------ run
-def _day_key(local):
-    return "daily-digest-" + local.strftime("%Y%m%d")
-
-
-def run_daily_digest(ops, *, config, reader_factory, writer, clock, window=DAILY_DIGEST_WINDOW):
-    """One digest per Istanbul weekday. Returns a status dict; never retries a send."""
+def run_daily_digest(ops, *, config, reader_factory, writer, clock, window=DAILY_DIGEST_WINDOW,
+                     preview_to=None, classifier=None, trend_source=None, cards=None, calendar=None):
+    """One team digest per Istanbul weekday, or one preview per day to ONE agency address."""
     claim = None
     try:
         now = clock()
         _need(isinstance(now, datetime) and now.tzinfo is not None, "aware_clock_required")
         _need(start_timestamp() <= now.timestamp() <= deadline_timestamp(), "authorization_expired")
         cfg = validate_config(config)
-        if not cfg["enabled"] or not cfg["recipients"]:
-            return {"status": "no_new_work", "reason": "digest_disabled_or_no_recipients", "business_writes": 0}
         local = now.astimezone(ISTANBUL)
-        first, last = window_minutes(window)
-        minute = local.hour * 60 + local.minute
-        if local.weekday() >= 5 or not first <= minute <= last:
-            return {"status": "no_new_work", "reason": "outside_digest_window", "business_writes": 0}
-        key = _day_key(local)
+        if preview_to is not None:
+            _need(internal_address(preview_to), "digest_preview_not_internal_agency")
+            recipients, key, subject_prefix = [preview_to], "daily-digest-preview-" + local.strftime("%Y%m%d"), "[ÖNİZLEME] "
+        else:
+            if not cfg["enabled"] or not cfg["recipients"]:
+                return {"status": "no_new_work", "reason": "digest_disabled_or_no_recipients", "business_writes": 0}
+            first, last = window_minutes(window)
+            minute = local.hour * 60 + local.minute
+            if local.weekday() >= 5 or not first <= minute <= last:
+                return {"status": "no_new_work", "reason": "outside_digest_window", "business_writes": 0}
+            recipients, key, subject_prefix = cfg["recipients"], "daily-digest-" + local.strftime("%Y%m%d"), ""
         token = uuid.uuid4().hex
 
         def claim_op(tx, ts):
@@ -269,19 +534,21 @@ def run_daily_digest(ops, *, config, reader_factory, writer, clock, window=DAILY
             ops._open(c, c["generation"], ts)
             _need(not b["overrun_hold"], "budget_overrun_hold")
             if row is not None and not (row["state"] == "claimed" and ts >= row["lease_until"]):
-                return None  # claimed/sending/sent/unknown: never a second digest that day
-            new = {"key": key, "kind": "daily_digest", "state": "claimed", "token": token, "generation": c["generation"],
-                   "claimed_at": ts, "lease_until": ts + LEASE_SECONDS, "date": local.date().isoformat()}
+                return None  # claimed/sending/sent/unknown: never a second mail under this key
+            new = {"key": key, "kind": "daily_digest_preview" if preview_to else "daily_digest", "state": "claimed",
+                   "token": token, "generation": c["generation"], "claimed_at": ts,
+                   "lease_until": ts + LEASE_SECONDS, "date": local.date().isoformat()}
             tx.put(key, new)
             return new
         claim = ops._run(claim_op)
         if claim is None:
-            return {"status": "already_recorded", "reason": "digest_already_claimed_or_sent_today", "business_writes": 0}
+            return {"status": "already_recorded", "reason": "digest_already_claimed_or_sent", "key": key,
+                    "business_writes": 0}
 
-        listing = reader_factory().collect()
-        body = render(listing, day=local.date(), day_note=cfg["day_note"])
-        payload = {"from": HAMLE, "to": cfg["recipients"], "cc": [],
-                   "subject": f"Hamle günlük iş özeti — {local.strftime('%d.%m.%Y')}", "body": body}
+        body, stats = build_digest(reader_factory(), day=local.date(), day_note=cfg["day_note"], classifier=classifier,
+                                   trend_source=trend_source, cards=cards, calendar=calendar)
+        payload = {"from": HAMLE, "to": list(recipients), "cc": [],
+                   "subject": f"{subject_prefix}Hamle günlük özet — {local.strftime('%d.%m.%Y')}", "body": body}
         sha = scope_digest(payload)
 
         def begin_op(tx, ts):
@@ -290,7 +557,7 @@ def run_daily_digest(ops, *, config, reader_factory, writer, clock, window=DAILY
             ops._open(c, claim["generation"], ts)  # stop/generation change after claim -> no send
             _need(not b["overrun_hold"], "budget_overrun_hold")
             row.update(state="sending", payload_sha256=sha, recipients=list(payload["to"]),
-                       subject=payload["subject"], open_todos=len(listing["todos"]), sending_at=ts)
+                       subject=payload["subject"], stats=stats, sending_at=ts)
             tx.put(key, row)
             return row
         ops._run(begin_op)
@@ -315,13 +582,12 @@ def run_daily_digest(ops, *, config, reader_factory, writer, clock, window=DAILY
             return {"status": "held", "reason": "digest_outcome_unknown_no_retry", "business_writes": None,
                     "automatic_retry_allowed": False}
         mark("sent", remote_id=remote)
-        return {"status": "digest_sent", "key": key, "recipients": len(payload["to"]),
-                "open_todos": len(listing["todos"]), "business_writes": 1, "model_calls": 0}
+        return {"status": "digest_sent", "key": key, "recipients": len(payload["to"]), "stats": stats,
+                "business_writes": 1}
     except Exception as exc:
         reason = re.sub(r"[^A-Za-z0-9_.:@-]", "_", str(getattr(exc, "code", None) or type(exc).__name__))[:120]
         if claim is not None:
-            # Nothing was sent (send failures return above). Release so a later run may retry.
-            try:
+            try:  # nothing was sent (send failures return above): release so a later run may retry
                 def release(tx, ts):
                     row = tx.get(claim["key"])
                     if row is not None and row["token"] == claim["token"] and row["state"] == "claimed":
@@ -333,10 +599,32 @@ def run_daily_digest(ops, *, config, reader_factory, writer, clock, window=DAILY
         return {"status": "held", "reason": reason, "business_writes": 0, "automatic_retry_allowed": False}
 
 
-def run_worker_daily_digest(ops, secrets, *, clock=None):
-    """Entry for worker.py --mode daily_digest (existing credential loaders only)."""
+def model_classifier(ops, load_key, catalog, *, transport=None):
+    """ONE batched call via the existing OpenAI path (v11_chain_models), under the 30 USD chain cap."""
+    from v11_chain_live import budget_gate
+    from v11_chain_models import (MODEL_RESERVATION, ModelGate, call_once, internal_cap_microdollars,
+                                  source_digest)
+    cap = internal_cap_microdollars(catalog)
+    gate = ModelGate(ledger=ops, cache=ops, generation=ops.control()["generation"], cap_microdollars=cap)
+    budget_ok = budget_gate(ops, MODEL_RESERVATION, cap)
+
+    def classify(model_input):
+        _need(budget_ok(), "model_budget_unavailable")
+        return gate.once("digest", source_digest("digest", model_input),
+                         lambda: call_once(load_key(), "digest", model_input, transport=transport))
+    return classify
+
+
+def run_worker_daily_digest(ops, secrets, *, clock=None, preview_to=None):
+    """Entry for worker.py --mode daily_digest (existing credential loaders only).
+
+    Trend provider: NONE shipped. model.py's request path pins tools=[] / tool_choice=none
+    and rejects tool output items, so web_search is not cleanly supported; the section
+    prints NO_TRENDS until a sourced trend_source adapter is injected.
+    """
     import basecamp_cloud_auth
     import cloud_providers as provider
+    from v11_chain_live import load_catalog
     from v11_chain_mail import gmail_token_context
     clock = clock or (lambda: datetime.now(timezone.utc))
     config = load_config()
@@ -346,6 +634,7 @@ def run_worker_daily_digest(ops, secrets, *, clock=None):
         token = basecamp_cloud_auth.access_token(secrets, claim_refresh=ops.claim_credential_refresh)
         session = provider._session()
         sessions.append(session)
+
         def get(url):
             r = None
             try:
@@ -371,7 +660,13 @@ def run_worker_daily_digest(ops, secrets, *, clock=None):
 
     writer = DigestMailWriter(token_context=gmail_token_context(secrets), session_factory=provider._session)
     try:
-        return run_daily_digest(ops, config=config, reader_factory=reader_factory, writer=writer, clock=clock)
+        classifier = model_classifier(ops, lambda: provider.openai_key(secrets), load_catalog())
+    except Exception:
+        classifier = None  # no cap/catalog -> overdue listed unclassified
+    try:
+        return run_daily_digest(ops, config=config, reader_factory=reader_factory, writer=writer, clock=clock,
+                                preview_to=preview_to, classifier=classifier, trend_source=None,
+                                cards=load_brand_cards(), calendar=load_calendar())
     finally:
         for s in sessions:
             s.close()

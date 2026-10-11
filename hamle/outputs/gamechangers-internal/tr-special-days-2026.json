@@ -1,0 +1,231 @@
+{
+  "schema_version": 1,
+  "kind": "tr_special_days",
+  "version": "2026-1-taslak",
+  "year": 2026,
+  "status": "taslak",
+  "note": "Statik Türkçe özel günler takvimi. Sabit tarihli günler verified=true; dini/değişken günler hesaplanmış tahmindir (verified=false, taslak).",
+  "days": [
+    {
+      "date": "2026-01-01",
+      "name": "Yılbaşı",
+      "tags": [
+        "genel"
+      ],
+      "verified": true
+    },
+    {
+      "date": "2026-02-14",
+      "name": "Sevgililer Günü",
+      "tags": [
+        "hediye",
+        "perakende",
+        "kozmetik",
+        "gida"
+      ],
+      "verified": true
+    },
+    {
+      "date": "2026-03-08",
+      "name": "Dünya Kadınlar Günü",
+      "tags": [
+        "genel"
+      ],
+      "verified": true
+    },
+    {
+      "date": "2026-03-20",
+      "name": "Ramazan Bayramı (1. gün)",
+      "tags": [
+        "genel"
+      ],
+      "verified": false
+    },
+    {
+      "date": "2026-04-23",
+      "name": "Ulusal Egemenlik ve Çocuk Bayramı",
+      "tags": [
+        "genel"
+      ],
+      "verified": true
+    },
+    {
+      "date": "2026-05-01",
+      "name": "Emek ve Dayanışma Günü",
+      "tags": [
+        "genel"
+      ],
+      "verified": true
+    },
+    {
+      "date": "2026-05-10",
+      "name": "Anneler Günü",
+      "tags": [
+        "hediye",
+        "perakende",
+        "kozmetik",
+        "gida"
+      ],
+      "verified": true
+    },
+    {
+      "date": "2026-05-19",
+      "name": "Atatürk'ü Anma, Gençlik ve Spor Bayramı",
+      "tags": [
+        "genel",
+        "spor"
+      ],
+      "verified": true
+    },
+    {
+      "date": "2026-05-27",
+      "name": "Kurban Bayramı (1. gün)",
+      "tags": [
+        "genel"
+      ],
+      "verified": false
+    },
+    {
+      "date": "2026-06-21",
+      "name": "Babalar Günü",
+      "tags": [
+        "hediye",
+        "perakende"
+      ],
+      "verified": true
+    },
+    {
+      "date": "2026-07-15",
+      "name": "Demokrasi ve Milli Birlik Günü",
+      "tags": [
+        "genel"
+      ],
+      "verified": true
+    },
+    {
+      "date": "2026-08-30",
+      "name": "Zafer Bayramı",
+      "tags": [
+        "genel"
+      ],
+      "verified": true
+    },
+    {
+      "date": "2026-10-10",
+      "name": "Dünya Ruh Sağlığı Günü",
+      "tags": [
+        "genel"
+      ],
+      "verified": true
+    },
+    {
+      "date": "2026-10-16",
+      "name": "Dünya Gıda Günü",
+      "tags": [
+        "gida"
+      ],
+      "verified": true
+    },
+    {
+      "date": "2026-10-29",
+      "name": "Cumhuriyet Bayramı",
+      "tags": [
+        "genel"
+      ],
+      "verified": true
+    },
+    {
+      "date": "2026-10-31",
+      "name": "Cadılar Bayramı",
+      "tags": [
+        "perakende",
+        "gida",
+        "kozmetik"
+      ],
+      "verified": true
+    },
+    {
+      "date": "2026-11-10",
+      "name": "Atatürk'ü Anma Günü",
+      "tags": [
+        "genel"
+      ],
+      "verified": true,
+      "note": "Saygı günü: kampanya/indirim dili kullanılmaz."
+    },
+    {
+      "date": "2026-11-11",
+      "name": "11.11 Bekarlar Günü indirimleri",
+      "tags": [
+        "e-ticaret",
+        "perakende"
+      ],
+      "verified": true
+    },
+    {
+      "date": "2026-11-20",
+      "name": "Dünya Çocuk Hakları Günü",
+      "tags": [
+        "genel"
+      ],
+      "verified": true
+    },
+    {
+      "date": "2026-11-24",
+      "name": "Öğretmenler Günü",
+      "tags": [
+        "genel",
+        "hediye"
+      ],
+      "verified": true
+    },
+    {
+      "date": "2026-11-25",
+      "name": "Kadına Yönelik Şiddete Karşı Uluslararası Mücadele Günü",
+      "tags": [
+        "genel"
+      ],
+      "verified": true
+    },
+    {
+      "date": "2026-11-27",
+      "name": "Black Friday (Efsane Cuma)",
+      "tags": [
+        "e-ticaret",
+        "perakende",
+        "kozmetik",
+        "gida",
+        "hediye"
+      ],
+      "verified": true
+    },
+    {
+      "date": "2026-11-30",
+      "name": "Cyber Monday",
+      "tags": [
+        "e-ticaret"
+      ],
+      "verified": true
+    },
+    {
+      "date": "2026-12-03",
+      "name": "Dünya Engelliler Günü",
+      "tags": [
+        "genel"
+      ],
+      "verified": true
+    },
+    {
+      "date": "2026-12-31",
+      "name": "Yılbaşı gecesi",
+      "tags": [
+        "genel",
+        "hediye",
+        "perakende",
+        "gida",
+        "kozmetik"
+      ],
+      "verified": true
+    }
+  ]
+}

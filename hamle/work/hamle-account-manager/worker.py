@@ -476,6 +476,8 @@ def main(argv=None):
     # Explicit operator-only manual internal chain run; never part of scheduler/default args.
     parser.add_argument("--manual-internal", action="store_true")
     parser.add_argument("--operator")
+    # Explicit one-off digest preview to ONE agency address (separate record key).
+    parser.add_argument("--preview-to")
     args = parser.parse_args(argv)
     backend = secrets = None
     try:
@@ -492,6 +494,9 @@ def main(argv=None):
         _require((args.manual_internal and args.mode == "chain_tick" and args.operator in
                   ("ahmet@gamechangers.com.tr", "cansu@gamechangers.com.tr", "ozge@gamechangers.com.tr")) or
                  (not args.manual_internal and args.operator is None), "manual_internal_requires_chain_tick_and_operator")
+        _require(args.preview_to is None or (args.mode == "daily_digest" and isinstance(args.preview_to, str) and
+                 re.fullmatch(r"[a-z0-9][a-z0-9._%+-]{0,63}@gamechangers\.com\.tr", args.preview_to) is not None
+                 and args.preview_to != "hamle@gamechangers.com.tr"), "preview_to_requires_daily_digest_and_agency_address")
         _require(os.environ.get("HAMLE_ALLOW_FIRESTORE_OPERATIONS") == "yes", "cloud_opt_in_required")
         _require(os.environ.get("HAMLE_PROJECT_ID") == "gamechangers-hamle" and
                  os.environ.get("HAMLE_FIRESTORE_DATABASE") == "hamle-operations", "cloud_scope_invalid")
@@ -524,7 +529,7 @@ def main(argv=None):
         elif args.mode == "daily_digest":
             # Non-default: one internal team digest per Istanbul weekday (v11_daily_digest).
             from v11_daily_digest import run_worker_daily_digest
-            result = run_worker_daily_digest(store, secrets)
+            result = run_worker_daily_digest(store, secrets, preview_to=args.preview_to)
         elif args.mode in ("review", "scheduled_review", "track", "recover_followup"):
             from business_writers import BusinessWriters
             writers = BusinessWriters(secrets, claim_refresh=store.claim_credential_refresh)
