@@ -124,5 +124,16 @@ class BrandAck(unittest.TestCase):
         self.assertEqual((rec["status"], rec["intents"]["task-ack"]["status"], h.mail.sent), ("in_production", "denied", []))
 
 
+class AckHtml(unittest.TestCase):
+    def test_task_link_is_the_job_title_in_tahoma(self):
+        from v11_chain_mail import mail_html
+        url = "https://3.basecamp.com/5898865/buckets/40694338/todos/77"
+        page = mail_html("Merhaba,\n\n- İş: Yerli <Sanayi> Görseli\n- Amaç: tanıtım\n\nGörev: " + url + "\n\nHamle")
+        self.assertIn("font-family:Tahoma", page)
+        self.assertIn(f'<a href="{url}"', page)
+        self.assertIn(">Yerli &lt;Sanayi&gt; Görseli</a>", page)
+        self.assertEqual(page.count("https://"), 1)  # only inside href, never as visible text
+
+
 if __name__ == "__main__":
     unittest.main()

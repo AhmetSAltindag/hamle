@@ -24,6 +24,7 @@ from email.message import EmailMessage
 from email.parser import BytesParser
 from email.utils import getaddresses
 import hashlib
+import html
 import re
 import time
 
@@ -43,6 +44,43 @@ ACK_FIELDS = CLARIFY_FIELDS | {"ack_task_id"}  # task_ack: one confirmation afte
 DELIVER_FIELDS = {"from", "to", "cc", "thread_id", "subject", "body", "artifact"}
 ARTIFACT_FIELDS = {"brand_id", "work_id", "version", "sha256", "mime_type"}
 FILENAME = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,100}\Z")
+
+
+
+MAIL_FONT = "Tahoma,Verdana,Segoe,sans-serif"
+MAIL_URL = re.compile(r"https://[^\s<>\"']+")
+
+
+def mail_html(body):
+    """Full-width Tahoma HTML twin of a plain chain mail; bare URLs become titled links."""
+    lines = body.split("\n")
+    title = next((l[len("- İş: "):].strip() for l in lines if l.startswith("- İş: ")), "")
+
+    def link(url, text):
+        return (f'<a href="{html.escape(url, quote=True)}" style="color:#1a56db;text-decoration:none;'
+                f'font-weight:bold;">{html.escape(text)}</a>')
+
+    def inline(line):
+        out, last = [], 0
+        for m in MAIL_URL.finditer(line):
+            out.append(html.escape(line[last:m.start()]))
+            out.append(link(m.group(0), (title or "Basecamp'te aç") if line.startswith("Görev: ")
+                            else ("Basecamp'te aç" if "basecamp.com" in m.group(0) else "bağlantı")))
+            last = m.end()
+        return "".join(out) + html.escape(line[last:])
+
+    parts, items = [], []
+    for line in lines + [""]:
+        if line.startswith("- "):
+            items.append(f'<li style="margin:0 0 4px;">{inline(line[2:])}</li>')
+            continue
+        if items:
+            parts.append(f'<ul style="margin:4px 0 8px;padding-left:20px;">{"".join(items)}</ul>')
+            items = []
+        parts.append(f'<div style="margin:0;">{inline(line)}</div>' if line.strip() else '<div style="height:10px;"></div>')
+    return ('<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="margin:0;padding:0;">'
+            f'<div style="font-family:{MAIL_FONT};font-size:14px;line-height:1.55;color:#1f2937;width:100%;">'
+            + "".join(parts) + "</div></body></html>")
 
 
 class ChainMailError(ValueError):
@@ -303,7 +341,9 @@ class GmailThreadReplyWriter:
         message["References"] = src["references"]
         message["Message-ID"] = self._message_id(payload, src)
         message.set_content(payload["body"], subtype="plain", charset="utf-8")
-        if file is not None:
+        if file is None:
+            message.add_alternative(mail_html(payload["body"]), subtype="html", charset="utf-8")
+        else:
             main, sub = file["content_type"].split("/", 1)
             message.add_attachment(file["data"], maintype=main, subtype=sub, filename=file["filename"])
         raw = message.as_bytes()
@@ -370,8 +410,10 @@ class GmailThreadReplyWriter:
               and not message.defects, "mail_readback_header_mismatch")
         expected_body = payload["body"] + ("" if payload["body"].endswith("\n") else "\n")
         if kind in ("clarify_brief", "acknowledge"):
-            _need(not message.is_multipart() and message.get_content_type() == "text/plain"
-                  and message.get_content().replace("\r\n", "\n") == expected_body, "mail_readback_body_mismatch")
+            plain = message.get_body(preferencelist=("plain",)) if message.is_multipart() else None
+            _need(message.get_content_type() == "multipart/alternative" and plain is not None
+                  and message.get_body(preferencelist=("html",)) is not None
+                  and plain.get_content().replace("\r\n", "\n") == expected_body, "mail_readback_body_mismatch")
         else:
             parts = list(message.iter_parts()) if message.is_multipart() else []
             _need(message.get_content_type() == "multipart/mixed" and len(parts) == 2

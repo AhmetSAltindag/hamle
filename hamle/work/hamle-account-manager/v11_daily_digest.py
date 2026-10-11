@@ -425,6 +425,160 @@ def render(listing, *, day, day_note, overdue, trends, specials, classified, new
     return "\n".join(lines)
 
 
+
+# ------------------------------------------------------------------ html (full width, Tahoma, titles are the links)
+FONT = "Tahoma,Verdana,Segoe,sans-serif"
+MONTHS = ("Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım",
+          "Aralık")
+BRAND_LABELS = {40694338: "WAT", 48639990: "Rabam", 43886681: "BWI", 48562916: "HAN Spaces", 48917059: "ya da",
+                40704523: "Altınmarka", 40704530: "Bikaldi", 40704459: "Gamechangers", 44320349: "Fenerium",
+                40704547: "New Biz"}
+GROUPS = (("action_on_us", "🔴 Aksiyon bizde"), ("waiting_client", "🟡 Onay / müşteri dönüşü bekleniyor"),
+          ("looks_done", "⚪ Bitmiş görünüyor, kapatılmamış"), (None, "• Sınıflandırılmadı"))
+HTML_GROUP_LIMIT = 5
+GREY, LINK, TEXT = "#6b7280", "#1a56db", "#1f2937"
+FOOTER = ("Hamle · Gamechangers günlük özet · Hafta içi her gün 09:15 · "
+          "Geri bildirim için bu maile 👍 / 👎 ile yanıt verin.")
+
+
+def _e(value):
+    return html.escape(str(value), quote=True)
+
+
+def _a(url, text, bold=True):
+    weight = "font-weight:bold;" if bold else ""
+    return f'<a href="{_e(url)}" style="color:{LINK};text-decoration:none;{weight}">{_e(text)}</a>'
+
+
+def _grey(text):
+    return f'<span style="color:{GREY};">{_e(text)}</span>'
+
+
+def _first_names(t):
+    names = [n.split()[0] for n in t.get("assignees") or [] if n.split()]
+    return " ".join("@" + n for n in names) or "atanmamış"
+
+
+def _label(t):
+    return BRAND_LABELS.get(t.get("project_id"), t.get("project") or "")
+
+
+def _title(text):
+    return re.sub(r"\*\*|__", "", str(text or "")).strip() or "(başlıksız)"
+
+
+def _li(head, note=None):
+    sub = f"<br>{note}" if note else ""
+    return f'<li style="margin:0 0 8px;">{head}{sub}</li>'
+
+
+def _ul(items):
+    return f'<ul style="margin:4px 0 0;padding-left:20px;">{"".join(items)}</ul>'
+
+
+def _h2(text):
+    return (f'<div style="font-size:15px;font-weight:bold;margin:22px 0 6px;padding-bottom:4px;'
+            f'border-bottom:1px solid #e5e7eb;">{_e(text)}</div>')
+
+
+def _h3(text):
+    return f'<div style="font-weight:bold;margin:12px 0 2px;">{_e(text)}</div>'
+
+
+def _p(text_html, style=""):
+    return f'<div style="margin:2px 0;{style}">{text_html}</div>'
+
+
+def render_html(listing, *, day, day_note, overdue, trends, specials, classified, new_business=None):
+    """HTML twin of render(): same facts, full width, Tahoma, Basecamp/source titles as links, no raw URLs."""
+    items = listing["items"]
+    today_iso = day.isoformat()
+    due = sorted([t for t in items if t["due_on"] == today_iso], key=lambda t: (_label(t), t["title"]))
+    marks = {k: sum(1 for t in overdue if t.get("status") == k) for k in MARKS}
+    brands = len({t.get("project_id") for t in overdue})
+    counts = [f"Açık iş {len(items)}", f"Bugün teslim {len(due)}", f"Gecikmiş {len(overdue)} ({brands} marka)"]
+    if classified:
+        counts += [f"{MARKS[k]} {n}" for k, n in marks.items()]
+    out = [f'<div style="font-size:19px;font-weight:bold;margin:0 0 4px;">Hamle günlük özet — '
+           f'{day.day} {MONTHS[day.month - 1]} {day.year}, {WEEKDAYS[day.weekday()]}</div>',
+           _p(_e(" · ".join(counts)), f"color:{GREY};")]
+    if day_note:
+        out.append(_p("<b>Günün notu:</b> " + _e(day_note[:300])))
+
+    out.append(_h2(f"📌 Bugün teslim ({len(due)})"))
+    out.append(_ul([_li(f"{_a(t['app_url'], _title(t['title']))} — {_grey(_label(t))} · {_e(_first_names(t))}")
+                    for t in due]) if due else _p("Bugün teslim iş yok."))
+
+    out.append(_h2(f"⏰ Gecikenler ({len(overdue)})"))
+    if not overdue:
+        out.append(_p("Geciken iş yok."))
+    for status, name in GROUPS:
+        group = [t for t in overdue if t.get("status") == status] if status else \
+            [t for t in overdue if t.get("status") not in MARKS]
+        if not group:
+            continue
+        group = sorted(group, key=lambda t: (t.get("hamle_assigned", False), -t["days_overdue"], t["title"]))
+        suffix = "" if status or classified or not group else " — model yanıtı yok"
+        out.append(_h3(f"{name} ({len(group)}){suffix}"))
+        lis = []
+        for t in group[:HTML_GROUP_LIMIT]:
+            head = (f"{_a(t['app_url'], _title(t['title']))} — {_grey(_label(t))} · {_e(_first_names(t))} · "
+                    f"{t['days_overdue']} gün")
+            reason = t.get("reason") or ("Hamle'ye atanmış; yalnız listelendi." if t.get("hamle_assigned") else "")
+            note = _e(reason) if reason else ""
+            if t.get("action"):
+                note += (" " if note else "") + "<b>Öneri:</b> " + _e(t["action"])
+            lis.append(_li(head, note or None))
+        if len(group) > HTML_GROUP_LIMIT:
+            lis.append(_li(_e(f"+{len(group) - HTML_GROUP_LIMIT} iş daha · ")
+                           + _a(f"{APP}/{listing.get('account')}/reports/todos/overdue", "tüm gecikenler", False)))
+        out.append(_ul(lis))
+
+    out.append(_h2("📈 Trend radarı"))
+    if trends:
+        cards = [b for b in _brands(listing.get("cards")) if b.get("main_platform")]
+        lis = []
+        for i, t in enumerate(trends[:LIMITS["trends"]]):
+            idea = t.get("idea")
+            if not idea and cards:
+                b = cards[i % len(cards)]
+                idea = f"{b['brand']} ({b['main_platform']}, taslak kart) için kendi ürün diliyle denenebilir."
+            when = date.fromisoformat(t["published_at"])
+            head = f"{_a(t['url'], t['title'])} {_grey(f'({when.day} {MONTHS[when.month - 1]})')}"
+            note = (_e(t["summary"]) + " " if t.get("summary") else "") + \
+                ("<b>Uyarlama:</b> " + _e(idea) if idea else "")
+            lis.append(_li(head, note.strip() or None))
+        out.append(_ul(lis))
+    else:
+        out.append(_p(_e(NO_TRENDS)))
+
+    if specials is not None:
+        end = day + timedelta(days=14)
+        out.append(_h2(f"📅 Özel günler ({day.day}–{end.day} {MONTHS[end.month - 1]})" if day.month == end.month
+                       else f"📅 Özel günler ({day.day} {MONTHS[day.month - 1]}–{end.day} {MONTHS[end.month - 1]})"))
+        lis = []
+        for s in specials[:LIMITS["special"]]:
+            when = f"{s['date'].day} {MONTHS[s['date'].month - 1]} {SHORT_DAYS[s['date'].weekday()]}"
+            name = _a(s["url"], s["name"]) if s.get("url") else f"<b>{_e(s['name'])}</b>"
+            if s.get("url"):
+                note = f"<b>{_e(s['brand'])}:</b> {_e(s['idea'])}"
+            else:
+                fit = ", ".join(f"{b['brand']} ({b['main_platform'] or '?'})" for b in s["brands"][:3]) or "uygun kart yok"
+                note = "<b>Öneri:</b> " + _e(fit) + (" " + _e(s["note"]) if s.get("note") else "") \
+                    + ("" if s["verified"] else " " + _grey("[tarih taslak]"))
+            lis.append(_li(f"{_grey(when)} · {name}", note))
+        out.append(_ul(lis) if lis else _p("Önümüzdeki 14 günde takvimde özel gün yok."))
+    if new_business is not None:
+        out.append(_h2("🚀 New Business — bu haftanın hedef markaları (@Cansu)"))
+        lis = [_li(f"{_a(b['url'], b['brand'])} {_grey('(' + b['sector'] + ')')}", _e(b["reason"]))
+               for b in new_business[:LIMITS["new_business"]]]
+        out.append(_ul(lis) if lis else _p("Bugün kaynağı doğrulanmış hedef marka bulunamadı."))
+    out.append(f'<div style="margin-top:26px;padding-top:8px;border-top:1px solid #e5e7eb;font-size:12px;'
+               f'color:{GREY};">{_e(FOOTER)}<br>Hamle tarih değiştirmez, iş kapatmaz; yalnızca öneri yazar.</div>')
+    return ('<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="margin:0;padding:0;">'
+            f'<div style="font-family:{FONT};font-size:14px;line-height:1.55;color:{TEXT};width:100%;">'
+            + "".join(out) + "</div></body></html>")
+
 # ------------------------------------------------------------------ mail (new message, one POST, readback)
 class DigestMailWriter:
     """Reuses v11_chain_mail's allowlisted Gmail REST call and the verified Gmail token."""
@@ -442,6 +596,8 @@ class DigestMailWriter:
         m["Subject"] = payload["subject"]
         m["Message-ID"] = self.message_id(payload)
         m.set_content(payload["body"], subtype="plain", charset="utf-8")
+        if payload.get("html"):
+            m.add_alternative(payload["html"], subtype="html", charset="utf-8")
         return m.as_bytes()
 
     def write(self, payload):
@@ -474,8 +630,11 @@ class DigestMailWriter:
         to = [a.lower() for _, a in getaddresses([str(msg["To"] or "")])]
         _need(getaddresses([str(msg["From"])]) == [("", HAMLE)] and to == payload["to"] and not msg.get_all("Cc")
               and not msg.get_all("Bcc") and str(msg["Subject"]) == payload["subject"]
-              and msg.get_content_type() == "text/plain"
-              and msg.get_content().replace("\r\n", "\n").rstrip("\n") == payload["body"].rstrip("\n"),
+              and msg.get_content_type() == ("multipart/alternative" if payload.get("html") else "text/plain")
+              and (not payload.get("html") or msg.get_body(preferencelist=("html",)) is not None)
+              and msg.get_body(preferencelist=("plain",)) is not None
+              and msg.get_body(preferencelist=("plain",)).get_content().replace("\r\n", "\n").rstrip("\n")
+              == payload["body"].rstrip("\n"),
               "digest_readback_mismatch")
         return {"readback_sha256": scope_digest(payload)}
 
@@ -543,9 +702,11 @@ def build_digest(reader, *, day, day_note, classifier=None, trend_source=None, c
                 new_business, nb_status = [], "provider_failed"
         else:
             nb_status = "no_provider"
-    body = render(listing, day=day, day_note=day_note, overdue=overdue, trends=trends, specials=specials,
-                  classified=classified > 0, new_business=new_business)
-    return body, {"open_items": len(listing["items"]), "overdue": len(overdue), "classified": classified,
+    parts = dict(day=day, day_note=day_note, overdue=overdue, trends=trends, specials=specials,
+                 classified=classified > 0, new_business=new_business)
+    body = render(listing, **parts)
+    stats_html = render_html(listing, **parts)
+    return body, {"html": stats_html, "open_items": len(listing["items"]), "overdue": len(overdue), "classified": classified,
                   "model": model_status, "trends": trend_status, "special_days": special_status,
                   "new_business": nb_status, "overdue_source": "report" if report is not None else "scan",
                   "new_business_brands": new_business or []}
@@ -629,7 +790,8 @@ def run_daily_digest(ops, *, config, reader_factory, writer, clock, window=DAILY
                                    cards=cards, calendar=calendar, special_source=special_source,
                                    new_business_source=new_business_source)
         payload = {"from": HAMLE, "to": list(recipients), "cc": [],
-                   "subject": f"{subject_prefix}Hamle günlük özet — {target.strftime('%d.%m.%Y')}", "body": body}
+                   "subject": f"{subject_prefix}Hamle günlük özet — {target.strftime('%d.%m.%Y')}", "body": body,
+                   "html": stats.pop("html")}
         sha = scope_digest(payload)
 
         def begin_op(tx, ts):

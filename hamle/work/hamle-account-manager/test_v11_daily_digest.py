@@ -8,6 +8,7 @@ from email.parser import BytesParser
 import json
 import os
 import socket
+import re
 import unittest
 from unittest.mock import patch
 
@@ -126,7 +127,10 @@ class Gmail:
         return BytesParser(policy=ep.default).parsebytes(list(self.sent.values())[n])
 
     def text(self, n=-1):
-        return self.message(n).get_content()
+        return self.message(n).get_body(preferencelist=("plain",)).get_content()
+
+    def html(self, n=-1):
+        return self.message(n).get_body(preferencelist=("html",)).get_content()
 
 
 def classification(*rows):
@@ -475,7 +479,7 @@ class PreviewDay(Base):
         self.assertEqual((r["status"], r["key"]), ("digest_sent", "daily-digest-preview-20261012"), r)
         msg = self.gmail.message()
         self.assertEqual(str(msg["Subject"]), "[ÖNİZLEME] Hamle günlük özet — 12.10.2026")
-        text = msg.get_content()
+        text = msg.get_body(preferencelist=("plain",)).get_content()
         for needle in ("12.10.2026 Pazartesi", f"- Afiş · Hamle İç Deneme · @Ahmet · {APP}/buckets/1/todos/1001",
                        "Story · Hamle İç Deneme · @Ahmet @Cansu · 2 gün gecikme", "ÖZEL GÜNLER (14 gün)"):
             self.assertIn(needle, text)
@@ -488,6 +492,21 @@ class PreviewDay(Base):
         self.assertNotIn("ÖZEL GÜNLER", self.gmail.text())
         self.assertIn("Story · Hamle İç Deneme · @Ahmet @Cansu · 1 gün gecikme", self.gmail.text())
         self.assertNotIn("daily-digest-20261012", self.ops.backend.data)
+
+    def test_html_part_is_full_width_tahoma_with_title_links(self):
+        self.run_digest(preview_to="ahmet@gamechangers.com.tr", preview_day="2026-10-12")
+        page = self.gmail.html()
+        self.assertEqual(self.gmail.message().get_content_type(), "multipart/alternative")
+        self.assertIn("font-family:Tahoma", page)
+        self.assertIn("width:100%", page)
+        self.assertNotIn("max-width", page)
+        self.assertIn(f'<a href="{APP}/buckets/1/todos/1001" style="color:#1a56db;text-decoration:none;'
+                      f'font-weight:bold;">Afiş</a>', page)
+        self.assertIn("12 Ekim 2026, Pazartesi", page)
+        self.assertIn("⏰ Gecikenler", page)
+        visible = re.sub(r"<[^>]+>", " ", page)
+        self.assertNotIn("https://", visible)  # no raw URL text, only links
+        self.assertNotIn("<style", page)
 
     def test_target_day_range_and_flag_pairing(self):
         for bad, code in (("2026-10-13", "digest_preview_day_out_of_range"),
