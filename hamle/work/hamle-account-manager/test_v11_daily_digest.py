@@ -341,7 +341,7 @@ class Overdue(Base):
         self.assertEqual(len(transport.calls), 1)
         self.assertTrue(stats["model"].startswith("unclassified:"), stats)
         self.assertIn("(sınıflandırılmadı", body)
-        self.assertNotIn("🔴", body); self.assertNotIn("🟡", body); self.assertNotIn("⚪", body)
+        self.assertNotIn("🔴", body); self.assertNotIn("🟡", body); self.assertNotIn("🟢", body)
         # cap reached -> no key load, no transport call
         catalog = load_catalog()
         catalog["budget"]["internal_live_cap_microdollars"] = 1

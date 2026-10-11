@@ -8,7 +8,7 @@ Basecamp link) from Hamle to the configured internal recipients (@gamechangers.c
   GECİKENLER   overdue todos (account report /reports/todos/overdue.json, falling back
                to the per-project scan) + dated Card Table cards; the last 5 comments
                of up to 40 items are classified by ONE batched model call
-               (🔴 bizde / 🟡 müşteri bekleniyor, tarih kaymalı / ⚪ bitmiş görünüyor).
+               (🔴 bizde / 🟡 müşteri bekleniyor, tarih kaymalı / 🟢 bitmiş görünüyor).
                No budget or model error -> listed unclassified (never invented).
                Items assigned to Hamle itself are listed only.
   TREND RADARI only sourced trends from an injected trend_source (URL + date);
@@ -54,7 +54,7 @@ MODEL_INPUT_BUDGET = 15_000
 NO_TRENDS = "Bugün doğrulanmış trend kaynağı alınamadı."
 WEEKDAYS = ("Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi", "Pazar")
 SHORT_DAYS = ("Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz")
-MARKS = {"action_on_us": "🔴", "waiting_client": "🟡", "looks_done": "⚪"}
+MARKS = {"action_on_us": "🔴", "waiting_client": "🟡", "looks_done": "🟢"}
 MORE_LINKS = 4
 LIMITS = {"today": 3, "overdue": 6, "trends": 4, "special": 3, "new_business": 5}  # worst case ~26 non-blank lines
 
@@ -422,7 +422,7 @@ def render(listing, *, day, day_note, overdue, trends, specials, classified, new
             lines.append(f"- {b['brand']} ({b['sector']}): {b['reason']} · {b['url']}")
         if not new_business:
             lines.append("- Bugün kaynağı doğrulanmış hedef marka bulunamadı.")
-    lines += ["", "Hamle tarih değiştirmez, iş kapatmaz; yalnızca öneri yazar. Basecamp salt-okunur okundu."]
+    lines += ["", FOOTER]
     return "\n".join(lines)
 
 
@@ -435,11 +435,11 @@ BRAND_LABELS = {40694338: "WAT", 48639990: "Rabam", 43886681: "BWI", 48562916: "
                 40704523: "Altınmarka", 40704530: "Bikaldi", 40704459: "Gamechangers", 44320349: "Fenerium",
                 40704547: "New Biz"}
 GROUPS = (("action_on_us", "🔴 Aksiyon bizde"), ("waiting_client", "🟡 Onay / müşteri dönüşü bekleniyor"),
-          ("looks_done", "⚪ Bitmiş görünüyor, kapatılmamış"), (None, "• Sınıflandırılmadı"))
+          ("looks_done", "🟢 Bitmiş görünüyor, kapatılmamış"), (None, "• Sınıflandırılmadı"))
 HTML_GROUP_LIMIT = 5
 GREY, LINK, TEXT = "#6b7280", "#1a56db", "#1f2937"
-FOOTER = ("Hamle · Gamechangers günlük özet · Hafta içi her gün 09:15 · "
-          "Geri bildirim için bu maile 👍 / 👎 ile yanıt verin.")
+FOOTER = ("Hamle AI Müşteri Temsilcisi · Gamechangers günlük iş özet · Hafta içi her gün 09:15 · "
+          "Hamle'nin gelişimi ve eğitimi için Basecamp ve Google Docs kullanımlarınız çok önemlidir.")
 
 
 def _e(value):
@@ -575,7 +575,7 @@ def render_html(listing, *, day, day_note, overdue, trends, specials, classified
                for b in new_business[:LIMITS["new_business"]]]
         out.append(_ul(lis) if lis else _p("Bugün kaynağı doğrulanmış hedef marka bulunamadı."))
     out.append(f'<div style="margin-top:26px;padding-top:8px;border-top:1px solid #e5e7eb;font-size:12px;'
-               f'color:{GREY};">{_e(FOOTER)}<br>Hamle tarih değiştirmez, iş kapatmaz; yalnızca öneri yazar.</div>')
+               f'color:{GREY};">{_e(FOOTER)}</div>')
     return ('<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="margin:0;padding:0;">'
             f'<div style="font-family:{FONT};font-size:14px;line-height:1.55;color:{TEXT};width:100%;">'
             + "".join(out) + "</div></body></html>")
