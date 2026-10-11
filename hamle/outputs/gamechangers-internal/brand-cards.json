@@ -9,15 +9,17 @@
     {
       "project_id": 40704523,
       "brand": "Altınmarka",
-      "sector": "kuyumculuk / altın (taslak)",
+      "sector": "kakao ve çikolata / gıda",
       "audience": null,
       "main_platform": "Instagram",
       "tags": [
-        "perakende",
-        "hediye"
+        "gida",
+        "hediye",
+        "perakende"
       ],
       "status": "taslak",
       "verified": false,
+      "sector_source": "Ahmet 2026-10-11: Altınmarka Kakao ve Çikolata bir gıda markası",
       "include_in_suggestions": true
     },
     {

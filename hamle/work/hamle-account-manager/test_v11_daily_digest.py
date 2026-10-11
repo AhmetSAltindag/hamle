@@ -426,7 +426,7 @@ class Sections(Base):
         body, _ = dd.build_digest(self.reader(), day=date(2026, 10, 12), day_note=None,
                                   cards=self.cards, calendar=self.calendar)
         self.assertIn("ÖZEL GÜNLER (14 gün)", body)
-        self.assertIn("16.10 Cum · Dünya Gıda Günü · öneri: uygun kart yok", body)  # Cacaonly out of scope
+        self.assertIn("16.10 Cum · Dünya Gıda Günü · öneri: Altınmarka (Instagram)", body)  # Altınmarka = gıda (Ahmet)
         body, _ = dd.build_digest(self.reader(), day=date(2026, 10, 13), day_note=None,
                                   cards=self.cards, calendar=self.calendar)
         self.assertNotIn("ÖZEL GÜNLER", body)
