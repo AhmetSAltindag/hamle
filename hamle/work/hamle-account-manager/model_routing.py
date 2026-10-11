@@ -90,7 +90,9 @@ def _route(role, raw, web):
     _need(raw["effort"] in EFFORTS, "model_effort_invalid")
     # Non-streaming requests: keep max_tokens <= 16000 (SDK HTTP timeout guidance).
     _need(type(raw["max_tokens"]) is int and 1024 <= raw["max_tokens"] <= 16_000, "model_max_tokens_invalid")
-    _need(type(raw["timeout_seconds"]) is int and 30 <= raw["timeout_seconds"] <= 540, "model_timeout_invalid")
+    # Web-search roles stream (wall-clock bound, up to 900 s); others stay non-streaming (<= 540 s).
+    _need(type(raw["timeout_seconds"]) is int and 30 <= raw["timeout_seconds"]
+          <= (900 if raw.get("web_search") is True else 540), "model_timeout_invalid")
     search = None
     if role in WEB_SEARCH_ROLES:
         _need(raw.get("web_search") is True, "web_search_required")

@@ -8,6 +8,7 @@ from __future__ import annotations
 import copy
 import json
 import re
+import time
 from datetime import datetime
 from fractions import Fraction
 from pathlib import Path
@@ -591,8 +592,26 @@ def _anthropic_status_code(exc):
             429: "quota_or_rate_limit", 529: "provider_overloaded_no_retry"}.get(status, "http_error_no_retry")
 
 
+STREAM_READ_TIMEOUT = 120
+
+
+class _StreamDeadline(Exception):
+    """Wall-clock limit reached mid-stream; a charge is possible (transport_outcome_unknown)."""
+
+
+def _anthropic_stream(client, kwargs, wall_seconds, clock=time.monotonic):
+    """messages.stream -> final message; long web-search turns never sit on one idle socket."""
+    deadline = clock() + wall_seconds
+    with client.messages.stream(**kwargs) as stream:
+        for _event in stream:
+            if clock() > deadline:
+                raise _StreamDeadline()
+        return stream.get_final_message()
+
+
 def anthropic_send(api_key, route, kwargs, *, client=None):
-    """One messages.create, SDK retries disabled. Returns the message as a plain dict.
+    """One messages.create (messages.stream on web-search routes), SDK retries disabled.
+    Returns the message as a plain dict.
 
     client is a test-only fake exposing messages.create(**kwargs). Errors carry only
     fixed codes; the key, exception text and request are never included.
@@ -600,14 +619,21 @@ def anthropic_send(api_key, route, kwargs, *, client=None):
     if (not isinstance(api_key, str) or not api_key.startswith(ANTHROPIC_KEY_PREFIX)
             or not 20 <= len(api_key) <= 512 or not api_key.isascii() or any(c.isspace() for c in api_key)):
         raise ModelError("credential_missing_or_invalid")
+    streamed = bool(route.web_search)
     if client is None:
         try:
             import anthropic
         except ImportError:
             raise ModelError("anthropic_sdk_unavailable") from None
-        client = anthropic.Anthropic(api_key=api_key, max_retries=0, timeout=float(route.timeout_seconds))
+        # Streaming research: the timeout is per read (events keep flowing), the wall clock
+        # is bounded below by route.timeout_seconds.
+        client = anthropic.Anthropic(api_key=api_key, max_retries=0, timeout=float(
+            min(route.timeout_seconds, STREAM_READ_TIMEOUT) if streamed else route.timeout_seconds))
     try:
-        message = client.messages.create(**kwargs)
+        if streamed:
+            message = _anthropic_stream(client, kwargs, route.timeout_seconds)
+        else:
+            message = client.messages.create(**kwargs)
     except Exception as exc:
         raise ModelError(_anthropic_status_code(exc)) from None
     try:

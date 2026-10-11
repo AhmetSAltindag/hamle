@@ -77,8 +77,8 @@ class TrendOnClaude(Research):
         items = self.source(client)(DAY)
         self.assertEqual([i["url"] for i in items], [GOOD, CITED])
         call = client.calls[0]
-        self.assertEqual(call["tools"], [{"type": "web_search_20260209", "name": "web_search", "max_uses": 5}])
-        self.assertEqual(call["output_config"], {"effort": "high"})  # no format: citations + JSON in text
+        self.assertEqual(call["tools"], [{"type": "web_search_20260209", "name": "web_search", "max_uses": 4}])
+        self.assertEqual(call["output_config"], {"effort": "medium"})  # no format: citations + JSON in text
         self.assertEqual(call["model"], "claude-opus-5-5")
         self.assertIn("TEK bir JSON nesnesi", call["system"])
         for forbidden in ("tool_choice", "thinking", "fallbacks"):
@@ -212,6 +212,47 @@ class Packaging(unittest.TestCase):
         for bad in ('Sonuç: {"a": 1}', '{"a": 1} ek metin', "[]"):
             with self.assertRaises(Exception):
                 ts.strict_json_text(bad)
+
+
+class Streaming(unittest.TestCase):
+    def test_research_route_streams_and_wall_clock_is_bounded(self):
+        import model
+        route = model_routing.load().route("trend_radar")
+        self.assertLessEqual(route.timeout_seconds, 900)
+
+        class Client:
+            def __init__(self):
+                self.messages, self.used = self, []
+
+            def create(self, **kw):
+                self.used.append("create")
+                raise AssertionError("research must stream")
+
+            def stream(self, **kw):
+                self.used.append("stream")
+                return self
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *exc):
+                return False
+
+            def __iter__(self):
+                return iter(range(3))
+
+            def get_final_message(self):
+                return {"ok": True}
+
+        c = Client()
+        self.assertEqual(model._anthropic_stream(c, {}, 60), {"ok": True})
+        ticks = iter([0, 10, 70, 200])
+        with self.assertRaises(model._StreamDeadline):
+            model._anthropic_stream(Client(), {}, 60, clock=lambda: next(ticks))
+        with self.assertRaises(model.ModelError) as err:
+            model.anthropic_send(KEY, route, {}, client=type("Slow", (Client,), {
+                "__iter__": lambda self: (_ for _ in ()).throw(TimeoutError())})())
+        self.assertEqual(err.exception.code, "transport_outcome_unknown")
 
 
 if __name__ == "__main__":

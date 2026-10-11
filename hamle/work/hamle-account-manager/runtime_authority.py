@@ -14,7 +14,8 @@ AUTHORIZATION_DEADLINE = "2026-10-12T23:59:59+03:00"
 # Istanbul local weekday windows "HH:MM" (inclusive slot starts), Mon-Fri.
 SCHEDULED_REVIEW_WINDOW = ("08:30", "18:30")  # unchanged legacy scheduled_review rule
 CHAIN_TICK_WINDOW = ("09:15", "18:30")
-DAILY_DIGEST_WINDOW = ("09:15", "18:30")
+DAILY_DIGEST_WINDOW = ("09:00", "18:30")  # 09:00 run prepares (Claude research), sends at 09:15
+DAILY_DIGEST_SEND_AT = "09:15"
 
 # Data that also carries the date and must be re-accepted/re-imported separately
 # when the deadline moves (not read from this module on purpose: they are records

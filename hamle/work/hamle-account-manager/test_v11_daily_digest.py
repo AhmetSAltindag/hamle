@@ -239,7 +239,7 @@ class Digest(Base):
         self.assertTrue(all(u.startswith(BASE + "/") for u in self.bc.calls))  # GET-only reader, no writes exist
 
     def test_window_weekday_and_deadline(self):
-        for when in ("2026-10-12T09:14:00+03:00", "2026-10-12T18:31:00+03:00", "2026-10-10T10:00:00+03:00"):
+        for when in ("2026-10-12T08:59:00+03:00", "2026-10-12T18:31:00+03:00", "2026-10-10T10:00:00+03:00"):
             self.now = datetime.fromisoformat(when)
             self.assertEqual(self.run_digest()["reason"], "outside_digest_window")
         self.now = datetime.fromisoformat("2026-10-13T09:16:00+03:00")
@@ -459,6 +459,18 @@ class Preview(Base):
             r = self.run_digest(preview_to=bad)
             self.assertEqual((r["status"], r["reason"]), ("held", "digest_preview_not_internal_agency"))
         self.assertEqual((self.gmail.calls, self.bc.calls), ([], []))
+
+
+class EarlyRun(Base):
+    START = datetime.fromisoformat("2026-10-12T09:00:00+03:00")
+
+    def test_0900_run_prepares_then_waits_until_0915_to_send(self):
+        waits = []
+        r = self.run_digest(sleep=waits.append)
+        self.assertEqual((r["status"], waits), ("digest_sent", [900.0]))
+        self.now = datetime.fromisoformat("2026-10-12T09:30:00+03:00")
+        self.assertEqual(self.run_digest(sleep=waits.append)["status"], "already_recorded")
+        self.assertEqual(len(self.gmail.posts()), 1)
 
 
 class PreviewDay(Base):

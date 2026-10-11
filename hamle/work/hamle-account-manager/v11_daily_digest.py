@@ -32,12 +32,13 @@ import html
 import json
 from pathlib import Path
 import re
+import time
 import uuid
 from urllib.parse import parse_qs, urlsplit
 from zoneinfo import ZoneInfo
 
 from autonomy_policy import HAMLE, scope_digest
-from runtime_authority import DAILY_DIGEST_WINDOW, deadline_timestamp, start_timestamp, window_minutes
+from runtime_authority import DAILY_DIGEST_SEND_AT, DAILY_DIGEST_WINDOW, deadline_timestamp, start_timestamp, window_minutes
 
 ISTANBUL = ZoneInfo("Europe/Istanbul")
 CONFIG_NAME = "daily-digest-config.json"
@@ -47,7 +48,7 @@ INTERNAL = re.compile(r"[a-z0-9][a-z0-9._%+-]{0,63}@gamechangers\.com\.tr\Z")
 API = "https://3.basecampapi.com"
 APP = "https://3.basecamp.com"
 HAMLE_PERSON = 53358100
-LEASE_SECONDS = 600
+LEASE_SECONDS = 1800  # = job timeout: research + wait-until-09:15 fit inside one claim
 MAX_CLASSIFIED = 40
 MODEL_INPUT_BUDGET = 15_000
 NO_TRENDS = "Bugün doğrulanmış trend kaynağı alınamadı."
@@ -737,7 +738,7 @@ def preview_target(value, today):
 
 def run_daily_digest(ops, *, config, reader_factory, writer, clock, window=DAILY_DIGEST_WINDOW,
                      preview_to=None, preview_day=None, classifier=None, trend_source=None, cards=None, calendar=None,
-                     special_source=None, new_business_source=None, preview_attempt=None):
+                     special_source=None, new_business_source=None, preview_attempt=None, sleep=time.sleep):
     """One team digest per Istanbul weekday, or one preview per target day to ONE agency address.
 
     preview_day (only with preview_to): today or the next Istanbul weekday at most 3 days
@@ -789,6 +790,12 @@ def run_daily_digest(ops, *, config, reader_factory, writer, clock, window=DAILY
                                    trend_source=trend_source if cfg["trend_search"] else None,  # flag-gated
                                    cards=cards, calendar=calendar, special_source=special_source,
                                    new_business_source=new_business_source)
+        if preview_to is None:  # team mail: prepared from 09:00, never sent before 09:15 Istanbul
+            h, mnt = (int(v) for v in DAILY_DIGEST_SEND_AT.split(":"))
+            send_at = local.replace(hour=h, minute=mnt, second=0, microsecond=0)
+            wait = (send_at - clock().astimezone(ISTANBUL)).total_seconds()
+            if wait > 0:
+                sleep(min(wait, 20 * 60))
         payload = {"from": HAMLE, "to": list(recipients), "cc": [],
                    "subject": f"{subject_prefix}Hamle günlük özet — {target.strftime('%d.%m.%Y')}", "body": body,
                    "html": stats.pop("html")}

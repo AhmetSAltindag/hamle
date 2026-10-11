@@ -74,6 +74,27 @@ class FakeClient:
             raise item
         return FakeMessage(item)
 
+    def stream(self, **kwargs):
+        return FakeStream(self.create(**kwargs))
+
+
+class FakeStream:
+    """Shape of the SDK MessageStream context manager (events, then get_final_message)."""
+    def __init__(self, final):
+        self.final = final
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *exc):
+        return False
+
+    def __iter__(self):
+        return iter(({"type": "message_start"}, {"type": "message_stop"}))
+
+    def get_final_message(self):
+        return self.final
+
 
 class NoNetwork(unittest.TestCase):
     def setUp(self):
@@ -96,7 +117,7 @@ class RoutingConfig(NoNetwork):
         for role in model_routing.ROLES:
             self.assertIn(r.route(role).effort, model_routing.EFFORTS)  # effort always explicit
         for role in model_routing.WEB_SEARCH_ROLES:
-            self.assertEqual(r.route(role).web_search, {"type": "web_search_20260209", "max_uses": 5,
+            self.assertEqual(r.route(role).web_search, {"type": "web_search_20260209", "max_uses": 4,
                                                         "fee_microdollars": 10_000})
         self.assertIsNone(r.route("chain_interpreter").web_search)
         self.assertTrue(r.flag("monday_special_days_research_enabled"))
@@ -154,7 +175,7 @@ class Request(NoNetwork):
 
     def test_web_search_tool_only_on_research_roles(self):
         kw = model.anthropic_request(self.routing.route("trend_radar"), "sys", "{}")
-        self.assertEqual(kw["tools"], [{"type": "web_search_20260209", "name": "web_search", "max_uses": 5}])
+        self.assertEqual(kw["tools"], [{"type": "web_search_20260209", "name": "web_search", "max_uses": 4}])
         self.assertNotIn("format", kw["output_config"])
         self.assertNotIn("tools", model.anthropic_request(self.routing.route("digest_classifier"), "s", "{}"))
 

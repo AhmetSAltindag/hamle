@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "config_id": "model-routing-20261011-claude-v1",
+  "config_id": "model-routing-20261011-claude-v2",
   "default_provider": "anthropic",
   "decision_ref": "Ahmet in project thread 2026-10-11: all paid model calls move to Claude tonight; customer relations and important work on Claude Opus 5.5; daily digest and internal work on Claude Haiku 5.5; Trend Radarı, Monday special days and New Business research quality-first on Claude Opus 5.5 with web search; OpenAI stays as a closed standby for one week.",
   "openai_standby": "provider \"openai\" with {\"profile\": \"astra-max-v1\"} is still accepted per role (except monday_special_days/new_business_research) but nothing selects it automatically; there is no cross-provider fallback. Standby review date: 2026-10-18.",
@@ -10,11 +10,11 @@
     "customer_text": {"provider": "anthropic", "model": "claude-opus-5-5", "effort": "high", "max_tokens": 16000, "timeout_seconds": 300},
     "chain_classifier": {"provider": "anthropic", "model": "claude-haiku-5-5", "effort": "low", "max_tokens": 4096, "timeout_seconds": 120},
     "digest_classifier": {"provider": "anthropic", "model": "claude-haiku-5-5", "effort": "low", "max_tokens": 8192, "timeout_seconds": 120},
-    "trend_radar": {"provider": "anthropic", "model": "claude-opus-5-5", "effort": "high", "max_tokens": 16000, "timeout_seconds": 360, "web_search": true},
-    "monday_special_days": {"provider": "anthropic", "model": "claude-opus-5-5", "effort": "high", "max_tokens": 16000, "timeout_seconds": 360, "web_search": true},
-    "new_business_research": {"provider": "anthropic", "model": "claude-opus-5-5", "effort": "high", "max_tokens": 16000, "timeout_seconds": 360, "web_search": true}
+    "trend_radar": {"provider": "anthropic", "model": "claude-opus-5-5", "effort": "medium", "max_tokens": 8000, "timeout_seconds": 480, "web_search": true},
+    "monday_special_days": {"provider": "anthropic", "model": "claude-opus-5-5", "effort": "medium", "max_tokens": 8000, "timeout_seconds": 480, "web_search": true},
+    "new_business_research": {"provider": "anthropic", "model": "claude-opus-5-5", "effort": "medium", "max_tokens": 8000, "timeout_seconds": 480, "web_search": true}
   },
-  "web_search": {"tool_type": "web_search_20260209", "max_uses": 5, "fee_microdollars_per_search": 10000},
+  "web_search": {"tool_type": "web_search_20260209", "max_uses": 4, "fee_microdollars_per_search": 10000},
   "flags": {"monday_special_days_research_enabled": true, "new_business_research_enabled": true},
   "rules": "Edit only via a reviewed commit; the image reads work/hamle-account-manager/chain-profile/model-routing.json, so a rebuild (package_chain_source.py) is needed after editing. An invalid file holds every model role (no default)."
 }
