@@ -516,7 +516,7 @@ def main(argv=None):
     parser.add_argument("--mode", choices=("review", "scheduled_review", "verify", "dispatch", "track", "recover_followup",
                                            "chain_tick", "daily_digest", "basecamp_credential_review",
                                            "reconcile_model_holds", "extend_authorization",
-                                           "research_probe"), required=True)
+                                           "research_probe", "settle_model_actual"), required=True)
     parser.add_argument("--proposal-id")
     parser.add_argument("--work-id")
     parser.add_argument("--failure-evidence-sha256")
@@ -531,6 +531,8 @@ def main(argv=None):
     # Explicit operator one-shot: settle proven-unsent Anthropic holds at 0.
     parser.add_argument("--cache-key", action="append")
     parser.add_argument("--evidence")
+    parser.add_argument("--reservation-key")
+    parser.add_argument("--actual-microdollars", type=int)
     args = parser.parse_args(argv)
     backend = secrets = None
     try:
@@ -571,7 +573,14 @@ def main(argv=None):
             from basecamp_cloud_auth import access_token
             token = access_token(secrets, claim_refresh=store.claim_credential_refresh)
             return providers.verify_basecamp_internal(token)
-        if args.mode == "research_probe":
+        if args.mode == "settle_model_actual":
+            # Operator one-shot: settle one 'unknown' Anthropic hold at its Console actual.
+            _require(args.reservation_key and args.actual_microdollars is not None and args.evidence,
+                     "settle_arguments_required")
+            row = store.settle_unknown_actual(args.reservation_key, args.actual_microdollars, args.evidence)
+            result = {"status": "model_actual_settled", "reservation_key": row["reservation_key"],
+                      "actual_microdollars": row["actual_microdollars"], "business_writes": 0}
+        elif args.mode == "research_probe":
             # Operator one-shot: ONE trend-radar research call for today's Istanbul date through the
             # normal budget gate and ledger (flag-independent), no mail, no Basecamp write. The result
             # is cached under the same key the digest uses, so a same-day digest reuses it.
@@ -663,7 +672,7 @@ def main(argv=None):
                 read_reply=writers.read_reply, create_comment=writers.create_comment,
                 read_comment=writers.read_comment, read_task_status=writers.read_task_status)
         print(json.dumps(result, ensure_ascii=False, sort_keys=True))
-        return 0 if result["status"] in ("stopped", "review_required", "already_recorded", "read_verified", "internal_actions_readback_verified", "slot_already_claimed", "no_new_work", "work_status_read_verified", "chain_tick_completed", "digest_sent", "credential_review_ready", "reconciled_not_sent", "budget_expiry_extended", "already_current", "research_probe_ok") else 2
+        return 0 if result["status"] in ("stopped", "review_required", "already_recorded", "read_verified", "internal_actions_readback_verified", "slot_already_claimed", "no_new_work", "work_status_read_verified", "chain_tick_completed", "digest_sent", "credential_review_ready", "reconciled_not_sent", "budget_expiry_extended", "already_current", "research_probe_ok", "model_actual_settled") else 2
     except Exception as exc:
         try:
             reason = _safe_error(exc)

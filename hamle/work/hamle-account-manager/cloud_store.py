@@ -951,6 +951,21 @@ class OperationsStore:
         _money(actual_microdollars); _label(evidence_ref)
         return self._budget_finish(key, actual_microdollars, evidence_ref)
 
+    def settle_unknown_actual(self, key, actual_microdollars, evidence):
+        """Operator one-shot: an Anthropic call whose outcome was 'unknown' (sent, no receipt)
+        is settled at the real cost read from the Anthropic Console. Only state 'unknown'
+        rows of provider anthropic; never lowers a settled amount; overrun rules unchanged."""
+        _label(key); evidence = _label(evidence)
+        _require(type(actual_microdollars) is int and 0 <= actual_microdollars <= 20_000_000, "settle_actual_invalid")
+        b = self._run(lambda tx, now: self._budget(tx), allow_expired=True)
+        r = next((r for r in b["reservations"] if r["reservation_key"] == key), None)
+        _require(r is not None and r["provider"] == "anthropic", "reservation_missing")
+        if r["state"] == "settled":
+            _require(r["actual_microdollars"] == actual_microdollars and r["evidence_ref"] == evidence, "settlement_conflict")
+            return r
+        _require(r["state"] == "unknown", "settle_actual_requires_unknown")
+        return self._budget_finish(key, actual_microdollars, evidence)
+
     def _budget_finish(self, key, actual, evidence):
         _label(key)
         def op(tx, now):

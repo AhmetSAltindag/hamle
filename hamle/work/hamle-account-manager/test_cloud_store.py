@@ -228,6 +228,16 @@ class StoreTests(unittest.TestCase):
         self.fails("action_already_reserved_no_retry", lambda: self.store.claim_action(aid, "p1", "gmail_reply", p["proposal_hash"], "w", g))
         self.assertEqual(len(self.store.public_state()["actions"]), 1)
 
+    def test_settle_unknown_actual_only_for_unknown_anthropic_rows(self):
+        self.store.budget_reserve("chain-model-x", "anthropic", 2_000_000)
+        self.fails("settle_actual_requires_unknown", lambda: self.store.settle_unknown_actual("chain-model-x", 300_000, "console-usage"))
+        self.store._budget_finish("chain-model-x", None, "sent-no-receipt")
+        r = self.store.settle_unknown_actual("chain-model-x", 300_000, "console-usage")
+        self.assertEqual((r["state"], r["actual_microdollars"]), ("settled", 300_000))
+        self.assertEqual(self.store.settle_unknown_actual("chain-model-x", 300_000, "console-usage")["state"], "settled")
+        self.fails("settlement_conflict", lambda: self.store.settle_unknown_actual("chain-model-x", 1, "console-usage"))
+        self.fails("reservation_missing", lambda: self.store.settle_unknown_actual("nope", 1, "console-usage"))
+
     def test_extend_budget_expiry_moves_only_the_date_once(self):
         b = self.backend.data["budget"]
         b["expires_at"] = "2026-10-12T23:59:59+03:00"
