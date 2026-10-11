@@ -375,19 +375,17 @@ class Sections(Base):
                {"title": "Eski", "url": "https://example.org/e", "published_at": "2026-08-01"}]
         self.assertEqual([t["title"] for t in dd.sourced_trends(raw, date(2026, 10, 12))], ["Kaynaklı trend"])
         body, stats = dd.build_digest(self.reader(), day=date(2026, 10, 12), day_note=None,
-                                      trend_source=lambda: raw, cards=self.cards, calendar=self.calendar)
+                                      trend_source=lambda day: raw, cards=self.cards, calendar=self.calendar)
         self.assertIn("- Kaynaklı trend (2026-10-10) · https://example.org/a Uyarlama:", body)
         self.assertNotIn(dd.NO_TRENDS, body)
         body, stats = dd.build_digest(self.reader(), day=date(2026, 10, 12), day_note=None,
-                                      trend_source=lambda: raw[1:], cards=self.cards, calendar=self.calendar)
+                                      trend_source=lambda day: raw[1:], cards=self.cards, calendar=self.calendar)
         self.assertIn(dd.NO_TRENDS, body)
-        def boom():
+        def boom(day):
             raise RuntimeError("x")
         body, stats = dd.build_digest(self.reader(), day=date(2026, 10, 12), day_note=None, trend_source=boom)
         self.assertEqual(stats["trends"], "provider_failed")
         self.assertIn(dd.NO_TRENDS, body)
-        with open(dd.__file__, encoding="utf-8") as f:
-            self.assertIn("trend_source=None", f.read())  # no live provider shipped
 
     def test_special_days_only_on_monday_with_brand_suggestions(self):
         body, _ = dd.build_digest(self.reader(), day=date(2026, 10, 12), day_note=None,
@@ -515,7 +513,7 @@ class RealVolume(Base):
             return classification(*[(it["ref"], "waiting_client", "Müşteri onayı bekleniyor.", "Tarihi kaydır.")
                                     for it in model_input["items"]])
         body, stats = dd.build_digest(self.reader(), day=date(2026, 10, 12), day_note="Toplantı 14:00",
-                                      classifier=fake, trend_source=lambda: [
+                                      classifier=fake, trend_source=lambda day: [
                                           {"title": f"Trend {i}", "url": f"https://example.org/{i}",
                                            "published_at": "2026-10-10"} for i in range(5)],
                                       cards=self.cards, calendar=self.calendar)

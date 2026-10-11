@@ -108,9 +108,10 @@ def validate_config(cfg):
     _need(note is None or (isinstance(note, str) and len(note) <= 2000
                            and not any(ord(c) < 32 and c not in "\n\t" for c in note)), "digest_day_note_invalid")
     _need(type(cfg.get("basecamp_account_id")) is int and cfg["basecamp_account_id"] > 0, "digest_account_invalid")
+    _need(type(cfg.get("trend_search_enabled", False)) is bool, "digest_trend_flag_invalid")
     return {"enabled": cfg["enabled"], "recipients": list(recipients),
             "day_note": " ".join(note.split()) if isinstance(note, str) and note.strip() else None,
-            "account_id": cfg["basecamp_account_id"]}
+            "account_id": cfg["basecamp_account_id"], "trend_search": cfg.get("trend_search_enabled", False)}
 
 
 def _plain(value, limit):
@@ -505,7 +506,7 @@ def build_digest(reader, *, day, day_note, classifier=None, trend_source=None, c
     trend_status = "no_provider"
     if trend_source is not None:
         try:
-            trends = sourced_trends(trend_source(), day)
+            trends = sourced_trends(trend_source(day), day)
             trend_status = f"{len(trends)}_sourced"
         except Exception:
             trend_status = "provider_failed"
@@ -586,7 +587,8 @@ def run_daily_digest(ops, *, config, reader_factory, writer, clock, window=DAILY
                     "business_writes": 0}
 
         body, stats = build_digest(reader_factory(), day=target, day_note=cfg["day_note"], classifier=classifier,
-                                   trend_source=trend_source, cards=cards, calendar=calendar)
+                                   trend_source=trend_source if cfg["trend_search"] else None,  # flag-gated
+                                   cards=cards, calendar=calendar)
         payload = {"from": HAMLE, "to": list(recipients), "cc": [],
                    "subject": f"{subject_prefix}Hamle günlük özet — {target.strftime('%d.%m.%Y')}", "body": body}
         sha = scope_digest(payload)
@@ -660,9 +662,9 @@ def model_classifier(ops, load_key, catalog, *, transport=None):
 def run_worker_daily_digest(ops, secrets, *, clock=None, preview_to=None, preview_day=None):
     """Entry for worker.py --mode daily_digest (existing credential loaders only).
 
-    Trend provider: NONE shipped. model.py's request path pins tools=[] / tool_choice=none
-    and rejects tool output items, so web_search is not cleanly supported; the section
-    prints NO_TRENDS until a sourced trend_source adapter is injected.
+    Trend provider: v11_trend_search (OpenAI Responses web_search, separate from model.py's
+    tools=[] path), built ONLY when daily-digest-config.json has trend_search_enabled=true;
+    otherwise the section prints NO_TRENDS.
     """
     import basecamp_cloud_auth
     import cloud_providers as provider
@@ -705,10 +707,18 @@ def run_worker_daily_digest(ops, secrets, *, clock=None, preview_to=None, previe
         classifier = model_classifier(ops, lambda: provider.openai_key(secrets), load_catalog())
     except Exception:
         classifier = None  # no cap/catalog -> overdue listed unclassified
+    cards = load_brand_cards()
+    trend_source = None
+    if validate_config(config)["trend_search"] is True:
+        try:
+            from v11_trend_search import trend_search_source
+            trend_source = trend_search_source(ops, lambda: provider.openai_key(secrets), load_catalog(), cards)
+        except Exception:
+            trend_source = None  # no cap/catalog -> NO_TRENDS
     try:
         return run_daily_digest(ops, config=config, reader_factory=reader_factory, writer=writer, clock=clock,
-                                preview_to=preview_to, preview_day=preview_day, classifier=classifier, trend_source=None,
-                                cards=load_brand_cards(), calendar=load_calendar())
+                                preview_to=preview_to, preview_day=preview_day, classifier=classifier,
+                                trend_source=trend_source, cards=cards, calendar=load_calendar())
     finally:
         for s in sessions:
             s.close()

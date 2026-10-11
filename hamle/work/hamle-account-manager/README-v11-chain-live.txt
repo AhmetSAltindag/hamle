@@ -91,3 +91,8 @@ Weekday schedule + daily digest (2026-10-11, local plan only)
   Monday section as of that date (today or the next Istanbul weekday, at most 3 days ahead);
   key daily-digest-preview-<YYYYMMDD of target>. Digest model cache key = sha256 of the exact
   input bytes, so the team send reuses a preview result only on a byte-identical input.
+  Trend provider: v11_trend_search.py (Responses API web_search; model.py stays tools=[]).
+  OFF unless daily-digest-config.json trend_search_enabled=true. One call per Istanbul day
+  via ModelGate (own chain-model-* hold, 30 USD cap). Items kept only with an https URL that
+  appears in the response's url_citation annotations or web_search_call sources and an ISO
+  date within 30 days; platform instagram|tiktok|x; brand limited to brand-cards with a sector.
