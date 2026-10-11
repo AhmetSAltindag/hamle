@@ -105,8 +105,8 @@ class Provider(Base):
 
 class Flag(Base):
     def test_disk_config_flag_is_on_per_decision(self):
-        self.assertIs(dd.load_config()["trend_search_enabled"], False)
-        self.assertIs(dd.validate_config(dd.load_config())["trend_search"], False)
+        self.assertIs(dd.load_config()["trend_search_enabled"], True)
+        self.assertIs(dd.validate_config(dd.load_config())["trend_search"], True)
         with self.assertRaises(dd.DigestError):
             dd.validate_config(config(trend_search_enabled="yes"))
 
