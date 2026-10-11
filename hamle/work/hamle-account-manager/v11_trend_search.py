@@ -1,8 +1,15 @@
-"""Trend Radarı provider: OpenAI Responses API + web_search tool (OFF by default).
+"""Web-search research: Trend Radarı (OFF by default), Monday special days and New Business
+target brands (both OFF by default via model-routing.json flags). Data only: nothing here
+posts to Basecamp or mail.
 
-Separate module on purpose: model.py / v11_chain_models keep tools=[] and tool_choice=none.
-This module reuses model.py's profile (gpt-6-astra), endpoint, encoder, JSON loader,
-usage parser and no-retry transport pattern, and the caller's existing OpenAI key loader.
+Provider per role from model-routing.json: trend_radar / monday_special_days /
+new_business_research default to Claude Opus 5.5 with the web_search server tool
+(model.py Anthropic transport, max_uses from config, 0.01 USD per search added to the
+hold). Structured outputs cannot be combined with web-search citations, so on Claude the
+model returns strict JSON in text, parsed and schema-checked here. pause_turn and
+web_search error result blocks are failures (no retry). The OpenAI Responses path below
+stays selectable for trend_radar only. Separate module on purpose: the chain/digest
+roles never get tools.
 
 Runs only when daily-digest-config.json has "trend_search_enabled": true. One call per
 Istanbul day through v11_chain_models.ModelGate (its own chain-model-* reservation, so it
@@ -24,9 +31,16 @@ import requests
 
 import model as base
 from model import ModelError
-from v11_chain_models import ChainModelError, _arr, _obj, _str, source_digest, validate
+from v11_chain_models import ChainModelError, _arr, _obj, _str, key_for, reservation_for, source_digest, validate
 
 PROMPT = Path(__file__).with_name("chain_trend_prompt.txt")
+SPECIAL_PROMPT = Path(__file__).with_name("chain_special_days_prompt.txt")
+NEW_BUSINESS_PROMPT = Path(__file__).with_name("chain_new_business_prompt.txt")
+MAX_SPECIAL_DAYS = 5
+SPECIAL_HORIZON_DAYS = 14
+MIN_NEW_BUSINESS, MAX_NEW_BUSINESS = 3, 5
+JSON_IN_TEXT = ("\n\nÇIKTI BİÇİMİ: Yanıtının tamamı, aşağıdaki JSON şemasına uyan TEK bir JSON nesnesi olsun. "
+                "Kod bloğu, açıklama veya başka metin yazma. Şema:\n")
 PLATFORMS = ("instagram", "tiktok", "x")
 MAX_TRENDS = 5
 MAX_RESPONSE_BYTES = 1_048_576  # web_search sources make responses larger than review outputs
@@ -212,16 +226,71 @@ def call_once(api_key, request_input, brands, *, transport=None, profile=None):
                     pass
 
 
+def strict_json_text(text):
+    """The whole text must be one JSON object (an optional single ```json fence is tolerated)."""
+    t = text.strip()
+    fence = re.fullmatch(r"```(?:json)?\s*(\{.*\})\s*```", t, flags=re.S)
+    if fence:
+        t = fence.group(1)
+    if not (t.startswith("{") and t.endswith("}")):
+        raise TrendSearchError("research_output_not_json")
+    return base._loads(t)
+
+
+def anthropic_research(route, prompt_path, request_input, out_schema, *, api_key, client=None, code="invalid_trend_schema"):
+    """One Claude call with the web_search server tool; JSON returned in text (citations on).
+
+    Returns {'output': {...validated value..., 'evidence': [normalized https URLs]}, 'receipt'}.
+    """
+    _need(route.provider == "anthropic" and route.web_search, "research_route_invalid")
+    source = base._encoded(request_input)
+    _need(len(source) <= base.MAX_INPUT_BYTES, "trend_input_byte_limit")
+    try:
+        system = prompt_path.read_text(encoding="utf-8")
+    except (OSError, UnicodeError):
+        raise TrendSearchError("trend_prompt_unavailable") from None
+    system += JSON_IN_TEXT + base._encoded(out_schema).decode("utf-8")
+    kwargs = base.anthropic_request(route, system, source.decode("utf-8"))
+    data = base.anthropic_send(api_key, route, kwargs, client=client)
+    result = base.anthropic_extract(route, data, structured=False)
+    try:
+        value = strict_json_text(result["text"])
+        validate(value, out_schema)
+    except Exception:
+        raise base._anthropic_error(code, data, route) from None
+    evidence = {normalize_url(u) for u in result["evidence"]}
+    evidence.discard(None)
+    return {"output": {**value, "evidence": sorted(evidence)}, "receipt": result["receipt"]}
+
+
+def _research_gate(ops, catalog, route):
+    from v11_chain_live import budget_gate
+    from v11_chain_models import ModelGate, internal_cap_microdollars
+    cap = internal_cap_microdollars(catalog)
+    hold = reservation_for(route)  # 2 USD token hold + max_uses x 0.01 USD search fees
+    return cap, hold, budget_gate(ops, hold, cap), lambda: ModelGate(
+        ledger=ops, cache=ops, generation=ops.control()["generation"], cap_microdollars=cap)
+
+
+def _routing(routing):
+    import model_routing
+    return routing if routing is not None else model_routing.load()
+
+
+def _iso_day(value):
+    try:
+        return date.fromisoformat(value) if re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(value)) else None
+    except ValueError:
+        return None
+
+
 def sourced(output, today):
     """Drop every item whose URL is not https + in the web_search evidence, or whose date is bad."""
     evidence = set(output.get("evidence") or [])
     out, seen = [], set()
     for t in output.get("trends") or []:
         url = normalize_url(t.get("url"))
-        try:
-            day = date.fromisoformat(t.get("date")) if re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(t.get("date"))) else None
-        except ValueError:
-            day = None
+        day = _iso_day(t.get("date"))
         if url is None or url not in evidence or url in seen or day is None \
                 or not today - timedelta(days=30) <= day <= today:
             continue
@@ -232,21 +301,130 @@ def sourced(output, today):
     return out[:MAX_TRENDS]
 
 
-def trend_search_source(ops, load_key, catalog, cards, *, transport=None):
-    """trend_source(day) adapter for v11_daily_digest; budget-held, once per day, cap-checked."""
-    from v11_chain_live import budget_gate
-    from v11_chain_models import MODEL_RESERVATION, ModelGate, internal_cap_microdollars
-    cap = internal_cap_microdollars(catalog)
+def trend_search_source(ops, load_key, catalog, cards, *, transport=None, routing=None, client=None):
+    """trend_source(day) adapter for v11_daily_digest; budget-held, once per day, cap-checked.
+
+    load_key: {provider: loader} (live) or one loader (tests). Role trend_radar decides the provider.
+    """
+    route = _routing(routing).route("trend_radar")
+    _, hold, budget_ok, gate = _research_gate(ops, catalog, route)
     brands = eligible_brands(cards)
     names = [b["brand"] for b in brands]
-    budget_ok = budget_gate(ops, MODEL_RESERVATION, cap)
+
+    def call(request_input):
+        if route.provider == "openai":
+            return call_once(key_for(load_key, "openai"), request_input, names, transport=transport,
+                             profile=route.profile_id)
+        return anthropic_research(route, PROMPT, request_input, schema(names),
+                                  api_key=key_for(load_key, "anthropic"), client=client)
 
     def source(day):
         _need(names, "trend_no_brand_cards")
         _need(budget_ok(), "model_budget_unavailable")
         request_input = {"today": day.isoformat(), "country": "TR", "platforms": list(PLATFORMS), "brands": brands}
-        gate = ModelGate(ledger=ops, cache=ops, generation=ops.control()["generation"], cap_microdollars=cap)
-        output = gate.once("trend", source_digest("trend", request_input),
-                           lambda: call_once(load_key(), request_input, names, transport=transport))
+        output = gate().once("trend", source_digest("trend", request_input), lambda: call(request_input),
+                             provider=route.provider, hold=hold)
         return sourced(output, day)
     return source
+
+
+# ---------------------------------------------------------------- Monday special days (data only)
+def special_days_schema(brands):
+    return _obj({"days": _arr(_obj({
+        "date": _str(10), "name": _str(120), "url": _str(300),
+        "brand": {"type": "string", "enum": list(brands)}, "idea": _str(240)}), MAX_SPECIAL_DAYS)})
+
+
+def sourced_special_days(output, today, horizon=SPECIAL_HORIZON_DAYS):
+    """Keep only days dated today..today+horizon whose https URL is in the web search evidence."""
+    evidence = set(output.get("evidence") or [])
+    out, seen = [], set()
+    for d in output.get("days") or []:
+        url = normalize_url(d.get("url"))
+        day = _iso_day(d.get("date"))
+        if url is None or url not in evidence or day is None or not today <= day <= today + timedelta(days=horizon):
+            continue
+        if (day, d["name"]) in seen:
+            continue
+        seen.add((day, d["name"]))
+        out.append({"date": day.isoformat(), "name": d["name"], "brand": d["brand"], "idea": d["idea"], "url": url})
+    return sorted(out, key=lambda r: r["date"])[:MAX_SPECIAL_DAYS]
+
+
+def special_days_research_source(ops, load_key, catalog, cards, *, routing=None, client=None):
+    """research(day) -> sourced special days for the next 14 days; None when the flag is off.
+
+    Runs only on Mondays (Istanbul day given by the caller). Data only; nothing is posted.
+    """
+    routing = _routing(routing)
+    if not routing.flag("monday_special_days_research_enabled"):
+        return None
+    route = routing.route("monday_special_days")
+    _, hold, budget_ok, gate = _research_gate(ops, catalog, route)
+    brands = eligible_brands(cards)
+    names = [b["brand"] for b in brands]
+
+    def research(day):
+        _need(day.weekday() == 0, "special_days_monday_only")
+        _need(names, "trend_no_brand_cards")
+        _need(budget_ok(), "model_budget_unavailable")
+        request_input = {"today": day.isoformat(), "until": (day + timedelta(days=SPECIAL_HORIZON_DAYS)).isoformat(),
+                         "country": "TR", "brands": brands}
+        output = gate().once("special_days", source_digest("special_days", request_input),
+                             lambda: anthropic_research(route, SPECIAL_PROMPT, request_input, special_days_schema(names),
+                                                        api_key=key_for(load_key, "anthropic"), client=client,
+                                                        code="invalid_special_days_schema"),
+                             provider=route.provider, hold=hold)
+        return sourced_special_days(output, day)
+    return research
+
+
+# ---------------------------------------------------------------- New Business target brands (data only)
+def new_business_schema():
+    return _obj({"brands": _arr(_obj({"brand": _str(80), "sector": _str(80), "reason": _str(300),
+                                      "url": _str(300)}), MAX_NEW_BUSINESS)})
+
+
+def _brand_key(name):
+    return re.sub(r"[^0-9a-zçğıöşü]+", "", str(name).casefold())
+
+
+def sourced_new_business(output, current_brands):
+    """Keep 3-5 non-client brands whose https source URL is in the web search evidence."""
+    evidence = set(output.get("evidence") or [])
+    existing = {_brand_key(b) for b in current_brands}
+    out, seen = [], set()
+    for b in output.get("brands") or []:
+        url, key = normalize_url(b.get("url")), _brand_key(b.get("brand"))
+        if url is None or url not in evidence or not key or key in existing or key in seen:
+            continue
+        seen.add(key)
+        out.append({"brand": b["brand"], "sector": b["sector"], "reason": b["reason"], "url": url})
+    out = out[:MAX_NEW_BUSINESS]
+    return {"status": "ok" if len(out) >= MIN_NEW_BUSINESS else "insufficient_sourced_brands", "brands": out}
+
+
+def new_business_research_source(ops, load_key, catalog, cards, *, routing=None, client=None):
+    """research(day) -> {'status', 'brands': [...]}; None when the flag is off. Data only."""
+    routing = _routing(routing)
+    if not routing.flag("new_business_research_enabled"):
+        return None
+    route = routing.route("new_business_research")
+    _, hold, budget_ok, gate = _research_gate(ops, catalog, route)
+    current = [b["brand"][:60] for b in (cards or {}).get("brands", []) if isinstance(b, dict)
+               and isinstance(b.get("brand"), str)][:40]
+    sectors = sorted({str(b["sector"])[:80] for b in (cards or {}).get("brands", []) if isinstance(b, dict)
+                      and b.get("sector")})[:20]
+
+    def research(day):
+        _need(budget_ok(), "model_budget_unavailable")
+        request_input = {"today": day.isoformat(), "country": "TR", "agency": "Gamechangers",
+                         "current_clients": current, "served_sectors": sectors,
+                         "wanted": f"{MIN_NEW_BUSINESS}-{MAX_NEW_BUSINESS}"}
+        output = gate().once("new_business", source_digest("new_business", request_input),
+                             lambda: anthropic_research(route, NEW_BUSINESS_PROMPT, request_input, new_business_schema(),
+                                                        api_key=key_for(load_key, "anthropic"), client=client,
+                                                        code="invalid_new_business_schema"),
+                             provider=route.provider, hold=hold)
+        return sourced_new_business(output, current)
+    return research

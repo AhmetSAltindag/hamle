@@ -675,9 +675,9 @@ def model_classifier(ops, load_key, catalog, *, transport=None, routing=None, cl
 def run_worker_daily_digest(ops, secrets, *, clock=None, preview_to=None, preview_day=None):
     """Entry for worker.py --mode daily_digest (existing credential loaders only).
 
-    Trend provider: v11_trend_search (OpenAI Responses web_search, separate from model.py's
-    tools=[] path), built ONLY when daily-digest-config.json has trend_search_enabled=true;
-    otherwise the section prints NO_TRENDS.
+    Trend provider: v11_trend_search (role trend_radar: Claude Opus 5.5 + web search by default,
+    OpenAI Responses web_search only if routed there), built ONLY when daily-digest-config.json
+    has trend_search_enabled=true; otherwise the section prints NO_TRENDS.
     """
     import basecamp_cloud_auth
     import cloud_providers as provider
@@ -727,7 +727,7 @@ def run_worker_daily_digest(ops, secrets, *, clock=None, preview_to=None, previe
     if validate_config(config)["trend_search"] is True:
         try:
             from v11_trend_search import trend_search_source
-            trend_source = trend_search_source(ops, keys["openai"], load_catalog(), cards)
+            trend_source = trend_search_source(ops, keys, load_catalog(), cards)
         except Exception:
             trend_source = None  # no cap/catalog -> NO_TRENDS
     try:

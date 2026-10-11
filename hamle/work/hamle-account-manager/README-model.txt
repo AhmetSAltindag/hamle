@@ -113,3 +113,10 @@ The 2 USD hold per call is unchanged; Claude holds are settled at the cost compu
 from response.usage (Opus 4/20/0.20 USD per 1M in/out/cache-read; Haiku 0.10/0.50,
 0.50/2.50 above 100K prompt tokens; web search 0.01 USD each). The ledger gains an
 "anthropic" provider (20 USD prepaid) on the first Claude reservation.
+Web-search research (v11_trend_search): trend_radar, monday_special_days and
+new_business_research run on Claude Opus 5.5 with the web_search server tool
+(tool type and max_uses from model-routing.json; hold = 2 USD + max_uses x 0.01 USD).
+JSON is returned in text (citations cannot be combined with structured outputs) and
+parsed strictly; only items whose https URL appears in web_search_tool_result blocks or
+citations survive. Special days / New Business are data-only and gated by the
+model-routing.json flags (both false); nothing is posted to Basecamp.

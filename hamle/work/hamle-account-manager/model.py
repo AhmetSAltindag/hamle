@@ -383,6 +383,11 @@ ANTHROPIC_PRICES = {
                          "long": (_P(1, 2), _P(5, 2), _P(1, 20), _P(5, 8))},
 }
 WEB_SEARCH_FEE_MICRODOLLARS = 10_000  # 0.01 USD per search
+# web_search_20260209 filters results with server-side code execution ("dynamic filtering"),
+# so those server blocks may appear next to web_search blocks on research roles.
+WEB_SEARCH_SERVER_TOOLS = ("web_search", "code_execution", "bash_code_execution", "text_editor_code_execution")
+DYNAMIC_FILTER_RESULTS = ("code_execution_tool_result", "bash_code_execution_tool_result",
+                          "text_editor_code_execution_tool_result")
 DOMAIN_CODES = ("escalation_mismatch", "escalation_reason_missing", "requested_deadline_changed")
 ANTHROPIC_STOP_FAILURES = {"refusal": "model_refusal", "max_tokens": "response_max_tokens",
                            "pause_turn": "response_pause_turn",
@@ -548,7 +553,9 @@ def anthropic_extract(route, data, *, structured=True):
                 if isinstance(cite, dict) and cite.get("type") == "web_search_result_location":
                     evidence.add(cite.get("url"))
             continue
-        if route.web_search and kind == "server_tool_use" and block.get("name") == "web_search":
+        if route.web_search and kind == "server_tool_use" and block.get("name") in WEB_SEARCH_SERVER_TOOLS:
+            continue
+        if route.web_search and kind in DYNAMIC_FILTER_RESULTS:  # web_search_20260209 filtering code; not evidence
             continue
         if route.web_search and kind == "web_search_tool_result":
             result = block.get("content")

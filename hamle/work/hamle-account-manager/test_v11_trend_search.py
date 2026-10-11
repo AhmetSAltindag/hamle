@@ -1,5 +1,6 @@
 """Trend Radarı web_search provider: fake transport only, no sockets, no keys."""
 from datetime import date, datetime
+from model_routing import openai_only
 import json
 import os
 import unittest
@@ -35,7 +36,8 @@ def trend(url, day="2026-10-10", brand="Cacaonly", platform="tiktok", name="Mini
 
 class Provider(Base):
     def source(self, transport, catalog=None):
-        return ts.trend_search_source(self.ops, lambda: KEY, catalog or load_catalog(), self.cards, transport=transport)
+        return ts.trend_search_source(self.ops, lambda: KEY, catalog or load_catalog(), self.cards, transport=transport,
+                                     routing=openai_only())
 
     def test_request_is_separate_web_search_path_and_model_py_stays_tool_free(self):
         brands = [b["brand"] for b in ts.eligible_brands(self.cards)]
@@ -94,7 +96,8 @@ class Provider(Base):
         catalog = load_catalog()
         catalog["budget"]["internal_live_cap_microdollars"] = 1
         transport, keys = Transport(), []
-        src = ts.trend_search_source(self.ops, lambda: keys.append(1) or KEY, catalog, self.cards, transport=transport)
+        src = ts.trend_search_source(self.ops, lambda: keys.append(1) or KEY, catalog, self.cards, transport=transport,
+                                     routing=openai_only())
         with self.assertRaises(ts.TrendSearchError):
             src(DAY)
         self.assertEqual((transport.calls, keys), ([], []))
@@ -110,7 +113,8 @@ class Flag(Base):
     def test_provider_never_runs_without_flag(self):
         good = "https://www.example.org/trend/mini-vlog"
         transport = Transport(response([trend(good)], cited=[good]))
-        src = ts.trend_search_source(self.ops, lambda: KEY, load_catalog(), self.cards, transport=transport)
+        src = ts.trend_search_source(self.ops, lambda: KEY, load_catalog(), self.cards, transport=transport,
+                                     routing=openai_only())
         r = self.run_digest(trend_source=src)
         self.assertEqual(r["status"], "digest_sent", r)
         self.assertEqual(transport.calls, [])
