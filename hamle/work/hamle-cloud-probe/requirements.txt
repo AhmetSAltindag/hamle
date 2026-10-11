@@ -1,0 +1,2 @@
+# Verified against Google Cloud official Python client changelog, 2026-10-10.
+google-cloud-firestore==2.34.0

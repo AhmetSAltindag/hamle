@@ -1,0 +1,10 @@
+{
+  "status": "passed",
+  "recorded_at": "2026-10-10T14:55:50.998814+00:00",
+  "suite": "account-manager all unittest",
+  "result": "----------------------------------------------------------------------\nRan 774 tests in 1.779s\n\nOK (skipped=4)",
+  "optional_jpeg_pdf": "all41inspector tests passed separately in bundled Python",
+  "live_ocr_acceptance": "required by Docker build smoke",
+  "model_calls": 0,
+  "provider_writes": 0
+}

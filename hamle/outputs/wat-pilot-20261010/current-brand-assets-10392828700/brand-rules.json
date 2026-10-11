@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "status": "reviewed_reference_not_activated_as_automatic_quality_gate",
+  "brand": "WAT Mobilite",
+  "source": {
+    "kind": "user_answer_currentapproved",
+    "user_selected_on": "2026-10-10",
+    "account_id": 5898865,
+    "project_id": 40694338,
+    "upload_id": 10392828700,
+    "source_url": "https://app.basecamp.com/5898865/buckets/40694338/uploads/10392828700",
+    "filename": "WATMobilite-Brand Guideline.pdf",
+    "byte_size": 9910859,
+    "sha256": "6be9fc432313ed5fd6d7741d52e83e584dddd26b8802238a01aee8b05ca3881c",
+    "cover_edition_year": 2024,
+    "pdf_metadata_creation_date": "2025-06-12",
+    "native_version_number": null,
+    "approval_scope": "Only this upload and exact downloaded hash. No inherited approval of parent vault, other files, separate logo masters or font binaries.",
+    "page_numbering": "One-based physical PDF page number. Most PDF pages contain two printed facing pages; table-of-contents page numbers differ."
+  },
+  "review": {
+    "pdf_pages": 39,
+    "text_extracted_pages": 39,
+    "rendered_pages": 39,
+    "visually_reviewed_pages": 39,
+    "detail_review_pages": [3, 4, 5, 6, 8, 9, 10, 21, 22],
+    "visual_review_method": "All page contact sheets, then 125 dpi detail renders of cited critical rules.",
+    "no_customer_output_scored": true,
+    "business_writes": 0,
+    "paid_model_calls": 0
+  },
+  "user_clarifications": {
+    "source": "explicit_user_decision",
+    "decided_on": "2026-10-10",
+    "decided_by": "Ahmet Şükrü Altındağ",
+    "typography_authoritative_pdf_page": 9,
+    "main_font": "Nunito Sans",
+    "support_font": "Josefin Sans",
+    "zircon_authoritative_representation": "printed_hex",
+    "zircon_hex": "#E8E7E6",
+    "scope": "Resolves the two guide interpretation questions only; does not activate automatic visual recognition or WAT customer acceptance."
+  },
+  "rules": [
+    {
+      "id": "logo_integrity",
+      "pdf_pages": [3, 4, 5, 6],
+      "type": "visual_reference",
+      "confirmed": [
+        "Preserve the selected WAT logo proportions and circular mark.",
+        "Use the approved palette and sufficient surrounding clear space.",
+        "Do not stretch, squash, rotate, blur, change opacity or arbitrary colors, add shadows, or combine with unrelated graphics.",
+        "Select a contrast-appropriate illustrated logo variant; the guide rejects a white logo on light gray and distorted proportions."
+      ],
+      "minimum_size_diagram_px": {"width": 100, "height": 100, "pdf_page": 6},
+      "measurement_caveat": "The page-6 100 px diagram is recorded as a source value. Media-specific applicability and clear-space unit x require a reviewed geometry rule before automatic acceptance/rejection. Page-3 18x grid and page-4 83px/45px logotype drawings are not universal output sizes.",
+      "separate_approved_master_file_verified": false,
+      "automatic_pass_or_reject_enabled": false
+    },
+    {
+      "id": "palette",
+      "pdf_pages": [7, 8],
+      "type": "normalized_values",
+      "colors": [
+        {"name_as_printed": "Bunting", "hex": "#1C2041", "rgb": [28, 32, 65], "cmyk": [100, 93, 38, 49], "rgb_hex_consistent": true},
+        {"name_as_printed": "Astronaout", "hex": "#273271", "rgb": [39, 50, 113], "cmyk": [100, 91, 21, 9], "rgb_hex_consistent": true},
+        {"name_as_printed": "Colombia Blue", "hex": "#A6DBF8", "rgb": [166, 219, 248], "cmyk": [38, 0, 0, 0], "rgb_hex_consistent": true},
+        {"name_as_printed": "Bunker", "hex": "#2D2D2D", "rgb": [45, 45, 45], "cmyk": [71, 61, 57, 70], "rgb_hex_consistent": true},
+        {"name_as_printed": "Zircon", "hex_as_printed": "#E8E7E6", "rgb_as_printed": [231, 232, 230], "cmyk_as_printed": [11, 8, 9, 0], "rgb_hex_consistent": false, "canonical_value": {"hex": "#E8E7E6", "rgb": [232, 231, 230], "rgb_derived_from_authoritative_hex": true, "source": "explicit_user_decision_2026-10-10"}, "conflict_status": "resolved_by_user", "conflict_id": "zircon_rgb_hex"}
+      ],
+      "automatic_pass_or_reject_enabled": false,
+      "caveat": "The user selected printed HEX #E8E7E6 for Zircon; canonical RGB 232/231/230 is derived from that HEX. The original printed mismatch remains evidence, not a pending question. These values do not establish rendered-color tolerance, ICC conversion, approved gradient variants or image quality; automatic pass/reject remains disabled."
+    },
+    {
+      "id": "typography",
+      "pdf_pages": [9, 10],
+      "type": "page_9_rule_confirmed_by_user",
+      "explicit_main_font_page_9": "Nunito Sans",
+      "explicit_support_font_page_9": "Josefin Sans",
+      "page_10_specimen_text": "LUCETTE HAAS DISPLAY",
+      "canonical_fonts": {"main": "Nunito Sans", "support": "Josefin Sans", "authoritative_pdf_page": 9, "source": "explicit_user_decision_2026-10-10"},
+      "page_9_size_examples_px": {"H1": 120, "H2": 60, "H3": 36, "Paragraph": 14, "Subtitle": 12},
+      "font_files_or_licenses_verified": false,
+      "conflict_id": "typography_specimen",
+      "conflict_status": "resolved_by_user",
+      "automatic_pass_or_reject_enabled": false,
+      "caveat": "The user explicitly selected page 9: main Nunito Sans, support Josefin Sans. Page 10 is retained as source evidence but does not override that rule or authorize additional fonts. Whether its specimen was a template remnant need not be inferred. Type sizes remain diagram examples, not universal sizes for every medium; automatic font recognition and pass/reject remain disabled."
+    },
+    {
+      "id": "social_post_example",
+      "pdf_pages": [11, 12],
+      "type": "scoped_example",
+      "logo_and_legibility_required": true,
+      "high_resolution_imagery_required": true,
+      "example_size_px": [1080, 1080],
+      "caveat": "The Instagram example is square. Actual requested platform, format and dimensions still come from the current authorized brief; this example does not prohibit other approved formats.",
+      "automatic_pass_or_reject_enabled": false
+    },
+    {
+      "id": "koc_cobranding",
+      "pdf_pages": [21, 22],
+      "type": "medium_specific_reference",
+      "combined_logo_contexts": ["press conference", "general assembly", "institutional-name-led events"],
+      "page_22_koc_width_ratios": {"portrait_layout": "1/12", "landscape_layout": "1/17", "website_or_ebulletin": "1/14"},
+      "landscape_symbol_and_logotype_over_one_meter": "Consult Koç Holding Kurumsal Marka ve Sponsorluklar Koordinatörlüğü.",
+      "caveat": "These ratios apply to the specified Koç logotype contexts. They do not require a Koç logo on every WAT social output, nor define WAT logo size universally.",
+      "automatic_pass_or_reject_enabled": false
+    },
+    {
+      "id": "templates_and_mockups",
+      "pdf_pages": [13, 14, 15, 16, 17, 18, 19, 20, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38],
+      "type": "reference_examples",
+      "caveat": "Stationery, promo material, icons, signage, clothing and vehicle mockups show possible visual application. Placeholder names, Latin copy, phone numbers, QR codes, dates and photography are not independently approved operational content or licensed source assets.",
+      "automatic_pass_or_reject_enabled": false
+    }
+  ],
+  "conflict_flags": [
+    {
+      "id": "zircon_rgb_hex",
+      "pdf_pages": [8],
+      "observed": "Printed RGB 231/232/230 converts to #E7E8E6; printed HEX #E8E7E6 converts to RGB 232/231/230.",
+      "status": "resolved_by_user",
+      "resolution": {"source": "explicit_user_decision", "decided_on": "2026-10-10", "authoritative_representation": "printed_hex", "canonical_hex": "#E8E7E6", "derived_rgb": [232, 231, 230]},
+      "needs_human_input": false,
+      "needs_human_input_before": null,
+      "do_not_automatically_reject": true,
+      "detail_image": "rendered/detail-08.png"
+    },
+    {
+      "id": "typography_specimen",
+      "pdf_pages": [9, 10],
+      "observed": "Page 9 explicitly specifies Nunito Sans and Josefin Sans; page 10's specimen says LUCETTE HAAS DISPLAY without explaining a change of the rule.",
+      "status": "resolved_by_user",
+      "resolution": {"source": "explicit_user_decision", "decided_on": "2026-10-10", "authoritative_pdf_page": 9, "main_font": "Nunito Sans", "support_font": "Josefin Sans"},
+      "needs_human_input": false,
+      "needs_human_input_before": null,
+      "do_not_automatically_reject": true,
+      "detail_images": ["rendered/detail-09.png", "rendered/detail-10.png"]
+    }
+  ],
+  "remaining_limits": [
+    "No logo-master or font binaries provided by this upload.",
+    "Guide approval alone does not calibrate semantic, aesthetic, legal-rights or customer brief compliance scores.",
+    "No image-generation or production model called; no customer task or mail changed.",
+    "No WAT customer automation enabled by this review."
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "kind": "prepared_work_authority_policy",
+  "brand_id": "gamechangers",
+  "service_id": "gc_internal",
+  "live_enabled": false,
+  "status": "pending_ahmet_acceptance",
+  "prepared_only": true,
+  "accepted": false,
+  "prepared_at": "2026-10-11",
+  "prepared_by": "offline Hamle build (not a human decision)",
+  "acceptance_required_from": "ahmet@gamechangers.com.tr",
+  "modelled_on": "outputs/wat-pilot-20261010/work-authority-user-decision-20261010.json (Ahmet accepted the visible-stop rule for brand wat_mobilite ONLY; that acceptance does NOT cover this internal brand)",
+  "terms": {
+    "allowed_scope": "gamechangers_internal_gc_internal_only",
+    "entry": "verified agency requester (catalog contact, can_request) whose actual latest email has Hamle in To or CC; derived once at intake after the Basecamp task is read back",
+    "actions": [
+      "add_comment",
+      "deliver_file"
+    ],
+    "same_scope_and_recipients_only": true,
+    "maximum_business_days": 2,
+    "timezone": "Europe/Istanbul",
+    "expiry": "earliest of: 2 Istanbul weekdays after the request mail arrived, brand scope/rubric expiry, this policy's acceptance expiry, budget deadline",
+    "stop_methods": [
+      "message_received_by_Hamle_stop_or_takeover (chain stop sweep each slot)",
+      "python3 v11_chain_live.py queue stop (generation fence)",
+      "global control stop"
+    ],
+    "renewal_required_on": [
+      "expiry",
+      "scope_change",
+      "recipient_change",
+      "visible_stop_or_takeover",
+      "queue_generation_change"
+    ],
+    "unseen_cc_removal_alone_cannot_be_treated_as_cancellation": true,
+    "does_not_replace": [
+      "quality gate (90+ or 80-89 with human approval)",
+      "exact To/CC + In-Reply-To checks",
+      "fresh file re-download hash",
+      "autonomy_policy.authorize_action",
+      "one-attempt write ledger"
+    ],
+    "does_not_extend_budget_deadline": true
+  },
+  "work_authority_policy": {
+    "schema_version": 1,
+    "kind": "visible_stop_work_policy_v1",
+    "enabled": false,
+    "status": "pending_ahmet_acceptance",
+    "brand_id": "gamechangers",
+    "service_id": "gc_internal",
+    "max_business_days": 2,
+    "timezone": "Europe/Istanbul",
+    "calendar": "weekends_only",
+    "observation_max_age_seconds": 300,
+    "visible_stop_required": true,
+    "unseen_cc_removal_detectable": false,
+    "unseen_cc_removal_is_revocation": false,
+    "allowed_issuers": [
+      "ahmet@gamechangers.com.tr",
+      "cansu@gamechangers.com.tr",
+      "ozge@gamechangers.com.tr"
+    ],
+    "actions": [
+      "add_comment",
+      "deliver_file"
+    ],
+    "acceptance": null
+  },
+  "policy_terms_sha256_when_accepted": "6c83b0beaa1e029510ecc2e05bd4958a460da48abb007f83da53a4120ead7477",
+  "acceptance_instructions": "Only after Ahmet explicitly accepts: set live_enabled=true, status=accepted, accepted=true; in work_authority_policy set enabled=true, status=accepted and acceptance={verified:true, authenticated:true, actor:'ahmet@gamechangers.com.tr', decision:'accept_visible_stop_work_authority', evidence_ref:<where he accepted>, accepted_at:<ISO with tz>, expires_at:<<= 2026-10-12T23:59:59+03:00>, policy_terms_sha256:<policy_terms_sha256_when_accepted>}. Any other edit changes the digest. Mails that arrived before accepted_at cannot get a derived grant."
+}

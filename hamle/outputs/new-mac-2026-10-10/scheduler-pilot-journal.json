@@ -1,0 +1,289 @@
+{
+  "schema": 1,
+  "steps": {
+    "narrow-invoker": {
+      "state": "returned",
+      "started_at": "2026-10-10T08:24:08.386744+00:00",
+      "returned_at": "2026-10-10T08:24:08.994573+00:00"
+    },
+    "create-hamle-pilot-20261012-early": {
+      "state": "returned",
+      "started_at": "2026-10-10T08:24:09.705214+00:00",
+      "returned_at": "2026-10-10T08:24:18.407664+00:00"
+    },
+    "pause-hamle-pilot-20261012-early": {
+      "state": "returned",
+      "started_at": "2026-10-10T08:24:18.408653+00:00",
+      "returned_at": "2026-10-10T08:24:18.857018+00:00"
+    },
+    "schedule-hamle-pilot-20261012-early": {
+      "state": "returned",
+      "started_at": "2026-10-10T08:24:19.047650+00:00",
+      "returned_at": "2026-10-10T08:24:20.108840+00:00"
+    },
+    "create-hamle-pilot-20261012-day": {
+      "state": "returned",
+      "started_at": "2026-10-10T08:24:21.022984+00:00",
+      "returned_at": "2026-10-10T08:24:21.496618+00:00"
+    },
+    "pause-hamle-pilot-20261012-day": {
+      "state": "returned",
+      "started_at": "2026-10-10T08:24:21.497875+00:00",
+      "returned_at": "2026-10-10T08:24:26.297088+00:00"
+    },
+    "schedule-hamle-pilot-20261012-day": {
+      "state": "returned",
+      "started_at": "2026-10-10T08:24:26.453235+00:00",
+      "returned_at": "2026-10-10T08:24:26.913200+00:00"
+    },
+    "create-hamle-pilot-20261012-late": {
+      "state": "returned",
+      "started_at": "2026-10-10T08:24:27.496718+00:00",
+      "returned_at": "2026-10-10T08:24:27.935860+00:00"
+    },
+    "pause-hamle-pilot-20261012-late": {
+      "state": "returned",
+      "started_at": "2026-10-10T08:24:27.937397+00:00",
+      "returned_at": "2026-10-10T08:24:31.933066+00:00"
+    },
+    "schedule-hamle-pilot-20261012-late": {
+      "state": "returned",
+      "started_at": "2026-10-10T08:24:32.122944+00:00",
+      "returned_at": "2026-10-10T08:24:32.716311+00:00"
+    },
+    "job-mode-scheduled-review": {
+      "state": "returned",
+      "started_at": "2026-10-10T08:24:33.695504+00:00",
+      "returned_at": "2026-10-10T08:24:35.681181+00:00"
+    },
+    "deny-run-once": {
+      "state": "started_do_not_retry",
+      "started_at": "2026-10-10T08:24:59.725402+00:00"
+    },
+    "enabled-deny-v1-inert-schedule": {
+      "state": "returned",
+      "started_at": "2026-10-10T08:33:18.135673+00:00",
+      "returned_at": "2026-10-10T08:33:20.501514+00:00"
+    },
+    "enabled-deny-v1-resume": {
+      "state": "returned",
+      "started_at": "2026-10-10T08:33:20.904476+00:00",
+      "returned_at": "2026-10-10T08:33:21.627566+00:00"
+    },
+    "enabled-deny-v1-run-once": {
+      "state": "returned",
+      "started_at": "2026-10-10T08:33:23.601977+00:00",
+      "returned_at": "2026-10-10T08:33:24.187589+00:00"
+    },
+    "enabled-deny-v1-pause": {
+      "state": "returned",
+      "started_at": "2026-10-10T08:33:25.621053+00:00",
+      "returned_at": "2026-10-10T08:33:29.102728+00:00"
+    },
+    "enabled-deny-v1-restore-schedule": {
+      "state": "returned",
+      "started_at": "2026-10-10T08:33:29.296341+00:00",
+      "returned_at": "2026-10-10T08:33:30.025966+00:00"
+    },
+    "reserve-google-pilot": {
+      "state": "returned",
+      "started_at": "2026-10-10T08:39:35.266054+00:00",
+      "returned_at": "2026-10-10T08:39:35.490800+00:00"
+    },
+    "begin-google-pilot-hold": {
+      "state": "returned",
+      "started_at": "2026-10-10T08:39:35.492932+00:00",
+      "returned_at": "2026-10-10T08:39:35.762415+00:00"
+    },
+    "resume-hamle-pilot-20261012-early": {
+      "state": "returned",
+      "started_at": "2026-10-10T08:39:36.701393+00:00",
+      "returned_at": "2026-10-10T08:39:37.336112+00:00"
+    },
+    "resume-hamle-pilot-20261012-day": {
+      "state": "returned",
+      "started_at": "2026-10-10T08:39:37.904866+00:00",
+      "returned_at": "2026-10-10T08:39:38.465212+00:00"
+    },
+    "resume-hamle-pilot-20261012-late": {
+      "state": "returned",
+      "started_at": "2026-10-10T08:39:39.281769+00:00",
+      "returned_at": "2026-10-10T08:39:40.100921+00:00"
+    }
+  },
+  "phases": {
+    "prepare-paused": {
+      "recorded_at": "2026-10-10T08:24:38.435162+00:00",
+      "status": "verified",
+      "state": "PAUSED",
+      "job_names": [
+        "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-pilot-20261012-early",
+        "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-pilot-20261012-day",
+        "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-pilot-20261012-late"
+      ],
+      "iam_policy_version": 3,
+      "iam_etag": "BwZdeDBZ9vk=",
+      "image": "europe-west1-docker.pkg.dev/gamechangers-hamle/hamle-runtime/hamle-account-manager@sha256:82d119ba26ed4a7c00b7c6f7ea78296d0b98943d2c2aff836b76907467f272df"
+    },
+    "deny-submission": {
+      "recorded_at": "2026-10-10T08:24:59.722979+00:00",
+      "status": "attempt_pending",
+      "submitted_at": "2026-10-10T08:24:59.722932+00:00",
+      "execution_ids_before": [
+        "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager/executions/hamle-account-manager-22ml9",
+        "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager/executions/hamle-account-manager-46djb",
+        "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager/executions/hamle-account-manager-5fz67",
+        "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager/executions/hamle-account-manager-6p2px",
+        "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager/executions/hamle-account-manager-9fqp5",
+        "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager/executions/hamle-account-manager-frvbr",
+        "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager/executions/hamle-account-manager-jfhw4",
+        "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager/executions/hamle-account-manager-n9dxp",
+        "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager/executions/hamle-account-manager-ncwfr",
+        "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager/executions/hamle-account-manager-rr4jw",
+        "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager/executions/hamle-account-manager-wkv5h"
+      ],
+      "job_name": "hamle-pilot-20261012-early"
+    },
+    "enabled-deny-submission-v1": {
+      "recorded_at": "2026-10-10T08:33:17.792245+00:00",
+      "status": "new_enabled_probe_started",
+      "started_at": "2026-10-10T08:33:12.949386+00:00",
+      "execution_ids_before": [
+        "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager/executions/hamle-account-manager-22ml9",
+        "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager/executions/hamle-account-manager-46djb",
+        "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager/executions/hamle-account-manager-5fz67",
+        "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager/executions/hamle-account-manager-6p2px",
+        "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager/executions/hamle-account-manager-9fqp5",
+        "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager/executions/hamle-account-manager-frvbr",
+        "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager/executions/hamle-account-manager-jfhw4",
+        "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager/executions/hamle-account-manager-n9dxp",
+        "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager/executions/hamle-account-manager-ncwfr",
+        "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager/executions/hamle-account-manager-rr4jw",
+        "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager/executions/hamle-account-manager-wkv5h"
+      ],
+      "initial_readback": {
+        "status": "verified",
+        "state": "PAUSED",
+        "job_names": [
+          "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-pilot-20261012-early",
+          "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-pilot-20261012-day",
+          "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-pilot-20261012-late"
+        ],
+        "iam_policy_version": 3,
+        "iam_etag": "BwZdeDBZ9vk=",
+        "image": "europe-west1-docker.pkg.dev/gamechangers-hamle/hamle-runtime/hamle-account-manager@sha256:82d119ba26ed4a7c00b7c6f7ea78296d0b98943d2c2aff836b76907467f272df"
+      },
+      "legacy_precondition": {
+        "status": "preserved_pre_target_failed_precondition",
+        "rpc_status_code": 9,
+        "source_file": "scheduler-paused-probe-rejection.json",
+        "evidence_sha256": "445ff54dd98d9cc17e30100ac4bae55bd6e47e42ebf38aeb045b2c695348ae28",
+        "old_submission": "2026-10-10T08:24:59.722932+00:00",
+        "old_step_unchanged": true,
+        "target_403_proven_by_old_attempt": false
+      },
+      "only_job": "hamle-pilot-20261012-early",
+      "inert_schedule": "0 0 1 1 *",
+      "restored_schedule": "30,45 8 12 10 *"
+    },
+    "enabled-deny-v1-cleanup": {
+      "recorded_at": "2026-10-10T08:33:33.303741+00:00",
+      "all_paused_actual_schedules_verified": true,
+      "readback": {
+        "status": "verified",
+        "state": "PAUSED",
+        "job_names": [
+          "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-pilot-20261012-early",
+          "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-pilot-20261012-day",
+          "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-pilot-20261012-late"
+        ],
+        "iam_policy_version": 3,
+        "iam_etag": "BwZdeDBZ9vk=",
+        "image": "europe-west1-docker.pkg.dev/gamechangers-hamle/hamle-runtime/hamle-account-manager@sha256:82d119ba26ed4a7c00b7c6f7ea78296d0b98943d2c2aff836b76907467f272df"
+      },
+      "uncertain_responses_reconciled_by_read": []
+    },
+    "enabled-deny-v1-verified": {
+      "recorded_at": "2026-10-10T08:39:11.838607+00:00",
+      "status": "verified_target_denied",
+      "audit": null,
+      "scheduler_attempt": {
+        "timestamp": "2026-10-10T08:33:29.802880450Z",
+        "insert_id": "svqiv9f4z5bib",
+        "job_name": "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-pilot-20261012-early",
+        "http_status": 403,
+        "status": "PERMISSION_DENIED"
+      },
+      "execution_ids_unchanged": true,
+      "all_jobs_paused": true,
+      "run_submission_once": true,
+      "business_execution_started": false,
+      "probe_kind": "enabled_inert_schedule",
+      "old_paused_precondition_preserved": true,
+      "target_http_denial_observed": true,
+      "target_uri": "https://run.googleapis.com/v2/projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager:run",
+      "configured_oauth_service_account": "hamle-scheduler@gamechangers-hamle.iam.gserviceaccount.com",
+      "target_principal_audit_observed": false,
+      "denial_exact_cause_not_observed": true,
+      "allowed_window_execution_tested": false
+    },
+    "deny-check": {
+      "recorded_at": "2026-10-10T08:39:11.844897+00:00",
+      "status": "verified_target_denied",
+      "audit": null,
+      "scheduler_attempt": {
+        "timestamp": "2026-10-10T08:33:29.802880450Z",
+        "insert_id": "svqiv9f4z5bib",
+        "job_name": "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-pilot-20261012-early",
+        "http_status": 403,
+        "status": "PERMISSION_DENIED"
+      },
+      "execution_ids_unchanged": true,
+      "all_jobs_paused": true,
+      "run_submission_once": true,
+      "business_execution_started": false,
+      "probe_kind": "enabled_inert_schedule",
+      "old_paused_precondition_preserved": true,
+      "target_http_denial_observed": true,
+      "target_uri": "https://run.googleapis.com/v2/projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager:run",
+      "configured_oauth_service_account": "hamle-scheduler@gamechangers-hamle.iam.gserviceaccount.com",
+      "target_principal_audit_observed": false,
+      "denial_exact_cause_not_observed": true,
+      "allowed_window_execution_tested": false
+    },
+    "budget-before-activation": {
+      "recorded_at": "2026-10-10T08:39:35.963433+00:00",
+      "status": "reserved",
+      "reservation_key": "cloud-scheduler-pilot-20261012-v1",
+      "reservation_microdollars": 1000000,
+      "budget": {
+        "limit_microdollars": 50000000,
+        "accounted_spend_microdollars": 0,
+        "held_microdollars": 14000000,
+        "prepaid_purchases_microdollars": 10000000,
+        "total_committed_microdollars": 19000000,
+        "remaining_microdollars": 31000000,
+        "overrun_hold": false,
+        "provider_hard_cap_installed": false
+      },
+      "retained_prior_holds": true,
+      "provider_hard_cap_installed": false
+    },
+    "activate": {
+      "recorded_at": "2026-10-10T08:39:44.275574+00:00",
+      "status": "activated_exact_date_internal_review",
+      "state": "ENABLED",
+      "job_names": [
+        "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-pilot-20261012-early",
+        "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-pilot-20261012-day",
+        "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-pilot-20261012-late"
+      ],
+      "iam_policy_version": 3,
+      "iam_etag": "BwZdeDBZ9vk=",
+      "image": "europe-west1-docker.pkg.dev/gamechangers-hamle/hamle-runtime/hamle-account-manager@sha256:82d119ba26ed4a7c00b7c6f7ea78296d0b98943d2c2aff836b76907467f272df",
+      "slots": 41,
+      "reservation_key": "cloud-scheduler-pilot-20261012-v1",
+      "automatic_business_dispatch": false
+    }
+  }
+}

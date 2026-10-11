@@ -1,0 +1,56 @@
+{
+  "recorded_at": "2026-10-10T08:40:05.186128+00:00",
+  "schedulers": [
+    {
+      "name": "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-pilot-20261012-early",
+      "state": "ENABLED",
+      "schedule": "30,45 8 12 10 *",
+      "timeZone": "Europe/Istanbul",
+      "scheduleTime": "2026-10-12T05:30:00Z"
+    },
+    {
+      "name": "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-pilot-20261012-day",
+      "state": "ENABLED",
+      "schedule": "*/15 9-17 12 10 *",
+      "timeZone": "Europe/Istanbul",
+      "scheduleTime": "2026-10-12T06:00:00Z"
+    },
+    {
+      "name": "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-pilot-20261012-late",
+      "state": "ENABLED",
+      "schedule": "0,15,30 18 12 10 *",
+      "timeZone": "Europe/Istanbul",
+      "scheduleTime": "2026-10-12T15:00:00Z"
+    }
+  ],
+  "slots_on_2026_10_12": 41,
+  "cadence_minutes": 15,
+  "automatic_business_dispatch": false,
+  "allowed_window_execution_tested": false,
+  "pending_followups": [
+    {
+      "proposal_id": "p-22e2a5f455020a4445403ea203c4aa6083c4c14b185ec67d52b1c1211129fd67",
+      "proposal_hash": "92a57c92cbe88b041dbdac1dabf01d6c0288c3e5288e28c1ae09d8c428082707",
+      "status": "awaiting_human_review",
+      "approval": null,
+      "cc": [
+        "cansu@gamechangers.com.tr"
+      ],
+      "bound_task_id": 10392247471
+    }
+  ],
+  "budget": {
+    "limit_microdollars": 50000000,
+    "accounted_spend_microdollars": 0,
+    "held_microdollars": 14000000,
+    "prepaid_purchases_microdollars": 10000000,
+    "total_committed_microdollars": 19000000,
+    "remaining_microdollars": 31000000,
+    "overrun_hold": false,
+    "provider_hard_cap_installed": false
+  },
+  "weighted_progress_percent": 30,
+  "original_work_items": 65,
+  "completed_items": 21,
+  "fully_independent_agents_accepted": 0
+}

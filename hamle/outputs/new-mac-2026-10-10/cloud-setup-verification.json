@@ -1,0 +1,57 @@
+{
+  "verified_at": "2026-10-10T01:02:25.587056+03:00",
+  "sdk": {
+    "version": "588.0.0",
+    "archive_sha256": "e05807bee530449ed42f896e724f4c1c4d656dd9f41e1bcdada60bfd80e583f2",
+    "official_archive_verified": true,
+    "local_private_config": true
+  },
+  "identity": "ahmet@gamechangers.com.tr",
+  "cloud_sdk_access_user_approved": true,
+  "project": {
+    "id": "gamechangers-hamle",
+    "number": "286533609595",
+    "state": "ACTIVE",
+    "organization": "642693774443"
+  },
+  "billing": {
+    "account": "019614-9B536E-1EFA0F",
+    "name": "My Billing Account",
+    "open": true,
+    "currency": "TRY",
+    "linked_to_original_project": true,
+    "billingEnabled": true,
+    "actual_costs_verified": true,
+    "free_trial_ui_credit_try": 14694.68,
+    "free_trial_days_ui": 90,
+    "credit_not_a_new_spending_authorization": true,
+    "cost_report": {
+      "observed_at": "2026-10-10T01:04:53.517746+03:00",
+      "visible_period": "2026-10-01 through 2026-10-09",
+      "displayed_usage_cost_try": "0.00",
+      "displayed_savings_try": "0.00",
+      "credit_remaining_try": "14694.68",
+      "credit_initial_try": "14694.68",
+      "report_no_cost_rows": true,
+      "source": "Cloud Billing Reports, account 019614-9B536E-1EFA0F",
+      "evidence_screenshot": "cloud-billing-report.jpg",
+      "reporting_may_be_delayed": true
+    }
+  },
+  "gmail_api_enabled": true,
+  "cloud_workload_deployed": true,
+  "paid_inference_calls": 0,
+  "aggregate_remaining_usd": "47.00 available after3.00 cost hold; actual billed cost pending",
+  "new_auto_created_project_used": false,
+  "read_commands": [
+    "auth list",
+    "projects describe gamechangers-hamle",
+    "billing accounts list",
+    "billing accounts describe",
+    "billing projects describe",
+    "services list --enabled"
+  ],
+  "mutation": "billing projects link gamechangers-hamle to authorized billing account; API response confirmed billingEnabled=true",
+  "last_updated_at": "2026-10-10T01:23:19.210920+03:00",
+  "cloud_workload_scope": "synthetic_only; stopped; see cloud-foundation.json"
+}

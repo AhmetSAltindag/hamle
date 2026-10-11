@@ -1,0 +1,112 @@
+{
+  "artifacts": {
+    "images": [
+      "europe-west1-docker.pkg.dev/gamechangers-hamle/hamle-runtime/hamle-account-manager:20261010-v3"
+    ]
+  },
+  "createTime": "2026-10-09T23:46:40.407228631Z",
+  "finishTime": "2026-10-09T23:48:08.344192Z",
+  "id": "94a8f741-4eed-42f5-8703-faf080aeb333",
+  "images": [
+    "europe-west1-docker.pkg.dev/gamechangers-hamle/hamle-runtime/hamle-account-manager:20261010-v3"
+  ],
+  "logUrl": "https://console.cloud.google.com/cloud-build/builds;region=europe-west1/94a8f741-4eed-42f5-8703-faf080aeb333?project=286533609595",
+  "name": "projects/286533609595/locations/europe-west1/builds/94a8f741-4eed-42f5-8703-faf080aeb333",
+  "options": {
+    "logging": "CLOUD_LOGGING_ONLY",
+    "machineType": "E2_MEDIUM",
+    "pool": {},
+    "workerRelease": "legacy"
+  },
+  "projectId": "gamechangers-hamle",
+  "queueTtl": "3600s",
+  "results": {
+    "buildStepImages": [
+      "sha256:40c2fb4fcd0ad51376eef166c2e7b2b40a3508d5776e2bf33db3783ab39d0f2e"
+    ],
+    "buildStepOutputs": [
+      ""
+    ],
+    "images": [
+      {
+        "artifactRegistryPackage": "projects/gamechangers-hamle/locations/europe-west1/repositories/hamle-runtime/packages/hamle-account-manager/versions/sha256:56b53d0f6bcbb03b0d34db1192681bedd4e38355dc71f7de4ff65cbf7fa55b2c",
+        "digest": "sha256:56b53d0f6bcbb03b0d34db1192681bedd4e38355dc71f7de4ff65cbf7fa55b2c",
+        "name": "europe-west1-docker.pkg.dev/gamechangers-hamle/hamle-runtime/hamle-account-manager:20261010-v3",
+        "pushTiming": {
+          "endTime": "2026-10-09T23:48:09.131992880Z",
+          "startTime": "2026-10-09T23:47:58.128381775Z"
+        }
+      }
+    ]
+  },
+  "serviceAccount": "projects/gamechangers-hamle/serviceAccounts/hamle-build@gamechangers-hamle.iam.gserviceaccount.com",
+  "source": {
+    "storageSource": {
+      "bucket": "gamechangers-hamle-runtime-source-286533609595",
+      "generation": "1791589600099114",
+      "object": "source/1791589599.600436-0c37452a56024d198319387d650e19bc.gz"
+    }
+  },
+  "sourceProvenance": {
+    "fileHashes": {
+      "gs://gamechangers-hamle-runtime-source-286533609595/source/1791589599.600436-0c37452a56024d198319387d650e19bc.gz#1791589600099114": {
+        "fileHash": [
+          {
+            "type": "MD5",
+            "value": "zHazCPbQOWQoY1dCvCZklg=="
+          },
+          {
+            "type": "SHA256",
+            "value": "dbgDxVWBi7nc_DBsuZX239K2-PXSg8Qz-MvK98feieA="
+          }
+        ]
+      }
+    },
+    "resolvedStorageSource": {
+      "bucket": "gamechangers-hamle-runtime-source-286533609595",
+      "generation": "1791589600099114",
+      "object": "source/1791589599.600436-0c37452a56024d198319387d650e19bc.gz"
+    }
+  },
+  "startTime": "2026-10-09T23:47:27.306937959Z",
+  "status": "SUCCESS",
+  "steps": [
+    {
+      "args": [
+        "build",
+        "--platform=linux/amd64",
+        "--tag=europe-west1-docker.pkg.dev/gamechangers-hamle/hamle-runtime/hamle-account-manager:20261010-v3",
+        "."
+      ],
+      "name": "gcr.io/cloud-builders/docker",
+      "pullTiming": {
+        "endTime": "2026-10-09T23:47:35.249151037Z",
+        "startTime": "2026-10-09T23:47:35.237581642Z"
+      },
+      "status": "SUCCESS",
+      "timing": {
+        "endTime": "2026-10-09T23:47:58.095361892Z",
+        "startTime": "2026-10-09T23:47:35.237581642Z"
+      }
+    }
+  ],
+  "timeout": "300s",
+  "timing": {
+    "BUILD": {
+      "endTime": "2026-10-09T23:47:58.128241361Z",
+      "startTime": "2026-10-09T23:47:34.677049047Z"
+    },
+    "FETCHSOURCE": {
+      "endTime": "2026-10-09T23:47:34.676839382Z",
+      "startTime": "2026-10-09T23:47:30.249488440Z"
+    },
+    "PUSH": {
+      "endTime": "2026-10-09T23:48:09.132091125Z",
+      "startTime": "2026-10-09T23:47:58.128379755Z"
+    },
+    "STORAGE_SOURCE": {
+      "endTime": "2026-10-09T23:47:34.676839382Z",
+      "startTime": "2026-10-09T23:47:30.249488440Z"
+    }
+  }
+}

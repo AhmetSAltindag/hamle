@@ -1,0 +1,15 @@
+{
+  "recorded_at": "2026-10-10T11:56:15.786495+00:00",
+  "network_calls": 0,
+  "paid_calls": 0,
+  "checks": {
+    "nested_credential_field_held": true,
+    "synthetic_secret_shaped_api_key_held": true,
+    "private_paths_excluded": true,
+    "key_presence_metadata_allowed": true,
+    "generated_python_compiles": true
+  },
+  "original_plan_documents_found": true,
+  "source_snapshot_pending_final_source_ready_signal": true,
+  "secrets_scanner_limitation": "Pattern and credential-field scan, not proof against every possible secret format."
+}

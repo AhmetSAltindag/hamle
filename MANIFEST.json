@@ -1,0 +1,2528 @@
+{
+  "name": "Hamle_Core_Devir_2026-10-10_V10",
+  "private_company_material": true,
+  "credentials_included": false,
+  "secret_scan": "Text patterns, recursive JSON credential fields, original Office XML; not a proof against every secret format.",
+  "files": [
+    {
+      "path": "00_ONCE_OKU.txt",
+      "bytes": 2985,
+      "sha256": "7c72f2c0a0e400715e3bcef581674e66ae67747c0b8f691150a78acacb6de0d5"
+    },
+    {
+      "path": "01_CLAUDE_BASLANGIC_MESAJI.txt",
+      "bytes": 2088,
+      "sha256": "df1d09e7e74bd9cd985f536149839a3c4a1cf13ef4162df341a87c613605c409"
+    },
+    {
+      "path": "02_CEKIRDEK_YOL_HARITASI.txt",
+      "bytes": 4259,
+      "sha256": "a4ea25cd449f65cd36b04c583cf028533d73c79c5e4ac430c40bec0d406da600"
+    },
+    {
+      "path": "03_KURULUM_VE_TASIMA.txt",
+      "bytes": 3873,
+      "sha256": "d98a166cc4071a6678e6fa0d8e8d01983f240c946fb687fb09565f2c208886da"
+    },
+    {
+      "path": "CURRENT_STATUS.json",
+      "bytes": 661,
+      "sha256": "734dcdacbe73c99ea80421ab14d05ec962d25788ad3c9251d370dadcaa7dc30f"
+    },
+    {
+      "path": "OMITTED_FILES.json",
+      "bytes": 1397,
+      "sha256": "2cf2799d9790965c09208c563bcaa0fd0116de0b2e9ff739a84858145f7ac36d"
+    },
+    {
+      "path": "PACKAGE_VALIDATION.json",
+      "bytes": 540,
+      "sha256": "41ecfd56988c4eb2b706d709c6cfa6c3d32b4f0abeeb0e80bb7b5f799ea245bf"
+    },
+    {
+      "path": "hamle/.gitignore",
+      "bytes": 76,
+      "sha256": "08a36ea94782de4f400975beb1a54b01e058f867cb2420e1d2a0c6df296894b2"
+    },
+    {
+      "path": "hamle/MANIFEST.json",
+      "bytes": 33853,
+      "sha256": "57c486b65aaaa40214c02fb28a83b60e017cf517ca6e3330fb1587c0472cc41d"
+    },
+    {
+      "path": "hamle/README_TR.txt",
+      "bytes": 7580,
+      "sha256": "37d43ad522805e4b6181ea6a2c45ca5a2904dada4be68d1cccf42b5481829023"
+    },
+    {
+      "path": "hamle/handoff/Basecamp_Kurulum_Notu.json",
+      "bytes": 1552,
+      "sha256": "e26d37f4dd463024de583a14397d6b695a7887a35baab8877969899aa50a599d"
+    },
+    {
+      "path": "hamle/handoff/GUNCEL_DURUM_2026-10-10.json",
+      "bytes": 4220,
+      "sha256": "775582118e58722e25de0f7a8ff558b19cd9ce8056857252e8253e7db0727f0d"
+    },
+    {
+      "path": "hamle/outputs/Hamle_Basecamp_B09_API_Kaniti_2026-10-09.json",
+      "bytes": 11682,
+      "sha256": "855801b31ab785a9a2880b212817e7768a003fe0c5750d3eed7d14da909470b2"
+    },
+    {
+      "path": "hamle/outputs/Hamle_Butce_Onayi_2026-10-09.json",
+      "bytes": 757,
+      "sha256": "af7ae4ce8fec37212d638ec519d5da1e8fc36acaa9c1fef880bc2772232a7ed7"
+    },
+    {
+      "path": "hamle/outputs/Hamle_Gmail_API_Kaniti_2026-10-09.json",
+      "bytes": 2070,
+      "sha256": "561db3a07cad52c6377e68d18c7ecca95301a5669a7128fabbb3c1b939ae234e"
+    },
+    {
+      "path": "hamle/outputs/Hamle_Gmail_Baslik_Gercek_Test_2026-10-09.json",
+      "bytes": 560,
+      "sha256": "357d414f1eb5f55e4405c98ea3047a53a91af7f6453a3cbbf9411712bb58d2a0"
+    },
+    {
+      "path": "hamle/outputs/Hamle_Gmail_Refresh_Kaniti_2026-10-09.json",
+      "bytes": 655,
+      "sha256": "61f024b04de8a79bd0c2d6e699ac4a238dc9e6819bc2c49f2ce484c505e649b1"
+    },
+    {
+      "path": "hamle/outputs/Hamle_Model_API_On_Kontrol_2026-10-09.json",
+      "bytes": 713,
+      "sha256": "f81780d3b54a6d3aacbc979005b866bcbfd3c531d90d7e07db31226f6a889ddb"
+    },
+    {
+      "path": "hamle/outputs/cloud-v11-internal-20261010/Hamle_Bulut_Ic_Uretim_Sonucu.txt",
+      "bytes": 3983,
+      "sha256": "bb3fb063c6789edd242a7f53f2f79afd0c68b02e20745ae04ffd0e04b10ecdb8"
+    },
+    {
+      "path": "hamle/outputs/cloud-v11-internal-20261010/WAT_Canliya_Gecis_Kalanlar.txt",
+      "bytes": 8111,
+      "sha256": "1448d1070aeb48aefdc16015853f8b2977f2ef15b2e00b21815837d4da5fdd1c"
+    },
+    {
+      "path": "hamle/outputs/cloud-v11-internal-20261010/acceptance-summary.json",
+      "bytes": 1979,
+      "sha256": "992f934cac160525b6ceb91c3bb1cae7211cedb0aa015203788440f2abb3ad7e"
+    },
+    {
+      "path": "hamle/outputs/cloud-v11-internal-20261010/build-verified.json",
+      "bytes": 1035,
+      "sha256": "61ec1e6c32cf38907937209d061e432f053680c640b03cbff199dda99c6069f4"
+    },
+    {
+      "path": "hamle/outputs/cloud-v11-internal-20261010/first-real-file-proof.json",
+      "bytes": 1403,
+      "sha256": "425a3758b8b3a7f0de42a2ff1edfd4e4ff3a00f5978158a6be38f9bcf53719a7"
+    },
+    {
+      "path": "hamle/outputs/cloud-v11-internal-20261010/first-run-diagnostics.json",
+      "bytes": 346,
+      "sha256": "8d534af35725c1536f445301912ed2827456accf4b902db87e834de43f42bbe3"
+    },
+    {
+      "path": "hamle/outputs/cloud-v11-internal-20261010/hamle-account-manager-d7d4b-status.json",
+      "bytes": 1456,
+      "sha256": "179eb5c7e494d47c89d0ea0eba5b5c9ca5afb788045ea9fc46048a13a826d352"
+    },
+    {
+      "path": "hamle/outputs/cloud-v11-internal-20261010/linux-ocr-build-proof.json",
+      "bytes": 5311,
+      "sha256": "7abaae2ccee171803122ed4316c38ccb8caed675d12fd670f9021ddb429bbd33"
+    },
+    {
+      "path": "hamle/outputs/cloud-v11-internal-20261010/local-validation.json",
+      "bytes": 436,
+      "sha256": "daf6a521dc1e572687775558dd9b7facebe7525041dac84ff1b38e9e598e476c"
+    },
+    {
+      "path": "hamle/outputs/cloud-v11-internal-20261010/new-email-readback.json",
+      "bytes": 1181,
+      "sha256": "5c3554f492987080e5748274f479201f3ee2e536623332a7f1221f860ecbc916"
+    },
+    {
+      "path": "hamle/outputs/cloud-v11-internal-20261010/pilot-private-readback.json",
+      "bytes": 21320,
+      "sha256": "96037f3b20f6c23ba5621319ce997ee710e2cf2b789c4d436db3aaa57b99fda7"
+    },
+    {
+      "path": "hamle/outputs/cloud-v11-internal-20261010/preflight-cloud-and-internal-readback.json",
+      "bytes": 19974,
+      "sha256": "61de66e693f1e262bf322e0707458f5b067ee57bb21b7ee37e2afd5c13c0dede"
+    },
+    {
+      "path": "hamle/outputs/cloud-v11-internal-20261010/preflight-internal-parent.json",
+      "bytes": 550,
+      "sha256": "734ddbc34f15a0ff376cfa11a0cad72ce5a9979cf336a77efc5683145fe131b6"
+    },
+    {
+      "path": "hamle/outputs/cloud-v11-internal-20261010/preflight-native-basecamp-attachment-contract.json",
+      "bytes": 1615,
+      "sha256": "b9ea5d135af5c476375e6cf8fcbd91b4182b4bed140364e96cff84e59769f67e"
+    },
+    {
+      "path": "hamle/outputs/cloud-v11-internal-20261010/preflight-old-attachment-contract.json",
+      "bytes": 1255,
+      "sha256": "c7702507f62adc40509fabe51b10791a0bba5f00c270aa4ad2ec0278902a66fd"
+    },
+    {
+      "path": "hamle/outputs/cloud-v11-internal-20261010/preflight-storage-download-contract.json",
+      "bytes": 249,
+      "sha256": "5da7f5d3fffdc7194227ce7faa0dd4b5974527bc91265377135fcab46bc7d0dc"
+    },
+    {
+      "path": "hamle/outputs/cloud-v11-internal-20261010/preflight-summary.json",
+      "bytes": 3689,
+      "sha256": "9818cb7838e0ef6e8110791d267968bc22ebb201f3c1d2bf1a0dd7fd268c8466"
+    },
+    {
+      "path": "hamle/outputs/cloud-v11-internal-20261010/recipient-confirmation.json",
+      "bytes": 447,
+      "sha256": "ad244778171b85c47c5359f38ff19d2df46408a013d41c13435b1fce775cd6e0"
+    },
+    {
+      "path": "hamle/outputs/cloud-v11-internal-20261010/release-advance-1.json",
+      "bytes": 3976,
+      "sha256": "b5f9904da6c60ea87fa0e768482d03ca1bf2e9902a87dd90a4fe1673b631eb00"
+    },
+    {
+      "path": "hamle/outputs/cloud-v11-internal-20261010/release-build.json",
+      "bytes": 2807,
+      "sha256": "eaba2d72a689a311719c5b620d553edab7ed7c546f5fcfad2d98f15149b56768"
+    },
+    {
+      "path": "hamle/outputs/cloud-v11-internal-20261010/release-deploy.json",
+      "bytes": 4146,
+      "sha256": "9f6e4d60da797dc4624b14b0fd140d95cb9c2ea3a5e9f0dc6daa277e2b163880"
+    },
+    {
+      "path": "hamle/outputs/cloud-v11-internal-20261010/v9/before-replay.json",
+      "bytes": 72167,
+      "sha256": "2166fc78faae4f719f07bd4d6579086fbbe7c4f7b689800bbd3577d56e32f900"
+    },
+    {
+      "path": "hamle/outputs/cloud-v11-internal-20261010/v9/build-verified.json",
+      "bytes": 1035,
+      "sha256": "346272e31a11831550dc6d4f3a63b5ae137a5db1248b6f80bf1b531e7c25ab84"
+    },
+    {
+      "path": "hamle/outputs/cloud-v11-internal-20261010/v9/final-journal-summary.json",
+      "bytes": 2599,
+      "sha256": "5382b37186dd736d75d67b9f99dd2f3d668729b9a1a511cf19bdac56ac3c667c"
+    },
+    {
+      "path": "hamle/outputs/cloud-v11-internal-20261010/v9/hamle-account-manager-4sfv9-status.json",
+      "bytes": 1351,
+      "sha256": "629ffde081ad21acad752420c13b4a709f9760bb64af71cbdf0d6494c301a92e"
+    },
+    {
+      "path": "hamle/outputs/cloud-v11-internal-20261010/v9/hamle-account-manager-5jt9k-status.json",
+      "bytes": 1351,
+      "sha256": "61a21df89cf5b4bc91d8e7270d73cbb9b3935cda30ca865afc22dcc9069be129"
+    },
+    {
+      "path": "hamle/outputs/cloud-v11-internal-20261010/v9/hamle-account-manager-8fnmh-status.json",
+      "bytes": 1350,
+      "sha256": "5bbcfd44c58189c6ec82c2e1d867a8461e41d3d7759bdb67872a268f222267f7"
+    },
+    {
+      "path": "hamle/outputs/cloud-v11-internal-20261010/v9/hamle-account-manager-x8vp9-status.json",
+      "bytes": 1351,
+      "sha256": "dffc90ce78d9ad94c1b8f7022b16f04103b760732f08a066c1fa22a8adc28b8d"
+    },
+    {
+      "path": "hamle/outputs/cloud-v11-internal-20261010/v9/local-validation.json",
+      "bytes": 324,
+      "sha256": "4ba7d58da3c72df010b5a7921d61fd219d4f67f3681ae24eac37af3b76325cf0"
+    },
+    {
+      "path": "hamle/outputs/cloud-v11-internal-20261010/v9/pilot-private-readback.json",
+      "bytes": 72167,
+      "sha256": "eb03702d9368a32b6b80bb6d06b21ff5d58427e59286411efd9fe54b32e047a9"
+    },
+    {
+      "path": "hamle/outputs/cloud-v11-internal-20261010/v9/release-advance-1.json",
+      "bytes": 3976,
+      "sha256": "e42efe1ec761d0db41eb41398ce1ef6846a489c748f9e9d711b508cf0196ffa8"
+    },
+    {
+      "path": "hamle/outputs/cloud-v11-internal-20261010/v9/release-advance-2.json",
+      "bytes": 3976,
+      "sha256": "a60a3231429b95d22e1ba973bb77634b8875772be085dd06f6ccab301ebb516e"
+    },
+    {
+      "path": "hamle/outputs/cloud-v11-internal-20261010/v9/release-advance-3.json",
+      "bytes": 3976,
+      "sha256": "a0393c0ea8bbc34761b7dd4737a7275fb3145e44cc5dbf2996b58bc0222d5939"
+    },
+    {
+      "path": "hamle/outputs/cloud-v11-internal-20261010/v9/release-advance-4.json",
+      "bytes": 3976,
+      "sha256": "183b1d91d4b9be09b6ff86fdccf1778100e6766c0958602ad47165edc22db4a4"
+    },
+    {
+      "path": "hamle/outputs/cloud-v11-internal-20261010/v9/release-build.json",
+      "bytes": 2806,
+      "sha256": "e5a8fd38db520a67503da060560be9a11106f848cafcfbbb96b0e099927bc639"
+    },
+    {
+      "path": "hamle/outputs/cloud-v11-internal-20261010/v9/release-deploy.json",
+      "bytes": 4143,
+      "sha256": "fcaf139713e367cb3c2b5714fd1561b7b6dc740f4f4f52632f4f670d78138f88"
+    },
+    {
+      "path": "hamle/outputs/gamechangers-pilot/coverage.json",
+      "bytes": 97165,
+      "sha256": "6a50bf07486359749384d6378f29dd571584657502510cf2e4582dd370b20c6c"
+    },
+    {
+      "path": "hamle/outputs/gamechangers-pilot/current-setup.json",
+      "bytes": 79833,
+      "sha256": "2fabf998143eeb83b0496f9cc9c006ee8b7a956664fcb2b8cee4c899f69b8873"
+    },
+    {
+      "path": "hamle/outputs/gamechangers-pilot/hamle-prova/important-dates.template.json",
+      "bytes": 1162,
+      "sha256": "3106be425d11e57e6ba2d1387fab699e70bbcb1532c057dc23e9bf7a479508c0"
+    },
+    {
+      "path": "hamle/outputs/gamechangers-pilot/hamle-prova/quality-review.json",
+      "bytes": 1069,
+      "sha256": "d3559f73a22406d3c40bf6a992462499cbe51e805891bf468ba603b522ff7601"
+    },
+    {
+      "path": "hamle/outputs/gamechangers-pilot/hamle-prova/rabam-examples.json",
+      "bytes": 18536,
+      "sha256": "8dd8518299abb8b32cddc1ad3495edcc59a86b34020683de79435d1a97b2e6fd"
+    },
+    {
+      "path": "hamle/outputs/gamechangers-pilot/hamle-prova/routing-policy.json",
+      "bytes": 15999,
+      "sha256": "8f2d1df60140364af88289f5c21efdfa8d6f40af19944c07d4325074389c931b"
+    },
+    {
+      "path": "hamle/outputs/gamechangers-pilot/hamle-prova/wat-examples.json",
+      "bytes": 17641,
+      "sha256": "5c9836fd2856e8fb03673838dbf1eae050731425b8abff13f1b34beba659851a"
+    },
+    {
+      "path": "hamle/outputs/gamechangers-pilot/learning/brand_observations.json",
+      "bytes": 75007,
+      "sha256": "2eb44a819820916db5596fd41d4ba78a1ba6f427fcce14737b60da2d0e336385"
+    },
+    {
+      "path": "hamle/outputs/gamechangers-pilot/learning-round2/index.json",
+      "bytes": 19168,
+      "sha256": "0a2cd93c50516c201def159511719eb0bd9a0d6d2a849f81ee4475a8c2e0f5a7"
+    },
+    {
+      "path": "hamle/outputs/gamechangers-pilot/learning-round2/quality-review.json",
+      "bytes": 710,
+      "sha256": "4a1f2fccc3bb7beb68697486731485265698d4febc2219f3f328c90c029bfe82"
+    },
+    {
+      "path": "hamle/outputs/gamechangers-pilot/learning-round2/rabam/knowledge.json",
+      "bytes": 106897,
+      "sha256": "f14481c7f6d66c0a28452ac10ddbdde9a129af7f2e3d3738c7bf4dd95c09497d"
+    },
+    {
+      "path": "hamle/outputs/gamechangers-pilot/learning-round2/wat_mobilite/knowledge.json",
+      "bytes": 114641,
+      "sha256": "d2231c1f62cde6a974d52955e9548673cb797edae06c13f98a093f77f4d5c2e7"
+    },
+    {
+      "path": "hamle/outputs/gamechangers-pilot/learning-round2/yada_multicosmetics/report.json",
+      "bytes": 45972,
+      "sha256": "63093242dff330e1bce09245e5c5bc1533ffd907047293d97e88d619937b1e61"
+    },
+    {
+      "path": "hamle/outputs/gamechangers-pilot/offline/README.txt",
+      "bytes": 9041,
+      "sha256": "fa0deebc6b0d293afd9e5e0d4a5c701bbf4dc1cee0578bdcfb1c2f2662ebb4a9"
+    },
+    {
+      "path": "hamle/outputs/gamechangers-pilot/offline/demo-evidence.json",
+      "bytes": 5630,
+      "sha256": "35437db1153fae478568664f7c4d5194308f7070a19f024a2a7f2ea4b7cc765a"
+    },
+    {
+      "path": "hamle/outputs/gamechangers-pilot/offline/demo-synthetic.sqlite",
+      "bytes": 106496,
+      "sha256": "c641d89022dc5f9cff16b2257fdeff30e4a61e71ce483d77f1eecf603874d499"
+    },
+    {
+      "path": "hamle/outputs/gamechangers-pilot/offline/engine.py",
+      "bytes": 28751,
+      "sha256": "0730c2b79905ec47ca5b1ccc389a926fb5934d59c1ee3430529c742ce829e587"
+    },
+    {
+      "path": "hamle/outputs/gamechangers-pilot/offline/run_tests.py",
+      "bytes": 35940,
+      "sha256": "7e34521032d65eb44ce7745a9ef9069bb9d1eaf767e15649640ff958b306b5dd"
+    },
+    {
+      "path": "hamle/outputs/gamechangers-pilot/offline/test-results.json",
+      "bytes": 10621,
+      "sha256": "0ea4f89c0abc3b94d6d1fdffc3cdad8b0025c345fdb589c5e00ca6facbdcd9b9"
+    },
+    {
+      "path": "hamle/outputs/gamechangers-pilot/roles/account_manager.json",
+      "bytes": 52124,
+      "sha256": "ac578f0ba3eaa1e8b710493602cd8c389de100acd67b9ab86372db06c356342b"
+    },
+    {
+      "path": "hamle/outputs/gamechangers-pilot/roles/copywriter.json",
+      "bytes": 27965,
+      "sha256": "84c9b8ad821226ce7e2487db83b7aedf7594c517280a2361af1307e7adfe3420"
+    },
+    {
+      "path": "hamle/outputs/gamechangers-pilot/roles/graphic_designer.json",
+      "bytes": 28287,
+      "sha256": "6481e92930a8e1c0170b61cb10ee0138d3123f5d79465dca5b2de26c3eac5fb8"
+    },
+    {
+      "path": "hamle/outputs/gamechangers-pilot/roles/motion_designer.json",
+      "bytes": 28645,
+      "sha256": "6229045b56536bb9632b5babba685c51efa37486ee2a298be36ad1147e0d0b07"
+    },
+    {
+      "path": "hamle/outputs/gamechangers-pilot/templates/brand-dossier.template.json",
+      "bytes": 5264,
+      "sha256": "6d6cca73750da869b38f7fcae3cec2515e0a9f97bc5ab32ab5725ebf1585878f"
+    },
+    {
+      "path": "hamle/outputs/gamechangers-pilot/templates/brief-version.template.json",
+      "bytes": 3462,
+      "sha256": "5b94336a9cceb050a0ace2674482809963ac7b3916748ef366a609f761d0e1f4"
+    },
+    {
+      "path": "hamle/outputs/gamechangers-pilot/templates/handoff.template.json",
+      "bytes": 1615,
+      "sha256": "f8e01f3e0f09a71a86ba3ba09af9baa09a53dbcec301bf0d14bd25ec2363897a"
+    },
+    {
+      "path": "hamle/outputs/gamechangers-pilot/templates/knowledge-record.schema.json",
+      "bytes": 10474,
+      "sha256": "f00c520818ed06dbf71baec2903710274d98955e98ab076f01cf712dded68a08"
+    },
+    {
+      "path": "hamle/outputs/gamechangers-pilot/templates/knowledge-zones.template.json",
+      "bytes": 10419,
+      "sha256": "ac4abfaf10b3b511db508af4155b222c3ce95696a931277e6862e345a191ed52"
+    },
+    {
+      "path": "hamle/outputs/gamechangers-pilot/templates/onboarding.template.json",
+      "bytes": 10326,
+      "sha256": "cc2695b431fd2ef829399ea38dae122ae261fc9fdae3be61d1f40fabab75b02e"
+    },
+    {
+      "path": "hamle/outputs/gamechangers-pilot/templates/validation-report.json",
+      "bytes": 1689,
+      "sha256": "9a7d2c42121df0f9d1889773d2c254c8561a962b8d0f78ec8eb87bdcbcad06a9"
+    },
+    {
+      "path": "hamle/outputs/hamle-yeni-mac-devir-2026-10-10/Hamle_Yeni_Mac_Ilk_Mesaj_2026-10-10.txt",
+      "bytes": 10495,
+      "sha256": "1b8f3c31a1d1eb5837c92e752d780689a8e13a959848d50e11355f45667fd807"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/Hamle_Bulut_Calisma_Adimlari.txt",
+      "bytes": 7251,
+      "sha256": "1d326c543ea22cca33a3f20669521969671640d5644e324e7c1e75ce68e894c2"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/Hamle_Ilk_Astra_Ciktisi.txt",
+      "bytes": 1992,
+      "sha256": "873c848e930dc2b354efdf09c4afd55f8db7c56c660a1b9a5dd7b6f62e91c179"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/acceptance-matrix-independent-review.json",
+      "bytes": 65345,
+      "sha256": "133a48b39fd551dbbea9df80fd1f09578c54463c497a0a9f55b680580e5a4ff0"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/autonomy-gap-audit.json",
+      "bytes": 12437,
+      "sha256": "931795741b5f9eecaab26c76d4cd38cb782c0ccb06034187aa800a1001a08de0"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/basecamp-read-verification.json",
+      "bytes": 831,
+      "sha256": "4e1e5520ee6ef9a649be03c8e469624fea49dbd5ec15db88ca075ee344709b30"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-account-manager-access-verification.json",
+      "bytes": 386,
+      "sha256": "8a823164008e762c89cb1d5042f1e53d947c09eb59fa5d4c20ef7ca5c3f70260"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-account-manager-budget.json",
+      "bytes": 937,
+      "sha256": "b60281b69937fa79a34587f4d681de12a2beed068aae4a20683ef44eb3634835"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-account-manager-iam-020256.json",
+      "bytes": 25104,
+      "sha256": "010bf7599d34e2ef615e9d042e5bd56d812de5703aca993d97426ef86b8815b9"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-account-manager-identities-020051.json",
+      "bytes": 7026,
+      "sha256": "50ca3903c2d9f4f3de1127e4ea7245a72f37b2169f3bc96ab987d233da85e65a"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-account-manager-inventory-020009.json",
+      "bytes": 110852,
+      "sha256": "03ecdc458c9a0b27de838076238b5bdb1f8438f511eee86f0f30f85e49f6ca2b"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-account-manager-resources-020137.json",
+      "bytes": 119556,
+      "sha256": "a520cd99ebdd6290324e3e1c85d77d285089499441131b2d97ad1d83272cad08"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-app-build-verified.json",
+      "bytes": 901,
+      "sha256": "ce2880f8f12f424e4188e80f1358a5b0a303f23311aea8080dc71fbb51f85a35"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-app-build.json",
+      "bytes": 2757,
+      "sha256": "8b037bc99497bde3eb8e14088ae0f98c57f1b4a3e1139931acfb5ec1bd2f0fc3"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-app-deploy.json",
+      "bytes": 11760,
+      "sha256": "838aba4c4ca11804028b83df6e4f0e76104cd38940d1bcf1f8e83bf62b0983ba"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-app-deployment-verified.json",
+      "bytes": 8782,
+      "sha256": "4acd6cd756b8124d959e5a9eeb7b2e5c211535693b7ab957ce2f473d28a90e39"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-app-v2-build-status.json",
+      "bytes": 3884,
+      "sha256": "96c88603be268d4073c8c493ad41d60ee62678ec548e7a1a7fa0c868161851f0"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-app-v2-build-verified.json",
+      "bytes": 215,
+      "sha256": "497e3086a60c3333e6313be5a9c7b18d72c7f3b1af3952f97523fd13ee2dc47c"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-app-v2-build.json",
+      "bytes": 3183,
+      "sha256": "943a6caa5c283766dc8144354e5e741b69eec93cf7a3ec1edd4dc58b25c86058"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-app-v2-deploy.json",
+      "bytes": 10298,
+      "sha256": "8556351dcc3f0ac4f505b7d791cb199df161f527183a479ae181a67bde3ec5f8"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-app-v2-deployment-verified.json",
+      "bytes": 9008,
+      "sha256": "b5b56d08a5de70b808a3a0ab5f87fbc5ec403ba28f67c86cde2454ad6e056894"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-app-v2-local-validation.json",
+      "bytes": 363,
+      "sha256": "824d8745fc87c21cdd35069153614f243f2bd4f22c52c415b1edf5d7d72ac478"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-app-v3-build-status.json",
+      "bytes": 3884,
+      "sha256": "33658aee2a6a87733ddaf0ea62a1f6ae6cc858c05603659480726690d1ed1bc5"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-app-v3-build-verified.json",
+      "bytes": 215,
+      "sha256": "76ff95df27f7116f22769776f170dafa4c1488f8e60bc9c300786ec5de7c995e"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-app-v3-build.json",
+      "bytes": 3300,
+      "sha256": "b867f0a22b9ba2781a18f4a92727adb7997dcc2f333efaa91b02ab48e58e36cf"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-app-v3-deploy.json",
+      "bytes": 10415,
+      "sha256": "fc4693719919c77203e8cfd2e99531ddb01c2ffbe742bc6b35ec21ab46aea00b"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-app-v3-deployment-verified.json",
+      "bytes": 9008,
+      "sha256": "ee57e167036edffb7c71dafc1c7551853853afb3080c2ba46bbfb0a29e078b1b"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-app-v3-local-validation.json",
+      "bytes": 320,
+      "sha256": "2afd3b2cf2263584f24c9ef07648c11ff07e70589a0e5c70d8cd334861994724"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-app-v4-build-status.json",
+      "bytes": 3884,
+      "sha256": "caf1165f440ff8c448bd93b2ab3e83454bd40148871d5c407db3bf54b80efb7f"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-app-v4-build-verified.json",
+      "bytes": 283,
+      "sha256": "39db05e701bfe5f0eaa1a227e2e22fc29a2827d58d3390f849337a9acf5e94f2"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-app-v4-build.json",
+      "bytes": 3300,
+      "sha256": "5a8d14caa96bc400601c2c29ee75659600c1fa4e6f7104b72356cbab2d60f421"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-app-v5-build-status.json",
+      "bytes": 3881,
+      "sha256": "a92bd06ae02aa52d7eedb951f5328845b4ec070cd074d20e8b76bd2e352a9098"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-app-v5-build-verified.json",
+      "bytes": 215,
+      "sha256": "7305da803e7f2ace91cc8270e5db44fe15f04fb176685f3b17901d239c195740"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-app-v5-build.json",
+      "bytes": 3300,
+      "sha256": "4ec052c113e20f4264fbae22d0174dc1ccf6a110193f319f53d12feb02e821f2"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-app-v5-deploy.json",
+      "bytes": 10412,
+      "sha256": "29693cc8c9378638001c171dea4504074ef9f1eb9c1f3bb990cc810f5cfc9b24"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-app-v5-deployment-verified.json",
+      "bytes": 9005,
+      "sha256": "135cb402ceb0df43aab9957ace1d6f9b06f8ee3552f4c3c539d0a9f760ed7205"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-app-v6-build-status.json",
+      "bytes": 3884,
+      "sha256": "e05a7273ac0c35034347acd4a1377c8204886e89425973519c91a6f713e90bac"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-app-v6-build-verified.json",
+      "bytes": 215,
+      "sha256": "29f65d8a5f32b968e0292a0abbec2bf2b670565fa133e3227c243e17978ff70a"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-app-v6-build.json",
+      "bytes": 3300,
+      "sha256": "191db3504abac98b6a992d6409fa1d786a966e4751037b1605a58b19cfd43dd8"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-app-v6-deploy.json",
+      "bytes": 10515,
+      "sha256": "37483972b126b9c7df832fe468c8edeeaa671df4ae86a5c55504df1d87485a54"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-app-v6-deployment-verified.json",
+      "bytes": 9008,
+      "sha256": "2c473a7839deb05084d2eed43edcbca04c72d8aca70494729f5cc5319ec61e3c"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-app-v6-local-validation.json",
+      "bytes": 2609,
+      "sha256": "58621e2dcb6fe1e12fcad4dd93370c8bf50365e8dc96fc8449f9a4a4d3a3ab0a"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-app-v7-build-status.json",
+      "bytes": 3884,
+      "sha256": "174792c995e85109208a61e18ccbb090e2afc8f3e335911c991104af7631571a"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-app-v7-build-verified.json",
+      "bytes": 215,
+      "sha256": "6172245a6887948f736bd7cbc083cce51a0f61e8df11f2389f7656682a0340c2"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-app-v7-build.json",
+      "bytes": 3400,
+      "sha256": "b4609b6eea0d61a23745f4d831121ed37d05b4a3b21184be77bc239da6d3a078"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-app-v7-deploy.json",
+      "bytes": 10544,
+      "sha256": "6f2709e0ba07f93e8defb082d27ae470fae2a9a7684b196898a9703fa3ca9ee1"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-app-v7-deployment-verified.json",
+      "bytes": 9006,
+      "sha256": "b066bf62e9f812b3f9a6b96df638e00d413d9bb060322e5b4ce8e57e72b0fbc6"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-app-v7-local-validation.json",
+      "bytes": 2609,
+      "sha256": "df2dd1c601cd14e4777fb16bf833224714c1626219e1e36b8a706645e24deb47"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-budget-import-snapshot.json",
+      "bytes": 1350,
+      "sha256": "ef83f68eeae1785a47f3c8cec8802d0e903c70919e52d4a15ae17a4ccfcc25e0"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-execution-v2-identity.json",
+      "bytes": 13656,
+      "sha256": "c5ee8de43b3a8cd375ca15f019a8752be532c8ce32ea0e195c9a3bf26cf84de6"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-execution-v2-internal-review.json",
+      "bytes": 13641,
+      "sha256": "fdd71cb706cba95ff7fb534318bea30a51d84ada8dbe10b55abe4d040338ed18"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-execution-v3-first-internal-dispatch.json",
+      "bytes": 13322,
+      "sha256": "b5b83d4d6960de80df38deb8284331706911dd2d536b6e1b52ce604ebbb5ca31"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-execution-v3-readback-reconciliation.json",
+      "bytes": 14649,
+      "sha256": "b3ff87a90023c94ef6e0cd1341b692e3695366048ea18e60af0d60c59b04876a"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-execution-v5-final-readbacks.json",
+      "bytes": 6632,
+      "sha256": "829be4d28704eccb4a341e3bd0a266ae055ae15d41354344240ff241c7367a8e"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-execution-v6-first-followup-review.json",
+      "bytes": 6591,
+      "sha256": "2f1f60ba4ea0e629deac62162d343d515535dcf17d766538c639d412c623cd6a"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-execution-v6-first-work-track.json",
+      "bytes": 13114,
+      "sha256": "554ab2246183bf37ca09d8276440df26a7060905d2e1ae9c62bfe56ae98b318a"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-execution-v7-first-followup-dispatch.json",
+      "bytes": 5700,
+      "sha256": "6a851b5887a66742afb88a7c9f781dad14aa344afa47d4923b6188597ddd4459"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-execution-v7-followup-controlled-recovery.json",
+      "bytes": 5796,
+      "sha256": "c768610c88844f27c464b4a5ab92524b7d233d6bfcd90d7b4f7376419ab0d535"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-execution-v7-followup-own-reply-check.json",
+      "bytes": 12949,
+      "sha256": "6d05dc5bd370d6843696e5f1bf1527011bde76dfeca5c255bb8c6a0fab1da3b6"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-execution-v7-followup-reconciliation.json",
+      "bytes": 13201,
+      "sha256": "349fe18c0dbc82ff9051dd98cf024dfaf12c25793d07c18db0e48147c2447be4"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-first-dispatch-state.json",
+      "bytes": 9660,
+      "sha256": "cb629fab8028e1ccea5e74bb411b3dcd8801308756ee824895b0e1f19b41198b"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-first-internal-completion-before-v5.json",
+      "bytes": 10496,
+      "sha256": "158d9cdb11ad0521ca8d15fcbd28ea90e007eeed1741ffd83330247b50bf0108"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-first-internal-completion.json",
+      "bytes": 11325,
+      "sha256": "a454ad11b05d3944a07a931c0f938f658c14614e4bc9ab5ce27992965cf21864"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-first-mail-readback-diagnostic.json",
+      "bytes": 3318,
+      "sha256": "b98a5e3df87763469623f15b2fadc52ab9b36ed70635298a638108919456294e"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-first-real-approval-state.json",
+      "bytes": 1570,
+      "sha256": "e01662c3861e00b0921dd66b8ebdc4e64b2e3dd4c4262189b91442150685cc33"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-first-real-inference.json",
+      "bytes": 8026,
+      "sha256": "0a87645176c5bc108dab43628a161fc037c95700878278353a8bd242a3961a11"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-first-task-readback-diagnostic.json",
+      "bytes": 4475,
+      "sha256": "bb66f909b9bd65470265575131d9b27ca38e121e109b0c5f74281ea3198f64cf"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-foundation.json",
+      "bytes": 3293,
+      "sha256": "1a2a78cc2039aa60d79ce1b13a0061915fecea6e98802640bdecfb346f9a3c1c"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-probe-logs.json",
+      "bytes": 2588,
+      "sha256": "96fe61cf818381533884c297781bc862a18891016311b6831f64609ac3c358b5"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-probe-records.json",
+      "bytes": 3130,
+      "sha256": "6f94cdf28ced30122b2c86455fa8bdf3b29c4ff6ac355d865b7def28b9a322eb"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-setup-verification.json",
+      "bytes": 2065,
+      "sha256": "bc72a2c7f5cf36017719d76ccfcddd0faf7d72058dd3f5fe7f6633ed30f76d04"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-source-package.json",
+      "bytes": 884,
+      "sha256": "52b2f31837c183e769c2c19fba9606ff3ed6a678990ba0644b882c4d7ce2c7d6"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-state-seed.json",
+      "bytes": 678,
+      "sha256": "0c4a6497113ea223cad265fde1104f560ec773e036d60acdf6282849bb234a9a"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-task-readback-reconciliation.py",
+      "bytes": 632,
+      "sha256": "2eee38f2e89f13072e5431c96288aeea828bcd4fc812583dba171e8a1ac452f3"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-worker-credential-diagnostic-results.json",
+      "bytes": 15769,
+      "sha256": "ddbc622b9d4bae9d2e3c3a0c70892fae420cba7247737292ba6606426ac5738f"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-worker-credential-diagnostic-start.json",
+      "bytes": 4423,
+      "sha256": "db5ff707b64edbf45d2abf15b523cda4d4341400032dc46ac7d415d0a99de4bf"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-worker-diagnostic-results.json",
+      "bytes": 18018,
+      "sha256": "5c9ef314f337abb0cca9d8bfefb075ab4fdd1822752c52d7ddd8914e14f7efb1"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-worker-diagnostic-start.json",
+      "bytes": 4477,
+      "sha256": "448bf05f36bf94ee68972999bd0cbf8bcbe529baabd0aa97ce77f3bd717057c5"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/cloud-worker-identity-verification.json",
+      "bytes": 12918,
+      "sha256": "8ea6ebed812084086437b2167d9559a060f242672db84d2f5a33e6dd03076345"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/followup-and-scheduler-current-status.json",
+      "bytes": 1837,
+      "sha256": "32cf73abfb4f46bf335d107c5fbb7d50b365143294fa5393e7d39bea6c56bb90"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/followup-budget-preflight.json",
+      "bytes": 1352,
+      "sha256": "0482704b5325ee4742081ea0d0e485eee3e4bd2e3699e9d746bcaca5f89acac7"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/followup-completed-acceptance.json",
+      "bytes": 6297,
+      "sha256": "41b48acef0cc3d4a9e65e92022ca993752f4e709e5af7b0f191f78ead00eb2ab"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/followup-existing-work-binding.json",
+      "bytes": 1179,
+      "sha256": "2019e906e37035f1fb422abb112be8cfb36c9e9ebe745a0b7b3e4eaa5f4690a8"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/followup-latest-cloud-state.json",
+      "bytes": 13205,
+      "sha256": "fb7243530d91e339d98c2da86408d71077355ef095d2288931348b50d41fbaae"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/followup-latest-recipient-evidence.json",
+      "bytes": 744,
+      "sha256": "71f139e3890b267f84a0b0cf3488a52c6b9e8eb0128985675b859d76ac0a97fd"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/followup-real-source-read.json",
+      "bytes": 3431,
+      "sha256": "989ba0ce682e440eff4845af1a879114d7da3e51cbdffe672f10d664e2231af0"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/followup-recovery-preflight.json",
+      "bytes": 914,
+      "sha256": "5953a76241b106f7cd4f3464395b14f5c60dbb2263be239be39abe6d6522a848"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/followup-start-state.json",
+      "bytes": 10369,
+      "sha256": "fe5dd7c6ac02d7558d0604ddd51b7f6a496d9bcc08eba66a27fc6ff25381cbbc"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/followup-v7-model-usage.json",
+      "bytes": 1016,
+      "sha256": "759bd449288e5276c50687463c53328d3124412a31977900849eb02f9836b2a8"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/followup-v7-review-state.json",
+      "bytes": 25233,
+      "sha256": "b5ec0f4507b894743f486fae3c4b25ff3e53c048b9d6003d2495bda24619daa0"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/followup-v7-user-delegated-approval.json",
+      "bytes": 1568,
+      "sha256": "6fa5ab968535100aad1554abd0a71da11a94b592da70b5220971f4a27b325461"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/hamle-basecamp-credential-cloud-import.json",
+      "bytes": 341,
+      "sha256": "393f19b8a64d6b1303c004f4eb10873c7b4832528aecde7f08c01c07996c5b98"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/hamle-gmail-oauth-cloud-import.json",
+      "bytes": 325,
+      "sha256": "d1c1ea80b7a3fc3c3261f920d86749a8b8118e191390bdd42a1116faac7b33dd"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/hamle-openai-api-key-cloud-import.json",
+      "bytes": 331,
+      "sha256": "756b5626399410748e10a81df3bb30e88fa40f97a298f402ae0205f5ec944cf1"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/hybrid-local-preparation-validation.json",
+      "bytes": 988,
+      "sha256": "b90555d830f7851cfe942a8662c04c3d9e4783c9da855f524c22705d673760cb"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/hybrid-preparation-budget-read.json",
+      "bytes": 594,
+      "sha256": "a93f9c365045a0f009281fa94f373ec8f5328ad3c2219d300fc194cebe43e91a"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/hybrid-preparation-current-status.json",
+      "bytes": 3794,
+      "sha256": "d2d02aa9c3d8d1605682eef330c8330bb7be04f691e82c0441c459f21ebfd64c"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/hybrid-provider-billing-check.json",
+      "bytes": 562,
+      "sha256": "66fe0f94a3e814999a0f54cffa6fe96f2d8a8f22754eefdf7dc84bf82395b332"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/hybrid-weekly-cost-planning.json",
+      "bytes": 4624,
+      "sha256": "9b4ed8ccca057776af05c94db19fac13ef9a23564a7fbedc5d3f2c96e01f1b14"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/internal-intake-live-read.json",
+      "bytes": 1693,
+      "sha256": "0eb52593c2affa358d24f66634cba890da9151375efef8109708e7eee34ed507"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/internal-intake-preflight.json",
+      "bytes": 1322,
+      "sha256": "d45891d203d30f4ede22f578f640007c9a52ceba5905fc7030ca17853093ff5a"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/internal-review-control-verification.json",
+      "bytes": 3989,
+      "sha256": "e52d56cc877f74bed52fbdab6a297b43eeaa14402ab83839509d8d150b6f61c2"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/internal-review-human-takeover.json",
+      "bytes": 1510,
+      "sha256": "5baa8c6153440080df9a4e518deb63b9472ef6e1957c67b8ca15d2144dd9303b"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/internal-review-import-20261010-013535.json",
+      "bytes": 2889,
+      "sha256": "d27b51d1eeb2d5a5c69494dd77250d7ae369a7fd3bb02d51cf31581e349506fa"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/openai-billing-funded.json",
+      "bytes": 801,
+      "sha256": "880491b114a991b70542b99569238aeec6967e95d1dde41a75bddd0d5d1623a5"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/openai-first-inference.json",
+      "bytes": 5038,
+      "sha256": "861557d3771a49a0dd4b571f75866ff6f82756136f171642063dfbc28b8f2f48"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/openai-metadata-verification.json",
+      "bytes": 407,
+      "sha256": "6c72210ae391996f8160960579b114541424fb82b882ecb55c67a6f1bcfc62c1"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/portability-hybrid-audit.json",
+      "bytes": 6104,
+      "sha256": "a966f36cec0eadeeff0a493463c786359867eaec84f515ba77dc36e16fdbcea6"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/portable-business-state-post-eval.json",
+      "bytes": 37902,
+      "sha256": "c0c3cc2672c35fc5ecef3b037d7094848b26baee93d494c6504f5cc55f9e99fb"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/portable-business-state.json",
+      "bytes": 36977,
+      "sha256": "b285ed31a31448d87555951697d0af4894e2ee6eca552d8674de1f2e16f4066f"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/portable-handover-preflight.json",
+      "bytes": 545,
+      "sha256": "e2729b3ff509d88e50d7d86f448d3371853510f7e297744cce5771bf21863bd2"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/runtime-local-verification.json",
+      "bytes": 1479,
+      "sha256": "2f85d6fef0970b7f689d0b36bb301b052b049d56d4bb14819a93c1a8ae91fbf0"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/scheduler-data-access-audit-config.json",
+      "bytes": 228,
+      "sha256": "f2059b8a32d69ada02d39570f8fe3563f80ebde8b8c6299752f8be80e9d63330"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/scheduler-enabled-denial-observations.json",
+      "bytes": 1536,
+      "sha256": "88f6753bf3644139c1309db33f617c79fdad80bd99147f841a20354e1573d1ea"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/scheduler-paused-probe-rejection.json",
+      "bytes": 6091,
+      "sha256": "1b7295e24b0acf69305e95cfd6fc71eff889e3473624742add07e04b991ce2d0"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/scheduler-pilot-journal.json",
+      "bytes": 13897,
+      "sha256": "338265832310d989fedd586887442abdd33814b5f9d59b9797229a19cd9b75c3"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/shared-budget-after-openai-funding.json",
+      "bytes": 594,
+      "sha256": "23b94e0bfee6d3bfd482ae0b54e7a4da5fa799dd290c470e63de21c86283dd2e"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/shared-budget-after-probe.json",
+      "bytes": 566,
+      "sha256": "b4608bb37f0144e936da923aef9d61b1d664eb4eebd79494e5457a48d084b1a5"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/shared-budget-initialization.json",
+      "bytes": 1363,
+      "sha256": "64c805c5b6ce6f4146c0bb6a7dcd44d157edc10c8187359a51443ce9c1114a1f"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/sol-evaluation-semantic-review.json",
+      "bytes": 19109,
+      "sha256": "2741e430c23a8bfb79735ec9fb00cb775efddf2543942c4ae7e021891ee25e18"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/sol-medium-five-synthetic-20261010-v1/1-routine_complete_brief.attempt.json",
+      "bytes": 176,
+      "sha256": "879b478bec40d314edecd03e19f6eb3bb88012d2f2d720ab4edf8bbfa29192ea"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/sol-medium-five-synthetic-20261010-v1/1-routine_complete_brief.result.json",
+      "bytes": 3776,
+      "sha256": "f4824a9b083bff995b2fbd16e344f41bda2fb0b61cbf7f259dd85e4538021a48"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/sol-medium-five-synthetic-20261010-v1/2-continuation_brand_separation.attempt.json",
+      "bytes": 183,
+      "sha256": "1560d6ffffb6fce1122e61084236d2f427eae9dfa0efb16d58be02432c8a6c1e"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/sol-medium-five-synthetic-20261010-v1/2-continuation_brand_separation.result.json",
+      "bytes": 3378,
+      "sha256": "a2d3d06d79f260424d4485569e79008d6f03899e4ca9e1d47d54015437e17472"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/sol-medium-five-synthetic-20261010-v1/3-commercial_extra_scope.attempt.json",
+      "bytes": 176,
+      "sha256": "a4a81ae6f14ad44f8417207406f9c5339c61b84d07f33e57ed2a8ebbf722a138"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/sol-medium-five-synthetic-20261010-v1/3-commercial_extra_scope.result.json",
+      "bytes": 3754,
+      "sha256": "fd800be12ed3c2b3d517b6478c51824d2ccc7c04e0119a3959933dac20a31a92"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/sol-medium-five-synthetic-20261010-v1/4-open_strategy_and_social_followup.attempt.json",
+      "bytes": 187,
+      "sha256": "43e9c2b275aa2ac5acca51a5ec074338a2e3b30893b03d8b53a15a7a799c3696"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/sol-medium-five-synthetic-20261010-v1/4-open_strategy_and_social_followup.result.json",
+      "bytes": 3721,
+      "sha256": "ffc1a8ae17c753576dc49a054a294052acdc3966d42c7268b70af93202716f29"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/sol-medium-five-synthetic-20261010-v1/5-quoted_instructions_are_untrusted.attempt.json",
+      "bytes": 187,
+      "sha256": "76430e96ebd8f2d81d201d001b0b52c3d358c6c990f2a361c1d0422b2a020e23"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/sol-medium-five-synthetic-20261010-v1/5-quoted_instructions_are_untrusted.result.json",
+      "bytes": 2628,
+      "sha256": "dc788a5fc9b58efd2b4e5dab030932ae4517166dd616daa6a8d7daeac895e52e"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/sol-medium-five-synthetic-20261010-v1/run-start.json",
+      "bytes": 353,
+      "sha256": "5d1ed18a426680c52f357df183cd2b6f074dfa5eebe35b8c7dfdd01a1dd268b7"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/sol-medium-five-synthetic-20261010-v1/summary.json",
+      "bytes": 499,
+      "sha256": "2f0cd827d7ba231ddca7069388effdc733037eb3018854865f8096e400502592"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/user-decisions-hybrid-preparation.json",
+      "bytes": 1405,
+      "sha256": "7458e7a9a29adfc81f61ce93bbd81ffd05566e61933340313538f6f5bae1ddf3"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/v11-acceptance-baseline.json",
+      "bytes": 22036,
+      "sha256": "b15cb74528b369662d21290ea1093a10bc166432b9be09355f0c279431809e4d"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/v11-current-status.json",
+      "bytes": 4018,
+      "sha256": "810e619fa28e6ad1e507b87dcf7ad8375cfbac7141d7f3a5f664d35b6ea47521"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/v11-local-validation.json",
+      "bytes": 1724,
+      "sha256": "8f9f8c562038f9fa069a8ff4eb48fe198d068b91a21d968689ca929b16557be5"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/v11-modules-independent-review.json",
+      "bytes": 10114,
+      "sha256": "265762f620c86c46c7800a0ce7a35e317cee378e5fbdeea27efa9cdf8af70bbb"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/verification-before-account-manager-cloud.json",
+      "bytes": 7207,
+      "sha256": "611420a67961c02aec5d857b242891e94debd737dff88ad4a77c9e45d9d36061"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/verification.json",
+      "bytes": 57694,
+      "sha256": "2cfec50c6d673aa84f8bd40cba894cd21058b4b8b2646caed4e8dfb6ff51509f"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/wat-pilot-review.json",
+      "bytes": 12087,
+      "sha256": "8662162089d27120863af98b173c32c0265de5152aefb4462e4bda8c8ab56e8b"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/wat-scored-note-delivery-validation.json",
+      "bytes": 1891,
+      "sha256": "4a0b75ef2692e1d5c2b5d8b46ad452590a9c3b6294e6c66a82a282ef9b68f9d0"
+    },
+    {
+      "path": "hamle/outputs/new-mac-2026-10-10/weekly-cost-estimate-internal-pilot.json",
+      "bytes": 973,
+      "sha256": "972eb7befb4b61c04f2ba203cf083b155ade5c1633d8808e15169e466cb5fc53"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/WAT_Akis_ve_Kararlar.txt",
+      "bytes": 6637,
+      "sha256": "eb61aba9cbb7efba8f4f6d7b4cb5b32ce60c384206742fc86d243b23735c908c"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/assets-metadata-evidence.json",
+      "bytes": 821,
+      "sha256": "625ed168e27951325e272d53b2cbab9a3624cc5439012e5810ad0a17f82805e3"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/basecamp-read-evidence.json",
+      "bytes": 6477,
+      "sha256": "c24abb4a150236ed4640497f5dbb6bcad13ca7c932c0b06a3a86757f0126b1ed"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/current-brand-assets-10392828700/WAT_Marka_Kilavuzu_Inceleme.txt",
+      "bytes": 4330,
+      "sha256": "77e7cb44b655a1c0fb4177efa9c719a17576265f944c3e475feefa5ad9909965"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/current-brand-assets-10392828700/brand-rules.json",
+      "bytes": 8822,
+      "sha256": "fdabb6a544a7abbe33da8b42ede031daa620b4f7d51d96e8ea4d83938f5cdff9"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/current-brand-assets-10392828700/metadata.json",
+      "bytes": 2055,
+      "sha256": "f8e77cb1fb476b19e801ae2f00a87095dc198a1f9334970eaf7207a4cc4e13b8"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/current-brand-assets-10392828700/page-text.json",
+      "bytes": 46185,
+      "sha256": "08581d2b672deee7721d72f4f96ba6f1896e9f943b44351c0d56deab21c29928"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/evidence-manifest.json",
+      "bytes": 3325,
+      "sha256": "18664a8a19e062e726184ab76f93989fa3747927d35b9901e906e5f165902e3e"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/example-10064527849/task-and-comments-read-evidence.json",
+      "bytes": 52588,
+      "sha256": "8fdaade659f82a8142d21c68f43a9cc11254ff1a864e088f79d2db8063cbc7f8"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/example-10064527849/workflow-analysis.json",
+      "bytes": 11531,
+      "sha256": "9c98a8d178d5ff4948aee417ce2f9bc065fe5a7af75bce2e413f82d2d2dd564b"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/example-10064527849/workflow-analysis.txt",
+      "bytes": 1980,
+      "sha256": "95ab5c4abd44028917ea1bfc6c706e4bbb4dc4a4cf1648390e8b5aa86298f641"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/example-10309337809/analysis-report.json",
+      "bytes": 7218,
+      "sha256": "26fe7947685dfef6f040057558fbbfe05f5a0c59a4938e3704f1fe1a2beb9a15"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/example-10309337809/artifact-manifest.json",
+      "bytes": 3443,
+      "sha256": "b323b9080457b7fc86e9d0908316b37f38ff1ab3941542fb7475cffaee8ef112"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/example-10309337809/evidence-checksums.json",
+      "bytes": 457,
+      "sha256": "58a47dd8bf5d514abe7139a3c0df550984b40e272cdb1a799689f1e1199fc86f"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/example-10309337809/selected-file-downloads-1.json",
+      "bytes": 1548,
+      "sha256": "20daeeef72b64985205cb5c172e1a4bf1a7b83bbdba014bf4a54f164bf677240"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/example-10309337809/selected-file-downloads-2.json",
+      "bytes": 1546,
+      "sha256": "9d8828338cd367b4f0a4ef658690f39d3804ab98047d81ae48252b28017e51dd"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/example-10309337809/task-and-comments-read-evidence.json",
+      "bytes": 25045,
+      "sha256": "bb22a96e8368ffc0f5d7e294d3e0a56bd2575156eaf20c8d10ad3dbd5dd32d17"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/internal-quality-rework-user-decision-20261010.json",
+      "bytes": 616,
+      "sha256": "5c0da349e0d7fc0476206a649a7be7c97809f94df1bc39d521a299574c208b0c"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/local-validation.json",
+      "bytes": 5801,
+      "sha256": "6bb0ab756944aa20e4ad2cdfd92586abb8b3bfd528481e1935681484d408bc1f"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/planning-validation.json",
+      "bytes": 4498,
+      "sha256": "f23077abd2c5fd5b839278305c198c052ca45169fdcf1d71291b001496a04dbc"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/real-output-shadow/WAT_Canliya_Gecis_Eksikleri.txt",
+      "bytes": 10819,
+      "sha256": "66366ec2c4b2d8dd30432ac3e844c5da3db59069d4e83e3e54abb41634b7af10"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/real-output-shadow/WAT_Gercek_Dosya_ve_Yetki_Sonucu.txt",
+      "bytes": 3832,
+      "sha256": "c2ee467406d673605e7765b5d019bfa8c443b9054e0df4e8aa50834fb1ee6f27"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/real-output-shadow/WAT_Gercek_Uretim_Kaniti.txt",
+      "bytes": 6323,
+      "sha256": "c71225c1c85dc0367942775de596cb4835a9d29bab90e2a068c0285daabc6d9d"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/real-output-shadow/WAT_Samet_Bulut_Dogrulama.txt",
+      "bytes": 5723,
+      "sha256": "f879b8346818f9fa06d515e8f2fd6cd48d2e038a580baeed047dc1903976b5df"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/real-output-shadow/WAT_Samet_Uretim_Zinciri.txt",
+      "bytes": 4343,
+      "sha256": "1043ba9b1ee1ea2c99862b738cfe25613acf117460feb18eba51addfc4eb207f"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/real-output-shadow/acceptance-summary.json",
+      "bytes": 15973,
+      "sha256": "0e9c887c72899066c3f917919b1f070386a426ccf38a598c3711476ac2da2ae2"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/real-output-shadow/authority-cloud-probe-revalidation.json",
+      "bytes": 401,
+      "sha256": "305c2d04c054da8e8d512647c6e6a3294c089f863d5d8734378263015f5132dc"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/real-output-shadow/authority-cloud-probe.attempt.json",
+      "bytes": 236,
+      "sha256": "dbb3d50d233201723d5c122b4cc5b4653c30a62cf05937a982a56ef1c921ff4b"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/real-output-shadow/authority-cloud-probe.json",
+      "bytes": 1064,
+      "sha256": "e4287043da2ac3e788a9a379057a8a2ed0f817db30381893f926e03e348ca699"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/real-output-shadow/budget-preflight.json",
+      "bytes": 913,
+      "sha256": "83dc1734c0eaed3878018f75730c13b06b3e014894a08e3bd60474aac7000b43"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/real-output-shadow/cloud-v10/build-verified.json",
+      "bytes": 1036,
+      "sha256": "ea2d7bbf4abe89bb855d68f49b716d22d55df2f04bf3c531ff53fdff3633e323"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/real-output-shadow/cloud-v10/bundled-media-validation.json",
+      "bytes": 264,
+      "sha256": "abb569c3b43760206d0ce0c588b7953406e9d60dcdd230081851558592aff7c3"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/real-output-shadow/cloud-v10/execution-receipts.json",
+      "bytes": 2789,
+      "sha256": "433b71758bf259de76b805161fc73e127862ba57ca0deea16ca4e4aff63e84e5"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/real-output-shadow/cloud-v10/hamle-account-manager-2cq6w-status.json",
+      "bytes": 1351,
+      "sha256": "76d36cf7847a37ecbd466790024bd43ac0e335ea89b64ecb7862be8b9fcebd4c"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/real-output-shadow/cloud-v10/hamle-account-manager-ngn8b-status.json",
+      "bytes": 1344,
+      "sha256": "061468d911d7a26052d97120351461d74bd2c0f98ee11685c2dd71c54f10049f"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/real-output-shadow/cloud-v10/hamle-account-manager-q8s4l-status.json",
+      "bytes": 1341,
+      "sha256": "d61ec82fb1e5c3ef586903701e7d8283739bb11e440c9aa960acc070e412c512"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/real-output-shadow/cloud-v10/hamle-account-manager-z7qt9-status.json",
+      "bytes": 1342,
+      "sha256": "567f1afa77bdeb9d7bad49a33812022cb7cf90ab5fb85b767e2a04b9c266f684"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/real-output-shadow/cloud-v10/local-validation.json",
+      "bytes": 9057,
+      "sha256": "707b7470eb7243c874d83a2cb9895948ec37e2af55b9b49cdbc743ee211f478b"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/real-output-shadow/cloud-v10/release-build.json",
+      "bytes": 2755,
+      "sha256": "34fa14f711788fa8c7826c5afc551acff26d7dcb76399ac3b82c2274df3fdf6a"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/real-output-shadow/cloud-v10/release-deploy-control.json",
+      "bytes": 5387,
+      "sha256": "714b44a430b93eaf17d435da6dc1cce97e0b7daeef392d33eaae45c0dd3d4c7f"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/real-output-shadow/cloud-v10/release-deploy.json",
+      "bytes": 4100,
+      "sha256": "e9ff5ba5f17f82780838e10154c8faba3f7abae558388ac008a311b4325ac550"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/real-output-shadow/cloud-v10/release-run-a-1.json",
+      "bytes": 3918,
+      "sha256": "1cb3f8466841a14898c40231e98341ef80302328d8fb8c52f8b1b0bc867e0787"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/real-output-shadow/cloud-v10/release-run-a-2.json",
+      "bytes": 3918,
+      "sha256": "a9649a0d08c2d325579b1aa6a0943cd5e74e5e529e685d5e541a0761fc884a6d"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/real-output-shadow/cloud-v10/release-run-b-1.json",
+      "bytes": 3918,
+      "sha256": "ef3c018b168a0b6565dd34d3d008267102c919115c940bd95e59afb2231a9cfb"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/real-output-shadow/cloud-v10/release-run-video-1.json",
+      "bytes": 3860,
+      "sha256": "60909e1f64da1b3a383c8f3953a2a2583dc65ed3a38046aed4c859247fefd378"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/real-output-shadow/cloud-v10/shadow-private-readback.json",
+      "bytes": 69529,
+      "sha256": "11a68836de44c0cf0f91a7631b855198a2f1c1ebe0f2f3993c332252073ce514"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/real-output-shadow/download-selection.json",
+      "bytes": 1617,
+      "sha256": "17ea6b17f2788d22b66d0e5fb126197525803bc6747e8ffdf2bd631d91cc3bd0"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/real-output-shadow/existing-file-revalidation.json",
+      "bytes": 6468,
+      "sha256": "b4a183350f1f6479a1a1feb3597fa40bdbcd9d330fedf2c53b72dcaa89ab5d4b"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/real-output-shadow/read-summary.json",
+      "bytes": 1759,
+      "sha256": "2009d4086102a44ad50efbb81289fceea9d11a3989c22d91ed262efc4a939399"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/real-output-shadow/real-output-audit.json",
+      "bytes": 17856,
+      "sha256": "ca5fb9dd3c7cf2a1f4222cc7b087d293313cf84aae8ec341743f657318d78971"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/real-output-shadow/samet-cloud-independent-review.json",
+      "bytes": 7627,
+      "sha256": "b48d4c5179ce72273146e23c4f752b54239e847cb640a1dc5027926ff61c0fc6"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/real-output-shadow/samet-download-selection.json",
+      "bytes": 328,
+      "sha256": "bbb6a60455ee2207d56016cf9cd8080faf6dd2e45325a3c3e8d803872a7855df"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/real-output-shadow/samet-file-downloads.json",
+      "bytes": 2551,
+      "sha256": "db9ece3656f1d7149c748bc4f4c0fdc3d96492a8cfd23f178ac974e332ff8b4b"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/real-output-shadow/samet-local-frame-observation.json",
+      "bytes": 2087,
+      "sha256": "c5a8a0c7cd94b361b641fb7442dabd5dd523ceb62eb2b850d07d45bb367c6b7c"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/real-output-shadow/samet-output-audit.json",
+      "bytes": 5883,
+      "sha256": "87961047a74d1c31067c5d0af4a05b307e68a72dd59a88bbb901a9ad9cd0f85e"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/real-output-shadow/samet-voice-source-reference.json",
+      "bytes": 404,
+      "sha256": "e4c0a7bc8aa423676989a508d12525c509e5cf4830267dd12d0b0ae45679432d"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/real-output-shadow/samet-workflow-evidence.json",
+      "bytes": 3873,
+      "sha256": "d30fb5617a2b22aa79f5f14496a8cd8f45df75da53d9f9c19291f1a00f095e3f"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/real-output-shadow/selected-file-downloads.json",
+      "bytes": 13681,
+      "sha256": "f0205433cd6bc10c41f18154fc442955be5a9065761a7de3e2c3046544f8a7e5"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/real-output-shadow/selected-file-inspection.json",
+      "bytes": 17023,
+      "sha256": "2938be9dc7148b167ac5a0456ed280fdbdd8da8c88bcb754660d203ce9f20de4"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/real-output-shadow/voice-source/audio-metadata.json",
+      "bytes": 723,
+      "sha256": "ce1cca58bfdd523982ff965d438283441b4ad5f7ed12e5e1bad22ce30cc6b140"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/user-decisions.json",
+      "bytes": 1230,
+      "sha256": "8169eb48db9914f5365d40504a05d27b79cc2a409fdc38751e3dba97a0497395"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/wat-current-status.json",
+      "bytes": 15973,
+      "sha256": "0e9c887c72899066c3f917919b1f070386a426ccf38a598c3711476ac2da2ae2"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/wat-planning-catalog.json",
+      "bytes": 14286,
+      "sha256": "4dcbf502e59b0386f154403f15e3c60a6c2e094e136104567c2fcd3d397a2d44"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/wat-quality-rubric-draft.json",
+      "bytes": 3366,
+      "sha256": "0f87dca9bb5931500200d033d3b2d25dd6c9b72baf09d6a38de64a9e73c10999"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/wat-status-before-real-shadow-20261010.json",
+      "bytes": 4706,
+      "sha256": "9610cb0640f7d1f56a6d74d9425bf4e4f9615d33e8088186abaa41cdc37801b9"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/work-authority-prepared-policies-20261010.json",
+      "bytes": 6460,
+      "sha256": "ae25afbd70ffdcbd8c19de19a3a87d2f139815f86c7228b29325b5966887459c"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/work-authority-user-decision-20261010.json",
+      "bytes": 1143,
+      "sha256": "a462e98560c244754a743bca7c6b09cdda41f5e35fc718e7c2f91e8b82cbcf08"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/workbook-input-evidence.json",
+      "bytes": 3091,
+      "sha256": "368a565ea07965c30e3712c5036780523ab5764b63e7a573abb82393a3fc2c2f"
+    },
+    {
+      "path": "hamle/work/audit_wat_real_outputs_readonly.py",
+      "bytes": 10929,
+      "sha256": "fe1bd0c99d4d3de95811ea19e47395dc12a98663821d58b150000b32b4203a4c"
+    },
+    {
+      "path": "hamle/work/cloud_gcloud.py",
+      "bytes": 739,
+      "sha256": "fa112c7a18fd299561772ea2a0b258a35317221e482fc37d3e5257c3fd5cc546"
+    },
+    {
+      "path": "hamle/work/compile_wat_shadow_evidence.py",
+      "bytes": 10135,
+      "sha256": "69227dbb94d62ebae21c122dc356b7275785e0617d65e34a8409277d22b4a53c"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/Dockerfile",
+      "bytes": 1420,
+      "sha256": "28066c229b74a5ed56d74e4da59184b7d91f26a0987fc11174b1577c2e5497cb"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/README-business-writers.txt",
+      "bytes": 4847,
+      "sha256": "7cbd36eeec465bab086ed3228d643e01f51dc206fa33d74bcc98331ed1221ec7"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/README-cloud-control.txt",
+      "bytes": 7935,
+      "sha256": "aade790cd71a74b912408e33e6881b408b0a27eed4bc44e9a063d64bdc0b907e"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/README-cloud-launch.txt",
+      "bytes": 8543,
+      "sha256": "13b0f58f7d6d6bcd2d9d5d2bd4125e120c9ffc1bcee70af7b67f488bccd9ddb8"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/README-cloud-providers.txt",
+      "bytes": 11345,
+      "sha256": "7ef52cbf2c020971edd7687dcb83e81708ac16d7db0b10ccfa20351e58b91d4b"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/README-cloud-store.txt",
+      "bytes": 14915,
+      "sha256": "79f37a42b1e6862bfba6915bae07b06f2b2d4d8f534266d0b7e5b5983408b328"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/README-dispatch.txt",
+      "bytes": 6343,
+      "sha256": "bba1c4e8a5b263725f3bdb5cdaf36c4a2cb0dba3a306b6693548ad34119d505f"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/README-model.txt",
+      "bytes": 6098,
+      "sha256": "1c2680da38acfb17e83cb018d3b2d3ea4e1a3b2deef70cb0eac1150d00a99da3"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/README-scheduler-plan.txt",
+      "bytes": 11106,
+      "sha256": "d07ffb514bb3fed25f22c20cae78cda0b06fcd163d21c0d656b1ac04958ff479"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/README-v11-artifact-inspector.txt",
+      "bytes": 5859,
+      "sha256": "7dda5f6b6656971da464dc86268d165f238f22e6a4c7e54dd63f63ee5c7d6e61"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/README-v11-basecamp-reader.txt",
+      "bytes": 3594,
+      "sha256": "6ff12ed3b21c0064a174c78751b94f8e6926805c1637c63b0aa2191641ca69ef"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/README-v11-cloud-internal.txt",
+      "bytes": 3944,
+      "sha256": "8a964dade440695689ab524be39616c79b8c2d52a4b4227345442b241ece331b"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/README-v11-delivery.txt",
+      "bytes": 7803,
+      "sha256": "82fa72dd3e46f03f4b9ef15f1f60f24f57519415958c68ab2c4d09b59a264e56"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/README-v11-intake-plan.txt",
+      "bytes": 5854,
+      "sha256": "baf2bead94d28d6af09d44299f7389c2f2358a972bede6f86b48f5d0fc37b6b5"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/README-v11-internal-providers.txt",
+      "bytes": 6625,
+      "sha256": "84dba3445932fa6677902c14f5f45fd2c20b1d988c4a093867b998a2dc692b5c"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/README-v11-internal-quality.txt",
+      "bytes": 5194,
+      "sha256": "4293dbd9addf113026aa965f3190b05fe7aa8ee6c6d23a1e9c221422c3327a0b"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/README-v11-internal-state.txt",
+      "bytes": 6396,
+      "sha256": "056ceedfb982a678a0bbe5b54d91e978ea4e3ab83d8b4cfe81e7100653820cff"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/README-v11-production-stages.txt",
+      "bytes": 9384,
+      "sha256": "1316a366906f25d4f013606aa4ba328be55190fc39ee6ad9fd9f5951dcbf8861"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/README-v11-quality-gate.txt",
+      "bytes": 9461,
+      "sha256": "9f498e8f1438ddcc804e3aa7940476367c0fe0eb6d56542a575367cb9da06cc6"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/README-v11-stop-intake.txt",
+      "bytes": 2459,
+      "sha256": "1f8e59d1b668cc1097d6902aa47caa9af858bc6cb862342259698b5be4ca50c9"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/README-v11-wat-media-inspector.txt",
+      "bytes": 9808,
+      "sha256": "127419aba2d26c71836848abae6685e814b54bbf9bd0ed27ab946604c2cc32ad"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/README-v11-wat-readonly.txt",
+      "bytes": 2601,
+      "sha256": "6eab534ea77be93b71ead5940ed92f4db836d71ab6d05763d81135348381aa46"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/README-v11-wat-timed-frame.txt",
+      "bytes": 2189,
+      "sha256": "22077e8a6a7f37b27cbbd7d854e076e65caa4a456764ed39c72315e8e0d22444"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/README-v11-work-authority-store.txt",
+      "bytes": 6552,
+      "sha256": "f270053ddd2e8fb01c907115c2dbde43dc6b3e6b8f6d42685341b0e2b4a9b79b"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/README-v11-work-authority.txt",
+      "bytes": 13862,
+      "sha256": "b42823036944dee720153ae9854df6ffc92a1a8a9e4f7100575eb2325596bd20"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/README-v11-work-queue.txt",
+      "bytes": 9142,
+      "sha256": "fa6240e5cfa0fbb47256fcfc93d56a47483428f9f482b05b05ada033ce0e6703"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/README-worker.txt",
+      "bytes": 13083,
+      "sha256": "c41349899d2d09cd4479a7d1fc2abc20750e706c3918018507678f3331899670"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/account_manager_prompt.txt",
+      "bytes": 4034,
+      "sha256": "47e93b3d5de26c0d880144f9a468713fb57c78faa66752eeda9bd0b0b13e55e2"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/autonomy_policy.py",
+      "bytes": 27241,
+      "sha256": "e2c7a7a795e6878a55e86d4f18864e564f63b44249f70549d05a02f1ef52b6f8"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/basecamp_cloud_auth.py",
+      "bytes": 22065,
+      "sha256": "bb0f02690cc3f890a4acbf594c5b78ddd8f00e2ca5a48c274a7abe11b23ecb3b"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/bind_internal_work.py",
+      "bytes": 1408,
+      "sha256": "61ee1876301df2a5195f23331a3c4da3f804dc5c1899834ace1d451d6224571b"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/business_writers.py",
+      "bytes": 22845,
+      "sha256": "d4ee1fb48d2cb34f6cdaede6cf0005b6a70367b6acf513cdd73503d1a959aa27"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/cloud-launch.json",
+      "bytes": 18468,
+      "sha256": "ea5ca1031ea8e0997ab64b751be0b9044a44bfaf4f28549e8e0685c9a0bdb77c"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/cloud-resource-plan.json",
+      "bytes": 14736,
+      "sha256": "ec10cddab2495f96cd64be41a8eace27479439f7c075eddee26eeb631cf3e949"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/cloud_control.py",
+      "bytes": 34676,
+      "sha256": "662c7f2af6e7b2a2c54d3f0c452cbd69d46fb069fdc627435169f4a9cfb040fd"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/cloud_execution.py",
+      "bytes": 3651,
+      "sha256": "f44be708406ee7995b77bd71d2c0090f41a82f007a3115f00426d67d9b543084"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/cloud_providers.py",
+      "bytes": 33198,
+      "sha256": "f9609bf99290e2b8fd6cf0e9f7dbd54bbaa99e3bb36e702c6b752a16740d844e"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/cloud_store.py",
+      "bytes": 55939,
+      "sha256": "3d4e01224110b7762f55e5593fcfbcde9c4744dc3d6f3a7a06a41f6547e61012"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/cloud_ui.html",
+      "bytes": 21454,
+      "sha256": "29be2ddbe6c0403888d2b9fdc2af476af11f533a8d8be31de75de250c4f39413"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/cloudbuild.yaml",
+      "bytes": 522,
+      "sha256": "6e54b4e82b75ef37c58bb46ce27c1219f35011e1444f2237992cbd045baaa077"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/customer_scope_template.json",
+      "bytes": 3388,
+      "sha256": "42f286a759fad209fd761783545026ab65c105f17fd1eaca6dc4f361f08453aa"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/deploy_cloud_app.py",
+      "bytes": 5654,
+      "sha256": "b3ab409846b0386346cedf460b57cdc2fddc6cc14e0b08f7efac8ffabbcc5dbb"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/dispatch.py",
+      "bytes": 12589,
+      "sha256": "8b53ed9490b0a0f3dfdc4cdedaee3c5963d291c1f3a43d54b12decd2bff94319"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/evaluate_sol_once.py",
+      "bytes": 8214,
+      "sha256": "65b881d946869cf290d952072fbb3f587cad3674db115a433c12b9fb8be0f394"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/extract_local_video_frame.swift",
+      "bytes": 1702,
+      "sha256": "6dc6d7f33420ef639e380d39fdbb3596ab82fefce952cd0549eef61e572d64fb"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/import_cloud_credentials.py",
+      "bytes": 4903,
+      "sha256": "b32db5e25467e115a23ed880d2dfcabb7924ec1277684b4b99d9ac8ccb95d8de"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/internal_ocr_smoke.py",
+      "bytes": 3062,
+      "sha256": "01213bfce76eddc18ca30035470fa1e54d696af43d7951a77a158d09695e47e7"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/live_once.py",
+      "bytes": 4800,
+      "sha256": "c4deb9d9707b60195aeaef3684168e2be1e8269ebb02141c157572fee49700ef"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/model-evaluation-cases.json",
+      "bytes": 9629,
+      "sha256": "3aa25e0633e9f72cfd2782489bd65bd2e32ef4ec55fff7221812c387ae7173e3"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/model.py",
+      "bytes": 15881,
+      "sha256": "8bb4eaa5135c7cb8465bddd2b5faa18a5ca6068d80d5a89b99071c1093927dc5"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/model_profiles.py",
+      "bytes": 2381,
+      "sha256": "21c772f3fac46eb4c46dc5a86310f521f3a7fa886b7e1872a9f23db38597cd13"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/package_cloud_source.py",
+      "bytes": 6735,
+      "sha256": "fd1b0dc2e0e8879057d83e00f93686cb7d3583d2994fe142c60ba50cfabd3036"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/probe_work_authority_cloud.py",
+      "bytes": 8942,
+      "sha256": "eaaceb4133cb8c2e8e4e7b1f10e61a6ff2560cb4040dd6008e90224cdcd6c7b7"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/provision_metadata.py",
+      "bytes": 5418,
+      "sha256": "99fb88cc891952d3ffbb8852246d26e85111142e50bcc6366f082d188c41b92d"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/recipient_policy.py",
+      "bytes": 1679,
+      "sha256": "8bfdb7788b3c9933d11e0b629740f708df39988af8dc25ca25eb4d30b178a380"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/release_v10.py",
+      "bytes": 6106,
+      "sha256": "ae30e361391d1448d2855dc63fc21c70b0d96785f730e27969108e68fa368e71"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/release_v2.py",
+      "bytes": 2162,
+      "sha256": "6c65bb14b37e74a9f253d5f28687ad203337d76e6b96b2d7e76949989850a801"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/release_v3.py",
+      "bytes": 2488,
+      "sha256": "c4ea14afcd9d460958905f00fde790e3536071f4684c2c8386d087ffffa560d4"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/release_v4.py",
+      "bytes": 2479,
+      "sha256": "3135aa66b014ceecb37290e4fdffcecfbeda5910810b89bc23e4fad405fd201b"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/release_v5.py",
+      "bytes": 2479,
+      "sha256": "6d4241edd04c60e4b4972dc6857ff604a5bc08ad0ab4e1a48c45ab7407662cbc"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/release_v6.py",
+      "bytes": 2817,
+      "sha256": "230f1a6cf253ed5d863fc5d70d0dcb58ca9658e2df9b0cb9f27a14ce75917955"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/release_v7.py",
+      "bytes": 2839,
+      "sha256": "709d7d92a47d956ac845d471e40cf0443123004386c39c6554f23bec513522fd"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/release_v8.py",
+      "bytes": 5738,
+      "sha256": "85eb0334fc7924e47bf27fbeecaed4aa9c9ea1d4d32bbca239556828ee6ff3a5"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/release_v9.py",
+      "bytes": 5746,
+      "sha256": "e45c9f60c2a2581dc7dddab68970aff774a33d933ee1ea968f156a74d235e083"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/requirements-cloud.txt",
+      "bytes": 820,
+      "sha256": "75e6dd8b114f6a33110d11f3a8060a957ee10a6a9080135e1faeafc779b04d1d"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/scheduler-plan-20261012.json",
+      "bytes": 11049,
+      "sha256": "58f04d17f714be9400541b6d04d4f154bbab73522461c418324eefee0d9a235d"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/scheduler_enabled_denial_probe.py",
+      "bytes": 23040,
+      "sha256": "f5d73eb7821f16ab33748490aee37389a6d3bf0497f214e24f16d5ba6bd31ef5"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/scheduler_pilot.py",
+      "bytes": 37539,
+      "sha256": "3da7bef69274b22552ba6522d12831457d45ee9a0253e478d93a10ab22fe0838"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/seed_cloud_state.py",
+      "bytes": 4103,
+      "sha256": "c0ce70b21c676f6a230401c35b01913853ec8817989e7225bdef6c068c4c6cff"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/synthetic_request.json",
+      "bytes": 904,
+      "sha256": "3b9902fe2f1881131d525ca8f950dc32ead7931a5c524fb27df8ade4b35f8b85"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/test_autonomy_policy.py",
+      "bytes": 18872,
+      "sha256": "cd76f9d5bdc9837c835f2c309e28b028a5e5b38d7f4a1d2c486e349c5a69ae4e"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/test_basecamp_cloud_auth.py",
+      "bytes": 13793,
+      "sha256": "b3ec232d995daf3090157fd8a091343cae7db9b76e5f7c97d8895c20e9c9d4d0"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/test_business_writers.py",
+      "bytes": 20878,
+      "sha256": "ac90c4f5406c9f636070ea9976b88d56694861882d61154e043f591d3532838e"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/test_cloud_control.py",
+      "bytes": 44658,
+      "sha256": "541f5ac64a6e2cbc31c344e45a0709d3c80462da229c041efcdcda1762c2185e"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/test_cloud_providers.py",
+      "bytes": 32935,
+      "sha256": "0bbd1810289395e757766899a6218c188de8587c9ea296f6b56f506581959aa8"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/test_cloud_store.py",
+      "bytes": 34587,
+      "sha256": "d029e38a5861f0a310dd5de091e6696ad84670f8bcfdb99da5fc17a63fd0a4db"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/test_dispatch.py",
+      "bytes": 11052,
+      "sha256": "2d719790082fab2dbd50e573db86785be686ac4af1f4a705d2f1a35742f44e83"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/test_followup_dispatch.py",
+      "bytes": 15541,
+      "sha256": "4810c652ce1591f012b84f4cbd25901f631aea4a5a8d9924b22c23b69030bdb5"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/test_model.py",
+      "bytes": 16690,
+      "sha256": "4c94c8c8dcfa75444920ef1a9764d55b5f90f88cb696c4a9835abbc544ddbd2c"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/test_model_profiles.py",
+      "bytes": 7923,
+      "sha256": "70e474359473435b2a03c3a81779680d6d9e112d5c6082eab5f0894e48f4485e"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/test_scored_autonomy.py",
+      "bytes": 11476,
+      "sha256": "901534da8ed8e8684721887f59a219678a82d78abf7bce6256864d8ea4eb655b"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/test_seed_cloud_state.py",
+      "bytes": 2786,
+      "sha256": "50359996cf715b204299facce17719c6a5e0f256c7271a9f69179ac2cdb3ed84"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/test_v11_artifact_inspector.py",
+      "bytes": 17630,
+      "sha256": "e92c39b7332e72302c3f98d0f5bc2d380223a961c419f4610ae69a76e42cb68d"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/test_v11_basecamp_reader.py",
+      "bytes": 9390,
+      "sha256": "34b92805c71531cac83bc94d3e83f173b26e7626a0aa36bf90385df016bac3e8"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/test_v11_delivery.py",
+      "bytes": 19643,
+      "sha256": "bce852509919642e0115b4c89c97fb3525d537c312d2ee1debcb52de6f92b971"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/test_v11_intake_plan.py",
+      "bytes": 24934,
+      "sha256": "b6370088606f3a83a5f5a4f1f813b3e29d2cb73bd19a07ebb8a407d0c04a60b9"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/test_v11_internal_providers.py",
+      "bytes": 14764,
+      "sha256": "93848296020a9866af232ce4f150c6ff71c7b01ce81c4cf4757af9ca903bd366"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/test_v11_internal_quality.py",
+      "bytes": 12342,
+      "sha256": "27152166ef13868af3139620f15dbc9845289e8ab26b55bd41f1e944341975eb"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/test_v11_internal_scheduling.py",
+      "bytes": 4907,
+      "sha256": "f49762ed8472aa7d9a20713d2f0f4f28b917274937a2ac7e45bbcc8f134aadec"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/test_v11_internal_state.py",
+      "bytes": 15145,
+      "sha256": "516fe78b5b1bf45205423c7ac2adc6eec15ba234313eec7fad794ad029050f71"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/test_v11_internal_worker.py",
+      "bytes": 16868,
+      "sha256": "73073e38fa771718ab6cec42899f1655cdd5cc087ddb5877a50987fb7f17a17a"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/test_v11_internal_worker_recovery.py",
+      "bytes": 2489,
+      "sha256": "f654bfca7fb6d05801fa2f9fbbd6de257832f4142a857196691a39dde592b8c7"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/test_v11_poll_journal.py",
+      "bytes": 13242,
+      "sha256": "8c6602e79cc51568ddbc5bcf2a24b67c3545de6da2f20057c9c6c44acce1c75b"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/test_v11_production_stages.py",
+      "bytes": 19844,
+      "sha256": "fcccb32c2a2f6a77292b453633c1445675edb013823d1f1361556baac0ca4ec9"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/test_v11_quality_gate.py",
+      "bytes": 21166,
+      "sha256": "da3a556a1cacbc69024fa9e5a72b78af6c1651f8e78bc6063e0a2f436228af96"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/test_v11_queue_delivery.py",
+      "bytes": 8797,
+      "sha256": "83fc8d2869e340e271d713ace9d75743d1b873baec0e985093fcca379cea0f59"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/test_v11_scored_delivery.py",
+      "bytes": 24765,
+      "sha256": "17f59e57a79faed8da5cd88a1b6cb8c7feaa9c6e3727c19d7a694335f9dbfbb1"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/test_v11_stop_intake.py",
+      "bytes": 6832,
+      "sha256": "0cc3d24f8b92e29f621e3a014b7bef4198f013ebc4ab2f9cf19c2d44b5e2077e"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/test_v11_wat_media_inspector.py",
+      "bytes": 23294,
+      "sha256": "dddc24cd1937c32c8aa9a354c2f0f13535aaee356cfb0f3a9aa617ed5340785a"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/test_v11_wat_readonly.py",
+      "bytes": 11571,
+      "sha256": "4b82ae34b95225da90645d8ed80139bbedf72b2f1c494e5fe7280440c3ab4279"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/test_v11_wat_shadow_worker.py",
+      "bytes": 5332,
+      "sha256": "8fd39a6f9c1ccb279d139f7cf3b9993429803998b4a1e5f23e583a5e0236b109"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/test_v11_wat_timed_frame.py",
+      "bytes": 4904,
+      "sha256": "9b35b0a0146ea21091c20545eb9c61733d34228a8ac29e125b30f42fd38cb299"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/test_v11_wat_video_shadow.py",
+      "bytes": 3536,
+      "sha256": "6dc64fe9d4f5c6f1b9a82a5168c0c7aacc05cd5d359c752ca15e31cf1ffba6b8"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/test_v11_wat_vision.py",
+      "bytes": 6213,
+      "sha256": "2783bfd99d8a9ce8a51031c5235b1ce99c0e136e9fef9ef7deea3163a53a979f"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/test_v11_work_authority.py",
+      "bytes": 21124,
+      "sha256": "3ef953357fea4aa358268862ae4600430aa573901222c0e6376c5868c303d52d"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/test_v11_work_authority_store.py",
+      "bytes": 21642,
+      "sha256": "0c42b944af11a6b4fdc1d2ddc17f39722de0d00e892fa9067704843f93bd52c6"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/test_v11_work_queue.py",
+      "bytes": 15633,
+      "sha256": "925221bdb89a06f6c5a0469334ea689d7eb451e068aaac397aaea1357b515f4d"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/test_worker.py",
+      "bytes": 37297,
+      "sha256": "9c05fa39c5aeef1e110dc608f3f30c77b5bd5d32df7c772db32816be9ebf1621"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/v11_artifact_inspector.py",
+      "bytes": 26895,
+      "sha256": "122706f2bde627a1479c49351f98db09f49e8a0b9ff21c87ffe724048e159a07"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/v11_basecamp_reader.py",
+      "bytes": 13168,
+      "sha256": "2758a5b61dee1b51ba42fd0b65d88e65a05560b7ef8c0cbfaa80bfae1379a458"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/v11_delivery.py",
+      "bytes": 35594,
+      "sha256": "c5481512fc86844cbdc40a6fcce7a145778d12be081e80f414c784be29456574"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/v11_intake_plan.py",
+      "bytes": 27257,
+      "sha256": "5c1467b51c6b08bf6203c679a9c65e3ea78024ab49d4347fd34d8d5443d55be7"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/v11_internal_providers.py",
+      "bytes": 23513,
+      "sha256": "91b9d4d25f44640326d0112de7ef0e1e3474ba7c22bacc92c6cc3d975716778c"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/v11_internal_quality.py",
+      "bytes": 17811,
+      "sha256": "2a3f7624b5f29d3cf9e2e632bb41b491645fa2d2aa5e600821d0d549c289fe40"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/v11_internal_state.py",
+      "bytes": 15317,
+      "sha256": "b4093aa1fab15c3b94f7da28235ef89474863e22136afa69a15785bcae14ef26"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/v11_internal_worker.py",
+      "bytes": 24821,
+      "sha256": "76a3a95f54b706a8ad529bca62bbff5e22e6a1db7361b81486dfd230ecf29939"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/v11_poll_journal.py",
+      "bytes": 11617,
+      "sha256": "0a4e95580be6433c5552112540b39b93364fff6bca213a67fb9f85462fba45b6"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/v11_production_stages.py",
+      "bytes": 20691,
+      "sha256": "bc71e93a00895545595ab4c249efa975162d46b905ef64cf74c7c53b7b9fada8"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/v11_quality_gate.py",
+      "bytes": 19084,
+      "sha256": "29682b3c9811986c5cd9f1e2820d0fb9f568ca1cdbae35803aaacf615e35afd8"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/v11_stop_intake.py",
+      "bytes": 7896,
+      "sha256": "859a2c9daf7b878191ddcf8cac30d16aa4497b9bb3979cc7340223d2c2d70797"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/v11_wat_media_inspector.py",
+      "bytes": 19627,
+      "sha256": "d0e601e898d5c3d1159fc3dbb3b2c261c74a44a7b9fa63dc968099d3092807d7"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/v11_wat_readonly.py",
+      "bytes": 10868,
+      "sha256": "b02c8a354c3f4eb24d784ea2dc79e1d94fbace84ceede712bb5e751a94807f51"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/v11_wat_shadow_worker.py",
+      "bytes": 10654,
+      "sha256": "dc85d14d7f0e316179f0f4df2b1f804282d46e9d0b6ce015decaaa0a31157ea7"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/v11_wat_timed_frame.py",
+      "bytes": 9992,
+      "sha256": "43dae3c550b386d9ac978293624f1bd49105bf279489a35a08b55d8bbe173b1c"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/v11_wat_video_shadow.py",
+      "bytes": 9081,
+      "sha256": "194da0e42a1f092444b07619ab06356f04c91da9cd9d40bd50ebecb5959d09e7"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/v11_wat_vision.py",
+      "bytes": 15453,
+      "sha256": "ca5b50177308f85bf0ec24f16fbae6428d041076ab46015688776d2fc0fc907d"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/v11_work_authority.py",
+      "bytes": 28395,
+      "sha256": "b5c77d09c8719a652ac62c430395a97cde29ca80db2dbecc906a689b31bb1715"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/v11_work_authority_store.py",
+      "bytes": 23129,
+      "sha256": "42bdaa25df500746171ba3b12672f2b53f49953b89405b919c41200002230a8b"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/v11_work_queue.py",
+      "bytes": 23062,
+      "sha256": "537abcfa733144563f25dadb1b9b3def61435c55f030cbf0bb3b8105c93eec8f"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/verify_cloud_deployment.py",
+      "bytes": 3495,
+      "sha256": "a618fd757d4cd226c8c449c322b5fece6f3eaaca844f8bee33834ebed8fe6d05"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/verify_internal_acceptance.py",
+      "bytes": 5774,
+      "sha256": "13cc42e34fba4ab8b78adfbe4c35d9a741140867f15755523643dccf9a1ed3c0"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/wat-reference/detail-03.png",
+      "bytes": 267961,
+      "sha256": "ddac364723e25ae8c78a4c4212103e9178bd66f700e7ca710edea5beceb84d72"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/wat-reference/detail-08.png",
+      "bytes": 160386,
+      "sha256": "5b4b424b37eda89f31e7c9aad47ba71a3d8fc79c6822a47e6b9bf0bc600cb0f8"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/wat-reference/detail-09.png",
+      "bytes": 282937,
+      "sha256": "2721cfa364853e90999ba80dee2890948f8fb714e18c6aad398484a721729dcb"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/wat-shadow-cases.json",
+      "bytes": 9337,
+      "sha256": "a3256215fe0781af1c13ce78c60adbd90ce4febfe4622282a10d1d27d4242a53"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/wat-video-shadow-cases.json",
+      "bytes": 2743,
+      "sha256": "4e00cfb7f5c81bf0f4d2979a7bb47f56e4ff8a50dbdec3e0a10e53ae9c4a43b1"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/wat_media_smoke.py",
+      "bytes": 2882,
+      "sha256": "a82bcc6a1c75db6047f115508acebff0a0dd0336a92900cc6270b907e79b14b1"
+    },
+    {
+      "path": "hamle/work/hamle-account-manager/worker.py",
+      "bytes": 35184,
+      "sha256": "95c9808818a04d7b604bb755ca4a9442dd80565ffba2b7b1ab6f0eabac330fcc"
+    },
+    {
+      "path": "hamle/work/hamle-cloud-probe/.dockerignore",
+      "bytes": 71,
+      "sha256": "fe36f58631584f273bfafc6fa473c9c6dd7fa14201f01493b466a48bd9512b06"
+    },
+    {
+      "path": "hamle/work/hamle-cloud-probe/Dockerfile",
+      "bytes": 309,
+      "sha256": "92b33c28ddd19cd681e6ac8fcc5aa3c8228303e89b8d8b104507e568eea52465"
+    },
+    {
+      "path": "hamle/work/hamle-cloud-probe/README.txt",
+      "bytes": 4624,
+      "sha256": "f968fd992c93d22dcbda1b665669af68142e673a3eb92fad13fbcbab0cbb95dd"
+    },
+    {
+      "path": "hamle/work/hamle-cloud-probe/cloudbuild.yaml",
+      "bytes": 453,
+      "sha256": "4f2e1f4a4e66236a1003ac49517e488712e73be6cdc02ef542ef12de6945caa0"
+    },
+    {
+      "path": "hamle/work/hamle-cloud-probe/core.py",
+      "bytes": 5825,
+      "sha256": "8f199ad89bb3361e0138661014828204279de88af9f2321b14b0802d5bc95cd2"
+    },
+    {
+      "path": "hamle/work/hamle-cloud-probe/firestore_store.py",
+      "bytes": 1836,
+      "sha256": "a065cf9cd9934e78f40acaff2b808fd5b527c382eade0056c51a5e6b7930723d"
+    },
+    {
+      "path": "hamle/work/hamle-cloud-probe/local-verification.json",
+      "bytes": 1653,
+      "sha256": "a7bbe180fccc0c638d1863d642a16e207121d36d8ba1406603be27c845aadd6e"
+    },
+    {
+      "path": "hamle/work/hamle-cloud-probe/main.py",
+      "bytes": 2363,
+      "sha256": "0f6b8ecc0979e855bb9d424859cb9a355df6ec83ba18a1e782e869b706f1ed8d"
+    },
+    {
+      "path": "hamle/work/hamle-cloud-probe/requirements.txt",
+      "bytes": 109,
+      "sha256": "45cc4e323efaf3d042dadc343d547ca8973588478bbaf6700ac372c95b7a38a8"
+    },
+    {
+      "path": "hamle/work/hamle-cloud-probe/test_probe.py",
+      "bytes": 10558,
+      "sha256": "9b6a4d5e5cae40d0100bb06e5751be6755ae157f536a9dc087c7eca828ff839b"
+    },
+    {
+      "path": "hamle/work/hamle-gmail-connector/.send-test-attempts/GC-HAMLE-GMAIL-20261009-01.accepted.json",
+      "bytes": 302,
+      "sha256": "21b61f2fa432d2f40e1692329080f4892d9364eb9d53f59708f3d07ca02e77ad"
+    },
+    {
+      "path": "hamle/work/hamle-gmail-connector/.send-test-attempts/GC-HAMLE-GMAIL-20261009-01.attempt.json",
+      "bytes": 228,
+      "sha256": "b9e581981e1f4decaace280356f3d2048439ad91a440a2f5a295ce9e1e6ece62"
+    },
+    {
+      "path": "hamle/work/hamle-gmail-connector/README.txt",
+      "bytes": 8547,
+      "sha256": "2466d9beed376f260f5f7b7ac7d7e2105e7ce4078ca3aed9805e38531a65ea18"
+    },
+    {
+      "path": "hamle/work/hamle-gmail-connector/constraints.txt",
+      "bytes": 628,
+      "sha256": "993226a7cd1793d80d26cdf4ce05facc6db973d53168483a96ef969d66bd7215"
+    },
+    {
+      "path": "hamle/work/hamle-gmail-connector/hamle_gmail.py",
+      "bytes": 21747,
+      "sha256": "f3ca3a6353ab5be1f9f0fe87c566b5f48fd64e6e41c99aed5cd2db816d7cddcd"
+    },
+    {
+      "path": "hamle/work/hamle-gmail-connector/requirements.txt",
+      "bytes": 124,
+      "sha256": "020040f9aa99395b07ae8af4405345b3a8a8c32471fed995c20f3a68187ee44b"
+    },
+    {
+      "path": "hamle/work/hamle-gmail-connector/test-results.json",
+      "bytes": 971,
+      "sha256": "2345ffe36d3f3ba5c53f75dba8c90977fb0874ee4db3243bf8be11576636bbbe"
+    },
+    {
+      "path": "hamle/work/hamle-gmail-connector/test_hamle_gmail.py",
+      "bytes": 26368,
+      "sha256": "b67e17055d8b8aa776768616718a7d93ed80d3324b84b4f309ed65e4b4f65f06"
+    },
+    {
+      "path": "hamle/work/hamle-internal-intake/README.txt",
+      "bytes": 5753,
+      "sha256": "8523abdc8ff844dda0ec11bc1c32c9fb031d5df067590823c1cf1926f2322f0f"
+    },
+    {
+      "path": "hamle/work/hamle-internal-intake/capture_internal_test.py",
+      "bytes": 8232,
+      "sha256": "0de7104b85ef8511c43c70d31b4272a9e9a7578d2fc6843213f545f62bcf03d4"
+    },
+    {
+      "path": "hamle/work/hamle-internal-intake/intake.py",
+      "bytes": 13260,
+      "sha256": "e5fc976a7753f39865a47fbee651a78b6063714ea5b0a60f945be785c0728286"
+    },
+    {
+      "path": "hamle/work/hamle-internal-intake/local-verification.json",
+      "bytes": 1399,
+      "sha256": "ba35d42b820ea474cb6299e86ebfbe3e8f0c60b62a5036cea6d977544e213e6c"
+    },
+    {
+      "path": "hamle/work/hamle-internal-intake/test_capture.py",
+      "bytes": 8245,
+      "sha256": "b3acd97332b748bfb328116b321f6887090410e2a08da701c936461a8be70274"
+    },
+    {
+      "path": "hamle/work/hamle-internal-intake/test_intake.py",
+      "bytes": 11038,
+      "sha256": "9bb89a92de1b2174b89f05e21753789a6ed2e06a0733344eff5f83de91d83fcb"
+    },
+    {
+      "path": "hamle/work/hamle-review-control/README-store.txt",
+      "bytes": 2982,
+      "sha256": "7051943f0f0285b6932d52a7b8ce1f9e7fa610217d1acdb5adb00c99e49d49a3"
+    },
+    {
+      "path": "hamle/work/hamle-review-control/README-ui.txt",
+      "bytes": 2126,
+      "sha256": "9d8979af5cfa1f8ffc4c8baf5cb5f4215a41f987cd80613be2e80f365afb254a"
+    },
+    {
+      "path": "hamle/work/hamle-review-control/server.py",
+      "bytes": 10964,
+      "sha256": "bcc7fe4d05c8acaa49d7e9252c9ea5e18e9b96f239d7173407408ae724d8ab80"
+    },
+    {
+      "path": "hamle/work/hamle-review-control/store.py",
+      "bytes": 12785,
+      "sha256": "2615e067e85e31a197b7c499c831d99c236ae9b382e3c8043a87c18aaea491f1"
+    },
+    {
+      "path": "hamle/work/hamle-review-control/test_server.py",
+      "bytes": 10979,
+      "sha256": "ba2734032e00e82008d513a0403df068835af866d8b3a152b45e208dc9eeeec5"
+    },
+    {
+      "path": "hamle/work/hamle-review-control/test_store.py",
+      "bytes": 14630,
+      "sha256": "4f7629cf365dd65aa2371c55d40ae63aa661a2d98113dfe1e9ae1a565b0fca99"
+    },
+    {
+      "path": "hamle/work/hamle-review-control/ui.html",
+      "bytes": 7650,
+      "sha256": "7a46125eb6ff874dbba3f1aaf03dba7dcc502116d587b2e08b98e3b2ceb4dff6"
+    },
+    {
+      "path": "hamle/work/hamle-runtime/README.txt",
+      "bytes": 2258,
+      "sha256": "83b30da9f4a4ad748fa4b2f6db5f33e858e7e4c1ce3f58f07c1fc2670522512b"
+    },
+    {
+      "path": "hamle/work/hamle-runtime/budget.py",
+      "bytes": 22213,
+      "sha256": "e4846a4333b50e557c3faf7f316858be74f61652e4c95ea1a2ac938fd151e754"
+    },
+    {
+      "path": "hamle/work/hamle-runtime/dry_run.py",
+      "bytes": 3159,
+      "sha256": "4dbc877b77da3838597506379b15aba9e31238c73d8fbe6738670791da1e90da"
+    },
+    {
+      "path": "hamle/work/hamle-runtime/ledger.py",
+      "bytes": 16875,
+      "sha256": "234e50b3719e1ffab142492568a76351e31a55bb699117c431e4e18cd8faa1ba"
+    },
+    {
+      "path": "hamle/work/hamle-runtime/schedule.py",
+      "bytes": 3357,
+      "sha256": "9b54edf8d553d589347950a3d1b303fdf6e5c7744760ad0aa6b8045d69bb3259"
+    },
+    {
+      "path": "hamle/work/hamle-runtime/test_budget.py",
+      "bytes": 21157,
+      "sha256": "e44d2a64890928c1c4148a07a4bed3877be24177dd8ea2fc8b6242def2635a60"
+    },
+    {
+      "path": "hamle/work/hamle-runtime/test_ledger.py",
+      "bytes": 18480,
+      "sha256": "115ddfe5b2b67405887e4f687d7bc45480fae5e200d50cfc3eedfc52fafb4752"
+    },
+    {
+      "path": "hamle/work/hamle-runtime/test_schedule.py",
+      "bytes": 3605,
+      "sha256": "ab43bcbba54d3bab38c42e14337417d419052276bd429995317663d802021234"
+    },
+    {
+      "path": "hamle/work/hamle-workflow/README.txt",
+      "bytes": 8745,
+      "sha256": "53df60fd61ff67c08319108e6eea5bb303c6949950eaa58d48d22d93bb3265c2"
+    },
+    {
+      "path": "hamle/work/hamle-workflow/basecamp-internal-test-plan.json",
+      "bytes": 17642,
+      "sha256": "bf8ebd425d98ee6fa8ced9d5310f94367d6d86a42a792b7fdd14f6d9bd2c69e5"
+    },
+    {
+      "path": "hamle/work/hamle-workflow/brand-readiness.json",
+      "bytes": 37481,
+      "sha256": "3bfbf6d3dc7f07f17b0fdf9796d56505059df00145757d082f4f8669059970ce"
+    },
+    {
+      "path": "hamle/work/hamle-workflow/build_brand_readiness.mjs",
+      "bytes": 9705,
+      "sha256": "cc5cddb1c30b07e841b4ef3c6fcc032aea21a0593214aa0e2a3ce6ccbb825a2b"
+    },
+    {
+      "path": "hamle/work/hamle-workflow/deployment-readiness.json",
+      "bytes": 27074,
+      "sha256": "869bc8951535dc20e1202c80a4b2855a8ccae5864df1ec5ab13e154138244cc2"
+    },
+    {
+      "path": "hamle/work/hamle-workflow/gmail_full_reader.py",
+      "bytes": 7664,
+      "sha256": "efed6de0e8c89f1e2cd9f16529a05a7280158f7970b2daea1a9bba0c2ffeaf0e"
+    },
+    {
+      "path": "hamle/work/hamle-workflow/mail_ingest.py",
+      "bytes": 15681,
+      "sha256": "fdd50ac28f2efd5fb1d52630fc22afe70461268e649afed26549384331c35427"
+    },
+    {
+      "path": "hamle/work/hamle-workflow/test_gmail_full_reader.py",
+      "bytes": 12404,
+      "sha256": "d32efca3bc1c476e7cac3861af53cf9a59c9936f838a4f661d51c33cebc17573"
+    },
+    {
+      "path": "hamle/work/hamle-workflow/test_mail_ingest.py",
+      "bytes": 18386,
+      "sha256": "3f3953005c8ee4184edcf5f2bd0ea67743a3146dca2c76636e7c923d6c2d7b4a"
+    },
+    {
+      "path": "hamle/work/portable_core_handover_v10.py",
+      "bytes": 18602,
+      "sha256": "094e296608af9fba821689af15e0570db260c7c5ac47cd72c49507cc7618f53f"
+    },
+    {
+      "path": "hamle/work/portable_handover.py",
+      "bytes": 25911,
+      "sha256": "08c3bbf8499a2c8488e5097477a401639b75739712d7d59eacfc652103a61ba0"
+    },
+    {
+      "path": "hamle/work/preflight_v11_internal_readonly.py",
+      "bytes": 9593,
+      "sha256": "628b656c26babd8184837a6d71b8137853a11d59c237cb30a253fc6f8c46478b"
+    },
+    {
+      "path": "hamle/work/project-tracker/build_document.py",
+      "bytes": 42618,
+      "sha256": "855a09fecb18060aa9348c804a0ae6ec75328dbe34d9a97523da20c5ca00aa69"
+    },
+    {
+      "path": "hamle/work/project-tracker/build_tracker.mjs",
+      "bytes": 19467,
+      "sha256": "29622ef66082855e20f1f83f11855cf8265f8c3e8f06f56a248a817426c571fe"
+    },
+    {
+      "path": "hamle/work/project-tracker/delivery-priority-2026-10-10.json",
+      "bytes": 4621,
+      "sha256": "0675b664533756f685871feb1295b877c44feda69683fe0a7f75bfe15089097b"
+    },
+    {
+      "path": "hamle/work/project-tracker/project-plan.json",
+      "bytes": 79436,
+      "sha256": "79ffff9b46a157d925b22b5b1ed022c1cdc8a8562bf117de32b32550d01ace4e"
+    },
+    {
+      "path": "hamle/work/project-tracker/verify_xlsx.py",
+      "bytes": 2697,
+      "sha256": "2cc46c92bec865ca4da164cd46b5c8aaba6982a22c4457dae69a3954a640799a"
+    },
+    {
+      "path": "hamle/work/read_cloud_probe.py",
+      "bytes": 1768,
+      "sha256": "6d5412c9435116d7ce363ad68612eb8fc70b7cf6f4f98fa49981b0af322f89a5"
+    },
+    {
+      "path": "hamle/work/read_wat_current_asset.py",
+      "bytes": 4743,
+      "sha256": "771446a83270e43fd7d882959ce115c073300c18d3f2e0f1918572a5f9cde96e"
+    },
+    {
+      "path": "hamle/work/read_wat_example_read_only.py",
+      "bytes": 5868,
+      "sha256": "a70043c7d35ebbd84c0e83bca319fbd4a597889cbc300f65e40ed21daff46f60"
+    },
+    {
+      "path": "hamle/work/reauth_cloud_sdk.py",
+      "bytes": 1117,
+      "sha256": "1f2a39e106150e1764da7adeaa02526384a3b94f576e0d24b72a0d6b7f5a4530"
+    },
+    {
+      "path": "hamle/work/validate_wat_planning.py",
+      "bytes": 6434,
+      "sha256": "fc6d8eeb3844517f9105861aa80564df37a3b08ff501021190937efb8207ef2a"
+    },
+    {
+      "path": "hamle/work/verify_basecamp_new_mac.py",
+      "bytes": 3361,
+      "sha256": "0cd4e044328f5fb950fbdc5785b585e752a45f9ec873f3b7ee643aa977ea7f0d"
+    },
+    {
+      "path": "hamle/work/verify_openai_metadata.py",
+      "bytes": 1909,
+      "sha256": "2d8d4981097d44ee7c6a8718817862db2639ed8253be345b69d517bfaff46538"
+    },
+    {
+      "path": "hamle/work/verify_wat_read_only.py",
+      "bytes": 4205,
+      "sha256": "478f1b74da521a1c5eee65d737a500440af3328ca0ebc1cff9392b4b0a3576bf"
+    },
+    {
+      "path": "original-handover/Hamle_Proje_Plani_2026-10-10_Yeni_Mac_Devir.docx",
+      "bytes": 64703,
+      "sha256": "1233451ae095d5f45de7243859f5d42dc78a99b45f321fdea223389fcef78917"
+    },
+    {
+      "path": "original-handover/Hamle_Proje_Takip_2026-10-10_Yeni_Mac_Devir.xlsx",
+      "bytes": 31957,
+      "sha256": "42c7ed23813d92085122c3a3354e2bad5a5c89312245b233629e7880897538b4"
+    },
+    {
+      "path": "original-handover/Hamle_v1_1_Marka_ve_Hizmet_Formu.xlsx",
+      "bytes": 19516,
+      "sha256": "7809c195dd92fcffca91cf943a8aef09ca4b7f80eb14500f85cad21c1aced916"
+    },
+    {
+      "path": "run_offline_tests.py",
+      "bytes": 800,
+      "sha256": "92b5ceb1c61db49cc52e9e1aba0dd50b5e0ed43c7e795af316da3023d258adc9"
+    },
+    {
+      "path": "verify_manifest.py",
+      "bytes": 752,
+      "sha256": "4babd1f6b1b609c7d9dcbb98373bb1014d39ec509dec1b9e6e23500af9335143"
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "scope": "first_stage_account_manager_only",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "max",
+  "price_source": "https://developers.openai.com/api/docs/models/gpt-6-astra",
+  "not_invoice": true,
+  "successful_actual_mail_examples_usd": [
+    0.24662,
+    0.461984
+  ],
+  "failed_attempt_cost": "unknown_not_zero",
+  "infrastructure_weekly_allowance_usd": [
+    1,
+    3
+  ],
+  "weekly_new_or_followup_mails": [
+    {
+      "count": 50,
+      "planning_range_usd": [
+        20,
+        35
+      ]
+    },
+    {
+      "count": 100,
+      "planning_range_usd": [
+        35,
+        60
+      ]
+    }
+  ],
+  "other_roles_and_graphics_animation_excluded": true,
+  "startup_build_cost_excluded": true,
+  "not_spending_authorization": true,
+  "not_guaranteed_cap": true,
+  "planned_checks_per_full_week": 205,
+  "no_new_mail_model_calls": 0,
+  "cache_write_surcharge_not_identified_in_usage": true,
+  "successful_examples_are_token_based_estimates_not_invoice": true
+}

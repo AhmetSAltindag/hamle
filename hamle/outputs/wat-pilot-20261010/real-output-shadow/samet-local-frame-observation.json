@@ -1,0 +1,49 @@
+{
+  "recorded_at": "2026-10-10T16:18:38.309412+00:00",
+  "video_path": "../../outputs/wat-pilot-20261010/real-output-shadow/task-10317695863/artifacts/samet-music-approved-candidate/WM_AVANTAJLARI_KATLA.mp4",
+  "video_sha256": "1b88ebfa84e979fbdbcdd29781694bcd76fbfaedffd8e11292aa545fbab6ae66",
+  "decoder": "macOS AVAssetImageGenerator with exact requestedTimeToleranceBefore/After",
+  "script_sha256": "6dc6d7f33420ef639e380d39fdbb3596ab82fefce952cd0549eef61e572d64fb",
+  "frames": [
+    {
+      "path": "samet-local-at-2s.png",
+      "requested_seconds": 2,
+      "actual_seconds": 2,
+      "actual_time_source": "successful Swift stdout in current tool transcript; exact-time tolerance zero assertion passed",
+      "sha256": "8900e448422ec072045af58b289d0cbb10badc1afe851959b78043c9b9e1fb86",
+      "byte_size": 1714663,
+      "dimensions": [
+        1080,
+        1920
+      ],
+      "direct_visual_review_by": "root assistant via view_image, not human approval",
+      "visible_campaign_headline": false,
+      "visible_discount_badge": false,
+      "salı_modu_on_visible": true
+    },
+    {
+      "path": "samet-local-at-3s.png",
+      "requested_seconds": 3,
+      "actual_seconds": 3,
+      "actual_time_source": "successful Swift stdout in current tool transcript; exact-time tolerance zero assertion passed",
+      "sha256": "fcc7131b338b0f55e08dd15542efd9af30d60aece5ba1b4c2a74814154545511",
+      "byte_size": 1863050,
+      "dimensions": [
+        1080,
+        1920
+      ],
+      "direct_visual_review_by": "root assistant via view_image, not human approval",
+      "visible_campaign_headline": true,
+      "visible_discount_badge": false,
+      "salı_modu_on_visible": true
+    }
+  ],
+  "timing_source_comment": 10335969966,
+  "timing_is_soft_preference": true,
+  "source_wording": "Kampanya mesajını mümkünse en geç 2. saniyede ekranda görmeye başlayalım.",
+  "exact_first_appearance_verified": false,
+  "cloud_ocr_result_rewritten": false,
+  "full_video_or_audio_review": false,
+  "customer_delivery_authorized": false,
+  "additional_paid_model_calls": 0
+}

@@ -1,0 +1,433 @@
+{
+  "schema_version": "1.0",
+  "test_id": "GC-HAMLE-BC-B09-20261009-01",
+  "started_at": "2026-10-09T23:55:33.638803+03:00",
+  "status": "passed",
+  "B09_pass": true,
+  "account_id": "5898865",
+  "project_id": "49184053",
+  "person_id": "53358100",
+  "profile": "hamle-gamechangers",
+  "preconditions": {
+    "identity_id": "53358100",
+    "identity_email": "hamle@gamechangers.com.tr",
+    "project_name": "Hamle — İç Deneme",
+    "project_status": "active",
+    "clients_enabled": false,
+    "project_member_ids": [
+      "47470759",
+      "53358100"
+    ],
+    "customers_or_unknown_members": false,
+    "todoset_id": "10384126975",
+    "duplicate_in_incomplete_or_completed_tasks": false
+  },
+  "commands": [
+    {
+      "step": "S01",
+      "exit_code": 0
+    },
+    {
+      "step": "S02",
+      "exit_code": 0
+    },
+    {
+      "step": "S03",
+      "exit_code": 0
+    },
+    {
+      "step": "S04",
+      "exit_code": 0
+    },
+    {
+      "step": "S04-completed",
+      "exit_code": 0
+    },
+    {
+      "step": "S06",
+      "exit_code": 0
+    },
+    {
+      "step": "S07",
+      "exit_code": 0
+    },
+    {
+      "step": "S08",
+      "exit_code": 0
+    },
+    {
+      "step": "S09",
+      "exit_code": 0
+    },
+    {
+      "step": "S10",
+      "exit_code": 0
+    },
+    {
+      "step": "S11",
+      "exit_code": 0
+    },
+    {
+      "step": "S12",
+      "exit_code": 0
+    },
+    {
+      "step": "S13",
+      "exit_code": 0
+    },
+    {
+      "step": "S14",
+      "local_validation": "passed"
+    },
+    {
+      "step": "S15",
+      "exit_code": 0
+    },
+    {
+      "step": "S16-corrected",
+      "exit_code": 0,
+      "flags": [
+        "--all-comments"
+      ]
+    }
+  ],
+  "mutations": [
+    {
+      "step": "S06",
+      "action": "create_new_internal_synthetic_todo",
+      "started_at": "2026-10-09T23:55:33.646223+03:00",
+      "outcome": "verified"
+    },
+    {
+      "step": "S09",
+      "action": "assign_Hamle_and_R1_revision",
+      "started_at": "2026-10-09T23:56:13.322358+03:00",
+      "outcome": "verified"
+    },
+    {
+      "step": "S11",
+      "action": "upload_one_fixture_and_create_one_comment",
+      "started_at": "2026-10-09T23:56:40.453404+03:00",
+      "outcome": "verified",
+      "provider_write_effects": 2
+    }
+  ],
+  "uncertain_outcomes": [],
+  "scope_limits": [
+    "Gmail API yetkisi",
+    "Basecamp refresh/iptal testi",
+    "Müşteri marka/proje erişimleri",
+    "Bulut çalışma ortamı",
+    "Otonom model/ajan üretimi",
+    "E04 görünmeyen CC çıkarma tespiti",
+    "Dört rolün canlı kabulü"
+  ],
+  "fixture": {
+    "filename": "Hamle_B09_R1_UTF8.txt",
+    "bytes": 264,
+    "sha256": "ec444d300f5d4dc2792a69da4fcf55f6a4195ffd97316506d9007a034153702a",
+    "encoding": "utf-8-sig",
+    "line_count": 8
+  },
+  "create_response": {
+    "bucket": {
+      "id": 49184053,
+      "name": "Hamle — İç Deneme",
+      "type": "Project"
+    },
+    "completed": false,
+    "completion_subscribers": [],
+    "content": "HAMLE | API B09 | GC-HAMLE-BC-B09-20261009-01 | V0",
+    "creator": {
+      "id": 53358100,
+      "name": "Hamle AI",
+      "title": "AI Assistant"
+    },
+    "description": "<p dir=\"auto\">Sentetik iç Basecamp API testi. Yalnız Hamle — İç Deneme projesi. Müşteri talebi veya onayı değildir. Başlangıç sürümü V0.</p>",
+    "id": 10391849167,
+    "status": "active",
+    "title": "HAMLE | API B09 | GC-HAMLE-BC-B09-20261009-01 | V0",
+    "type": "Todo",
+    "visible_to_clients": false
+  },
+  "new_task_id": "10391849167",
+  "initial_task_readback": {
+    "bucket": {
+      "id": 49184053,
+      "name": "Hamle — İç Deneme",
+      "type": "Project"
+    },
+    "completed": false,
+    "completion_subscribers": [],
+    "content": "HAMLE | API B09 | GC-HAMLE-BC-B09-20261009-01 | V0",
+    "creator": {
+      "id": 53358100,
+      "name": "Hamle AI",
+      "title": "AI Assistant"
+    },
+    "description": "<p dir=\"auto\">Sentetik iç Basecamp API testi. Yalnız Hamle — İç Deneme projesi. Müşteri talebi veya onayı değildir. Başlangıç sürümü V0.</p>",
+    "id": 10391849167,
+    "status": "active",
+    "title": "HAMLE | API B09 | GC-HAMLE-BC-B09-20261009-01 | V0",
+    "type": "Todo",
+    "visible_to_clients": false
+  },
+  "initial_subscriptions_readback": {
+    "subscribed": true,
+    "subscribers": [
+      {
+        "id": 53358100,
+        "name": "Hamle AI",
+        "title": "AI Assistant"
+      }
+    ]
+  },
+  "update_response": {
+    "assignees": [
+      {
+        "id": 53358100,
+        "name": "Hamle AI",
+        "title": "AI Assistant"
+      }
+    ],
+    "bucket": {
+      "id": 49184053,
+      "name": "Hamle — İç Deneme",
+      "type": "Project"
+    },
+    "completed": false,
+    "completion_subscribers": [],
+    "content": "HAMLE | API B09 | GC-HAMLE-BC-B09-20261009-01 | R1",
+    "creator": {
+      "id": 53358100,
+      "name": "Hamle AI",
+      "title": "AI Assistant"
+    },
+    "description": "<p dir=\"auto\">Sentetik iç Basecamp API testi. R1: sorumlu Hamle AI olarak atandı; Türkçe dosya geri okuma kontrolü bu göreve bağlanacak. Müşteri işi veya onayı değildir.</p>",
+    "id": 10391849167,
+    "status": "active",
+    "title": "HAMLE | API B09 | GC-HAMLE-BC-B09-20261009-01 | R1",
+    "type": "Todo",
+    "visible_to_clients": false
+  },
+  "r1_task_readback": {
+    "assignees": [
+      {
+        "id": 53358100,
+        "name": "Hamle AI",
+        "title": "AI Assistant"
+      }
+    ],
+    "bucket": {
+      "id": 49184053,
+      "name": "Hamle — İç Deneme",
+      "type": "Project"
+    },
+    "completed": false,
+    "completion_subscribers": [],
+    "content": "HAMLE | API B09 | GC-HAMLE-BC-B09-20261009-01 | R1",
+    "creator": {
+      "id": 53358100,
+      "name": "Hamle AI",
+      "title": "AI Assistant"
+    },
+    "description": "<p dir=\"auto\">Sentetik iç Basecamp API testi. R1: sorumlu Hamle AI olarak atandı; Türkçe dosya geri okuma kontrolü bu göreve bağlanacak. Müşteri işi veya onayı değildir.</p>",
+    "id": 10391849167,
+    "status": "active",
+    "title": "HAMLE | API B09 | GC-HAMLE-BC-B09-20261009-01 | R1",
+    "type": "Todo",
+    "visible_to_clients": false
+  },
+  "comment_create_response": {
+    "bucket": {
+      "id": 49184053,
+      "name": "Hamle — İç Deneme",
+      "type": "Project"
+    },
+    "content_attachments": [
+      {
+        "byte_size": 264,
+        "content_type": "text/plain",
+        "filename": "Hamle_B09_R1_UTF8.txt",
+        "id": 903148527
+      }
+    ],
+    "creator": {
+      "id": 53358100,
+      "name": "Hamle AI"
+    },
+    "id": 10391852105,
+    "parent": {
+      "id": 10391849167,
+      "type": "Todo"
+    },
+    "status": "active",
+    "type": "Comment",
+    "visible_to_clients": false
+  },
+  "new_comment_id": "10391852105",
+  "comment_readback": {
+    "bucket": {
+      "id": 49184053,
+      "name": "Hamle — İç Deneme",
+      "type": "Project"
+    },
+    "content_attachments": [
+      {
+        "byte_size": 264,
+        "content_type": "text/plain",
+        "filename": "Hamle_B09_R1_UTF8.txt",
+        "id": 903148527
+      }
+    ],
+    "creator": {
+      "id": 53358100,
+      "name": "Hamle AI"
+    },
+    "id": 10391852105,
+    "parent": {
+      "id": 10391849167,
+      "type": "Todo"
+    },
+    "status": "active",
+    "type": "Comment",
+    "visible_to_clients": false
+  },
+  "file_readback": {
+    "filename": "Hamle_B09_R1_UTF8.txt",
+    "attachment_id": 903148527,
+    "downloaded_bytes": 264,
+    "original_sha256": "ec444d300f5d4dc2792a69da4fcf55f6a4195ffd97316506d9007a034153702a",
+    "downloaded_sha256": "ec444d300f5d4dc2792a69da4fcf55f6a4195ffd97316506d9007a034153702a",
+    "sha256_equal": true,
+    "full_byte_equality": true,
+    "full_decoded_text_equality": true,
+    "decoded_encoding": "utf-8-sig",
+    "line_count": 8,
+    "turkish_characters_intact": true,
+    "full_text": "HAMLE BASECAMP API B09 İÇ DENEME\nTest ID: GC-HAMLE-BC-B09-20261009-01\nHesap: 5898865\nProje: 49184053\nSorumlu: Hamle AI / 53358100\nSürüm: R1\nTürkçe kontrol: Çç Ğğ İı Öö Şş Üü\nBu dosya sentetik iç testtir; müşteri işi veya onayı değildir.\n",
+    "downloaded_local_path": "work/hamle-workflow/basecamp-b09-evidence/downloaded/Hamle_B09_R1_UTF8.txt"
+  },
+  "final_subscriptions_readback": {
+    "subscribed": true,
+    "subscribers": [
+      {
+        "id": 53358100,
+        "name": "Hamle AI",
+        "title": "AI Assistant"
+      }
+    ]
+  },
+  "final_task_readback": {
+    "assignees": [
+      {
+        "id": 53358100,
+        "name": "Hamle AI",
+        "title": "AI Assistant"
+      }
+    ],
+    "bucket": {
+      "id": 49184053,
+      "name": "Hamle — İç Deneme",
+      "type": "Project"
+    },
+    "completed": false,
+    "completion_subscribers": [],
+    "creator": {
+      "id": 53358100,
+      "name": "Hamle AI",
+      "title": "AI Assistant"
+    },
+    "id": 10391849167,
+    "parent": {
+      "id": 10384126975,
+      "title": "İş Listesi",
+      "type": "Todoset"
+    },
+    "status": "active",
+    "title": "HAMLE | API B09 | GC-HAMLE-BC-B09-20261009-01 | R1",
+    "type": "Todo",
+    "visible_to_clients": false
+  },
+  "final_comment_readback": {
+    "id": 10391852105,
+    "status": "active",
+    "visible_to_clients": false,
+    "title": "Re: HAMLE | API B09 | GC-HAMLE-BC-B09-20261009-01 | R1",
+    "content_attachments": [
+      {
+        "id": 903148527,
+        "filename": "Hamle_B09_R1_UTF8.txt",
+        "content_type": "text/plain",
+        "byte_size": 264
+      }
+    ],
+    "type": "Comment",
+    "parent": {
+      "id": 10391849167,
+      "title": "HAMLE | API B09 | GC-HAMLE-BC-B09-20261009-01 | R1",
+      "type": "Todo"
+    },
+    "bucket": {
+      "id": 49184053,
+      "name": "Hamle — İç Deneme",
+      "type": "Project"
+    },
+    "creator": {
+      "id": 53358100,
+      "name": "Hamle AI",
+      "title": "AI Assistant"
+    }
+  },
+  "final_checks": {
+    "task_creator_Hamle": true,
+    "task_private": true,
+    "R1_title": true,
+    "assignee_only_Hamle": true,
+    "completion_subscribers_empty": true,
+    "comment_creator_Hamle": true,
+    "comment_parent_new_task": true,
+    "comment_bucket_internal": true,
+    "comment_private": true,
+    "single_attachment": true,
+    "final_subscribers_only_Hamle": true
+  },
+  "resolved_diagnostics": [
+    {
+      "step": "S16-original",
+      "issue": "Mutually exclusive local CLI options --comments and --all-comments were combined in the prepared command. Official v0.13.0 comments_embed.go:44 identified the conflict.",
+      "resolution": "Corrected read-only command used --all-comments alone; final task and comment readback passed. No write operation was retried.",
+      "original_record": [
+        {
+          "step": "S15-S16",
+          "reason": "AssertionError"
+        }
+      ]
+    }
+  ],
+  "finished_at": "2026-10-09T23:59:02.223245+03:00",
+  "new_task_url": "https://app.basecamp.com/5898865/buckets/49184053/todos/10391849167",
+  "customer_notification_check": {
+    "project_members_only_known_internal": true,
+    "clients_enabled": false,
+    "initial_subscriber_ids": [
+      53358100
+    ],
+    "final_subscriber_ids": [
+      53358100
+    ],
+    "completion_subscriber_ids": [],
+    "mention_or_explicit_notify_added": false,
+    "customer_notification_observed": false,
+    "scope": "No customer was a project member, subscriber or explicit recipient; provider notification delivery logs were not independently audited."
+  },
+  "left_test_task_completed": false,
+  "remote_effects": {
+    "new_todos": 1,
+    "todo_updates": 1,
+    "comments_created": 1,
+    "attachments_uploaded": 1,
+    "existing_test_tasks_changed": false,
+    "project_or_membership_changed": false
+  }
+}

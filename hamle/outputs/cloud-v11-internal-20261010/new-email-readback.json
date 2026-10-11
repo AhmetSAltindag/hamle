@@ -1,0 +1,51 @@
+{
+  "status": "verified",
+  "subject": "HAMLE-IC-URETIM-20261010-01",
+  "thread_id": "1a12646136af37f0",
+  "message_id": "1a12646136af37f0",
+  "body_logged": false,
+  "internal_scope": {
+    "status": "read_verified",
+    "account_id": 5898865,
+    "project_id": 49184053,
+    "person_id": 53358100,
+    "todo_parent_id": 10384126975,
+    "todo_parent_type": "Todoset",
+    "assignee_id": 53358100,
+    "member_ids": [
+      47470759,
+      53358100
+    ],
+    "clients_enabled": false,
+    "basecamp_content_writes": 0,
+    "action_eligible": false
+  },
+  "generation": 1,
+  "source_fields": [
+    "subject",
+    "thread_id",
+    "message_id",
+    "source_subject",
+    "is_continuation",
+    "root_message_id",
+    "root_rfc_message_id",
+    "snapshot_fingerprint",
+    "captured_at",
+    "in_reply_to",
+    "references",
+    "source_sha256",
+    "sender",
+    "hamle_direct_recipient",
+    "latest_to",
+    "latest_cc",
+    "body_in_memory_only",
+    "attachments_fetched",
+    "token_refreshed",
+    "action_eligible",
+    "mailbox_writes",
+    "unseen_cc_removal_resolved"
+  ],
+  "captured_at": "2026-10-10T14:50:06.180197+00:00",
+  "model_calls": 0,
+  "business_writes": 0
+}

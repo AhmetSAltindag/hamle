@@ -1,0 +1,1511 @@
+{
+  "read_at": "2026-10-10T16:16:05.201414+00:00",
+  "cases": {
+    "a": {
+      "token_count": {
+        "conservative_cost_usd": 0.11161,
+        "input_tokens": 11876,
+        "is_invoice": false,
+        "binding_sha256": "4a31bb0cd0ee05be26bd7e859777231edede027cae5a8c85abf6c394480d95f1",
+        "max_output_tokens": 8192
+      },
+      "binding_sha256": "4a31bb0cd0ee05be26bd7e859777231edede027cae5a8c85abf6c394480d95f1",
+      "generation": 1,
+      "key": "wat-real-output-shadow-20261010-v1-a",
+      "result": {
+        "customer_acceptance_proven": false,
+        "artifact_sha256": "af2cedaa20b48305e5bd35b9b18216e9af7247561dbf9d9b0e2aef71cc7b5dd5",
+        "status": "shadow_observation_only",
+        "observation": {
+          "visible_text": "wat\nTüm\nİstasyonlarda\nTek Fiyat\n*Kampanya 7 Ekim gün sonuna kadar geçerlidir.\nAC tarifelerde değişiklik gösterebilir.\nSadece\nbir hafta!\nwat\nHayatı\nŞARJ ET",
+          "score_reasons": {
+            "text_accuracy": "Okunabilen ana söylem ve açıklamalar yazılı briefle uyumlu; Türkçe aksanlarda belirgin hata görülmüyor. Süre vurgusu istenen ifadeyi karşılıyor. Metin bütünlüğündeki temel eksik “10,99 TL/kWh” bilgisidir.",
+            "brief": "Sonbahar teması, araç/şarj bağlamı, logo, ana söylem, süre vurgusu ve iki açıklama mevcut. Zorunlu sayısal fiyat ve birim eksik; bu eksik, diğer şartların karşılanmasıyla giderilmiş sayılmaz.",
+            "readability": "Başlık ve süre rozeti büyük, belirgin ve kolay okunuyor. Açıklamalar açık zemin üzerinde koyu yazıyla okunabilir; ancak ana başlığa göre daha küçük. İstasyon üzerindeki küçük ayrıntı yazıları güvenle çözülemiyor.",
+            "brand_style": "Koyu lacivert, açık mavi ve açık nötr alanlar referanslarla görsel yakınlık gösteriyor. Logo kontrastlı ve çevresinde boşluk var. Parlak mavi üç boyutlu başlık ve rozet, referans sayfalarının sade görsel dilinden daha efektli. Fotoğraftaki sonbahar renkleri kusur olarak değerlendirilmedi. Puan yalnız görsel uyum gözlemidir."
+          },
+          "uncertainties": [
+            "Şarj istasyonunun ekranındaki ve küçük etiketlerindeki metinlerin tamamı güvenle okunamıyor; bunlar görünür metin aktarımına eklenmedi.",
+            "Düzleştirilmiş görselden Nunito Sans/Josefin Sans font dosyaları, tam logo master eşliği ve kesin renk kodları doğrulanamaz.",
+            "Kayda geçmeyen telefon revizyonunun içeriği bilinmiyor; değerlendirme yalnız bu tek görsel ve verilen yazılı şartlarla sınırlıdır."
+          ],
+          "scores": {
+            "text_accuracy": 85,
+            "brief": 80,
+            "readability": 90,
+            "brand_style": 82
+          },
+          "requirements": [
+            {
+              "id": "brand_logo",
+              "region": "Sağ üst köşedeki koyu dikey alan",
+              "evidence": "Koyu zemin üzerinde beyaz “wat” yazısı ve parçalı dairesel işaret belirgin. Görünür logoda bariz esneme, dönme veya bulanıklık yok.",
+              "result": "pass"
+            },
+            {
+              "id": "headline",
+              "region": "Üst ve üst-orta bölüm",
+              "evidence": "“Tüm İstasyonlarda Tek Fiyat” söylemi üç satırda açıkça okunuyor.",
+              "result": "pass"
+            },
+            {
+              "id": "price",
+              "region": "Görselin tamamı; özellikle ana başlık ve kampanya bilgi alanı",
+              "evidence": "“Tek Fiyat” başlığı var; ancak zorunlu “10,99 TL/kWh” fiyatı ve birimi görselde görünmüyor.",
+              "result": "fail"
+            },
+            {
+              "id": "campaign_end",
+              "region": "Ana başlığın hemen altındaki açıklama, ilk satır",
+              "evidence": "“*Kampanya 7 Ekim gün sonuna kadar geçerlidir.” cümlesi okunabiliyor.",
+              "result": "pass"
+            },
+            {
+              "id": "ac_disclosure",
+              "region": "Ana başlığın altındaki açıklama, ikinci satır",
+              "evidence": "“AC tarifelerde değişiklik gösterebilir.” cümlesi okunabiliyor.",
+              "result": "pass"
+            },
+            {
+              "id": "one_week",
+              "region": "Orta bölüm, açıklamanın altındaki takvim simgeli rozet",
+              "evidence": "Mavi rozet içinde “Sadece bir hafta!” yazıyor.",
+              "result": "pass"
+            }
+          ],
+          "revision_notes": [
+            "Kritik eksik: “10,99 TL/kWh” fiyatını ve birimini başlıkla ilişkili, belirgin ve okunabilir bir alana ekleyin.",
+            "Fiyat eklenirken kampanya bitişi ve AC açıklamasının okunabilirliğini koruyun.",
+            "Marka diliyle daha yakın görsel uyum hedefleniyorsa başlık ve rozetteki yoğun üç boyutlu/parlak efektleri sadeleştirmeyi değerlendirin."
+          ]
+        },
+        "usage": {
+          "input_tokens": 11876,
+          "output_tokens": 1147,
+          "input_tokens_details": {
+            "cached_tokens": 0
+          },
+          "total_tokens": 13023,
+          "output_tokens_details": {
+            "reasoning_tokens": 73
+          }
+        },
+        "cost_is_invoice": false,
+        "response_id": "resp_02804710f1e101ef016aca63a6356c87d1a7ae03fd5cbacfe4",
+        "unrecorded_historical_verbal_change_known": false,
+        "assessment": {
+          "full_video_review": false,
+          "rights_verified": false,
+          "live_enabled": false,
+          "exact_logo_master_verified": false,
+          "provisional_weighted_score": 83.5,
+          "failed_requirements": [
+            "price"
+          ],
+          "customer_approval_verified": false,
+          "unknown_requirements": [],
+          "provisional_route": "revision_candidate",
+          "action_eligible": false,
+          "weights_status": "draft_not_accepted",
+          "exact_font_verified": false
+        },
+        "binding_sha256": "4a31bb0cd0ee05be26bd7e859777231edede027cae5a8c85abf6c394480d95f1",
+        "producer_id": 47658175,
+        "comment_id": 10317954872,
+        "binding": {
+          "images": [
+            {
+              "sha256": "ddac364723e25ae8c78a4c4212103e9178bd66f700e7ca710edea5beceb84d72",
+              "label": "Kılavuz fiziksel sayfa3: logo",
+              "role": "reference"
+            },
+            {
+              "sha256": "5b4b424b37eda89f31e7c9aad47ba71a3d8fc79c6822a47e6b9bf0bc600cb0f8",
+              "label": "Kılavuz fiziksel sayfa8: renkler",
+              "role": "reference"
+            },
+            {
+              "sha256": "2721cfa364853e90999ba80dee2890948f8fb714e18c6aad398484a721729dcb",
+              "label": "Kılavuz fiziksel sayfa9: fontlar",
+              "role": "reference"
+            },
+            {
+              "sha256": "af2cedaa20b48305e5bd35b9b18216e9af7247561dbf9d9b0e2aef71cc7b5dd5",
+              "label": "İncelenen WAT KV",
+              "role": "output"
+            }
+          ],
+          "version": "wat-shadow-vision-v1",
+          "reasoning_effort": "medium",
+          "context_sha256": "c97815dc5340d7c5771e3e93b310538c9f03730fae3d019f47bf3b985a94df8d",
+          "model": "gpt-6.1-sol"
+        },
+        "automatic_retry_allowed": false,
+        "historical_price_detection_check": true,
+        "business_writes": 0,
+        "token_cost_estimate_usd": 0.035222,
+        "deterministic_inspection": {
+          "inspector_id": "hamle-byte-inspector-v1",
+          "parser": "stdlib-png-crc-zlib-v1",
+          "extracted_text": "_ Tum ww\n\n. » İstasyonlarda\nve *Kampanya 7 Ekim gün sonuna kadar geçerlidir.\nve = AC aa meee , 2\nty | © Sadece pan Deyi\ni bir hafta! Gig we\n\ndizer Vm IA\n= ge —— = in —~ —\n\neae —— Se\nee? SS El 4 — >\n",
+          "checks": {
+            "fact:height": {
+              "method": "deterministic",
+              "finding": "Expected height=1350; measured=1350",
+              "artifact_sha256": "af2cedaa20b48305e5bd35b9b18216e9af7247561dbf9d9b0e2aef71cc7b5dd5",
+              "result": "pass",
+              "location": "decoded file structure",
+              "critical": true,
+              "evidence_ref": "sha256:baa7706ed60ff5037fa1327f83cee8e3c40ca60e7ebedbf2422bb5c5c153d0a9",
+              "evaluator_id": "hamle-byte-inspector-v1",
+              "brief_sha256": "6170a84866a934e91ec6b97048eea1a4ee7582ae26ecac80c7b54b6f70b9f107"
+            },
+            "size_bytes": {
+              "method": "deterministic",
+              "finding": "Measured bytes: 2383471",
+              "artifact_sha256": "af2cedaa20b48305e5bd35b9b18216e9af7247561dbf9d9b0e2aef71cc7b5dd5",
+              "result": "pass",
+              "location": "complete file bytes",
+              "critical": true,
+              "evidence_ref": "sha256:baa7706ed60ff5037fa1327f83cee8e3c40ca60e7ebedbf2422bb5c5c153d0a9",
+              "evaluator_id": "hamle-byte-inspector-v1",
+              "brief_sha256": "6170a84866a934e91ec6b97048eea1a4ee7582ae26ecac80c7b54b6f70b9f107"
+            },
+            "fact:width": {
+              "method": "deterministic",
+              "finding": "Expected width=1080; measured=1080",
+              "artifact_sha256": "af2cedaa20b48305e5bd35b9b18216e9af7247561dbf9d9b0e2aef71cc7b5dd5",
+              "result": "pass",
+              "location": "decoded file structure",
+              "critical": true,
+              "evidence_ref": "sha256:baa7706ed60ff5037fa1327f83cee8e3c40ca60e7ebedbf2422bb5c5c153d0a9",
+              "evaluator_id": "hamle-byte-inspector-v1",
+              "brief_sha256": "6170a84866a934e91ec6b97048eea1a4ee7582ae26ecac80c7b54b6f70b9f107"
+            },
+            "mime_type": {
+              "method": "deterministic",
+              "finding": "Measured MIME: image/png",
+              "artifact_sha256": "af2cedaa20b48305e5bd35b9b18216e9af7247561dbf9d9b0e2aef71cc7b5dd5",
+              "result": "pass",
+              "location": "file signature and decoded format",
+              "critical": true,
+              "evidence_ref": "sha256:baa7706ed60ff5037fa1327f83cee8e3c40ca60e7ebedbf2422bb5c5c153d0a9",
+              "evaluator_id": "hamle-byte-inspector-v1",
+              "brief_sha256": "6170a84866a934e91ec6b97048eea1a4ee7582ae26ecac80c7b54b6f70b9f107"
+            },
+            "text_inspection": {
+              "method": "deterministic",
+              "finding": "Bounded eng+tur OCR completed.",
+              "artifact_sha256": "af2cedaa20b48305e5bd35b9b18216e9af7247561dbf9d9b0e2aef71cc7b5dd5",
+              "result": "pass",
+              "location": "actual image pixel OCR process",
+              "critical": true,
+              "evidence_ref": "sha256:baa7706ed60ff5037fa1327f83cee8e3c40ca60e7ebedbf2422bb5c5c153d0a9",
+              "evaluator_id": "hamle-byte-inspector-v1",
+              "brief_sha256": "6170a84866a934e91ec6b97048eea1a4ee7582ae26ecac80c7b54b6f70b9f107"
+            }
+          },
+          "model_calls": 0,
+          "ocr": {
+            "parser": "tesseract 5.5.0",
+            "status": "completed",
+            "languages": [
+              "eng",
+              "tur"
+            ],
+            "normalization": "nfkd-casefold-marks-whitespace-v1"
+          },
+          "output_spec_sha256": "3652f351b40ab85c941b0d1d558b9fbdbaa48f4cb6c107b1eed0e8422ad0b9ed",
+          "delivery_authorized": false,
+          "evidence_sha256": "df7ebaa9d8e0a9dcb4d3817b786043525f1237ce999d325e08a5dc1c85e946c3",
+          "network_writes": 0,
+          "text_sha256": "a6004dfd2c133b7be120e011cc7cf86199ae663f410d0fe0bb4e4cb02b795878",
+          "source_sha256": "aeee8aa87a9faf960ef18ddf1098583f39337a8b8bf64b44754e2d0a49fd4022",
+          "artifact": {
+            "facts_bound_sha256": "af2cedaa20b48305e5bd35b9b18216e9af7247561dbf9d9b0e2aef71cc7b5dd5",
+            "id": "wat-historical-kv",
+            "sha256": "af2cedaa20b48305e5bd35b9b18216e9af7247561dbf9d9b0e2aef71cc7b5dd5",
+            "evidence_ref": "sha256:baa7706ed60ff5037fa1327f83cee8e3c40ca60e7ebedbf2422bb5c5c153d0a9",
+            "facts": {
+              "width": 1080,
+              "height": 1350,
+              "bit_depth": 8
+            },
+            "mime_type": "image/png",
+            "size_bytes": 2383471
+          },
+          "inspection_status": "passed",
+          "schema_version": 1,
+          "source": {
+            "account_id": 5898865,
+            "verified": true,
+            "project_id": 40694338,
+            "evidence_ref": "wat-native-file:895203774",
+            "task_id": 10309337809,
+            "attachment_id": 895203774
+          },
+          "resource_limits": "bounded-byte-pixel-zlib",
+          "limitations": [
+            "Deterministic checks do not establish brand meaning, visual quality, rights or current send authority.",
+            "No visual-semantic review or approved-logo comparison was performed.",
+            "OCR is fallible and cannot prove that undetected text is visually absent."
+          ],
+          "checked_at": "2026-10-10T16:11:12.390303+00:00",
+          "brief_sha256": "6170a84866a934e91ec6b97048eea1a4ee7582ae26ecac80c7b54b6f70b9f107",
+          "semantic_review_required": true
+        },
+        "task_id": 10309337809
+      },
+      "live_enabled": false,
+      "created_at": 1791648672.312544,
+      "state": "completed",
+      "model_receipt": {
+        "usage": {
+          "input_tokens": 11876,
+          "output_tokens": 1147,
+          "input_tokens_details": {
+            "cached_tokens": 0
+          },
+          "total_tokens": 13023,
+          "output_tokens_details": {
+            "reasoning_tokens": 73
+          }
+        },
+        "response_id": "resp_02804710f1e101ef016aca63a6356c87d1a7ae03fd5cbacfe4",
+        "binding_sha256": "4a31bb0cd0ee05be26bd7e859777231edede027cae5a8c85abf6c394480d95f1",
+        "model": "gpt-6.1-sol"
+      },
+      "completed_at": 1791648698.109588,
+      "customer_writes": 0,
+      "started_at": 1791648677.193413
+    },
+    "b": {
+      "token_count": {
+        "conservative_cost_usd": 0.1115975,
+        "input_tokens": 11871,
+        "is_invoice": false,
+        "binding_sha256": "62b0b67015b398349fe748ceb1cc355d330071f22c8f9b12ceb08a4177b31e8e",
+        "max_output_tokens": 8192
+      },
+      "completed_at": 1791648905.408459,
+      "generation": 1,
+      "key": "wat-real-output-shadow-20261010-v1-b",
+      "result": {
+        "customer_acceptance_proven": false,
+        "artifact_sha256": "0b855872d2104e3dcebcb260cccdd5bf16adf123f05567ea44eb7c10f1eb4bbf",
+        "status": "shadow_observation_only",
+        "usage": {
+          "input_tokens": 11871,
+          "input_tokens_details": {
+            "cached_tokens": 0
+          },
+          "output_tokens": 1160,
+          "total_tokens": 13031,
+          "output_tokens_details": {
+            "reasoning_tokens": 122
+          }
+        },
+        "observation": {
+          "visible_text": "wat\nTüm\nİstasyonlarda\nTek Fiyat\n10,99 TL/kWh\nSadece\nbir hafta!\nwat\nHayatı\nŞARJ ET\n*Kampanya 7 Ekim gün sonuna kadar geçerlidir.\nAC tarifelerde değişiklik gösterebilir.",
+          "score_reasons": {
+            "text_accuracy": "Zorunlu metinlerde görünür bir yazım hatası saptanmadı. Türkçe karakterler, 10,99 fiyatı, TL/kWh birimi, 7 Ekim tarihi ve AC açıklaması yazılı briefle uyumlu.",
+            "brief": "Bu tek ana görselde altı zorunlu şartın tamamı görünür. Sonbahar yaprakları, araç ve şarj istasyonu istenen görsel bağlamı sağlıyor.",
+            "readability": "Başlık, fiyat ve süre rozeti belirgin bir hiyerarşiyle kolay okunuyor. Alt açıklama bu görüntüde okunabilir; ancak diğer metinlere göre küçük ve dokulu fotoğraf zemini üzerinde olduğu için küçültülmüş kullanımda daha kırılgan.",
+            "brand_style": "Lacivert, açık mavi ve açık nötr alanlar ile dairesel WAT logosu referanslarla görsel bağ kuruyor. Başlık ve rozetteki parlak, doygun mavi üç boyutlu efektler, referansların daha düz görsel dilinden ayrışıyor; bu gözlem tek başına kesin bir kılavuz ihlali değildir. Fotoğraftaki sonbahar renkleri kusur sayılmadı."
+          },
+          "uncertainties": [
+            "Düzleştirilmiş görselden kesin font dosyası, logo master eşliği ve tam renk kodları doğrulanamaz.",
+            "Şarj istasyonunun ekranındaki ve teknik panelindeki küçük yazıların tamamı güvenilir biçimde okunamıyor; bunlar görünür metin aktarımına eklenmedi.",
+            "Kayda geçmeyen telefon revizyonunun içeriği bilinmiyor; değerlendirme yalnız bu görsel ve yazılı şartlarla sınırlı.",
+            "Alt puanlar 0–100 ölçeğinde taslak görsel gözlem puanlarıdır."
+          ],
+          "revision_notes": [
+            "Görünür zorunlu metinler açısından eksik saptanmadı.",
+            "Küçük ekran okunabilirliğini güçlendirmek için alt açıklamanın boyutu veya arkasındaki zemin ayrımı artırılabilir.",
+            "Referansların daha düz görsel diline yaklaşılmak istenirse başlık ve rozetteki parlak üç boyutlu efektler sadeleştirilebilir."
+          ],
+          "requirements": [
+            {
+              "id": "brand_logo",
+              "evidence": "Sağ üstte, koyu lacivert zemin üzerinde beyaz “wat” yazısı ve parçalı dairesel işaret görünür. Belirgin bir esneme, dönme veya yanlış marka görünümü saptanmıyor.",
+              "region": "Sağ üst köşe",
+              "result": "pass"
+            },
+            {
+              "id": "headline",
+              "evidence": "“Tüm İstasyonlarda Tek Fiyat” söylemi üç satırlı, büyük bir başlık olarak okunuyor.",
+              "region": "Üst bölüm ve üst orta",
+              "result": "pass"
+            },
+            {
+              "id": "price",
+              "evidence": "“10,99 TL/kWh” fiyatı, virgülü ve birimiyle açıkça görünür.",
+              "region": "Başlığın hemen altındaki açık renkli fiyat alanı",
+              "result": "pass"
+            },
+            {
+              "id": "campaign_end",
+              "evidence": "“*Kampanya 7 Ekim gün sonuna kadar geçerlidir.” satırı okunuyor.",
+              "region": "Alt kenardaki açıklamanın ilk satırı",
+              "result": "pass"
+            },
+            {
+              "id": "ac_disclosure",
+              "evidence": "“AC tarifelerde değişiklik gösterebilir.” açıklaması okunuyor.",
+              "region": "Alt kenardaki açıklamanın ikinci satırı",
+              "result": "pass"
+            },
+            {
+              "id": "one_week",
+              "evidence": "Mavi rozet üzerinde “Sadece bir hafta!” vurgusu görünür.",
+              "region": "Orta bölüm, fiyatın altı",
+              "result": "pass"
+            }
+          ],
+          "scores": {
+            "text_accuracy": 100,
+            "brief": 100,
+            "readability": 91,
+            "brand_style": 85
+          }
+        },
+        "cost_is_invoice": false,
+        "assessment": {
+          "full_video_review": false,
+          "rights_verified": false,
+          "exact_font_verified": false,
+          "customer_approval_verified": false,
+          "provisional_weighted_score": 94.0,
+          "failed_requirements": [],
+          "live_enabled": false,
+          "unknown_requirements": [],
+          "provisional_route": "quality_candidate",
+          "action_eligible": false,
+          "weights_status": "draft_not_accepted",
+          "exact_logo_master_verified": false
+        },
+        "unrecorded_historical_verbal_change_known": false,
+        "response_id": "resp_0a312557970611d6016aca6474733887d1a80789089e162e00",
+        "binding_sha256": "62b0b67015b398349fe748ceb1cc355d330071f22c8f9b12ceb08a4177b31e8e",
+        "producer_id": 47658175,
+        "comment_id": 10328180313,
+        "binding": {
+          "images": [
+            {
+              "sha256": "ddac364723e25ae8c78a4c4212103e9178bd66f700e7ca710edea5beceb84d72",
+              "label": "Kılavuz fiziksel sayfa3: logo",
+              "role": "reference"
+            },
+            {
+              "sha256": "5b4b424b37eda89f31e7c9aad47ba71a3d8fc79c6822a47e6b9bf0bc600cb0f8",
+              "label": "Kılavuz fiziksel sayfa8: renkler",
+              "role": "reference"
+            },
+            {
+              "sha256": "2721cfa364853e90999ba80dee2890948f8fb714e18c6aad398484a721729dcb",
+              "label": "Kılavuz fiziksel sayfa9: fontlar",
+              "role": "reference"
+            },
+            {
+              "sha256": "0b855872d2104e3dcebcb260cccdd5bf16adf123f05567ea44eb7c10f1eb4bbf",
+              "label": "İncelenen WAT KV",
+              "role": "output"
+            }
+          ],
+          "version": "wat-shadow-vision-v1",
+          "reasoning_effort": "medium",
+          "context_sha256": "75f7d38bb0b4486170b781021ef9b8954497015b2d623b4b055941e37d509736",
+          "model": "gpt-6.1-sol"
+        },
+        "automatic_retry_allowed": false,
+        "historical_price_detection_check": true,
+        "business_writes": 0,
+        "token_cost_estimate_usd": 0.035342,
+        "deterministic_inspection": {
+          "inspector_id": "hamle-byte-inspector-v1",
+          "parser": "stdlib-png-crc-zlib-v1",
+          "ocr": {
+            "parser": "tesseract 5.5.0",
+            "status": "completed",
+            "languages": [
+              "eng",
+              "tur"
+            ],
+            "normalization": "nfkd-casefold-marks-whitespace-v1"
+          },
+          "checks": {
+            "fact:height": {
+              "critical": true,
+              "finding": "Expected height=1350; measured=1350",
+              "artifact_sha256": "0b855872d2104e3dcebcb260cccdd5bf16adf123f05567ea44eb7c10f1eb4bbf",
+              "result": "pass",
+              "brief_sha256": "6170a84866a934e91ec6b97048eea1a4ee7582ae26ecac80c7b54b6f70b9f107",
+              "evidence_ref": "sha256:cb4c339900f6a81f5f676729f3b1eee4db8dc629f347cece6cf5ecd654385892",
+              "method": "deterministic",
+              "evaluator_id": "hamle-byte-inspector-v1",
+              "location": "decoded file structure"
+            },
+            "size_bytes": {
+              "critical": true,
+              "finding": "Measured bytes: 2360008",
+              "artifact_sha256": "0b855872d2104e3dcebcb260cccdd5bf16adf123f05567ea44eb7c10f1eb4bbf",
+              "result": "pass",
+              "brief_sha256": "6170a84866a934e91ec6b97048eea1a4ee7582ae26ecac80c7b54b6f70b9f107",
+              "evidence_ref": "sha256:cb4c339900f6a81f5f676729f3b1eee4db8dc629f347cece6cf5ecd654385892",
+              "method": "deterministic",
+              "evaluator_id": "hamle-byte-inspector-v1",
+              "location": "complete file bytes"
+            },
+            "fact:width": {
+              "critical": true,
+              "finding": "Expected width=1080; measured=1080",
+              "artifact_sha256": "0b855872d2104e3dcebcb260cccdd5bf16adf123f05567ea44eb7c10f1eb4bbf",
+              "result": "pass",
+              "brief_sha256": "6170a84866a934e91ec6b97048eea1a4ee7582ae26ecac80c7b54b6f70b9f107",
+              "evidence_ref": "sha256:cb4c339900f6a81f5f676729f3b1eee4db8dc629f347cece6cf5ecd654385892",
+              "method": "deterministic",
+              "evaluator_id": "hamle-byte-inspector-v1",
+              "location": "decoded file structure"
+            },
+            "mime_type": {
+              "critical": true,
+              "finding": "Measured MIME: image/png",
+              "artifact_sha256": "0b855872d2104e3dcebcb260cccdd5bf16adf123f05567ea44eb7c10f1eb4bbf",
+              "result": "pass",
+              "brief_sha256": "6170a84866a934e91ec6b97048eea1a4ee7582ae26ecac80c7b54b6f70b9f107",
+              "evidence_ref": "sha256:cb4c339900f6a81f5f676729f3b1eee4db8dc629f347cece6cf5ecd654385892",
+              "method": "deterministic",
+              "evaluator_id": "hamle-byte-inspector-v1",
+              "location": "file signature and decoded format"
+            },
+            "text_inspection": {
+              "critical": true,
+              "finding": "Bounded eng+tur OCR completed.",
+              "artifact_sha256": "0b855872d2104e3dcebcb260cccdd5bf16adf123f05567ea44eb7c10f1eb4bbf",
+              "result": "pass",
+              "brief_sha256": "6170a84866a934e91ec6b97048eea1a4ee7582ae26ecac80c7b54b6f70b9f107",
+              "evidence_ref": "sha256:cb4c339900f6a81f5f676729f3b1eee4db8dc629f347cece6cf5ecd654385892",
+              "method": "deterministic",
+              "evaluator_id": "hamle-byte-inspector-v1",
+              "location": "actual image pixel OCR process"
+            }
+          },
+          "extracted_text": ", Tum\n» İstasyonlarda\n) yea rr\nirek.kiyatı\n",
+          "model_calls": 0,
+          "output_spec_sha256": "3652f351b40ab85c941b0d1d558b9fbdbaa48f4cb6c107b1eed0e8422ad0b9ed",
+          "delivery_authorized": false,
+          "evidence_sha256": "849f250eed5976687ac498272160a1a9296764c789c9a04f8821cbfbce40cee6",
+          "network_writes": 0,
+          "text_sha256": "2378003535067ffd7daf8dc96167a46bcedce10ace338fa1ac87ef67e57b61b4",
+          "source_sha256": "bb01ea4b84e2bfe725e092421719e8b24748ad3a5abd1036d002ecbfdf3b0bb2",
+          "artifact": {
+            "sha256": "0b855872d2104e3dcebcb260cccdd5bf16adf123f05567ea44eb7c10f1eb4bbf",
+            "id": "wat-historical-kv",
+            "facts_bound_sha256": "0b855872d2104e3dcebcb260cccdd5bf16adf123f05567ea44eb7c10f1eb4bbf",
+            "size_bytes": 2360008,
+            "facts": {
+              "width": 1080,
+              "bit_depth": 8,
+              "height": 1350
+            },
+            "mime_type": "image/png",
+            "evidence_ref": "sha256:cb4c339900f6a81f5f676729f3b1eee4db8dc629f347cece6cf5ecd654385892"
+          },
+          "inspection_status": "passed",
+          "schema_version": 1,
+          "source": {
+            "account_id": 5898865,
+            "verified": true,
+            "project_id": 40694338,
+            "evidence_ref": "wat-native-file:896341819",
+            "task_id": 10309337809,
+            "attachment_id": 896341819
+          },
+          "resource_limits": "bounded-byte-pixel-zlib",
+          "limitations": [
+            "Deterministic checks do not establish brand meaning, visual quality, rights or current send authority.",
+            "No visual-semantic review or approved-logo comparison was performed.",
+            "OCR is fallible and cannot prove that undetected text is visually absent."
+          ],
+          "checked_at": "2026-10-10T16:14:39.195267+00:00",
+          "brief_sha256": "6170a84866a934e91ec6b97048eea1a4ee7582ae26ecac80c7b54b6f70b9f107",
+          "semantic_review_required": true
+        },
+        "task_id": 10309337809
+      },
+      "live_enabled": false,
+      "created_at": 1791648879.101455,
+      "state": "completed",
+      "model_receipt": {
+        "usage": {
+          "input_tokens": 11871,
+          "input_tokens_details": {
+            "cached_tokens": 0
+          },
+          "output_tokens": 1160,
+          "total_tokens": 13031,
+          "output_tokens_details": {
+            "reasoning_tokens": 122
+          }
+        },
+        "response_id": "resp_0a312557970611d6016aca6474733887d1a80789089e162e00",
+        "binding_sha256": "62b0b67015b398349fe748ceb1cc355d330071f22c8f9b12ceb08a4177b31e8e",
+        "model": "gpt-6.1-sol"
+      },
+      "customer_writes": 0,
+      "binding_sha256": "62b0b67015b398349fe748ceb1cc355d330071f22c8f9b12ceb08a4177b31e8e",
+      "started_at": 1791648883.462007
+    }
+  },
+  "video": {
+    "model_calls": 0,
+    "generation": 1,
+    "results": [
+      {
+        "inspection": {
+          "audio_script_or_listening_verified": false,
+          "media": {
+            "inspector_id": "wat-media-inspector-v1",
+            "frames": [
+              {
+                "ocr_performed": false,
+                "video_sha256": "1b88ebfa84e979fbdbcdd29781694bcd76fbfaedffd8e11292aa545fbab6ae66",
+                "timestamp_verified": false,
+                "size_bytes": 1698402,
+                "timestamp_seconds": null,
+                "sha256": "dfc42ea2e30bc1e1dc7258b2a6e87770335eee67704c671d5986ffa985817805",
+                "semantic_review_performed": false,
+                "evidence_sha256": "12b8b5ab298aad5ef3029723e14dad73ebd730e8894dbbb653872bb6f4b0f671",
+                "facts": {
+                  "width": 1080,
+                  "bit_depth": 8,
+                  "height": 1920
+                },
+                "frame_index": 0,
+                "mime_type": "image/png"
+              },
+              {
+                "ocr_performed": false,
+                "video_sha256": "1b88ebfa84e979fbdbcdd29781694bcd76fbfaedffd8e11292aa545fbab6ae66",
+                "timestamp_verified": false,
+                "size_bytes": 1927610,
+                "timestamp_seconds": null,
+                "sha256": "4196c10665c859222d5cb9fe5ac8fac80aba5b4cd0960ef126b3955da96d39ff",
+                "semantic_review_performed": false,
+                "evidence_sha256": "76872626a6aa6d1c6014d1b91e3327f08bc6b3f21d6414ab9f61153dd85d154c",
+                "facts": {
+                  "width": 1080,
+                  "bit_depth": 8,
+                  "height": 1920
+                },
+                "frame_index": 38,
+                "mime_type": "image/png"
+              },
+              {
+                "ocr_performed": false,
+                "video_sha256": "1b88ebfa84e979fbdbcdd29781694bcd76fbfaedffd8e11292aa545fbab6ae66",
+                "timestamp_verified": false,
+                "size_bytes": 2000913,
+                "timestamp_seconds": null,
+                "sha256": "e59c2dbc97c484f0979f2c244970c6d358a6a4f6c574da610209f277b327e70f",
+                "semantic_review_performed": false,
+                "evidence_sha256": "d04747a967722b8f716e57799d00f89bce69e17fd671675d0223b6d9dff4a7d1",
+                "facts": {
+                  "width": 1080,
+                  "bit_depth": 8,
+                  "height": 1920
+                },
+                "frame_index": 76,
+                "mime_type": "image/png"
+              },
+              {
+                "ocr_performed": false,
+                "video_sha256": "1b88ebfa84e979fbdbcdd29781694bcd76fbfaedffd8e11292aa545fbab6ae66",
+                "timestamp_verified": false,
+                "size_bytes": 2074861,
+                "timestamp_seconds": null,
+                "sha256": "5504d84b2117402949fb86f57b0faa07037a67ee1e177450ec7034f2be9f1671",
+                "semantic_review_performed": false,
+                "evidence_sha256": "de06c493f425e0b863d77a82c1be3ba5a66e1af82c0bf54d0b88b8436c3a6223",
+                "facts": {
+                  "width": 1080,
+                  "bit_depth": 8,
+                  "height": 1920
+                },
+                "frame_index": 114,
+                "mime_type": "image/png"
+              },
+              {
+                "ocr_performed": false,
+                "video_sha256": "1b88ebfa84e979fbdbcdd29781694bcd76fbfaedffd8e11292aa545fbab6ae66",
+                "timestamp_verified": false,
+                "size_bytes": 2006701,
+                "timestamp_seconds": null,
+                "sha256": "cb3635fc6088ab0b932c971781c9b60ee3e177bd8bc938d3140cc096a7ced35d",
+                "semantic_review_performed": false,
+                "evidence_sha256": "2822f16d2d5ccfbaf5a66bb9bf37d266eba0d58de1771207ec17addb76f8ac97",
+                "facts": {
+                  "width": 1080,
+                  "bit_depth": 8,
+                  "height": 1920
+                },
+                "frame_index": 152,
+                "mime_type": "image/png"
+              },
+              {
+                "ocr_performed": false,
+                "video_sha256": "1b88ebfa84e979fbdbcdd29781694bcd76fbfaedffd8e11292aa545fbab6ae66",
+                "timestamp_verified": false,
+                "size_bytes": 2108562,
+                "timestamp_seconds": null,
+                "sha256": "e196ff606ae4ec704cbddcdfa95b0682bc38c3cbc15f8214fdae3ea61aac9e01",
+                "semantic_review_performed": false,
+                "evidence_sha256": "08b61fb1961dbfc17610972cfa3006ad79b8da972bac9bfa31e9a26f40c71d82",
+                "facts": {
+                  "width": 1080,
+                  "bit_depth": 8,
+                  "height": 1920
+                },
+                "frame_index": 190,
+                "mime_type": "image/png"
+              },
+              {
+                "ocr_performed": false,
+                "video_sha256": "1b88ebfa84e979fbdbcdd29781694bcd76fbfaedffd8e11292aa545fbab6ae66",
+                "timestamp_verified": false,
+                "size_bytes": 2088013,
+                "timestamp_seconds": null,
+                "sha256": "879c8b5f33306876abbfa3b5f3db408a3020e9e99f7ca929219b84a71c0504d3",
+                "semantic_review_performed": false,
+                "evidence_sha256": "6309e507ae62867acd12af65ef0cf1d5702fba62caa1fd711ae6a775ae57aa29",
+                "facts": {
+                  "width": 1080,
+                  "bit_depth": 8,
+                  "height": 1920
+                },
+                "frame_index": 228,
+                "mime_type": "image/png"
+              },
+              {
+                "ocr_performed": false,
+                "video_sha256": "1b88ebfa84e979fbdbcdd29781694bcd76fbfaedffd8e11292aa545fbab6ae66",
+                "timestamp_verified": false,
+                "size_bytes": 2052611,
+                "timestamp_seconds": null,
+                "sha256": "099d97103bc5aa4fac6a409b96049300fbfab0d3d1e6936f73132e57cf67278b",
+                "semantic_review_performed": false,
+                "evidence_sha256": "0c41c14c6d82a25d6bd82f02e9b18a139fdab7dba0f9ebfd3dd766003d762ca7",
+                "facts": {
+                  "width": 1080,
+                  "bit_depth": 8,
+                  "height": 1920
+                },
+                "frame_index": 267,
+                "mime_type": "image/png"
+              }
+            ],
+            "model_calls": 0,
+            "checks": {
+              "mime_type": {
+                "brief_sha256": "998e210c1fc56f3331d9b0afe533f2e97a51c17993a0ef4c7ab8a869296e0ea3",
+                "finding": "Measured mime_type=video/mp4; requested condition passed.",
+                "artifact_sha256": "1b88ebfa84e979fbdbcdd29781694bcd76fbfaedffd8e11292aa545fbab6ae66",
+                "result": "pass",
+                "observed": "video/mp4",
+                "location": "actual MP4 container/stream metadata",
+                "evidence_ref": "probe-sha256:0eaa1bd547c37994de1af61baf8a47907f05afbcc4395da15fe85b7101e75f7b",
+                "method": "deterministic",
+                "evaluator_id": "wat-media-inspector-v1",
+                "critical": true
+              },
+              "size_bytes": {
+                "brief_sha256": "998e210c1fc56f3331d9b0afe533f2e97a51c17993a0ef4c7ab8a869296e0ea3",
+                "finding": "Measured size_bytes=10151280; requested condition passed.",
+                "artifact_sha256": "1b88ebfa84e979fbdbcdd29781694bcd76fbfaedffd8e11292aa545fbab6ae66",
+                "result": "pass",
+                "observed": 10151280,
+                "location": "actual MP4 container/stream metadata",
+                "evidence_ref": "probe-sha256:0eaa1bd547c37994de1af61baf8a47907f05afbcc4395da15fe85b7101e75f7b",
+                "method": "deterministic",
+                "evaluator_id": "wat-media-inspector-v1",
+                "critical": true
+              }
+            },
+            "artifact_sha256": "1b88ebfa84e979fbdbcdd29781694bcd76fbfaedffd8e11292aa545fbab6ae66",
+            "size_bytes": 10151280,
+            "output_spec_sha256": "2514be5fee96fea695d438a52a993fd12346d140b81b3aaf8fbecd2535a8338b",
+            "reason": "sparse_frames_do_not_establish_full_video_content",
+            "delivery_authorized": false,
+            "evidence_sha256": "3cf4095f7bef781df304ea8ed7e739c31e0e6295922e0e5f6c957a87ca8dd419",
+            "tool_availability": {
+              "ffmpeg": true,
+              "ffprobe": true
+            },
+            "probe_sha256": "0eaa1bd547c37994de1af61baf8a47907f05afbcc4395da15fe85b7101e75f7b",
+            "coverage": {
+              "requested_frame_indices": [
+                0,
+                38,
+                76,
+                114,
+                152,
+                190,
+                228,
+                267
+              ],
+              "full_content_review": false,
+              "decoded_frame_indices": [
+                0,
+                38,
+                76,
+                114,
+                152,
+                190,
+                228,
+                267
+              ],
+              "kind": "video_metadata_and_optional_sparse_frames",
+              "complete_visual_semantics": false,
+              "complete_audio_review": false,
+              "full_decode_verified": false
+            },
+            "network_reads": 0,
+            "technical_status": "passed",
+            "source_sha256": "973913b44ef31babd8329670511727731e41426fb65c56b38c57eac295c38cd9",
+            "schema_version": 1,
+            "source": {
+              "account_id": 5898865,
+              "verified": true,
+              "project_id": 40694338,
+              "evidence_ref": "wat-native-video:897278053",
+              "task_id": 10317695863,
+              "attachment_id": 897278053
+            },
+            "declared_mime": "video/mp4",
+            "sampling_status": "completed_sparse_only",
+            "brand_or_creative_accepted": false,
+            "artifact": {
+              "facts_bound_sha256": "1b88ebfa84e979fbdbcdd29781694bcd76fbfaedffd8e11292aa545fbab6ae66",
+              "id": "samet-music",
+              "sha256": "1b88ebfa84e979fbdbcdd29781694bcd76fbfaedffd8e11292aa545fbab6ae66",
+              "evidence_ref": "probe-sha256:0eaa1bd547c37994de1af61baf8a47907f05afbcc4395da15fe85b7101e75f7b",
+              "facts": {
+                "duration_seconds": "268/25",
+                "video_codec": "h264",
+                "audio_present": true,
+                "encoded_width": 1080,
+                "frame_rate": "25",
+                "width": 1080,
+                "height": 1920,
+                "encoded_height": 1920,
+                "audio_codec": "aac",
+                "verification_level": "local_container_stream_metadata",
+                "container_duration_seconds": "268/25",
+                "full_decode_verified": false,
+                "rotation": 0
+              },
+              "size_bytes": 10151280,
+              "mime_type": "video/mp4"
+            },
+            "inspection": null,
+            "checked_at": "2026-10-10T16:12:39.905985+00:00",
+            "brief_sha256": "998e210c1fc56f3331d9b0afe533f2e97a51c17993a0ef4c7ab8a869296e0ea3",
+            "network_writes": 0
+          },
+          "brand_or_creative_accepted": false,
+          "sampled_frame_ocr": [
+            {
+              "sha256": "dfc42ea2e30bc1e1dc7258b2a6e87770335eee67704c671d5986ffa985817805",
+              "ocr": {
+                "parser": "tesseract 5.5.0",
+                "status": "completed",
+                "languages": [
+                  "eng",
+                  "tur"
+                ],
+                "normalization": "nfkd-casefold-marks-whitespace-v1"
+              },
+              "text": "© okt\n(wy,\nE 7 i op ? vi Tip >\neer © 6-0) Ez\n[Sco gama) —\nKoc Vİ ‘ —_\n\n— —_ = > —\n\nbaz =\n",
+              "text_truncated": false,
+              "timestamp_verified": false,
+              "frame_index": 0,
+              "text_sha256": "6e9a2db3f5dbb5e17efd6cd55bf4cb00231fba9641648718143906d06c495857"
+            },
+            {
+              "sha256": "4196c10665c859222d5cb9fe5ac8fac80aba5b4cd0960ef126b3955da96d39ff",
+              "ocr": {
+                "parser": "tesseract 5.5.0",
+                "status": "completed",
+                "languages": [
+                  "eng",
+                  "tur"
+                ],
+                "normalization": "nfkd-casefold-marks-whitespace-v1"
+              },
+              "text": "i wy\n4\nia wo — n\nPee _— % nin\nvw aan ig (J >\n+ er _ . fe 7\nsaree. | sd fy\n‘ « İS, ağ Dr ff a.\n= Hes ; 2 ‘ Fe\ne Hayali seal Le | Tip\nMr dl |\n‘on 7) oy em\nm “loo =) 7 — |\nen >\nm =\n",
+              "text_truncated": false,
+              "timestamp_verified": false,
+              "frame_index": 38,
+              "text_sha256": "1f0ebb8fd84dc0366ec20760ac72f2495b08ef443b38817df797e97116a15707"
+            },
+            {
+              "sha256": "e59c2dbc97c484f0979f2c244970c6d358a6a4f6c574da610209f277b327e70f",
+              "ocr": {
+                "parser": "tesseract 5.5.0",
+                "status": "completed",
+                "languages": [
+                  "eng",
+                  "tur"
+                ],
+                "normalization": "nfkd-casefold-marks-whitespace-v1"
+              },
+              "text": "ut\nHer Salı WAT'la,\nAvantajı Katla!\nSalı Modu “on @\n(i le at\n“4 i digs a i de ity ae\nea\n",
+              "text_truncated": false,
+              "timestamp_verified": false,
+              "frame_index": 76,
+              "text_sha256": "ee8e26348c9ff2071a1b84818b6f14a7df335aa595eefa3edbf5e498a1fc0288"
+            },
+            {
+              "sha256": "5504d84b2117402949fb86f57b0faa07037a67ee1e177450ec7034f2be9f1671",
+              "ocr": {
+                "parser": "tesseract 5.5.0",
+                "status": "completed",
+                "languages": [
+                  "eng",
+                  "tur"
+                ],
+                "normalization": "nfkd-casefold-marks-whitespace-v1"
+              },
+              "text": "re |\nNa\nax Her Salı WAT'la,\nAvantajı Katla! *\nSalı Modu ON\n",
+              "text_truncated": false,
+              "timestamp_verified": false,
+              "frame_index": 114,
+              "text_sha256": "0e08aa30539456616e66a37eb0e67314a192863ab74606cd91f9313afa6419c1"
+            },
+            {
+              "sha256": "cb3635fc6088ab0b932c971781c9b60ee3e177bd8bc938d3140cc096a7ced35d",
+              "ocr": {
+                "parser": "tesseract 5.5.0",
+                "status": "completed",
+                "languages": [
+                  "eng",
+                  "tur"
+                ],
+                "normalization": "nfkd-casefold-marks-whitespace-v1"
+              },
+              "text": "( | |\n> Her Salı WAT'la,\nAvantaji Katla! *\nSali Modu on\n= 100 mi —\n",
+              "text_truncated": false,
+              "timestamp_verified": false,
+              "frame_index": 152,
+              "text_sha256": "2a9f8e53a6b51318e255e7718d9cba9fb5ebdf2e209001f0613e8c4b6768b0c8"
+            },
+            {
+              "sha256": "e196ff606ae4ec704cbddcdfa95b0682bc38c3cbc15f8214fdae3ea61aac9e01",
+              "ocr": {
+                "parser": "tesseract 5.5.0",
+                "status": "completed",
+                "languages": [
+                  "eng",
+                  "tur"
+                ],
+                "normalization": "nfkd-casefold-marks-whitespace-v1"
+              },
+              "text": "( 7\nNa\n* Her Salı WAT'la, .\nAvantajı Katla!\nSalı Modu ON |\nA BA q İşle Tdi\n",
+              "text_truncated": false,
+              "timestamp_verified": false,
+              "frame_index": 190,
+              "text_sha256": "10b9a014e0c6dbe5ac1de0715f0d2305d014963b1390b268dc80f65af033ae28"
+            },
+            {
+              "sha256": "879c8b5f33306876abbfa3b5f3db408a3020e9e99f7ca929219b84a71c0504d3",
+              "ocr": {
+                "parser": "tesseract 5.5.0",
+                "status": "completed",
+                "languages": [
+                  "eng",
+                  "tur"
+                ],
+                "normalization": "nfkd-casefold-marks-whitespace-v1"
+              },
+              "text": "( i\na. Her Salı WAT'la, p\nAvantajı Katla!\nSalı Modu ON\nİN 7\n",
+              "text_truncated": false,
+              "timestamp_verified": false,
+              "frame_index": 228,
+              "text_sha256": "46701e19d235feb04f19c50b5978c619dd9945c93bb5c678195a2db5749f2974"
+            },
+            {
+              "sha256": "099d97103bc5aa4fac6a409b96049300fbfab0d3d1e6936f73132e57cf67278b",
+              "ocr": {
+                "parser": "tesseract 5.5.0",
+                "status": "completed",
+                "languages": [
+                  "eng",
+                  "tur"
+                ],
+                "normalization": "nfkd-casefold-marks-whitespace-v1"
+              },
+              "text": "y : >\nZe\nHer Salı WAT'la, a\nAvantajı Katla!\nSalı Modu ON\n| | ais ~ i ide 4\n~& 100 = —— |\n",
+              "text_truncated": false,
+              "timestamp_verified": false,
+              "frame_index": 267,
+              "text_sha256": "2e6122f1f854acb64fb57444eb5d19383987efa4a7018c98183c6451aeb4cc4a"
+            }
+          ],
+          "message_timing": {
+            "ocr": {
+              "parser": "tesseract 5.5.0",
+              "status": "completed",
+              "languages": [
+                "eng",
+                "tur"
+              ],
+              "normalization": "nfkd-casefold-marks-whitespace-v1"
+            },
+            "evidence": {
+              "model_calls": 0,
+              "absence_is_failure": false,
+              "message_presence_verified": false,
+              "artifact_sha256": "1b88ebfa84e979fbdbcdd29781694bcd76fbfaedffd8e11292aa545fbab6ae66",
+              "frame": {
+                "timeline_origin": "container_format_start_time",
+                "pts_ticks": 50000,
+                "timestamp_verified": true,
+                "timeline_origin_seconds": "0",
+                "selected_from_actual_pts": true,
+                "byte_size": 1815475,
+                "ffmpeg_showinfo_pts_verified": true,
+                "sha256": "e0f62e0ea2e046db876606e7020512d01e4fab1a01476dfe6691b84110f9d924",
+                "presentation_seconds": "2",
+                "elapsed_seconds": "2",
+                "deadline_seconds": "2",
+                "decoded_pts_count": 268,
+                "frame_index": 50,
+                "time_base": "1/25000"
+              },
+              "status": "verified_timestamp_frame",
+              "exact_first_appearance_verified": false,
+              "reason": "content_presence_still_requires_ocr_or_visual_evidence",
+              "full_content_review": false,
+              "delivery_authorized": false,
+              "version": "wat-timed-frame-v1",
+              "evidence_sha256": "6fd03d07bc74e82f773e8b3369b5bdacf24cbe24553ceba88f64ad2002f2ecdc",
+              "probe_sha256": "4e52d489fe9f3f889bbfb5185d0e0cb792d81eded13c7f77a95e3a794be85956"
+            },
+            "status": "unassessed",
+            "absence_is_failure": false,
+            "exact_first_appearance_verified": false,
+            "required_phrases": [
+              "Her Salı WAT’la",
+              "Avantajı Katla",
+              "%10"
+            ],
+            "text": "e\nWw\nMia\ne ji ME 1: —\n\\ İK» ey. =\nSARI ET i ye — >\n\" : i) aS\n= ——= = mz - =\n~ >\n=\n",
+            "brief_sha256": "998e210c1fc56f3331d9b0afe533f2e97a51c17993a0ef4c7ab8a869296e0ea3",
+            "text_sha256": "51723f228f38d668af6fd1e6fbcb5a9cae29ba9735337ea6a5122a1e9b5072f1"
+          },
+          "human_review_required": true,
+          "full_content_review": false,
+          "delivery_authorized": false,
+          "message_visible_by_two_seconds_positive_witness": false
+        },
+        "id": "samet-music",
+        "historical_approval": {
+          "actor_id": 52096503,
+          "basis": "son video onaylandı; önceki tek Samet MP4 ile zaman sırası bağı",
+          "current_delivery_authority": false,
+          "exact_hash_approval": false,
+          "comment_id": 10340298133
+        },
+        "source_artifact": {
+          "sha256": "1b88ebfa84e979fbdbcdd29781694bcd76fbfaedffd8e11292aa545fbab6ae66",
+          "producer_id": 50486696,
+          "attachment_id": 897278053,
+          "byte_size": 10151280,
+          "task_id": 10317695863,
+          "comment_id": 10336607720
+        }
+      },
+      {
+        "inspection": {
+          "audio_script_or_listening_verified": false,
+          "media": {
+            "inspector_id": "wat-media-inspector-v1",
+            "frames": [
+              {
+                "ocr_performed": false,
+                "video_sha256": "b69614a7a6691a18fd306454111dbdfcd388218ff932a618206b37760b1bc58d",
+                "timestamp_verified": false,
+                "size_bytes": 1698402,
+                "timestamp_seconds": null,
+                "sha256": "dfc42ea2e30bc1e1dc7258b2a6e87770335eee67704c671d5986ffa985817805",
+                "semantic_review_performed": false,
+                "evidence_sha256": "c168059b829c73e6e446ffae71974bed73a41426f202a000cde319ffcc985cae",
+                "facts": {
+                  "width": 1080,
+                  "bit_depth": 8,
+                  "height": 1920
+                },
+                "frame_index": 0,
+                "mime_type": "image/png"
+              },
+              {
+                "ocr_performed": false,
+                "video_sha256": "b69614a7a6691a18fd306454111dbdfcd388218ff932a618206b37760b1bc58d",
+                "timestamp_verified": false,
+                "size_bytes": 1940272,
+                "timestamp_seconds": null,
+                "sha256": "049dc9b643c0ecb73ed17fb5db958da367b50220cc0035ba57807b38ac839aa8",
+                "semantic_review_performed": false,
+                "evidence_sha256": "7774ede3f9a57a064015ff503e2593925ead2345dcaaa71c5d78c67b742231c9",
+                "facts": {
+                  "width": 1080,
+                  "bit_depth": 8,
+                  "height": 1920
+                },
+                "frame_index": 42,
+                "mime_type": "image/png"
+              },
+              {
+                "ocr_performed": false,
+                "video_sha256": "b69614a7a6691a18fd306454111dbdfcd388218ff932a618206b37760b1bc58d",
+                "timestamp_verified": false,
+                "size_bytes": 2042899,
+                "timestamp_seconds": null,
+                "sha256": "91406203495d09e6437b3d4a40719a2d414ada2b59280d62591784b75b5fb790",
+                "semantic_review_performed": false,
+                "evidence_sha256": "b31f3730547ebad6710d907869e5141dba95ab43d852eadfcef0477eac98909f",
+                "facts": {
+                  "width": 1080,
+                  "bit_depth": 8,
+                  "height": 1920
+                },
+                "frame_index": 84,
+                "mime_type": "image/png"
+              },
+              {
+                "ocr_performed": false,
+                "video_sha256": "b69614a7a6691a18fd306454111dbdfcd388218ff932a618206b37760b1bc58d",
+                "timestamp_verified": false,
+                "size_bytes": 1992932,
+                "timestamp_seconds": null,
+                "sha256": "420c11b0231a0dcc31cfb91e16bae3388b721c14b78ac1ccda47dd589b955c03",
+                "semantic_review_performed": false,
+                "evidence_sha256": "95ac0b37758b1c67584bd7edf9a9ec8b695a8ff4433dc770a2cbc2197a8d446c",
+                "facts": {
+                  "width": 1080,
+                  "bit_depth": 8,
+                  "height": 1920
+                },
+                "frame_index": 126,
+                "mime_type": "image/png"
+              },
+              {
+                "ocr_performed": false,
+                "video_sha256": "b69614a7a6691a18fd306454111dbdfcd388218ff932a618206b37760b1bc58d",
+                "timestamp_verified": false,
+                "size_bytes": 2106150,
+                "timestamp_seconds": null,
+                "sha256": "3e7ce0af1d41fd2f7131b2f3241ccc342b614df64320b65595891c904febeade",
+                "semantic_review_performed": false,
+                "evidence_sha256": "cb37727d3123c09e23e68c82cc10b9ad4ed17460f44fa12079c8f65a94cd0ad4",
+                "facts": {
+                  "width": 1080,
+                  "bit_depth": 8,
+                  "height": 1920
+                },
+                "frame_index": 168,
+                "mime_type": "image/png"
+              },
+              {
+                "ocr_performed": false,
+                "video_sha256": "b69614a7a6691a18fd306454111dbdfcd388218ff932a618206b37760b1bc58d",
+                "timestamp_verified": false,
+                "size_bytes": 2124225,
+                "timestamp_seconds": null,
+                "sha256": "4c5df59a0925d8b0a0dd11423b96eefe9e9ee2bc0c0548be14023ed7faef7645",
+                "semantic_review_performed": false,
+                "evidence_sha256": "52624a6cf3ca0e2ef7633daf26cfbb4f8d6ad7315791167f967d42b119b309ab",
+                "facts": {
+                  "width": 1080,
+                  "bit_depth": 8,
+                  "height": 1920
+                },
+                "frame_index": 210,
+                "mime_type": "image/png"
+              },
+              {
+                "ocr_performed": false,
+                "video_sha256": "b69614a7a6691a18fd306454111dbdfcd388218ff932a618206b37760b1bc58d",
+                "timestamp_verified": false,
+                "size_bytes": 2107881,
+                "timestamp_seconds": null,
+                "sha256": "e37ad54f1811eec8dd4dcfc9d060fd128b6b50673eccadf97e0396dcb785d8d4",
+                "semantic_review_performed": false,
+                "evidence_sha256": "f7ecbeea1c3dc09e18d450ba21fb7f5116f6e874113c5311c3d1c32cd43f72d8",
+                "facts": {
+                  "width": 1080,
+                  "bit_depth": 8,
+                  "height": 1920
+                },
+                "frame_index": 252,
+                "mime_type": "image/png"
+              },
+              {
+                "ocr_performed": false,
+                "video_sha256": "b69614a7a6691a18fd306454111dbdfcd388218ff932a618206b37760b1bc58d",
+                "timestamp_verified": false,
+                "size_bytes": 2131921,
+                "timestamp_seconds": null,
+                "sha256": "e5da3c4753972f6d5ee2211b37c3dfe6f6db12e8427b8421a9cd6faa339fe570",
+                "semantic_review_performed": false,
+                "evidence_sha256": "2016b45ee64505d1c448504f74350dd8505b917d1c97f212f918babb236c2bee",
+                "facts": {
+                  "width": 1080,
+                  "bit_depth": 8,
+                  "height": 1920
+                },
+                "frame_index": 294,
+                "mime_type": "image/png"
+              }
+            ],
+            "model_calls": 0,
+            "checks": {
+              "mime_type": {
+                "brief_sha256": "998e210c1fc56f3331d9b0afe533f2e97a51c17993a0ef4c7ab8a869296e0ea3",
+                "finding": "Measured mime_type=video/mp4; requested condition passed.",
+                "artifact_sha256": "b69614a7a6691a18fd306454111dbdfcd388218ff932a618206b37760b1bc58d",
+                "result": "pass",
+                "observed": "video/mp4",
+                "location": "actual MP4 container/stream metadata",
+                "evidence_ref": "probe-sha256:8e9eacb20e27eb76bb0dbd0e0306eff4ecf1828ac061fbf05de6c3863ca03d40",
+                "method": "deterministic",
+                "evaluator_id": "wat-media-inspector-v1",
+                "critical": true
+              },
+              "size_bytes": {
+                "brief_sha256": "998e210c1fc56f3331d9b0afe533f2e97a51c17993a0ef4c7ab8a869296e0ea3",
+                "finding": "Measured size_bytes=11168366; requested condition passed.",
+                "artifact_sha256": "b69614a7a6691a18fd306454111dbdfcd388218ff932a618206b37760b1bc58d",
+                "result": "pass",
+                "observed": 11168366,
+                "location": "actual MP4 container/stream metadata",
+                "evidence_ref": "probe-sha256:8e9eacb20e27eb76bb0dbd0e0306eff4ecf1828ac061fbf05de6c3863ca03d40",
+                "method": "deterministic",
+                "evaluator_id": "wat-media-inspector-v1",
+                "critical": true
+              }
+            },
+            "artifact_sha256": "b69614a7a6691a18fd306454111dbdfcd388218ff932a618206b37760b1bc58d",
+            "size_bytes": 11168366,
+            "output_spec_sha256": "dc1314fcc7f94851204e5b85c08a64b142a2082292a83850cd5818849bc407a0",
+            "reason": "sparse_frames_do_not_establish_full_video_content",
+            "delivery_authorized": false,
+            "evidence_sha256": "545ef4aa75ea8713c9248622ce088900f5c8aa922123a5079da26ca4d38ef1a9",
+            "tool_availability": {
+              "ffmpeg": true,
+              "ffprobe": true
+            },
+            "probe_sha256": "8e9eacb20e27eb76bb0dbd0e0306eff4ecf1828ac061fbf05de6c3863ca03d40",
+            "coverage": {
+              "requested_frame_indices": [
+                0,
+                42,
+                84,
+                126,
+                168,
+                210,
+                252,
+                294
+              ],
+              "full_content_review": false,
+              "decoded_frame_indices": [
+                0,
+                42,
+                84,
+                126,
+                168,
+                210,
+                252,
+                294
+              ],
+              "kind": "video_metadata_and_optional_sparse_frames",
+              "complete_visual_semantics": false,
+              "complete_audio_review": false,
+              "full_decode_verified": false
+            },
+            "network_reads": 0,
+            "technical_status": "passed",
+            "source_sha256": "a1b27c3415be3ccdd0bbb5aa5aa2f7a266dde89b5f2bf1eca6ec9bdc1d2eab5e",
+            "schema_version": 1,
+            "source": {
+              "account_id": 5898865,
+              "verified": true,
+              "project_id": 40694338,
+              "evidence_ref": "wat-native-video:897985544",
+              "task_id": 10317695863,
+              "attachment_id": 897985544
+            },
+            "declared_mime": "video/mp4",
+            "sampling_status": "completed_sparse_only",
+            "brand_or_creative_accepted": false,
+            "artifact": {
+              "facts_bound_sha256": "b69614a7a6691a18fd306454111dbdfcd388218ff932a618206b37760b1bc58d",
+              "id": "samet-voiceover",
+              "sha256": "b69614a7a6691a18fd306454111dbdfcd388218ff932a618206b37760b1bc58d",
+              "evidence_ref": "probe-sha256:8e9eacb20e27eb76bb0dbd0e0306eff4ecf1828ac061fbf05de6c3863ca03d40",
+              "facts": {
+                "duration_seconds": "59/5",
+                "video_codec": "h264",
+                "audio_present": true,
+                "encoded_width": 1080,
+                "frame_rate": "25",
+                "width": 1080,
+                "height": 1920,
+                "encoded_height": 1920,
+                "audio_codec": "aac",
+                "verification_level": "local_container_stream_metadata",
+                "container_duration_seconds": "59/5",
+                "full_decode_verified": false,
+                "rotation": 0
+              },
+              "size_bytes": 11168366,
+              "mime_type": "video/mp4"
+            },
+            "inspection": null,
+            "checked_at": "2026-10-10T16:13:09.768214+00:00",
+            "brief_sha256": "998e210c1fc56f3331d9b0afe533f2e97a51c17993a0ef4c7ab8a869296e0ea3",
+            "network_writes": 0
+          },
+          "brand_or_creative_accepted": false,
+          "sampled_frame_ocr": [
+            {
+              "sha256": "dfc42ea2e30bc1e1dc7258b2a6e87770335eee67704c671d5986ffa985817805",
+              "ocr": {
+                "parser": "tesseract 5.5.0",
+                "status": "completed",
+                "languages": [
+                  "eng",
+                  "tur"
+                ],
+                "normalization": "nfkd-casefold-marks-whitespace-v1"
+              },
+              "text": "© okt\n(wy,\nE 7 i op ? vi Tip >\neer © 6-0) Ez\n[Sco gama) —\nKoc Vİ ‘ —_\n\n— —_ = > —\n\nbaz =\n",
+              "text_truncated": false,
+              "timestamp_verified": false,
+              "frame_index": 0,
+              "text_sha256": "6e9a2db3f5dbb5e17efd6cd55bf4cb00231fba9641648718143906d06c495857"
+            },
+            {
+              "sha256": "049dc9b643c0ecb73ed17fb5db958da367b50220cc0035ba57807b38ac839aa8",
+              "ocr": {
+                "parser": "tesseract 5.5.0",
+                "status": "completed",
+                "languages": [
+                  "eng",
+                  "tur"
+                ],
+                "normalization": "nfkd-casefold-marks-whitespace-v1"
+              },
+              "text": "Nay § Si\n“A ae huge a\n\n‘ N tA aa FA is: ZS\n\nBier Çi |\n- \\ | A\n= 100 =a “\n\n~~ >\n\n: =—\n",
+              "text_truncated": false,
+              "timestamp_verified": false,
+              "frame_index": 42,
+              "text_sha256": "98363f2b562835740ca8acd07f7896f007d18a09d2a409aade9c6a22f6db6f4a"
+            },
+            {
+              "sha256": "91406203495d09e6437b3d4a40719a2d414ada2b59280d62591784b75b5fb790",
+              "ocr": {
+                "parser": "tesseract 5.5.0",
+                "status": "completed",
+                "languages": [
+                  "eng",
+                  "tur"
+                ],
+                "normalization": "nfkd-casefold-marks-whitespace-v1"
+              },
+              "text": "» Her Salı WAT'la,\nAvantajı Katla!\nSalı Modu “on @\nRk oe İZ —<\n74 8 he Zi i : ed a\n—— =\n",
+              "text_truncated": false,
+              "timestamp_verified": false,
+              "frame_index": 84,
+              "text_sha256": "6f45b4f3f9ce569ec825652b174d227ae4ff3bc62736d269f941f0e7afcbb29b"
+            },
+            {
+              "sha256": "420c11b0231a0dcc31cfb91e16bae3388b721c14b78ac1ccda47dd589b955c03",
+              "ocr": {
+                "parser": "tesseract 5.5.0",
+                "status": "completed",
+                "languages": [
+                  "eng",
+                  "tur"
+                ],
+                "normalization": "nfkd-casefold-marks-whitespace-v1"
+              },
+              "text": "Vie )\nNa\nSs Her Salı WAT'la,\nAvantajı Katla! *\nSalı Modu ON\nle ndirim\nef s 4 us SAY Ap i\"\n",
+              "text_truncated": false,
+              "timestamp_verified": false,
+              "frame_index": 126,
+              "text_sha256": "cbdd18f4f4ff96a59c7a6480a86338d2f326b226eee33a1658a452df288d5ed2"
+            },
+            {
+              "sha256": "3e7ce0af1d41fd2f7131b2f3241ccc342b614df64320b65595891c904febeade",
+              "ocr": {
+                "parser": "tesseract 5.5.0",
+                "status": "completed",
+                "languages": [
+                  "eng",
+                  "tur"
+                ],
+                "normalization": "nfkd-casefold-marks-whitespace-v1"
+              },
+              "text": "/ ,\nJp Her Sali WAT'la,\nAvantajı Katla! *\nSalı Modu ON\nNi ;\n(| m... >\naL, 7\ni hye sh ie İN | Lip öl\n| eer | 7 Ne fh |\nTne |1Oo = e)\n",
+              "text_truncated": false,
+              "timestamp_verified": false,
+              "frame_index": 168,
+              "text_sha256": "4a7acf175b0e0f2b3e25d98f45eb39af96e5951de8ba87fa96207dd636006113"
+            },
+            {
+              "sha256": "4c5df59a0925d8b0a0dd11423b96eefe9e9ee2bc0c0548be14023ed7faef7645",
+              "ocr": {
+                "parser": "tesseract 5.5.0",
+                "status": "completed",
+                "languages": [
+                  "eng",
+                  "tur"
+                ],
+                "normalization": "nfkd-casefold-marks-whitespace-v1"
+              },
+              "text": "( ”\n& Her Salı WAT'la,\nAvantajı Katla! *\nSalı Modu ON\n| joe aye ap\n",
+              "text_truncated": false,
+              "timestamp_verified": false,
+              "frame_index": 210,
+              "text_sha256": "92c25dcdbf106bdd455c7d8d524c2b4e90b88cc086b4d0f9fbee4b5b9bcf5772"
+            },
+            {
+              "sha256": "e37ad54f1811eec8dd4dcfc9d060fd128b6b50673eccadf97e0396dcb785d8d4",
+              "ocr": {
+                "parser": "tesseract 5.5.0",
+                "status": "completed",
+                "languages": [
+                  "eng",
+                  "tur"
+                ],
+                "normalization": "nfkd-casefold-marks-whitespace-v1"
+              },
+              "text": "oT Ss\n$e Her Salı WAT'la, R\nAvantajı Katla!\nSalı Modu ON |\n(ee ao\n",
+              "text_truncated": false,
+              "timestamp_verified": false,
+              "frame_index": 252,
+              "text_sha256": "ef683f3fb5432c4cec01b2cb222f22b968339b1cef37383e006eccf23caa9119"
+            },
+            {
+              "sha256": "e5da3c4753972f6d5ee2211b37c3dfe6f6db12e8427b8421a9cd6faa339fe570",
+              "ocr": {
+                "parser": "tesseract 5.5.0",
+                "status": "completed",
+                "languages": [
+                  "eng",
+                  "tur"
+                ],
+                "normalization": "nfkd-casefold-marks-whitespace-v1"
+              },
+              "text": "oT\naa Her Salı WAT'la, :\nAvantajı Katla!\nSalı Modu ON |\nIv Si ii o yi DA Lİ\nfle fede\n",
+              "text_truncated": false,
+              "timestamp_verified": false,
+              "frame_index": 294,
+              "text_sha256": "55cb3434e0da8040031e9dde0ddc9a2054eccce774d9837c37799ad2d7c2f062"
+            }
+          ],
+          "message_timing": {
+            "ocr": {
+              "parser": "tesseract 5.5.0",
+              "status": "completed",
+              "languages": [
+                "eng",
+                "tur"
+              ],
+              "normalization": "nfkd-casefold-marks-whitespace-v1"
+            },
+            "evidence": {
+              "model_calls": 0,
+              "absence_is_failure": false,
+              "message_presence_verified": false,
+              "artifact_sha256": "b69614a7a6691a18fd306454111dbdfcd388218ff932a618206b37760b1bc58d",
+              "frame": {
+                "timeline_origin": "container_format_start_time",
+                "pts_ticks": 50000,
+                "timestamp_verified": true,
+                "timeline_origin_seconds": "0",
+                "selected_from_actual_pts": true,
+                "byte_size": 1815475,
+                "ffmpeg_showinfo_pts_verified": true,
+                "sha256": "e0f62e0ea2e046db876606e7020512d01e4fab1a01476dfe6691b84110f9d924",
+                "presentation_seconds": "2",
+                "elapsed_seconds": "2",
+                "deadline_seconds": "2",
+                "decoded_pts_count": 295,
+                "frame_index": 50,
+                "time_base": "1/25000"
+              },
+              "status": "verified_timestamp_frame",
+              "exact_first_appearance_verified": false,
+              "reason": "content_presence_still_requires_ocr_or_visual_evidence",
+              "full_content_review": false,
+              "delivery_authorized": false,
+              "version": "wat-timed-frame-v1",
+              "evidence_sha256": "f628d6f11e5252dbbc7ff184b230fb1abebf704f667e374c6b7f6a5d52155d1b",
+              "probe_sha256": "1f4ac4b0b6b175aee76065a3e18376e5a49829ce26951d40a53cd49967a5669a"
+            },
+            "status": "unassessed",
+            "absence_is_failure": false,
+            "exact_first_appearance_verified": false,
+            "required_phrases": [
+              "Her Salı WAT’la",
+              "Avantajı Katla",
+              "%10"
+            ],
+            "text": "e\nWw\nMia\ne ji ME 1: —\n\\ İK» ey. =\nSARI ET i ye — >\n\" : i) aS\n= ——= = mz - =\n~ >\n=\n",
+            "brief_sha256": "998e210c1fc56f3331d9b0afe533f2e97a51c17993a0ef4c7ab8a869296e0ea3",
+            "text_sha256": "51723f228f38d668af6fd1e6fbcb5a9cae29ba9735337ea6a5122a1e9b5072f1"
+          },
+          "human_review_required": true,
+          "full_content_review": false,
+          "delivery_authorized": false,
+          "message_visible_by_two_seconds_positive_witness": false
+        },
+        "id": "samet-voiceover",
+        "historical_approval": {
+          "actor_id": null,
+          "basis": "bu dosyadan sonra ayrı onay görülmedi",
+          "current_delivery_authority": false,
+          "exact_hash_approval": false,
+          "comment_id": null
+        },
+        "source_artifact": {
+          "sha256": "b69614a7a6691a18fd306454111dbdfcd388218ff932a618206b37760b1bc58d",
+          "producer_id": 50486696,
+          "attachment_id": 897985544,
+          "byte_size": 11168366,
+          "task_id": 10317695863,
+          "comment_id": 10343076732
+        }
+      }
+    ],
+    "business_writes": 0,
+    "live_enabled": false,
+    "state": "completed",
+    "completed_at": 1791648816.477353,
+    "binding_sha256": "e774b7f41c91311190f7faef798210031af75090c562bf3c72594554919a529f",
+    "started_at": 1791648756.519958
+  },
+  "budget": {
+    "limit_microdollars": 50000000,
+    "accounted_spend_microdollars": 0,
+    "held_microdollars": 19000000,
+    "prepaid_purchases_microdollars": 10000000,
+    "total_committed_microdollars": 22000000,
+    "remaining_microdollars": 28000000,
+    "overrun_hold": false,
+    "provider_hard_cap_installed": false
+  },
+  "control_generation": 1
+}

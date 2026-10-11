@@ -1,0 +1,1375 @@
+{
+  "id": 10064527849,
+  "title": "WM // Temmuz Ağustos Yaz Kampanyası İletişimi ",
+  "status": "active",
+  "completed": true,
+  "created_at": "2026-07-06T08:17:10.574Z",
+  "updated_at": "2026-09-09T16:58:40.758Z",
+  "due_on": "2026-09-04",
+  "starts_on": null,
+  "comments_count": 71,
+  "visible_to_clients": false,
+  "bucket": {
+    "id": 40694338,
+    "name": "WAT Mobilite",
+    "type": "Project"
+  },
+  "parent": {
+    "app_url": "https://app.basecamp.com/5898865/buckets/40694338/todolists/8231779952",
+    "id": 8231779952,
+    "title": "Sosyal Medya ",
+    "type": "Todolist",
+    "url": "https://3.basecampapi.com/5898865/buckets/40694338/todolists/8231779952.json"
+  },
+  "creator": {
+    "id": 52096503,
+    "name": "Özge Yağmur",
+    "title": "Sr. Social Media & Project, Team Lead",
+    "employee": true
+  },
+  "assignees": [
+    {
+      "id": 49858132,
+      "name": "Aleyna Efe",
+      "title": "Project Manager",
+      "employee": true
+    },
+    {
+      "id": 47658175,
+      "name": "Berkay Kayaköylü",
+      "title": "Art Director",
+      "employee": true
+    }
+  ],
+  "description": {
+    "text": "Berkay\n  \n selam,\nTemmuz ve Ağustos aylarını kapsayacak always-on kampanyası 8 Temmuz’da başlayacak. Bu sefer önceki serilerden bambaşka bir yol izleyeceğiz. O yüzden tüm kreatifleri hazırlamadan önce bir KV çalışmamız gerekiyor.\n\n-Kampanya tarihleri görselde yer almayacak, çünkü değişebilir. Pm’de kullanacağız.\n-Fiyatın bold bir şekilde öne çıktığı bir tasarım olacak. Bir badge içinde verilebilir.\n-Bu kampanyada yaz temasını sahipleniyoruz. Bu nedenle daha canlı, enerjik ve yazı hissettiren bir görsel dünya ile ilerlemek istiyoruz. Kampanya görseli ve reels birbiriyle konuşacak, o yüzden görselde şemsiye olur, şezlong olur yaz itemlarının sonradan hareketlendirilebileceği bir dünya oluşturalım.\n-Ana başlık:\nAvantajlı DC Şarj Fırsatları Yaz Boyunca Sizi Bekliyor!\n*bold kısım öne çıksın.\n\nİstanbul / Bursa / Antalya / İzmir / Tekirdağ bunlar bullet bullet belirebilir, pin ikonu içinde yazılı şekilde veya yol tabelası görürüz vb.\n\nKV’de el sıkıştıktan sonra yani ikinci fazda;\n-1 adet statik kampanya görseli *web'de kullanmak üzere.\n-1 adet reels,\n-fiyat ve lokasyon bazında story boyutunda kampanya görselleri,\n-rota içerikleri,\n-mailing hazırlayacağız.\n*Görsel yerleşimleri bu bilgiye göre yapmakta yarar var.",
+    "attachments": [],
+    "link_metadata": []
+  },
+  "comments": [
+    {
+      "id": 10065163857,
+      "created_at": "2026-07-06T12:19:25.084Z",
+      "updated_at": "2026-07-06T12:41:57.928Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 47658175,
+        "name": "Berkay Kayaköylü",
+        "title": "Art Director",
+        "employee": true
+      },
+      "content": {
+        "text": "Özge\n  \n Selam kv hazır ektedir\n\n    WM_TEMMUZ_YAZ_KAMPANYA.png\n\n  \n  \n    Barış",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10065594019,
+      "created_at": "2026-07-06T13:52:16.224Z",
+      "updated_at": "2026-07-06T13:52:16.224Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 52096503,
+        "name": "Özge Yağmur",
+        "title": "Sr. Social Media & Project, Team Lead",
+        "employee": true
+      },
+      "content": {
+        "text": "Berkay\n\n  \n  \n    Barış\n  \n selam,\n\nGelen yorumları iletiyorum, hızlı bir aksiyon rica ediyorlar.\n\nÖncelikli olarak KV'de WT cihazını öne çıkarmak istiyoruz ve ana odağın cihazda olmasını rica ediyoruz.\n\nWAT logosu duplike olmuş, location iconun içinde WAT logosu bulunanı tamamen kaldıralım. Sol taraftaki WAT logosu ile devam edelim.\n\nFiyatı \"10,99'dan başlayan fiyatlarla\" gibi bir söyleme çevirelim. Badge içinde tek bir fiyatlandırma konumlandıralım. Bunun yanına bir * işareti koyarak en alta şu bilgiyi verelim:\n\n*Fiyatlar lokasyonlara göre değişiklik göstermektedir. \n\nEn son kampanya KV'miz gibi tek page'de KV görseli olmasını rica ediyoruz. Biraz daha kreatif tarafı ağır basan bir tasarım ama cihazın ön planda olduğu, farklı bir tasarım ile ilerlemeyi tercih ediyoruz. *sanırım şurada yaptığın gibi bir trick bekleniyor \n\n    Berkay\n  \n [URL removed from text; see link metadata] \n\n\"Avantajlı DC Şarj Fırsatları\" yerine \"Avantajlı Şarj Noktaları\" olarak yazalım.\n\nSol taraftaki tabelalar biraz kafa karıştırıcı gözüküyor. Ana KV'de onları konumlandırmayalım. Direkt görsel olarak ilerleyelim. *bu tabelaların gözünü kapatalım ana görselde, lokasyon setlerinde değerlendiririz, uçurmayalım direkt.",
+        "attachments": [],
+        "link_metadata": [
+          {
+            "host": "www.instagram.com",
+            "url_sha256": "7b62b6395f110eaf430e47084dc1c4f9757c9b2b2a669afe5edf7553becb4035"
+          }
+        ]
+      }
+    },
+    {
+      "id": 10066292943,
+      "created_at": "2026-07-06T15:59:06.672Z",
+      "updated_at": "2026-07-06T15:59:06.697Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 47658175,
+        "name": "Berkay Kayaköylü",
+        "title": "Art Director",
+        "employee": true
+      },
+      "content": {
+        "text": "Özge\n  \n Selam revize ektedir\n\n    WM_TEMMUZ_YAZ_KAMPANYA_02.png\n\n  \n  \n    Barış",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10066343162,
+      "created_at": "2026-07-06T16:09:37.234Z",
+      "updated_at": "2026-07-06T16:09:37.234Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 52096503,
+        "name": "Özge Yağmur",
+        "title": "Sr. Social Media & Project, Team Lead",
+        "employee": true
+      },
+      "content": {
+        "text": "Berkay\n  \n 'cım selam, özelden konuştuk ama burada da dursun diye atıyorum yorumlarımı. Diğer tüm yorumlar uygulanmış, bunun için teşekkür ederim ama bu son taslak bize geri döner çünkü bu haliyle diğer kampanya görsellerinden ayrışmıyor. \n\nBir başka kampanyada uçaklı tasarımda yaptığımız gibi şemsiye, şezlong vb. yaz itemlarını sonradan hareketlendirebileceğimiz şekilde tasarıma entegre edebiliriz konuştuğumuz gibi. Final halini iletsem daha iyi olur, bekliyorum.",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10066653968,
+      "created_at": "2026-07-06T17:14:34.711Z",
+      "updated_at": "2026-07-06T17:19:05.464Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 47658175,
+        "name": "Berkay Kayaköylü",
+        "title": "Art Director",
+        "employee": true
+      },
+      "content": {
+        "text": "Özge\n  \n Selam güncel hali ektedir\n\n    WM_TEMMUZ_YAZ_KAMPANYA_02.png\n\n  \n  \n    Barış",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10069011369,
+      "created_at": "2026-07-07T06:07:09.583Z",
+      "updated_at": "2026-07-07T06:07:09.62Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 52096503,
+        "name": "Özge Yağmur",
+        "title": "Sr. Social Media & Project, Team Lead",
+        "employee": true
+      },
+      "content": {
+        "text": "Berkay\n  \n 'cım günaydın, alternatif olarak onu da iletmiştim, aşağıdaki tasarımla ilerleyeceğiz.\n\nBu görselin öncelikle 1 adet reels stb ve LinkedIn boyutlandırmasını rica edeceğim.\n\nMailing+web görseli vb. assetler için \n\n    Aleyna\n  \n yazacaktır detayları.\n\n  \n    unnamed (1).png",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10069142828,
+      "created_at": "2026-07-07T07:15:10.541Z",
+      "updated_at": "2026-07-07T07:15:10.541Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 49858132,
+        "name": "Aleyna Efe",
+        "title": "Project Manager",
+        "employee": true
+      },
+      "content": {
+        "text": "Berkay\n  \n selamlar mailing metnine aşğıdan ulaşabilirsin.\n\nBaşlık\nWAT ile Avantajlı DC Şarj Fırsatları Yaz Boyunca Sizi Bekliyor!\n\nMetin:\nYazın enerjisi rotanızda!\n\nSeçili WAT Mobilite istasyonlarında geçerli avantajlı DC şarj tarifeleriyle yolunuza avantajlı devam edin.\n\nKampanyalı lokasyonları web sitemiz üzerinden inceleyebilir, size en uygun şarj noktasını kolayca planlayabilirsiniz.\n\nCTA\nAvantajlı Lokasyonları Keşfet!",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10069449714,
+      "created_at": "2026-07-07T09:15:18.182Z",
+      "updated_at": "2026-07-07T09:15:18.217Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 47658175,
+        "name": "Berkay Kayaköylü",
+        "title": "Art Director",
+        "employee": true
+      },
+      "content": {
+        "text": "Özge\n  \n Selam STB ve boyutlandırma ektedir\n\n    \n  \n    WM_TEMMUZ_KAMPANYA_LNKDIN.png\n\n    \n  \n    STB.png\n\n  \n  \n    Barış",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10069463856,
+      "created_at": "2026-07-07T09:21:18.02Z",
+      "updated_at": "2026-07-07T09:21:18.02Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 52096503,
+        "name": "Özge Yağmur",
+        "title": "Sr. Social Media & Project, Team Lead",
+        "employee": true
+      },
+      "content": {
+        "text": "Berkay\n  \n selam,\n\nSTB'ye ps de eklemeliyiz sanırım, örnek video: [URL removed from text; see link metadata] \n\nBu ps'de blok uygulamadan Facebook ve Twitter logosunu kaldırabilir miyiz? Sadece Instagram, YouTube ve LinkedIn logosuyla devam edebiliriz demişlerdi.\n\nBir de kv'nin -ortadaki görsel reels kapak olacak şekilde-  3'lü gridini de rica ederim.",
+        "attachments": [],
+        "link_metadata": [
+          {
+            "host": "www.instagram.com",
+            "url_sha256": "3f9fc07813cf3654a2eb106c260c3c4535fbadc04e9e67f660450020c5d68666"
+          }
+        ]
+      }
+    },
+    {
+      "id": 10069685175,
+      "created_at": "2026-07-07T10:46:41.195Z",
+      "updated_at": "2026-07-07T10:46:41.232Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 47658175,
+        "name": "Berkay Kayaköylü",
+        "title": "Art Director",
+        "employee": true
+      },
+      "content": {
+        "text": "Özge\n\n  \n  \n    Aleyna\n  \n Selam STB ve mailing hazır ektedir\n\n    \n  \n    STB.png\n\n    \n  \n    WM_TEMMUZ_MAILING.png",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10069689477,
+      "created_at": "2026-07-07T10:48:33.615Z",
+      "updated_at": "2026-07-07T10:58:04.225Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 47658175,
+        "name": "Berkay Kayaköylü",
+        "title": "Art Director",
+        "employee": true
+      },
+      "content": {
+        "text": "Özge\n  \n Selam 3lü grid hazır ektedir\n\n    \n  \n    WM_KV_3LU_GRID-2_04.png\n\n    \n  \n    WM_KV_3LU_GRID-2_02.png\n\n    \n  \n    WM_KV_3LU_GRID-2_06.png\n\n    \n  \n    WM_KV_3LU_GRID-2_02.jpg\n\n  \n  \n    Barış",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10069730588,
+      "created_at": "2026-07-07T11:03:24.465Z",
+      "updated_at": "2026-07-07T11:03:24.503Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 49858132,
+        "name": "Aleyna Efe",
+        "title": "Project Manager",
+        "employee": true
+      },
+      "content": {
+        "text": "Berkay\n  \n selamlar,\n\n** Başlığı tasarımdaki gibi \"Avantajlı Şarj Noktaları Yaz Boyunca Sizi Bekliyor!\" olarak güncelleyelim.\n\n** Bir de fiyat kısmını daha önce görsellerde kullandığımız gibi kullanalım. \n\n    Ekran Resmi 2026-07-07 14.03.09.png",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10069838158,
+      "created_at": "2026-07-07T11:40:27.687Z",
+      "updated_at": "2026-07-07T11:40:27.687Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 52096503,
+        "name": "Özge Yağmur",
+        "title": "Sr. Social Media & Project, Team Lead",
+        "employee": true
+      },
+      "content": {
+        "text": "Berkay\n  \n'cım selam, sm'de de yapalım aynı güncellemeyi, tüm seti bekliyorumm.",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10069951935,
+      "created_at": "2026-07-07T12:20:05.788Z",
+      "updated_at": "2026-07-07T12:20:05.863Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 47658175,
+        "name": "Berkay Kayaköylü",
+        "title": "Art Director",
+        "employee": true
+      },
+      "content": {
+        "text": "Özge\n\n  \n  \n    Aleyna\n  \n Selam güncel halleri ektedir\n\n    \n  \n    WM_KV_3LU_GRID-2_06.png\n\n    \n  \n    WM_KV_3LU_GRID 2.png\n\n    \n  \n    WM_TEMMUZ_YAZ_KAMPANYA_03.png\n\n    \n  \n    WM_TEMMUZ_KAMPANYA_LNKDIN.png\n\n    \n  \n    WM_TEMMUZ_MAILING.png\n\n    \n  \n    STB.png",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10070235546,
+      "created_at": "2026-07-07T13:28:57.47Z",
+      "updated_at": "2026-07-07T13:28:57.538Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 47658175,
+        "name": "Berkay Kayaköylü",
+        "title": "Art Director",
+        "employee": true
+      },
+      "content": {
+        "text": "Özge\n\n  \n  \n    Aleyna\n  \n Selam revize ektedir\n\n    \n  \n    WM_TEMMUZ_YAZ_KAMPANYA_03.png\n\n    \n  \n    WM_KV_3LU_GRID 2.png\n\n    \n  \n    WM_TEMMUZ_KAMPANYA_LNKDIN.png\n\n    \n  \n    WM_TEMMUZ_MAILING.png\n\n    \n  \n    STB.png",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10070247757,
+      "created_at": "2026-07-07T13:31:13.121Z",
+      "updated_at": "2026-07-07T13:31:13.121Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 47658175,
+        "name": "Berkay Kayaköylü",
+        "title": "Art Director",
+        "employee": true
+      },
+      "content": {
+        "text": "Özge\n  \n Motion için PSD ektedir\n[URL removed from text; see link metadata]",
+        "attachments": [],
+        "link_metadata": [
+          {
+            "host": "we.tl",
+            "url_sha256": "bc828d9993466fd0eac3eb8580d2da91370ed373488078ca33a7011be28b7d45"
+          }
+        ]
+      }
+    },
+    {
+      "id": 10070396250,
+      "created_at": "2026-07-07T13:58:31.89Z",
+      "updated_at": "2026-07-07T13:58:31.92Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 47658175,
+        "name": "Berkay Kayaköylü",
+        "title": "Art Director",
+        "employee": true
+      },
+      "content": {
+        "text": "Özge\n  \n 3lü grid reels cover ektedir\n\n    WM_KV_3LU_GRID-2_02.png",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10074202858,
+      "created_at": "2026-07-08T10:58:21.167Z",
+      "updated_at": "2026-07-08T10:58:21.167Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 52096503,
+        "name": "Özge Yağmur",
+        "title": "Sr. Social Media & Project, Team Lead",
+        "employee": true
+      },
+      "content": {
+        "text": "Berkay\n  \n 'cım hello, grid'de ve linkedin görselinde de fiyat kısmında şu güncellemeyi yapalım:\n\n-kwh'dan değil kwh'den olacakmış doğrusu, şöyle güncelleyelim: kWh’den",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10074218937,
+      "created_at": "2026-07-08T11:04:15.766Z",
+      "updated_at": "2026-07-08T11:05:19.81Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 47658175,
+        "name": "Berkay Kayaköylü",
+        "title": "Art Director",
+        "employee": true
+      },
+      "content": {
+        "text": "Özge\n  \n Güncel halleri ve PSD ektedir\nPSD:[URL removed from text; see link metadata]\n\n    STB.png\n\nGrid;\n\n    \n  \n    WM_KV_3LU_GRID 2.png\n\n    \n  \n    WM_KV_3LU_GRID-2_05.png\n\nLNKDIN;\n\n    WM_TEMMUZ_KAMPANYA_LNKDIN.png",
+        "attachments": [],
+        "link_metadata": [
+          {
+            "host": "we.tl",
+            "url_sha256": "589599c3ed7150c9ccaa78a52f4d4a9d5ccda30ac4428e369b00dccba7b0fea1"
+          }
+        ]
+      }
+    },
+    {
+      "id": 10074456360,
+      "created_at": "2026-07-08T12:27:15.128Z",
+      "updated_at": "2026-07-08T12:27:15.128Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 49858132,
+        "name": "Aleyna Efe",
+        "title": "Project Manager",
+        "employee": true
+      },
+      "content": {
+        "text": "Berkay\n  \n selam mailingte;\n\n-kwh'dan değil kwh'den olacakmış doğrusu, şöyle güncelleyelim: kWh’den",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10074480672,
+      "created_at": "2026-07-08T12:34:00.657Z",
+      "updated_at": "2026-07-08T12:34:18.951Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 47658175,
+        "name": "Berkay Kayaköylü",
+        "title": "Art Director",
+        "employee": true
+      },
+      "content": {
+        "text": "Aleyna\n  \n yanlış task'e gitmiş tekrar gönderiyorum\n\n    WM_TEMMUZ_MAILING.png",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10078745234,
+      "created_at": "2026-07-09T11:43:39.685Z",
+      "updated_at": "2026-07-09T11:43:39.685Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 49858132,
+        "name": "Aleyna Efe",
+        "title": "Project Manager",
+        "employee": true
+      },
+      "content": {
+        "text": "Berkay\n  \n selamlar, \n\n**Ek olarak web sitesinde masaüstü banner ve kampanya kapak için KV uyarlamasını rica edeceğiz.\n\nSlider Masaüstü: 1920 x 570px\nKampanya Kapak: 1000x666px",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10082594571,
+      "created_at": "2026-07-10T09:42:02.805Z",
+      "updated_at": "2026-07-10T09:42:02.84Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 47658175,
+        "name": "Berkay Kayaköylü",
+        "title": "Art Director",
+        "employee": true
+      },
+      "content": {
+        "text": "Aleyna\n  \n Selam boyutlar hazır ektedir\n\n    \n  \n    WM_KAMPANYA_KAPAK.png\n\n    \n  \n    WM_KAMPANYA_SLIDER_MASAUSTU.png\n\n  \n  \n    Barış",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10088261825,
+      "created_at": "2026-07-13T11:00:28.775Z",
+      "updated_at": "2026-07-13T11:00:28.825Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 49858132,
+        "name": "Aleyna Efe",
+        "title": "Project Manager",
+        "employee": true
+      },
+      "content": {
+        "text": "Berkay\n  \n selamlar, \n\n** WAT logosunu kaldırır mısın\n\n    Ekran Resmi 2026-07-13 13.58.26.png",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10088333391,
+      "created_at": "2026-07-13T11:29:59.278Z",
+      "updated_at": "2026-07-13T11:29:59.304Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 47658175,
+        "name": "Berkay Kayaköylü",
+        "title": "Art Director",
+        "employee": true
+      },
+      "content": {
+        "text": "Aleyna\n  \n Selam revize ektedir\n\n    WM_KAMPANYA_SLIDER_MASAUSTUv2.png",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10208017792,
+      "created_at": "2026-08-17T07:37:43.805Z",
+      "updated_at": "2026-08-17T07:56:06.886Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 49858132,
+        "name": "Aleyna Efe",
+        "title": "Project Manager",
+        "employee": true
+      },
+      "content": {
+        "text": "Berkay\n  \n selamlar,\n\nAynı tasarım üzerinden;\n**Belirleyici bir renk ile kampanyanın 30 Eylül'e kadar uzatıldığına belirtelim. \n\nAna Başlık: Avantajlı Şarj Fırsatları\nAlt söylem: Kampanyamızı 30 Eylül'e uzattık!\n\nSlider Masaüstü: 1920 x 570px\n\nSlider mobil: 430x500px\n\n**Emailing",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10208055153,
+      "created_at": "2026-08-17T07:56:15.851Z",
+      "updated_at": "2026-08-17T07:56:15.851Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 49858132,
+        "name": "Aleyna Efe",
+        "title": "Project Manager",
+        "employee": true
+      },
+      "content": {
+        "text": "Berkay\n  \n yukardaki yorum güncel.",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10213142133,
+      "created_at": "2026-08-18T11:06:48.067Z",
+      "updated_at": "2026-08-18T11:06:48.218Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 47658175,
+        "name": "Berkay Kayaköylü",
+        "title": "Art Director",
+        "employee": true
+      },
+      "content": {
+        "text": "Aleyna\n  \n Selam metinler güncellendi ektedir\n\n    \n  \n    WM_TEMMUZ_MAILING_02.png\n\n    \n  \n    WM_KAMPANYA_SLIDER_MASAUSTU.png\n\n    \n  \n    WM_SLIDER_MOBIL.png\n\n  \n  \n    Barış",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10213146709,
+      "created_at": "2026-08-18T11:08:56.112Z",
+      "updated_at": "2026-08-18T11:08:56.14Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 49858132,
+        "name": "Aleyna Efe",
+        "title": "Project Manager",
+        "employee": true
+      },
+      "content": {
+        "text": "Berkay\n  \n selam, mailing boyutunda aşağıdaki yazıyı kaldırır mısın? \n\n    Ekran Resmi 2026-08-18 14.07.33.png",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10213158793,
+      "created_at": "2026-08-18T11:13:34.477Z",
+      "updated_at": "2026-08-18T11:13:34.508Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 47658175,
+        "name": "Berkay Kayaköylü",
+        "title": "Art Director",
+        "employee": true
+      },
+      "content": {
+        "text": "Aleyna\n  \n Selam ektedir\n\n    WM_TEMMUZ_MAILING_02.png",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10213208774,
+      "created_at": "2026-08-18T11:33:21.186Z",
+      "updated_at": "2026-08-18T11:33:21.186Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 49858132,
+        "name": "Aleyna Efe",
+        "title": "Project Manager",
+        "employee": true
+      },
+      "content": {
+        "text": "Berkay\n  \n selamlar, \n\n** Kırmızı rengi kullanarak badge halinde 30 eylülü yansıtacağımız belli edeceğimiz bir tasarım çalışalım. Hepsinde.\n\n** Göze gelsin 30 eylüle kadar uzattık kırmızı olsun.",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10213228457,
+      "created_at": "2026-08-18T11:41:05.147Z",
+      "updated_at": "2026-08-18T11:50:34.916Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 52168172,
+        "name": "Barış Sülün",
+        "title": "Sr. Art Director, Team Lead",
+        "employee": true
+      },
+      "content": {
+        "text": "''Kampanyamızı 30 Eylül'e kadar uzattık'' kısımlı yazı bir bilgi içerdiği için o kısmını duygusal lık katan fontlarla kullanmayalım ayrıca. \n\n    Berkay\n\nEl yazısı fontlar daha çok yaşam, hayat ya da bu örnekteki gibi '' Yaz boyunca sizlerle'' gibi kelimeler içeriyorsa kullanalım, bunu daha öncede konuşmuştuk, buradan da söylemiş olayım.",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10213357234,
+      "created_at": "2026-08-18T12:20:37.338Z",
+      "updated_at": "2026-08-18T12:20:37.399Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 47658175,
+        "name": "Berkay Kayaköylü",
+        "title": "Art Director",
+        "employee": true
+      },
+      "content": {
+        "text": "Aleyna\n  \n Selam revize ektedir\nMarkaya uyumlu olmayacağı ve daha önce hiç kullanmdığımız için markanın kendi renkleriyle metni öne çıkarttım\n\n    \n  \n    WM_TEMMUZ_MAILING_02.png\n\n    \n  \n    WM_KAMPANYA_SLIDER_MASAUSTU.png\n\n    \n  \n    WM_SLIDER_MOBIL.png\n\n  \n  \n    Barış",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10213363242,
+      "created_at": "2026-08-18T12:22:16.395Z",
+      "updated_at": "2026-08-18T12:29:35.149Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 49858132,
+        "name": "Aleyna Efe",
+        "title": "Project Manager",
+        "employee": true
+      },
+      "content": {
+        "text": "Berkay\n  \n toplantıda bir de kırmızı görmek istediler. O Yüzden rica etmiştim.",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10213398527,
+      "created_at": "2026-08-18T12:32:23.741Z",
+      "updated_at": "2026-08-18T12:32:23.816Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 47658175,
+        "name": "Berkay Kayaköylü",
+        "title": "Art Director",
+        "employee": true
+      },
+      "content": {
+        "text": "Aleyna\n  \n kırmızı versiyonlar Ektedir\n\n    \n  \n    WM_KAMPANYA_SLIDER_MASAUSTUKIRMIZI.png\n\n    \n  \n    WM_SLIDER_MOBIL KIRMIZI.png\n\n    \n  \n    WM_TEMMUZ_MAILING_KIRMIZI.png",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10213452851,
+      "created_at": "2026-08-18T12:47:50.408Z",
+      "updated_at": "2026-08-18T12:47:50.408Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 49858132,
+        "name": "Aleyna Efe",
+        "title": "Project Manager",
+        "employee": true
+      },
+      "content": {
+        "text": "Berkay\n  \n selamlar; bu tarafta farklı bir kreatif istendi. \n\n** Story boyut olacak.\n\n** Bu görselde mevcut fiyat olan 14,99 TL’nin üzeri çizili şekilde, kampanya fiyatı 10,99 TL daha ön planda konumlandıralım. \n\n**İletişimin mümkün olduğunca sade ve direkt olmasını istedikleri için, herhangi bir lifestyle görsel ya da ek görsel öğe kullanmadan yalnızca yazı ve fiyat mesajı üzerinden ilerleyelim.\n\n*WAT kreatiflerinde yaptığımız backgroundları kullanabiliriz.\n\n!! Bir önceki kreatifte kullandığımız yazı olacak. \n\n  \n  \n    Barış",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10213453908,
+      "created_at": "2026-08-18T12:48:06.478Z",
+      "updated_at": "2026-08-18T12:48:06.478Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 49858132,
+        "name": "Aleyna Efe",
+        "title": "Project Manager",
+        "employee": true
+      },
+      "content": {
+        "text": "Berkay\n  \n tek görsel olacak sadece.",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10214124589,
+      "created_at": "2026-08-18T15:01:21.372Z",
+      "updated_at": "2026-08-18T15:01:21.412Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 47658175,
+        "name": "Berkay Kayaköylü",
+        "title": "Art Director",
+        "employee": true
+      },
+      "content": {
+        "text": "Aleyna\n  \n Selam ektedir\n\n    \n  \n    YAZ_KAMPANYA_ST_v2.png\n\n    \n  \n    YAZ_KAMPANYA_ST.png\n\n  \n  \n    Barış",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10216990456,
+      "created_at": "2026-08-19T06:54:06.864Z",
+      "updated_at": "2026-08-19T06:54:06.906Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 49858132,
+        "name": "Aleyna Efe",
+        "title": "Project Manager",
+        "employee": true
+      },
+      "content": {
+        "text": "Berkay\n  \n selamlar, \n\n** Ana kreatiflerin aşağıdaki hazırlanması istendi. \n** Badge içerisinde göstereceğiz.\n** Söylem Şehre Dönüşte Devam Ediyor.\n\n    unnamed.png\n\n**Bir diğer görselde ise ana odağın fiyat olmasını ve göze çarpmasını isteniyor, \n** Arka planın direkt beyaz olsun. Aşağıda yine bir örnek iletiyorum, bu minvalde bir tasarım çalışabilirsin.\n\n  \n    unnamed-1.png",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10217662128,
+      "created_at": "2026-08-19T11:36:42.156Z",
+      "updated_at": "2026-08-19T11:36:42.214Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 47658175,
+        "name": "Berkay Kayaköylü",
+        "title": "Art Director",
+        "employee": true
+      },
+      "content": {
+        "text": "Aleyna\n  \n Selam revize ektedir\n\n    \n  \n    WM_KAMPANYA_SLIDER_MASAUSTU.png\n\n    \n  \n    YAZ_KAMPANYA_ST_v2.png\n\n    \n  \n    YAZ_KAMPANYA_ST.png",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10217673774,
+      "created_at": "2026-08-19T11:41:05.987Z",
+      "updated_at": "2026-08-19T11:41:14.422Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 49858132,
+        "name": "Aleyna Efe",
+        "title": "Project Manager",
+        "employee": true
+      },
+      "content": {
+        "text": "Berkay\n  \n canım, mailingi de alabilir miyim rica etsem",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10217709168,
+      "created_at": "2026-08-19T11:54:06.824Z",
+      "updated_at": "2026-08-19T11:55:22.063Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 47658175,
+        "name": "Berkay Kayaköylü",
+        "title": "Art Director",
+        "employee": true
+      },
+      "content": {
+        "text": "Aleyna\n  \n Selam ektedir\n\n    WM_TEMMUZ_MAILING_02.png",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10217782980,
+      "created_at": "2026-08-19T12:15:30.413Z",
+      "updated_at": "2026-08-19T12:15:30.413Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 49858132,
+        "name": "Aleyna Efe",
+        "title": "Project Manager",
+        "employee": true
+      },
+      "content": {
+        "text": "Berkay\n  \n selamlar, \n\n* Story boyut\n* Mailing\n- Mobil slider\n-Masaüstü slider için; \n\n** Ana hatları koruyarak aşağıdaki bilgileri baz alarak ilerleyelim.\n\n**Badge gibi detaylarda yer alan metinlerin mümkün olduğunca ilettiğimiz haliyle koruyalım.\n\n** Kampanya tarafında revizeye gittiğimiz için “10,99 TL/kWh’den başlayan fiyatlarla” söylemini artık kullanmayacağız, bunun yerine “Eylül Boyunca” ifadesini konumlandırmak istiyoruz.\n\n**** Badge tasarımı tarafında sizin önerdiğiniz yapıyla ilerleyebiliriz, yalnızca badge içerisindeki metnin değişmemesi bizim için önemli. \n \nBadge içerisinde; Eylül boyunca olarak rev. edelim.\n\n** Aynı şekilde “Avantajlı Şarj Noktaları Şehre Dönüşte Devam Ediyor” başlığının mevcut yazı boyutu ve font yapısını değiştirmeyelim. \n\n**Kırmızı tonunda da daha önce ilettiğimiz rengi baz alabiliriz. Cümle sonlarında nokta kullanmayalım.\n\n**  ünlem kullanalım. Ayrıca kampanya sloganı“Avantajlı Şarj Fırsatları” değil, “Avantajlı Şarj Noktaları” olacak.",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10218516543,
+      "created_at": "2026-08-19T14:44:35.428Z",
+      "updated_at": "2026-08-19T16:05:04.191Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 47658175,
+        "name": "Berkay Kayaköylü",
+        "title": "Art Director",
+        "employee": true
+      },
+      "content": {
+        "text": "Aleyna\n  \n Selam revize ektedir\n\n    \n  \n    WM_KAMPANYA_SLIDER_MASAUSTU.png\n\n    \n  \n    WM_SLIDER_MOBIL.png\n\n    \n  \n    WM_TEMMUZ_MAILING_02.png\n\n    \n  \n    YAZ_KAMPANYA_ST_v2.png\n\n    \n  \n    YAZ_KAMPANYA_ST.png",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10221493668,
+      "created_at": "2026-08-20T07:01:53.692Z",
+      "updated_at": "2026-08-20T07:12:08.349Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 47658175,
+        "name": "Berkay Kayaköylü",
+        "title": "Art Director",
+        "employee": true
+      },
+      "content": {
+        "text": "Aleyna\n  \n Revize ektedir\n\n    YAZ_KAMPANYA_ST_v2.png",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10222045207,
+      "created_at": "2026-08-20T10:55:17.796Z",
+      "updated_at": "2026-08-20T10:55:17.838Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 49858132,
+        "name": "Aleyna Efe",
+        "title": "Project Manager",
+        "employee": true
+      },
+      "content": {
+        "text": "Berkay\n  \n selamlar,\n\n** Masaüstü slider'a WAT logosunu koyalım.\n\n** Aşağıdaki kreatifte logoyu biraz daha büyütelim.\n\n    Ekran Resmi 2026-08-20 12.38.59.png\n\n** Kv üzerinden bir statik görsel hazırlayacağız.\n** Statik bir gönderi olarak konumlandırmak istiyorlar. **Kaydırmalı kurgunun devam eden sayfalarında ise kampanyaya dahil lokasyonlarımızı şehirleri öne çıkaracağız.\n\nÖrnek: [URL removed from text; see link metadata]\n\n* Kampanyaya dahil lokasyonları aşağıdaki link üzerinden görüntüleyebilirsiniz.\n[URL removed from text; see link metadata]\n\n** Aşağıda lokasyonları il il ayırdım. İlk olarak istanbuldan bir örnek yapalım. Onay alalım.\n** kv'yi baz alarak yapıcaz. il ve istasyonlar kv renginde bg olabilir.\n  \n    WAT_Mobilite_Ayni_Sehirdeki_Istasyonlar.xlsx\n\nYaparken arayabilirsin.",
+        "attachments": [],
+        "link_metadata": [
+          {
+            "host": "www.instagram.com",
+            "url_sha256": "8a9ea2c02da4d194d0b1e6eaaf4603010b7d3ae0be029d8582db42271e4ceb4a"
+          },
+          {
+            "host": "www.watmobilite.com",
+            "url_sha256": "7403d04aaf2ebcadc2f9ab7e165efa696733ef036b8cd0c84d5bafd9d8688b0a"
+          }
+        ]
+      }
+    },
+    {
+      "id": 10222326922,
+      "created_at": "2026-08-20T12:38:38.884Z",
+      "updated_at": "2026-08-20T12:38:38.884Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 49858132,
+        "name": "Aleyna Efe",
+        "title": "Project Manager",
+        "employee": true
+      },
+      "content": {
+        "text": "Berkay\n  \n beyaz background üzerindeki kreatifte;\n\n**14,49 yazacak.",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10231919585,
+      "created_at": "2026-08-24T13:47:24.349Z",
+      "updated_at": "2026-08-24T14:42:49.972Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 47658175,
+        "name": "Berkay Kayaköylü",
+        "title": "Art Director",
+        "employee": true
+      },
+      "content": {
+        "text": "Aleyna\n  \n Selam revize ve carousel tasarımı ektedir iki sayfa hazırladım iki farklı tasarım dilinde hangisi ile ilerlemek isterlerse onun üzerinden devam edeceğiz\n\n    \n  \n    KAMPANYA_C_01.png\n\n    \n  \n    KAMPANYA_C_02.png\n\n    \n  \n    KAMPANYA_C_03.png\n\n    \n  \n    WM_KAMPANYA_SLIDER_MASAUSTU.png\n\n    \n  \n    YAZ_KAMPANYA_ST_v2.png\n\n  \n  \n    Barış",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10235208015,
+      "created_at": "2026-08-25T06:55:41.478Z",
+      "updated_at": "2026-08-25T06:55:41.507Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 49858132,
+        "name": "Aleyna Efe",
+        "title": "Project Manager",
+        "employee": true
+      },
+      "content": {
+        "text": "Berkay\n  \n selamlar, \n\n** Kampanya_C_02 ile ilerleyebilirsin. Alfabetik sıralamaya özen göstererek listelemeye ve aynı tesiste olan lokasyonları bölmeden ard arda sıralamaya özen gösterelim. \n\nERG Ankara..\nERG 69 Niğde..\nERG 125 Ankara..\nERG 125 Niğde..  Gibi.\n\n    Ekran Resmi 2026-08-25 09.55.26.png",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10236992280,
+      "created_at": "2026-08-25T15:40:07.225Z",
+      "updated_at": "2026-08-25T15:40:07.225Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 52168172,
+        "name": "Barış Sülün",
+        "title": "Sr. Art Director, Team Lead",
+        "employee": true
+      },
+      "content": {
+        "text": "Bu kısmı yarın \n\n    İpek\n  \n ilerletecek, \n\n    Berkay\n  \n çoğunluk kısmını ilerletti. Yarın teslim edeceğiz bilginize.",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10239805399,
+      "created_at": "2026-08-26T07:55:56.032Z",
+      "updated_at": "2026-08-26T07:56:24.306Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 51207148,
+        "name": "İpek Tunalı",
+        "title": "Art Director",
+        "employee": true
+      },
+      "content": {
+        "text": "Aleyna\n  \n selamlar dosyalar ektedir. Preview ve toplu zip şeklinde iletiyorum.\n  \n    KAMPANYA_CARO.zip\n\n  \n\n    KAMPANYA_C_01.png\n\n    \n  \n    KAMPANYA_C_03.png\n\n    \n  \n    KAMPANYA_C_02.png\n\n    \n  \n    KAMPANYA_C_04.png\n\n    \n  \n    KAMPANYA_C_03 copy 3.png\n\n    \n  \n    KAMPANYA_C_02 copy.png\n\n    \n  \n    KAMPANYA_C_03 copy.png\n\n    \n  \n    KAMPANYA_C_04 copy.png\n\n    \n  \n    KAMPANYA_C_03 copy 2.png\n\n    \n  \n    KAMPANYA_C_04 copy 3.png\n\n    \n  \n    KAMPANYA_C_04 copy 2.png\n\n    \n  \n    KAMPANYA_C_04 copy 4.png\n\n    \n  \n    KAMPANYA_C_03 copy 3-1.png\n\n    \n  \n    KAMPANYA_C_04 copy 4-1.png\n\n    \n  \n    KAMPANYA_C_04 copy 5.png\n\n    \n  \n    KAMPANYA_C_03 copy 4.png",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10239822993,
+      "created_at": "2026-08-26T08:03:11.798Z",
+      "updated_at": "2026-08-26T08:03:11.825Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 49858132,
+        "name": "Aleyna Efe",
+        "title": "Project Manager",
+        "employee": true
+      },
+      "content": {
+        "text": "İpek\n  \n selamlar, alfabeye göre listeyi güncelledim. \n\n    WAT_Mobilite_Lokasyonlar_Alfabetik.xlsx",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10239974680,
+      "created_at": "2026-08-26T09:06:24.157Z",
+      "updated_at": "2026-08-26T09:07:26.627Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 51207148,
+        "name": "İpek Tunalı",
+        "title": "Art Director",
+        "employee": true
+      },
+      "content": {
+        "text": "Aleyna\n  \n selam revize ektedir. Preview ve toplu zip şeklinde iletiyorum.\n\n    \n  \n    KAMPANYA_C_01.png\n\n    \n  \n    KAMPANYA_2.png\n\n    \n  \n    KAMPANYA_3.png\n\n    \n  \n    KAMPANYA_4.png\n\n    \n  \n    KAMPANYA_5.png\n\n    \n  \n    KAMPANYA_6.png\n\n    \n  \n    KAMPANYA_7.png\n\n    \n  \n    KAMPANYA_8.png\n\n    \n  \n    KAMPANYA_9.png\n\n    \n  \n    KAMPANYA_10.png\n\n    \n  \n    KAMPANYA_11.png\n\n    \n  \n    KAMPANYA_12.png\n\n    \n  \n    KAMPANYA_13.png\n\n    \n  \n    KAMPANYA_14.png\n\n    \n  \n    KAMPANYA_15.png\n\n    \n  \n    KAMPANYA_16.png\n\n  \n    KAMPANYA_CARO.zip",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10254611661,
+      "created_at": "2026-08-31T11:31:55.007Z",
+      "updated_at": "2026-08-31T11:32:04.728Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 52096503,
+        "name": "Özge Yağmur",
+        "title": "Sr. Social Media & Project, Team Lead",
+        "employee": true
+      },
+      "content": {
+        "text": "İpek\n  \n 'cim en son sette yer alan cover görselde en alttaki *'lı metin değişecek, şöyle olacak:\n\n*Avantajlı şarj fiyatı seçili DC lokasyonlarda geçerlidir. \n\n  \n  \n    Aleyna\n  \n fyi,",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10254629741,
+      "created_at": "2026-08-31T11:39:22.645Z",
+      "updated_at": "2026-08-31T11:39:22.676Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 51207148,
+        "name": "İpek Tunalı",
+        "title": "Art Director",
+        "employee": true
+      },
+      "content": {
+        "text": "Özge\n  \n selam revize ektedir.\n\n    KAMPANYA_C_01.png",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10254687927,
+      "created_at": "2026-08-31T12:01:24.245Z",
+      "updated_at": "2026-08-31T12:01:24.245Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 49858132,
+        "name": "Aleyna Efe",
+        "title": "Project Manager",
+        "employee": true
+      },
+      "content": {
+        "text": "İpek\n  \n selamlar, \n\n16 görsel fazla gelmiş olabilir. \n\n** 10 görselse sıkıştıracak şekilde yazıları biraz küçültebilir miyiz? Ya da yan yana olacak şekilde konumlandırabilir miyiz?\n\nBiraz öncelik rica ediyorum. \n\n    Barış",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10254869933,
+      "created_at": "2026-08-31T12:54:32.861Z",
+      "updated_at": "2026-08-31T12:54:32.861Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 49858132,
+        "name": "Aleyna Efe",
+        "title": "Project Manager",
+        "employee": true
+      },
+      "content": {
+        "text": "İpek\n  \n selamlar konuştuğumuz gibi ortak yolu bulduk. Aşağıda bahesdiyorum.\n\n**  5 büyük şehirdeki istasyonları öne çıkarabiliriz., \n** Oksijen lokasyonlarını “Oksijen Tesisleri” şeklinde konumlandırabiliriz. \n**Diğer lokasyonlara yönlendirmek için de “Tüm lokasyonları görmek için web sitemizi ziyaret edin!” gibi bir CTA kullanabiliriz. \n**Şehirleri İstanbul, İzmir, Ankara, Antalya, Bursa olarak baz alabiliriz.",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10254886054,
+      "created_at": "2026-08-31T12:58:50.958Z",
+      "updated_at": "2026-08-31T12:58:50.958Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 52168172,
+        "name": "Barış Sülün",
+        "title": "Sr. Art Director, Team Lead",
+        "employee": true
+      },
+      "content": {
+        "text": "Berkay\n  \n  buraya tekrardan sen devam edebilirsin. Öncelikli olacak şekilde.\n\n  \n  \n    İpek\n  \n  sende dosyaları paylaşırsın.",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10254921532,
+      "created_at": "2026-08-31T13:06:50.358Z",
+      "updated_at": "2026-08-31T13:06:50.392Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 51207148,
+        "name": "İpek Tunalı",
+        "title": "Art Director",
+        "employee": true
+      },
+      "content": {
+        "text": "Berkay\n  \n selam çalışma dosyası ektedir.\n  \n    KAMPANYA_CAROUSEL.zip",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10255366389,
+      "created_at": "2026-08-31T14:34:54.051Z",
+      "updated_at": "2026-08-31T14:34:54.134Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 47658175,
+        "name": "Berkay Kayaköylü",
+        "title": "Art Director",
+        "employee": true
+      },
+      "content": {
+        "text": "Aleyna\n  \n Selam Revize ektedir\n\n    \n  \n    KAMPANYA_C_01.png\n\n    \n  \n    KAMPANYA_C_02.png\n\n    \n  \n    KAMPANYA_C_03.png\n\n    \n  \n    KAMPANYA_C_04.png\n\n    \n  \n    KAMPANYA_C_05.png\n\n  \n  \n    Barış",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10258740775,
+      "created_at": "2026-09-01T07:34:34.256Z",
+      "updated_at": "2026-09-01T07:34:34.256Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 49858132,
+        "name": "Aleyna Efe",
+        "title": "Project Manager",
+        "employee": true
+      },
+      "content": {
+        "text": "Berkay\n  \n selam mailing boyutunda başlığı aşağıaki gibi günceller misin?\n\n*** Avantajlı Şarj Noktaları Şehre Dönüşte Devam Ediyor!",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10259434313,
+      "created_at": "2026-09-01T11:44:19.674Z",
+      "updated_at": "2026-09-01T11:44:19.674Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 52096503,
+        "name": "Özge Yağmur",
+        "title": "Sr. Social Media & Project, Team Lead",
+        "employee": true
+      },
+      "content": {
+        "text": "Berkay\n  \n ana kreatif hem mailing hem banner boyutunda istendi, fyi",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10259507951,
+      "created_at": "2026-09-01T12:09:22.772Z",
+      "updated_at": "2026-09-01T12:09:22.772Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 52168172,
+        "name": "Barış Sülün",
+        "title": "Sr. Art Director, Team Lead",
+        "employee": true
+      },
+      "content": {
+        "text": "İpek\n  \n  burada senle devam edelim.",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10259513261,
+      "created_at": "2026-09-01T12:11:12.346Z",
+      "updated_at": "2026-09-01T12:11:12.346Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 51207148,
+        "name": "İpek Tunalı",
+        "title": "Art Director",
+        "employee": true
+      },
+      "content": {
+        "text": "Özge\n  \n selam banner için boyut iletebilir misin? Mailingde standart ilerliyorum.",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10259543595,
+      "created_at": "2026-09-01T12:20:22.899Z",
+      "updated_at": "2026-09-01T12:20:22.899Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 52096503,
+        "name": "Özge Yağmur",
+        "title": "Sr. Social Media & Project, Team Lead",
+        "employee": true
+      },
+      "content": {
+        "text": "web sitesinde kullanılan kampanya banner'ı her zamanki \n\n    Berkay\n  \n yönlendirecektir.",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10259647116,
+      "created_at": "2026-09-01T12:47:07.476Z",
+      "updated_at": "2026-09-01T12:47:07.519Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 51207148,
+        "name": "İpek Tunalı",
+        "title": "Art Director",
+        "employee": true
+      },
+      "content": {
+        "text": "Özge\n  \n selam mailing ve banner(slider_masaüstü) boyutu ektedir.\n\n    \n  \n    WM_KAMPANYA_SLIDER_MASAUSTU.png\n\n    \n  \n    WM_TEMMUZ_MAILING_02.png",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10264193692,
+      "created_at": "2026-09-02T11:44:30.608Z",
+      "updated_at": "2026-09-02T11:44:30.608Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 52096503,
+        "name": "Özge Yağmur",
+        "title": "Sr. Social Media & Project, Team Lead",
+        "employee": true
+      },
+      "content": {
+        "text": "İpek\n  \n selam, aynı görselin 1920 - 570px boyutunu iletebilir misin? Kampanya sayfasında konumlandıracaklarmış.",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10264266104,
+      "created_at": "2026-09-02T12:09:03.602Z",
+      "updated_at": "2026-09-02T12:09:03.602Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 52096503,
+        "name": "Özge Yağmur",
+        "title": "Sr. Social Media & Project, Team Lead",
+        "employee": true
+      },
+      "content": {
+        "text": "doğru ölçü ile ilettiğimize dair ss ilettim teşekkürler \n\n    Berkay",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10273027864,
+      "created_at": "2026-09-04T10:32:14.306Z",
+      "updated_at": "2026-09-04T10:32:14.306Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 52096503,
+        "name": "Özge Yağmur",
+        "title": "Sr. Social Media & Project, Team Lead",
+        "employee": true
+      },
+      "content": {
+        "text": "Berkay\n\n  \n  \n    İpek\n  \n selam, bu konuyla ilgili şöyle döndüler, desteğinizi rica ederim:\n\nMinik bir karışıklık olmuş kusura bakmayın. İlettiğiniz boyutta sıkıntı yok, ek olarak 1000x666px boyutta bir çalışma rica edeceğiz.",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10273085260,
+      "created_at": "2026-09-04T10:58:38.498Z",
+      "updated_at": "2026-09-04T11:02:02.396Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 51207148,
+        "name": "İpek Tunalı",
+        "title": "Art Director",
+        "employee": true
+      },
+      "content": {
+        "text": "Özge\n  \n selam bu tarafı ben devam ettireceğim.",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10273236434,
+      "created_at": "2026-09-04T12:03:12.274Z",
+      "updated_at": "2026-09-04T12:03:12.305Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 51207148,
+        "name": "İpek Tunalı",
+        "title": "Art Director",
+        "employee": true
+      },
+      "content": {
+        "text": "Özge\n  \n selamlar boyutlandırma ektedir.\n\n    1000X666.png",
+        "attachments": [],
+        "link_metadata": []
+      }
+    }
+  ],
+  "read_evidence": {
+    "recorded_at": "2026-10-10T14:28:19.731174+00:00",
+    "identity": "hamle@gamechangers.com.tr",
+    "account_id": 5898865,
+    "project_id": 40694338,
+    "task_id": 10064527849,
+    "comments_all_requested": true,
+    "comments_returned": 71,
+    "comments_count_matches": true,
+    "basecamp_content_writes": 0,
+    "paid_model_calls": 0,
+    "live_authority_granted": false,
+    "signed_urls_persisted": false,
+    "attachment_metadata_complete": false,
+    "file_mentions_retained_in_comment_text": true,
+    "attachment_metadata_note": "Only recognized attachment HTML attributes were extracted; empty metadata is not proof that no file is attached. No attachment bytes were inspected."
+  }
+}

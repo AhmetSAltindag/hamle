@@ -1,0 +1,21 @@
+{
+  "version_tag": "v0.13.0",
+  "release_url": "https://github.com/basecamp/basecamp-cli/releases/tag/v0.13.0",
+  "verified_previous_archive_name": "basecamp_0.13.0_darwin_arm64.tar.gz",
+  "previous_darwin_arm64_archive_sha256": "7b5c23b96224ba207cec8d01a213e52e3644bfd740162bd6c6a65e5b32b2d3d3",
+  "previous_darwin_arm64_binary_sha256": "16fabecae291092ccc3d7afad7fbdfd23b5f3bf8a08aad09b3b5005e6a7b1e50",
+  "previous_checksums_file_sha256": "2c05e783c87920d06264a3a01a5caaeda8d7f91dce7aacf16397ee67ae85672c",
+  "binary_included": false,
+  "auth_state_included": false,
+  "install_rule": "Select the correct official v0.13.0 asset for the new Mac architecture; verify that asset against the official release checksum. These previous arm64 hashes do not validate an Intel asset.",
+  "local_target": "work/basecamp-tools/bin/basecamp",
+  "new_mac_profile_name": "hamle-gamechangers",
+  "identity_constraints": {
+    "account_id": "5898865",
+    "person_id": "53358100",
+    "email": "hamle@gamechangers.com.tr",
+    "internal_project_id": "49184053"
+  },
+  "keyring_rule": "Reauthorize on the new Mac; explicitly verify auth status storage=keyring. The retained v0.13.0 review observed plaintext fallback when keyring probing fails; do not proceed with plaintext/file credential storage. Never export the old Keychain token.",
+  "new_mac_env_rule": "Resolve XDG_CONFIG_HOME=<NEW_ROOT>/work/private-connections/config and XDG_CACHE_HOME=<NEW_ROOT>/work/private-connections/cache as absolute paths; these directories and their content are not included."
+}

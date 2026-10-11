@@ -1,0 +1,727 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-10-10T00:09:32.301828+03:00",
+  "scope": "Explicit allowlist, no recursive personal-profile scan",
+  "package_contains_credentials": false,
+  "does_not_create_runtime_or_connections": true,
+  "source_files_unchanged": true,
+  "source_file_count": 57,
+  "files": [
+    {
+      "path": "work/hamle-gmail-connector/hamle_gmail.py",
+      "kind": "source_code_or_dependency_or_readme",
+      "source_path": "work/hamle-gmail-connector/hamle_gmail.py",
+      "bytes": 21747,
+      "sha256": "f3ca3a6353ab5be1f9f0fe87c566b5f48fd64e6e41c99aed5cd2db816d7cddcd",
+      "source_sha256": "f3ca3a6353ab5be1f9f0fe87c566b5f48fd64e6e41c99aed5cd2db816d7cddcd"
+    },
+    {
+      "path": "work/hamle-gmail-connector/test_hamle_gmail.py",
+      "kind": "source_code_or_dependency_or_readme",
+      "source_path": "work/hamle-gmail-connector/test_hamle_gmail.py",
+      "bytes": 26368,
+      "sha256": "b67e17055d8b8aa776768616718a7d93ed80d3324b84b4f309ed65e4b4f65f06",
+      "source_sha256": "b67e17055d8b8aa776768616718a7d93ed80d3324b84b4f309ed65e4b4f65f06"
+    },
+    {
+      "path": "work/hamle-gmail-connector/requirements.txt",
+      "kind": "source_code_or_dependency_or_readme",
+      "source_path": "work/hamle-gmail-connector/requirements.txt",
+      "bytes": 124,
+      "sha256": "020040f9aa99395b07ae8af4405345b3a8a8c32471fed995c20f3a68187ee44b",
+      "source_sha256": "020040f9aa99395b07ae8af4405345b3a8a8c32471fed995c20f3a68187ee44b"
+    },
+    {
+      "path": "work/hamle-gmail-connector/constraints.txt",
+      "kind": "source_code_or_dependency_or_readme",
+      "source_path": "work/hamle-gmail-connector/constraints.txt",
+      "bytes": 628,
+      "sha256": "993226a7cd1793d80d26cdf4ce05facc6db973d53168483a96ef969d66bd7215",
+      "source_sha256": "993226a7cd1793d80d26cdf4ce05facc6db973d53168483a96ef969d66bd7215"
+    },
+    {
+      "path": "work/hamle-gmail-connector/README.txt",
+      "kind": "source_code_or_dependency_or_readme",
+      "source_path": "work/hamle-gmail-connector/README.txt",
+      "bytes": 8547,
+      "sha256": "2466d9beed376f260f5f7b7ac7d7e2105e7ce4078ca3aed9805e38531a65ea18",
+      "source_sha256": "2466d9beed376f260f5f7b7ac7d7e2105e7ce4078ca3aed9805e38531a65ea18"
+    },
+    {
+      "path": "work/hamle-workflow/mail_ingest.py",
+      "kind": "source_code_or_dependency_or_readme",
+      "source_path": "work/hamle-workflow/mail_ingest.py",
+      "bytes": 15681,
+      "sha256": "fdd50ac28f2efd5fb1d52630fc22afe70461268e649afed26549384331c35427",
+      "source_sha256": "fdd50ac28f2efd5fb1d52630fc22afe70461268e649afed26549384331c35427"
+    },
+    {
+      "path": "work/hamle-workflow/test_mail_ingest.py",
+      "kind": "source_code_or_dependency_or_readme",
+      "source_path": "work/hamle-workflow/test_mail_ingest.py",
+      "bytes": 18386,
+      "sha256": "3f3953005c8ee4184edcf5f2bd0ea67743a3146dca2c76636e7c923d6c2d7b4a",
+      "source_sha256": "3f3953005c8ee4184edcf5f2bd0ea67743a3146dca2c76636e7c923d6c2d7b4a"
+    },
+    {
+      "path": "work/hamle-workflow/gmail_full_reader.py",
+      "kind": "source_code_or_dependency_or_readme",
+      "source_path": "work/hamle-workflow/gmail_full_reader.py",
+      "bytes": 7664,
+      "sha256": "efed6de0e8c89f1e2cd9f16529a05a7280158f7970b2daea1a9bba0c2ffeaf0e",
+      "source_sha256": "efed6de0e8c89f1e2cd9f16529a05a7280158f7970b2daea1a9bba0c2ffeaf0e"
+    },
+    {
+      "path": "work/hamle-workflow/test_gmail_full_reader.py",
+      "kind": "source_code_or_dependency_or_readme",
+      "source_path": "work/hamle-workflow/test_gmail_full_reader.py",
+      "bytes": 12404,
+      "sha256": "d32efca3bc1c476e7cac3861af53cf9a59c9936f838a4f661d51c33cebc17573",
+      "source_sha256": "d32efca3bc1c476e7cac3861af53cf9a59c9936f838a4f661d51c33cebc17573"
+    },
+    {
+      "path": "work/hamle-workflow/README.txt",
+      "kind": "source_code_or_dependency_or_readme",
+      "source_path": "work/hamle-workflow/README.txt",
+      "bytes": 8745,
+      "sha256": "53df60fd61ff67c08319108e6eea5bb303c6949950eaa58d48d22d93bb3265c2",
+      "source_sha256": "53df60fd61ff67c08319108e6eea5bb303c6949950eaa58d48d22d93bb3265c2"
+    },
+    {
+      "path": "work/hamle-workflow/build_brand_readiness.mjs",
+      "kind": "source_code_or_dependency_or_readme",
+      "source_path": "work/hamle-workflow/build_brand_readiness.mjs",
+      "bytes": 9705,
+      "sha256": "cc5cddb1c30b07e841b4ef3c6fcc032aea21a0593214aa0e2a3ce6ccbb825a2b",
+      "source_sha256": "cc5cddb1c30b07e841b4ef3c6fcc032aea21a0593214aa0e2a3ce6ccbb825a2b"
+    },
+    {
+      "path": "outputs/gamechangers-pilot/offline/engine.py",
+      "kind": "source_code_or_dependency_or_readme",
+      "source_path": "outputs/gamechangers-pilot/offline/engine.py",
+      "bytes": 28751,
+      "sha256": "0730c2b79905ec47ca5b1ccc389a926fb5934d59c1ee3430529c742ce829e587",
+      "source_sha256": "0730c2b79905ec47ca5b1ccc389a926fb5934d59c1ee3430529c742ce829e587"
+    },
+    {
+      "path": "outputs/gamechangers-pilot/offline/run_tests.py",
+      "kind": "source_code_or_dependency_or_readme",
+      "source_path": "outputs/gamechangers-pilot/offline/run_tests.py",
+      "bytes": 35940,
+      "sha256": "7e34521032d65eb44ce7745a9ef9069bb9d1eaf767e15649640ff958b306b5dd",
+      "source_sha256": "7e34521032d65eb44ce7745a9ef9069bb9d1eaf767e15649640ff958b306b5dd"
+    },
+    {
+      "path": "outputs/gamechangers-pilot/offline/README.txt",
+      "kind": "source_code_or_dependency_or_readme",
+      "source_path": "outputs/gamechangers-pilot/offline/README.txt",
+      "bytes": 9041,
+      "sha256": "fa0deebc6b0d293afd9e5e0d4a5c701bbf4dc1cee0578bdcfb1c2f2662ebb4a9",
+      "source_sha256": "fa0deebc6b0d293afd9e5e0d4a5c701bbf4dc1cee0578bdcfb1c2f2662ebb4a9"
+    },
+    {
+      "path": "work/project-tracker/build_document.py",
+      "kind": "source_code_or_dependency_or_readme",
+      "source_path": "work/project-tracker/build_document.py",
+      "bytes": 42618,
+      "sha256": "855a09fecb18060aa9348c804a0ae6ec75328dbe34d9a97523da20c5ca00aa69",
+      "source_sha256": "855a09fecb18060aa9348c804a0ae6ec75328dbe34d9a97523da20c5ca00aa69"
+    },
+    {
+      "path": "work/project-tracker/build_tracker.mjs",
+      "kind": "source_code_or_dependency_or_readme",
+      "source_path": "work/project-tracker/build_tracker.mjs",
+      "bytes": 19467,
+      "sha256": "29622ef66082855e20f1f83f11855cf8265f8c3e8f06f56a248a817426c571fe",
+      "source_sha256": "29622ef66082855e20f1f83f11855cf8265f8c3e8f06f56a248a817426c571fe"
+    },
+    {
+      "path": "work/project-tracker/verify_xlsx.py",
+      "kind": "source_code_or_dependency_or_readme",
+      "source_path": "work/project-tracker/verify_xlsx.py",
+      "bytes": 2697,
+      "sha256": "2cc46c92bec865ca4da164cd46b5c8aaba6982a22c4457dae69a3954a640799a",
+      "source_sha256": "2cc46c92bec865ca4da164cd46b5c8aaba6982a22c4457dae69a3954a640799a"
+    },
+    {
+      "path": "outputs/hamle-yeni-mac-devir-2026-10-10/Hamle_Yeni_Mac_Ilk_Mesaj_2026-10-10.txt",
+      "kind": "source_code_or_dependency_or_readme",
+      "source_path": "outputs/hamle-yeni-mac-devir-2026-10-10/Hamle_Yeni_Mac_Ilk_Mesaj_2026-10-10.txt",
+      "bytes": 10495,
+      "sha256": "1b8f3c31a1d1eb5837c92e752d780689a8e13a959848d50e11355f45667fd807",
+      "source_sha256": "1b8f3c31a1d1eb5837c92e752d780689a8e13a959848d50e11355f45667fd807"
+    },
+    {
+      "path": "work/hamle-gmail-connector/test-results.json",
+      "kind": "sanitized_normalized_json_snapshot",
+      "source_path": "work/hamle-gmail-connector/test-results.json",
+      "bytes": 971,
+      "sha256": "2345ffe36d3f3ba5c53f75dba8c90977fb0874ee4db3243bf8be11576636bbbe",
+      "source_sha256": "2345ffe36d3f3ba5c53f75dba8c90977fb0874ee4db3243bf8be11576636bbbe"
+    },
+    {
+      "path": "work/hamle-workflow/brand-readiness.json",
+      "kind": "sanitized_normalized_json_snapshot",
+      "source_path": "work/hamle-workflow/brand-readiness.json",
+      "bytes": 37481,
+      "sha256": "3bfbf6d3dc7f07f17b0fdf9796d56505059df00145757d082f4f8669059970ce",
+      "source_sha256": "3bfbf6d3dc7f07f17b0fdf9796d56505059df00145757d082f4f8669059970ce"
+    },
+    {
+      "path": "work/hamle-workflow/basecamp-internal-test-plan.json",
+      "kind": "sanitized_normalized_json_snapshot",
+      "source_path": "work/hamle-workflow/basecamp-internal-test-plan.json",
+      "bytes": 17642,
+      "sha256": "bf8ebd425d98ee6fa8ced9d5310f94367d6d86a42a792b7fdd14f6d9bd2c69e5",
+      "source_sha256": "3d725c11ea31aa467162884e8048372abbcabfce6f1718443ddf63adfd1fd0b3"
+    },
+    {
+      "path": "work/hamle-workflow/deployment-readiness.json",
+      "kind": "sanitized_normalized_json_snapshot",
+      "source_path": "work/hamle-workflow/deployment-readiness.json",
+      "bytes": 27074,
+      "sha256": "869bc8951535dc20e1202c80a4b2855a8ccae5864df1ec5ab13e154138244cc2",
+      "source_sha256": "aa5dc4ea38adf5bce878d50533eecae6173faa2ddc8f645a9a1680ec3a7d8056"
+    },
+    {
+      "path": "work/project-tracker/project-plan.json",
+      "kind": "sanitized_normalized_json_snapshot",
+      "source_path": "work/project-tracker/project-plan.json",
+      "bytes": 79436,
+      "sha256": "79ffff9b46a157d925b22b5b1ed022c1cdc8a8562bf117de32b32550d01ace4e",
+      "source_sha256": "79ffff9b46a157d925b22b5b1ed022c1cdc8a8562bf117de32b32550d01ace4e"
+    },
+    {
+      "path": "outputs/gamechangers-pilot/current-setup.json",
+      "kind": "sanitized_normalized_json_snapshot",
+      "source_path": "outputs/gamechangers-pilot/current-setup.json",
+      "bytes": 79833,
+      "sha256": "2fabf998143eeb83b0496f9cc9c006ee8b7a956664fcb2b8cee4c899f69b8873",
+      "source_sha256": "a37d532f50333d68ef683484785a53ee0063787129a1bc22cc411263c3044b55"
+    },
+    {
+      "path": "outputs/gamechangers-pilot/coverage.json",
+      "kind": "sanitized_normalized_json_snapshot",
+      "source_path": "outputs/gamechangers-pilot/coverage.json",
+      "bytes": 97165,
+      "sha256": "6a50bf07486359749384d6378f29dd571584657502510cf2e4582dd370b20c6c",
+      "source_sha256": "90be5fb75397c194dfa6a47227dbb2bfd97c0746140f3ede3e2a206bea506767"
+    },
+    {
+      "path": "outputs/gamechangers-pilot/roles/account_manager.json",
+      "kind": "sanitized_normalized_json_snapshot",
+      "source_path": "outputs/gamechangers-pilot/roles/account_manager.json",
+      "bytes": 52124,
+      "sha256": "ac578f0ba3eaa1e8b710493602cd8c389de100acd67b9ab86372db06c356342b",
+      "source_sha256": "bfb61d6e1ab07e8744695aeb53701cd69bbc771a25db6d05ce369f179e5c24cb"
+    },
+    {
+      "path": "outputs/gamechangers-pilot/roles/copywriter.json",
+      "kind": "sanitized_normalized_json_snapshot",
+      "source_path": "outputs/gamechangers-pilot/roles/copywriter.json",
+      "bytes": 27965,
+      "sha256": "84c9b8ad821226ce7e2487db83b7aedf7594c517280a2361af1307e7adfe3420",
+      "source_sha256": "23487afd97c996199c26cd55ac8cf3a2a1f28fba25b5fd8db77a82542a70e1af"
+    },
+    {
+      "path": "outputs/gamechangers-pilot/roles/graphic_designer.json",
+      "kind": "sanitized_normalized_json_snapshot",
+      "source_path": "outputs/gamechangers-pilot/roles/graphic_designer.json",
+      "bytes": 28287,
+      "sha256": "6481e92930a8e1c0170b61cb10ee0138d3123f5d79465dca5b2de26c3eac5fb8",
+      "source_sha256": "dd36d010bef0ad4b342b6f26b461096d7e27ee040192bf2c0bd2820827708a06"
+    },
+    {
+      "path": "outputs/gamechangers-pilot/roles/motion_designer.json",
+      "kind": "sanitized_normalized_json_snapshot",
+      "source_path": "outputs/gamechangers-pilot/roles/motion_designer.json",
+      "bytes": 28645,
+      "sha256": "6229045b56536bb9632b5babba685c51efa37486ee2a298be36ad1147e0d0b07",
+      "source_sha256": "06fcf925cc70e7c0d0efbb49427ab9e38801bc2c9612f1d2b4a31338cb60f1e7"
+    },
+    {
+      "path": "outputs/gamechangers-pilot/templates/brief-version.template.json",
+      "kind": "sanitized_normalized_json_snapshot",
+      "source_path": "outputs/gamechangers-pilot/templates/brief-version.template.json",
+      "bytes": 3462,
+      "sha256": "5b94336a9cceb050a0ace2674482809963ac7b3916748ef366a609f761d0e1f4",
+      "source_sha256": "5b94336a9cceb050a0ace2674482809963ac7b3916748ef366a609f761d0e1f4"
+    },
+    {
+      "path": "outputs/gamechangers-pilot/templates/handoff.template.json",
+      "kind": "sanitized_normalized_json_snapshot",
+      "source_path": "outputs/gamechangers-pilot/templates/handoff.template.json",
+      "bytes": 1615,
+      "sha256": "f8e01f3e0f09a71a86ba3ba09af9baa09a53dbcec301bf0d14bd25ec2363897a",
+      "source_sha256": "f8e01f3e0f09a71a86ba3ba09af9baa09a53dbcec301bf0d14bd25ec2363897a"
+    },
+    {
+      "path": "outputs/gamechangers-pilot/templates/knowledge-zones.template.json",
+      "kind": "sanitized_normalized_json_snapshot",
+      "source_path": "outputs/gamechangers-pilot/templates/knowledge-zones.template.json",
+      "bytes": 10419,
+      "sha256": "ac4abfaf10b3b511db508af4155b222c3ce95696a931277e6862e345a191ed52",
+      "source_sha256": "ac4abfaf10b3b511db508af4155b222c3ce95696a931277e6862e345a191ed52"
+    },
+    {
+      "path": "outputs/gamechangers-pilot/templates/onboarding.template.json",
+      "kind": "sanitized_normalized_json_snapshot",
+      "source_path": "outputs/gamechangers-pilot/templates/onboarding.template.json",
+      "bytes": 10326,
+      "sha256": "cc2695b431fd2ef829399ea38dae122ae261fc9fdae3be61d1f40fabab75b02e",
+      "source_sha256": "e5b47f8ed01925c7f296a687c50ab44cc6c881aaec47b3bacd30a28268f2777c"
+    },
+    {
+      "path": "outputs/gamechangers-pilot/templates/brand-dossier.template.json",
+      "kind": "sanitized_normalized_json_snapshot",
+      "source_path": "outputs/gamechangers-pilot/templates/brand-dossier.template.json",
+      "bytes": 5264,
+      "sha256": "6d6cca73750da869b38f7fcae3cec2515e0a9f97bc5ab32ab5725ebf1585878f",
+      "source_sha256": "6d6cca73750da869b38f7fcae3cec2515e0a9f97bc5ab32ab5725ebf1585878f"
+    },
+    {
+      "path": "outputs/gamechangers-pilot/templates/knowledge-record.schema.json",
+      "kind": "sanitized_normalized_json_snapshot",
+      "source_path": "outputs/gamechangers-pilot/templates/knowledge-record.schema.json",
+      "bytes": 10474,
+      "sha256": "f00c520818ed06dbf71baec2903710274d98955e98ab076f01cf712dded68a08",
+      "source_sha256": "f00c520818ed06dbf71baec2903710274d98955e98ab076f01cf712dded68a08"
+    },
+    {
+      "path": "outputs/gamechangers-pilot/templates/validation-report.json",
+      "kind": "sanitized_normalized_json_snapshot",
+      "source_path": "outputs/gamechangers-pilot/templates/validation-report.json",
+      "bytes": 1689,
+      "sha256": "9a7d2c42121df0f9d1889773d2c254c8561a962b8d0f78ec8eb87bdcbcad06a9",
+      "source_sha256": "9a7d2c42121df0f9d1889773d2c254c8561a962b8d0f78ec8eb87bdcbcad06a9"
+    },
+    {
+      "path": "outputs/gamechangers-pilot/hamle-prova/routing-policy.json",
+      "kind": "sanitized_normalized_json_snapshot",
+      "source_path": "outputs/gamechangers-pilot/hamle-prova/routing-policy.json",
+      "bytes": 15999,
+      "sha256": "8f2d1df60140364af88289f5c21efdfa8d6f40af19944c07d4325074389c931b",
+      "source_sha256": "8f2d1df60140364af88289f5c21efdfa8d6f40af19944c07d4325074389c931b"
+    },
+    {
+      "path": "outputs/gamechangers-pilot/hamle-prova/important-dates.template.json",
+      "kind": "sanitized_normalized_json_snapshot",
+      "source_path": "outputs/gamechangers-pilot/hamle-prova/important-dates.template.json",
+      "bytes": 1162,
+      "sha256": "3106be425d11e57e6ba2d1387fab699e70bbcb1532c057dc23e9bf7a479508c0",
+      "source_sha256": "3106be425d11e57e6ba2d1387fab699e70bbcb1532c057dc23e9bf7a479508c0"
+    },
+    {
+      "path": "outputs/gamechangers-pilot/hamle-prova/wat-examples.json",
+      "kind": "sanitized_normalized_json_snapshot",
+      "source_path": "outputs/gamechangers-pilot/hamle-prova/wat-examples.json",
+      "bytes": 17641,
+      "sha256": "5c9836fd2856e8fb03673838dbf1eae050731425b8abff13f1b34beba659851a",
+      "source_sha256": "5c9836fd2856e8fb03673838dbf1eae050731425b8abff13f1b34beba659851a"
+    },
+    {
+      "path": "outputs/gamechangers-pilot/hamle-prova/rabam-examples.json",
+      "kind": "sanitized_normalized_json_snapshot",
+      "source_path": "outputs/gamechangers-pilot/hamle-prova/rabam-examples.json",
+      "bytes": 18536,
+      "sha256": "8dd8518299abb8b32cddc1ad3495edcc59a86b34020683de79435d1a97b2e6fd",
+      "source_sha256": "8dd8518299abb8b32cddc1ad3495edcc59a86b34020683de79435d1a97b2e6fd"
+    },
+    {
+      "path": "outputs/gamechangers-pilot/hamle-prova/quality-review.json",
+      "kind": "sanitized_normalized_json_snapshot",
+      "source_path": "outputs/gamechangers-pilot/hamle-prova/quality-review.json",
+      "bytes": 1069,
+      "sha256": "d3559f73a22406d3c40bf6a992462499cbe51e805891bf468ba603b522ff7601",
+      "source_sha256": "d3559f73a22406d3c40bf6a992462499cbe51e805891bf468ba603b522ff7601"
+    },
+    {
+      "path": "outputs/gamechangers-pilot/learning/brand_observations.json",
+      "kind": "sanitized_normalized_json_snapshot",
+      "source_path": "outputs/gamechangers-pilot/learning/brand_observations.json",
+      "bytes": 75007,
+      "sha256": "2eb44a819820916db5596fd41d4ba78a1ba6f427fcce14737b60da2d0e336385",
+      "source_sha256": "2eb44a819820916db5596fd41d4ba78a1ba6f427fcce14737b60da2d0e336385"
+    },
+    {
+      "path": "outputs/gamechangers-pilot/learning-round2/index.json",
+      "kind": "sanitized_normalized_json_snapshot",
+      "source_path": "outputs/gamechangers-pilot/learning-round2/index.json",
+      "bytes": 19168,
+      "sha256": "0a2cd93c50516c201def159511719eb0bd9a0d6d2a849f81ee4475a8c2e0f5a7",
+      "source_sha256": "0a2cd93c50516c201def159511719eb0bd9a0d6d2a849f81ee4475a8c2e0f5a7"
+    },
+    {
+      "path": "outputs/gamechangers-pilot/learning-round2/quality-review.json",
+      "kind": "sanitized_normalized_json_snapshot",
+      "source_path": "outputs/gamechangers-pilot/learning-round2/quality-review.json",
+      "bytes": 710,
+      "sha256": "4a1f2fccc3bb7beb68697486731485265698d4febc2219f3f328c90c029bfe82",
+      "source_sha256": "4a1f2fccc3bb7beb68697486731485265698d4febc2219f3f328c90c029bfe82"
+    },
+    {
+      "path": "outputs/gamechangers-pilot/learning-round2/wat_mobilite/knowledge.json",
+      "kind": "sanitized_normalized_json_snapshot",
+      "source_path": "outputs/gamechangers-pilot/learning-round2/wat_mobilite/knowledge.json",
+      "bytes": 114641,
+      "sha256": "d2231c1f62cde6a974d52955e9548673cb797edae06c13f98a093f77f4d5c2e7",
+      "source_sha256": "d2231c1f62cde6a974d52955e9548673cb797edae06c13f98a093f77f4d5c2e7"
+    },
+    {
+      "path": "outputs/gamechangers-pilot/learning-round2/rabam/knowledge.json",
+      "kind": "sanitized_normalized_json_snapshot",
+      "source_path": "outputs/gamechangers-pilot/learning-round2/rabam/knowledge.json",
+      "bytes": 106897,
+      "sha256": "f14481c7f6d66c0a28452ac10ddbdde9a129af7f2e3d3738c7bf4dd95c09497d",
+      "source_sha256": "f14481c7f6d66c0a28452ac10ddbdde9a129af7f2e3d3738c7bf4dd95c09497d"
+    },
+    {
+      "path": "outputs/gamechangers-pilot/learning-round2/yada_multicosmetics/report.json",
+      "kind": "sanitized_normalized_json_snapshot",
+      "source_path": "outputs/gamechangers-pilot/learning-round2/yada_multicosmetics/report.json",
+      "bytes": 45972,
+      "sha256": "63093242dff330e1bce09245e5c5bc1533ffd907047293d97e88d619937b1e61",
+      "source_sha256": "911252a09f2f86a229ed74bef40039ad763eb341e5e80a4735112896d64c3711"
+    },
+    {
+      "path": "outputs/gamechangers-pilot/offline/test-results.json",
+      "kind": "sanitized_normalized_json_snapshot",
+      "source_path": "outputs/gamechangers-pilot/offline/test-results.json",
+      "bytes": 10621,
+      "sha256": "bc7e3c933833200b692e575ef33c78add1e6af47456aaa5c7bc0ce4353689273",
+      "source_sha256": "bc7e3c933833200b692e575ef33c78add1e6af47456aaa5c7bc0ce4353689273"
+    },
+    {
+      "path": "outputs/gamechangers-pilot/offline/demo-evidence.json",
+      "kind": "sanitized_normalized_json_snapshot",
+      "source_path": "outputs/gamechangers-pilot/offline/demo-evidence.json",
+      "bytes": 5630,
+      "sha256": "35437db1153fae478568664f7c4d5194308f7070a19f024a2a7f2ea4b7cc765a",
+      "source_sha256": "35437db1153fae478568664f7c4d5194308f7070a19f024a2a7f2ea4b7cc765a"
+    },
+    {
+      "path": "outputs/Hamle_Gmail_API_Kaniti_2026-10-09.json",
+      "kind": "sanitized_normalized_json_snapshot",
+      "source_path": "outputs/Hamle_Gmail_API_Kaniti_2026-10-09.json",
+      "bytes": 2070,
+      "sha256": "561db3a07cad52c6377e68d18c7ecca95301a5669a7128fabbb3c1b939ae234e",
+      "source_sha256": "977a82f807db1c6834b826f5b6356f1e882ac5525b5f402f738429c8ecb97e10"
+    },
+    {
+      "path": "outputs/Hamle_Gmail_Refresh_Kaniti_2026-10-09.json",
+      "kind": "sanitized_normalized_json_snapshot",
+      "source_path": "outputs/Hamle_Gmail_Refresh_Kaniti_2026-10-09.json",
+      "bytes": 655,
+      "sha256": "61f024b04de8a79bd0c2d6e699ac4a238dc9e6819bc2c49f2ce484c505e649b1",
+      "source_sha256": "61f024b04de8a79bd0c2d6e699ac4a238dc9e6819bc2c49f2ce484c505e649b1"
+    },
+    {
+      "path": "outputs/Hamle_Gmail_Baslik_Gercek_Test_2026-10-09.json",
+      "kind": "sanitized_normalized_json_snapshot",
+      "source_path": "outputs/Hamle_Gmail_Baslik_Gercek_Test_2026-10-09.json",
+      "bytes": 560,
+      "sha256": "357d414f1eb5f55e4405c98ea3047a53a91af7f6453a3cbbf9411712bb58d2a0",
+      "source_sha256": "357d414f1eb5f55e4405c98ea3047a53a91af7f6453a3cbbf9411712bb58d2a0"
+    },
+    {
+      "path": "outputs/Hamle_Basecamp_B09_API_Kaniti_2026-10-09.json",
+      "kind": "sanitized_normalized_json_snapshot",
+      "source_path": "outputs/Hamle_Basecamp_B09_API_Kaniti_2026-10-09.json",
+      "bytes": 11682,
+      "sha256": "855801b31ab785a9a2880b212817e7768a003fe0c5750d3eed7d14da909470b2",
+      "source_sha256": "35072d73e611240f3a414b5ccda026eb7a239c3c7e2a50c5a4b737fd9897afa0"
+    },
+    {
+      "path": "outputs/Hamle_Model_API_On_Kontrol_2026-10-09.json",
+      "kind": "sanitized_normalized_json_snapshot",
+      "source_path": "outputs/Hamle_Model_API_On_Kontrol_2026-10-09.json",
+      "bytes": 713,
+      "sha256": "f81780d3b54a6d3aacbc979005b866bcbfd3c531d90d7e07db31226f6a889ddb",
+      "source_sha256": "f81780d3b54a6d3aacbc979005b866bcbfd3c531d90d7e07db31226f6a889ddb"
+    },
+    {
+      "path": "outputs/Hamle_Butce_Onayi_2026-10-09.json",
+      "kind": "sanitized_normalized_json_snapshot",
+      "source_path": "outputs/Hamle_Butce_Onayi_2026-10-09.json",
+      "bytes": 757,
+      "sha256": "af7ae4ce8fec37212d638ec519d5da1e8fc36acaa9c1fef880bc2772232a7ed7",
+      "source_sha256": "af7ae4ce8fec37212d638ec519d5da1e8fc36acaa9c1fef880bc2772232a7ed7"
+    },
+    {
+      "path": "work/hamle-gmail-connector/.send-test-attempts/GC-HAMLE-GMAIL-20261009-01.attempt.json",
+      "kind": "exact_internal_send_deduplication_record",
+      "source_path": "work/hamle-gmail-connector/.send-test-attempts/GC-HAMLE-GMAIL-20261009-01.attempt.json",
+      "bytes": 228,
+      "sha256": "b9e581981e1f4decaace280356f3d2048439ad91a440a2f5a295ce9e1e6ece62",
+      "source_sha256": "b9e581981e1f4decaace280356f3d2048439ad91a440a2f5a295ce9e1e6ece62"
+    },
+    {
+      "path": "work/hamle-gmail-connector/.send-test-attempts/GC-HAMLE-GMAIL-20261009-01.accepted.json",
+      "kind": "exact_internal_send_deduplication_record",
+      "source_path": "work/hamle-gmail-connector/.send-test-attempts/GC-HAMLE-GMAIL-20261009-01.accepted.json",
+      "bytes": 302,
+      "sha256": "21b61f2fa432d2f40e1692329080f4892d9364eb9d53f59708f3d07ca02e77ad",
+      "source_sha256": "21b61f2fa432d2f40e1692329080f4892d9364eb9d53f59708f3d07ca02e77ad"
+    },
+    {
+      "path": "handoff/Basecamp_Kurulum_Notu.json",
+      "kind": "derived_non_secret_install_metadata",
+      "bytes": 1552,
+      "sha256": "e26d37f4dd463024de583a14397d6b695a7887a35baab8877969899aa50a599d"
+    },
+    {
+      "path": "handoff/GUNCEL_DURUM_2026-10-10.json",
+      "kind": "derived_current_precedence_record",
+      "bytes": 4220,
+      "sha256": "775582118e58722e25de0f7a8ff558b19cd9ce8056857252e8253e7db0727f0d"
+    },
+    {
+      "path": "README_TR.txt",
+      "kind": "generated_handoff_instructions",
+      "bytes": 7580,
+      "sha256": "37d43ad522805e4b6181ea6a2c45ca5a2904dada4be68d1cccf42b5481829023"
+    }
+  ],
+  "sanitization": {
+    "transformations": [
+      {
+        "file": "work/hamle-workflow/basecamp-internal-test-plan.json",
+        "pointer": "/command_context/working_directory",
+        "reason": "Unrelated absolute macOS path removed."
+      },
+      {
+        "file": "work/hamle-workflow/basecamp-internal-test-plan.json",
+        "pointer": "/command_context/executable",
+        "reason": "Old workspace prefix removed; path is relative to extracted package root."
+      },
+      {
+        "file": "work/hamle-workflow/basecamp-internal-test-plan.json",
+        "pointer": "/command_context/environment/XDG_CONFIG_HOME",
+        "reason": "Old workspace prefix removed; path is relative to extracted package root."
+      },
+      {
+        "file": "work/hamle-workflow/basecamp-internal-test-plan.json",
+        "pointer": "/command_context/environment/XDG_CACHE_HOME",
+        "reason": "Old workspace prefix removed; path is relative to extracted package root."
+      },
+      {
+        "file": "work/hamle-workflow/basecamp-internal-test-plan.json",
+        "pointer": "/fixture/path",
+        "reason": "Old workspace prefix removed; path is relative to extracted package root."
+      },
+      {
+        "file": "work/hamle-workflow/basecamp-internal-test-plan.json",
+        "pointer": "/steps/4/file",
+        "reason": "Old workspace prefix removed; path is relative to extracted package root."
+      },
+      {
+        "file": "work/hamle-workflow/basecamp-internal-test-plan.json",
+        "pointer": "/steps/10/args/7",
+        "reason": "Old workspace prefix removed; path is relative to extracted package root."
+      },
+      {
+        "file": "work/hamle-workflow/basecamp-internal-test-plan.json",
+        "pointer": "/steps/12/args/8",
+        "reason": "Old workspace prefix removed; path is relative to extracted package root."
+      },
+      {
+        "file": "work/hamle-workflow/basecamp-internal-test-plan.json",
+        "pointer": "/steps/13/original",
+        "reason": "Old workspace prefix removed; path is relative to extracted package root."
+      },
+      {
+        "file": "work/hamle-workflow/basecamp-internal-test-plan.json",
+        "pointer": "/steps/13/downloaded_directory",
+        "reason": "Old workspace prefix removed; path is relative to extracted package root."
+      },
+      {
+        "file": "outputs/gamechangers-pilot/current-setup.json",
+        "pointer": "/source_document",
+        "reason": "Raw body/source-document reference or credential-bearing field excluded."
+      },
+      {
+        "file": "outputs/gamechangers-pilot/coverage.json",
+        "pointer": "/pending_threads/0/source_url",
+        "reason": "URL query removed; stable path retained."
+      },
+      {
+        "file": "outputs/gamechangers-pilot/coverage.json",
+        "pointer": "/pending_threads/1/source_url",
+        "reason": "URL query removed; stable path retained."
+      },
+      {
+        "file": "outputs/gamechangers-pilot/coverage.json",
+        "pointer": "/pending_threads/2/source_url",
+        "reason": "URL query removed; stable path retained."
+      },
+      {
+        "file": "outputs/gamechangers-pilot/coverage.json",
+        "pointer": "/pending_threads/3/source_url",
+        "reason": "URL query removed; stable path retained."
+      },
+      {
+        "file": "outputs/gamechangers-pilot/coverage.json",
+        "pointer": "/pending_threads/4/source_url",
+        "reason": "URL query removed; stable path retained."
+      },
+      {
+        "file": "outputs/gamechangers-pilot/coverage.json",
+        "pointer": "/pending_threads/5/source_url",
+        "reason": "URL query removed; stable path retained."
+      },
+      {
+        "file": "outputs/gamechangers-pilot/coverage.json",
+        "pointer": "/pending_threads/6/source_url",
+        "reason": "URL query removed; stable path retained."
+      },
+      {
+        "file": "outputs/gamechangers-pilot/coverage.json",
+        "pointer": "/pending_threads/7/source_url",
+        "reason": "URL query removed; stable path retained."
+      },
+      {
+        "file": "outputs/gamechangers-pilot/coverage.json",
+        "pointer": "/pending_threads/8/source_url",
+        "reason": "URL query removed; stable path retained."
+      },
+      {
+        "file": "outputs/gamechangers-pilot/coverage.json",
+        "pointer": "/pending_threads/9/source_url",
+        "reason": "URL query removed; stable path retained."
+      },
+      {
+        "file": "outputs/gamechangers-pilot/coverage.json",
+        "pointer": "/pending_threads/10/source_url",
+        "reason": "URL query removed; stable path retained."
+      },
+      {
+        "file": "outputs/gamechangers-pilot/coverage.json",
+        "pointer": "/pending_threads/11/source_url",
+        "reason": "URL query removed; stable path retained."
+      },
+      {
+        "file": "outputs/gamechangers-pilot/coverage.json",
+        "pointer": "/pending_threads/12/source_url",
+        "reason": "URL query removed; stable path retained."
+      },
+      {
+        "file": "outputs/gamechangers-pilot/coverage.json",
+        "pointer": "/pending_threads/13/source_url",
+        "reason": "URL query removed; stable path retained."
+      },
+      {
+        "file": "outputs/gamechangers-pilot/coverage.json",
+        "pointer": "/pending_threads/14/source_url",
+        "reason": "URL query removed; stable path retained."
+      },
+      {
+        "file": "outputs/gamechangers-pilot/coverage.json",
+        "pointer": "/pending_threads/15/source_url",
+        "reason": "URL query removed; stable path retained."
+      },
+      {
+        "file": "outputs/gamechangers-pilot/coverage.json",
+        "pointer": "/pending_threads/16/source_url",
+        "reason": "URL query removed; stable path retained."
+      },
+      {
+        "file": "outputs/gamechangers-pilot/coverage.json",
+        "pointer": "/pending_threads/17/source_url",
+        "reason": "URL query removed; stable path retained."
+      },
+      {
+        "file": "outputs/gamechangers-pilot/coverage.json",
+        "pointer": "/pending_threads/18/source_url",
+        "reason": "URL query removed; stable path retained."
+      },
+      {
+        "file": "outputs/gamechangers-pilot/coverage.json",
+        "pointer": "/pending_threads/19/source_url",
+        "reason": "URL query removed; stable path retained."
+      },
+      {
+        "file": "outputs/gamechangers-pilot/coverage.json",
+        "pointer": "/pending_threads/20/source_url",
+        "reason": "URL query removed; stable path retained."
+      },
+      {
+        "file": "outputs/gamechangers-pilot/coverage.json",
+        "pointer": "/pending_threads/21/source_url",
+        "reason": "URL query removed; stable path retained."
+      },
+      {
+        "file": "outputs/gamechangers-pilot/roles/account_manager.json",
+        "pointer": "/source_document",
+        "reason": "Raw body/source-document reference or credential-bearing field excluded."
+      },
+      {
+        "file": "outputs/gamechangers-pilot/roles/copywriter.json",
+        "pointer": "/source_document",
+        "reason": "Raw body/source-document reference or credential-bearing field excluded."
+      },
+      {
+        "file": "outputs/gamechangers-pilot/roles/graphic_designer.json",
+        "pointer": "/source_document",
+        "reason": "Raw body/source-document reference or credential-bearing field excluded."
+      },
+      {
+        "file": "outputs/gamechangers-pilot/roles/motion_designer.json",
+        "pointer": "/source_document",
+        "reason": "Raw body/source-document reference or credential-bearing field excluded."
+      },
+      {
+        "file": "outputs/gamechangers-pilot/templates/onboarding.template.json",
+        "pointer": "/source_document",
+        "reason": "Raw body/source-document reference or credential-bearing field excluded."
+      },
+      {
+        "file": "outputs/gamechangers-pilot/learning-round2/yada_multicosmetics/report.json",
+        "pointer": "/attachment_text_evidence",
+        "reason": "Raw body/source-document reference or credential-bearing field excluded."
+      },
+      {
+        "file": "outputs/Hamle_Gmail_API_Kaniti_2026-10-09.json",
+        "pointer": "/display_url",
+        "reason": "URL query removed; stable path retained."
+      },
+      {
+        "file": "outputs/Hamle_Basecamp_B09_API_Kaniti_2026-10-09.json",
+        "pointer": "/file_readback/downloaded_local_path",
+        "reason": "Old workspace prefix removed; path is relative to extracted package root."
+      }
+    ],
+    "transformation_count": 41,
+    "raw_data_or_secret_values_not_logged": true
+  },
+  "exclusions": [
+    "private-connections/**",
+    "OAuth client JSON and tokens",
+    "macOS Keychain",
+    "all .env files",
+    ".venv/**",
+    "node_modules/**",
+    ".git/**",
+    "Basecamp Mach-O binary and downloaded archives",
+    "raw email sources/full archives",
+    "original client attachments",
+    "screenshots and images",
+    "raw logs",
+    "SQLite/WAL/SHM state",
+    "ciphertexts",
+    "signed/transient file URLs",
+    "Word/Excel/PDF deliveries"
+  ],
+  "preserved_deduplication_state": [
+    "work/hamle-gmail-connector/.send-test-attempts/GC-HAMLE-GMAIL-20261009-01.attempt.json",
+    "work/hamle-gmail-connector/.send-test-attempts/GC-HAMLE-GMAIL-20261009-01.accepted.json"
+  ],
+  "validation": {
+    "all_json_parse": true,
+    "all_python_ast_parse": true,
+    "known_secret_regex_scan": true,
+    "no_matching_secret_values_found": true,
+    "absolute_old_mac_path_scan_pass": true,
+    "new_mac_auth_not_tested": true,
+    "semantic_secret_absence_not_guaranteed_by_regex_alone": true
+  }
+}

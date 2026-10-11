@@ -1,0 +1,112 @@
+{
+  "recorded_at": "2026-10-10T01:37:18.581111+03:00",
+  "device": "new_mac",
+  "scope": "local_fixed_internal_test_review_control",
+  "capture_evidence": "internal-review-import-20261010-013535.json",
+  "tests": {
+    "store": 22,
+    "http": 16,
+    "total": 38,
+    "result": "passed",
+    "network_scope": "temporary loopback only",
+    "real_provider_calls_in_tests": 0,
+    "test_command": "../hamle-gmail-connector/.venv/bin/python -B -m unittest discover -p 'test_*.py' -v"
+  },
+  "independent_review": {
+    "completed": true,
+    "finding": "Stop/takeover rejected when clock moved backwards",
+    "resolved": true,
+    "regression_tests_added": 3
+  },
+  "ui": {
+    "url": "http://127.0.0.1:59655/",
+    "bound_address": "127.0.0.1",
+    "screenshot": "internal-review-panel-ready.jpg",
+    "visible_record_verified": true,
+    "human_click_acceptance": "passed_for_local_demo_only"
+  },
+  "durable_state_observed": {
+    "control": {
+      "mode": "review_open",
+      "generation": 0,
+      "changed_at": 1791585333.710219
+    },
+    "items": [
+      {
+        "review_id": "107593e5aadcaa018b05c955ba0b34fe1cdc816fd55d6064bc2b2d5934987ad7",
+        "thread_id": "1a122c8fb08321fb",
+        "message_id": "1a122c8fb08321fb",
+        "capture_fingerprint": "5fc1ba46c69e1cf5ee2b1c06eb26d11512711e266d0f6d20d37a2e62d4e11781",
+        "observed_at": 1791585335.3956711,
+        "generation": 0,
+        "status": "awaiting_human_review",
+        "brand": "gamechangers_internal",
+        "test_subject": "HAMLE-IC-PROVA-20261010-YENIMAC-01",
+        "action_eligible": false
+      }
+    ],
+    "test_subject": "HAMLE-IC-PROVA-20261010-YENIMAC-01",
+    "demo_only": true,
+    "external_actions_enabled": false,
+    "action_eligible": false,
+    "unseen_cc_removal_resolved": false
+  },
+  "safety_limits": {
+    "provider_write_authority": false,
+    "human_identity_authenticated": false,
+    "customer_workflow_acceptance": false,
+    "cloud_dispatch_integrated": false,
+    "unseen_cc_removal_resolved": false
+  },
+  "this_turn_activity": {
+    "fixed_thread_reads": 2,
+    "outgoing_mail_calls": 0,
+    "basecamp_write_calls": 0,
+    "model_inference_calls": 0,
+    "cloud_calls": 0
+  },
+  "historical_baseline": {
+    "tasks": 65,
+    "accepted": 19,
+    "points": 27,
+    "total_points": 100,
+    "live_agents_accepted": 0
+  },
+  "sha256": {
+    "store.py": "2615e067e85e31a197b7c499c831d99c236ae9b382e3c8043a87c18aaea491f1",
+    "server.py": "bcc7fe4d05c8acaa49d7e9252c9ea5e18e9b96f239d7173407408ae724d8ab80",
+    "README-store.txt": "7051943f0f0285b6932d52a7b8ce1f9e7fa610217d1acdb5adb00c99e49d49a3",
+    "ui.html": "7a46125eb6ff874dbba3f1aaf03dba7dcc502116d587b2e08b98e3b2ceb4dff6",
+    "README-ui.txt": "9d8979af5cfa1f8ffc4c8baf5cb5f4215a41f987cd80613be2e80f365afb254a",
+    "test_store.py": "4f7629cf365dd65aa2371c55d40ae63aa661a2d98113dfe1e9ae1a565b0fca99",
+    "test_server.py": "ba2734032e00e82008d513a0403df068835af866d8b3a152b45e208dc9eeeec5"
+  },
+  "last_updated_at": "2026-10-10T01:38:31.198091+03:00",
+  "human_takeover_evidence": "internal-review-human-takeover.json",
+  "durable_state_after_human_click": {
+    "control": {
+      "mode": "takeover",
+      "generation": 1,
+      "changed_at": 1791585442.9024901
+    },
+    "items": [
+      {
+        "review_id": "107593e5aadcaa018b05c955ba0b34fe1cdc816fd55d6064bc2b2d5934987ad7",
+        "thread_id": "1a122c8fb08321fb",
+        "message_id": "1a122c8fb08321fb",
+        "capture_fingerprint": "5fc1ba46c69e1cf5ee2b1c06eb26d11512711e266d0f6d20d37a2e62d4e11781",
+        "observed_at": 1791585335.3956711,
+        "generation": 0,
+        "status": "cancelled",
+        "brand": "gamechangers_internal",
+        "test_subject": "HAMLE-IC-PROVA-20261010-YENIMAC-01",
+        "action_eligible": false
+      }
+    ],
+    "test_subject": "HAMLE-IC-PROVA-20261010-YENIMAC-01",
+    "demo_only": true,
+    "external_actions_enabled": false,
+    "action_eligible": false,
+    "unseen_cc_removal_resolved": false
+  }
+}

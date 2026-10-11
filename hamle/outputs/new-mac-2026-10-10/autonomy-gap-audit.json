@@ -1,0 +1,203 @@
+{
+  "audit_kind": "read_only_routine_autonomy_gap_review",
+  "recorded_at": "2026-10-10T11:47:17.446302+00:00",
+  "source_precedence": "Current v7 code and 10 October follow-up acceptance supersede older 8–9 October connection-pending notes; old brand authority gaps remain because no newer verified values were found.",
+  "scope": "Current account manager source and local evidence only. No live APIs, credentials, deploy or customer action.",
+  "current_verified": [
+    {
+      "capability": "One real internal thread bound to one private Basecamp task, with actual follow-up comment and reply preserving verified Cansu CC",
+      "evidence": "followup-completed-acceptance.json",
+      "boundary": "Internal coordination; open Cansu/Ahmet strategic escalation is retained."
+    },
+    {
+      "capability": "Persistent business action receipts; repeated reconciliation is read-only, own latest reply causes no new work/model call",
+      "evidence": [
+        "cloud-execution-v7-followup-reconciliation.json",
+        "cloud-execution-v7-followup-own-reply-check.json"
+      ]
+    },
+    {
+      "capability": "Global stop/takeover and control generation fences; exact payload approval with 300 second expiry before every new write",
+      "source": [
+        "cloud_control.py:256",
+        "cloud_store.py:621",
+        "dispatch.py:174"
+      ]
+    },
+    {
+      "capability": "15-minute pilot scheduling configured; worker schedule path prepares review only",
+      "source": [
+        "worker.py:383",
+        "README-scheduler-plan.txt"
+      ],
+      "boundary": "First actual allowed Monday window remains pending; ongoing recurrence after the authorized deadline is not approved."
+    }
+  ],
+  "not_currently_implemented": [
+    {
+      "id": "multi_work_intake",
+      "detail": "Mailbox capture, recipients, project, subject and scope are hard-coded to the internal pilot; _bound_work permits at most one work. Need paginated incremental intake and per-brand/per-thread mapping with stable event IDs.",
+      "source": [
+        "cloud_providers.py:29",
+        "cloud_providers.py:40",
+        "worker.py:183",
+        "recipient_policy.py:29"
+      ]
+    },
+    {
+      "id": "routine_policy_authority",
+      "detail": "Replace individual content approval for accepted routine action classes with versioned explicit brand/service delegation and deterministic preflight checks. A model classification must never itself grant authority. Preserve human gates for commercial, complaint/strategy and social-editorial collaboration.",
+      "source": [
+        "cloud_store.py:548",
+        "cloud_store.py:621",
+        "dispatch.py:31",
+        "account_manager_prompt.txt:1"
+      ]
+    },
+    {
+      "id": "per_work_handover",
+      "detail": "Add authenticated stop, takeover and controlled resume for each work plus whole-system emergency stop. Observe actual human replies and task ownership changes; cancel queued actions; existing in-flight provider calls may complete.",
+      "source": [
+        "cloud_control.py:256",
+        "cloud_store.py:172"
+      ]
+    },
+    {
+      "id": "unseen_cc_removal",
+      "detail": "Latest-mail checks can only inspect mail Hamle actually received. Fresh polling and a short TTL do not prove an unseen CC-removal did not occur. Before delayed outbound customer actions, define visible work-level stop/revocation and fresh authorization protocol; hold stale/uncertain jobs. Do not monitor Ahmet mailbox or create forwarding rules.",
+      "source": [
+        "account_manager_prompt.txt:9",
+        "README-dispatch.txt"
+      ]
+    },
+    {
+      "id": "end_to_end_followup",
+      "detail": "Current tracking reads one todo status, due_on and revision count. Need authorized assignments, requested-vs-confirmed dates, availability handoff, overdue rules, actual escalation notifications, morning summary and accepted transition states.",
+      "source": [
+        "worker.py:413",
+        "worker.py:140",
+        "model.py:52"
+      ]
+    },
+    {
+      "id": "attachments_and_delivery",
+      "detail": "Actual attachments, artifact versions/hashes, producer release, allowed recipient set, brand/revision/rights checks and separate internal-note/public delivery channels are missing from current text-only writer. Todo completed must not automatically mean customer-ready.",
+      "source": [
+        "business_writers.py:108",
+        "business_writers.py:304",
+        "account_manager_prompt.txt:7"
+      ]
+    },
+    {
+      "id": "operational_reliability",
+      "detail": "Complete multi-worker crash/lease acceptance, OAuth revocation/restart, independent missed-run/error notification, billing reconciliation and restore drill before expanded production. Preserve existing unknown-write holds and read-only reconciliation.",
+      "source": [
+        "acceptance-matrix-independent-review.json"
+      ]
+    },
+    {
+      "id": "quality_and_cost_routing",
+      "detail": "Evaluate selected economical model on known representative routine and escalation cases before live routing. Persist route/model/usage and bound escalation loops and cost per work; cheaper-model failure must not silently cause unbounded Astra calls.",
+      "source": [
+        "model.py:17",
+        "cloud_store.py:778",
+        "worker.py:300"
+      ]
+    },
+    {
+      "id": "pilot_storage_capacity",
+      "detail": "Current Firestore pilot namespace and aggregate proposal/budget arrays are bounded by MAX_PROPOSALS=50 and MAX_RESERVATIONS=200, with worker limited to one bound work. A 250 incoming/week workload needs per-event queryable documents, pagination/checkpoints, lifecycle/retention, queues and bounded batch processing before production expansion. Disabling approval or adding this isolated pure policy module does not solve capacity.",
+      "source": [
+        "cloud_store.py",
+        "worker.py:183"
+      ]
+    }
+  ],
+  "genuine_user_inputs": [
+    {
+      "id": "canonical_brand_authority_source",
+      "ask": "Varsa mevcut müşteri/hizmet tablosunun yerini paylaş; yoksa ilk açılacak marka için yetkili müşteri e-postaları, ajans iş sahibi, Basecamp proje bağlantısı, verilen hizmetler ve revizyon sınırlarını belirt.",
+      "why": "Brand/contact/service fields are still null; historical mail learning cannot fill live authority. Existing all-brand pilot decision remains unchanged; one completed row can launch without waiting for all others.",
+      "agent_can_do": "Read the supplied source, draft each mapping, verify Basecamp IDs/list/membership/customer visibility through authorized read-only access; do not make user transcribe IDs."
+    },
+    {
+      "id": "delivery_source_and_release",
+      "ask": "Güncel dosyalar hangi klasörde/projede; hangi ekip üyesinin hangi işaretinden sonra dosyayı müşteriye gönderebiliriz? Teslim tarihi ve kaç revizyon için geçerli kurallar nerede?",
+      "why": "A technical file check cannot decide creative acceptance or grant a due-date commitment. This can be a team release, rather than asking Ahmet on every job.",
+      "agent_can_do": "Build versioned artifact checks, exact readback and recipient checks; apply known service rules without repeated human permission."
+    },
+    {
+      "id": "operational_owners",
+      "ask": "Hamle hata verdiğinde/devralma gerektiğinde ilk bakacak kişi kim?",
+      "why": "Özge email is now directly user-confirmed as ozge@gamechangers.com.tr; Basecamp display name Özge Yağmur is user-confirmed, but a verified person ID has not yet been obtained. Operational incident ownership remains unaccepted. Cansu address is verified and must not be asked again."
+    },
+    {
+      "id": "ongoing_budget_and_model",
+      "ask": "Rutin model önerisi ile haftalık harcama tavanını ve 12 Ekim sonrası çalışma dönemini seç.",
+      "why": "Latest request explores hybrid routing but has not selected a routine model; existing shared 50 USD authorization ends on 12 October 2026 at 23:59 Istanbul."
+    }
+  ],
+  "known_do_not_reask": [
+    "Cansu email: cansu@gamechangers.com.tr",
+    "15-minute weekdays 08:30–18:30 Istanbul, 41 checks/day",
+    "Eight separate brands and their known domains",
+    "Commercial to Ahmet; complaint/strategy to Cansu and Ahmet; social editorial to Özge and Hamle",
+    "Hamle own mailbox only; actual latest To/CC participation required; no own/automatic mail loops",
+    "Unknown business write is held, never automatically retried",
+    "Existing cloud secret access/service-account authorizations for the current project",
+    "Özge email user-confirmed: ozge@gamechangers.com.tr; Basecamp display name Özge Yağmur; numeric person ID not yet verified"
+  ],
+  "staged_release": [
+    {
+      "stage": 1,
+      "name": "Policy-bounded routine internal coordination",
+      "work": "Generalize internal multi-work intake and verified routine scopes; per-work stop; visible holds; local semantic/escalation/duplicate tests; then a small explicit internal acceptance. No per-message content approval for already accepted routine classes.",
+      "exit": "A normal request, its follow-up, human takeover and own reply complete without duplication, scope escape or fabricated promises."
+    },
+    {
+      "stage": 2,
+      "name": "Verified brand intake and coordination",
+      "work": "For each complete brand/service row: acknowledge receipt, ask missing brief facts, create/update the correct task, record requested dates, check status and escalate under the documented authority. Keep delayed client actions held until authority protocol is met.",
+      "exit": "Shadow comparisons and bounded real acceptance confirm correct brand, recipient, routing and permissions; unknown contacts/scopes remain held."
+    },
+    {
+      "stage": 3,
+      "name": "Production handoff and controlled customer delivery",
+      "work": "Bind actual producer release to the exact file version. Check required format/content, approved brand references, recipient/CC, internal-note exclusion, current job authority and idempotent send. Follow up against accepted due dates.",
+      "exit": "A real completed file is retrieved and checked, delivered once, verified, revised on the same work and stopped correctly on takeover. No animation-wide independence implied."
+    }
+  ],
+  "progress": "No new acceptance points awarded by this audit. Original 65 weighted rows remain 30/100 and 21/65 complete; 0/4 fully independent live accepted agents.",
+  "writes": "Only this local audit artifact; existing source and historical evidence unchanged.",
+  "offline_policy_foundation": {
+    "source": "autonomy_policy.py",
+    "test_source": "test_autonomy_policy.py",
+    "template": "customer_scope_template.json",
+    "test_result": "47 synthetic offline tests passed",
+    "runtime_integrated": false,
+    "provider_actions": 0,
+    "live_customer_enable": false,
+    "bounds": [
+      "Scope evidence must be produced by trusted adapters, never model/mail content.",
+      "Control observations bind current work and are short-lived.",
+      "Prepared action binds actual source fingerprint and exact action payload hash.",
+      "Existing task writes bind exact task ID plus semantic snapshot.",
+      "Delayed action authorization binds exact prepared action digest.",
+      "Delivery release binds exact file version/hash, QA policy/assets, To/CC, service/scope/source and action payload.",
+      "Customer brand templates remain disabled and empty.",
+      "Canonical executable envelopes reject extra BCC, unverified payload recipients/target/assignee and replacement delivery artifact even when payload hash is recomputed."
+    ],
+    "remaining": "This isolated policy does not implement signed evidence creation, authenticated per-work UI, runtime dispatch integration, queues/scaling, customer-source verification, delivery retrieval/QA or provider acceptance.",
+    "independent_agent_review": {
+      "reviewer": "portability_audit",
+      "result": "Targeted post-fix synthetic attack replay passed; no remaining concrete bypass finding within reviewed contract.",
+      "checks": [
+        "foreign-work and stale control evidence",
+        "wrong task with recomputed prepared payload",
+        "fresh source paired with old prepared action",
+        "previous delivery release paired with newly registry-allowed CC and re-prepared current action"
+      ],
+      "runtime_acceptance": false
+    }
+  }
+}

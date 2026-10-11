@@ -1,0 +1,20 @@
+{
+  "source_drive_file_id": "1lrv157v-AGcGpd8l_bdE7_7A-wW-Nqrc",
+  "filename": "wat_4.wav",
+  "size": 776074,
+  "sha256": "1bb6447f6d0a628e688e5c2533168b9a5069c8f372e5bd55a990119ee44f77c7",
+  "verified_riff_wave": true,
+  "channels": 1,
+  "sample_rate": 44100,
+  "sample_width_bytes": 2,
+  "nframes": 387964,
+  "duration_seconds": 8.797369614512471,
+  "compression": "NONE",
+  "source_task_id": "10317695863",
+  "source_comment_id": "10340298133",
+  "source_shared_by_person_id": "52096503",
+  "source_author": "Özge",
+  "spoken_text_verified": false,
+  "audio_video_alignment_verified": false,
+  "source_approval_basis": "Özge refers to approved voice in this exact comment; no independent client mail approval read."
+}

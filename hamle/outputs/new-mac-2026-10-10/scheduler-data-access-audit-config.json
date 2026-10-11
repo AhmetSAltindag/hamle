@@ -1,0 +1,7 @@
+{
+  "project": "gamechangers-hamle",
+  "auditConfigs": [],
+  "scope": "project_only_inherited_policy_not_inspected",
+  "target_runjob_log_type": "DATA_WRITE",
+  "source": "https://docs.cloud.google.com/run/docs/audit-logging"
+}

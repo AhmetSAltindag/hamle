@@ -1,0 +1,82 @@
+{
+  "id": 10392247471,
+  "bucket": {
+    "id": 49184053,
+    "name": "Hamle — İç Deneme",
+    "type": "Project"
+  },
+  "parent": {
+    "id": 10384126975,
+    "title": "İş Listesi",
+    "type": "Todoset",
+    "url": "https://3.basecampapi.com/5898865/buckets/49184053/todosets/10384126975.json",
+    "app_url": "https://app.basecamp.com/5898865/buckets/49184053/todosets/10384126975"
+  },
+  "creator": {
+    "id": 53358100,
+    "attachable_sgid": "BAh7BkkiC19yYWlscwY6BkVUewdJIglkYXRhBjsAVEkiKWdpZDovL2JjMy9QZXJzb24vNTMzNTgxMDA_ZXhwaXJlc19pbgY7AFRJIghwdXIGOwBUSSIPYXR0YWNoYWJsZQY7AFQ=--097550af8e4339de2e4176d4aa09c0da644ceede",
+    "name": "Hamle AI",
+    "personable_type": "User",
+    "title": "AI Assistant",
+    "tagline": "Always Online",
+    "location": "Digital",
+    "created_at": "2026-10-08T09:58:55.202Z",
+    "updated_at": "2026-10-09T21:42:47.430Z",
+    "email_address": "hamle@gamechangers.com.tr",
+    "bio": "Always Online",
+    "admin": false,
+    "owner": false,
+    "client": false,
+    "employee": true,
+    "time_zone": "Europe/Moscow",
+    "avatar_url": "https://bc3-production-assets-cdn.basecamp-static.com/5898865/people/BAhpBBQuLgM=--6baa1d3ae7822daaabdcd2bafaed2f8898ecef92/avatar",
+    "company": {
+      "id": 3821191,
+      "name": "Gamechangers"
+    },
+    "can_ping": true,
+    "can_manage_projects": true,
+    "can_manage_people": false,
+    "can_access_timesheet": false,
+    "can_access_hill_charts": true
+  },
+  "status": "active",
+  "visible_to_clients": false,
+  "completed": false,
+  "due_on": null,
+  "content": "Gamechangers | Son çeyrek strateji ve içerik yaklaşımı taslağı",
+  "description": "<div dir=\"auto\">Amaç: Ajans hesabının aktifliğini ve sektörel farklılaşmasını artırırken iç iletişimi ve ekip motivasyonunu desteklemek.<br><br>Hazırlık: Öncelikli kanalları, dış hedef kitleyi ve paylaşılabilir malzemeleri netleştir. Strateji görüşmesi için trend seçme ölçütleri, içerik temaları, ekip katılımı seçenekleri ve başarı göstergeleri önerileri hazırla. Yayın ritmi önerisini kapasite değerlendirmesine bağlı tut.<br><br>Değerlendirme önerisi: Stratejik çerçeve Cansu ve Ahmet; sosyal medya gündemi ve içerik planı Özge ve Hamle tarafından ele alınmalı.<br><br>Son çeyrek planlama dönemidir, onaylanmış teslim tarihi değildir. Teslim tarihi ve görev ataması açık; üretim kapasitesi değerlendirmesi gerekli.</div>",
+  "assignees": [
+    {
+      "id": 53358100,
+      "attachable_sgid": "BAh7BkkiC19yYWlscwY6BkVUewdJIglkYXRhBjsAVEkiKWdpZDovL2JjMy9QZXJzb24vNTMzNTgxMDA_ZXhwaXJlc19pbgY7AFRJIghwdXIGOwBUSSIPYXR0YWNoYWJsZQY7AFQ=--097550af8e4339de2e4176d4aa09c0da644ceede",
+      "name": "Hamle AI",
+      "personable_type": "User",
+      "title": "AI Assistant",
+      "tagline": "Always Online",
+      "location": "Digital",
+      "created_at": "2026-10-08T09:58:55.202Z",
+      "updated_at": "2026-10-09T21:42:47.430Z",
+      "email_address": "hamle@gamechangers.com.tr",
+      "bio": "Always Online",
+      "admin": false,
+      "owner": false,
+      "client": false,
+      "employee": true,
+      "time_zone": "Europe/Moscow",
+      "avatar_url": "https://bc3-production-assets-cdn.basecamp-static.com/5898865/people/BAhpBBQuLgM=--6baa1d3ae7822daaabdcd2bafaed2f8898ecef92/avatar",
+      "company": {
+        "id": 3821191,
+        "name": "Gamechangers"
+      },
+      "can_ping": true,
+      "can_manage_projects": true,
+      "can_manage_people": false,
+      "can_access_timesheet": false,
+      "can_access_hill_charts": true
+    }
+  ],
+  "app_url": "https://app.basecamp.com/5898865/buckets/49184053/todos/10392247471",
+  "expected_description": "Amaç: Ajans hesabının aktifliğini ve sektörel farklılaşmasını artırırken iç iletişimi ve ekip motivasyonunu desteklemek.\n\nHazırlık: Öncelikli kanalları, dış hedef kitleyi ve paylaşılabilir malzemeleri netleştir. Strateji görüşmesi için trend seçme ölçütleri, içerik temaları, ekip katılımı seçenekleri ve başarı göstergeleri önerileri hazırla. Yayın ritmi önerisini kapasite değerlendirmesine bağlı tut.\n\nDeğerlendirme önerisi: Stratejik çerçeve Cansu ve Ahmet; sosyal medya gündemi ve içerik planı Özge ve Hamle tarafından ele alınmalı.\n\nSon çeyrek planlama dönemidir, onaylanmış teslim tarihi değildir. Teslim tarihi ve görev ataması açık; üretim kapasitesi değerlendirmesi gerekli.",
+  "description_matches": false
+}

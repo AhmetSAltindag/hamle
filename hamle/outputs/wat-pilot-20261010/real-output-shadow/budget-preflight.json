@@ -1,0 +1,28 @@
+{
+  "recorded_at": "2026-10-10T15:28:19.028162+00:00",
+  "control": {
+    "changed_at": 1791589170.647069,
+    "generation": 1,
+    "actor_subject": "accounts.google.com:101753770166685750662",
+    "proposal_ids": [
+      "p-a0627d6de33573f9284e8799b2b537af6da59d22bdfcff812158e64f3490067d",
+      "p-22e2a5f455020a4445403ea203c4aa6083c4c14b185ec67d52b1c1211129fd67"
+    ],
+    "mode": "review_open",
+    "work_ids": [
+      "w-675aa8f8f399be886498c8b43ee6c0fa59d572ebc2012ce5650fbc4f244ad129"
+    ]
+  },
+  "budget": {
+    "limit_microdollars": 50000000,
+    "accounted_spend_microdollars": 0,
+    "held_microdollars": 17000000,
+    "prepaid_purchases_microdollars": 10000000,
+    "total_committed_microdollars": 21000000,
+    "remaining_microdollars": 29000000,
+    "overrun_hold": false,
+    "provider_hard_cap_installed": false
+  },
+  "planned_additional_vision_reserve_usd": 1,
+  "paid_calls_this_stage": 0
+}

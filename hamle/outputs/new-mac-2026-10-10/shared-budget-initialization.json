@@ -1,0 +1,39 @@
+{
+  "observed_at": "2026-10-10T01:06:14.469816+03:00",
+  "user_confirmed_no_other_hamle_spending": true,
+  "total_authorized_usd": "50.00",
+  "recorded_prior_spend_usd": "0.00",
+  "infrastructure_reserve_usd": "3.00",
+  "reserve_is_not_actual_cost": true,
+  "available_after_reservation_usd": "47.00",
+  "budget_status": {
+    "policy_id": "hamle-shared-20261009-20261012",
+    "limit_microdollars": 50000000,
+    "all_provider_baselines_and_billing_known": true,
+    "accounted_spend_microdollars": 0,
+    "held_microdollars": 3000000,
+    "remaining_microdollars": 47000000,
+    "overrun_hold": false,
+    "provider_hard_cap_installed": false,
+    "provider_reconciliation_connected": false
+  },
+  "cloud_probe_scope": {
+    "max_builds": 1,
+    "build_timeout_seconds": 300,
+    "max_job_executions": 9,
+    "job_timeout_seconds": 60,
+    "tasks": 1,
+    "parallelism": 1,
+    "max_retries": 0,
+    "scheduler_enabled": false,
+    "model_calls": 0,
+    "customer_data": false,
+    "revision_reason": "One additional negative check required: initial final run overtook queued stop; it is not counted as stop acceptance. 3USD reserve unchanged."
+  },
+  "limitations": [
+    "billing report latency",
+    "external future spending not automatically detected",
+    "no provider-wide hard stop",
+    "do not settle reservation to zero until costs reconciled"
+  ]
+}

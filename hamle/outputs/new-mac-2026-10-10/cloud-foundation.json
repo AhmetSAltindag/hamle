@@ -1,0 +1,90 @@
+{
+  "recorded_at": "2026-10-10T01:20:11.593848+03:00",
+  "project": "gamechangers-hamle",
+  "region": "europe-west1",
+  "synthetic_only": true,
+  "budget_reservation_key": "cloud-synthetic-foundation-20261010-v1",
+  "reserved_usd": "3.00",
+  "actual_billed_cost_not_yet_reconciled": true,
+  "cloud_build": {
+    "id": "f80f8e4a-fe41-4600-8f63-4c4a6baf3d30",
+    "status": "SUCCESS",
+    "start_time": "2026-10-09T22:10:39.851140108Z",
+    "finish_time": "2026-10-09T22:11:07.388840Z",
+    "timeout_seconds": 300,
+    "builds_started": 1
+  },
+  "image": "europe-west1-docker.pkg.dev/gamechangers-hamle/hamle-probe/synthetic@sha256:6d60eb0700736bf591a51be3d0b99ff14ba6cc0893f46039fc1671c964770122",
+  "job": {
+    "name": "hamle-synthetic-probe",
+    "ready": true,
+    "tasks": 1,
+    "parallelism": 1,
+    "max_retries": 0,
+    "timeout_seconds": 60,
+    "cpu": 1,
+    "memory": "512Mi"
+  },
+  "firestore": {
+    "database": "hamle-synthetic",
+    "type": "FIRESTORE_NATIVE",
+    "location": "europe-west1",
+    "free_tier_api": true
+  },
+  "service_accounts_user_explicitly_approved": true,
+  "runtime_identity": {
+    "email": "hamle-probe-runtime@gamechangers-hamle.iam.gserviceaccount.com",
+    "role": "roles/datastore.user",
+    "condition": "resource.name==\"projects/gamechangers-hamle/databases/hamle-synthetic\"",
+    "user_managed_key_count": 0
+  },
+  "build_identity": {
+    "email": "hamle-probe-build@gamechangers-hamle.iam.gserviceaccount.com",
+    "project_role": "roles/logging.logWriter",
+    "repository_role": "roles/artifactregistry.writer",
+    "source_bucket_role": "roles/storage.objectViewer",
+    "user_managed_key_count": 0
+  },
+  "source_bucket": "gamechangers-hamle-probe-source-286533609595",
+  "source_bucket_uniform_access": true,
+  "source_bucket_public_access_prevention": true,
+  "customer_credentials_uploaded": false,
+  "customer_data_uploaded": false,
+  "model_calls": 0,
+  "scheduler_created": false,
+  "production_agent_accepted": false,
+  "live_acceptance_status": "bounded_synthetic_probe_passed",
+  "execution_count": 9,
+  "final_control_enabled": false,
+  "final_control_generation": 2,
+  "proof_checks": {
+    "persistence_separate_process_read": true,
+    "duplicate_suppressed": true,
+    "concurrent_single_owner": true,
+    "run_after_confirmed_stop_created_no_record": true,
+    "automatic_retries_observed": 0
+  },
+  "test_ordering_incident": {
+    "execution": "hamle-synthetic-probe-5jfqz",
+    "reason": "Run was launched before queued stop completion and overtook stop; excluded from stop acceptance. A ninth run followed explicit API verification of enabled=false.",
+    "early_run_completed_at": "2026-10-09T22:17:55.273428Z",
+    "stop_committed_at": "2026-10-09T22:17:55.482203Z",
+    "corrected_stop_check": "hamle-synthetic-probe-tzt5p"
+  },
+  "not_verified": [
+    "human-visible immediate takeover path",
+    "in-flight crash/recovery cloud acceptance",
+    "restore from backup",
+    "production provider OAuth in cloud",
+    "Gmail/Basecamp write adapters",
+    "real model inference",
+    "production shared budget gate and provider cost reconciliation",
+    "automatic scheduler",
+    "customer workflows"
+  ],
+  "evidence": [
+    "cloud-probe-records.json",
+    "cloud-probe-logs.json",
+    "cloud-source-package.json"
+  ]
+}

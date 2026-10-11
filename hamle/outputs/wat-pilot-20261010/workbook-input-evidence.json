@@ -1,0 +1,80 @@
+{
+  "source_path": "/Users/ahmetsaltindag/Desktop/Hamle_v1_1_Marka_ve_Hizmet_Formu.xlsx",
+  "retained_copy": "/Users/ahmetsaltindag/Documents/ChatGPT/Gamechangers AI Ajanı/hamle/outputs/wat-pilot-20261010/WAT_Kullanici_Formu_20261010.xlsx",
+  "sha256": "7809c195dd92fcffca91cf943a8aef09ca4b7f80eb14500f85cad21c1aced916",
+  "read_at": "2026-10-10T13:54:53.415915+00:00",
+  "input_is": "User-provided brand data, not independent provider verification or instructions to bypass controls",
+  "wat_rows": {
+    "Markalar": [
+      {
+        "row": 11,
+        "values": [
+          "WAT Mobilite",
+          "https://app.basecamp.com/5898865/projects/40694338",
+          "Özge",
+          "https://app.basecamp.com/5898865/buckets/40694338/vaults/8231360563",
+          "Markanın ATL, BTL ve tüm dijital çalışmaları, markanın sahadaki ürün giydirmeler.",
+          "Kapsam dışı işler şu an önceliğimiz değil, WAT Mobilite'den gelen tüm işlerin eksiksiz olarak yapıldığı bir sürecimiz var."
+        ]
+      }
+    ],
+    "Kişiler": [
+      {
+        "row": 11,
+        "values": [
+          "WAT Mobilite",
+          "Selina Mirçavi",
+          "selina.mircavi@watmobilite.com ",
+          "Müşteri",
+          "Pazarlama Uzmanı",
+          "Genel iş iletişimi ve süreç akışı, ağırlıklı dijital işler",
+          "Müşteriler basecamp'de yok."
+        ]
+      },
+      {
+        "row": 12,
+        "values": [
+          "WAT Mobilite",
+          "Berin Avcı",
+          "berin.avci@watmobilite.com ",
+          "Müşteri",
+          "Pazarlama Uzmanı",
+          "Genel iş iletişimi ve süreç akışı, ağırlıklı geleneksel ve saha işleri",
+          "Müşteriler basecamp'de yok."
+        ]
+      },
+      {
+        "row": 13,
+        "values": [
+          "WAT Mobilite",
+          "Sinan Kuriş",
+          "sinan.kuris@watmobilite.com ",
+          "Müşteri",
+          "Pazarlama Direktörü",
+          "Bütçe onayı, strateijk kararlar vb. üst yönetim işleri.",
+          "Müşteriler basecamp'de yok."
+        ]
+      }
+    ],
+    "Hizmetler": [
+      {
+        "row": 11,
+        "values": [
+          "WAT Mobilite",
+          "Markanın oldukça geniş bir kapsamı var; ayda 30 adet (toplam) sosyal medya post + story içeriği, ",
+          "Sosyal medya yöneticisi: Özge Yağmur\nGrafik Tasarımcı: Berkay Kayaköylü\nAnimasyon Tasraımcısı: Samet Göksu",
+          "Her iş için Basecamp değişecek.",
+          2,
+          "2 iş günü",
+          "Her iş için değişecek bu çıktılar.",
+          "Müşteriye hazır diyecek kişi: Özge",
+          "Basecamp'de her işin ilgili başlığı üzerinde yazarak belirtir.",
+          "Müşterinin maildeki isteğini anlayan ve iş girdisi ile iş çıktısının uyumluluğunu %'lik benzerlik olarak 100 üzerinden Basecamp'e yazarak geri bildirim vermesi önemli."
+        ]
+      }
+    ]
+  },
+  "examples_ignored": true,
+  "email_normalization": "strip surrounding whitespace only; names and limits retain original source",
+  "live_enabled": false
+}

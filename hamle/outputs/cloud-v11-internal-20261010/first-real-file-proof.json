@@ -1,0 +1,49 @@
+{
+  "execution": "hamle-account-manager-d7d4b",
+  "mail_thread_id": "1a12646136af37f0",
+  "task_id": 10392824665,
+  "submission_comment_id": "10392824791",
+  "filename": "hamle-main-v1.png",
+  "attachment_id": "903245587",
+  "sha256": "53dc068bbd9aaa167399d1ba6a8410f7870dc4948509639decc5ed241e781e44",
+  "size_bytes": 17414,
+  "checks": {
+    "text_inspection": "pass",
+    "fact:height": "pass",
+    "required_text:disclosure": "pass",
+    "required_text:title": "pass",
+    "mime_type": "pass",
+    "required_text:date": "fail",
+    "size_bytes": "pass",
+    "fact:width": "pass"
+  },
+  "ocr": {
+    "status": "completed",
+    "languages": [
+      "eng",
+      "tur"
+    ],
+    "parser": "tesseract 5.5.0",
+    "normalization": "nfkd-casefold-marks-whitespace-v1"
+  },
+  "first_quality_result": {
+    "send_allowed": false,
+    "network_writes": 0,
+    "requires_producer_submission": true,
+    "unassessed_checks": [],
+    "release_policy_enforced_by_dispatcher": true,
+    "reason": "current_safety_evidence_stale",
+    "score_meaning": "weighted_rubric_conformance_not_probability",
+    "score": null,
+    "model_calls": 0,
+    "schema_version": 1,
+    "requires_action_authority": true,
+    "criteria": [],
+    "critical_failures": [],
+    "route": "held",
+    "live_enabled": false
+  },
+  "customer_writes": 0,
+  "mail_sent": false,
+  "followup": "QA timestamp fix; reuse same task and bytes"
+}

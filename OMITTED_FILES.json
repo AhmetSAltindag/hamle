@@ -1,0 +1,45 @@
+{
+  "files": [
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/real-output-shadow/task-10064527849/native-task-and-comments.json",
+      "reason": "raw_historical_comment_dump_not_needed_for_core"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/real-output-shadow/task-10309337809/native-task-and-comments.json",
+      "reason": "raw_historical_comment_dump_not_needed_for_core"
+    },
+    {
+      "path": "hamle/outputs/wat-pilot-20261010/real-output-shadow/task-10317695863/native-task-and-comments.json",
+      "reason": "raw_historical_comment_dump_not_needed_for_core"
+    }
+  ],
+  "excluded_categories": [
+    ".cache",
+    ".git",
+    ".pytest_cache",
+    ".venv",
+    "__pycache__",
+    "application_default_credentials.json",
+    "attachments",
+    "cache",
+    "client_secret.json",
+    "cloud-tools",
+    "credentials.json",
+    "downloads",
+    "gmail-desktop.json",
+    "node_modules",
+    "private-connections",
+    "raw-mail",
+    "raw_mail",
+    "token.json",
+    "venv"
+  ],
+  "also_excluded": [
+    "SDK/CLI binaries",
+    "raw media attachments and complete raw mail archive",
+    "previous export ZIPs",
+    "logs and caches"
+  ],
+  "business_state": "Historical snapshots only; full live state is still in existing Firestore.",
+  "review_note": "Four task-identifier false positives were rescanned with API-key token boundaries; all other scans retained."
+}

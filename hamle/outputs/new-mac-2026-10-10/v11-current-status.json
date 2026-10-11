@@ -1,0 +1,73 @@
+{
+  "recorded_at": "2026-10-10T12:23:06.678538+00:00",
+  "user_scope": "Hamle v1.1: cloud customer representative; Gmail intake/clarification, Basecamp team assignment/follow-up, QA and same-thread delivery of team-produced work; routine operations without per-message Ahmet approval.",
+  "v11_progress": {
+    "earned": 38,
+    "total": 100,
+    "meaning": "Evidence-based functional readiness assessment, not time or model accuracy",
+    "source": "v11-acceptance-baseline.json",
+    "unchanged_after_local_foundations": true
+  },
+  "original_plan": {
+    "tasks_total": 65,
+    "completed": 21,
+    "open": 44,
+    "weighted_points": 30,
+    "weights_changed": false
+  },
+  "v12": "WhatsApp groups, excluded from current v1.1.",
+  "workbook": {
+    "path": "/Users/ahmetsaltindag/Documents/ChatGPT/Gamechangers AI Ajanı/hamle/outputs/hamle-v11-marka-formu-20261010/Hamle_v1_1_Marka_ve_Hizmet_Formu.xlsx",
+    "sha256": "132a04e81f6092634b0989f1293f232c7373a8e588954630c77a1721ca983991",
+    "sheets": [
+      "Markalar",
+      "Kişiler",
+      "Hizmetler"
+    ],
+    "purpose": "Unverified user input; no automatic import or authority granted",
+    "known_contacts_prepopulated": true,
+    "eight_brands_separate": true,
+    "unknowns_left_blank": true,
+    "examples_fictional_and_outside_tables": true
+  },
+  "new_local_implementation": [
+    "Independent work queues with persistent-adapter contract, source dedup and per-work leases/stops",
+    "Bounded Basecamp task/comments reader with conditional GET, changes/absence observations and complete-poll checks",
+    "Immutable poll journal with crash recovery before checkpoint advance",
+    "Artifact/brief/version-bound QA and producer-release delivery coordinator; internal-feedback separation",
+    "Synthetic two-work queue/delivery cooperation and reader/journal/queue integration"
+  ],
+  "validation": {
+    "file": "v11-local-validation.json",
+    "tests_passed": 425,
+    "new_v11_tests": 106,
+    "network_provider_calls_this_work": 0,
+    "paid_model_calls": 0,
+    "actual_messages_or_comments_sent": 0,
+    "live_customer_acceptance": false
+  },
+  "live_runtime": {
+    "new_modules_deployed": false,
+    "current_v7_code_untouched": true,
+    "latest_live_evidence": "followup-completed-acceptance.json",
+    "scope": "One internal thread and same-task follow-up with explicit per-proposal approval; does not imply customer autonomy"
+  },
+  "remaining_required": [
+    "User-filled brand/project/contacts/service/revision/producer/release criteria and independent verification",
+    "Live multi-mail intake, attachments, correct task selection/assignment and multi-service splitting inside one thread",
+    "Production provider adapters plus current global control, model-routing and budget integration",
+    "Persistent delivery state, actual artifact byte inspection/QA and producer submission interface",
+    "Per-work visible stop and fresh delayed-action participation confirmation; unseen CC removal remains unsolved",
+    "Firestore indexes/IAM, queue/poll migration and restart acceptance",
+    "Live internal end-to-end delivery then historical shadow and scoped customer acceptance",
+    "Reconciled provider spending and post-12 October spending decision before further paid operations"
+  ],
+  "explicit_limits": [
+    "Current queue maps one thread to one work/task, not several independent jobs in one email",
+    "Basecamp observation journal caps100changes and100active-comment hashes; first poll includes task event, overflow holds without truncation",
+    "Basecamp pagination is not an atomic snapshot; preflight must reread current facts",
+    "Local 300-second source authorization window must be reconciled with15-minute polling using an explicit protocol, not silent relaxation"
+  ],
+  "packaging": "No new ZIP created; user requested next packaging after v1.1 real operation. Earlier portable package remains intact.",
+  "next_user_step": "Fill workbook (one brand is enough to begin) and upload. Leave unknowns blank."
+}

@@ -1,0 +1,33 @@
+{
+  "recorded_at": "2026-10-10T14:32:17.586693+00:00",
+  "files": {
+    "WAT_Akis_ve_Kararlar.txt": "eb61aba9cbb7efba8f4f6d7b4cb5b32ce60c384206742fc86d243b23735c908c",
+    "WAT_Kullanici_Formu_20261010.xlsx": "7809c195dd92fcffca91cf943a8aef09ca4b7f80eb14500f85cad21c1aced916",
+    "assets-metadata-evidence.json": "625ed168e27951325e272d53b2cbab9a3624cc5439012e5810ad0a17f82805e3",
+    "basecamp-read-evidence.json": "c24abb4a150236ed4640497f5dbb6bcad13ca7c932c0b06a3a86757f0126b1ed",
+    "example-10064527849/task-and-comments-read-evidence.json": "8fdaade659f82a8142d21c68f43a9cc11254ff1a864e088f79d2db8063cbc7f8",
+    "example-10064527849/workflow-analysis.json": "9c98a8d178d5ff4948aee417ce2f9bc065fe5a7af75bce2e413f82d2d2dd564b",
+    "example-10064527849/workflow-analysis.txt": "95ab5c4abd44028917ea1bfc6c706e4bbb4dc4a4cf1648390e8b5aa86298f641",
+    "example-10309337809/analysis-report.json": "26fe7947685dfef6f040057558fbbfe05f5a0c59a4938e3704f1fe1a2beb9a15",
+    "example-10309337809/artifact-manifest.json": "b323b9080457b7fc86e9d0908316b37f38ff1ab3941542fb7475cffaee8ef112",
+    "example-10309337809/artifacts/approved-kv-candidate/EKIM_KAMPANYA_KV_1.png": "0b855872d2104e3dcebcb260cccdd5bf16adf123f05567ea44eb7c10f1eb4bbf",
+    "example-10309337809/artifacts/final-package-horizontal/EKIM_KAMPANYA_KV_1_YATAY.png": "9b849553ecca11ecab651d24269b91c89aa8ea034859c44bbe304a5a3727d4af",
+    "example-10309337809/artifacts/final-package-kv/EKIM_KAMPANYA_KV_1.png": "1946fe106830e97ed8b2640c692fa030904dfaa4739b15f7bef7816bf100888e",
+    "example-10309337809/artifacts/final-package-story/EKIM_KAMPANYA_STORY.png": "38c8bc95e12874f06783ec66a17fc4dcd6e3bf8c3a328a08e66222479246a531",
+    "example-10309337809/artifacts/latest-reels-cover-candidate/EKIM_KAMPANYA_03.png": "c02e6c57a4db6ebf29ba05afecb9b46dd0814d025162841605dd021a96180373",
+    "example-10309337809/artifacts/pre-price-kv/EKIM_KAMPANYA_KV_1.png": "af2cedaa20b48305e5bd35b9b18216e9af7247561dbf9d9b0e2aef71cc7b5dd5",
+    "example-10309337809/evidence-checksums.json": "58a47dd8bf5d514abe7139a3c0df550984b40e272cdb1a799689f1e1199fc86f",
+    "example-10309337809/selected-file-downloads-1.json": "20daeeef72b64985205cb5c172e1a4bf1a7b83bbdba014bf4a54f164bf677240",
+    "example-10309337809/selected-file-downloads-2.json": "9d8828338cd367b4f0a4ef658690f39d3804ab98047d81ae48252b28017e51dd",
+    "example-10309337809/task-and-comments-read-evidence.json": "bb22a96e8368ffc0f5d7e294d3e0a56bd2575156eaf20c8d10ad3dbd5dd32d17",
+    "local-validation.json": "6bb0ab756944aa20e4ad2cdfd92586abb8b3bfd528481e1935681484d408bc1f",
+    "local-validation.log": "90d1faacac1b9ba9affd592d781733a3af3f2a8d69040b3ad018723f9b9efd32",
+    "planning-validation.json": "f23077abd2c5fd5b839278305c198c052ca45169fdcf1d71291b001496a04dbc",
+    "user-decisions.json": "8169eb48db9914f5365d40504a05d27b79cc2a409fdc38751e3dba97a0497395",
+    "wat-current-status.json": "9610cb0640f7d1f56a6d74d9425bf4e4f9615d33e8088186abaa41cdc37801b9",
+    "wat-planning-catalog.json": "b9404f08625006b983b20e49cd64d820174ae75720e4ffbeb0e820df21c8c7d8",
+    "wat-quality-rubric-draft.json": "4a8dd0af951588cd2112e4fa1e71906d3fb96e76d9e9adf01b680da407a93685",
+    "workbook-input-evidence.json": "368a565ea07965c30e3712c5036780523ab5764b63e7a573abb82393a3fc2c2f"
+  },
+  "no_credentials_included": true
+}

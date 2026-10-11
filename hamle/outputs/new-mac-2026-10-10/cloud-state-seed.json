@@ -1,0 +1,24 @@
+{
+  "recorded_at": "2026-10-10T02:05:13.898667+03:00",
+  "status": "passed",
+  "control": {
+    "mode": "stopped",
+    "proposal_ids": [],
+    "actor_subject": "bootstrap",
+    "generation": 0,
+    "changed_at": 1791587113.304504
+  },
+  "budget": {
+    "limit_microdollars": 50000000,
+    "accounted_spend_microdollars": 0,
+    "held_microdollars": 9000000,
+    "prepaid_purchases_microdollars": 10000000,
+    "total_committed_microdollars": 18000000,
+    "remaining_microdollars": 32000000,
+    "overrun_hold": false,
+    "provider_hard_cap_installed": false
+  },
+  "local_paid_calls_disabled": true,
+  "new_budget_reset": false,
+  "provider_reconciliation_connected": false
+}

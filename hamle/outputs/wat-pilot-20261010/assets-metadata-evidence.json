@@ -1,0 +1,42 @@
+{
+  "recorded_at": "2026-10-10T13:57:20.705266+00:00",
+  "project_id": 40694338,
+  "vault_id": 8231360563,
+  "read_success": true,
+  "reason": null,
+  "metadata": [
+    {
+      "id": 10168446888,
+      "name": "INTRO OUTRO",
+      "type": "Folder"
+    },
+    {
+      "id": 9759093931,
+      "name": "Logolar",
+      "type": "Folder"
+    },
+    {
+      "id": 9759083319,
+      "name": "Cihazlar",
+      "type": "Folder"
+    },
+    {
+      "id": 9759088953,
+      "name": "QR Kodlar",
+      "type": "Folder"
+    },
+    {
+      "id": 9759092901,
+      "name": "Şarj İstasyonu Kullanım Rehberi",
+      "type": "Folder"
+    },
+    {
+      "id": 9759291981,
+      "name": "WAT_Hakkında.docx",
+      "type": "Upload"
+    }
+  ],
+  "file_bytes_examined": 0,
+  "all_assets_current_and_approved_verified": false,
+  "writes": 0
+}

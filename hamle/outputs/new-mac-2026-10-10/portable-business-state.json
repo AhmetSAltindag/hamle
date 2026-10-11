@@ -1,0 +1,582 @@
+{
+  "observed_at": "2026-10-10T11:52:41.820721+00:00",
+  "project": "gamechangers-hamle",
+  "database": "hamle-operations",
+  "collection": "hamle_internal_v1",
+  "consistency": "read-only collection stream; not transactionally point-in-time across documents",
+  "restore_mode": "stopped_reconciliation_required_no_automatic_resume",
+  "restore_instructions": [
+    "Preserve immutable receipts, source/event IDs, proposals, work bindings and budget reservations.",
+    "Restore control in stopped mode with a new generation; never reuse exported approvals, leases, action tokens or active claim capabilities.",
+    "Reconcile Gmail and Basecamp read-only before any new business write; ambiguous writes remain held.",
+    "Snapshot is not credentials or a one-command live migration."
+  ],
+  "removed_capability_paths": [
+    "action-02b2f943435e396bd58114b42138a0a216eb0799509f3d78872e81a17e182b8a/token",
+    "action-115e36ae7f3515b70106a4f3bdaf2bd353e0df888b5b54f7925e54c50702183c/token",
+    "action-440966a28cf46a4130eb15f1493120901db7b11e7f9246939feee2924bf7447b/token",
+    "action-5a67853a3fe378d8991039bee1c3a7b45db22ffb7803f788a7ea4615a18b1a5d/token",
+    "evt-22e2a5f455020a4445403ea203c4aa6083c4c14b185ec67d52b1c1211129fd67/token",
+    "recovery-evt-22e2a5f455020a4445403ea203c4aa6083c4c14b185ec67d52b1c1211129fd67-2/authorization",
+    "recovery-evt-22e2a5f455020a4445403ea203c4aa6083c4c14b185ec67d52b1c1211129fd67-2/token"
+  ],
+  "documents": [
+    {
+      "document_id": "action-02b2f943435e396bd58114b42138a0a216eb0799509f3d78872e81a17e182b8a",
+      "data": {
+        "readback_at": 1791590547.303531,
+        "provider_id": "10392247471",
+        "kind": "basecamp_todo",
+        "finished_at": 1791589859.651539,
+        "worker": "internal-dispatch",
+        "created_at": 1791589855.466234,
+        "state": "verified",
+        "proposal_id": "p-a0627d6de33573f9284e8799b2b537af6da59d22bdfcff812158e64f3490067d",
+        "payload_hash": "fd6389d4d9a39a2ac9707503fad3c1947bbba2b32ccb66a8a4c7706b6db7f9ae",
+        "lease_until": 1791589915.466234,
+        "generation": 1,
+        "dispatched_at": 1791589859.288082,
+        "action_id": "02b2f943435e396bd58114b42138a0a216eb0799509f3d78872e81a17e182b8a"
+      }
+    },
+    {
+      "document_id": "action-115e36ae7f3515b70106a4f3bdaf2bd353e0df888b5b54f7925e54c50702183c",
+      "data": {
+        "readback_at": 1791590548.41258,
+        "provider_id": "1a12316fc6221a84",
+        "kind": "gmail_reply",
+        "finished_at": 1791590071.587123,
+        "worker": "internal-dispatch",
+        "created_at": 1791590068.176489,
+        "state": "verified",
+        "proposal_id": "p-a0627d6de33573f9284e8799b2b537af6da59d22bdfcff812158e64f3490067d",
+        "payload_hash": "fd6389d4d9a39a2ac9707503fad3c1947bbba2b32ccb66a8a4c7706b6db7f9ae",
+        "lease_until": 1791590128.176489,
+        "generation": 1,
+        "dispatched_at": 1791590071.029388,
+        "action_id": "115e36ae7f3515b70106a4f3bdaf2bd353e0df888b5b54f7925e54c50702183c"
+      }
+    },
+    {
+      "document_id": "action-440966a28cf46a4130eb15f1493120901db7b11e7f9246939feee2924bf7447b",
+      "data": {
+        "readback_at": 1791631777.66415,
+        "provider_id": "10392670403",
+        "kind": "basecamp_comment",
+        "finished_at": 1791631702.492655,
+        "payload_hash": "92a57c92cbe88b041dbdac1dabf01d6c0288c3e5288e28c1ae09d8c428082707",
+        "created_at": 1791631692.408533,
+        "proposal_id": "p-22e2a5f455020a4445403ea203c4aa6083c4c14b185ec67d52b1c1211129fd67",
+        "worker": "internal-dispatch",
+        "state": "verified",
+        "lease_until": 1791631752.408533,
+        "generation": 1,
+        "dispatched_at": 1791631702.202543,
+        "action_id": "440966a28cf46a4130eb15f1493120901db7b11e7f9246939feee2924bf7447b"
+      }
+    },
+    {
+      "document_id": "action-5a67853a3fe378d8991039bee1c3a7b45db22ffb7803f788a7ea4615a18b1a5d",
+      "data": {
+        "readback_at": 1791631778.671761,
+        "provider_id": "1a1259253846f6ea",
+        "kind": "gmail_reply",
+        "finished_at": 1791631709.379801,
+        "payload_hash": "92a57c92cbe88b041dbdac1dabf01d6c0288c3e5288e28c1ae09d8c428082707",
+        "created_at": 1791631704.519665,
+        "proposal_id": "p-22e2a5f455020a4445403ea203c4aa6083c4c14b185ec67d52b1c1211129fd67",
+        "worker": "internal-dispatch",
+        "state": "verified",
+        "lease_until": 1791631764.519665,
+        "generation": 1,
+        "dispatched_at": 1791631708.736931,
+        "action_id": "5a67853a3fe378d8991039bee1c3a7b45db22ffb7803f788a7ea4615a18b1a5d"
+      }
+    },
+    {
+      "document_id": "budget",
+      "data": {
+        "providers": {
+          "visual_generation": {
+            "baseline_microdollars": 0,
+            "paid_microdollars": 0,
+            "billing_ready": false
+          },
+          "google_cloud": {
+            "baseline_microdollars": 0,
+            "paid_microdollars": 0,
+            "billing_ready": true
+          },
+          "openai": {
+            "baseline_microdollars": 0,
+            "paid_microdollars": 10000000,
+            "billing_ready": true
+          }
+        },
+        "evidence_ref": "cloud-budget-import-snapshot.json",
+        "overrun_hold": false,
+        "policy_id": "hamle-shared-20261009-20261012",
+        "reservations": [
+          {
+            "state": "unknown",
+            "actual_microdollars": null,
+            "evidence_ref": null,
+            "provider": "openai",
+            "reservation_key": "astra-max-first-internal-20261010-v1",
+            "reserved_microdollars": 1000000
+          },
+          {
+            "state": "unknown",
+            "actual_microdollars": null,
+            "evidence_ref": null,
+            "provider": "google_cloud",
+            "reservation_key": "cloud-account-manager-foundation-20261010-v1",
+            "reserved_microdollars": 5000000
+          },
+          {
+            "state": "unknown",
+            "actual_microdollars": null,
+            "evidence_ref": null,
+            "provider": "google_cloud",
+            "reservation_key": "cloud-synthetic-foundation-20261010-v1",
+            "reserved_microdollars": 3000000
+          },
+          {
+            "evidence_ref": null,
+            "finished_at": 1791589321.374939,
+            "actual_microdollars": null,
+            "created_at": 1791589230.85754,
+            "state": "unknown",
+            "started_at": 1791589230.897231,
+            "provider": "openai",
+            "reservation_key": "model-a0627d6de33573f9284e8799b2b537af6da59d22bdfcff812158e64f3490067d",
+            "reserved_microdollars": 1000000
+          },
+          {
+            "evidence_ref": null,
+            "finished_at": 1791619340.214573,
+            "actual_microdollars": null,
+            "created_at": 1791619182.811349,
+            "state": "unknown",
+            "started_at": 1791619182.849691,
+            "provider": "openai",
+            "reservation_key": "model-22e2a5f455020a4445403ea203c4aa6083c4c14b185ec67d52b1c1211129fd67",
+            "reserved_microdollars": 1000000
+          },
+          {
+            "evidence_ref": null,
+            "finished_at": 1791620354.161981,
+            "actual_microdollars": null,
+            "created_at": 1791620186.827547,
+            "state": "unknown",
+            "started_at": 1791620186.874189,
+            "provider": "openai",
+            "reservation_key": "model-22e2a5f455020a4445403ea203c4aa6083c4c14b185ec67d52b1c1211129fd67-attempt2",
+            "reserved_microdollars": 2000000
+          },
+          {
+            "evidence_ref": null,
+            "finished_at": 1791621584.131207,
+            "actual_microdollars": null,
+            "created_at": 1791621575.345317,
+            "state": "unknown",
+            "started_at": 1791621575.557653,
+            "reserved_microdollars": 1000000,
+            "reservation_key": "cloud-scheduler-pilot-20261012-v1",
+            "provider": "google_cloud"
+          }
+        ],
+        "import_hash": "f60aeec3f9289ff9f4d90cc67b568ee1f811b9cb1a635013460df2e9a2bf71fb",
+        "expires_at": "2026-10-12T23:59:59+03:00",
+        "limit_microdollars": 50000000
+      }
+    },
+    {
+      "document_id": "control",
+      "data": {
+        "work_ids": [
+          "w-675aa8f8f399be886498c8b43ee6c0fa59d572ebc2012ce5650fbc4f244ad129"
+        ],
+        "changed_at": 1791589170.647069,
+        "proposal_ids": [
+          "p-a0627d6de33573f9284e8799b2b537af6da59d22bdfcff812158e64f3490067d",
+          "p-22e2a5f455020a4445403ea203c4aa6083c4c14b185ec67d52b1c1211129fd67"
+        ],
+        "generation": 1,
+        "actor_subject": "accounts.google.com:101753770166685750662",
+        "mode": "review_open"
+      }
+    },
+    {
+      "document_id": "evt-22e2a5f455020a4445403ea203c4aa6083c4c14b185ec67d52b1c1211129fd67",
+      "data": {
+        "held_at": 1791619340.29225,
+        "proposal_hash": "92a57c92cbe88b041dbdac1dabf01d6c0288c3e5288e28c1ae09d8c428082707",
+        "source_fingerprint": "b1828c39759af99216a5db382a0eccdb04c86615fc6577ceb51de465c1039f22",
+        "state": "completed",
+        "claimed_at": 1791619182.582459,
+        "revision_number": 1,
+        "proposal_id": "p-22e2a5f455020a4445403ea203c4aa6083c4c14b185ec67d52b1c1211129fd67",
+        "work_id": "w-675aa8f8f399be886498c8b43ee6c0fa59d572ebc2012ce5650fbc4f244ad129",
+        "reason": "response_incomplete",
+        "generation": 1,
+        "completed_at": 1791631709.872461,
+        "message_id": "1a124c2cc6542718",
+        "event_id": "evt-22e2a5f455020a4445403ea203c4aa6083c4c14b185ec67d52b1c1211129fd67"
+      }
+    },
+    {
+      "document_id": "model-failure-b374732b60663f748e118138de6ce0c2c032f44bd23aedaf0a98614f93d204be",
+      "data": {
+        "legacy_observability_gap": true,
+        "evidence_sha256": "2f1f60ba4ea0e629deac62162d343d515535dcf17d766538c639d412c623cd6a",
+        "usage_is_invoice": false,
+        "recorded_at": 1791620186.544549,
+        "reservation_key": "model-22e2a5f455020a4445403ea203c4aa6083c4c14b185ec67d52b1c1211129fd67",
+        "reason": "response_incomplete",
+        "receipt": null
+      }
+    },
+    {
+      "document_id": "model-receipt-afe1cc4b467b6005002d75016ade55edfec29e6558d077be1dfb994e8fa53f9b",
+      "data": {
+        "recorded_at": 1791589321.294903,
+        "reservation_key": "model-a0627d6de33573f9284e8799b2b537af6da59d22bdfcff812158e64f3490067d",
+        "usage_is_invoice": false,
+        "receipt": {
+          "model": "gpt-6-astra",
+          "usage": {
+            "input_tokens_details": {
+              "cached_tokens": 0
+            },
+            "output_tokens_details": {
+              "reasoning_tokens": 3624
+            },
+            "total_tokens": 5974,
+            "input_tokens": 1302,
+            "output_tokens": 4672
+          },
+          "response_id": "resp_0fd6d807396c1fcd016ac97b6fab6c87d1954d38df04279739",
+          "reasoning_effort": "max"
+        }
+      }
+    },
+    {
+      "document_id": "model-receipt-fc8e9b05eaef5c3fef48cf53d0866bad47908781d76d7aeba52cb4c1d0ab69bf",
+      "data": {
+        "recorded_at": 1791620354.081552,
+        "reservation_key": "model-22e2a5f455020a4445403ea203c4aa6083c4c14b185ec67d52b1c1211129fd67-attempt2",
+        "usage_is_invoice": false,
+        "receipt": {
+          "model": "gpt-6-astra",
+          "usage": {
+            "input_tokens_details": {
+              "cached_tokens": 1304
+            },
+            "output_tokens_details": {
+              "reasoning_tokens": 7250
+            },
+            "input_tokens": 3237,
+            "total_tokens": 12064,
+            "output_tokens": 8827
+          },
+          "response_id": "resp_0f1c80f4f613d5bf016ac9f45bbbe887d18a98ce024d8fc754",
+          "reasoning_effort": "max"
+        }
+      }
+    },
+    {
+      "document_id": "proposal-p-22e2a5f455020a4445403ea203c4aa6083c4c14b185ec67d52b1c1211129fd67",
+      "data": {
+        "source_fingerprint": "b1828c39759af99216a5db382a0eccdb04c86615fc6577ceb51de465c1039f22",
+        "proposal_hash": "92a57c92cbe88b041dbdac1dabf01d6c0288c3e5288e28c1ae09d8c428082707",
+        "approval": {
+          "proposal_hash": "92a57c92cbe88b041dbdac1dabf01d6c0288c3e5288e28c1ae09d8c428082707",
+          "escalation_status": "open",
+          "production_authorized": false,
+          "approved_at": 1791631620.937665,
+          "purpose": "internal_coordination_only",
+          "generation": 1,
+          "actor_subject": "accounts.google.com:101753770166685750662",
+          "decision_authorized": false
+        },
+        "created_at": 1791620354.271427,
+        "proposal_id": "p-22e2a5f455020a4445403ea203c4aa6083c4c14b185ec67d52b1c1211129fd67",
+        "payload": {
+          "comment": {
+            "project_id": 49184053,
+            "account_id": 5898865,
+            "task_id": 10392247471,
+            "body": "Mevcut göreve takip notu taslağı:\nNetleşenler: Instagram ve LinkedIn öncelikli. Dış hedef kitle İstanbul’da yaşayan 30–55 yaş kadın ve erkek marka yönetimi profesyonelleri. Proje/vakalar ayrı akışta; öneri seti dışında. Ekip hikâyelerinde Ahmet veya Cansu başlangıç seçeneği; iç iletişim ve motivasyon hedefi korunuyor.\nAçık noktalar: Birincil başarı ölçütü, ilk pilot katılımı ve paylaşılabilir hikâye girdisi.\nSonraki adım: Kanal bazlı öneriler ve ekip hikâyesi görüşme çerçevesiyle açık Cansu–Ahmet strateji değerlendirmesini ilerletmek; ardından içerik/trend planını Özge ve Hamle’nin birlikte ele alması. Yayın ritmi ve teslim takvimi kapasite değerlendirmesine bağlı.",
+            "task_fingerprint": "506630075fc8e20a0798587de71c3a132e872749faec9ad40e6c08643b0526dd",
+            "todo_parent_type": "Todoset",
+            "todo_parent_id": 10384126975
+          },
+          "scope": "gamechangers_internal",
+          "analysis": {
+            "brief": {
+              "audience": "Dış hedef kitle: İstanbul’da yaşayan, 30–55 yaş arası kadın ve erkek marka yönetimi profesyonelleri; potansiyel ajans müşterileri. İç iletişim hedef kitlesi: Gamechangers ekibi.",
+              "requested_deadline": null,
+              "confirmed_deadline": null,
+              "deliverables": [
+                "Son çeyrek strateji görüşmesi için Instagram ve LinkedIn’in rollerini, öncelikleri ve sektörel farklılaşma yaklaşımını detaylandıran taslak.",
+                "Proje/vaka paylaşımları hariç, LinkedIn için karar notları ve Instagram için kısa/görsel içerik başlıkları ile format önerileri.",
+                "Ahmet veya Cansu’yla başlanabilecek ekip hikâyesi pilotunun konu ve görüşme çerçevesi; gönüllü ekip katılımı seçenekleri.",
+                "Trend seçme ölçütleri, başarı göstergeleri ve stratejik değerlendirme ile kapasite netleşmesine bağlı içerik planı önerisi."
+              ]
+            },
+            "intent": "complaint_strategy",
+            "escalation": {
+              "reason": "Mevcut stratejik değerlendirme açık; kanal ve hedef kitlenin netleşmesi strateji kararını kapatmıyor. Son çeyrek öncelikleri ve sektörel farklılaşma için öncelik Cansu ve Ahmet’in değerlendirmesinde. Sosyal medya gündemi, trendler ve içerik planı boyutunu ayrıca Özge ve Hamle birlikte ele almalı.",
+              "owner": "cansu_and_ahmet"
+            },
+            "request_summary": "Gamechangers’ın mevcut son çeyrek strateji çalışmasında kanallar ve dış hedef kitle netleşti. Proje/vaka akışından ayrı, ekip hikâyelerini de içeren detaylı içerik önerileri isteniyor.",
+            "missing_questions": [
+              "Bu dönemin birincil başarı ölçütü nitelikli görünürlük mü, potansiyel müşteri görüşmeleri mi?",
+              "İlk ekip hikâyesi pilotunu seninle kısa bir soru-cevap üzerinden geliştirmemiz uygun mu?"
+            ],
+            "task_draft": {
+              "assignee": null,
+              "due_at": null,
+              "title": "Gamechangers | Son çeyrek strateji ve içerik yaklaşımı taslağı",
+              "description": "Mevcut göreve takip notu taslağı:\nNetleşenler: Instagram ve LinkedIn öncelikli. Dış hedef kitle İstanbul’da yaşayan 30–55 yaş kadın ve erkek marka yönetimi profesyonelleri. Proje/vakalar ayrı akışta; öneri seti dışında. Ekip hikâyelerinde Ahmet veya Cansu başlangıç seçeneği; iç iletişim ve motivasyon hedefi korunuyor.\nAçık noktalar: Birincil başarı ölçütü, ilk pilot katılımı ve paylaşılabilir hikâye girdisi.\nSonraki adım: Kanal bazlı öneriler ve ekip hikâyesi görüşme çerçevesiyle açık Cansu–Ahmet strateji değerlendirmesini ilerletmek; ardından içerik/trend planını Özge ve Hamle’nin birlikte ele alması. Yayın ritmi ve teslim takvimi kapasite değerlendirmesine bağlı."
+            },
+            "reply_draft": {
+              "body": "Selam Ahmet,\n\nInstagram ve LinkedIn önceliği netleşti. İstanbul’da yaşayan 30–55 yaş arası kadın ve erkek marka yönetimi profesyonellerine odaklanıyoruz. Proje ve vakaları mevcut paylaşım akışınıza bırakıp bu öneri setinin dışında tutuyorum.\n\nÖnceki eksenleri bu bilgilerle şöyle somutlaştırmayı öneriyorum:\n\n- LinkedIn — Marka yöneticisinin karar notları: “Son çeyrekte iletişim önceliklerini seçmek” ve “Briefte netlik sağlayan üç karar” gibi kısa görüş yazıları. Amaç, yalnız iş göstermek değil, ajansın düşünme biçimini görünür kılmak ve mesleki tartışma başlatmak.\n- Instagram — Bir fikir, bir çıkarım: “Trend seçimi için mini kontrol listesi” gibi kaydırmalı gönderiler ve marka yönetimi gündemine ilişkin hikâye anketleri. LinkedIn’deki görüşleri burada daha kısa ve görsel bir anlatımla ele alabiliriz.\n- Ekip hikâyesi pilotu: Seninle veya Cansu’yla kısa bir soru-cevap üzerinden mesleki bir öğrenim, karar alma alışkanlığı veya ekip çalışmasını güçlendiren bir yöntem arayabiliriz. Hazır bir hikâye varsaymak yerine gerçek yanıtlardan ilerleyelim. Paylaşım uygunluğu netleşen anlatı, LinkedIn’de kısa metin; Instagram’da alıntı kartları olarak değerlendirilebilir. Diğer ekip arkadaşları da gönüllü soru ve konu katkısı sunabilir.\n\nTrend seçiminde hedef kitleye fayda, ajansın yaklaşımıyla uyum, özgün yorum imkânı, itibar/telif uygunluğu ve üretim eforunu birlikte değerlendirelim. Başarı göstergeleri için takipçi sayısının yanında nitelikli yorumlar, kaydetmeler, profil ziyaretleri ve içerik kaynaklı görüşme taleplerini öneriyorum; sayısal hedefleri mevcut performans görülmeden belirlemeyelim.\n\nİlerlemek için iki nokta:\n- Bu dönemin birincil başarı ölçütü nitelikli görünürlük mü, potansiyel müşteri görüşmeleri mi?\n- İlk ekip hikâyesi pilotunu seninle kısa bir soru-cevap üzerinden geliştirmemiz uygun mu?\n\nBu detaylandırılmış seti senin ve Cansu’nun strateji değerlendirmesine temel yapabiliriz. Ardından kanal bazlı içerik planını Özge’yle birlikte ele almayı öneriyorum. Yayın ritmi ve teslim takvimi için ekip kapasitesini kontrol ederek ilerleyelim.\n\nSevgiler,\nHamle",
+              "subject": "Re: HAMLE-IC-IS-20261010-01"
+            },
+            "known_facts": [
+              "Talep mevcut strateji ve içerik yaklaşımı işinin devamı.",
+              "Öncelikli kanallar Instagram ve LinkedIn.",
+              "Dış hedef kitle İstanbul’da yaşayan, 30–55 yaş arası kadın ve erkek marka yönetimi profesyonelleri; potansiyel ajans müşterileri.",
+              "İç iletişimi ve ekip motivasyonunu destekleme hedefi korunuyor.",
+              "Proje ve vakalar ayrıca paylaşım sırasına alınıyor; bu öneri setine dahil edilmemesi isteniyor.",
+              "Ahmet önceki içerik eksenlerine olumlu yaklaşıyor; ekip hikâyeleri için kendisinden veya Cansu’dan başlanabileceğini belirtiyor.",
+              "Kaynakta Cansu ve Ahmet’in stratejik değerlendirmesi açık olarak belirtiliyor.",
+              "Son çeyrek planlama dönemi; teslim tarihi belirtilmemiş.",
+              "Girdi yalnız Gamechangers iç denemesi olarak belirtilmiş; müşteri gönderimi yetkisi yok."
+            ]
+          },
+          "work": {
+            "version": 1,
+            "task_id": 10392247471,
+            "escalation_owner": "cansu_and_ahmet",
+            "escalation_status": "open",
+            "thread_id": "1a122eec4ccdb53a",
+            "project_id": 49184053,
+            "work_id": "w-675aa8f8f399be886498c8b43ee6c0fa59d572ebc2012ce5650fbc4f244ad129",
+            "account_id": 5898865
+          },
+          "reply": {
+            "to": [
+              "ahmet@gamechangers.com.tr"
+            ],
+            "body": "Selam Ahmet,\n\nInstagram ve LinkedIn önceliği netleşti. İstanbul’da yaşayan 30–55 yaş arası kadın ve erkek marka yönetimi profesyonellerine odaklanıyoruz. Proje ve vakaları mevcut paylaşım akışınıza bırakıp bu öneri setinin dışında tutuyorum.\n\nÖnceki eksenleri bu bilgilerle şöyle somutlaştırmayı öneriyorum:\n\n- LinkedIn — Marka yöneticisinin karar notları: “Son çeyrekte iletişim önceliklerini seçmek” ve “Briefte netlik sağlayan üç karar” gibi kısa görüş yazıları. Amaç, yalnız iş göstermek değil, ajansın düşünme biçimini görünür kılmak ve mesleki tartışma başlatmak.\n- Instagram — Bir fikir, bir çıkarım: “Trend seçimi için mini kontrol listesi” gibi kaydırmalı gönderiler ve marka yönetimi gündemine ilişkin hikâye anketleri. LinkedIn’deki görüşleri burada daha kısa ve görsel bir anlatımla ele alabiliriz.\n- Ekip hikâyesi pilotu: Seninle veya Cansu’yla kısa bir soru-cevap üzerinden mesleki bir öğrenim, karar alma alışkanlığı veya ekip çalışmasını güçlendiren bir yöntem arayabiliriz. Hazır bir hikâye varsaymak yerine gerçek yanıtlardan ilerleyelim. Paylaşım uygunluğu netleşen anlatı, LinkedIn’de kısa metin; Instagram’da alıntı kartları olarak değerlendirilebilir. Diğer ekip arkadaşları da gönüllü soru ve konu katkısı sunabilir.\n\nTrend seçiminde hedef kitleye fayda, ajansın yaklaşımıyla uyum, özgün yorum imkânı, itibar/telif uygunluğu ve üretim eforunu birlikte değerlendirelim. Başarı göstergeleri için takipçi sayısının yanında nitelikli yorumlar, kaydetmeler, profil ziyaretleri ve içerik kaynaklı görüşme taleplerini öneriyorum; sayısal hedefleri mevcut performans görülmeden belirlemeyelim.\n\nİlerlemek için iki nokta:\n- Bu dönemin birincil başarı ölçütü nitelikli görünürlük mü, potansiyel müşteri görüşmeleri mi?\n- İlk ekip hikâyesi pilotunu seninle kısa bir soru-cevap üzerinden geliştirmemiz uygun mu?\n\nBu detaylandırılmış seti senin ve Cansu’nun strateji değerlendirmesine temel yapabiliriz. Ardından kanal bazlı içerik planını Özge’yle birlikte ele almayı öneriyorum. Yayın ritmi ve teslim takvimi için ekip kapasitesini kontrol ederek ilerleyelim.\n\nSevgiler,\nHamle",
+            "in_reply_to": "<CAOOr=Fj9PzNdAtb9Yv=Jf_h2W78UXSk_a+4D23OKUrjmE3ceUg@mail.gmail.com>",
+            "from": "hamle@gamechangers.com.tr",
+            "subject": "Re: HAMLE-IC-IS-20261010-01",
+            "thread_id": "1a122eec4ccdb53a",
+            "references": "<CAOOr=FimfFb65F0oZKxUtJHAsfk5-M5SrHzBZt9ZRB5s8LGe2g@mail.gmail.com> <CAG20L6U3CZowLYQG2BbmXbWwR4GcxqLAAYG+J4mpxL_DA_UEgg@mail.gmail.com> <CAOOr=Fj9PzNdAtb9Yv=Jf_h2W78UXSk_a+4D23OKUrjmE3ceUg@mail.gmail.com>",
+            "cc": [
+              "cansu@gamechangers.com.tr"
+            ]
+          },
+          "source": {
+            "captured_at": "2026-10-10T08:16:19.969568+00:00",
+            "snapshot_fingerprint": "a5cab26723b1942d102282418c205cc6c6446d01c99c94f913d64b73f1921ad5",
+            "message_id": "1a124c2cc6542718",
+            "thread_id": "1a122eec4ccdb53a"
+          }
+        },
+        "generation": 1,
+        "status": "approved"
+      }
+    },
+    {
+      "document_id": "proposal-p-a0627d6de33573f9284e8799b2b537af6da59d22bdfcff812158e64f3490067d",
+      "data": {
+        "source_fingerprint": "cd7d0ff20a139272d56dc1c34aa2137db04448df1a1e4f13ff8a4318c1625209",
+        "approval": {
+          "proposal_hash": "fd6389d4d9a39a2ac9707503fad3c1947bbba2b32ccb66a8a4c7706b6db7f9ae",
+          "escalation_status": "open",
+          "production_authorized": false,
+          "approved_at": 1791589817.162141,
+          "purpose": "internal_coordination_only",
+          "generation": 1,
+          "actor_subject": "accounts.google.com:101753770166685750662",
+          "decision_authorized": false
+        },
+        "proposal_hash": "fd6389d4d9a39a2ac9707503fad3c1947bbba2b32ccb66a8a4c7706b6db7f9ae",
+        "created_at": 1791589321.445361,
+        "proposal_id": "p-a0627d6de33573f9284e8799b2b537af6da59d22bdfcff812158e64f3490067d",
+        "payload": {
+          "scope": "gamechangers_internal",
+          "task": {
+            "title": "Gamechangers | Son çeyrek strateji ve içerik yaklaşımı taslağı",
+            "description": "Amaç: Ajans hesabının aktifliğini ve sektörel farklılaşmasını artırırken iç iletişimi ve ekip motivasyonunu desteklemek.\n\nHazırlık: Öncelikli kanalları, dış hedef kitleyi ve paylaşılabilir malzemeleri netleştir. Strateji görüşmesi için trend seçme ölçütleri, içerik temaları, ekip katılımı seçenekleri ve başarı göstergeleri önerileri hazırla. Yayın ritmi önerisini kapasite değerlendirmesine bağlı tut.\n\nDeğerlendirme önerisi: Stratejik çerçeve Cansu ve Ahmet; sosyal medya gündemi ve içerik planı Özge ve Hamle tarafından ele alınmalı.\n\nSon çeyrek planlama dönemidir, onaylanmış teslim tarihi değildir. Teslim tarihi ve görev ataması açık; üretim kapasitesi değerlendirmesi gerekli.",
+            "todo_parent_type": "Todoset",
+            "account_id": 5898865,
+            "project_id": 49184053,
+            "todo_parent_id": 10384126975,
+            "due_at": null,
+            "assignee_id": 53358100
+          },
+          "analysis": {
+            "brief": {
+              "audience": "İç iletişim boyutunda Gamechangers ekibi; ajans hesabının dış hedef kitlesi henüz belirtilmemiş.",
+              "requested_deadline": null,
+              "confirmed_deadline": null,
+              "deliverables": [
+                "Son çeyrek strateji görüşmesi için öncelik ve sektörel farklılaşma önerileri",
+                "Trend seçme ölçütleri ve örnek içerik başlıkları",
+                "İç iletişimi ve ekip motivasyonunu destekleyen katılım önerileri",
+                "Kanallar ve hedef kitle netleştikten sonra değerlendirilecek içerik planı ve başarı göstergeleri taslağı"
+              ]
+            },
+            "intent": "complaint_strategy",
+            "escalation": {
+              "reason": "Talep stratejik konumlandırma, son çeyrek öncelikleri ve sektörel farklılaşma içerdiği için öncelikle Cansu ve Ahmet’in değerlendirmesine yönlendirilmeli. Sosyal medya gündemi, trendler ve dönemsel içerik planı boyutunu ise Özge ve Hamle birlikte ele almalı.",
+              "owner": "cansu_and_ahmet"
+            },
+            "request_summary": "Gamechangers’ın ajans hesabı için son çeyrekte trendlerle uyumlu, ekip motivasyonunu destekleyen ve sektörel farklılaşma sağlayacak bir yaklaşımın görüşülmesi isteniyor.",
+            "missing_questions": [
+              "Hangi sosyal medya kanallarını önceliklendirelim?",
+              "Ajans hesabında öncelikli dış hedef kitle kim?",
+              "Son çeyrekte paylaşılabilecek proje, vaka ve ekip hikâyeleri neler?"
+            ],
+            "task_draft": {
+              "assignee": null,
+              "due_at": null,
+              "title": "Gamechangers | Son çeyrek strateji ve içerik yaklaşımı taslağı",
+              "description": "Amaç: Ajans hesabının aktifliğini ve sektörel farklılaşmasını artırırken iç iletişimi ve ekip motivasyonunu desteklemek.\n\nHazırlık: Öncelikli kanalları, dış hedef kitleyi ve paylaşılabilir malzemeleri netleştir. Strateji görüşmesi için trend seçme ölçütleri, içerik temaları, ekip katılımı seçenekleri ve başarı göstergeleri önerileri hazırla. Yayın ritmi önerisini kapasite değerlendirmesine bağlı tut.\n\nDeğerlendirme önerisi: Stratejik çerçeve Cansu ve Ahmet; sosyal medya gündemi ve içerik planı Özge ve Hamle tarafından ele alınmalı.\n\nSon çeyrek planlama dönemidir, onaylanmış teslim tarihi değildir. Teslim tarihi ve görev ataması açık; üretim kapasitesi değerlendirmesi gerekli."
+            },
+            "reply_draft": {
+              "body": "Selam Ahmet,\n\nSon çeyrekte Gamechangers hesabını daha aktif ve trendlerle uyumlu yönetirken iç iletişimi, ekip motivasyonunu ve sektörel görünürlüğü birlikte güçlendirmeyi hedefliyorsun.\n\nBaşlangıç için üç içerik ekseni öneriyorum:\n- Ajansın uzmanlığıyla örtüşen trendlere özgün yorumlar.\n- Paylaşımı uygun proje ve vakalarda yaklaşımımızı görünür kılan anlatılar.\n- Gönüllü ekip katkısıyla hazırlanan süreç ve öğrenim paylaşımları.\n\nHer akıma katılmak yerine bize uygun olanları seçmek ve yayın ritmini ekip kapasitesine göre belirlemek önemli. Önce stratejik öncelikleri sen ve Cansu’yla değerlendirmeyi; ardından içerik ve trend planını Özge’yle birlikte ele almayı öneriyorum.\n\nGörüşme taslağını şekillendirmek için:\n- Hangi sosyal medya kanallarını önceliklendirelim?\n- Ajans hesabında öncelikli dış hedef kitle kim?\n- Son çeyrekte paylaşılabilecek proje, vaka ve ekip hikâyeleri neler?\n\nSevgiler,\nHamle",
+              "subject": "Re: HAMLE-IC-IS-20261010-01"
+            },
+            "known_facts": [
+              "Talep Gamechangers’ın kendi ajans hesabıyla ilgili.",
+              "Hesabın daha aktif, trendlere ve akımlara uygun yönetilmesi hedefleniyor.",
+              "İç iletişimin ve ekip motivasyonunun desteklenmesi isteniyor.",
+              "Odak dönem yılın son çeyreği; teslim tarihi belirtilmemiş.",
+              "Kaynakta talebin yalnız Gamechangers iç denemesi olduğu ve müşteri gönderimi yetkisi bulunmadığı belirtiliyor."
+            ]
+          },
+          "reply": {
+            "to": [
+              "ahmet@gamechangers.com.tr"
+            ],
+            "body": "Selam Ahmet,\n\nSon çeyrekte Gamechangers hesabını daha aktif ve trendlerle uyumlu yönetirken iç iletişimi, ekip motivasyonunu ve sektörel görünürlüğü birlikte güçlendirmeyi hedefliyorsun.\n\nBaşlangıç için üç içerik ekseni öneriyorum:\n- Ajansın uzmanlığıyla örtüşen trendlere özgün yorumlar.\n- Paylaşımı uygun proje ve vakalarda yaklaşımımızı görünür kılan anlatılar.\n- Gönüllü ekip katkısıyla hazırlanan süreç ve öğrenim paylaşımları.\n\nHer akıma katılmak yerine bize uygun olanları seçmek ve yayın ritmini ekip kapasitesine göre belirlemek önemli. Önce stratejik öncelikleri sen ve Cansu’yla değerlendirmeyi; ardından içerik ve trend planını Özge’yle birlikte ele almayı öneriyorum.\n\nGörüşme taslağını şekillendirmek için:\n- Hangi sosyal medya kanallarını önceliklendirelim?\n- Ajans hesabında öncelikli dış hedef kitle kim?\n- Son çeyrekte paylaşılabilecek proje, vaka ve ekip hikâyeleri neler?\n\nSevgiler,\nHamle",
+            "in_reply_to": "<CAOOr=FimfFb65F0oZKxUtJHAsfk5-M5SrHzBZt9ZRB5s8LGe2g@mail.gmail.com>",
+            "from": "hamle@gamechangers.com.tr",
+            "subject": "Re: HAMLE-IC-IS-20261010-01",
+            "thread_id": "1a122eec4ccdb53a",
+            "references": "<CAOOr=FimfFb65F0oZKxUtJHAsfk5-M5SrHzBZt9ZRB5s8LGe2g@mail.gmail.com>",
+            "cc": []
+          },
+          "source": {
+            "captured_at": "2026-10-09T23:40:29.656656+00:00",
+            "snapshot_fingerprint": "fb0f84f42ac7e49cd43fd58f9833c8861a002f722f4b6330c793b253255ce92f",
+            "message_id": "1a122eec4ccdb53a",
+            "thread_id": "1a122eec4ccdb53a"
+          }
+        },
+        "generation": 1,
+        "status": "approved"
+      }
+    },
+    {
+      "document_id": "recovery-evt-22e2a5f455020a4445403ea203c4aa6083c4c14b185ec67d52b1c1211129fd67-2",
+      "data": {
+        "state": "proposed",
+        "recovery_id": "recovery-evt-22e2a5f455020a4445403ea203c4aa6083c4c14b185ec67d52b1c1211129fd67-2",
+        "proposal_hash": "92a57c92cbe88b041dbdac1dabf01d6c0288c3e5288e28c1ae09d8c428082707",
+        "reservation_key": "model-22e2a5f455020a4445403ea203c4aa6083c4c14b185ec67d52b1c1211129fd67-attempt2"
+      }
+    },
+    {
+      "document_id": "refresh-7b25f0bf1cf08f400b7aaba4301fef22b943faeebf729bd8fc10f25fe7cac3a7",
+      "data": {
+        "state": "claimed_do_not_retry",
+        "claimed_at": 1791619087.229137
+      }
+    },
+    {
+      "document_id": "refresh-e1de043c59432c607ee935f348f6ca270b7a965ada3e4b375174fcff8d0fb4a4",
+      "data": {
+        "state": "claimed_do_not_retry",
+        "claimed_at": 1791631692.650816
+      }
+    },
+    {
+      "document_id": "source-b1828c39759af99216a5db382a0eccdb04c86615fc6577ceb51de465c1039f22",
+      "data": {
+        "proposal_id": "p-22e2a5f455020a4445403ea203c4aa6083c4c14b185ec67d52b1c1211129fd67",
+        "created_at": 1791620354.271427
+      }
+    },
+    {
+      "document_id": "source-cd7d0ff20a139272d56dc1c34aa2137db04448df1a1e4f13ff8a4318c1625209",
+      "data": {
+        "proposal_id": "p-a0627d6de33573f9284e8799b2b537af6da59d22bdfcff812158e64f3490067d",
+        "created_at": 1791589321.445361
+      }
+    },
+    {
+      "document_id": "thread-8cce38493a7e6abcfb4cc29542d96279564251583ef3bbc60592ac0fd2dc3a61",
+      "data": {
+        "work_id": "w-675aa8f8f399be886498c8b43ee6c0fa59d572ebc2012ce5650fbc4f244ad129",
+        "thread_id": "1a122eec4ccdb53a"
+      }
+    },
+    {
+      "document_id": "work-w-675aa8f8f399be886498c8b43ee6c0fa59d572ebc2012ce5650fbc4f244ad129",
+      "data": {
+        "event_ids": [
+          "evt-22e2a5f455020a4445403ea203c4aa6083c4c14b185ec67d52b1c1211129fd67"
+        ],
+        "pending_event_id": null,
+        "task_id": 10392247471,
+        "escalation_owner": "cansu_and_ahmet",
+        "escalation_status": "open",
+        "last_message_id": "1a124c2cc6542718",
+        "seed_proposal_hash": "fd6389d4d9a39a2ac9707503fad3c1947bbba2b32ccb66a8a4c7706b6db7f9ae",
+        "thread_id": "1a122eec4ccdb53a",
+        "seed_reply_message_id": "1a12316fc6221a84",
+        "root_message_id": "1a122eec4ccdb53a",
+        "todo_parent_id": 10384126975,
+        "root_rfc_message_id": "<CAOOr=FimfFb65F0oZKxUtJHAsfk5-M5SrHzBZt9ZRB5s8LGe2g@mail.gmail.com>",
+        "version": 1,
+        "last_reply_message_id": "1a1259253846f6ea",
+        "created_at": 1791618942.296947,
+        "todo_parent_type": "Todoset",
+        "account_id": 5898865,
+        "revision_count": 1,
+        "work_id": "w-675aa8f8f399be886498c8b43ee6c0fa59d572ebc2012ce5650fbc4f244ad129",
+        "seed_proposal_id": "p-a0627d6de33573f9284e8799b2b537af6da59d22bdfcff812158e64f3490067d",
+        "last_completed_at": 1791631709.872461,
+        "latest_observation": {
+          "updated_at": "2026-10-10T11:28:22.360Z",
+          "task_id": 10392247471,
+          "assignee_ids": [
+            53358100
+          ],
+          "task_fingerprint": "506630075fc8e20a0798587de71c3a132e872749faec9ad40e6c08643b0526dd",
+          "description": "Amaç: Ajans hesabının aktifliğini ve sektörel farklılaşmasını artırırken iç iletişimi ve ekip motivasyonunu desteklemek.\n\nHazırlık: Öncelikli kanalları, dış hedef kitleyi ve paylaşılabilir malzemeleri netleştir. Strateji görüşmesi için trend seçme ölçütleri, içerik temaları, ekip katılımı seçenekleri ve başarı göstergeleri önerileri hazırla. Yayın ritmi önerisini kapasite değerlendirmesine bağlı tut.\n\nDeğerlendirme önerisi: Stratejik çerçeve Cansu ve Ahmet; sosyal medya gündemi ve içerik planı Özge ve Hamle tarafından ele alınmalı.\n\nSon çeyrek planlama dönemidir, onaylanmış teslim tarihi değildir. Teslim tarihi ve görev ataması açık; üretim kapasitesi değerlendirmesi gerekli.",
+          "observed_at": "2026-10-10T11:31:10.980796+00:00",
+          "todo_parent_id": 10384126975,
+          "title": "Gamechangers | Son çeyrek strateji ve içerik yaklaşımı taslağı",
+          "todo_parent_type": "Todoset",
+          "account_id": 5898865,
+          "due_on": null,
+          "project_id": 49184053,
+          "status": "active",
+          "completed": false,
+          "identity_verified": true
+        },
+        "project_id": 49184053
+      }
+    }
+  ],
+  "contains_credentials": false
+}

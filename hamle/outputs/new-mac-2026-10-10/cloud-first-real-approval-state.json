@@ -1,0 +1,43 @@
+{
+  "recorded_at": "2026-10-10T02:50:22.902421+03:00",
+  "release": "v3",
+  "control": {
+    "mode": "review_open",
+    "actor_subject": "accounts.google.com:101753770166685750662",
+    "changed_at": 1791589170.647069,
+    "generation": 1,
+    "proposal_ids": [
+      "p-a0627d6de33573f9284e8799b2b537af6da59d22bdfcff812158e64f3490067d"
+    ]
+  },
+  "proposal_id": "p-a0627d6de33573f9284e8799b2b537af6da59d22bdfcff812158e64f3490067d",
+  "proposal_hash": "fd6389d4d9a39a2ac9707503fad3c1947bbba2b32ccb66a8a4c7706b6db7f9ae",
+  "proposal_status": "approved",
+  "approval": {
+    "proposal_hash": "fd6389d4d9a39a2ac9707503fad3c1947bbba2b32ccb66a8a4c7706b6db7f9ae",
+    "escalation_status": "open",
+    "production_authorized": false,
+    "actor_subject": "accounts.google.com:101753770166685750662",
+    "purpose": "internal_coordination_only",
+    "decision_authorized": false,
+    "generation": 1,
+    "approved_at": 1791589817.162141
+  },
+  "actions": [],
+  "budget": {
+    "limit_microdollars": 50000000,
+    "accounted_spend_microdollars": 0,
+    "held_microdollars": 10000000,
+    "prepaid_purchases_microdollars": 10000000,
+    "total_committed_microdollars": 18000000,
+    "remaining_microdollars": 32000000,
+    "overrun_hold": false,
+    "provider_hard_cap_installed": false
+  },
+  "cloud_provider_identity_verified": true,
+  "real_internal_model_calls": 1,
+  "local_synthetic_model_calls": 1,
+  "scheduler_created": false,
+  "customer_scope_open": false,
+  "next_user_step": "Review exact proposal in IAP panel and explicitly approve internal coordination only"
+}

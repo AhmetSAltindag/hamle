@@ -1,0 +1,11 @@
+{
+  "subject": "HAMLE-IC-URETIM-20261010-01",
+  "thread_id": "1a12646136af37f0",
+  "hamle_sent_message_id": "1a126653276ea37b",
+  "confirmation_source": "direct_user_answer_in_current_conversation",
+  "confirmed_by": "Ahmet Şükrü Altındağ",
+  "confirmation": "Evet, iki PNG ekli mail geldi",
+  "recipient_inbox_confirmation": "confirmed_by_user",
+  "both_png_attachments_observed": true,
+  "recorded_at": "2026-10-10T15:20:33.482994+00:00"
+}

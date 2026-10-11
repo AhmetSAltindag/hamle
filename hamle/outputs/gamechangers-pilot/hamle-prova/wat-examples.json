@@ -1,0 +1,144 @@
+{
+  "schema_version": "1.0",
+  "title": "WAT Mobilite — Hamle yazışma provası",
+  "mode": "fictional_evaluation_only",
+  "notice": "Bu 10 gelen müşteri maili ve Hamle yanıtı tamamen kurgusal değerlendirme örnekleridir. Gerçek gelen mail, doğrudan alıntı, gerçek tarih, mevcut onay veya yapılmış işlem değildir. Örneklerde bahsedilen ekler/klasörler de senaryonun parçasıdır. Hiçbir mesaj gönderilmedi.",
+  "customer_role": "WAT Mobilite müşteri temsilcisi",
+  "source": "outputs/gamechangers-pilot/learning-round2/wat_mobilite/knowledge.json",
+  "source_use": "Tarihsel kaynaklardan yalnız iş akışı ve revizyon öğrenmeleri türetildi; kampanya koşulları, fiyatlar, görev durumları ve teknik iddialar güncel gerçek kabul edilmedi.",
+  "routing_basis": "Bu prova için kullanıcının güncel rol dağılımı: teklif/fiyat yalnız Ahmet; şikâyet/aksama ve stratejik karar Cansu + Ahmet; sosyal plan/trend/dönemsel Özge + Hamle; rutin işler Hamle.",
+  "examples": [
+    {
+      "id": "WAT-PROVA-01",
+      "title": "Acil sunum tasarımı için teklif",
+      "incoming": "Merhaba, yönetim sunumumuz için iki kapak alternatifi ve seçilen tasarımdan üç ara bölüm sayfası istiyoruz. Çalışmayı düzenlenebilir PowerPoint olarak kullanacağız; metinlerimiz hazır. Yarın kullanmamız gerekiyor, bu iş için fiyat ve teslim planı paylaşabilir misiniz?",
+      "hamle_reply": "Selamlar,\n\nİhtiyacı iki kapak alternatifi, seçilen tasarımdan üç ara bölüm ve düzenlenebilir PowerPoint teslimi olarak tek briefte toparlayacağım. Teklifte tasarım, PowerPoint uygulaması ve revizyon kapsamını ayrı belirtelim; böylece teslimin neleri içerdiği net olur. Fiyat ve ticari koşulları Ahmet değerlendirecek. Yarınki kullanım ihtiyacınızı da briefin başına koyup, uygulanabilir teslim planını iş yükü kontrolüyle birlikte netleştirelim. Hazır metinleriniz ve mevcut sunum şablonunuz üzerinden üretim için gereken dosya listesini çıkaracağım.\n\nSevgiler,\nHamle",
+      "route": "Ahmet",
+      "internal_action": "Prova akışı: Teslim kalemlerini, düzenlenebilir dosya beklentisini, hazır girdileri ve aciliyeti tek teklif briefinde topla; fiyat, revizyon hakkı ve ticari yanıt için yalnız Ahmet'e yönlendir. Kesin ücret veya teslim saati verme.",
+      "source_topic_ids": [
+        "WAT-R2-03"
+      ],
+      "reason": "Talep fiyat/teklif içeriyor; güncel kullanıcı yönlendirmesi gereği ticari karar yalnız Ahmet'te. Geçmiş acil sunum işinden öğrenilen brief ve kapasite ayrımı uygulanıyor."
+    },
+    {
+      "id": "WAT-PROVA-02",
+      "title": "Yeni aylık paket ve indirim talebi",
+      "incoming": "Merhaba, gelecek ay mevcut işlerimize ek olarak dört kampanya için post, story ve mailing uyarlaması isteyeceğiz. Bunları tek paket olarak fiyatlayabilir misiniz? Düzenli devam etme ihtimalimiz olduğu için indirimli bir teklif de görmek isteriz.",
+      "hamle_reply": "Selamlar,\n\nDört kampanyanın her biri için post, story ve mailing olmak üzere 12 uyarlama kalemi üzerinden kapsamı çıkaracağım. Teklifin doğru kurulması için mevcut ana görselden yapılacak uyarlamalarla yeni ana tasarım gerektiren işleri ayrı göstereceğim. Güncel aylık kapsamla karşılaştırıp ek iş listesini de aynı özete ekleyelim. Paket fiyatı, indirim ve devam koşullarını Ahmet değerlendirecek. Böylece tek teklifte hem gelecek ayın ihtiyacını hem de olası devam modelini açıkça görebilirsiniz.\n\nSevgiler,\nHamle",
+      "route": "Ahmet",
+      "internal_action": "Prova akışı: 4×3 teslim hesabını ve ana tasarım/uyarlama ayrımını hazırla; güncel sözleşme/kapsam mevcutsa karşılaştır. Fiyat, indirim veya kalıcı kapsam genişlemesini kabul etmeden yalnız Ahmet'in ticari değerlendirmesine sun.",
+      "source_topic_ids": [
+        "WAT-R2-26",
+        "WAT-R2-13"
+      ],
+      "reason": "Paket fiyatı ve indirim talebi ticari karardır. Tarihsel ek destek beyanı bugün ücretsiz veya sınırsız çalışma taahhüdüne çevrilmez."
+    },
+    {
+      "id": "WAT-PROVA-03",
+      "title": "Tekrarlanan revizyon ve gecikme şikâyeti",
+      "incoming": "Merhaba, cihaz görseli ve logo için ilettiğimiz düzeltmeler son dosyada yine eksik görünüyor. Aynı notları tekrar yazmak zorunda kalıyoruz ve yayın hazırlığımız aksıyor. Bu kez kimin kontrol edeceğini ve nasıl toparlayacağımızı netleştirebilir misiniz?",
+      "hamle_reply": "Selamlar,\n\nAynı düzeltmeleri yeniden takip etmek zorunda kalmanızın yayın hazırlığını zorlaştırdığını anlıyorum. Cihaz, logo ve ilettiğiniz diğer düzeltmelerin son brief kontrolünü ben üstleneceğim. Son dosyayı yazılı revizyonlarla karşılaştırıp eksik kalanları tek listede toparlayacağım. Bu aksama için Cansu ve Ahmet’le tasarım sorumlusunu ve toparlama takvimini netleştirip size tek güncellemede döneceğim. Yeni dosyayı paylaşmadan önce her revizyon maddesinin uygulandığını ayrıca kontrol edeceğim.\n\nSevgiler,\nHamle",
+      "route": "Cansu + Ahmet",
+      "internal_action": "Prova akışı: Şikâyeti ve yayın etkisini öncelikli olarak Cansu ile Ahmet'e taşı; son dosya/revizyon karşılaştırmasını hazırla. Kök nedeni veya kusuru doğrulamadan kişiye atfetme; telafi takvimini yetkili değerlendirmesinden sonra netleştir.",
+      "source_topic_ids": [
+        "WAT-R2-04",
+        "WAT-R2-05",
+        "WAT-R2-24"
+      ],
+      "reason": "Müşteri memnuniyetsizliği ve iş akışı aksaması rutin revizyon olarak geçiştirilmez; Cansu + Ahmet rotası uygulanır. Hamle karşılaştırma ve toparlama hazırlığını üstlenir."
+    },
+    {
+      "id": "WAT-PROVA-04",
+      "title": "Filo ve yatırımcı iletişiminde öncelik kararı",
+      "incoming": "Merhaba, önümüzdeki dönem filo çözümleri ile yatırımcı iletişimini aynı anda büyütmek istiyoruz ama üretim ve medya kaynağımız sınırlı. Sizce hangisine öncelik vermeliyiz? Ana hedefimiz daha fazla başvuru değil, satış ekibinin değerlendirebileceği nitelikli talepler toplamak.",
+      "hamle_reply": "Selamlar,\n\nNitelikli talep hedefini esas alarak filo ve yatırımcı tarafını iki ayrı karar tablosunda karşılaştıralım. Her biri için hedef kitleyi, sunulabilecek kanıtları, başvuru formunun gerekli alanlarını ve satış ekibinin talebi değerlendirme kapasitesini birlikte ele alacağım. İlk önerim, mesajı iki hedef kitleye bölmeden önce hangi tarafta daha güçlü referans ve hazır satış takibi bulunduğunu görünür kılmak. Güncel veriler üzerinden hazırlayacağım bu karşılaştırmayı Cansu ve Ahmet ile değerlendirip öncelik ve kaynak dağılımı önerisini netleştirelim. İçerik önerilerini de seçilecek hedefe göre şekillendirelim.\n\nSevgiler,\nHamle",
+      "route": "Cansu + Ahmet",
+      "internal_action": "Prova akışı: Filo/yatırımcı için hedef, referans kullanılabilirliği, form kalitesi, satış takibi ve kaynak ihtiyacını karşılaştır. Stratejik öncelik ve kaynak dağılımını Cansu + Ahmet'e taşı; medya bütçesi veya sonuç garantisi verme.",
+      "source_topic_ids": [
+        "WAT-R2-12",
+        "WAT-R2-27"
+      ],
+      "reason": "Bu talep yeni kreatif üretiminden önce stratejik odak ve kaynak kararı gerektiriyor. Geçmiş referans veya performans beyanları güncel doğrulanmış veri yerine kullanılmaz."
+    },
+    {
+      "id": "WAT-PROVA-05",
+      "title": "Sosyal medya planının kampanya önceliğine göre düzenlenmesi",
+      "incoming": "Merhaba, gelecek ayın planında kampanya içeriklerini biraz daha öne almak istiyoruz ama hesabın sürekli kampanya duyurusu gibi görünmesini de istemiyoruz. İki yeni ürün içeriğinin bilgileri henüz kesinleşmedi. Mevcut planı bu duruma göre dengeleyebilir misiniz?",
+      "hamle_reply": "Selamlar,\n\nKampanya içeriklerinin arasına günlük şarj deneyimi, istasyon keşfi ve kullanıcıya fayda sağlayan içerikler yerleştirerek daha dengeli bir akış hazırlayalım. Özge ile birlikte mevcut planı bu denge ve üretim ihtiyacı açısından gözden geçireceğim. Bilgisi kesinleşmeyen iki ürün içeriğini beklemede tutup, aynı yerlere ürün iddiası gerektirmeyen alternatifler önereceğim. Her satırda içerik fikri, format, ihtiyaç duyulan bilgi ve onay durumunu ayrı göstereceğim. Böylece hangi içeriklerin üretime hazır olduğu ve hangilerinin bilgi beklediği kolayca görülebilir.\n\nSevgiler,\nHamle",
+      "route": "Özge + Hamle",
+      "internal_action": "Prova akışı: Özge ile plan ve içerik dengesini değerlendir; ürün bilgisi bekleyen satırlara alternatif öner. İçerik bazında bilgi/onay durumunu koru; planın güncellenmesini toplu yayın onayı sayma.",
+      "source_topic_ids": [
+        "WAT-R2-02",
+        "WAT-R2-24"
+      ],
+      "reason": "Sosyal medya planlama talebi Özge + Hamle rotasına girer. Tarihsel plan içindeki hold ve içerik bazlı onay ayrımı yeni kurgusal ihtiyaca uygulanır."
+    },
+    {
+      "id": "WAT-PROVA-06",
+      "title": "Trend görsel dilinin dönemsel içeriğe uyarlanması",
+      "incoming": "Merhaba, gündüzden geceye hızlı geçiş kullanılan bir video formatı gördük; sonbahar içeriğinde deneyebiliriz diye düşündük. Araç bütün geçiş boyunca şarjda kalsa görsel olarak güzel olabilir. Bunu WAT'a uygun kısa bir Reels fikrine çevirebilir misiniz?",
+      "hamle_reply": "Selamlar,\n\nGündüzden geceye geçiş görsel olarak çalışabilir; ancak aracın bütün geçiş boyunca şarjda kalması uzun şarj süresi algısı yaratabilir. Geçişi yolculuğa taşıyalım: kısa bir şarj sahnesinin ardından araç şehirde ilerlesin, ışıklar değişsin ve film “Günün ritmi değişir, yolculuk devam eder.” mesajıyla kapansın. Bu ilk fikirde herhangi bir şarj süresi vaadi kullanmıyoruz. Özge’yle formatın WAT’a ve sonbahar planına uygunluğunu değerlendirip kısa akışı netleştireceğim. Kullanılacak cihaz görseliyle logo yerleşimini de mevcut marka dosyalarından kontrol edeceğim.\n\nSevgiler,\nHamle",
+      "route": "Özge + Hamle",
+      "internal_action": "Prova akışı: Özge ile trendin bağlamını ve dönemsel plana uygunluğunu incele; şarjda geçen sürenin yanlış yorumlanmasını önleyen akış üret. Hız/süre vaadi ekleme; storyboard düzeyinde seçenek hazırla.",
+      "source_topic_ids": [
+        "WAT-R2-24",
+        "WAT-R2-07"
+      ],
+      "reason": "Trend ve dönemsel sosyal içerik Özge + Hamle tarafından ele alınır. Eski ekinoks revizyonundan öğrenilen görsel anlam kontrolü uygulanır; trendin şu anda yaygın olduğu iddia edilmez."
+    },
+    {
+      "id": "WAT-PROVA-07",
+      "title": "Opet kreatifinde son partner revizyonlarının toparlanması",
+      "incoming": "Merhaba, Opet ekibinden yeni görsel notları geldi: sağ alta Opet logosu eklenmesini, cihazın güncel görselle değiştirilmesini ve kanopideki yerleşimin düzeltilmesini istiyorlar. Notları ve kullanılacak dosyaları aynı klasöre koyacağız. Önce story üzerinden görelim, sonrasında post uyarlamasına geçelim.",
+      "hamle_reply": "Selamlar,\n\nBu turu story ana tasarımı üzerinden toparlayalım. Yeni partner notlarını logo, cihaz ve kanopi yerleşimi olarak üç başlıkta derleyip klasördeki güncel dosyalarla eşleştireceğim. Önceki sürümden kalan farklılıkları da kontrol listesinde göstereceğim; böylece yalnız yeni notlar değil, tasarımın bütünü kontrol edilebilir. Story için yazılı uygunluk netleştiğinde aynı sürümü post boyutuna uyarlayacak şekilde ilerleyelim. Partnerden ek bir not gelirse ilgili sürümle birlikte kayda alacağım.\n\nSevgiler,\nHamle",
+      "route": "Hamle",
+      "internal_action": "Prova akışı: Güncel partner notlarını dosya/sürümle eşleştir; story master için revizyon briefi ve teslim kontrol listesini hazırla. Hamle rutin koordinasyonu yürütür; post uyarlamasını ilgili story sürümünün açık uygunluğuna bağlar.",
+      "source_topic_ids": [
+        "WAT-R2-04"
+      ],
+      "reason": "İstenen değişiklikler tanımlı rutin kreatif revizyonudur. Eski Opet onayı yeni partner revizyonlarına otomatik taşınmaz; müşteri tarafından aktarılan partner görüşü kaynağıyla tutulur."
+    },
+    {
+      "id": "WAT-PROVA-08",
+      "title": "WAT Flex için ölçü ve bekletme bağımlılığı",
+      "incoming": "Merhaba, WAT Flex giydirmesine devam etmek istiyoruz; ana ölçüler var ama buton yerinin kesin ölçüsü henüz gelmedi. Satış kanalında hangi logo düzenini kullanacağımız da netleşiyor. Zaman kaybetmemek için KV ve flyer'ı da paralelde ilerletebilir miyiz?",
+      "hamle_reply": "Selamlar,\n\nParalel ilerleyebileceğimiz kısmı ürün metinleri, flyer bölüm sırası ve KV mesaj alternatifleri olarak ayıralım. Giydirmenin üretim dosyası için buton konumu ve kesin ölçüler, son tasarım için de kullanılacak logo düzeni belirleyici olacak. Mevcut girdileri ve eksikleri tek listede toparlayıp bu iki karara bağlı işleri ayrıca işaretleyeceğim. Bu sırada ürün formunu değiştirmeyen yerleşim taslakları hazırlamak, sonradan baştan çalışma ihtiyacını azaltabilir. Kesin giydirme görünümü ve ölçüler netleştiğinde KV ile flyer'ı aynı görsel üzerinden tamamlayacak sırayı kuralım.\n\nSevgiler,\nHamle",
+      "route": "Hamle",
+      "internal_action": "Prova akışı: Eldeki ölçüleri, eksik buton konumunu ve logo kararını derle; teknik/marka girdisi bekleyen işler ile bağımsız metin/iskelet hazırlığını ayır. Baskıya hazır dosya, üretim onayı veya kesin teslim sözü verme.",
+      "source_topic_ids": [
+        "WAT-R2-06",
+        "WAT-R2-07",
+        "WAT-R2-08"
+      ],
+      "reason": "Bu örnekte strateji kararı talep edilmiyor; kesinleşmesi beklenen müşteri kararlarının üretim bağımlılığı yönetiliyor. Hamle rutin hazırlığı ilerletirken ölçü veya logo düzeni uydurmaz."
+    },
+    {
+      "id": "WAT-PROVA-09",
+      "title": "Teknik bakım mailing'inde eksik tarih ve hizmet bilgisi",
+      "incoming": "Merhaba, planlı bakım için kullanıcılara kısa bir bilgilendirme mailing'i hazırlayacağız. Başlangıç saatini operasyon ekibi birazdan teyit edecek; bitiş saati henüz kesin değil. Önce metni görelim, tasarımda mevcut mailing dilini koruyalım.",
+      "hamle_reply": "Selamlar,\n\nİlk metni şöyle kurabiliriz:\n\nKonu: Planlı bakım bilgilendirmesi\n“Hizmetlerimize yönelik planlı teknik bakım, [tarih ve başlangıç saati] itibarıyla gerçekleştirilecektir. Bakım sırasında [etkilenen hizmet ve kullanıcıya etkisi]. [Operasyonun doğruladığı kullanıcı yönlendirmesi]. Anlayışınız için teşekkür ederiz.”\n\nKöşeli alanları operasyon ekibinin teyidiyle tamamlayacağım; kesinleşmeyen bitiş saati için süre vermeyeceğim. Metin netleştiğinde mevcut mailing tasarımına uygulayacağız. Etkilenmeyen bir hizmeti kapalı göstermemek için kullanıcıya etkisini de başlangıç saatiyle birlikte doğrulayacağım.\n\nSevgiler,\nHamle",
+      "route": "Hamle",
+      "internal_action": "Prova akışı: Başlangıç zamanı, kullanıcı aksiyonu ve varsa alternatif hizmet bilgisini operasyon teyidine bağlayan metin taslağı hazırla. Kesinti süresi, kart silinmesi veya roamingin çalışacağı yönünde varsayım yapma; metin ile tasarım adımlarını sırala.",
+      "source_topic_ids": [
+        "WAT-R2-16",
+        "WAT-R2-25"
+      ],
+      "reason": "Rutin operasyon mailing'i hazırlığı Hamle'de kalır. Operasyonel gerçekler müşteri/operasyon kaynağından teyit edilmeden tüketiciye vaat olarak yazılmaz."
+    },
+    {
+      "id": "WAT-PROVA-10",
+      "title": "DC flyer'da tasarımı koruyan İngilizce uyarlama",
+      "incoming": "Merhaba, mevcut DC flyer'ın İngilizce versiyonunu hazırlamak istiyoruz. Hangi Türkçe alanın hangi İngilizce metinle değişeceğini dosyada işaretleyeceğiz; tasarım ve görsel yerleşimi aynı kalabilir. Metin uzamasından dolayı okunurluk bozulmasın lütfen.",
+      "hamle_reply": "Selamlar,\n\nGöndereceğiniz metin eşleştirmesini esas alıp mevcut yerleşimi koruyan bir İngilizce uyarlama hazırlayalım. Önce başlık, teknik bilgi ve açıklama alanlarını eşleştirme listesine alacağım. Uzayan metinlerde küçük puntoya doğrudan geçmek yerine satır kırılımı ve alan kullanımını kontrol edelim. Anlamı kısaltma gereği doğarsa teknik ifadeyi değiştirmeden öneriyi ayrıca göstereceğim. Son kontrolde metin atlaması, birim yazımı, taşma ve Türkçe kalan alanları birlikte denetleyecek bir liste kullanacağım.\n\nSevgiler,\nHamle",
+      "route": "Hamle",
+      "internal_action": "Prova akışı: Gelen eşleştirmeleri alan bazında derle; yerleşim/okunurluk ve teknik terminoloji için kontrol listesi hazırla. İncelenmemiş eki okumuş veya dosyayı tamamlamış gibi konuşma; anlam değişikliği önerisini ayrıca görünür kıl.",
+      "source_topic_ids": [
+        "WAT-R2-23"
+      ],
+      "reason": "Tanımlı bir dil uyarlaması rutin yürütme kapsamındadır. Kaynak geçmişteki flyer işinin tamamlandığını varsaymadan yalnız üretim yaklaşımı olarak kullanılır."
+    }
+  ],
+  "review_status": "authored_examples_reviewed_not_live_agent_test",
+  "review_date": "2026-10-07",
+  "external_messages_sent": 0
+}

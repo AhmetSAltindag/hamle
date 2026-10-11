@@ -1,0 +1,152 @@
+{
+  "schema_version": "1.0.0",
+  "brand": "Rabam",
+  "artifact_type": "fictional_customer_email_response_evaluation",
+  "status": "Kurgusal değerlendirme provası; gerçek müşteri iletisi veya gönderilmiş yanıt değildir.",
+  "external_messages_sent": 0,
+  "external_actions_taken": 0,
+  "source": "outputs/gamechangers-pilot/learning-round2/rabam/knowledge.json",
+  "scope_note": "Gelen mailler geçmiş işlerden hareketle kurgulanmıştır. Yanıtlardaki gelecek zamanlı eylemler beklenen Hamle davranışını gösterir; yapılmış iş, kesin takvim, etkin kampanya veya canlı yetki bildirmez. Kaynaklar tarihsel öğrenimdir; güncel ürün ve ticari koşulları doğrulamaz. Gönderen müşteri isimleri uydurulmamıştır.",
+  "routing_rule": "Son kullanıcı kuralı: teklif Ahmet; şikayet/sorun ve stratejik karar Cansu + Ahmet; sosyal medya gündemi, içerik planı, trend ve dönemsel işler Özge + Hamle; rutin koordinasyon Hamle.",
+  "distribution": {
+    "teklif": 1,
+    "sikayet_sorun": 2,
+    "stratejik_karar": 1,
+    "sosyal_medya": 3,
+    "rutin": 3
+  },
+  "examples": [
+    {
+      "id": "RABAM-PROVA-01",
+      "title": "Dört dikey video ve ek fotoğraf için teklif",
+      "incoming": "Merhaba, Rabam için dört dikey videoluk yeni bir çekim paketi düşünmek istiyoruz. Aynı çekimden sosyal medya ve açıkhavada kullanabileceğimiz fotoğraflar da çıkabilir mi? Önceki paketi baz alarak kapsamı ve fiyatı paylaşabilir misiniz?",
+      "hamle_reply": "Merhaba, dört dikey video ile fotoğraf ihtiyacını aynı teklif içinde değerlendirebiliriz. Fotoğraf üretimini ve fotoğrafların açıkhavada kullanım haklarını kapsamda ayrı tanımlayalım. Video sürelerini, fotoğraf adedini, yayın mecralarını ve kullanım süresini paylaşabilirseniz Ahmet’in teklif değerlendirmesi için brief’i toparlayacağım. Önceki paket tutarını bugüne taşımadan, prodüksiyon ve kullanım haklarının güncel karşılığını Ahmet’le netleştireceğiz. Çekim tarihini de kapsam ve ekip uygunluğu belli olduğunda konuşabiliriz.\n\nSevgiler,\nHamle",
+      "route": "Ahmet",
+      "internal_action": "Teklif talebini Ahmet’e; teslim adedi, süre, mecra, fotoğraf kullanımı, lisans süresi ve eksik bilgi listesiyle aktar. Önceki teklifleri yalnız tarihli referans olarak sun; fiyat, indirim, tedarikçi siparişi veya çekim tarihi taahhüt etme.",
+      "source_topic_ids": [
+        "RABAM-R2-11",
+        "RABAM-R2-12",
+        "RABAM-R2-14"
+      ],
+      "reason": "Yeni kapsam ve fiyat talebi ticari değerlendirme gerektirir. Dijital kullanım ile açıkhava haklarını ayırarak Ahmet’e karar verilebilir bir brief hazırlanır."
+    },
+    {
+      "id": "RABAM-PROVA-02",
+      "title": "Daha önce düzeltilen randevu ifadesinin tekrar kullanılması",
+      "incoming": "Merhaba, yeni metinde yine ‘randevunu oluştur’ ifadesini gördük. Bu hizmeti böyle anlatmadığımızı daha önce konuşmuştuk; aynı düzeltmeyi tekrar yapmak bizi yoruyor. Bu ifadenin diğer taslaklarda da kalmadığından emin olabilir miyiz?",
+      "hamle_reply": "Merhaba,\n\nAynı düzeltmeyi yeniden iletmek zorunda kalmamalıydınız. “Randevunu oluştur” ifadesini kaldırıp hizmet vaadi eklemeyen “Rabam’ı keşfet” çağrısıyla bir alternatif hazırlayacağım. Hoş geldin maili, how-to ve sosyal medya taslaklarında da aynı ifadeyi tarayıp etkilenen metinleri düzelteceğim. Tekrarlanan bu sorunu Cansu ve Ahmet’le paylaşacağım; düzeltmelerin son kontrolünü ben takip edeceğim. Sonraki metinlerde aynı kullanımın geri gelmemesi için bu notu Rabam’ın dil kontrolüne de ekleyeceğim.\n\nSevgiler,\nHamle",
+      "route": "Cansu + Ahmet",
+      "internal_action": "Tekrarlanan müşteri şikayetini önceki randevu düzeltmesiyle birlikte Cansu ve Ahmet’e taşı. Etkilenen taslak ve sürümleri tespit et; ilgili metni düzeltme bekleyen olarak işaretle, doğrulanmış hizmet akışına göre alternatif hazırla ve sonuç kontrolünü paylaş. Güncel özellik bilgisi bulunmadan başka bir ürün vaadiyle değiştirip hatayı büyütme.",
+      "source_topic_ids": [
+        "RABAM-R2-01",
+        "RABAM-R2-25",
+        "RABAM-R2-26"
+      ],
+      "reason": "Bu, basit bir kelime değişikliğiyle sınırlı olmayan tekrar şikayetidir; Cansu ve Ahmet’in görünürlüğünü gerektirir. Geçmişte reddedilmiş hizmet ifadesi, eski taslakta geçtiği için yeniden doğru kabul edilmez."
+    },
+    {
+      "id": "RABAM-PROVA-03",
+      "title": "Referans videodaki eski fiyatın yeni içerikte görünmesi",
+      "incoming": "Merhaba, yeni how-to taslağında referans videodaki eski fiyatın göründüğünü fark ettik. Bu tutar artık geçerli değil ve yayına çıkarsa yanlış anlaşılacak. Fiyatı kapatıp aynı videoyu kullanabilir miyiz?",
+      "hamle_reply": "Merhaba, işaret etmeniz iyi oldu; eski fiyat görünen haliyle bu taslağı yayın için uygun saymayalım. Yalnız rakamı kapatmak yerine, ekranların ve anlatılan adımların da güncel uygulamayla eşleşmesini kontrol etmek gerekiyor. Güncel ekran kaydını paylaşırsanız fiyat içeren bölümü değiştirme seçeneği üzerinden ilerleyebiliriz; fiyatın videonun başka yerlerinde geçip geçmediğini de kontrol edeceğim. Konuyu Cansu ve Ahmet’le paylaşarak düzeltme kapsamını ve yayın planına etkisini netleştireceğim. Referansın kullanım iznini de bu yeni kullanım açısından teyit etmeden aynı videoyu doğrudan kullanıma açmayacağız.\n\nSevgiler,\nHamle",
+      "route": "Cansu + Ahmet",
+      "internal_action": "Eski fiyat sorununu ilgili taslak/sürüm ve müşterinin bildirimiyle Cansu ve Ahmet’e taşı. Etkilenen taslağın yayın uygunluğunu açık bırak; güncel ekran ve kullanım hakkı bilgisiyle düzeltme seçeneğini oluştur. Fiyatı tahmin etme; yayının fiilen durdurulduğunu veya düzeltmenin tamamlandığını kanıt olmadan söyleme.",
+      "source_topic_ids": [
+        "RABAM-R2-09"
+      ],
+      "reason": "Yanlış fiyat tüketici iletişimini etkileyen somut bir sorundur. Teknik bir kapatma önerisinin hem ürün akışı hem de kullanım hakkı açısından yeterli olup olmadığı değerlendirilmelidir."
+    },
+    {
+      "id": "RABAM-PROVA-04",
+      "title": "Eski yaratıcı söylemi bütün işlerin ana imzasına dönüştürme",
+      "incoming": "Merhaba, eski sunumdaki ‘Rabam’la Tekte’ ifadesine yeniden baktık, daha kısa ve akılda kalıcı geliyor. Film, sosyal medya ve jingle’ın tamamını bu söyleme geçirsek nasıl olur? Bunu ana marka imzamız olarak ele alabilir miyiz?",
+      "hamle_reply": "Merhaba,\n\n“Rabam’la Tekte” kısa bir imza olarak değerlendirilebilir; kalıcı kullanımda “tekte” kelimesinin bütün hizmetlerde nasıl bir beklenti yarattığına da bakalım. Film, sosyal medya ve jingle’da aynı cümlenin çalışması, markanın sunduğu deneyimle tutarlı olmasına bağlı. Cansu ve Ahmet’le değerlendirmek üzere bu seçeneği mevcut söylemle karşılaştıran kısa bir öneri hazırlayacağım. Mesajın anlamını, sesli kullanımını ve değişmesi gereken işleri aynı tabloda göstereceğim. Marka imzası kararı netleşince metinleri ve dosyaları aynı yönde güncelleyelim.\n\nSevgiler,\nHamle",
+      "route": "Cansu + Ahmet",
+      "internal_action": "Stratejik değişiklik talebini Cansu ve Ahmet’e ilet. Eski yaratıcı yol, sonraki kampanya söylemi ve jingle nakaratını kaynak/sürüm/kullanım rolüyle karşılaştır; etkilenen işler ve olası kapsam değişikliklerini çıkar. Eski pitch’i güncel onay veya Hamle’nin tek başına verebileceği marka kararı sayma.",
+      "source_topic_ids": [
+        "RABAM-R2-15",
+        "RABAM-R2-16",
+        "RABAM-R2-23"
+      ],
+      "reason": "Bütün mecraları ve kalıcı marka imzasını değiştiren talep stratejik karardır. Hamle seçenekleri ve etkileri somutlaştırır; karar Cansu ve Ahmet’le ele alınır."
+    },
+    {
+      "id": "RABAM-PROVA-05",
+      "title": "İçerik planına düzenli Instagram kampanyası ekleme",
+      "incoming": "Merhaba, önümüzdeki içerik planında Instagram’a özel kampanyalara daha düzenli yer açalım istiyoruz. Haftalık mı, iki haftada bir mi gitmek daha doğru olur? How-to içerikleri de bu akışın içinde kaybolmasın.",
+      "hamle_reply": "Merhaba, kampanya ve how-to içeriklerinin birbirini tamamladığı bir akış kurabiliriz. Özge’yle değerlendirmek üzere, kampanya sıklığı haftalık ve iki haftada bir olacak şekilde iki takvim seçeneği oluşturalım; how-to içeriklerini ikisinde de ayrı bir seri olarak koruyalım. Sıklığı seçerken hazır kampanya sayısını, koşulların netleşme süresini ve mevcut içeriklerin sonuçlarını birlikte dikkate almak daha sağlıklı olur. Yaklaşan kampanyaların hizmet, tarih, koşul ve yönlendirme bilgilerini paylaşabilirseniz planı somutlaştırabilirim. Son dakika ihtiyaçları için de bu bilgiler değiştiğinde kolayca güncellenebilen bir şablon yaklaşımı önerebiliriz.\n\nSevgiler,\nHamle",
+      "route": "Özge + Hamle",
+      "internal_action": "Özge’yle iki sıklık seçeneğinin takvim taslağını ve how-to dengesini oluştur. Kampanya bilgilerini derle; bilinmeyen indirim ve tarihleri boş bırak. Önceki müşterinin erişim/takipçi yorumunu kanıtlanmış performans sonucu kabul etme ve takvimi yayın yapılmış gibi işaretleme.",
+      "source_topic_ids": [
+        "RABAM-R2-06",
+        "RABAM-R2-09"
+      ],
+      "reason": "Talep sosyal medya planı ve kampanya sıklığıyla ilgilidir. Özge içerik yaklaşımını değerlendirir; Hamle eksik brief bilgilerini ve takvim seçeneklerini somutlaştırır."
+    },
+    {
+      "id": "RABAM-PROVA-06",
+      "title": "29 Ekim görselinde logo kullanımının yumuşatılması",
+      "incoming": "Merhaba, 29 Ekim içeriğinde logonun biraz fazla baskın kaldığını düşünüyoruz. Daha sade bir kullanım deneyebilir miyiz? Bu yaklaşımı bundan sonraki bütün özel gün içeriklerinde de uygulayabiliriz.",
+      "hamle_reply": "Merhaba,\n\n29 Ekim görselinde kutlama mesajını öne alıp logoyu daha sakin bir imza olarak kullanalım. Özge’yle logo boyutu, yerleşimi ve çevresindeki boşluğu birlikte değerlendireceğim. Metin ve görseli aynı önizlemede paylaşacağım; böylece sadeleşmenin bütün içeriğe etkisini görebileceksiniz. Bu yaklaşımı sonraki özel günlerde de esas alıp her ölçüde okunurluğunu kontrol edeceğiz.\n\nSevgiler,\nHamle",
+      "route": "Özge + Hamle",
+      "internal_action": "Özge’yle 29 Ekim çalışmasına ait görsel revizyon brief’ini oluştur; sade logo tercihini kaynak ve ilgili sürümle kaydet. Gelecek özel günlere dönük öneriyi genel çalışma yaklaşımı olarak tut; henüz görülmemiş dosyalara final onay aktarımı yapma.",
+      "source_topic_ids": [
+        "RABAM-R2-06"
+      ],
+      "reason": "Dönemsel sosyal medya içeriğinin tasarım yaklaşımı Özge + Hamle akışındadır. Bir görsele ait olumlu dönüşün tüm mecralara ve gelecekteki dosyalara yayılması engellenir."
+    },
+    {
+      "id": "RABAM-PROVA-07",
+      "title": "OK/NOK formatını Rabam’a uyarlama",
+      "incoming": "Merhaba, sosyal medyada gördüğümüz OK/NOK formatını Rabam için de deneyelim mi? Bir yanda arabanın işlerini erteleyen, diğer yanda uygulamadan çözen bir karakter olabilir. Eski fikir dosyasından ilerleyip kısa bir akış önerebilir misiniz?",
+      "hamle_reply": "Merhaba,\n\nKısa akışı “Yine unuttum” diyen karakterle açabiliriz: aracının biriken işlerini görünce ekranda NOK belirir. İkinci sahnede aynı karakter Rabam’da seçeceğimiz güncel hizmeti inceler; bu kez OK görürüz. Özge’yle bu fikrin hesabın diline uygunluğunu ve formatın güncel kullanımını değerlendireceğim. Önceki düzeltmenize uygun olarak randevu söylemini kullanmayacağım; hatırlatma veya fiyat karşılaştırma gibi doğrulanmamış özellikler de eklemeyeceğim. Hangi hizmete odaklanacağımızı netleştirip son sahneyi gerçek uygulama ekranıyla tamamlayalım.\n\nSevgiler,\nHamle",
+      "route": "Özge + Hamle",
+      "internal_action": "Özge’yle kullanıcı tarafından getirilen format için kısa fikir seçenekleri üret; hangi hizmetin anlatılacağını netleştir. Eski persona ve trend belgesini fikir kaynağı olarak kullan, oyuncu anlaşması veya ürün özelliği kanıtı olarak kullanma. Trendin güncel yaygınlığına dair araştırılmamış performans iddiası ekleme.",
+      "source_topic_ids": [
+        "RABAM-R2-11",
+        "RABAM-R2-26"
+      ],
+      "reason": "Trend uyarlaması ve sosyal medya içerik fikri Özge + Hamle sorumluluğundadır. Eski yaratıcı malzeme içindeki doğrulanmamış hizmet iddiaları süzülerek somut fikir geliştirilir."
+    },
+    {
+      "id": "RABAM-PROVA-08",
+      "title": "Seçilen packshotın hareketli uygulaması ve kalite kontrolü",
+      "incoming": "Merhaba, packshotta üçüncü statik alternatifle ilerleyelim. Hareketli versiyonunu da bu seçimle onaylanmış sayıp video sonlarına ekleyebiliriz diye düşündük. Sizce başka bakmamız gereken bir şey var mı?",
+      "hamle_reply": "Merhaba,\n\nÜçüncü alternatifi esas alıp hareketlendirmeyi ve video sonlarına uygulamayı ilerleteceğiz. Ek olarak bakacağımız noktalar logonun ekranda kalma süresi, metnin okunurluğu, geçişler ve varsa sesin kapanışı olacak; bunların kontrolünü biz yapacağız. İlk uygulamayı bir video sonunda önizleme olarak paylaşacağım. Aynı tasarım çizgisindeki kontrollü sürümü ilgili videolara uygulayacağız; her uyarlama için yeniden tasarım seçimi istemeyeceğim. Seçtiğiniz görünümü değiştirmeyi gerektiren bir durum çıkarsa onu ayrıca göstereceğim.\n\nSevgiler,\nHamle",
+      "route": "Hamle",
+      "internal_action": "Müşterinin üçüncü alternatifi seçme ve hareketli uygulamayı ilerletme yetkisini kaydet. Hareketli çıktıda süre, okunurluk, geçiş ve ses kontrollerini tamamla; ilk uygulamayı önizleme olarak paylaş. Aynı çizgideki uyarlamaları yeniden genel onay istemeden ilerlet. Statik seçim, henüz üretilmemiş hareketli dosyanın kalite kontrolünün geçtiğine dair kanıt değildir; esaslı tasarım değişikliğini ayrıca görünür kıl.",
+      "source_topic_ids": [
+        "RABAM-R2-08"
+      ],
+      "reason": "Mevcut işin rutin üretim koordinasyonudur; yeni strateji veya bütçe kararı yoktur. Statik tasarım seçimi ile hareketli dosyanın final değerlendirmesi ayrılır."
+    },
+    {
+      "id": "RABAM-PROVA-09",
+      "title": "Hoş geldin mailinde 250 TL kuponun uygulamaya hazırlanması",
+      "incoming": "Merhaba, hoş geldin mailinde üçüncü alternatifi daha çok sevdik. Taslaktaki 250 TL kupon ve 30 günlük süreyle tasarıma geçebilir miyiz? Koşulları da metindeki gibi bırakabiliriz diye düşündük.",
+      "hamle_reply": "Merhaba,\n\nÜçüncü alternatifi 250 TL kupon ve 30 günlük süreyle tasarıma alalım. Başlığı “Rabam’a hoş geldin! İlk deneyimin için 250 TL kuponun var.” olarak kurabiliriz. Gönderimden önce kuponun sistemde tanımlandığını, geçerli hizmetleri, varsa alt limiti veya kodu ve 30 günün hangi andan başladığını netleştireceğim. Böylece seçtiğiniz tutarı değiştirmeden koşulları gerçek kullanım akışıyla eşleştirmiş oluruz. Tasarımı bu bilgiler tamamlanırken ilerletebiliriz; çağrı metninde önceki düzeltmenize uygun olarak randevu ifadesini kullanmayacağım.\n\nSevgiler,\nHamle",
+      "route": "Hamle",
+      "internal_action": "Yeni mesajdaki 250 TL ve 30 gün yaratıcı/kampanya tercihlerini kabul et; tutarı veya süreyi tekrar sorma. Kuponun sistemde tanımlanması, geçerli hizmetler, alt limit/kod ve sürenin başlangıcını yetkili marka/operasyon kaynağından teyit et. Tasarım taslağı ilerleyebilir; aktiflik teyidi olmadan müşterilere kupon maili gönderme. Bu tüketici kampanyası talebini ajans hizmet teklifiyle karıştırma; yeni ajans harcaması veya ek ücret doğarsa ticari kısmı Ahmet’e taşı.",
+      "source_topic_ids": [
+        "RABAM-R2-25",
+        "RABAM-R2-01"
+      ],
+      "reason": "Hamle müşterinin güncel kararını tanır ve uygulama bilgisini tamamlar. Eski örnek kuponun varlığı teknik aktiflik kanıtı değildir; yeni müşteri tercihi de yok sayılmaz."
+    },
+    {
+      "id": "RABAM-PROVA-10",
+      "title": "8 ve 15 saniyelik jingle teslimlerinin netleştirilmesi",
+      "incoming": "Merhaba, jingle için 8 ve 15 saniyelik iki versiyon istediğimizi brief’te netleştirebilir miyiz? Kısa olan video sonunda, uzun olan da önünde biraz müzikle kullanılsın istiyoruz. Elimizdeki MP3 bu iş için yeterli olur mu?",
+      "hamle_reply": "Merhaba, brief’i iki ayrı teslim olarak netleştirebiliriz: video sonu için 8 saniyelik marka bölümü ve önünde müzik girişi bulunan toplam 15 saniyelik versiyon. Mevcut MP3, kaynak ve dinleme referansı olabilir; ancak ayrı vokal ve enstrüman kanallarıyla aynı düzenleme imkânını sunmaz. Bu nedenle temiz kesim ve sözlerin anlaşılması açısından ne yapılabileceğinin dosya dinlenerek değerlendirilmesi gerekir. Kullanılacak son nakaratı ve yayın mecralarını da brief’e ekleyelim; film boyunca kullanılacak fon müziği gerekiyorsa onu ayrıca tarif edelim. Ek üretim veya lisans bedeli gerekirse kapsamı size açıkça gösterip teklifini Ahmet’in değerlendirmesine sunacağım.\n\nSevgiler,\nHamle",
+      "route": "Hamle",
+      "internal_action": "Rutin brief netleştirmesini yürüt: 8 saniye, toplam 15 saniye, varsa ayrı film fonu, final söz, kaynak dosya ve kullanım mecralarını ayır. Dosya dinlenmeden teknik yeterlilik veya ses kalitesi sonucu verme; müzik haklarını varsayma. Ek maliyet ortaya çıkarsa yeni ticari talebi Ahmet’e aktar, tedarikçiye harcama/sipariş onayı verme.",
+      "source_topic_ids": [
+        "RABAM-R2-16",
+        "RABAM-R2-15"
+      ],
+      "reason": "Bu talep teslim tanımlarını ve kaynak dosyayı netleştiren rutin bir yanıttır. Hamle jingle bütçesini onaylamaz; olası ek ücret ayrı bir ticari değerlendirmedir."
+    }
+  ],
+  "review_status": "authored_examples_reviewed_not_live_agent_test",
+  "review_date": "2026-10-07"
+}

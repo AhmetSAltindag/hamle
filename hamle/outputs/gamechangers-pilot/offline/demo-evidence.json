@@ -1,0 +1,169 @@
+{
+  "mode": "offline_synthetic_only",
+  "real_sends": 0,
+  "fixture_time": "2026-10-07T09:00:00+03:00",
+  "tables": {
+    "events": [
+      {
+        "channel": "email",
+        "source_id": "demo-message-1",
+        "brand": "SYNTHETIC_A",
+        "job_id": 1,
+        "received_at": "2026-10-07T09:00:00+03:00",
+        "body": "Yalnız sentetik kayıt: kampanya metni talebi.",
+        "archive": 0
+      },
+      {
+        "channel": "email",
+        "source_id": "demo-removed",
+        "brand": "SYNTHETIC_A",
+        "job_id": null,
+        "received_at": "2026-10-07T09:00:00+03:00",
+        "body": "Sentetik son mesaj: Hamle doğrudan alıcı değil.",
+        "archive": 0
+      },
+      {
+        "channel": "email",
+        "source_id": "demo-reincluded",
+        "brand": "SYNTHETIC_A",
+        "job_id": 1,
+        "received_at": "2026-10-07T09:00:00+03:00",
+        "body": "Sentetik yeni mesaj: Hamle açıkça yeniden CC'de.",
+        "archive": 0
+      }
+    ],
+    "jobs": [
+      {
+        "id": 1,
+        "brand": "SYNTHETIC_A",
+        "request_ref": "demo-request",
+        "thread": "demo-thread",
+        "state": "brief_ready",
+        "owner": "account_manager",
+        "brief_version": 2,
+        "human_answered": 0
+      }
+    ],
+    "briefs": [
+      {
+        "job_id": 1,
+        "version": 1,
+        "created_at": "2026-10-07T09:00:00+03:00",
+        "data": "{\"assets\":[],\"brand\":\"SYNTHETIC_A\",\"claims\":[],\"deliverable\":\"1 metin taslağı\",\"objective\":\"Sentetik mesaj testi\",\"source_refs\":[{\"brand\":\"SYNTHETIC_A\",\"id\":\"source-a\",\"status\":\"current\",\"valid_until\":\"2026-12-31\"}]}",
+        "digest": "e659913fb0d7f3a307a403f4c05921e3e2688e04183aa812c6ef4b90d29ed145",
+        "trigger_channel": "email",
+        "trigger_source_id": "demo-message-1"
+      },
+      {
+        "job_id": 1,
+        "version": 2,
+        "created_at": "2026-10-07T09:00:00+03:00",
+        "data": "{\"assets\":[],\"brand\":\"SYNTHETIC_A\",\"claims\":[],\"deliverable\":\"1 metin taslağı\",\"objective\":\"Sentetik yeni yetkili olay\",\"source_refs\":[{\"brand\":\"SYNTHETIC_A\",\"id\":\"source-a\",\"status\":\"current\",\"valid_until\":\"2026-12-31\"}]}",
+        "digest": "3ab24b477d6a3296d3304f7cae310ce66c09c7c773f654e9fd5fb0c7b829f817",
+        "trigger_channel": "email",
+        "trigger_source_id": "demo-reincluded"
+      }
+    ],
+    "actions": [
+      {
+        "id": 1,
+        "idempotency_key": "demo-reply-1",
+        "job_id": 1,
+        "kind": "email_reply",
+        "brand": "SYNTHETIC_A",
+        "recipient": "client-a@example.invalid",
+        "thread": "demo-thread",
+        "role": "account_manager",
+        "brief_version": 1,
+        "state": "unknown",
+        "attempts": 1,
+        "evidence": null,
+        "payload": "{\"text\":\"Sentetik yanıt; gönderilmedi.\"}"
+      },
+      {
+        "id": 2,
+        "idempotency_key": "demo-task-1",
+        "job_id": 1,
+        "kind": "basecamp_task",
+        "brand": "SYNTHETIC_A",
+        "recipient": "test-project-a",
+        "thread": "demo-thread",
+        "role": "account_manager",
+        "brief_version": 1,
+        "state": "mail_authorization_revoked",
+        "attempts": 0,
+        "evidence": null,
+        "payload": "{\"text\":\"Sentetik görev; dışarı yazılmadı.\"}"
+      }
+    ],
+    "action_log": [
+      {
+        "id": 1,
+        "action_id": 1,
+        "event": "planned",
+        "detail": "offline only"
+      },
+      {
+        "id": 2,
+        "action_id": 1,
+        "event": "dispatch_started",
+        "detail": "no provider call"
+      },
+      {
+        "id": 3,
+        "action_id": 1,
+        "event": "unknown",
+        "detail": "synthetic transport outcome"
+      },
+      {
+        "id": 4,
+        "action_id": 2,
+        "event": "planned",
+        "detail": "offline only"
+      }
+    ],
+    "checkpoints": [
+      {
+        "source": "synthetic_history",
+        "cursor": "page-001",
+        "checked_at": "2026-10-07T09:00:00+03:00"
+      }
+    ],
+    "event_authority": [
+      {
+        "channel": "email",
+        "source_id": "demo-message-1",
+        "actionable": 1,
+        "reason": "direct_to_cc",
+        "evidence": "{\"direct_cc\":[],\"direct_to\":[\"hamle@gamechangers.com.tr\"],\"direction\":\"inbound\",\"from_address\":\"client-a@example.invalid\",\"message_id\":\"demo-message-1\",\"sequence\":1,\"thread_id\":\"demo-thread\",\"verified_direct_headers\":true}",
+        "mail_epoch": "demo-message-1"
+      },
+      {
+        "channel": "email",
+        "source_id": "demo-removed",
+        "actionable": 0,
+        "reason": "not_direct_to_cc",
+        "evidence": "{\"direct_cc\":[],\"direct_to\":[],\"direction\":\"inbound\",\"from_address\":\"client-a@example.invalid\",\"message_id\":\"demo-removed\",\"sequence\":2,\"thread_id\":\"demo-thread\",\"verified_direct_headers\":true}",
+        "mail_epoch": "demo-removed"
+      },
+      {
+        "channel": "email",
+        "source_id": "demo-reincluded",
+        "actionable": 1,
+        "reason": "direct_to_cc",
+        "evidence": "{\"direct_cc\":[\"hamle@gamechangers.com.tr\"],\"direct_to\":[],\"direction\":\"inbound\",\"from_address\":\"client-a@example.invalid\",\"message_id\":\"demo-reincluded\",\"sequence\":3,\"thread_id\":\"demo-thread\",\"verified_direct_headers\":true}",
+        "mail_epoch": "demo-reincluded"
+      }
+    ],
+    "mail_authority": [
+      {
+        "brand": "SYNTHETIC_A",
+        "thread": "demo-thread",
+        "sequence": 3,
+        "source_id": "demo-reincluded",
+        "allowed": 1,
+        "reason": "direct_to_cc"
+      }
+    ]
+  }
+}

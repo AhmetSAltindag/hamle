@@ -1,0 +1,85 @@
+{
+  "snapshot_created_at": "2026-10-10T00:09:32.301828+03:00",
+  "snapshot_kind": "portable_non_secret_handoff_not_live_runtime",
+  "precedence": "This dated handoff status and dated successful evidence override older current-setup, role, routing and readiness snapshots for connection status, model choice, budget and dates. Business authority rules remain strict; historical brand observations are not current approval.",
+  "verified_on_previous_mac": {
+    "gmail": [
+      "OAuth profile and exact readonly+send scopes",
+      "one fixed internal send and recipient delivery",
+      "refresh and separate-process reopening",
+      "own SENT input rejected by full-header reader"
+    ],
+    "basecamp": [
+      "Hamle API read/write in internal project49184053",
+      "B09 new task10391849167, Hamle assignment, R1 revision, comment10391852105",
+      "264-byte UTF-8 BOM file downloaded: full text and SHA-256 equality"
+    ],
+    "not_ported_as_credentials": true
+  },
+  "new_mac_connection_status": "unverified; no credentials or auth-state migration in this package",
+  "selected_model": "gpt-6-astra",
+  "selected_api_reasoning": "max",
+  "model_api_account_access_verified": false,
+  "openai_api_key_in_package": false,
+  "live_roles_verified": 0,
+  "cloud_runtime_deployed": false,
+  "customer_actions_enabled": false,
+  "budget": {
+    "recorded_at": "2026-10-09T23:57:40.483096+03:00",
+    "starts_at": "2026-10-09",
+    "ends_at": "2026-10-12T23:59:59+03:00",
+    "currency": "USD",
+    "aggregate_limit": 50,
+    "providers": [
+      "Google Cloud",
+      "OpenAI",
+      "visual generation"
+    ],
+    "automatic_renewal_authorized": false
+  },
+  "budget_guard": "50 USD is one aggregate limit through 12 October 2026 23:59:59 Istanbul; it is not 50 per service or a spending reset on the new Mac. Existing spend/remaining balance and billing setup must be verified before paid work. The package creates no billing control.",
+  "project_plan_snapshot": {
+    "tasks": 65,
+    "accepted_tasks": 19,
+    "proposed_baseline_points": 100.0,
+    "accepted_points": 27.0,
+    "live_roles": 0
+  },
+  "current_brand_scope": [
+    "WAT Mobilite",
+    "Rabam",
+    "ya da",
+    "Multicosmetics",
+    "Altınmarka",
+    "Bikaldi",
+    "HAN Spaces",
+    "Gamechangers (internal)"
+  ],
+  "current_brand_scope_source": "outputs/hamle-yeni-mac-devir-2026-10-10/Hamle_Yeni_Mac_Ilk_Mesaj_2026-10-10.txt",
+  "learning": {
+    "initial_scoped_observations": 20,
+    "additional_detailed_topics": 60,
+    "WAT": 27,
+    "Rabam": 26,
+    "historical_combined_ya_da_Multicosmetics_Remedium_group": 7,
+    "current_separate_brand_mapping": "Pending per-source mapping; do not assign all seven to either current brand or merge ya da and Multicosmetics. Remedium is a historical source label, not an added current brand.",
+    "whole_archive_learned": false,
+    "raw_emails_included": false,
+    "attachments_reviewed_scope": "Use per-topic source limitations; the package contains no original attachments."
+  },
+  "schedule_intent": {
+    "timezone": "Europe/Istanbul",
+    "weekday_checks": "08:30 through 18:30 inclusive every 30 minutes",
+    "checks_per_weekday": 21,
+    "morning_summary": "Hamle to Ahmet after the first successful 08:30 run",
+    "scheduler_installed": false
+  },
+  "policy": [
+    "Only actual latest relevant To/CC inclusion of Hamle can permit an action; visibility, old membership, BCC and quoted headers cannot.",
+    "Hamle cannot detect a removal email that never reaches its mailbox; E04 remains incomplete. Do not bridge this by copying all mail or re-adding Hamle.",
+    "Quotes/prices: Ahmet; complaint/problem/strategy: Cansu+Ahmet; social plan/trend/seasonal: Özge+Hamle; other authorized routine: Hamle.",
+    "All brands stay in scope; each brand/service opens only after its own explicit readiness acceptance.",
+    "Model, cloud, durable state, queues, per-brand permissions and end-to-end acceptance remain pending unless a newer verified artifact says otherwise."
+  ],
+  "first_live_step_on_new_mac": "After explicit local OAuth setup and identity verification, use read-only technical checks. Do not rerun completed send-test/B09 demonstrations just because the machine changed."
+}

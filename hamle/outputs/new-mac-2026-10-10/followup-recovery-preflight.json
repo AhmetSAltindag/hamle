@@ -1,0 +1,19 @@
+{
+  "status": "explicit_operator_recovery_preparation",
+  "prior_execution": "hamle-account-manager-wkv5h",
+  "old_failure_reason": "response_incomplete",
+  "failure_evidence_sha256": "2f1f60ba4ea0e629deac62162d343d515535dcf17d766538c639d412c623cd6a",
+  "work_id": "w-675aa8f8f399be886498c8b43ee6c0fa59d572ebc2012ce5650fbc4f244ad129",
+  "failed_task_fingerprint": "506630075fc8e20a0798587de71c3a132e872749faec9ad40e6c08643b0526dd",
+  "original_provider_failure_reason_unknown": true,
+  "old_attempt_retained": true,
+  "old_reservation_retained": true,
+  "maximum_additional_attempts": 1,
+  "new_reservation_usd": 2,
+  "model": "gpt-6-astra",
+  "reasoning": "max",
+  "max_output_tokens": 16384,
+  "worker_timeout_seconds": 600,
+  "automatic_retry": false,
+  "authorization_basis": "User authorized completing Hamle follow-up under existing shared 50 USD cap; operator maintenance, not business content approval."
+}

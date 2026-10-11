@@ -1,0 +1,1688 @@
+{
+  "audited_at": "2026-10-10T10:40:30.641424+03:00",
+  "audit_kind": "independent_read_only_exact_acceptance_review",
+  "workbook": "/Users/ahmetsaltindag/Desktop/Hamle/Hamle_Proje_Takip_2026-10-10_Yeni_Mac_Devir.xlsx",
+  "workbook_sha256_before_and_after": "42c7ed23813d92085122c3a3354e2bad5a5c89312245b233629e7880897538b4",
+  "workbook_unchanged": true,
+  "builder": "hamle/work/project-tracker/build_tracker.mjs",
+  "source_plan": "/Users/ahmetsaltindag/Documents/ChatGPT/Gamechangers AI Ajanı/hamle/work/project-tracker/project-plan.json",
+  "xlsx_plan_match": "all65ids_titles_status_weights_acceptance_equal",
+  "scoring": {
+    "method": "sum(weight*done)/100; binary completion only; no partial credit",
+    "summary_formula": "Özet!B6 = D23/C23",
+    "completed_formula": "SUMIFS of original weights where done=1",
+    "dependency_note": "Builder does not use dependencies as a scoring formula; own acceptance assessed separately. Unfinished dependencies remain disclosed and block broader launch."
+  },
+  "baseline": {
+    "tasks": 65,
+    "completed": 19,
+    "points": 27,
+    "fully_live_accepted_agents": 0
+  },
+  "proposal": {
+    "new_ids": [
+      "A05",
+      "D03"
+    ],
+    "new_points": 3,
+    "completed_tasks": 21,
+    "open_tasks": 44,
+    "weighted_percent": 30,
+    "fully_live_accepted_agents": 0,
+    "workbook_updated": false
+  },
+  "decisive_new_evidence": [
+    {
+      "id": "A05",
+      "weight": 1,
+      "source": "Current direct user handover authorization + written policy and priority decision",
+      "note": "User expressly requires a new Ahmet decision after shared limit/deadline; no allocation by provider is substituted for shared cap."
+    },
+    {
+      "id": "D03",
+      "weight": 2,
+      "source": "hamle/outputs/new-mac-2026-10-10/cloud-first-real-inference.json",
+      "note": "Actual gpt-6-astra/max cloud model result, response_id, usage and structured output; not catalog metadata or offline tests."
+    }
+  ],
+  "borderline_not_awarded": [
+    {
+      "id": "D04",
+      "weight": 2,
+      "reason": "Cloud independence is strongly supported, but a documented Mac-off/disconnected acceptance step is absent. Do not claim the literal test happened."
+    },
+    {
+      "id": "D06",
+      "weight": 2,
+      "reason": "Least-privilege internal prototype proven; full role/brand/denied-access acceptance remains broader."
+    },
+    {
+      "id": "D10",
+      "weight": 1,
+      "reason": "Cloud secret transfer/refresh proven; existing Desktop Gmail client is retained and distinct production OAuth flow acceptance is not separately established."
+    }
+  ],
+  "not_to_conflate": [
+    "First narrow internal coordination success is not the broader I03 text/graphic/revision/summary loop.",
+    "Local test pass is not live supplier acceptance.",
+    "One reply/task does not mean continuous follow-up or customer activation.",
+    "18 committed/32 available is a budget ledger with holds, not reconciled invoices."
+  ],
+  "matrix": [
+    {
+      "id": "A01",
+      "title": "Pilot kapsamı, To/CC şartı ve yetki sınırlarını yazılı hale getirme",
+      "weight": 2,
+      "baseline_done": 1,
+      "proposed_done": 1,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Tüm markalar kapsamı, son mesajın gerçek To/CC şartı, hariç mesaj ve rutin yetki sınırı yazılı.",
+      "workbook_range": "İş Listesi!A7:N7",
+      "status": "baseline_preserved",
+      "reason": "Önceden kabul edilmiş devir başlangıcı korunuyor; bu denetimde aynı işten tekrar puan verilmedi.",
+      "unmet_conditions": [],
+      "evidence": [
+        "hamle/work/project-tracker/project-plan.json"
+      ],
+      "dependencies": [],
+      "baseline_dependencies_open": []
+    },
+    {
+      "id": "A02",
+      "title": "Dört rolün iş tanımı ve sorumluluk sınırları",
+      "weight": 2,
+      "baseline_done": 1,
+      "proposed_done": 1,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Hamle, metin, grafik ve animasyon için ayrı görev, çıktı, araç ve kalite kontrol tanımları mevcut.",
+      "workbook_range": "İş Listesi!A8:N8",
+      "status": "baseline_preserved",
+      "reason": "Önceden kabul edilmiş devir başlangıcı korunuyor; bu denetimde aynı işten tekrar puan verilmedi.",
+      "unmet_conditions": [],
+      "evidence": [
+        "hamle/work/project-tracker/project-plan.json"
+      ],
+      "dependencies": [
+        "A01"
+      ],
+      "baseline_dependencies_open": []
+    },
+    {
+      "id": "A03",
+      "title": "Ahmet, Cansu ve Özge karar yönlendirmelerini tanımlama",
+      "weight": 1,
+      "baseline_done": 1,
+      "proposed_done": 1,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Teklif→Ahmet; sorun/şikâyet/strateji→Cansu+Ahmet; sosyal plan/gündem→Özge+Hamle; diğer yetkili rutin→Hamle ayrımı yazılı.",
+      "workbook_range": "İş Listesi!A9:N9",
+      "status": "baseline_preserved",
+      "reason": "Önceden kabul edilmiş devir başlangıcı korunuyor; bu denetimde aynı işten tekrar puan verilmedi.",
+      "unmet_conditions": [],
+      "evidence": [
+        "hamle/work/project-tracker/project-plan.json"
+      ],
+      "dependencies": [
+        "A01"
+      ],
+      "baseline_dependencies_open": []
+    },
+    {
+      "id": "A04",
+      "title": "Marka, kişi, iş kapsamı ve onay matrisi",
+      "weight": 1,
+      "baseline_done": 0,
+      "proposed_done": 0,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Yedi dış marka ve Gamechangers iç alanı için yetkili kişiler, karar/onay sınırları, alıcılar ve hizmet kapsamı kayıtlı; bilinmeyen yetki varsayılmıyor.",
+      "workbook_range": "İş Listesi!A10:N10",
+      "status": "open_partial",
+      "reason": "İç Gamechangers alanı tanımlı; tüm dış markalar için kişi/karar/hizmet matrisi yok.",
+      "unmet_conditions": [
+        "Yedi dış marka için yetkili kişi, alıcı ve hizmet/onay sınırları."
+      ],
+      "evidence": [
+        "hamle/outputs/new-mac-2026-10-10/cloud-first-internal-completion.json"
+      ],
+      "dependencies": [
+        "A01"
+      ],
+      "baseline_dependencies_open": []
+    },
+    {
+      "id": "A05",
+      "title": "Güncel harcama, hizmet ve model limitleri",
+      "weight": 1,
+      "baseline_done": 0,
+      "proposed_done": 1,
+      "proposed_new_points": 1,
+      "acceptance_exact": "9 Ekim ve sonrası için ayrı bütçe dönemi/üst sınırı, izinli hizmetler, model tercihi ve sınır aşımı sahibi yazılı.",
+      "workbook_range": "İş Listesi!A11:N11",
+      "status": "new_completion_recommended",
+      "reason": "Güncel kullanıcı talebi ve yazılı dönem kaydı 9–12 Ekim ortak50USD, GoogleCloud/OpenAI/görsel sağlayıcıları, Astra/max ve sınır/süre sonrası Ahmet kararı şartını birlikte belirliyor.",
+      "unmet_conditions": [],
+      "evidence": [
+        "hamle/outputs/new-mac-2026-10-10/cloud-budget-import-snapshot.json",
+        "hamle/work/hamle-runtime/budget.py",
+        "hamle/work/project-tracker/delivery-priority-2026-10-10.json"
+      ],
+      "dependencies": [
+        "A01"
+      ],
+      "baseline_dependencies_open": []
+    },
+    {
+      "id": "A06",
+      "title": "Operasyon kabul ölçütleri ve sorumlu sahiplik",
+      "weight": 1,
+      "baseline_done": 0,
+      "proposed_done": 0,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Her canlı kapısının kabul kanıtı, kontrol sorumlusu, olay sahibi ve devralma yolu atanmış; çalışma sorumlulukları ilgili insanlarca biliniyor.",
+      "workbook_range": "İş Listesi!A12:N12",
+      "status": "open_partial",
+      "reason": "Ahmet kontrolü mevcut; tüm canlı kapı/olay sorumlulukları ve ilgili insanların kabulü yok.",
+      "unmet_conditions": [
+        "Her canlı kapısı için isimli kontrol/olay sahibi ve ilgili insanların haberdar olduğunun kanıtı."
+      ],
+      "evidence": [
+        "hamle/outputs/new-mac-2026-10-10/cloud-first-internal-completion.json"
+      ],
+      "dependencies": [
+        "A01",
+        "A03"
+      ],
+      "baseline_dependencies_open": []
+    },
+    {
+      "id": "B01",
+      "title": "Google Cloud projesini oluşturma",
+      "weight": 1,
+      "baseline_done": 1,
+      "proposed_done": 1,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Gamechangers Hamle projesi gamechangers.com.tr altında oluşturuldu ve proje kimliği doğrulandı.",
+      "workbook_range": "İş Listesi!A13:N13",
+      "status": "baseline_preserved",
+      "reason": "Önceden kabul edilmiş devir başlangıcı korunuyor; bu denetimde aynı işten tekrar puan verilmedi.",
+      "unmet_conditions": [],
+      "evidence": [
+        "hamle/work/project-tracker/project-plan.json"
+      ],
+      "dependencies": [],
+      "baseline_dependencies_open": []
+    },
+    {
+      "id": "B02",
+      "title": "Gmail API'yi etkinleştirme",
+      "weight": 1,
+      "baseline_done": 1,
+      "proposed_done": 1,
+      "proposed_new_points": 0,
+      "acceptance_exact": "gamechangers-hamle projesinde Gmail API Enabled durumu görüldü.",
+      "workbook_range": "İş Listesi!A14:N14",
+      "status": "baseline_preserved",
+      "reason": "Önceden kabul edilmiş devir başlangıcı korunuyor; bu denetimde aynı işten tekrar puan verilmedi.",
+      "unmet_conditions": [],
+      "evidence": [
+        "hamle/work/project-tracker/project-plan.json"
+      ],
+      "dependencies": [
+        "B01"
+      ],
+      "baseline_dependencies_open": []
+    },
+    {
+      "id": "B03",
+      "title": "OAuth uygulama kaydını oluşturma",
+      "weight": 1,
+      "baseline_done": 1,
+      "proposed_done": 1,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Google Auth Platform uygulaması oluşturuldu; Internal kitle ve uygulama bilgileri kayıtlı.",
+      "workbook_range": "İş Listesi!A15:N15",
+      "status": "baseline_preserved",
+      "reason": "Önceden kabul edilmiş devir başlangıcı korunuyor; bu denetimde aynı işten tekrar puan verilmedi.",
+      "unmet_conditions": [],
+      "evidence": [
+        "hamle/work/project-tracker/project-plan.json"
+      ],
+      "dependencies": [
+        "B02"
+      ],
+      "baseline_dependencies_open": []
+    },
+    {
+      "id": "B04",
+      "title": "Desktop OAuth istemcisi ve özel kimlik bilgisi saklama",
+      "weight": 1,
+      "baseline_done": 1,
+      "proposed_done": 1,
+      "proposed_new_points": 0,
+      "acceptance_exact": "İstemci oluşturma/AI agent seçimi ve özel yerel saklama onayı tamam; Desktop istemci bilgisi yetkili özel konumda, günlüklerde veya belgelerde sır yok.",
+      "workbook_range": "İş Listesi!A16:N16",
+      "status": "baseline_preserved",
+      "reason": "Önceden kabul edilmiş devir başlangıcı korunuyor; bu denetimde aynı işten tekrar puan verilmedi.",
+      "unmet_conditions": [],
+      "evidence": [
+        "hamle/work/project-tracker/project-plan.json"
+      ],
+      "dependencies": [
+        "B03"
+      ],
+      "baseline_dependencies_open": []
+    },
+    {
+      "id": "B05",
+      "title": "Hamle OAuth kimliği ve gerçek Gmail API okuma",
+      "weight": 2,
+      "baseline_done": 1,
+      "proposed_done": 1,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Yalnız Hamle e-posta kimliği ve tam gmail.readonly+gmail.send izinleri doğrulandı; gerçek API ile izinli iç test zinciri okundu; yenilenebilir yetki güvenli depoda.",
+      "workbook_range": "İş Listesi!A17:N17",
+      "status": "baseline_preserved",
+      "reason": "Önceden kabul edilmiş devir başlangıcı korunuyor; bu denetimde aynı işten tekrar puan verilmedi.",
+      "unmet_conditions": [],
+      "evidence": [
+        "hamle/work/project-tracker/project-plan.json"
+      ],
+      "dependencies": [
+        "B04"
+      ],
+      "baseline_dependencies_open": []
+    },
+    {
+      "id": "B06",
+      "title": "Gmail API iç gönderimi ve alıcıda teslim kontrolü",
+      "weight": 1,
+      "baseline_done": 1,
+      "proposed_done": 1,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Tek açık test kimliğiyle sabit Hamle→Ahmet teknik maili bir kez API'den gönderildi; alıcı kutusunda aynı ileti kimliği/başlığı doğrulandı.",
+      "workbook_range": "İş Listesi!A18:N18",
+      "status": "baseline_preserved",
+      "reason": "Önceden kabul edilmiş devir başlangıcı korunuyor; bu denetimde aynı işten tekrar puan verilmedi.",
+      "unmet_conditions": [],
+      "evidence": [
+        "hamle/work/project-tracker/project-plan.json"
+      ],
+      "dependencies": [
+        "B05"
+      ],
+      "baseline_dependencies_open": []
+    },
+    {
+      "id": "B07",
+      "title": "Gmail ve Basecamp erişim yenileme, iptal ve yeniden başlatma",
+      "weight": 1,
+      "baseline_done": 0,
+      "proposed_done": 0,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Her iki bağlantıda yenileme ve yeniden başlatma sonrası doğru kimlik sürüyor; iptal edildiğinde erişim duruyor, belirsiz yazma tekrar edilmiyor.",
+      "workbook_range": "İş Listesi!A19:N19",
+      "status": "open_partial",
+      "reason": "Bulutta Gmail refresh ve süreçler arasında doğru kimlik kanıtlı; iki sağlayıcıda iptal/yeniden yetki canlı senaryosu tamam değil.",
+      "unmet_conditions": [
+        "Her iki bağlantıda gerçek iptal sonrası erişimin durması ve yenileme/yeniden başlatma setinin tamamı."
+      ],
+      "evidence": [
+        "hamle/outputs/new-mac-2026-10-10/cloud-execution-v2-identity.json",
+        "hamle/outputs/new-mac-2026-10-10/cloud-first-internal-completion.json"
+      ],
+      "dependencies": [
+        "B05",
+        "B08"
+      ],
+      "baseline_dependencies_open": []
+    },
+    {
+      "id": "B08",
+      "title": "Hamle Basecamp API okuma, yazma ve yeniden okuma",
+      "weight": 2,
+      "baseline_done": 1,
+      "proposed_done": 1,
+      "proposed_new_points": 0,
+      "acceptance_exact": "hamle-gamechangers profili Hamle kimliğiyle doğrulandı; özel iç görev okundu, yorum yazıldı ve aynı yorum geri okundu.",
+      "workbook_range": "İş Listesi!A20:N20",
+      "status": "baseline_preserved",
+      "reason": "Önceden kabul edilmiş devir başlangıcı korunuyor; bu denetimde aynı işten tekrar puan verilmedi.",
+      "unmet_conditions": [],
+      "evidence": [
+        "hamle/work/project-tracker/project-plan.json"
+      ],
+      "dependencies": [],
+      "baseline_dependencies_open": []
+    },
+    {
+      "id": "B09",
+      "title": "Basecamp API dosya, atama ve revizyon döngüsü",
+      "weight": 1,
+      "baseline_done": 1,
+      "proposed_done": 1,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Hamle API üzerinden iç görevde atama, sürümlü revizyon ve dosya yükleme yapıldı; alıcı/görünürlük ve dosyanın tam içeriği yeniden doğrulandı.",
+      "workbook_range": "İş Listesi!A21:N21",
+      "status": "baseline_preserved",
+      "reason": "Önceden kabul edilmiş devir başlangıcı korunuyor; bu denetimde aynı işten tekrar puan verilmedi.",
+      "unmet_conditions": [],
+      "evidence": [
+        "hamle/work/project-tracker/project-plan.json"
+      ],
+      "dependencies": [
+        "B08"
+      ],
+      "baseline_dependencies_open": []
+    },
+    {
+      "id": "B10",
+      "title": "Tüm markaların Basecamp proje ve görünürlük eşlemesi",
+      "weight": 1,
+      "baseline_done": 0,
+      "proposed_done": 0,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Her marka için doğru hesap/proje/liste, sorumlu kimlikleri ve müşteri görünürlük sınırı doğrulandı; başka markaya erişim engeli sınandı.",
+      "workbook_range": "İş Listesi!A22:N22",
+      "status": "open_partial",
+      "reason": "Yalnız özel iç proje doğrulandı.",
+      "unmet_conditions": [
+        "Tüm markaların proje/liste/sorumlu/görünürlük eşlemesi ve başka markaya erişim engeli."
+      ],
+      "evidence": [
+        "hamle/outputs/new-mac-2026-10-10/cloud-execution-v2-identity.json"
+      ],
+      "dependencies": [
+        "A04",
+        "B08"
+      ],
+      "baseline_dependencies_open": [
+        "A04"
+      ]
+    },
+    {
+      "id": "B11",
+      "title": "Gmail tarayıcı iç gidiş-dönüş testi",
+      "weight": 1,
+      "baseline_done": 1,
+      "proposed_done": 1,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Hamle gelen iç mailin gerçek To başlığını ve içeriğini okudu; Hamle yanıtı Ahmet gelen kutusunda aynı zincirde görüldü.",
+      "workbook_range": "İş Listesi!A23:N23",
+      "status": "baseline_preserved",
+      "reason": "Önceden kabul edilmiş devir başlangıcı korunuyor; bu denetimde aynı işten tekrar puan verilmedi.",
+      "unmet_conditions": [],
+      "evidence": [
+        "hamle/work/project-tracker/project-plan.json"
+      ],
+      "dependencies": [],
+      "baseline_dependencies_open": []
+    },
+    {
+      "id": "B12",
+      "title": "Gmail yardımcısının 30 çevrimdışı testi",
+      "weight": 1,
+      "baseline_done": 1,
+      "proposed_done": 1,
+      "proposed_new_points": 0,
+      "acceptance_exact": "30 test ağ kapalı sahte bağımlılıklarla geçti; yanlış kimlik/izin, sır sızıntısı ve aynı test kimliği tekrarı engellendi.",
+      "workbook_range": "İş Listesi!A24:N24",
+      "status": "baseline_preserved",
+      "reason": "Önceden kabul edilmiş devir başlangıcı korunuyor; bu denetimde aynı işten tekrar puan verilmedi.",
+      "unmet_conditions": [],
+      "evidence": [
+        "hamle/work/project-tracker/project-plan.json"
+      ],
+      "dependencies": [],
+      "baseline_dependencies_open": []
+    },
+    {
+      "id": "C01",
+      "title": "105 dizi / 763 mesajın tarihli ve sınırlı okuma kaydı",
+      "weight": 3,
+      "baseline_done": 1,
+      "proposed_done": 1,
+      "proposed_new_points": 0,
+      "acceptance_exact": "İki turda 105 dizi/763 mesaj kayıtlı; ek 60 konu WAT 27, Rabam 26, eski ya da/Multicosmetics/Remedium grubunda 7. Yeni marka ayrımına kaynak bazında eşleme açık; tam arşiv iddiası yok.",
+      "workbook_range": "İş Listesi!A25:N25",
+      "status": "baseline_preserved",
+      "reason": "Önceden kabul edilmiş devir başlangıcı korunuyor; bu denetimde aynı işten tekrar puan verilmedi.",
+      "unmet_conditions": [],
+      "evidence": [
+        "hamle/work/project-tracker/project-plan.json"
+      ],
+      "dependencies": [],
+      "baseline_dependencies_open": []
+    },
+    {
+      "id": "C02",
+      "title": "Kaynaklı ilk marka öğrenme ve sentez çıktıları",
+      "weight": 2,
+      "baseline_done": 1,
+      "proposed_done": 1,
+      "proposed_new_points": 0,
+      "acceptance_exact": "İlk marka gözlemleri ve ek konu sentezleri kaynak, karar, müşteri düzeltmesi ve bilinmeyenleri ayırıyor; geçmiş talep güncel onay yapılmıyor.",
+      "workbook_range": "İş Listesi!A26:N26",
+      "status": "baseline_preserved",
+      "reason": "Önceden kabul edilmiş devir başlangıcı korunuyor; bu denetimde aynı işten tekrar puan verilmedi.",
+      "unmet_conditions": [],
+      "evidence": [
+        "hamle/work/project-tracker/project-plan.json"
+      ],
+      "dependencies": [
+        "C01"
+      ],
+      "baseline_dependencies_open": []
+    },
+    {
+      "id": "C03",
+      "title": "Dört hafıza alanı ve kayıt şablonları",
+      "weight": 1,
+      "baseline_done": 1,
+      "proposed_done": 1,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Ajans, marka, iş ve dış itibar alanları için dört bölge ve kaynak/sürüm/yetki içeren kayıt şablonları mevcut.",
+      "workbook_range": "İş Listesi!A27:N27",
+      "status": "baseline_preserved",
+      "reason": "Önceden kabul edilmiş devir başlangıcı korunuyor; bu denetimde aynı işten tekrar puan verilmedi.",
+      "unmet_conditions": [],
+      "evidence": [
+        "hamle/work/project-tracker/project-plan.json"
+      ],
+      "dependencies": [
+        "A02"
+      ],
+      "baseline_dependencies_open": []
+    },
+    {
+      "id": "C04",
+      "title": "Ek, görsel, video ve lisans içerik incelemesi",
+      "weight": 2,
+      "baseline_done": 0,
+      "proposed_done": 0,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Canlı işte kullanılacak gerekli ekler gerçekten açılmış; metin, görsel, ses/video ve kullanım hakkı kontrolleri ayrı kayıtlı; okunmayan dosya açık işaretli.",
+      "workbook_range": "İş Listesi!A28:N28",
+      "status": "open_partial",
+      "reason": "Gerçek iç mail düz metin; adapter ekleri işlemek yerine engelliyor.",
+      "unmet_conditions": [
+        "Gerekli gerçek ek, görsel, ses/video ve kullanım hakkı incelemeleri."
+      ],
+      "evidence": [
+        "hamle/outputs/new-mac-2026-10-10/cloud-first-real-inference.json",
+        "hamle/work/hamle-account-manager/README-cloud-providers.txt"
+      ],
+      "dependencies": [
+        "C01"
+      ],
+      "baseline_dependencies_open": []
+    },
+    {
+      "id": "C05",
+      "title": "Tüm markalar için güncel onaylı kaynak dosyası",
+      "weight": 2,
+      "baseline_done": 0,
+      "proposed_done": 0,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Her canlı marka için güncel logo/ton, ürün-hizmet gerçekleri, reddedilmiş yönler, onaylı iddialar ve yetkili kaynak/sürüm sahibi belli.",
+      "workbook_range": "İş Listesi!A29:N29",
+      "status": "open_no_new_acceptance_evidence",
+      "reason": "Onaylı tüm marka kaynak paketi henüz yok.",
+      "unmet_conditions": [
+        "Her canlı marka için güncel varlık/ton/iddia ve yetkili sürüm sahibi."
+      ],
+      "evidence": [],
+      "dependencies": [
+        "C02",
+        "C04",
+        "A04"
+      ],
+      "baseline_dependencies_open": [
+        "C04",
+        "A04"
+      ]
+    },
+    {
+      "id": "C06",
+      "title": "Yetkili kişiler, özel günler ve doğum günü takvimi",
+      "weight": 1,
+      "baseline_done": 0,
+      "proposed_done": 0,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Yetkili kişi kayıtlarında gerekli gün/ay ve kaynak var; marka günleri resmi kaynakla teyitli; ön hazırlık sahipleri ve hatırlatma süreleri belli.",
+      "workbook_range": "İş Listesi!A30:N30",
+      "status": "open_no_new_acceptance_evidence",
+      "reason": "Yetkili özel gün/doğum günü kaynağı tamamlanmadı.",
+      "unmet_conditions": [
+        "Yetkili gün/ay kaynakları, resmi marka günleri, sahip ve hazırlık süreleri."
+      ],
+      "evidence": [],
+      "dependencies": [
+        "A04"
+      ],
+      "baseline_dependencies_open": [
+        "A04"
+      ]
+    },
+    {
+      "id": "C07",
+      "title": "Çalışan sistemde marka ve role uygun bilgi çağırma",
+      "weight": 1,
+      "baseline_done": 0,
+      "proposed_done": 0,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Gerçek işte yalnız ilgili marka ve rol için gerekli kaynaklar çağrılıyor; farklı marka/özel ticari veri sorgusu engelleniyor ve kaydı tutuluyor.",
+      "workbook_range": "İş Listesi!A31:N31",
+      "status": "open_partial",
+      "reason": "Sabit iç kapsam var; marka/rol hafızası getirme sistemi kurulmadı.",
+      "unmet_conditions": [
+        "Gerçek işte marka/rol kaynak çağırma ve çapraz marka/ticari veri reddi."
+      ],
+      "evidence": [
+        "hamle/outputs/new-mac-2026-10-10/cloud-first-real-inference.json"
+      ],
+      "dependencies": [
+        "C03",
+        "D05",
+        "D06"
+      ],
+      "baseline_dependencies_open": [
+        "D05",
+        "D06"
+      ]
+    },
+    {
+      "id": "C08",
+      "title": "Artımlı öğrenme, sayfalama ve kaldığı yerden devam",
+      "weight": 1,
+      "baseline_done": 0,
+      "proposed_done": 0,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Yetkili geçmiş ve yeni kaynak okuması kalıcı kontrol noktasından sürüyor; sayfa/mesaj tekilleştirme var; okuma hatası 'yeni mail yok' sayılmıyor; arşiv canlı iş açmıyor.",
+      "workbook_range": "İş Listesi!A32:N32",
+      "status": "open_partial",
+      "reason": "Tek iç zincir okunuyor; arşiv öğrenmesinde kalıcı sayfalama/devam akışı yok.",
+      "unmet_conditions": [
+        "Geçmiş/yeni kaynak kontrol noktası, sayfa tekilliği, kesinti ve eski kayıt tekrarı kabulü."
+      ],
+      "evidence": [
+        "hamle/work/hamle-account-manager/README-cloud-providers.txt"
+      ],
+      "dependencies": [
+        "C01",
+        "C03",
+        "D05"
+      ],
+      "baseline_dependencies_open": [
+        "D05"
+      ]
+    },
+    {
+      "id": "C09",
+      "title": "Saklama, veri azaltma ve silme kurallarını uygulama",
+      "weight": 1,
+      "baseline_done": 0,
+      "proposed_done": 0,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Gerekli veri alanları, saklama süresi, erişim/silme sahibi ve yedek etkisi tanımlı; örnek silme talebi ilgili kayıt ve türetilmiş çıktılarda uygulanıp izleniyor.",
+      "workbook_range": "İş Listesi!A33:N33",
+      "status": "open_no_new_acceptance_evidence",
+      "reason": "Veri azaltımı mevcut; silme/saklama kabulü yok.",
+      "unmet_conditions": [
+        "Süreler ve silme sahibi, türetilmiş çıktı/yedek etkisi, gerçek örnek silme."
+      ],
+      "evidence": [],
+      "dependencies": [
+        "A04",
+        "D05",
+        "D06"
+      ],
+      "baseline_dependencies_open": [
+        "A04",
+        "D05",
+        "D06"
+      ]
+    },
+    {
+      "id": "D01",
+      "title": "Yazılım ve bulut mimarisi taslağı",
+      "weight": 1,
+      "baseline_done": 1,
+      "proposed_done": 1,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Mevcut taslakta çalışma hizmeti, zamanlayıcı, kalıcı kayıt, sır saklama, bilgi alanları ve rol ayrımı tanımlı; dağıtılmış olduğu iddia edilmiyor.",
+      "workbook_range": "İş Listesi!A34:N34",
+      "status": "baseline_preserved",
+      "reason": "Önceden kabul edilmiş devir başlangıcı korunuyor; bu denetimde aynı işten tekrar puan verilmedi.",
+      "unmet_conditions": [],
+      "evidence": [
+        "hamle/work/project-tracker/project-plan.json"
+      ],
+      "dependencies": [
+        "A01",
+        "A02"
+      ],
+      "baseline_dependencies_open": []
+    },
+    {
+      "id": "D02",
+      "title": "Faturalama, güncel bütçe ve gerçek harcama kontrolü",
+      "weight": 2,
+      "baseline_done": 0,
+      "proposed_done": 0,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Güncel dönemin onaylı ortak sınırı, faturalama sahibi, maliyet rezervasyonu ve gerçek kullanım mutabakatı kurulmuş; uyarı tek başına harcama kesici sayılmıyor.",
+      "workbook_range": "İş Listesi!A35:N35",
+      "status": "open_partial",
+      "reason": "50USD, faturalama ve kalıcı rezerv mevcut; gerçek sağlayıcı faturalarıyla mutabakat yok.",
+      "unmet_conditions": [
+        "Gerçek kullanım mutabakatı ve devamlı sağlayıcı maliyeti kontrolü."
+      ],
+      "evidence": [
+        "hamle/outputs/new-mac-2026-10-10/cloud-budget-import-snapshot.json",
+        "hamle/outputs/new-mac-2026-10-10/cloud-first-internal-completion.json"
+      ],
+      "dependencies": [
+        "A05"
+      ],
+      "baseline_dependencies_open": [
+        "A05"
+      ]
+    },
+    {
+      "id": "D03",
+      "title": "Model API erişimi ve gerçek model/yetenek doğrulaması",
+      "weight": 2,
+      "baseline_done": 0,
+      "proposed_done": 1,
+      "proposed_new_points": 2,
+      "acceptance_exact": "Yetkili hesapta istenen model ve ayar gerçek çağrıyla doğrulandı; mevcut değilse kullanıcıya görünür alternatif kararı var; araç çağrısı ve çıktı kaydı alınmış.",
+      "workbook_range": "İş Listesi!A36:N36",
+      "status": "new_completion_recommended",
+      "reason": "İstenen gpt-6-astra + max gerçek yerel ve gerçek bulut API çağrısıyla doğrulandı; response_id, kullanım ve tam çıktı kayıtlı.",
+      "unmet_conditions": [],
+      "evidence": [
+        "hamle/outputs/new-mac-2026-10-10/openai-first-inference.json",
+        "hamle/outputs/new-mac-2026-10-10/cloud-first-real-inference.json",
+        "hamle/outputs/new-mac-2026-10-10/cloud-execution-v2-internal-review.json"
+      ],
+      "dependencies": [
+        "A05",
+        "D02"
+      ],
+      "baseline_dependencies_open": [
+        "A05",
+        "D02"
+      ]
+    },
+    {
+      "id": "D04",
+      "title": "Cloud Run çalışma hizmeti",
+      "weight": 2,
+      "baseline_done": 0,
+      "proposed_done": 0,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Yetkili projede sürümlü hizmet çalışıyor; kimlik doğrulama ve sağlık kaydı mevcut; bilgisayar kapalıyken kontrollü iç işi tamamlıyor.",
+      "workbook_range": "İş Listesi!A37:N37",
+      "status": "open_partial",
+      "reason": "Sürümlü Cloud Run/IAP ve gerçek iç iş sonucu kanıtlı; satırın kapalı bilgisayar şartına özel test yok.",
+      "unmet_conditions": [
+        "Bilgisayar kapalı/bağlantısızken kontrollü iç işin tamamlandığına ilişkin açık kabul kanıtı."
+      ],
+      "evidence": [
+        "hamle/outputs/new-mac-2026-10-10/cloud-app-v5-deployment-verified.json",
+        "hamle/outputs/new-mac-2026-10-10/cloud-first-internal-completion.json",
+        "hamle/outputs/new-mac-2026-10-10/cloud-execution-v5-final-readbacks.json"
+      ],
+      "dependencies": [
+        "D01",
+        "D02",
+        "D03"
+      ],
+      "baseline_dependencies_open": [
+        "D02",
+        "D03"
+      ]
+    },
+    {
+      "id": "D05",
+      "title": "Kalıcı iş kaydı, kilit ve tekrar gönderim engeli",
+      "weight": 3,
+      "baseline_done": 0,
+      "proposed_done": 0,
+      "proposed_new_points": 0,
+      "acceptance_exact": "İş/olay/aksiyon sürümü kalıcı; eşzamanlı iki çalışandan yalnız biri işlemi sahiplenebiliyor; kesinti sonrası sürüyor; sonucu belirsiz yazma kendiliğinden tekrarlanmıyor.",
+      "workbook_range": "İş Listesi!A38:N38",
+      "status": "open_partial",
+      "reason": "Kalıcı niyet/makbuz ve ayrı çalıştırmada yalnız geri okuma iyileşmesi canlı kanıtlı; yarış/kesinti seti production depo için eksik.",
+      "unmet_conditions": [
+        "hamle-operations üzerinde iki eşzamanlı çalışanın tek sahipliği ve gönderim sınırı kesinti/belirsiz sonuç testi."
+      ],
+      "evidence": [
+        "hamle/outputs/new-mac-2026-10-10/cloud-first-internal-completion.json",
+        "hamle/outputs/new-mac-2026-10-10/cloud-execution-v5-final-readbacks.json",
+        "hamle/outputs/new-mac-2026-10-10/cloud-foundation.json"
+      ],
+      "dependencies": [
+        "D04"
+      ],
+      "baseline_dependencies_open": [
+        "D04"
+      ]
+    },
+    {
+      "id": "D06",
+      "title": "Sır kasası, asgari yetki ve rol erişimi",
+      "weight": 2,
+      "baseline_done": 0,
+      "proposed_done": 0,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Üretim sırları uygun güvenli depoda; sırlar log/çıktıda yok; rol/marka/araç erişimleri uygulamada sınırlandırılmış ve gereksiz erişim reddediliyor.",
+      "workbook_range": "İş Listesi!A39:N39",
+      "status": "open_partial",
+      "reason": "Üç sır güvenli kasada, ayrı hizmet hesapları/IAM ve sabit iç sınırlar kanıtlı; bütün rol/marka erişimi kabulü yok.",
+      "unmet_conditions": [
+        "Dört rol/marka/araç erişim sınırlarının tümü ve gereksiz erişimin çalışan ortamda reddi."
+      ],
+      "evidence": [
+        "hamle/outputs/new-mac-2026-10-10/cloud-account-manager-access-verification.json",
+        "hamle/outputs/new-mac-2026-10-10/cloud-execution-v2-identity.json",
+        "hamle/outputs/new-mac-2026-10-10/cloud-app-v5-deployment-verified.json",
+        "hamle/outputs/new-mac-2026-10-10/hamle-gmail-oauth-cloud-import.json",
+        "hamle/outputs/new-mac-2026-10-10/hamle-openai-api-key-cloud-import.json",
+        "hamle/outputs/new-mac-2026-10-10/hamle-basecamp-credential-cloud-import.json"
+      ],
+      "dependencies": [
+        "D04"
+      ],
+      "baseline_dependencies_open": [
+        "D04"
+      ]
+    },
+    {
+      "id": "D07",
+      "title": "Hafta içi 21 kontrol ve tatil takvimi",
+      "weight": 1,
+      "baseline_done": 0,
+      "proposed_done": 0,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Europe/Istanbul hafta içi 08:30 ve 18:30 dahil 30 dakikada bir tam 21 benzersiz zaman dilimi çalışıyor; tatil kuralı açık, hafta sonu sürekli çalışma yok.",
+      "workbook_range": "İş Listesi!A40:N40",
+      "status": "open_partial",
+      "reason": "21 dilim kodu offline testli, gerçek zamanlayıcı yok.",
+      "unmet_conditions": [
+        "Gerçek 21 benzersiz hafta içi dilimin çalışması ve tatil kuralı."
+      ],
+      "evidence": [
+        "hamle/outputs/new-mac-2026-10-10/cloud-first-internal-completion.json",
+        "hamle/outputs/new-mac-2026-10-10/cloud-app-v2-local-validation.json"
+      ],
+      "dependencies": [
+        "D04",
+        "D05"
+      ],
+      "baseline_dependencies_open": [
+        "D04",
+        "D05"
+      ]
+    },
+    {
+      "id": "D08",
+      "title": "İzleme, kesinti alarmı ve toparlanma",
+      "weight": 1,
+      "baseline_done": 0,
+      "proposed_done": 0,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Atlanan zaman dilimi, bekleyen iş ve bağlantı hatası bağımsız kontrolde görülüyor; doğru insana alarm gidiyor ve düzelme kaydı var.",
+      "workbook_range": "İş Listesi!A41:N41",
+      "status": "open_partial",
+      "reason": "Cloud günlükleri var; bağımsız izleme/alarm/toparlanma kabulü yok.",
+      "unmet_conditions": [
+        "Atlanan dilim/bekleyen iş/bağlantı hatasını bağımsız izleyen servis, insan alarmı ve düzelme kaydı."
+      ],
+      "evidence": [
+        "hamle/outputs/new-mac-2026-10-10/cloud-first-internal-completion.json"
+      ],
+      "dependencies": [
+        "D04",
+        "D05",
+        "D07"
+      ],
+      "baseline_dependencies_open": [
+        "D04",
+        "D05",
+        "D07"
+      ]
+    },
+    {
+      "id": "D09",
+      "title": "Yedekten yükleme ve kurtarma",
+      "weight": 1,
+      "baseline_done": 0,
+      "proposed_done": 0,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Örnek yedek ayrı test alanına yükleniyor; iş/aksiyon kayıtları tutarlı, kayıp ve tekrar üretim olmadan kaldığı yer görülüyor; kurtarma süresi kayıtlı.",
+      "workbook_range": "İş Listesi!A42:N42",
+      "status": "open_partial",
+      "reason": "Yedek geri yükleme provası yapılmadı.",
+      "unmet_conditions": [
+        "Ayrı alana restore, tutarlı iş/aksiyon durumu ve kayıtlı kurtarma süresi."
+      ],
+      "evidence": [
+        "hamle/outputs/new-mac-2026-10-10/cloud-foundation.json"
+      ],
+      "dependencies": [
+        "D05",
+        "D06"
+      ],
+      "baseline_dependencies_open": [
+        "D05",
+        "D06"
+      ]
+    },
+    {
+      "id": "D10",
+      "title": "Üretim OAuth dönüş adresi, sır taşıma ve yeniden yetki",
+      "weight": 1,
+      "baseline_done": 0,
+      "proposed_done": 0,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Bulut için uygun OAuth istemci/dönüş akışı doğrulandı; gerekli yeniden yetki alındı; Hamle kimliği ve izinleri korundu; yerel test tokeni gelişigüzel taşınmadı.",
+      "workbook_range": "İş Listesi!A43:N43",
+      "status": "open_partial",
+      "reason": "Onaylı üç-sır aktarımı, ayrı Basecamp cloud oturumu ve Gmail cloud refresh geçti; Gmail mevcut Desktop istemcisini kullanıyor.",
+      "unmet_conditions": [
+        "Desktop testinden ayrı üretime uygun OAuth istemci/dönüş veya yeniden yetki seçiminin açık kabul kaydı."
+      ],
+      "evidence": [
+        "hamle/outputs/new-mac-2026-10-10/cloud-execution-v2-identity.json",
+        "hamle/outputs/new-mac-2026-10-10/hamle-gmail-oauth-cloud-import.json",
+        "hamle/outputs/new-mac-2026-10-10/hamle-basecamp-credential-cloud-import.json",
+        "hamle/work/hamle-account-manager/README-cloud-providers.txt"
+      ],
+      "dependencies": [
+        "B04",
+        "B05",
+        "D04",
+        "D06"
+      ],
+      "baseline_dependencies_open": [
+        "D04",
+        "D06"
+      ]
+    },
+    {
+      "id": "E01",
+      "title": "Katılım ve yetki sınırlarının 35 çevrimdışı testi",
+      "weight": 2,
+      "baseline_done": 1,
+      "proposed_done": 1,
+      "proposed_new_points": 0,
+      "acceptance_exact": "35 sentetik kural testi geçti; To/CC, hariç mesaj, insan devri, sürüm, durdurma ve belirsiz işlem kontrolü yerel kapsamda kayıtlı.",
+      "workbook_range": "İş Listesi!A44:N44",
+      "status": "baseline_preserved",
+      "reason": "Önceden kabul edilmiş devir başlangıcı korunuyor; bu denetimde aynı işten tekrar puan verilmedi.",
+      "unmet_conditions": [],
+      "evidence": [
+        "hamle/work/project-tracker/project-plan.json"
+      ],
+      "dependencies": [
+        "A01"
+      ],
+      "baseline_dependencies_open": []
+    },
+    {
+      "id": "E02",
+      "title": "10 WAT ve 10 Rabam yazılı mail provası",
+      "weight": 1,
+      "baseline_done": 1,
+      "proposed_done": 1,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Toplam 20 yazılı talep/yanıt örneği kaynak ve rota kurallarıyla incelenmiş; kurgusal prova ve gerçek işlem ayrımı görünür.",
+      "workbook_range": "İş Listesi!A45:N45",
+      "status": "baseline_preserved",
+      "reason": "Önceden kabul edilmiş devir başlangıcı korunuyor; bu denetimde aynı işten tekrar puan verilmedi.",
+      "unmet_conditions": [],
+      "evidence": [
+        "hamle/work/project-tracker/project-plan.json"
+      ],
+      "dependencies": [
+        "A03",
+        "C02"
+      ],
+      "baseline_dependencies_open": []
+    },
+    {
+      "id": "E03",
+      "title": "Gerçek başlık, tam dizi, ek ve gönderilmiş yanıt okuması",
+      "weight": 2,
+      "baseline_done": 0,
+      "proposed_done": 0,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Yetkili Hamle olayında sağlayıcı başlıkları, görünür ilgili dizi, gerekli ek ve son insan/gönderilmiş yanıt okunuyor; eksik veri açık işaretleniyor.",
+      "workbook_range": "İş Listesi!A46:N46",
+      "status": "open_partial",
+      "reason": "Gerçek iç mail başlık/dizi/düz metin ve giden yanıt geri okundu; ek desteği kapalı.",
+      "unmet_conditions": [
+        "Gerekli gerçek ekler ve bağlı eksik-veri senaryoları."
+      ],
+      "evidence": [
+        "hamle/outputs/new-mac-2026-10-10/cloud-first-real-inference.json",
+        "hamle/outputs/new-mac-2026-10-10/cloud-first-internal-completion.json"
+      ],
+      "dependencies": [
+        "B05",
+        "D05"
+      ],
+      "baseline_dependencies_open": [
+        "D05"
+      ]
+    },
+    {
+      "id": "E04",
+      "title": "Her aksiyondan önce gerçek To/CC ve yetki iptali",
+      "weight": 3,
+      "baseline_done": 0,
+      "proposed_done": 0,
+      "proposed_new_points": 0,
+      "acceptance_exact": "İş/brief/revizyon/üretim/Basecamp/gönderim öncesi en güncel meşru katılım kontrolü var; gözlenen çıkarılma bekleyen işi durduruyor; görünmeyen çıkarılma biliniyor denmiyor; yeniden dahil olma yalnız yeni kapsamı açıyor.",
+      "workbook_range": "İş Listesi!A47:N47",
+      "status": "open_partial",
+      "reason": "İki dış yazma öncesi fresh kontrol, görünür IAP durdurma ve belirsiz-sonuç kuralı var.",
+      "unmet_conditions": [
+        "İş/brief/revizyon/üretim bütün yollarında canlı kabul; gözlenen çıkarma ve yeniden dahil olma negatif senaryoları."
+      ],
+      "evidence": [
+        "hamle/outputs/new-mac-2026-10-10/cloud-first-internal-completion.json",
+        "hamle/work/hamle-account-manager/dispatch.py"
+      ],
+      "dependencies": [
+        "E01",
+        "E03",
+        "D05",
+        "D06",
+        "D10"
+      ],
+      "baseline_dependencies_open": [
+        "E03",
+        "D05",
+        "D06",
+        "D10"
+      ]
+    },
+    {
+      "id": "E05",
+      "title": "Canlı brief, karar yönlendirmesi, devir ve atama",
+      "weight": 2,
+      "baseline_done": 0,
+      "proposed_done": 0,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Yetkili iş tek kayda dönüşüyor; dört karar rotası ve karma niyet doğru kişilere gidiyor; brief sürümü/sorumlu/termin/devir kabulü görünür; rutin revizyona gereksiz yeni Ahmet onayı istenmiyor.",
+      "workbook_range": "İş Listesi!A48:N48",
+      "status": "open_partial",
+      "reason": "Bir strateji talebi özet/brief/onaya dönüştü; Cansu/Özge danışması yapılmış sayılmıyor.",
+      "unmet_conditions": [
+        "Dört karar rotası/karma niyet, insan sahiplerin kabulü, rutin revizyonun gereksiz Ahmet onaysız ilerlemesi."
+      ],
+      "evidence": [
+        "hamle/outputs/new-mac-2026-10-10/cloud-first-real-inference.json",
+        "hamle/outputs/new-mac-2026-10-10/cloud-first-internal-completion.json"
+      ],
+      "dependencies": [
+        "A04",
+        "B10",
+        "C07",
+        "E04",
+        "D03"
+      ],
+      "baseline_dependencies_open": [
+        "A04",
+        "B10",
+        "C07",
+        "E04",
+        "D03"
+      ]
+    },
+    {
+      "id": "E06",
+      "title": "Basecamp revizyon, sürüm, onay ve insan devralması",
+      "weight": 2,
+      "baseline_done": 0,
+      "proposed_done": 0,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Görev/yorum/dosya sürümü aynı işe bağlı; müşteri onayı doğru yetkili ve sürüme bağlı; insan devralınca otomatik işlem duruyor ve yaptığı yanıt tekrarlanmıyor.",
+      "workbook_range": "İş Listesi!A49:N49",
+      "status": "open_partial",
+      "reason": "Bir görev ve kesin taslak onayı var; aynı işte takip/revizyon kurulmadı.",
+      "unmet_conditions": [
+        "İki revizyon, görev/yorum/dosya sürümleri, yanlış sürüm onayı ve insan yanıtının tekrarlanmaması."
+      ],
+      "evidence": [
+        "hamle/outputs/new-mac-2026-10-10/cloud-first-internal-completion.json"
+      ],
+      "dependencies": [
+        "B09",
+        "E05"
+      ],
+      "baseline_dependencies_open": [
+        "E05"
+      ]
+    },
+    {
+      "id": "E07",
+      "title": "Çıkış mailinde alıcı, dosya QA ve gönderim kaydı",
+      "weight": 1,
+      "baseline_done": 0,
+      "proposed_done": 0,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Gerçek çıkışta doğru marka/alıcı/zincir, yetkili güncel dosya ve iç not ayrımı doğrulanıyor; gönderim niyeti ve sonucu kalıcı; kabul/teslim farklı kaydediliyor.",
+      "workbook_range": "İş Listesi!A50:N50",
+      "status": "open_partial",
+      "reason": "Hamle→Ahmet doğru zincirde bir mail, kalıcı send intent/receipt ve ayrı teslim teyidi var.",
+      "unmet_conditions": [
+        "Güncel yetkili dosya QA, eski dosya/yanlış alıcı ve iç not ayrımı senaryoları."
+      ],
+      "evidence": [
+        "hamle/outputs/new-mac-2026-10-10/cloud-first-internal-completion.json"
+      ],
+      "dependencies": [
+        "B06",
+        "E04",
+        "E06"
+      ],
+      "baseline_dependencies_open": [
+        "E04",
+        "E06"
+      ]
+    },
+    {
+      "id": "E08",
+      "title": "Takipler, sabah özeti ve özel dönem takvimi",
+      "weight": 2,
+      "baseline_done": 0,
+      "proposed_done": 0,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Mevcut başlangıç seçimiyle ilk başarılı08:30turundan sonra Hamle hesabından Ahmet’e sabah özeti; takipler ve özel gün hazırlıkları gerçek kayıtlarla tek kez üretiliyor; hariç mail içeriği girdi olmuyor.",
+      "workbook_range": "İş Listesi!A51:N51",
+      "status": "open_partial",
+      "reason": "Sabah özeti/takip/özel günler henüz canlı değil.",
+      "unmet_conditions": [
+        "08.30 sonrası gerçek özet teslimi, özel gün ve takip tekilliği."
+      ],
+      "evidence": [
+        "hamle/outputs/new-mac-2026-10-10/cloud-first-internal-completion.json"
+      ],
+      "dependencies": [
+        "C06",
+        "D07",
+        "E05",
+        "E07"
+      ],
+      "baseline_dependencies_open": [
+        "C06",
+        "D07",
+        "E05",
+        "E07"
+      ]
+    },
+    {
+      "id": "E09",
+      "title": "Otomatik yanıt döngüsü ve belirsiz teslim yönetimi",
+      "weight": 1,
+      "baseline_done": 0,
+      "proposed_done": 0,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Kendi gönderisi, otomatik cevap ve mükerrer sağlayıcı olayı yeni iş/yanıt açmıyor; belirsiz gönderim insan uzlaştırmasına gidiyor ve otomatik tekrar yok.",
+      "workbook_range": "İş Listesi!A52:N52",
+      "status": "open_partial",
+      "reason": "Gerçek yanıt makbuzu bir kez; final geri okumada yeni yazma0.",
+      "unmet_conditions": [
+        "Çalışan iç ortamda kendi-mail yankısı, otomatik yanıt, mükerrer olay ve belirsiz gönderimin insan uzlaştırması senaryolarının tamamı."
+      ],
+      "evidence": [
+        "hamle/outputs/new-mac-2026-10-10/cloud-first-internal-completion.json"
+      ],
+      "dependencies": [
+        "E03",
+        "E04",
+        "E07"
+      ],
+      "baseline_dependencies_open": [
+        "E03",
+        "E04",
+        "E07"
+      ]
+    },
+    {
+      "id": "F01",
+      "title": "Metin rolünün model ve üretim aracı bağlantısı",
+      "weight": 2,
+      "baseline_done": 0,
+      "proposed_done": 0,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Metin rolü hedef ortamda doğrulanmış model/araçla ayrı iş bağlamında çalışıyor; müşteri gönderimi yetkisi yok; çıktı ve hata kaydı tutuluyor.",
+      "workbook_range": "İş Listesi!A53:N53",
+      "status": "open_partial",
+      "reason": "İlk müşteri temsilcisi iç koordinasyon kanıtı bu ayrı uzman rolünün kabulünü karşılamaz.",
+      "unmet_conditions": [
+        "Metin rolü hedef ortamda doğrulanmış model/araçla ayrı iş bağlamında çalışıyor; müşteri gönderimi yetkisi yok; çıktı ve hata kaydı tutuluyor."
+      ],
+      "evidence": [
+        "hamle/outputs/new-mac-2026-10-10/cloud-first-internal-completion.json"
+      ],
+      "dependencies": [
+        "D03",
+        "D04",
+        "D06"
+      ],
+      "baseline_dependencies_open": [
+        "D03",
+        "D04",
+        "D06"
+      ]
+    },
+    {
+      "id": "F02",
+      "title": "Metin için onaylı marka kaynaklarını çağırma",
+      "weight": 1,
+      "baseline_done": 0,
+      "proposed_done": 0,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Metin rolü güncel ilgili marka tonu/iddiaları ve reddedilmiş yönleri getiriyor; başka marka verisi veya eski fiyat güncel gerçek yapılmıyor.",
+      "workbook_range": "İş Listesi!A54:N54",
+      "status": "open_partial",
+      "reason": "İlk müşteri temsilcisi iç koordinasyon kanıtı bu ayrı uzman rolünün kabulünü karşılamaz.",
+      "unmet_conditions": [
+        "Metin rolü güncel ilgili marka tonu/iddiaları ve reddedilmiş yönleri getiriyor; başka marka verisi veya eski fiyat güncel gerçek yapılmıyor."
+      ],
+      "evidence": [
+        "hamle/outputs/new-mac-2026-10-10/cloud-first-internal-completion.json"
+      ],
+      "dependencies": [
+        "C05",
+        "C07",
+        "F01"
+      ],
+      "baseline_dependencies_open": [
+        "C05",
+        "C07",
+        "F01"
+      ]
+    },
+    {
+      "id": "F03",
+      "title": "Yapılandırılmış brief'ten metin çıktısı",
+      "weight": 1,
+      "baseline_done": 0,
+      "proposed_done": 0,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Brief amacı, hedef kitle, mecra, zorunlu bilgi ve çağrıya uygun sürümlü metin üretiliyor; kritik eksik için doğru kişiye soru gidiyor.",
+      "workbook_range": "İş Listesi!A55:N55",
+      "status": "open_partial",
+      "reason": "İlk müşteri temsilcisi iç koordinasyon kanıtı bu ayrı uzman rolünün kabulünü karşılamaz.",
+      "unmet_conditions": [
+        "Brief amacı, hedef kitle, mecra, zorunlu bilgi ve çağrıya uygun sürümlü metin üretiliyor; kritik eksik için doğru kişiye soru gidiyor."
+      ],
+      "evidence": [
+        "hamle/outputs/new-mac-2026-10-10/cloud-first-internal-completion.json"
+      ],
+      "dependencies": [
+        "F02",
+        "E05"
+      ],
+      "baseline_dependencies_open": [
+        "F02",
+        "E05"
+      ]
+    },
+    {
+      "id": "F04",
+      "title": "İddia, dil ve marka tonu kalite kontrolü",
+      "weight": 2,
+      "baseline_done": 0,
+      "proposed_done": 0,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Türkçe, mecra sınırı, marka tonu, kaynaklı iddia ve zorunlu bilgiler kontrol ediliyor; doğrulanmamış iddia yayına/teslime çıkmıyor.",
+      "workbook_range": "İş Listesi!A56:N56",
+      "status": "open_partial",
+      "reason": "İlk müşteri temsilcisi iç koordinasyon kanıtı bu ayrı uzman rolünün kabulünü karşılamaz.",
+      "unmet_conditions": [
+        "Türkçe, mecra sınırı, marka tonu, kaynaklı iddia ve zorunlu bilgiler kontrol ediliyor; doğrulanmamış iddia yayına/teslime çıkmıyor."
+      ],
+      "evidence": [
+        "hamle/outputs/new-mac-2026-10-10/cloud-first-internal-completion.json"
+      ],
+      "dependencies": [
+        "F03"
+      ],
+      "baseline_dependencies_open": [
+        "F03"
+      ]
+    },
+    {
+      "id": "F05",
+      "title": "Gerçek iç metin revizyon ve kabul vakaları",
+      "weight": 2,
+      "baseline_done": 0,
+      "proposed_done": 0,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Önceden tanımlı iç vakalarda talep→metin→insan geri bildirimi→yeni sürüm→kabul tam döngüsü geçiyor; ret gerekçesi ve kabul sürümü kayıtlı.",
+      "workbook_range": "İş Listesi!A57:N57",
+      "status": "open_partial",
+      "reason": "İlk müşteri temsilcisi iç koordinasyon kanıtı bu ayrı uzman rolünün kabulünü karşılamaz.",
+      "unmet_conditions": [
+        "Önceden tanımlı iç vakalarda talep→metin→insan geri bildirimi→yeni sürüm→kabul tam döngüsü geçiyor; ret gerekçesi ve kabul sürümü kayıtlı."
+      ],
+      "evidence": [
+        "hamle/outputs/new-mac-2026-10-10/cloud-first-internal-completion.json"
+      ],
+      "dependencies": [
+        "F04",
+        "E06"
+      ],
+      "baseline_dependencies_open": [
+        "F04",
+        "E06"
+      ]
+    },
+    {
+      "id": "G01",
+      "title": "Marka varlıkları, font ve kullanım lisansları",
+      "weight": 2,
+      "baseline_done": 0,
+      "proposed_done": 0,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Kullanılacak logo, görsel, font ve üretim dosyalarının güncel sürümü/kullanım hakkı belli; eksik veya lisansı belirsiz varlık üretime girmiyor.",
+      "workbook_range": "İş Listesi!A58:N58",
+      "status": "open_partial",
+      "reason": "İlk müşteri temsilcisi iç koordinasyon kanıtı bu ayrı uzman rolünün kabulünü karşılamaz.",
+      "unmet_conditions": [
+        "Kullanılacak logo, görsel, font ve üretim dosyalarının güncel sürümü/kullanım hakkı belli; eksik veya lisansı belirsiz varlık üretime girmiyor."
+      ],
+      "evidence": [
+        "hamle/outputs/new-mac-2026-10-10/cloud-first-internal-completion.json"
+      ],
+      "dependencies": [
+        "C05"
+      ],
+      "baseline_dependencies_open": [
+        "C05"
+      ]
+    },
+    {
+      "id": "G02",
+      "title": "Grafik üretim aracına entegrasyon",
+      "weight": 2,
+      "baseline_done": 0,
+      "proposed_done": 0,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Yetkili grafik aracı tanımlı iş alanında dosya açma/üretme/kaydetme yapıyor; maliyet ve erişim sınırı uygulanıyor.",
+      "workbook_range": "İş Listesi!A59:N59",
+      "status": "open_partial",
+      "reason": "İlk müşteri temsilcisi iç koordinasyon kanıtı bu ayrı uzman rolünün kabulünü karşılamaz.",
+      "unmet_conditions": [
+        "Yetkili grafik aracı tanımlı iş alanında dosya açma/üretme/kaydetme yapıyor; maliyet ve erişim sınırı uygulanıyor."
+      ],
+      "evidence": [
+        "hamle/outputs/new-mac-2026-10-10/cloud-first-internal-completion.json"
+      ],
+      "dependencies": [
+        "D04",
+        "D06",
+        "G01"
+      ],
+      "baseline_dependencies_open": [
+        "D04",
+        "D06",
+        "G01"
+      ]
+    },
+    {
+      "id": "G03",
+      "title": "Ölçü varyantları, düzenlenebilir ve final çıktı",
+      "weight": 2,
+      "baseline_done": 0,
+      "proposed_done": 0,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Canlıya açılacak ölçü/format listesinde doğru ebat ve güvenli alanla düzenlenebilir kaynak ve final dosya oluşuyor; dosya sürümleri iş kaydıyla eşleşiyor.",
+      "workbook_range": "İş Listesi!A60:N60",
+      "status": "open_partial",
+      "reason": "İlk müşteri temsilcisi iç koordinasyon kanıtı bu ayrı uzman rolünün kabulünü karşılamaz.",
+      "unmet_conditions": [
+        "Canlıya açılacak ölçü/format listesinde doğru ebat ve güvenli alanla düzenlenebilir kaynak ve final dosya oluşuyor; dosya sürümleri iş kaydıyla eşleşiyor."
+      ],
+      "evidence": [
+        "hamle/outputs/new-mac-2026-10-10/cloud-first-internal-completion.json"
+      ],
+      "dependencies": [
+        "G02",
+        "E05"
+      ],
+      "baseline_dependencies_open": [
+        "G02",
+        "E05"
+      ]
+    },
+    {
+      "id": "G04",
+      "title": "Gerçek grafik çıktısının görsel kalite kontrolü",
+      "weight": 2,
+      "baseline_done": 0,
+      "proposed_done": 0,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Her açılacak format render edilip görülmüş; logo, metin, font, renk, taşma, okunurluk, ebat ve kaynak doğruluğu kontrol kaydı var.",
+      "workbook_range": "İş Listesi!A61:N61",
+      "status": "open_partial",
+      "reason": "İlk müşteri temsilcisi iç koordinasyon kanıtı bu ayrı uzman rolünün kabulünü karşılamaz.",
+      "unmet_conditions": [
+        "Her açılacak format render edilip görülmüş; logo, metin, font, renk, taşma, okunurluk, ebat ve kaynak doğruluğu kontrol kaydı var."
+      ],
+      "evidence": [
+        "hamle/outputs/new-mac-2026-10-10/cloud-first-internal-completion.json"
+      ],
+      "dependencies": [
+        "G03"
+      ],
+      "baseline_dependencies_open": [
+        "G03"
+      ]
+    },
+    {
+      "id": "G05",
+      "title": "Gerçek iç grafik revizyon ve kabul vakaları",
+      "weight": 2,
+      "baseline_done": 0,
+      "proposed_done": 0,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Tanımlı iç grafik vakaları brief→çıktı→insan revizyonu→yeni sürüm→kabul döngüsünü tamamlıyor; kabul dosyası ve kaynak dosya eşleşiyor.",
+      "workbook_range": "İş Listesi!A62:N62",
+      "status": "open_partial",
+      "reason": "İlk müşteri temsilcisi iç koordinasyon kanıtı bu ayrı uzman rolünün kabulünü karşılamaz.",
+      "unmet_conditions": [
+        "Tanımlı iç grafik vakaları brief→çıktı→insan revizyonu→yeni sürüm→kabul döngüsünü tamamlıyor; kabul dosyası ve kaynak dosya eşleşiyor."
+      ],
+      "evidence": [
+        "hamle/outputs/new-mac-2026-10-10/cloud-first-internal-completion.json"
+      ],
+      "dependencies": [
+        "G04",
+        "E06"
+      ],
+      "baseline_dependencies_open": [
+        "G04",
+        "E06"
+      ]
+    },
+    {
+      "id": "H01",
+      "title": "Animasyon araçları, varlıklar ve müzik lisansları",
+      "weight": 2,
+      "baseline_done": 0,
+      "proposed_done": 0,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Geniş animasyon kapsamı, araçları, ses/müzik/görüntü hakları ve üretim sorumlusu belirli; satın alma ve ses kimliği izinleri açık.",
+      "workbook_range": "İş Listesi!A63:N63",
+      "status": "open_partial",
+      "reason": "İlk müşteri temsilcisi iç koordinasyon kanıtı bu ayrı uzman rolünün kabulünü karşılamaz.",
+      "unmet_conditions": [
+        "Geniş animasyon kapsamı, araçları, ses/müzik/görüntü hakları ve üretim sorumlusu belirli; satın alma ve ses kimliği izinleri açık."
+      ],
+      "evidence": [
+        "hamle/outputs/new-mac-2026-10-10/cloud-first-internal-completion.json"
+      ],
+      "dependencies": [
+        "C05",
+        "D02"
+      ],
+      "baseline_dependencies_open": [
+        "C05",
+        "D02"
+      ]
+    },
+    {
+      "id": "H02",
+      "title": "Storyboard, kurgu, üretim ve render",
+      "weight": 2,
+      "baseline_done": 0,
+      "proposed_done": 0,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Tanımlı animasyon işinde onaylı metin/storyboard, süre, sahne ve ses planından düzenlenebilir proje ile final render üretiliyor.",
+      "workbook_range": "İş Listesi!A64:N64",
+      "status": "open_partial",
+      "reason": "İlk müşteri temsilcisi iç koordinasyon kanıtı bu ayrı uzman rolünün kabulünü karşılamaz.",
+      "unmet_conditions": [
+        "Tanımlı animasyon işinde onaylı metin/storyboard, süre, sahne ve ses planından düzenlenebilir proje ile final render üretiliyor."
+      ],
+      "evidence": [
+        "hamle/outputs/new-mac-2026-10-10/cloud-first-internal-completion.json"
+      ],
+      "dependencies": [
+        "H01",
+        "D04",
+        "D06"
+      ],
+      "baseline_dependencies_open": [
+        "H01",
+        "D04",
+        "D06"
+      ]
+    },
+    {
+      "id": "H03",
+      "title": "Videoyu baştan sona izleme, ses ve çıktı QA",
+      "weight": 2,
+      "baseline_done": 0,
+      "proposed_done": 0,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Final video baştan sona izlenmiş ve sesi dinlenmiş; senkron, altyazı, kare hızı, oran, süre, haklar ve son kare kontrol edilmiş; revizyon sonrası yeniden görülmüş.",
+      "workbook_range": "İş Listesi!A65:N65",
+      "status": "open_partial",
+      "reason": "İlk müşteri temsilcisi iç koordinasyon kanıtı bu ayrı uzman rolünün kabulünü karşılamaz.",
+      "unmet_conditions": [
+        "Final video baştan sona izlenmiş ve sesi dinlenmiş; senkron, altyazı, kare hızı, oran, süre, haklar ve son kare kontrol edilmiş; revizyon sonrası yeniden görülmüş."
+      ],
+      "evidence": [
+        "hamle/outputs/new-mac-2026-10-10/cloud-first-internal-completion.json"
+      ],
+      "dependencies": [
+        "H02"
+      ],
+      "baseline_dependencies_open": [
+        "H02"
+      ]
+    },
+    {
+      "id": "I01",
+      "title": "Kritik olumsuz entegrasyon kabul testleri",
+      "weight": 1.5,
+      "baseline_done": 0,
+      "proposed_done": 0,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Gerçek iç ortamda yanlış marka/alıcı, hariç To/CC, insan devri, eski sürüm, kesinti, tekrar ve belirsiz yazma güvenli duruyor; mail/ekteki kural değiştirme talimatı yetki kazanmıyor; kanıtları kayıtlı.",
+      "workbook_range": "İş Listesi!A66:N66",
+      "status": "open_partial",
+      "reason": "Olumsuz offline testler mevcut; tam bağlı sağlayıcı kabul seti yok.",
+      "unmet_conditions": [
+        "Yanlış marka/alıcı, To/CC, devir, eski sürüm, kesinti, tekrar, belirsiz yazma ve mail/ek injection canlı setinin tamamı."
+      ],
+      "evidence": [
+        "hamle/outputs/new-mac-2026-10-10/cloud-app-v2-local-validation.json",
+        "hamle/outputs/new-mac-2026-10-10/cloud-first-internal-completion.json"
+      ],
+      "dependencies": [
+        "B07",
+        "E04",
+        "E06",
+        "E07",
+        "E09",
+        "D08",
+        "D09",
+        "D10"
+      ],
+      "baseline_dependencies_open": [
+        "B07",
+        "E04",
+        "E06",
+        "E07",
+        "E09",
+        "D08",
+        "D09",
+        "D10"
+      ]
+    },
+    {
+      "id": "I02",
+      "title": "Kör tarihî yeniden oynatma ve gölge değerlendirme",
+      "weight": 1.5,
+      "baseline_done": 0,
+      "proposed_done": 0,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Seçilmiş tarihî vakalar beklenen kararlar önceden modele verilmeden gölgede değerlendiriliyor; özgün başlık/kararlar korunuyor; müşteri maili veya üretim Basecamp işlemi oluşmuyor.",
+      "workbook_range": "İş Listesi!A67:N67",
+      "status": "open_no_new_acceptance_evidence",
+      "reason": "Kör tarihî/gölge değerlendirme yapılmadı.",
+      "unmet_conditions": [
+        "Ayrı anahtarla kör tarihî vaka seti ve rota/brief/çıktı ölçümü."
+      ],
+      "evidence": [],
+      "dependencies": [
+        "C02",
+        "E05",
+        "E06",
+        "F04",
+        "G04"
+      ],
+      "baseline_dependencies_open": [
+        "E05",
+        "E06",
+        "F04",
+        "G04"
+      ]
+    },
+    {
+      "id": "I03",
+      "title": "Gamechangers iç uçtan uca demo",
+      "weight": 1,
+      "baseline_done": 0,
+      "proposed_done": 0,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Ahmet'in açık To/CC ile Hamle'ye gönderdiği yeni iç talep gerçek giriş→brief→metin/grafik→Basecamp revizyon→kontrollü teslim ve özet döngüsünü tamamlıyor.",
+      "workbook_range": "İş Listesi!A68:N68",
+      "status": "open_partial",
+      "reason": "Dar ilk iç koordinasyon geçti, ancak bu satırın daha geniş kabulü geçmedi.",
+      "unmet_conditions": [
+        "Metin/grafik çıktısı, Basecamp revizyon, kontrollü teslim ve özet döngüsünün tamamı."
+      ],
+      "evidence": [
+        "hamle/outputs/new-mac-2026-10-10/cloud-first-internal-completion.json"
+      ],
+      "dependencies": [
+        "I01",
+        "E08",
+        "F05",
+        "G05"
+      ],
+      "baseline_dependencies_open": [
+        "I01",
+        "E08",
+        "F05",
+        "G05"
+      ]
+    },
+    {
+      "id": "I04",
+      "title": "Açık iş geçiş mutabakatı ve geri dönüş planı",
+      "weight": 1.5,
+      "baseline_done": 0,
+      "proposed_done": 0,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Başlangıç anında açık işler, son insan yanıtları, sahipler ve geçerli sürümler uzlaştırılmış; canlı sınırı/stop/insana dönüş yolu ve rollback sorumlusu kayıtlı.",
+      "workbook_range": "İş Listesi!A69:N69",
+      "status": "open_partial",
+      "reason": "Yeni iç işe ait kayıt var; tüm açık iş devri mutabakatı yok.",
+      "unmet_conditions": [
+        "Açık işler/son insan yanıtları/sahipler/sürümler uzlaşması ve rollback sorumlusu."
+      ],
+      "evidence": [
+        "hamle/outputs/new-mac-2026-10-10/cloud-first-internal-completion.json"
+      ],
+      "dependencies": [
+        "A04",
+        "A05",
+        "B10",
+        "I03"
+      ],
+      "baseline_dependencies_open": [
+        "A04",
+        "A05",
+        "B10",
+        "I03"
+      ]
+    },
+    {
+      "id": "I05",
+      "title": "Sınırlı rutin canlı kullanım ve izleme",
+      "weight": 1.5,
+      "baseline_done": 0,
+      "proposed_done": 0,
+      "proposed_new_points": 0,
+      "acceptance_exact": "IN13 marka/hizmet kaydında sekiz canlı koşulu ve ilgili bağımlılıklar kanıtlı; yalnız bu kapsamda gerçek olaylar işleniyor. En az bir tam 21 turluk iş gününde olay/kayıt eşleşmesi, hata ve devirler izleniyor.",
+      "workbook_range": "İş Listesi!A70:N70",
+      "status": "open_partial",
+      "reason": "Müşteri akışı ve scheduler kapalı.",
+      "unmet_conditions": [
+        "IN13 sekiz kapı, sınırlı gerçek olaylar, bir tam21turluk gün ve hata/devir izlemi."
+      ],
+      "evidence": [
+        "hamle/outputs/new-mac-2026-10-10/cloud-first-internal-completion.json"
+      ],
+      "dependencies": [
+        "I04",
+        "I03",
+        "D08",
+        "I01",
+        "I02",
+        "A06",
+        "C09"
+      ],
+      "baseline_dependencies_open": [
+        "I04",
+        "I03",
+        "D08",
+        "I01",
+        "I02",
+        "A06",
+        "C09"
+      ]
+    },
+    {
+      "id": "I06",
+      "title": "Dört rol ve çok marka için genişletilmiş üretim kabulü",
+      "weight": 1,
+      "baseline_done": 0,
+      "proposed_done": 0,
+      "proposed_new_points": 0,
+      "acceptance_exact": "Dört rolün açılacak yetenekleri ve tüm etkin markaların ayrı erişim/kalite/teslim kontrolleri geçti; genişletme sınırları ve sorumlular yazılı.",
+      "workbook_range": "İş Listesi!A71:N71",
+      "status": "open_partial",
+      "reason": "Dört rol/çok marka üretim kabulü yok.",
+      "unmet_conditions": [
+        "Tüm açılacak rol/marka yeteneklerinde erişim, kalite ve teslim kabulü."
+      ],
+      "evidence": [
+        "hamle/outputs/new-mac-2026-10-10/cloud-first-internal-completion.json"
+      ],
+      "dependencies": [
+        "I05",
+        "H03",
+        "F05",
+        "G05"
+      ],
+      "baseline_dependencies_open": [
+        "I05",
+        "H03",
+        "F05",
+        "G05"
+      ]
+    }
+  ]
+}

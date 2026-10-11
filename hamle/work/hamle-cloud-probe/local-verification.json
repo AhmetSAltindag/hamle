@@ -1,0 +1,32 @@
+{
+  "recorded_at": "2026-10-09T22:03:48.855504+00:00",
+  "scope": "local_only_synthetic_cloud_probe",
+  "tests_passed": 17,
+  "python": "3.12.14",
+  "command": "../hamle-gmail-connector/.venv/bin/python -B -m unittest discover -p 'test_*.py' -v",
+  "real_firestore_tested": false,
+  "docker_built": false,
+  "deployed": false,
+  "paid_model_calls": 0,
+  "scheduler_created": false,
+  "original_runtime_modified": false,
+  "sources": [
+    "https://docs.cloud.google.com/python/docs/reference/firestore/latest/changelog",
+    "https://docs.cloud.google.com/python/docs/reference/firestore/latest/google.cloud.firestore_v1.transaction.Transaction",
+    "https://docs.cloud.google.com/python/docs/reference/firestore/latest/google.cloud.firestore_v1.client.Client"
+  ],
+  "sha256": {
+    "core.py": "8f199ad89bb3361e0138661014828204279de88af9f2321b14b0802d5bc95cd2",
+    "firestore_store.py": "a065cf9cd9934e78f40acaff2b808fd5b527c382eade0056c51a5e6b7930723d",
+    "main.py": "0f6b8ecc0979e855bb9d424859cb9a355df6ec83ba18a1e782e869b706f1ed8d",
+    "test_probe.py": "9b6a4d5e5cae40d0100bb06e5751be6755ae157f536a9dc087c7eca828ff839b",
+    "Dockerfile": "92b33c28ddd19cd681e6ac8fcc5aa3c8228303e89b8d8b104507e568eea52465",
+    "requirements.txt": "45cc4e323efaf3d042dadc343d547ca8973588478bbaf6700ac372c95b7a38a8",
+    ".dockerignore": "fe36f58631584f273bfafc6fa473c9c6dd7fa14201f01493b466a48bd9512b06",
+    "README.txt": "412a0b630e972ffa21eb5b446f4efb4881affa06bc2aa01e4f2c2bd23118d757"
+  },
+  "review_fixes": [
+    "live clock checked before every Firestore transaction",
+    "strict control and run schema validation; malformed records held/refused"
+  ]
+}

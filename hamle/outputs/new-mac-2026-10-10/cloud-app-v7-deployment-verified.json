@@ -1,0 +1,278 @@
+{
+  "recorded_at": "2026-10-10T11:15:25.076845+03:00",
+  "status": "metadata_verified",
+  "control_url": "https://hamle-control-286533609595.europe-west1.run.app",
+  "image": "europe-west1-docker.pkg.dev/gamechangers-hamle/hamle-runtime/hamle-account-manager@sha256:82d119ba26ed4a7c00b7c6f7ea78296d0b98943d2c2aff836b76907467f272df",
+  "scheduler_created": false,
+  "business_execution_started": false,
+  "job": {
+    "apiVersion": "run.googleapis.com/v1",
+    "kind": "Job",
+    "metadata": {
+      "annotations": {
+        "run.googleapis.com/client-name": "gcloud",
+        "run.googleapis.com/client-version": "588.0.0",
+        "run.googleapis.com/creator": "ahmet@gamechangers.com.tr",
+        "run.googleapis.com/lastModifier": "ahmet@gamechangers.com.tr",
+        "run.googleapis.com/operation-id": "b4fe9fcc-35a0-449a-9622-e8079342f596"
+      },
+      "creationTimestamp": "2026-10-09T23:24:01.368826Z",
+      "generation": 6,
+      "labels": {
+        "cloud.googleapis.com/location": "europe-west1",
+        "run.googleapis.com/lastUpdatedTime": "2026-10-10T08:14:54.747743Z"
+      },
+      "name": "hamle-account-manager",
+      "namespace": "286533609595",
+      "resourceVersion": "AAZdeA9XraI",
+      "selfLink": "/apis/run.googleapis.com/v1/namespaces/286533609595/jobs/hamle-account-manager",
+      "uid": "37e16aea-2407-42c1-80f0-1f22aa872bab"
+    },
+    "spec": {
+      "template": {
+        "metadata": {
+          "annotations": {
+            "run.googleapis.com/client-name": "gcloud",
+            "run.googleapis.com/client-version": "588.0.0",
+            "run.googleapis.com/execution-environment": "gen2"
+          },
+          "labels": {
+            "client.knative.dev/nonce": "tim_geg_yop"
+          }
+        },
+        "spec": {
+          "parallelism": 1,
+          "taskCount": 1,
+          "template": {
+            "spec": {
+              "containers": [
+                {
+                  "args": [
+                    "worker.py",
+                    "--mode",
+                    "review"
+                  ],
+                  "command": [
+                    "python"
+                  ],
+                  "env": [
+                    {
+                      "name": "HAMLE_ALLOW_FIRESTORE_OPERATIONS",
+                      "value": "yes"
+                    },
+                    {
+                      "name": "HAMLE_PROJECT_ID",
+                      "value": "gamechangers-hamle"
+                    },
+                    {
+                      "name": "HAMLE_FIRESTORE_DATABASE",
+                      "value": "hamle-operations"
+                    }
+                  ],
+                  "image": "europe-west1-docker.pkg.dev/gamechangers-hamle/hamle-runtime/hamle-account-manager@sha256:82d119ba26ed4a7c00b7c6f7ea78296d0b98943d2c2aff836b76907467f272df",
+                  "resources": {
+                    "limits": {
+                      "cpu": "1",
+                      "memory": "512Mi"
+                    }
+                  }
+                }
+              ],
+              "maxRetries": 0,
+              "serviceAccountName": "hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com",
+              "timeoutSeconds": "600"
+            }
+          }
+        }
+      }
+    },
+    "status": {
+      "conditions": [
+        {
+          "status": "True",
+          "type": "Ready"
+        }
+      ],
+      "executionCount": 10,
+      "latestCreatedExecution": {
+        "completionStatus": "EXECUTION_FAILED",
+        "completionTimestamp": "2026-10-10T08:02:23.292870Z",
+        "creationTimestamp": "2026-10-10T07:59:06.129137Z",
+        "name": "hamle-account-manager-wkv5h"
+      },
+      "observedGeneration": 6
+    }
+  },
+  "service": {
+    "apiVersion": "serving.knative.dev/v1",
+    "kind": "Service",
+    "metadata": {
+      "annotations": {
+        "run.googleapis.com/client-name": "gcloud",
+        "run.googleapis.com/client-version": "588.0.0",
+        "run.googleapis.com/iap-enabled": "true",
+        "run.googleapis.com/ingress": "all",
+        "run.googleapis.com/ingress-status": "all",
+        "run.googleapis.com/maxScale": "1",
+        "run.googleapis.com/operation-id": "43281648-6669-4f3c-b756-da4c05dd47bc",
+        "run.googleapis.com/urls": "[\"https://hamle-control-286533609595.europe-west1.run.app\",\"https://hamle-control-aludfxyq3a-ew.a.run.app\"]",
+        "serving.knative.dev/creator": "ahmet@gamechangers.com.tr",
+        "serving.knative.dev/lastModifier": "ahmet@gamechangers.com.tr"
+      },
+      "creationTimestamp": "2026-10-09T23:24:05.808367Z",
+      "generation": 6,
+      "labels": {
+        "cloud.googleapis.com/location": "europe-west1"
+      },
+      "name": "hamle-control",
+      "namespace": "286533609595",
+      "resourceVersion": "AAZdeBBJ//s",
+      "selfLink": "/apis/serving.knative.dev/v1/namespaces/286533609595/services/hamle-control",
+      "uid": "3f505075-3ecd-4591-beca-7ce82dbdd0d5"
+    },
+    "spec": {
+      "template": {
+        "metadata": {
+          "annotations": {
+            "autoscaling.knative.dev/maxScale": "1",
+            "run.googleapis.com/client-name": "gcloud",
+            "run.googleapis.com/client-version": "588.0.0",
+            "run.googleapis.com/cpu-throttling": "true",
+            "run.googleapis.com/startup-cpu-boost": "false"
+          },
+          "labels": {
+            "client.knative.dev/nonce": "exqpcnoijv",
+            "run.googleapis.com/startupProbeType": "Default"
+          }
+        },
+        "spec": {
+          "containerConcurrency": 4,
+          "containers": [
+            {
+              "args": [
+                "--bind",
+                ":8080",
+                "cloud_control:create_app()"
+              ],
+              "command": [
+                "gunicorn"
+              ],
+              "env": [
+                {
+                  "name": "HAMLE_ALLOW_FIRESTORE_OPERATIONS",
+                  "value": "yes"
+                },
+                {
+                  "name": "IAP_AUDIENCE",
+                  "value": "/projects/286533609595/locations/europe-west1/services/hamle-control"
+                },
+                {
+                  "name": "PUBLIC_ORIGIN",
+                  "value": "https://hamle-control-286533609595.europe-west1.run.app"
+                }
+              ],
+              "image": "europe-west1-docker.pkg.dev/gamechangers-hamle/hamle-runtime/hamle-account-manager@sha256:82d119ba26ed4a7c00b7c6f7ea78296d0b98943d2c2aff836b76907467f272df",
+              "ports": [
+                {
+                  "containerPort": 8080,
+                  "name": "http1"
+                }
+              ],
+              "resources": {
+                "limits": {
+                  "cpu": "1",
+                  "memory": "512Mi"
+                }
+              },
+              "startupProbe": {
+                "failureThreshold": 1,
+                "periodSeconds": 240,
+                "tcpSocket": {
+                  "port": 8080
+                },
+                "timeoutSeconds": 240
+              }
+            }
+          ],
+          "serviceAccountName": "hamle-control@gamechangers-hamle.iam.gserviceaccount.com",
+          "timeoutSeconds": 60
+        }
+      },
+      "traffic": [
+        {
+          "latestRevision": true,
+          "percent": 100
+        }
+      ]
+    },
+    "status": {
+      "address": {
+        "url": "https://hamle-control-aludfxyq3a-ew.a.run.app"
+      },
+      "conditions": [
+        {
+          "lastTransitionTime": "2026-10-10T08:15:11.007739Z",
+          "status": "True",
+          "type": "Ready"
+        },
+        {
+          "lastTransitionTime": "2026-10-10T08:15:03.619201Z",
+          "status": "True",
+          "type": "ConfigurationsReady"
+        },
+        {
+          "lastTransitionTime": "2026-10-10T08:15:10.978517Z",
+          "status": "True",
+          "type": "RoutesReady"
+        }
+      ],
+      "latestCreatedRevisionName": "hamle-control-00006-2nh",
+      "latestReadyRevisionName": "hamle-control-00006-2nh",
+      "observedGeneration": 6,
+      "traffic": [
+        {
+          "latestRevision": true,
+          "percent": 100,
+          "revisionName": "hamle-control-00006-2nh"
+        }
+      ],
+      "url": "https://hamle-control-aludfxyq3a-ew.a.run.app"
+    }
+  },
+  "job_iam": {
+    "bindings": [
+      {
+        "members": [
+          "serviceAccount:hamle-scheduler@gamechangers-hamle.iam.gserviceaccount.com"
+        ],
+        "role": "roles/run.invoker"
+      }
+    ],
+    "etag": "BwZdcKY3UXU=",
+    "version": 1
+  },
+  "service_iam": {
+    "bindings": [
+      {
+        "members": [
+          "serviceAccount:service-286533609595@gcp-sa-iap.iam.gserviceaccount.com"
+        ],
+        "role": "roles/run.invoker"
+      }
+    ],
+    "etag": "BwZdcKZSihA=",
+    "version": 1
+  },
+  "iap_iam": {
+    "bindings": [
+      {
+        "members": [
+          "user:ahmet@gamechangers.com.tr"
+        ],
+        "role": "roles/iap.httpsResourceAccessor"
+      }
+    ],
+    "etag": "BwZdcLN0Nvg=",
+    "version": 1
+  }
+}

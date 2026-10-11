@@ -1,0 +1,17 @@
+[
+  {
+    "timestamp": "2026-10-10T15:01:37.892404Z",
+    "jsonPayload": {
+      "automatic_retry": false,
+      "reason": "unexpected_quality_route",
+      "status": "held"
+    }
+  },
+  {
+    "timestamp": "2026-10-10T15:01:38.081423Z",
+    "textPayload": "Container called exit(2)."
+  },
+  {
+    "timestamp": "2026-10-10T15:01:41.856535Z"
+  }
+]

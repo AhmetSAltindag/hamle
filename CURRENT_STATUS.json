@@ -1,0 +1,14 @@
+{
+  "created_at": "2026-10-10T16:41:48.770765+00:00",
+  "purpose": "portable_source_handover_core_first_minimum_model_cost",
+  "latest_evidence": "hamle/outputs/wat-pilot-20261010/real-output-shadow/acceptance-summary.json",
+  "customer_live_enabled": false,
+  "credentials_included": false,
+  "full_current_firestore_backup": false,
+  "full_chat_history_included": false,
+  "runtime_claude_adapter_implemented": false,
+  "cloud_or_scheduler_modified": false,
+  "provider_calls_during_packaging": 0,
+  "priority": "Wire existing generic core; brand learning/configuration remains modular; WAT pilot.",
+  "source_snapshot_contains_current_code_and_tests": true
+}

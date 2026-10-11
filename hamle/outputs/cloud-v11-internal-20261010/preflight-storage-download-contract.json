@@ -1,0 +1,9 @@
+{
+  "status": 200,
+  "location_host": "",
+  "content_type": "text/plain",
+  "bytes": 264,
+  "sha256": "ec444d300f5d4dc2792a69da4fcf55f6a4195ffd97316506d9007a034153702a",
+  "redirect_auth_header_sent": false,
+  "signed_redirect_url_printed": false
+}

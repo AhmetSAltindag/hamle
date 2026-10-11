@@ -1,0 +1,21 @@
+{
+  "checked_at": "2026-10-10T16:43:15.092489+00:00",
+  "status": "passed",
+  "suite_count": 8,
+  "tests_run": 1225,
+  "skipped": 6,
+  "suite_test_counts": [
+    30,
+    54,
+    58,
+    17,
+    30,
+    38,
+    963,
+    35
+  ],
+  "source": "tests executed from exported package with existing Python environment",
+  "paid_model_calls": 0,
+  "cloud_modified": false,
+  "limitation": "Reuses existing installed dependencies; fresh dependency installation/production restore not tested. Local HTTP control tests require localhost permission."
+}

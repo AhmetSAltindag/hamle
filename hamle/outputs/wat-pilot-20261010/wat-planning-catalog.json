@@ -1,0 +1,508 @@
+{
+  "schema_version": 1,
+  "brand_id": "wat_mobilite",
+  "version": "wat-intake-20261010-v3",
+  "verified": true,
+  "verification_ref": "workbook-input-evidence.json + basecamp-read-evidence.json + user-decisions.json",
+  "live_enabled": false,
+  "verification_scope": "Planning contacts/roles/project/list mappings only; not live automatic delivery or accepted visual QA. Non-social graphic+animation/video is planned as one Motion-list work, derived from user-confirmed non-social Motion routing and design-before-motion ordering; this combined-list choice is a working assumption, not separately confirmed live acceptance.",
+  "contacts": [
+    {
+      "name": "Selina Mirçavi",
+      "email": "selina.mircavi@watmobilite.com",
+      "side": "customer",
+      "verified": true,
+      "verification_ref": "workbook-input-evidence.json/Kişiler11-13",
+      "service_ids": [
+        "wat_social",
+        "wat_design",
+        "wat_motion"
+      ],
+      "can_receive": true,
+      "can_request": true,
+      "can_relay": false,
+      "can_amend": false,
+      "basecamp_verified": false,
+      "project_member": false,
+      "focus": "Ağırlıklı dijital işler"
+    },
+    {
+      "name": "Berin Avcı",
+      "email": "berin.avci@watmobilite.com",
+      "side": "customer",
+      "verified": true,
+      "verification_ref": "workbook-input-evidence.json/Kişiler11-13",
+      "service_ids": [
+        "wat_social",
+        "wat_design",
+        "wat_motion"
+      ],
+      "can_receive": true,
+      "can_request": true,
+      "can_relay": false,
+      "can_amend": false,
+      "basecamp_verified": false,
+      "project_member": false,
+      "focus": "Ağırlıklı geleneksel ve saha işleri"
+    },
+    {
+      "name": "Sinan Kuriş",
+      "email": "sinan.kuris@watmobilite.com",
+      "side": "customer",
+      "verified": true,
+      "verification_ref": "workbook-input-evidence.json/Kişiler11-13",
+      "service_ids": [
+        "wat_social",
+        "wat_design",
+        "wat_motion"
+      ],
+      "can_receive": true,
+      "can_request": true,
+      "can_relay": false,
+      "can_amend": false,
+      "basecamp_verified": false,
+      "project_member": false,
+      "focus": "Bütçe ve strateji; Ahmet/Cansu istisna akışı korunur"
+    },
+    {
+      "name": "Ahmet Şükrü Altındağ",
+      "email": "ahmet@gamechangers.com.tr",
+      "side": "agency",
+      "verified": true,
+      "verification_ref": "user-decisions + project unique-person roster",
+      "service_ids": [
+        "wat_social",
+        "wat_design",
+        "wat_motion"
+      ],
+      "can_receive": true,
+      "can_request": true,
+      "can_relay": true,
+      "can_amend": true,
+      "basecamp_verified": true,
+      "basecamp_id": 47470759,
+      "project_member": true,
+      "agency_roles": [
+        "principal"
+      ],
+      "email_person_binding_basis": "User-provided email and unique confirmed Basecamp name; provider email remains redacted"
+    },
+    {
+      "name": "Cansu Akiş Kabil",
+      "email": "cansu@gamechangers.com.tr",
+      "side": "agency",
+      "verified": true,
+      "verification_ref": "user-decisions + project unique-person roster",
+      "service_ids": [
+        "wat_social",
+        "wat_design",
+        "wat_motion"
+      ],
+      "can_receive": true,
+      "can_request": true,
+      "can_relay": true,
+      "can_amend": true,
+      "basecamp_verified": true,
+      "basecamp_id": 48793256,
+      "project_member": true,
+      "agency_roles": [
+        "strategy_owner"
+      ],
+      "email_person_binding_basis": "User-provided email and unique confirmed Basecamp name; provider email remains redacted"
+    },
+    {
+      "name": "Özge Yağmur",
+      "email": "ozge@gamechangers.com.tr",
+      "side": "agency",
+      "verified": true,
+      "verification_ref": "user-decisions + project unique-person roster",
+      "service_ids": [
+        "wat_social",
+        "wat_design",
+        "wat_motion"
+      ],
+      "can_receive": true,
+      "can_request": true,
+      "can_relay": true,
+      "can_amend": true,
+      "basecamp_verified": true,
+      "basecamp_id": 52096503,
+      "project_member": true,
+      "agency_roles": [
+        "social_manager"
+      ],
+      "email_person_binding_basis": "User-provided email and unique confirmed Basecamp name; provider email remains redacted"
+    }
+  ],
+  "basecamp_people": {
+    "47470759": {
+      "name": "Ahmet Şükrü Altındağ",
+      "basecamp_id": 47470759,
+      "side": "agency",
+      "basecamp_verified": true,
+      "project_member": true,
+      "agency_roles": [
+        "principal"
+      ],
+      "production_kinds": [],
+      "verification_ref": "basecamp-read-evidence.json",
+      "can_amend": true,
+      "service_ids": [
+        "wat_social",
+        "wat_design",
+        "wat_motion"
+      ],
+      "amendment_authority_ref": "user request: agency additions/removals by Ozge, Ahmet and Cansu; user-decisions.json + verified Basecamp roster"
+    },
+    "48793256": {
+      "name": "Cansu Akiş Kabil",
+      "basecamp_id": 48793256,
+      "side": "agency",
+      "basecamp_verified": true,
+      "project_member": true,
+      "agency_roles": [
+        "strategy_owner"
+      ],
+      "production_kinds": [],
+      "verification_ref": "basecamp-read-evidence.json",
+      "can_amend": true,
+      "service_ids": [
+        "wat_social",
+        "wat_design",
+        "wat_motion"
+      ],
+      "amendment_authority_ref": "user request: agency additions/removals by Ozge, Ahmet and Cansu; user-decisions.json + verified Basecamp roster"
+    },
+    "52096503": {
+      "name": "Özge Yağmur",
+      "basecamp_id": 52096503,
+      "side": "agency",
+      "basecamp_verified": true,
+      "project_member": true,
+      "agency_roles": [
+        "social_manager"
+      ],
+      "production_kinds": [],
+      "verification_ref": "basecamp-read-evidence.json",
+      "can_amend": true,
+      "service_ids": [
+        "wat_social",
+        "wat_design",
+        "wat_motion"
+      ],
+      "amendment_authority_ref": "user request: agency additions/removals by Ozge, Ahmet and Cansu; user-decisions.json + verified Basecamp roster"
+    },
+    "47658175": {
+      "name": "Berkay Kayaköylü",
+      "basecamp_id": 47658175,
+      "side": "agency",
+      "basecamp_verified": true,
+      "project_member": true,
+      "agency_roles": [],
+      "production_kinds": [
+        "graphic"
+      ],
+      "verification_ref": "basecamp-read-evidence.json"
+    },
+    "50486696": {
+      "name": "Samet Göksu",
+      "basecamp_id": 50486696,
+      "side": "agency",
+      "basecamp_verified": true,
+      "project_member": true,
+      "agency_roles": [],
+      "production_kinds": [
+        "animation",
+        "video"
+      ],
+      "verification_ref": "basecamp-read-evidence.json"
+    }
+  },
+  "basecamp": {
+    "account_id": 5898865,
+    "project_id": 40694338,
+    "customer_visible": false,
+    "verified": true,
+    "verification_ref": "basecamp-read-evidence.json"
+  },
+  "routes": [
+    {
+      "service_id": "wat_social",
+      "category_key": "social",
+      "category_name": "Sosyal Medya",
+      "list_id": 8231779952,
+      "verified": true,
+      "verification_ref": "basecamp-read-evidence.json + user confirmed routing reply",
+      "allowed_kinds": [
+        "graphic",
+        "animation",
+        "video"
+      ],
+      "assignee_ids_by_kind": {
+        "graphic": [
+          47658175
+        ],
+        "animation": [
+          50486696
+        ],
+        "video": [
+          50486696
+        ]
+      },
+      "sequence_verified": true,
+      "production_sequences": {
+        "animation+graphic": [
+          {
+            "id": "design",
+            "kinds": [
+              "graphic"
+            ],
+            "depends_on": []
+          },
+          {
+            "id": "motion",
+            "kinds": [
+              "animation"
+            ],
+            "depends_on": [
+              "design"
+            ]
+          }
+        ],
+        "animation+video": [
+          {
+            "id": "motion",
+            "kinds": [
+              "animation",
+              "video"
+            ],
+            "depends_on": []
+          }
+        ],
+        "graphic+video": [
+          {
+            "id": "design",
+            "kinds": [
+              "graphic"
+            ],
+            "depends_on": []
+          },
+          {
+            "id": "motion",
+            "kinds": [
+              "video"
+            ],
+            "depends_on": [
+              "design"
+            ]
+          }
+        ],
+        "animation+graphic+video": [
+          {
+            "id": "design",
+            "kinds": [
+              "graphic"
+            ],
+            "depends_on": []
+          },
+          {
+            "id": "motion",
+            "kinds": [
+              "animation",
+              "video"
+            ],
+            "depends_on": [
+              "design"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "service_id": "wat_design",
+      "category_key": "atl_btl_field",
+      "category_name": "Projeler",
+      "list_id": 8234557425,
+      "verified": true,
+      "verification_ref": "basecamp-read-evidence.json + user confirmed routing reply",
+      "allowed_kinds": [
+        "graphic"
+      ],
+      "assignee_ids_by_kind": {
+        "graphic": [
+          47658175
+        ]
+      },
+      "sequence_verified": true,
+      "production_sequences": {}
+    },
+    {
+      "service_id": "wat_motion",
+      "category_key": "non_social_motion",
+      "category_name": "Motion",
+      "list_id": 9381497228,
+      "verified": true,
+      "verification_ref": "basecamp-read-evidence.json + user confirmed routing reply",
+      "allowed_kinds": [
+        "graphic",
+        "animation",
+        "video"
+      ],
+      "assignee_ids_by_kind": {
+        "animation": [
+          50486696
+        ],
+        "video": [
+          50486696
+        ],
+        "graphic": [
+          47658175
+        ]
+      },
+      "sequence_verified": true,
+      "production_sequences": {
+        "animation+graphic": [
+          {
+            "id": "design",
+            "kinds": [
+              "graphic"
+            ],
+            "depends_on": []
+          },
+          {
+            "id": "motion",
+            "kinds": [
+              "animation"
+            ],
+            "depends_on": [
+              "design"
+            ]
+          }
+        ],
+        "animation+video": [
+          {
+            "id": "motion",
+            "kinds": [
+              "animation",
+              "video"
+            ],
+            "depends_on": []
+          }
+        ],
+        "graphic+video": [
+          {
+            "id": "design",
+            "kinds": [
+              "graphic"
+            ],
+            "depends_on": []
+          },
+          {
+            "id": "motion",
+            "kinds": [
+              "video"
+            ],
+            "depends_on": [
+              "design"
+            ]
+          }
+        ],
+        "animation+graphic+video": [
+          {
+            "id": "design",
+            "kinds": [
+              "graphic"
+            ],
+            "depends_on": []
+          },
+          {
+            "id": "motion",
+            "kinds": [
+              "animation",
+              "video"
+            ],
+            "depends_on": [
+              "design"
+            ]
+          }
+        ]
+      },
+      "required_any_kinds": [
+        "animation",
+        "video"
+      ],
+      "combined_work_routing_basis": {
+        "kind": "derived_planning_assumption",
+        "basis": "User confirmed non-social animation/video to Motion and design before animation when both outputs are required. A combined non-social work stays in one Motion list; standalone graphic work does not belong here.",
+        "separately_live_accepted": false
+      }
+    }
+  ],
+  "brand_assets": {
+    "vault_id": 8231360563,
+    "source_url": "https://app.basecamp.com/5898865/buckets/40694338/vaults/8231360563",
+    "folder_metadata_verified": true,
+    "current_file_versions_accepted": false,
+    "approved_reference_documents": [
+      {
+        "upload_id": 10392828700,
+        "filename": "WATMobilite-Brand Guideline.pdf",
+        "sha256": "6be9fc432313ed5fd6d7741d52e83e584dddd26b8802238a01aee8b05ca3881c",
+        "user_approved_current_reference": true,
+        "font_page": 9,
+        "primary_font": "Nunito Sans",
+        "secondary_font": "Josefin Sans",
+        "light_grey_hex": "#E8E7E6",
+        "exact_logo_master_or_font_files_verified": false,
+        "evidence_ref": "current-brand-assets-10392828700/brand-rules.json + direct user replies"
+      }
+    ]
+  },
+  "terms": {
+    "social_monthly_total_posts_and_stories": 30,
+    "social_customer_revision_rounds": 2,
+    "social_target_business_days": 2,
+    "internal_quality_rework_is_separate": true,
+    "broader_atl_btl_field_and_video_deadlines": "Per agreed brief; do not automatically extend social terms",
+    "source": "Hizmetler!B11:F11",
+    "internal_quality_revision_limit_per_work": 2,
+    "internal_quality_limit_handoff_to": [
+      "ozge@gamechangers.com.tr",
+      "ahmet@gamechangers.com.tr",
+      "cansu@gamechangers.com.tr"
+    ],
+    "internal_quality_limit_ref": "internal-quality-rework-user-decision-20261010.json"
+  },
+  "human_exceptions": {
+    "commercial": [
+      "ahmet@gamechangers.com.tr"
+    ],
+    "complaint_strategy": [
+      "ahmet@gamechangers.com.tr",
+      "cansu@gamechangers.com.tr"
+    ],
+    "social_planning": [
+      "ozge@gamechangers.com.tr"
+    ],
+    "konkur_list_id": 9315207883,
+    "konkur_owners": [
+      "ahmet@gamechangers.com.tr",
+      "cansu@gamechangers.com.tr"
+    ]
+  },
+  "provider_mutation_allowed_by_this_file": false,
+  "work_authority": {
+    "status": "visible_stop_terms_accepted_pending_live_integration",
+    "decision_ref": "work-authority-user-decision-20261010.json",
+    "accepted_by": "ahmet@gamechangers.com.tr",
+    "accepted_at": "2026-10-10T15:41:33.218450+00:00",
+    "maximum_business_days": 2,
+    "timezone": "Europe/Istanbul",
+    "same_scope_and_recipients_only": true,
+    "unseen_cc_removal_detectable": false,
+    "visible_stop_revokes_pending_work": true,
+    "deadline_cap": "2026-10-12T23:59:59+03:00",
+    "live_enabled": false,
+    "runtime_grants_created_for_customer_work": 0
+  }
+}

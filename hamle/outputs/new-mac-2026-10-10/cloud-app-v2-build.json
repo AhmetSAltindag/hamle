@@ -1,0 +1,86 @@
+{
+  "started_at": "2026-10-10T02:36:20.229008+03:00",
+  "phase": "build",
+  "status": "submitted",
+  "control": {
+    "changed_at": 1791587113.304504,
+    "proposal_ids": [],
+    "generation": 0,
+    "mode": "stopped",
+    "actor_subject": "bootstrap"
+  },
+  "budget": {
+    "limit_microdollars": 50000000,
+    "accounted_spend_microdollars": 0,
+    "held_microdollars": 9000000,
+    "prepaid_purchases_microdollars": 10000000,
+    "total_committed_microdollars": 18000000,
+    "remaining_microdollars": 32000000,
+    "overrun_hold": false,
+    "provider_hard_cap_installed": false
+  },
+  "results": [
+    {
+      "argv": [
+        "builds",
+        "submit",
+        "/Users/ahmetsaltindag/Documents/ChatGPT/Gamechangers AI Ajan\u0131/hamle/outputs/app-source-20261010-v2.tar.gz",
+        "--config=/Users/ahmetsaltindag/Documents/ChatGPT/Gamechangers AI Ajan\u0131/hamle/work/hamle-account-manager/cloudbuild.yaml",
+        "--gcs-source-staging-dir=gs://gamechangers-hamle-runtime-source-286533609595/source",
+        "--region=europe-west1",
+        "--async"
+      ],
+      "result": {
+        "artifacts": {
+          "images": [
+            "europe-west1-docker.pkg.dev/gamechangers-hamle/hamle-runtime/hamle-account-manager:20261010-v2"
+          ]
+        },
+        "createTime": "2026-10-09T23:36:22.515603687Z",
+        "id": "672adeda-d2c0-44f7-887b-9c58217ed202",
+        "images": [
+          "europe-west1-docker.pkg.dev/gamechangers-hamle/hamle-runtime/hamle-account-manager:20261010-v2"
+        ],
+        "logUrl": "https://console.cloud.google.com/cloud-build/builds;region=europe-west1/672adeda-d2c0-44f7-887b-9c58217ed202?project=286533609595",
+        "name": "projects/286533609595/locations/europe-west1/builds/672adeda-d2c0-44f7-887b-9c58217ed202",
+        "options": {
+          "logging": "CLOUD_LOGGING_ONLY",
+          "machineType": "E2_MEDIUM",
+          "pool": {},
+          "workerRelease": "legacy"
+        },
+        "projectId": "gamechangers-hamle",
+        "queueTtl": "3600s",
+        "serviceAccount": "projects/gamechangers-hamle/serviceAccounts/hamle-build@gamechangers-hamle.iam.gserviceaccount.com",
+        "source": {
+          "storageSource": {
+            "bucket": "gamechangers-hamle-runtime-source-286533609595",
+            "generation": "1791588982226196",
+            "object": "source/1791588981.569753-8e9ec5b74fed4a29931b40bb7bcbcb47.gz"
+          }
+        },
+        "sourceProvenance": {
+          "resolvedStorageSource": {
+            "bucket": "gamechangers-hamle-runtime-source-286533609595",
+            "generation": "1791588982226196",
+            "object": "source/1791588981.569753-8e9ec5b74fed4a29931b40bb7bcbcb47.gz"
+          }
+        },
+        "status": "QUEUED",
+        "steps": [
+          {
+            "args": [
+              "build",
+              "--platform=linux/amd64",
+              "--tag=europe-west1-docker.pkg.dev/gamechangers-hamle/hamle-runtime/hamle-account-manager:20261010-v2",
+              "."
+            ],
+            "name": "gcr.io/cloud-builders/docker"
+          }
+        ],
+        "timeout": "300s"
+      }
+    }
+  ],
+  "build_id": "672adeda-d2c0-44f7-887b-9c58217ed202"
+}

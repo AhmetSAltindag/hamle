@@ -1,0 +1,44 @@
+{
+  "id": "1a12316fc6221a84",
+  "thread_matches": true,
+  "sent": true,
+  "headers": {
+    "From": [
+      "hamle@gamechangers.com.tr"
+    ],
+    "To": [
+      "ahmet@gamechangers.com.tr"
+    ],
+    "Cc": [],
+    "Bcc": [],
+    "Subject": [
+      "Re: HAMLE-IC-IS-20261010-01"
+    ],
+    "Message-ID": [
+      "<CAG20L6U3CZowLYQG2BbmXbWwR4GcxqLAAYG+J4mpxL_DA_UEgg@mail.gmail.com>"
+    ],
+    "In-Reply-To": [
+      "<CAOOr=FimfFb65F0oZKxUtJHAsfk5-M5SrHzBZt9ZRB5s8LGe2g@mail.gmail.com>"
+    ],
+    "References": [
+      "<CAOOr=FimfFb65F0oZKxUtJHAsfk5-M5SrHzBZt9ZRB5s8LGe2g@mail.gmail.com>"
+    ]
+  },
+  "expected_message_id": "<hamle-c79c32cf5b435032ac6e303c690d06f389bf852e8b58ffe998db6e0904902d49@gamechangers.com.tr>",
+  "expected_headers": {
+    "from": "hamle@gamechangers.com.tr",
+    "to": [
+      "ahmet@gamechangers.com.tr"
+    ],
+    "cc": [],
+    "subject": "Re: HAMLE-IC-IS-20261010-01",
+    "in_reply_to": "<CAOOr=FimfFb65F0oZKxUtJHAsfk5-M5SrHzBZt9ZRB5s8LGe2g@mail.gmail.com>",
+    "references": "<CAOOr=FimfFb65F0oZKxUtJHAsfk5-M5SrHzBZt9ZRB5s8LGe2g@mail.gmail.com>"
+  },
+  "multipart": false,
+  "content_type": "text/plain",
+  "defects": [],
+  "body_matches": true,
+  "body_repr": "'Selam Ahmet,\\n\\nSon çeyrekte Gamechangers hesabını daha aktif ve trendlerle uyumlu yönetirken iç iletişimi, ekip motivasyonunu ve sektörel görünürlüğü birlikte güçlendirmeyi hedefliyorsun.\\n\\nBaşlangıç için üç içerik ekseni öneriyorum:\\n- Ajansın uzmanlığıyla örtüşen trendlere özgün yorumlar.\\n- Paylaşımı uygun proje ve vakalarda yaklaşımımızı görünür kılan anlatılar.\\n- Gönüllü ekip katkısıyla hazırlanan süreç ve öğrenim paylaşımları.\\n\\nHer akıma katılmak yerine bize uygun olanları seçmek ve yayın ritmini ekip kapasitesine göre belirlemek önemli. Önce stratejik öncelikleri sen ve Cansu’yla değerlendirmeyi; ardından içerik ve trend planını Özge’yle birlikte ele almayı öneriyorum.\\n\\nGörüşme taslağını şekillendirmek için:\\n- Hangi sosyal medya kanallarını önceliklendirelim?\\n- Ajans hesabında öncelikli dış hedef kitle kim?\\n- Son çeyrekte paylaşılabilecek proje, vaka ve ekip hikâyeleri neler?\\n\\nSevgiler,\\nHamle\\n'",
+  "expected_body_repr": "'Selam Ahmet,\\n\\nSon çeyrekte Gamechangers hesabını daha aktif ve trendlerle uyumlu yönetirken iç iletişimi, ekip motivasyonunu ve sektörel görünürlüğü birlikte güçlendirmeyi hedefliyorsun.\\n\\nBaşlangıç için üç içerik ekseni öneriyorum:\\n- Ajansın uzmanlığıyla örtüşen trendlere özgün yorumlar.\\n- Paylaşımı uygun proje ve vakalarda yaklaşımımızı görünür kılan anlatılar.\\n- Gönüllü ekip katkısıyla hazırlanan süreç ve öğrenim paylaşımları.\\n\\nHer akıma katılmak yerine bize uygun olanları seçmek ve yayın ritmini ekip kapasitesine göre belirlemek önemli. Önce stratejik öncelikleri sen ve Cansu’yla değerlendirmeyi; ardından içerik ve trend planını Özge’yle birlikte ele almayı öneriyorum.\\n\\nGörüşme taslağını şekillendirmek için:\\n- Hangi sosyal medya kanallarını önceliklendirelim?\\n- Ajans hesabında öncelikli dış hedef kitle kim?\\n- Son çeyrekte paylaşılabilecek proje, vaka ve ekip hikâyeleri neler?\\n\\nSevgiler,\\nHamle\\n'"
+}

@@ -1,0 +1,106 @@
+{
+  "synthetic_only": true,
+  "source": "https://firestore.googleapis.com/v1/projects/gamechangers-hamle/databases/hamle-synthetic/documents/hamle-synthetic-probe-v1?pageSize=20",
+  "documents": [
+    {
+      "name": "projects/gamechangers-hamle/databases/hamle-synthetic/documents/hamle-synthetic-probe-v1/control",
+      "fields": {
+        "schema": {
+          "integerValue": "1"
+        },
+        "enabled": {
+          "booleanValue": false
+        },
+        "generation": {
+          "integerValue": "2"
+        }
+      },
+      "createTime": "2026-10-09T22:12:48.428238Z",
+      "updateTime": "2026-10-09T22:17:55.482203Z"
+    },
+    {
+      "name": "projects/gamechangers-hamle/databases/hamle-synthetic/documents/hamle-synthetic-probe-v1/run-3f92a0be7d9b891571fde19beffda74384a46892d30ace5b3d73ba9b10303241",
+      "fields": {
+        "spec": {
+          "stringValue": "fixed-synthetic-sum-1-through-100-v1"
+        },
+        "schema": {
+          "integerValue": "1"
+        },
+        "attempts": {
+          "integerValue": "1"
+        },
+        "synthetic_result": {
+          "integerValue": "5050"
+        },
+        "generation": {
+          "integerValue": "1"
+        },
+        "state": {
+          "stringValue": "completed"
+        },
+        "owner": {
+          "stringValue": "f4e91d664367462393ee6ce1beae8276"
+        }
+      },
+      "createTime": "2026-10-09T22:14:47.086091Z",
+      "updateTime": "2026-10-09T22:14:47.187694Z"
+    },
+    {
+      "name": "projects/gamechangers-hamle/databases/hamle-synthetic/documents/hamle-synthetic-probe-v1/run-592cdc56c36e505f7628dc146728f7bfd5a00366c264929b87bedb2eeaaa0cc4",
+      "fields": {
+        "synthetic_result": {
+          "integerValue": "5050"
+        },
+        "attempts": {
+          "integerValue": "1"
+        },
+        "spec": {
+          "stringValue": "fixed-synthetic-sum-1-through-100-v1"
+        },
+        "state": {
+          "stringValue": "completed"
+        },
+        "schema": {
+          "integerValue": "1"
+        },
+        "owner": {
+          "stringValue": "16b56fb7d1ca49c9830071351160f0b7"
+        },
+        "generation": {
+          "integerValue": "1"
+        }
+      },
+      "createTime": "2026-10-09T22:17:55.183131Z",
+      "updateTime": "2026-10-09T22:17:55.273428Z"
+    },
+    {
+      "name": "projects/gamechangers-hamle/databases/hamle-synthetic/documents/hamle-synthetic-probe-v1/run-ba91fe5c7623b4f5b841266e3c30ad06a8bf3fb7c8da6c0cc50bad5783b023f4",
+      "fields": {
+        "spec": {
+          "stringValue": "fixed-synthetic-sum-1-through-100-v1"
+        },
+        "state": {
+          "stringValue": "completed"
+        },
+        "owner": {
+          "stringValue": "66c35c7f411c47dc96bea837621039d5"
+        },
+        "generation": {
+          "integerValue": "1"
+        },
+        "schema": {
+          "integerValue": "1"
+        },
+        "attempts": {
+          "integerValue": "1"
+        },
+        "synthetic_result": {
+          "integerValue": "5050"
+        }
+      },
+      "createTime": "2026-10-09T22:15:48.169869Z",
+      "updateTime": "2026-10-09T22:15:48.281284Z"
+    }
+  ]
+}

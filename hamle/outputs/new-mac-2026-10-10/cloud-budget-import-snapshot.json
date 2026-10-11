@@ -1,0 +1,50 @@
+{
+  "policy_id": "hamle-shared-20261009-20261012",
+  "limit_microdollars": 50000000,
+  "expires_at": "2026-10-12T23:59:59+03:00",
+  "overrun_hold": false,
+  "providers": {
+    "google_cloud": {
+      "baseline_microdollars": 0,
+      "paid_microdollars": 0,
+      "billing_ready": true
+    },
+    "openai": {
+      "baseline_microdollars": 0,
+      "paid_microdollars": 10000000,
+      "billing_ready": true
+    },
+    "visual_generation": {
+      "baseline_microdollars": 0,
+      "paid_microdollars": 0,
+      "billing_ready": false
+    }
+  },
+  "reservations": [
+    {
+      "reservation_key": "astra-max-first-internal-20261010-v1",
+      "provider": "openai",
+      "reserved_microdollars": 1000000,
+      "actual_microdollars": null,
+      "state": "unknown",
+      "evidence_ref": null
+    },
+    {
+      "reservation_key": "cloud-account-manager-foundation-20261010-v1",
+      "provider": "google_cloud",
+      "reserved_microdollars": 5000000,
+      "actual_microdollars": null,
+      "state": "unknown",
+      "evidence_ref": null
+    },
+    {
+      "reservation_key": "cloud-synthetic-foundation-20261010-v1",
+      "provider": "google_cloud",
+      "reserved_microdollars": 3000000,
+      "actual_microdollars": null,
+      "state": "unknown",
+      "evidence_ref": null
+    }
+  ],
+  "evidence_ref": "cloud-budget-import-snapshot.json"
+}

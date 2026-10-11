@@ -1,0 +1,57 @@
+{
+  "artifact_kind": "unpopulated_handoff_template",
+  "handoff_id": null,
+  "work_id": null,
+  "subtask_id": null,
+  "brand_id": null,
+  "brief_version": null,
+  "accountable_owner_id": null,
+  "producer_id": null,
+  "producer_type": null,
+  "task": null,
+  "delivery_package": null,
+  "source_record_ids": [],
+  "asset_versions": [],
+  "due_date": null,
+  "priority": null,
+  "dependencies": null,
+  "acceptance_criteria": null,
+  "open_questions": [],
+  "constraints": [],
+  "visibility": {
+    "project_id": null,
+    "task_list_id": null,
+    "client_visible": null,
+    "notification_recipients": null,
+    "visibility_verified": false
+  },
+  "acceptance": {
+    "status": "not_sent",
+    "accepted_by": null,
+    "accepted_at": null,
+    "capacity_confirmed": false,
+    "confirmed_delivery": null,
+    "source_record_id": null
+  },
+  "human_takeover": {
+    "active": false,
+    "taken_over_by": null,
+    "affected_subtask_ids": null,
+    "source_record_id": null,
+    "automated_production_stopped": false,
+    "conflicting_external_replies_stopped": false
+  },
+  "result": {
+    "status": "not_started",
+    "output_versions": [],
+    "checks_performed": [],
+    "checks_unavailable": [],
+    "next_verified_step": null
+  },
+  "rules": [
+    "Devir tek bir hesap verebilir sahip ve geçerli brief sürümü içerir.",
+    "Atandı durumu kabul veya üretimde anlamına gelmez.",
+    "Üretim uzmanları müşteri yanıtını Müşteri Temsilcisi üzerinden yürütür.",
+    "İnsan devri aynı işin otomatik üretimi ve çelişen dış yanıtlarını durdurur; diğer bağımsız işler sürer."
+  ]
+}

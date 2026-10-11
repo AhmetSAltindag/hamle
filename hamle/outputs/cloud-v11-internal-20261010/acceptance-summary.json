@@ -1,0 +1,64 @@
+{
+  "status": "passed",
+  "scope": "internal_technical_png_cloud_flow_only",
+  "subject": "HAMLE-IC-URETIM-20261010-01",
+  "thread_id": "1a12646136af37f0",
+  "source_message_id": "1a12646136af37f0",
+  "basecamp_project_id": 49184053,
+  "task_ids": [
+    10392824665,
+    10392833077
+  ],
+  "technical_scores": {
+    "missing_date": "65",
+    "corrected_main": "100",
+    "story": "100"
+  },
+  "final_files": [
+    {
+      "filename": "hamle-main-v2.png",
+      "provider_id": "903246376",
+      "sha256": "61fd4477a1be147ad29a4d98b0dffff72a6182af8e77eb8f7ff689220dadf46f",
+      "byte_size": 23387
+    },
+    {
+      "filename": "hamle-story-v1.png",
+      "provider_id": "903246577",
+      "sha256": "5ac2d21705136c1a424b2d8de8e018d4ed4efe9423b697e7885ea8c3e2342862",
+      "byte_size": 28060
+    }
+  ],
+  "delivery_message_id": "1a126653276ea37b",
+  "sent_raw_mime_bytes_verified": true,
+  "recipient_inbox_confirmation": "confirmed_by_user",
+  "verified_provider_actions": 12,
+  "cloud_executions": [
+    {
+      "name": "hamle-account-manager-4sfv9",
+      "completed_at": "2026-10-10T15:18:53.910383Z"
+    },
+    {
+      "name": "hamle-account-manager-5jt9k",
+      "completed_at": "2026-10-10T15:20:39.565933Z"
+    },
+    {
+      "name": "hamle-account-manager-8fnmh",
+      "completed_at": "2026-10-10T15:11:09.732308Z"
+    },
+    {
+      "name": "hamle-account-manager-x8vp9",
+      "completed_at": "2026-10-10T15:13:41.758672Z"
+    }
+  ],
+  "replay_added_provider_writes": 0,
+  "replay_state_unchanged": true,
+  "initial_runtime_error": "QA control timestamp ordering; same real task/file reused after fix",
+  "wat_live_enabled": false,
+  "professional_brand_or_artistic_acceptance": false,
+  "actual_scheduler_trigger_acceptance": false,
+  "manual_cloud_wakeups_used": true,
+  "paid_model_calls": 0,
+  "additional_cloud_budget_reserved_usd": 2,
+  "cloud_invoice_reconciled": false,
+  "state_sha256": "504d90b755b5b02229d099a4381e9cf7098d55b91715a0a510adf633cfcf0b26"
+}

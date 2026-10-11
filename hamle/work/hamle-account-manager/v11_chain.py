@@ -1,0 +1,751 @@
+"""Hamle v1.1 internal work chain: one 15-minute tick, offline-testable.
+
+Connects existing modules without changing them:
+  verified mail -> interpreter -> v11_intake_plan.plan_intake
+    -> clarification reply (same thread, original sender only)  or
+    -> v11_work_queue bind/enqueue/claim -> v11_production_stages
+    -> v11_brand_task.create_stage_task (profile route/producer, overseers subscribed)
+  each tick: BasecampReader -> PollJournal -> queue events -> classifier
+    question   -> record_producer_question -> grounded answer comment or manager tag
+    submission -> v11_quality_gate.evaluate_quality
+                  90+    -> DeliveryCoordinator (same mail thread, recipient/CC/stop checks)
+                  80-89  -> manager approval tag, wait
+                  <80    -> internal revision comment, max N rounds, then human handoff
+
+Every provider write is a durable chain intent, then queue.begin_write, ONE provider
+attempt, exact readback and queue.confirm_write. Anything uncertain is
+queue.hold_unknown and never retried. All providers, models and the clock are
+injected; nothing here imports a network client or reads credentials. Not wired
+into worker.py; run_chain_tick() is a separate, non-default entry point.
+"""
+from __future__ import annotations
+
+import copy
+import html
+import re
+from datetime import datetime
+
+from autonomy_policy import HAMLE, scope_digest
+import business_writers as bw
+import cloud_providers as provider
+from v11_basecamp_reader import BasecampReader, ReadError, digest as record_digest
+from v11_brand_task import HAMLE_PERSON, create_stage_task, prepare_stage_task
+from v11_delivery import DeliveryCoordinator, quality_feedback, record_outcome
+from v11_intake_plan import IntakeError, _contacts, _email, intake_requirements_digest, plan_intake, \
+    record_producer_question
+from v11_poll_journal import PollJournal, checkpoint_digest
+from v11_production_stages import initialize_production, ready_stages
+from v11_quality_gate import evaluate_quality
+from v11_work_queue import QueueError, WRITE_BINDING_FIELDS, digest
+
+MANAGER_ROLES = ("social_manager", "principal", "strategy_owner")
+CLASSES = ("question", "submission", "approval", "other")
+MAX_EVENTS_PER_WORK = 25
+
+
+class ChainError(ValueError):
+    def __init__(self, code):
+        super().__init__(code)
+        self.code = code
+
+
+def _need(ok, code):
+    if not ok:
+        raise ChainError(code)
+
+
+def _plain(value, limit=4000):
+    """Untrusted Basecamp HTML -> bounded plain text (never rendered or executed)."""
+    text = re.sub(r"<[^>]*>", " ", value if isinstance(value, str) else "")
+    return re.sub(r"\s+", " ", html.unescape(text)).strip()[:limit]
+
+
+class ChainDeps:
+    """All side effects are injected.
+
+    mail_reader() -> list of verified latest-message sources (plan_intake source
+      fields + subject, text, source_order).
+    interpreter(text, context) -> {'requirements': {...}, 'follow_ups': [str]}
+    classifier(text, context) -> one of CLASSES
+    answerer(text, context) -> {'answer': str, 'grounded_in': ['brief.x'|'profile.y']} or None
+    assessor(view, comment) -> {'policy','assessment','binding','safety'} or None
+    approval_reader(view, comment) -> exact verified human_approval record or None
+    task_writer_factory(catalog, state) -> BrandTaskWriter
+    basecamp_get(url, conditional_headers) -> (status, payload, headers)  (SessionGet)
+    comment_writer / mail_writer: write(payload) -> {'remote_id'};
+      readback(remote_id, payload) -> {'readback_sha256'}
+    delivery_bridge(view) -> (delivery_work, DeliveryAdapter)
+    authorize(action_kind, payload) -> True only after fresh stop/To-CC/budget checks
+    budget_ok() -> False skips every model call for this tick
+    intake_authority(view, context) -> optional; derives send authority right after the task exists
+    clock() -> timezone-aware datetime
+    """
+    REQUIRED = ("queue", "catalog", "clock", "mail_reader", "interpreter", "classifier", "answerer",
+                "assessor", "task_writer_factory", "basecamp_get", "comment_writer", "mail_writer",
+                "delivery_bridge", "authorize")
+
+    def __init__(self, **kw):
+        missing = [k for k in self.REQUIRED if kw.get(k) is None]
+        _need(not missing, "chain_dependency_missing")
+        kw.setdefault("budget_ok", lambda: True)
+        kw.setdefault("approval_reader", lambda view, comment: None)
+        kw.setdefault("worker_id", "hamle-chain")
+        kw.setdefault("stage_event_actor_id", None)
+        kw.setdefault("intake_authority", None)
+        self.__dict__.update(kw)
+
+
+class Chain:
+    def __init__(self, deps):
+        self.d = deps
+        self.q = deps.queue
+        self.journal = PollJournal(self.q)
+        self.catalog = copy.deepcopy(deps.catalog)
+        people = self.catalog.get("basecamp_people", {})
+        self.names = {int(k): v.get("name", k) for k, v in people.items()}
+        self.managers = sorted(int(k) for k, v in people.items()
+                               if set(v.get("agency_roles", [])) & set(MANAGER_ROLES))
+        chain = self.catalog.get("chain", {})
+        self.approvers = list(chain.get("quality_approver_basecamp_ids", self.managers))
+
+    # ---------- durable chain records (same backend, own record kinds) ----------
+    @staticmethod
+    def _key(prefix, work_id):
+        return prefix + digest(work_id)
+
+    def _load(self, prefix, work_id):
+        return self.q._run(lambda tx, _: tx.get(self._key(prefix, work_id)))
+
+    def _save(self, prefix, row):
+        key = self._key(prefix, row["work_id"])
+        def op(tx, now):
+            row["updated_at"] = now
+            tx.put(key, row)
+            return row
+        return self.q._run(op)
+
+    def _new_record(self, work):
+        return {"id": self._key("chain-", work["work_id"]), "kind": "chain_work", "work_id": work["work_id"],
+                "brand_id": work["brand_id"], "thread_id": work["thread_id"], "status": "new", "reason": None,
+                "title": None, "reply": None, "task_id": None, "stage_id": None, "assignee_ids": [],
+                "questions": {}, "revision_count": 0, "quality": None, "delivery_state": None,
+                "intents": {}, "pending_changes": {}, "history": []}
+
+    def _note(self, rec, text):
+        rec["history"] = (rec["history"] + [text])[-20:]
+
+    # ---------- tick ----------
+    def tick(self):
+        now = self.d.clock()
+        _need(isinstance(now, datetime) and now.tzinfo is not None, "clock_timezone_required")
+        report = {"status": "ok", "reason": None, "provider_writes": 0, "model_calls": 0,
+                  "ignored_mail": [], "works": {}}
+        self._report, self._now = report, now
+        control = self.q.control()
+        if control["mode"] != "queue_open":
+            report.update(status="stopped", reason="global_" + control["mode"])
+            return report
+        if not (self.catalog.get("live_enabled") is True
+                and self.catalog.get("provider_mutation_allowed_by_this_file") is True):
+            report.update(status="held", reason="brand_profile_live_disabled")
+            return report
+        self.gen = control["generation"]
+        sources = {}
+        for source in self.d.mail_reader() or []:
+            self._ingest(source, sources)
+        model_ok = self.d.budget_ok() is True
+        if not model_ok:
+            report["reason"] = "model_budget_unavailable"
+        cursor = None
+        while True:
+            page = self.q.page(kind="work", limit=100, cursor=cursor)
+            for work in page["items"]:
+                if work["brand_id"] == self.catalog["brand_id"]:
+                    try:
+                        report["works"][work["work_id"]] = self._run_work(work, sources, model_ok)
+                    except (ValueError, KeyError, TypeError, AttributeError) as exc:  # isolate one work
+                        report["works"][work["work_id"]] = {"events": 0, "status": "error:" + str(
+                            getattr(exc, "code", None) or type(exc).__name__)[:150]}
+            cursor = page["next_cursor"]
+            if cursor is None:
+                break
+        return report
+
+    def _ingest(self, source, sources):
+        try:
+            contacts = _contacts(self.catalog)
+            _email(source, contacts, self._now)  # Hamle in real To/CC, allowed sender, fresh, not own/auto.
+            sender = contacts[source["sender"]]
+            _need(sender.get("side") == "agency" and sender.get("can_request") is True, "sender_not_agency_requester")
+            _need(type(source.get("source_order")) is int and source["source_order"] > 0, "source_order_missing")
+            route = self._default_route()
+            work = self.q.bind_work(brand_id=self.catalog["brand_id"], thread_id=source["thread_id"],
+                                    account_id=self.catalog["basecamp"]["account_id"],
+                                    project_id=self.catalog["basecamp"]["project_id"], list_id=route["list_id"],
+                                    service_id=route["service_id"], expected_generation=self.gen)
+            self.q.enqueue_message(work["work_id"], message_id=source["message_id"],
+                                   fingerprint=source["fingerprint"], source_order=source["source_order"],
+                                   expected_generation=self.gen)
+            sources[source["message_id"]] = source
+        except (IntakeError, ChainError, QueueError, KeyError, TypeError, ValueError) as exc:
+            self._report["ignored_mail"].append({"message_id": str(source.get("message_id"))[:200]
+                                                 if isinstance(source, dict) else None,
+                                                 "reason": getattr(exc, "code", None) or str(exc)})
+
+    def _default_route(self):
+        chain = self.catalog.get("chain", {})
+        routes = [r for r in self.catalog.get("routes", [])
+                  if r.get("service_id") == chain.get("default_service_id")
+                  and r.get("category_key") == chain.get("default_category_key")]
+        _need(len(routes) == 1 and type(routes[0].get("list_id")) is int, "default_route_unconfirmed")
+        return routes[0]
+
+    def _run_work(self, work, sources, model_ok):
+        out = {"events": 0, "status": None}
+        if work["mode"] != "active":
+            out["status"] = "work_" + work["mode"]
+            return out
+        comments = {}
+        if work.get("task_id"):
+            try:
+                comments = self._poll(work)
+            except (ReadError, QueueError, ChainError) as exc:
+                out["status"] = "poll_held:" + (getattr(exc, "code", None) or str(exc))
+                return out
+        for _ in range(MAX_EVENTS_PER_WORK):
+            head = self._head(work["work_id"])
+            if head is None:
+                break
+            if head["source_kind"] == "gmail" and head["source_id"] not in sources:
+                out["status"] = "waiting_for_mail_reread"
+                break
+            if not model_ok:
+                out["status"] = "waiting_for_model_budget"
+                break
+            try:
+                claim = self.q.claim_next(work["work_id"], worker_id=self.d.worker_id, expected_generation=self.gen)
+            except QueueError as exc:
+                out["status"] = "queue_held:" + exc.code
+                break
+            if claim is None:
+                break
+            done = self._handle(claim, sources, comments)
+            out["events"] += 1
+            if done is None:  # unresolved write: work stays blocked, no retry
+                out["status"] = "write_outcome_unknown"
+                break
+            outcome, ref = done
+            try:
+                self.q.complete_event(claim, outcome=outcome, evidence_ref=ref)
+            except QueueError as exc:  # e.g. takeover/stop landed mid-event: leave it for a human
+                out["status"] = "queue_held:" + exc.code
+                break
+            if outcome == "held_for_human":
+                break
+        rec = self._load("chain-", work["work_id"])
+        out["status"] = out["status"] or (rec or {}).get("status")
+        return out
+
+    def _head(self, work_id):
+        def op(tx, _):
+            w = self.q._work(tx, work_id)
+            if w["head_sequence"] >= w["next_sequence"]:
+                return None
+            return tx.get(self.q._event_key(work_id, w["head_sequence"]))
+        return self.q._run(op)
+
+    # ---------- Basecamp observation -> journal -> queue ----------
+    def _poll(self, work):
+        rec = self._load("chain-", work["work_id"]) or self._new_record(work)
+        def remember(batch):
+            for change in (batch or {}).get("changes", []):
+                rec["pending_changes"][change["event_id"]] = {k: change[k] for k in ("kind", "record_id", "record_sha256")}
+        pending = self.journal.pending(work["work_id"])
+        if pending is not None:  # crash recovery: drain the frozen batch first, never re-poll over it
+            remember(pending)
+            self._save("chain-", rec)
+            self.journal.drain(work["work_id"], expected_generation=self.gen, max_events=100)
+        previous = self.journal.checkpoint(work["work_id"])
+        reader = BasecampReader(self.d.basecamp_get)
+        observation = reader.poll({k: work[k] for k in ("work_id", "account_id", "project_id", "list_id", "task_id")},
+                                  previous=previous, observed_at=self._now)
+        batch = self.journal.stage(observation, expected_checkpoint_digest=checkpoint_digest(previous),
+                                   expected_generation=self.gen)
+        remember(batch)
+        self._save("chain-", rec)
+        self.journal.drain(work["work_id"], expected_generation=self.gen, max_events=100)
+        return {str(c["id"]): c for c in observation["comments"]}
+
+    # ---------- event dispatch ----------
+    def _handle(self, claim, sources, comments):
+        work = self.q.get_work(claim["work_id"])
+        rec = self._load("chain-", work["work_id"]) or self._new_record(work)
+        event = claim["event"]
+        try:
+            if event["source_kind"] == "gmail":
+                return self._on_mail(claim, work, rec, sources[event["source_id"]])
+            return self._on_basecamp(claim, work, rec, comments)
+        except (ValueError, KeyError, TypeError, AttributeError) as exc:  # incl. BrandTask/Production errors
+            rec = self._load("chain-", work["work_id"]) or rec  # keep durable intents written so far
+            code = getattr(exc, "code", None) or (str(exc) if isinstance(exc, (IntakeError, ValueError))
+                                                   and not isinstance(exc, KeyError) else type(exc).__name__)
+            rec.update(status="held", reason=str(code)[:150])
+            self._save("chain-", rec)
+            if self.q.get_work(work["work_id"])["inflight_action_id"]:
+                return None
+            return "held_for_human", "chain-held:" + rec["reason"][:150]
+
+    def _model(self, fn, *args):
+        self._report["model_calls"] += 1
+        return fn(*args)
+
+    # ---------- mail ----------
+    def _past_works(self, work):
+        rows = self.q.backend.scan(kind="chain_work", filters={"brand_id": work["brand_id"]}, limit=50)
+        return [{"title": r.get("title"), "status": r.get("status"), "task_id": r.get("task_id"),
+                 "same_thread": r.get("thread_id") == work["thread_id"]}
+                for r in rows if r["work_id"] != work["work_id"] and r.get("title")][:20]
+
+    def _on_mail(self, claim, work, rec, source):
+        if rec["status"] not in ("new", "awaiting_clarification"):
+            # Follow-up mail on a running work: brief changes need amend_brief + human review.
+            if rec.get("task_id"):
+                body = self._tag(self.managers, "Bu iş zincirine yeni bir mail geldi. Brief değişikliği olabilir; "
+                                 "lütfen inceleyin (Hamle brief'i kendiliğinden değiştirmez).")
+                if self._comment(claim, work, rec, "followup-mail", body, self.managers) is None:
+                    return None
+            return "no_action", "followup-mail-flagged"
+        past = self._past_works(work)
+        result = self._model(self.d.interpreter, source.get("text", ""),
+                             {"subject": source.get("subject"), "brand_id": work["brand_id"], "past_works": past,
+                              "status": rec["status"]}) or {}
+        requirements = copy.deepcopy(result.get("requirements") or {})
+        chain = self.catalog.get("chain", {})
+        requirements.setdefault("brand_id", self.catalog["brand_id"])
+        requirements.setdefault("service_id", chain.get("default_service_id"))
+        requirements.setdefault("category_key", chain.get("default_category_key"))
+        requirements.pop("agreement", None)  # never accept an agreement claimed by model output
+        rule = chain.get("agency_direct_request_counts_as_agreement", {})
+        if rule.get("value") is True and rule.get("verified") is True:
+            requirements["agreement"] = {"verified": True, "source_message_id": source["message_id"],
+                                         "evidence_ref": source["evidence_ref"],
+                                         "requirements_sha256": intake_requirements_digest(requirements)}
+        plan = plan_intake(source, requirements, self.catalog, now=self._now)
+        rec["title"] = requirements.get("title") if isinstance(requirements.get("title"), str) else rec["title"]
+        if plan["status"] == "needs_clarification":
+            intent = plan["intents"][0]["payload"]
+            lines = ["Merhaba,", "", "İşe başlayabilmem için şu bilgilere ihtiyacım var:"]
+            lines += ["- " + q["question"] for q in plan["questions"]]
+            extra = [str(q).strip()[:300] for q in (result.get("missing_questions") or [])
+                     if isinstance(q, str) and q.strip()][:3]  # bounded model questions, internal requester only
+            lines += ["- " + q for q in dict.fromkeys(extra) if q not in {x["question"] for x in plan["questions"]}]
+            lines += ["", "Teşekkürler,", "Hamle"]
+            payload = {"from": HAMLE, "to": [source["sender"]], "cc": [], "thread_id": intent["thread_id"],
+                       "in_reply_to_message_id": intent["in_reply_to_message_id"],
+                       "subject": "Re: " + str(source.get("subject") or "")[:180], "body": "\n".join(lines)}
+            rec.update(status="awaiting_clarification", reason=plan["reason"])
+            state = self._write(claim, work, rec, "clarify-" + source["message_id"][:150], "clarify_brief",
+                                "gmail", payload, self.d.mail_writer)
+            return None if state == "unknown" else ("processed", "clarification:" + state)
+        _need(plan["status"] == "ready_internal_task", "intake_" + str(plan["reason"]))
+        brief = plan["brief"]
+        _need(brief["binding"]["list_id"] == work["list_id"] and brief["service_id"] == work["service_id"],
+              "intake_route_differs_from_bound_work")
+        state = initialize_production(work["work_id"], brief)
+        stage_id = ready_stages(state)[0]["id"]
+        rec.update(status="creating_task", reason=None, title=brief["title"], stage_id=stage_id,
+                   reply={k: brief["reply_envelope"][k] for k in ("thread_id", "to", "cc", "in_reply_to_message_id")},
+                   assignee_ids=state["stages"][stage_id]["spec"]["assignee_ids"],
+                   brief_sha256=state["brief_sha256"])
+        intake_work = {"work_id": work["work_id"], "task_id": None, "brief": brief, "status": "awaiting_production"}
+        prod = {"id": self._key("chain-prod-", work["work_id"]), "kind": "chain_production",
+                "work_id": work["work_id"], "state": state, "intake_work": intake_work}
+        self._save("chain-prod-", prod)
+        prepared = prepare_stage_task(state, self.catalog, stage_id, work, claim)
+        key = prepared["action_key"]
+        rec["intents"][key] = {"kind": "create_task", "provider": "basecamp", "status": "prepared",
+                               "payload_sha256": prepared["payload_sha256"], "event_id": claim["event_id"]}
+        self._save("chain-", rec)
+        writer = self.d.task_writer_factory(copy.deepcopy(self.catalog), copy.deepcopy(state))
+        created = create_stage_task(self.q, claim, state, self.catalog, stage_id, writer,
+                                    authorize=lambda p: self.d.authorize("create_task", p) is True)
+        self._report["provider_writes"] += created["network_writes"]
+        if created["status"] != "task_created_readback_verified":
+            status = "unknown" if created["network_writes"] else "denied"
+            rec["intents"][key]["status"] = status
+            rec.update(status="held", reason=created["reason"])
+            self._save("chain-", rec)
+            return None if status == "unknown" else ("held_for_human", "create-task:" + str(created["reason"])[:150])
+        task = created["stage_task"]
+        rec["intents"][key].update(status="confirmed", remote_id=str(task["task_id"]))
+        rec.update(status="in_production", task_id=task["task_id"])
+        intake_work["task_id"] = task["task_id"]
+        prod["intake_work"] = intake_work
+        prod["stage_task"] = task  # ready for a bind_stage_task event once its overseer actor is decided
+        self._save("chain-prod-", prod)
+        self._save("chain-", rec)
+        if self.d.intake_authority is not None:
+            # Send authority is derived once, at intake, from the accepted brand policy
+            # (no grant -> later delivery is held). Never blocks the task itself.
+            try:
+                rec["authority"] = self.d.intake_authority(self._view(rec), {"risk_area": requirements.get("risk_area")})
+            except Exception:
+                rec["authority"] = {"status": "not_granted", "reason": "intake_authority_failed"}
+            self._save("chain-", rec)
+        work = self.q.get_work(work["work_id"])
+        note = self._context_note(rec, past, result.get("follow_ups"), result.get("context_notes"))
+        if self._comment(claim, work, rec, "context-note", note, []) is None:
+            return None
+        return "processed", "basecamp-readback:" + str(task["task_id"])
+
+    def _context_note(self, rec, past, follow_ups, context_notes=None):
+        lines = ["Hamle iç bağlam notu — yalnız ekip içi, müşteriye/requester'a gönderilmez."]
+        notes = [str(n)[:300] for n in (context_notes or []) if isinstance(n, str) and n.strip()][:5]
+        if notes:
+            lines.append("Talepten çıkan iç notlar (model önerisi):")
+            lines += ["- " + n for n in notes]
+        lines.append("Aynı marka/zincirdeki geçmiş işler:")
+        lines += [f"- {p['title']} · durum: {p['status']}" + (f" · görev {p['task_id']}" if p["task_id"] else "")
+                  + (" · aynı mail zinciri" if p["same_thread"] else "") for p in past] or ["- kayıt yok"]
+        items = [str(f)[:300] for f in (follow_ups or []) if isinstance(f, str) and f.strip()][:5]
+        lines.append("Olası takip işleri (model önerisi; onay veya söz değildir):")
+        lines += ["- " + f for f in items] or ["- öneri yok"]
+        return "\n".join(lines)
+
+    # ---------- Basecamp comments ----------
+    def _on_basecamp(self, claim, work, rec, comments):
+        change = rec["pending_changes"].pop(claim["event"]["source_id"], None)
+        self._save("chain-", rec)
+        if change is None or change["kind"] != "comment_observed":
+            return "no_action", "basecamp-" + (change or {}).get("kind", "change_unknown")
+        comment = comments.get(str(change["record_id"]))
+        if comment is None or record_digest(comment) != change["record_sha256"]:
+            return "superseded", "comment-changed-or-absent"
+        author = (comment.get("creator") or {}).get("id")
+        if author == HAMLE_PERSON:
+            return "no_action", "own-comment"
+        producer, manager = author in rec["assignee_ids"], author in self.managers
+        if not (producer or manager) or rec["status"] in ("delivered", "human_handoff"):
+            return "no_action", "comment-not-actionable"
+        text = _plain(comment.get("content"))
+        kind = self._model(self.d.classifier, text, {"status": rec["status"], "producer": producer,
+                                                    "manager": manager})
+        if kind == "question" and producer:
+            return self._question(claim, work, rec, comment, text)
+        if kind == "submission" and producer:
+            return self._submission(claim, work, rec, comment)
+        if kind == "approval" and author in self.approvers and rec["status"] == "awaiting_human_approval":
+            return self._approval(claim, work, rec, comment)
+        return "no_action", "comment-class-" + str(kind)[:40]
+
+    def _question(self, claim, work, rec, comment, text):
+        prod = self._load("chain-prod-", work["work_id"])
+        b = prod["intake_work"]["brief"]["binding"]
+        qid = "bc-comment-" + str(comment["id"])
+        question = {"id": qid, "text": text or "(boş)", "source": {
+            "channel": "basecamp", "verified": True, "evidence_ref": "basecamp-comment:" + str(comment["id"]),
+            "actor_id": comment["creator"]["id"], "account_id": b["account_id"], "project_id": b["project_id"],
+            "list_id": b["list_id"], "task_id": work["task_id"]}}
+        recorded = record_producer_question(prod["intake_work"], question, self.catalog)
+        prod["intake_work"] = recorded["work"]
+        self._save("chain-prod-", prod)
+        brief = prod["intake_work"]["brief"]
+        answer = self._model(self.d.answerer, text, {"brief": {k: brief.get(k) for k in (
+            "title", "objective", "audience", "deadline", "assets_ref", "deliverables")},
+            "profile": {k: self.catalog.get(k) for k in ("brand_id", "terms", "verification_scope")}})
+        allowed = {"brief." + k for k in ("title", "objective", "audience", "deadline", "assets_ref", "deliverables")}
+        allowed |= {"profile." + k for k in ("terms", "brand_id", "verification_scope")}
+        refs = answer.get("grounded_in") if isinstance(answer, dict) else None
+        grounded = (isinstance(answer, dict) and isinstance(answer.get("answer"), str) and answer["answer"].strip()
+                    and isinstance(refs, list) and refs and all(isinstance(r, str) and r.split("[")[0] in allowed
+                                                                for r in refs))
+        name = self.names.get(comment["creator"]["id"], "")
+        if grounded:
+            body = f"@{name} {answer['answer'].strip()[:3000]}\n(Dayanak: {', '.join(refs)})"
+            mentions, status = [comment["creator"]["id"]], "answered"
+        else:
+            body = self._tag(self.managers, "Üreticinin sorusu brief/profilden güvenle yanıtlanamadı; "
+                             "lütfen bu görevin altında yanıtlayın.")
+            mentions, status = list(self.managers), "escalated_to_managers"
+        rec["questions"][qid] = {"status": status}
+        result = self._comment(claim, work, rec, "answer-" + qid, body, mentions)
+        if result is None:
+            return None
+        rec["questions"][qid]["intent"] = result
+        self._save("chain-", rec)
+        return "processed", "producer-question:" + status
+
+    def _evidence(self, rec, comment):
+        view = self._view(rec)
+        self._report["model_calls"] += 1
+        return self.d.assessor(view, copy.deepcopy(comment)), view
+
+    def _submission(self, claim, work, rec, comment, human_approval=None):
+        evidence, view = self._evidence(rec, comment)
+        if not isinstance(evidence, dict):
+            result = {"route": "held", "reason": "quality_evidence_missing", "score": None}
+        else:
+            result = evaluate_quality(evidence.get("policy"), evidence.get("assessment"), evidence.get("binding"),
+                                      evidence.get("safety"), now=self._now, human_approval=human_approval)
+        rec["quality"] = {"route": result["route"], "reason": result["reason"], "score": result.get("score"),
+                          "comment_id": comment["id"], "assessment_sha256": result.get("assessment_sha256")}
+        self._note(rec, f"quality {result.get('score')} -> {result['route']}")
+        version = str((evidence or {}).get("artifact_version") or f"comment-{comment['id']}")
+        route = result["route"]
+        if route == "delivery_candidate":
+            return self._deliver(claim, work, rec)
+        if route == "needs_human_approval":
+            rec.update(status="awaiting_human_approval", reason=result["reason"])
+            body = self._tag(self.approvers, "Puan 80–89 bandında: müşteriye/requester'a gitmeden önce Özge, Ahmet "
+                             "veya Cansu'dan birinin onayı gerekiyor.\n\n" + quality_feedback(result, artifact_version=version))
+            if self._comment(claim, work, rec, f"approval-{comment['id']}", body, self.approvers) is None:
+                return None
+            return "processed", "quality:needs_human_approval"
+        if route == "revision":
+            limit = self.catalog.get("terms", {}).get("internal_quality_revision_limit_per_work")
+            _need(type(limit) is int and 1 <= limit <= 10, "internal_revision_limit_missing")
+            if rec["revision_count"] < limit:
+                rec.update(status="changes_requested", reason=result["reason"])
+                body = self._tag(rec["assignee_ids"], f"İç düzeltme {rec['revision_count'] + 1}/{limit}.\n\n"
+                                 + quality_feedback(result, artifact_version=version))
+                state = self._comment(claim, work, rec, f"revision-{comment['id']}", body, rec["assignee_ids"])
+                if state is None:
+                    return None
+                if state == "confirmed":  # only a verified revision write counts toward the limit
+                    rec["revision_count"] += 1
+                    self._save("chain-", rec)
+                return "processed", "quality:revision"
+            rec.update(status="human_handoff", reason="internal_revision_limit_reached")
+            body = self._tag(self.managers, f"{limit} iç düzeltme turu doldu; iş insana devredildi. "
+                             "Hamle bu işte yeni düzeltme istemeyecek.\n\n" + quality_feedback(result, artifact_version=version))
+            if self._comment(claim, work, rec, f"handoff-{comment['id']}", body, self.managers) is None:
+                return None
+            return "held_for_human", "internal-revision-limit"
+        rec.update(status="quality_held", reason=result["reason"])
+        body = self._tag(self.managers, "Kalite değerlendirmesi tamamlanamadı (" + result["reason"] +
+                         "); insan incelemesi gerekiyor.")
+        if self._comment(claim, work, rec, f"quality-held-{comment['id']}", body, self.managers) is None:
+            return None
+        return "held_for_human", "quality-held"
+
+    def _approval(self, claim, work, rec, comment):
+        approval = self.d.approval_reader(self._view(rec), copy.deepcopy(comment))
+        if not isinstance(approval, dict):
+            return "no_action", "approval-comment-without-verified-record"
+        source = {"id": rec["quality"]["comment_id"]}
+        return self._submission(claim, work, rec, source, human_approval=approval)
+
+    # ---------- delivery (same mail thread) ----------
+    def _deliver(self, claim, work, rec):
+        dwork, adapter = self.d.delivery_bridge(self._view(rec))
+        _need(all(dwork.get(k) == work[k] for k in WRITE_BINDING_FIELDS), "delivery_bridge_binding_mismatch")
+        coordinator = DeliveryCoordinator()
+        for _ in range(2):  # scored path may need a durable quality note before the mail
+            polled = coordinator.poll(adapter, dwork, rec["delivery_state"], now=self._now)
+            rec["delivery_state"] = polled["state"]
+            if not polled["intents"]:
+                break
+            intent = polled["intents"][0]
+            if intent["kind"] == "deliver_file":
+                p = intent["payload"]
+                _need(p["thread_id"] == rec["reply"]["thread_id"] == work["thread_id"], "delivery_thread_changed")
+                _need(p["to"] == rec["reply"]["to"] and p["cc"] == rec["reply"]["cc"], "delivery_recipients_changed")
+            pre = coordinator.preflight_intent(adapter, dwork, rec["delivery_state"], intent, now=self._now)
+            if not pre["allowed"]:
+                rec["delivery_state"] = pre["state"]
+                break
+            if self._delivery_write(claim, work, rec, intent, pre["state"]) != "confirmed":
+                if self.q.get_work(work["work_id"])["inflight_action_id"]:
+                    return None  # started/unknown write: no tag, no retry
+                rec["delivery_state"] = dict(rec["delivery_state"] or {}, status="held",
+                                             reason="delivery_write_not_authorized")
+                break
+        state = rec["delivery_state"] or {}
+        if state.get("status") == "delivered":
+            rec.update(status="delivered", reason=None)
+            self._save("chain-", rec)
+            return "processed", "delivered:" + state["last_confirmed_delivery"]["action_id"][:100]
+        rec.update(status="delivery_held", reason=state.get("reason"))
+        self._save("chain-", rec)
+        body = self._tag(self.managers, "Teslim, gönderim öncesi kontrollerde durdu (" + str(state.get("reason"))[:150]
+                         + "). Hamle bu işi göndermeyecek; lütfen inceleyin ve gerekirse elle gönderin.")
+        key = "delivery-held-" + str(rec["quality"]["comment_id"] if rec.get("quality") else "x")
+        if self._comment(claim, work, rec, key, body, self.managers) is None:
+            return None
+        return "held_for_human", "delivery-held:" + str(state.get("reason"))[:120]
+
+    def _delivery_write(self, claim, work, rec, intent, state):
+        key, kind = intent["action_id"], intent["kind"]
+        provider_name = "gmail" if kind == "deliver_file" else "basecamp"
+        rec["intents"][key] = {"kind": kind, "provider": provider_name, "status": "prepared",
+                               "payload_sha256": intent["payload_sha256"], "event_id": claim["event_id"]}
+        self._save("chain-", rec)
+        if self.d.authorize(kind, copy.deepcopy(intent["payload"])) is not True:
+            rec["intents"][key]["status"] = "denied"
+            self._save("chain-", rec)
+            return "denied"
+        binding = {k: intent["authority_request"]["work_binding"][k] for k in WRITE_BINDING_FIELDS}
+        binding["queue_event_fingerprint"] = claim["event"]["fingerprint"]
+        action = self.q.begin_write(claim, action_kind=kind, payload_sha256=intent["payload_sha256"],
+                                    action_key=key, prepared_binding=binding)
+        rec["delivery_state"] = record_outcome(state, intent, status="started")
+        rec["intents"][key].update(status="started", action_id=action["id"])
+        self._save("chain-", rec)
+        writer = self.d.mail_writer if kind == "deliver_file" else self.d.comment_writer
+        try:
+            self._report["provider_writes"] += 1
+            remote = self._one_write(writer, intent["payload"], intent["payload_sha256"])
+            self.q.confirm_write(action_id=action["id"], claim_token=claim["token"],
+                                 payload_sha256=intent["payload_sha256"],
+                                 receipt={"provider": provider_name, "remote_id": remote,
+                                          "readback_sha256": intent["payload_sha256"]})
+        except Exception:
+            return self._unknown(rec, key, action, lambda: record_outcome(rec["delivery_state"], intent, status="unknown"))
+        receipt = {"provider_readback_verified": True, "payload_sha256": intent["payload_sha256"],
+                   "action_id": key, "evidence_ref": f"{provider_name}-readback:{remote}"}
+        if intent.get("quality_note") is True:
+            receipt["quality_context_sha256"] = intent["quality_context_sha256"]
+        rec["delivery_state"] = record_outcome(rec["delivery_state"], intent, status="confirmed", receipt=receipt)
+        rec["intents"][key].update(status="confirmed", remote_id=remote)
+        self._save("chain-", rec)
+        return "confirmed"
+
+    # ---------- generic single write ----------
+    def _tag(self, ids, text):
+        return " ".join("@" + self.names.get(i, str(i)) for i in ids) + "\n" + text
+
+    def _comment(self, claim, work, rec, key, body, mention_ids):
+        _need(work.get("task_id"), "comment_requires_bound_task")
+        payload = {"target": {k: work[k] for k in ("account_id", "project_id", "list_id", "task_id")},
+                   "body": body[:12000], "mention_ids": sorted(set(mention_ids)), "internal_only": True}
+        state = self._write(claim, work, rec, key, "add_comment", "basecamp", payload, self.d.comment_writer)
+        return None if state == "unknown" else state
+
+    def _write(self, claim, work, rec, key, action_kind, provider_name, payload, writer):
+        key = key[:200]
+        sha = scope_digest(payload)
+        prior = rec["intents"].get(key)
+        if prior:
+            _need(prior["payload_sha256"] == sha, "intent_payload_conflict")
+            if prior["status"] in ("confirmed", "denied"):
+                return prior["status"]
+            _need(prior["status"] == "prepared", "intent_outcome_unknown_no_retry")
+        rec["intents"][key] = {"kind": action_kind, "provider": provider_name, "status": "prepared",
+                               "payload_sha256": sha, "event_id": claim["event_id"]}
+        self._save("chain-", rec)  # durable intent BEFORE any authority/provider step
+        if self.d.authorize(action_kind, copy.deepcopy(payload)) is not True:
+            rec["intents"][key]["status"] = "denied"
+            self._save("chain-", rec)
+            return "denied"
+        work = self.q.get_work(work["work_id"])
+        binding = {**{k: work[k] for k in WRITE_BINDING_FIELDS}, "queue_event_fingerprint": claim["event"]["fingerprint"]}
+        action = self.q.begin_write(claim, action_kind=action_kind, payload_sha256=sha, action_key=key,
+                                    prepared_binding=binding)
+        rec["intents"][key].update(status="started", action_id=action["id"])
+        self._save("chain-", rec)
+        try:
+            self._report["provider_writes"] += 1
+            remote = self._one_write(writer, payload, sha)
+            self.q.confirm_write(action_id=action["id"], claim_token=claim["token"], payload_sha256=sha,
+                                 receipt={"provider": provider_name, "remote_id": remote, "readback_sha256": sha})
+        except Exception:
+            return self._unknown(rec, key, action)
+        rec["intents"][key].update(status="confirmed", remote_id=remote)
+        self._save("chain-", rec)
+        return "confirmed"
+
+    @staticmethod
+    def _one_write(writer, payload, sha):
+        receipt = writer.write(copy.deepcopy(payload))
+        remote = receipt.get("remote_id") if isinstance(receipt, dict) else None
+        _need(isinstance(remote, str) and 0 < len(remote) <= 200, "provider_receipt_unconfirmed")
+        readback = writer.readback(remote, copy.deepcopy(payload))
+        _need(isinstance(readback, dict) and readback.get("readback_sha256") == sha, "provider_readback_mismatch")
+        return remote
+
+    def _unknown(self, rec, key, action, delivery_update=None):
+        try:
+            self.q.hold_unknown(action["id"])
+        except Exception:
+            pass  # started action already forbids any resend
+        if delivery_update is not None:
+            try:
+                rec["delivery_state"] = delivery_update()
+            except Exception:
+                pass
+        rec["intents"][key]["status"] = "unknown"
+        rec.update(status="write_outcome_unknown", reason="provider_write_outcome_unknown_no_retry")
+        self._save("chain-", rec)
+        return "unknown"
+
+    def _view(self, rec):
+        prod = self._load("chain-prod-", rec["work_id"]) or {}
+        return {"work_id": rec["work_id"], "thread_id": rec["thread_id"], "task_id": rec["task_id"],
+                "reply": copy.deepcopy(rec["reply"]), "stage_id": rec["stage_id"],
+                "brief": copy.deepcopy((prod.get("intake_work") or {}).get("brief")),
+                "brief_sha256": rec.get("brief_sha256"), "revision_count": rec["revision_count"]}
+
+
+def run_chain_tick(deps):
+    """Separate, non-default entry point. worker.py does not call this."""
+    return Chain(deps).tick()
+
+
+class BasecampCommentWriter:
+    """Narrow comment writer for ONE verified private project; one POST, exact readback.
+
+    write(payload) -> {'remote_id'}; readback(remote_id, payload) -> {'readback_sha256'}.
+    Mentions are listed in payload['mention_ids'] and named in text; rendering real
+    Basecamp @mentions needs each person's attachable sgid (not wired yet).
+    """
+    ORIGIN = "https://3.basecampapi.com"
+
+    def __init__(self, catalog, *, token_provider, session_factory=provider._session):
+        bc = catalog["basecamp"]
+        _need(bc.get("verified") is True and bc.get("customer_visible") is False, "comment_project_unverified")
+        self.account, self.project = bc["account_id"], bc["project_id"]
+        self.token_provider, self.session_factory = token_provider, session_factory
+
+    def _check(self, payload):
+        t = payload.get("target", {}) if isinstance(payload, dict) else {}
+        _need(set(payload) == {"target", "body", "mention_ids", "internal_only"} and payload["internal_only"] is True
+              and t.get("account_id") == self.account and t.get("project_id") == self.project
+              and type(t.get("task_id")) is int and t["task_id"] > 0
+              and isinstance(payload["body"], str) and 0 < len(payload["body"]) <= 12000, "comment_payload_invalid")
+        return f"{self.ORIGIN}/{self.account}/buckets/{self.project}"
+
+    def _request(self, method, url, body=None, expected=200):
+        session, response = self.session_factory(), None
+        try:
+            response = session.request(method, url, headers={
+                "Authorization": "Bearer " + provider._token(self.token_provider()),
+                "Content-Type": "application/json", "User-Agent": "Hamle Chain (ahmet@gamechangers.com.tr)"},
+                data=None if body is None else provider._encode(body), timeout=(10, 30),
+                allow_redirects=False, stream=True)
+            _need(response.status_code == expected, "provider_response_unconfirmed")
+            raw = b"".join(response.iter_content(chunk_size=16384))
+            _need(len(raw) <= 262144, "provider_response_too_large")
+            result = provider._json(raw)
+            _need(isinstance(result, dict), "provider_response_invalid")
+            return result
+        finally:
+            if response is not None:
+                response.close()
+            session.close()
+
+    def write(self, payload):
+        base = self._check(payload)
+        row = self._request("POST", f"{base}/recordings/{payload['target']['task_id']}/comments.json",
+                            {"content": bw._description(payload["body"])}, expected=201)
+        _need(type(row.get("id")) is int and row["id"] > 0, "comment_receipt_unconfirmed")
+        return {"remote_id": str(row["id"])}
+
+    def readback(self, remote_id, payload):
+        base = self._check(payload)
+        _need(isinstance(remote_id, str) and re.fullmatch(r"[0-9]{1,30}", remote_id), "comment_receipt_invalid")
+        row = self._request("GET", f"{base}/comments/{remote_id}.json")
+        _need(row.get("id") == int(remote_id) and row.get("bucket", {}).get("id") == self.project
+              and row.get("parent", {}).get("id") == payload["target"]["task_id"]
+              and row.get("creator", {}).get("id") == HAMLE_PERSON and row.get("visible_to_clients") is False
+              and bw._description_matches(row.get("content"), payload["body"]), "comment_readback_mismatch")
+        return {"readback_sha256": scope_digest(payload)}

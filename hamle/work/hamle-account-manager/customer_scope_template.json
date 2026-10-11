@@ -1,0 +1,119 @@
+{
+  "artifact_kind": "disabled_offline_customer_scope_template",
+  "schema_version": 1,
+  "runtime_integrated": false,
+  "live_enabled": false,
+  "notes": [
+    "Bu kayıtlar yetki vermez. Tüm markalar hedef kapsamda; her marka/hizmet ayrı doğrulanır.",
+    "Müşteri ve ekip bilgileri, proje, hizmet/revizyon kuralları yetkili kaynakla doldurulmadan kayıt açılamaz.",
+    "Gecikmiş iş için yeni açık iş yetkisi gerekir. Yeni posta kutusu okuması, Hamle’ye ulaşmayan CC çıkarılmasını göstermez.",
+    "Model çıktısı, tarihsel öğrenme veya müşterinin mail metni bu alanları kendiliğinden doğrulayamaz.",
+    "autonomy_policy.py yalnız yerel saf denetimdir; mevcut canlı işçi tarafından kullanılmaz."
+  ],
+  "brands": [
+    {
+      "schema_version": 1,
+      "brand_id": "wat_mobilite",
+      "brand_name": "WAT Mobilite",
+      "enabled": false,
+      "authority": null,
+      "customer_contacts": null,
+      "agency_contacts": null,
+      "allowed_cc_contacts": null,
+      "agency_owner": null,
+      "basecamp": null,
+      "services": null
+    },
+    {
+      "schema_version": 1,
+      "brand_id": "rabam",
+      "brand_name": "Rabam",
+      "enabled": false,
+      "authority": null,
+      "customer_contacts": null,
+      "agency_contacts": null,
+      "allowed_cc_contacts": null,
+      "agency_owner": null,
+      "basecamp": null,
+      "services": null
+    },
+    {
+      "schema_version": 1,
+      "brand_id": "ya_da",
+      "brand_name": "ya da",
+      "enabled": false,
+      "authority": null,
+      "customer_contacts": null,
+      "agency_contacts": null,
+      "allowed_cc_contacts": null,
+      "agency_owner": null,
+      "basecamp": null,
+      "services": null
+    },
+    {
+      "schema_version": 1,
+      "brand_id": "multicosmetics",
+      "brand_name": "Multicosmetics",
+      "enabled": false,
+      "authority": null,
+      "customer_contacts": null,
+      "agency_contacts": null,
+      "allowed_cc_contacts": null,
+      "agency_owner": null,
+      "basecamp": null,
+      "services": null
+    },
+    {
+      "schema_version": 1,
+      "brand_id": "altinmarka",
+      "brand_name": "Altınmarka",
+      "enabled": false,
+      "authority": null,
+      "customer_contacts": null,
+      "agency_contacts": null,
+      "allowed_cc_contacts": null,
+      "agency_owner": null,
+      "basecamp": null,
+      "services": null
+    },
+    {
+      "schema_version": 1,
+      "brand_id": "bikaldi",
+      "brand_name": "Bikaldi",
+      "enabled": false,
+      "authority": null,
+      "customer_contacts": null,
+      "agency_contacts": null,
+      "allowed_cc_contacts": null,
+      "agency_owner": null,
+      "basecamp": null,
+      "services": null
+    },
+    {
+      "schema_version": 1,
+      "brand_id": "han_spaces",
+      "brand_name": "HAN Spaces",
+      "enabled": false,
+      "authority": null,
+      "customer_contacts": null,
+      "agency_contacts": null,
+      "allowed_cc_contacts": null,
+      "agency_owner": null,
+      "basecamp": null,
+      "services": null
+    },
+    {
+      "schema_version": 1,
+      "brand_id": "gamechangers",
+      "brand_name": "Gamechangers",
+      "enabled": false,
+      "authority": null,
+      "customer_contacts": null,
+      "agency_contacts": null,
+      "allowed_cc_contacts": null,
+      "agency_owner": null,
+      "basecamp": null,
+      "services": null
+    }
+  ]
+}

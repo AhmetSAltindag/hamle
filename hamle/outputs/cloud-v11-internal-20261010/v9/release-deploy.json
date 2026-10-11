@@ -1,0 +1,125 @@
+{
+  "status": "confirmed",
+  "recorded_at": "2026-10-10T15:09:28.439371+00:00",
+  "phase": "deploy",
+  "control_generation": 1,
+  "budget_before": {
+    "limit_microdollars": 50000000,
+    "accounted_spend_microdollars": 0,
+    "held_microdollars": 17000000,
+    "prepaid_purchases_microdollars": 10000000,
+    "total_committed_microdollars": 21000000,
+    "remaining_microdollars": 29000000,
+    "overrun_hold": false,
+    "provider_hard_cap_installed": false
+  },
+  "argv": [
+    "run",
+    "jobs",
+    "update",
+    "hamle-account-manager",
+    "--region=europe-west1",
+    "--image=europe-west1-docker.pkg.dev/gamechangers-hamle/hamle-runtime/hamle-account-manager@sha256:835abc23a95eda5375307a21c2d1d1c52ad2eca6c0d45a7dc1fe666e75529f34",
+    "--task-timeout=600s"
+  ],
+  "customer_scope_enabled": false,
+  "new_iam_or_secrets": false,
+  "result": {
+    "apiVersion": "run.googleapis.com/v1",
+    "kind": "Job",
+    "metadata": {
+      "annotations": {
+        "run.googleapis.com/client-name": "gcloud",
+        "run.googleapis.com/client-version": "588.0.0",
+        "run.googleapis.com/creator": "ahmet@gamechangers.com.tr",
+        "run.googleapis.com/lastModifier": "ahmet@gamechangers.com.tr",
+        "run.googleapis.com/operation-id": "ade2ef08-765f-4b2e-bb7b-2c8f006f73c4"
+      },
+      "creationTimestamp": "2026-10-09T23:24:01.368826Z",
+      "generation": 9,
+      "labels": {
+        "cloud.googleapis.com/location": "europe-west1",
+        "run.googleapis.com/lastUpdatedTime": "2026-10-10T15:09:31.131926Z"
+      },
+      "name": "hamle-account-manager",
+      "namespace": "286533609595",
+      "resourceVersion": "AAZdfdoYhFc",
+      "selfLink": "/apis/run.googleapis.com/v1/namespaces/286533609595/jobs/hamle-account-manager",
+      "uid": "37e16aea-2407-42c1-80f0-1f22aa872bab"
+    },
+    "spec": {
+      "template": {
+        "metadata": {
+          "annotations": {
+            "run.googleapis.com/client-name": "gcloud",
+            "run.googleapis.com/client-version": "588.0.0",
+            "run.googleapis.com/execution-environment": "gen2"
+          },
+          "labels": {
+            "client.knative.dev/nonce": "luc_zib_civ"
+          }
+        },
+        "spec": {
+          "parallelism": 1,
+          "taskCount": 1,
+          "template": {
+            "spec": {
+              "containers": [
+                {
+                  "args": [
+                    "worker.py",
+                    "--mode",
+                    "scheduled_review"
+                  ],
+                  "command": [
+                    "python"
+                  ],
+                  "env": [
+                    {
+                      "name": "HAMLE_ALLOW_FIRESTORE_OPERATIONS",
+                      "value": "yes"
+                    },
+                    {
+                      "name": "HAMLE_PROJECT_ID",
+                      "value": "gamechangers-hamle"
+                    },
+                    {
+                      "name": "HAMLE_FIRESTORE_DATABASE",
+                      "value": "hamle-operations"
+                    }
+                  ],
+                  "image": "europe-west1-docker.pkg.dev/gamechangers-hamle/hamle-runtime/hamle-account-manager@sha256:835abc23a95eda5375307a21c2d1d1c52ad2eca6c0d45a7dc1fe666e75529f34",
+                  "resources": {
+                    "limits": {
+                      "cpu": "1",
+                      "memory": "512Mi"
+                    }
+                  }
+                }
+              ],
+              "maxRetries": 0,
+              "serviceAccountName": "hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com",
+              "timeoutSeconds": "600"
+            }
+          }
+        }
+      }
+    },
+    "status": {
+      "conditions": [
+        {
+          "status": "True",
+          "type": "Ready"
+        }
+      ],
+      "executionCount": 15,
+      "latestCreatedExecution": {
+        "completionStatus": "EXECUTION_FAILED",
+        "completionTimestamp": "2026-10-10T15:01:41.326835Z",
+        "creationTimestamp": "2026-10-10T15:00:18.019951Z",
+        "name": "hamle-account-manager-d7d4b"
+      },
+      "observedGeneration": 9
+    }
+  }
+}

@@ -1,0 +1,92 @@
+WAT / Samet — gerçek dosyalarla bulut teknik doğrulaması
+
+Bulut çalışması: hamle-account-manager-ngn8b
+Tamamlanma: 10 Ekim 2026 19:13:39 İstanbul (16:13:39 UTC).
+Bağımsız inceleme kaynağı: cloud-v10/shadow-private-readback.json,
+10 Ekim 2026 16:14:21 UTC tarihli video kaydı ve execution durum kaydı.
+İşletim sonucu başarılı; iki video kaydı kalıcı veritabanında tamamlandı.
+
+Doğrulanan teknik sonuç
+- Samet / yorum 10336607720 / ek 897278053: müzikli video 10,72 saniye;
+  10.151.280 bayt; 1080×1920; 25 kare/sn; H.264; AAC ses akışı var.
+- Samet / yorum 10343076732 / ek 897985544: sesli video 11,80 saniye;
+  11.168.366 bayt; 1080×1920; 25 kare/sn; H.264; AAC ses akışı var.
+- İki videonun gerçek yerel dosya boyutu ve SHA256'sı bulut sonuçlarıyla
+  yeniden karşılaştırıldı ve eşleşti. Görev 10317695863 / üretici 50486696
+  bağları doğrulandı. Media ve zaman kanıtlarının içerik hash'leri yeniden
+  hesaplandı; 16 seyrek karenin görüntü/OCR kayıt bağları da eşleşti.
+- Her videodan sekiz gerçek PNG kare çözüldü; Türkçe/İngilizce OCR çalıştı.
+  Bu teknik kapsam, videonun bütün görüntü ve ses içeriğinin kabulü değildir.
+
+2. saniye tercihi: bulut OCR sonucu ve yerel gözlem ayrı
+Her iki dosyada 50. kare ayrıca çözüldü. Gerçek sunum zaman damgası
+50000 × 1/25000 = 2,000 saniye; başlangıç zamanı 0. ffprobe ve ffmpeg
+showinfo zamanları eşleşiyor. Bu iki PNG'nin hash'i de aynı:
+e0f62e0ea2e046db876606e7020512d01e4fab1a01476dfe6691b84110f9d924
+
+Zamanın doğrulanması metnin göründüğünü doğrulamaz. Bu karede OCR, beklenen
+“Her Salı WAT'la”, “Avantajı Katla” ve “%10” koşullarını sağlayan olumlu bir
+metin kanıtı üretemedi. Bulut OCR sonucu doğru biçimde unassessed: ne geçti
+ne de başarısız sayıldı. Aşağıdaki ayrı yerel gözlem bu ham sonucu değiştirmedi.
+
+Sonraki seyrek karelerin bazılarında başlık OCR ile okunuyor. Bu kareler
+ayrı gerçek zaman damgası doğrulaması taşımadığı için 2. saniye şartını
+geçirmek için kullanılamaz. OCR'nin okuyamaması yazının kesinlikle olmadığı
+anlamına gelmez; kısmen görünmeye başlayan bir mesajı bütünüyle okunur metin
+şartına dönüştürüp otomatik ret vermek de doğru olmaz.
+
+Yerel gerçek karelerin ayrıca görsel incelenmesi
+Kök görev sahibi aynı müzikli MP4'ten macOS AVAssetImageGenerator kullanarak
+2,000 ve 3,000 saniyelerde iki PNG çıkardı. Zaman toleransları sıfırdı;
+çıktıdaki gerçek zamanın istenen zamana eşitliği kodda denetlendi. Kaynak
+MP4 SHA256'sı 1b88ebfa84e979fbdbcdd29781694bcd76fbfaedffd8e11292aa545fbab6ae66.
+Kaynak, komut/gerçek zaman beyanı ve PNG hash'leri şu ayrı kayıtta bağlı:
+samet-local-frame-observation.json.
+
+İki kare kök asistan ve bağımsız inceleyen asistan tarafından view_image ile
+doğrudan görüldü; bu bir insan onayı değildir. 2. saniyede ortada Salı Modu
+ON var; kampanya başlığı ve %10 indirim rozeti bu karede görünmüyor.
+3. saniyede WAT logosu ve “Her Salı WAT'la, Avantajı Katla!” başlığı görünür;
+%10 rozeti bu karede de görünmüyor. Bu iki örnek ilk görünme anını veya
+önceki bütün karelerde bulunmama durumunu kanıtlamaz.
+
+Yerel 2 sn PNG: samet-local-at-2s.png; 1.714.663 bayt;
+SHA256 8900e448422ec072045af58b289d0cbb10badc1afe851959b78043c9b9e1fb86.
+Yerel 3 sn PNG: samet-local-at-3s.png; 1.863.050 bayt;
+SHA256 fcc7131b338b0f55e08dd15542efd9af30d60aece5ba1b4c2a74814154545511.
+Yerel ve bulut PNG kodlamalarının bire bir bayt eşitliği iddia edilmedi.
+
+Kaynak yorum 10335969966'nın tam ifadesi: “Kampanya mesajını mümkünse en geç
+2. saniyede ekranda görmeye başlayalım.” MÜMKÜNSE sözcüğü korunmalıdır:
+bu istek koşulsuz teknik teslim sınırı değil, zamanlama tercihidir. Karedeki
+gözlem inceleme notu olarak kalır; otomatik ret veya müşteri gönderimini
+engelleyen katı koşul yapılmaz. Tarihsel onay da bu nedenle geri alınmaz.
+
+Brief ve ses sınırı
+1080×1920 ve 25 kare/sn ölçülmüş dosya bilgisidir; tarihsel briefte yazılı
+zorunlu sayısal çıktı ölçüsü olarak sunulmadı. Önceki videoya ilişkin yaklaşık
+“8 sn” ifadesi son iki dosya için kesin süre sınırı değildir.
+
+Ayrı onaylı olarak paylaşılan wat_4.wav kaynağı 8,7973696 saniyedir. Bunun
+10,72 / 11,80 saniyelik toplam video sürelerinden farklı olması tek başına
+hata değildir; sesin ON/OFF geçişinden sonra girmesi istenmişti. AAC akışının
+varlığı konuşma metnini, doğru kaynağın kullanıldığını, giriş zamanını,
+kesilmeyi, miks/müzik dengesini veya sondaki fade-out'u kanıtlamaz. Bu ses
+kontrolleri yapılmış ya da geçmiş sayılmadı.
+
+Teslim kararı
+Özge'nin ilk müzikli video için tarihsel onayı korunuyor. Sonraki sesli
+sürüm için 33 yorumda ayrı açık onay bulunmadığı bilgisi korunuyor.
+Bu bulut sonucu müşteri teslimini açmadı: live_enabled=false,
+delivery_authorized=false, human_review_required=true. Sayısal yaratıcı
+kalite puanı veya 90/100 müşteri gönderim kabulü üretilmedi.
+
+Video bulut çalışmasında 0 model çağrısı, 0 Basecamp iş/yorum yazımı ve
+0 müşteri maili. Bulut hesaplama kullanımı bu ifadeden bağımsızdır.
+Bu bağımsız incelemede yerel kanıt dosyaları ve kök görev sahibinin çıkardığı
+iki PNG okundu; yeni sağlayıcı çağrısı, kaynak değişikliği veya müşteri
+işlemi yapılmadı. Kök görev sahibinin yerel kare çıkarımı ücretli API/model
+çağrısı veya ek bulut çalışması kullanmadı.
+
+Ayrıntılı doğrulama: samet-cloud-independent-review.json
+Önceki kaynak/onay zinciri: WAT_Samet_Uretim_Zinciri.txt

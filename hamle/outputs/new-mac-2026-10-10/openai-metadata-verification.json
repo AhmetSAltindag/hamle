@@ -1,0 +1,14 @@
+{
+  "checked_at": "2026-10-10T00:48:59.928959+03:00",
+  "requested_model": "gpt-6-astra",
+  "method": "GET",
+  "endpoint": "https://api.openai.com/v1/models/gpt-6-astra",
+  "inference_calls": 0,
+  "customer_data_sent": false,
+  "reasoning_max_live_verified": false,
+  "billing_verified": false,
+  "http_status": 200,
+  "metadata_access_verified": true,
+  "model_id": "gpt-6-astra",
+  "owned_by": "system"
+}

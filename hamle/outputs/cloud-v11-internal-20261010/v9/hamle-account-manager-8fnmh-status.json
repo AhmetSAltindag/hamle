@@ -1,0 +1,36 @@
+{
+  "name": "hamle-account-manager-8fnmh",
+  "status": {
+    "completionTime": "2026-10-10T15:11:09.732308Z",
+    "conditions": [
+      {
+        "lastTransitionTime": "2026-10-10T15:11:09.732308Z",
+        "message": "Execution completed successfully in 45.63s.",
+        "status": "True",
+        "type": "Completed"
+      },
+      {
+        "lastTransitionTime": "2026-10-10T15:10:20.548199Z",
+        "message": "Provisioned imported containers.",
+        "status": "True",
+        "type": "ResourcesAvailable"
+      },
+      {
+        "lastTransitionTime": "2026-10-10T15:10:34.782255Z",
+        "message": "Started deployed execution in 14.23s.",
+        "status": "True",
+        "type": "Started"
+      },
+      {
+        "lastTransitionTime": "2026-10-10T15:10:20.442519Z",
+        "message": "Imported container image in 7.3s.",
+        "status": "True",
+        "type": "ContainerReady"
+      }
+    ],
+    "logUri": "https://console.cloud.google.com/logs/viewer?project=gamechangers-hamle&advancedFilter=resource.type%3D%22cloud_run_job%22%0Aresource.labels.job_name%3D%22hamle-account-manager%22%0Aresource.labels.location%3D%22europe-west1%22%0Alabels.%22run.googleapis.com/execution_name%22%3D%22hamle-account-manager-8fnmh%22",
+    "observedGeneration": 1,
+    "startTime": "2026-10-10T15:10:24.092654Z",
+    "succeededCount": 1
+  }
+}

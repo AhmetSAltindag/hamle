@@ -1,0 +1,165 @@
+{
+  "schema_version": 1,
+  "status": "reviewable_command_plan_not_executed",
+  "project": "gamechangers-hamle",
+  "region": "europe-west1",
+  "date": "2026-10-10",
+  "scope": "First internal account-manager flow only; identities and resource metadata first, secret values never in this plan",
+  "execution": {
+    "interpreter_relative_to_hamle": "work/hamle-gmail-connector/.venv/bin/python",
+    "wrapper_relative_to_hamle": "work/cloud_gcloud.py",
+    "argv_policy": "Execute each listed argv as a subprocess argument list after the two fixed launcher paths. No shell, interpolation, token argument, raw diagnostic output or automatic retries.",
+    "common_argv_suffix": ["--project=gamechangers-hamle", "--format=json", "--quiet"],
+    "output_policy": "Capture stdout/stderr in memory. Persist only allowlisted resource name, existence, operation status and sanitized IAM bindings. No tokens/secret versions payloads or HTTP logging.",
+    "read_before_write": "Complete identity/resource inventory first. Reuse only resources whose type, identity and intended role match. Exact confirmed NOT_FOUND permits creation; permission/network/parse errors do not.",
+    "unknown_mutation_result": "Read the exact resource to reconcile before any repeated creation or grant.",
+    "apply_policy": "No bulk apply; run one numbered phase only when its gate has passed. This file itself executes nothing."
+  },
+  "authorization_gate": {
+    "status": "explicitly_approved_by_user_do_not_ask_again",
+    "needed_before_new_persistent_access": "A concrete approval covering these four identities, their listed roles and private cloud transfer of three Hamle credentials.",
+    "provenance": "Prior explicit approval authorized hamle-probe-runtime and hamle-probe-build for synthetic data with no Gmail, Basecamp, OpenAI or customer-data access. Those accounts are not expanded here.",
+    "not_required_again": ["Existing 50 USD aggregate authorization through 2026-10-12 23:59:59 Europe/Istanbul", "Existing Astra/max model choice", "Completed 10 USD OpenAI funding and disabled auto-reload"],
+    "old_probe_accounts_modified": false,
+    "user_managed_service_account_keys_created": false
+  },
+  "funding_gate": {
+    "evidence": "../../outputs/new-mac-2026-10-10/shared-budget-after-openai-funding.json",
+    "prepaid_openai_usd": "10.00",
+    "google_unreconciled_hold_usd": "3.00",
+    "new_infrastructure_reservation_usd": "5.00",
+    "new_infrastructure_reservation_key": "cloud-account-manager-foundation-20261010-v1",
+    "uncommitted_usd": "32.00",
+    "new_infrastructure_reservation_required": false,
+    "fresh_google_cost_read_required": true,
+    "paid_first_astra_call_status": "passed_local_customer_free_astra_max_1_USD_hold_retained_pending_invoice_reconciliation",
+    "warning": "Do not charge prepaid token consumption against the shared limit twice. Resource creation/build/deploy costs need their own bounded reservation."
+  },
+  "phases": [
+    {
+      "order": 1,
+      "name": "Inventory only",
+      "mutations": false,
+      "commands": [
+        ["services", "list", "--enabled"],
+        ["iam", "service-accounts", "describe", "hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com"],
+        ["iam", "service-accounts", "describe", "hamle-control@gamechangers-hamle.iam.gserviceaccount.com"],
+        ["iam", "service-accounts", "describe", "hamle-scheduler@gamechangers-hamle.iam.gserviceaccount.com"],
+        ["iam", "service-accounts", "describe", "hamle-build@gamechangers-hamle.iam.gserviceaccount.com"],
+        ["firestore", "databases", "describe", "--database=hamle-operations"],
+        ["artifacts", "repositories", "describe", "hamle-runtime", "--location=europe-west1"],
+        ["storage", "buckets", "describe", "gs://gamechangers-hamle-runtime-source-286533609595"],
+        ["secrets", "describe", "hamle-gmail-oauth"],
+        ["secrets", "describe", "hamle-basecamp-credential"],
+        ["secrets", "describe", "hamle-openai-api-key"],
+        ["run", "jobs", "describe", "hamle-account-manager", "--region=europe-west1"],
+        ["run", "services", "describe", "hamle-control", "--region=europe-west1"]
+      ],
+      "api_disabled_handling": "An API_DISABLED result is not resource absence. Verify enabled APIs first; defer dependent describe until required API is explicitly enabled in phase 3. Never treat arbitrary command failure as NOT_FOUND."
+    },
+    {
+      "order": 2,
+      "name": "Create missing identities only; grant no roles yet",
+      "gate": "New persistent identity scope approved; all four names inventoried and no unexpected existing principal",
+      "mutations": true,
+      "commands_create_only_if_missing": [
+        ["iam", "service-accounts", "create", "hamle-runtime", "--display-name=Hamle internal account-manager runtime"],
+        ["iam", "service-accounts", "create", "hamle-control", "--display-name=Hamle authenticated human control"],
+        ["iam", "service-accounts", "create", "hamle-scheduler", "--display-name=Hamle fixed-job scheduler"],
+        ["iam", "service-accounts", "create", "hamle-build", "--display-name=Hamle application image build"]
+      ],
+      "readback": "Describe all four identities. Verify unique IDs, expected email/project, disabled=false and zero user-managed keys. Stop here if only identity creation was approved."
+    },
+    {
+      "order": 3,
+      "name": "Enable only missing APIs, then create missing resource metadata",
+      "gate": "Resource plan approved and fresh shared budget reservation recorded",
+      "mutations": true,
+      "required_apis": ["run.googleapis.com", "cloudbuild.googleapis.com", "artifactregistry.googleapis.com", "firestore.googleapis.com", "iam.googleapis.com", "secretmanager.googleapis.com", "iap.googleapis.com", "cloudscheduler.googleapis.com"],
+      "api_enable_template": ["services", "enable", "<ONLY_MISSING_APPROVED_SERVICE_NAMES>"],
+      "commands_create_only_if_missing": [
+        ["firestore", "databases", "create", "--database=hamle-operations", "--location=europe-west1", "--type=firestore-native", "--edition=standard", "--concurrency-mode=pessimistic"],
+        ["artifacts", "repositories", "create", "hamle-runtime", "--location=europe-west1", "--repository-format=docker", "--description=Hamle internal account-manager application"],
+        ["storage", "buckets", "create", "gs://gamechangers-hamle-runtime-source-286533609595", "--location=europe-west1", "--uniform-bucket-level-access", "--public-access-prevention"],
+        ["secrets", "create", "hamle-gmail-oauth", "--replication-policy=user-managed", "--locations=europe-west1"],
+        ["secrets", "create", "hamle-basecamp-credential", "--replication-policy=user-managed", "--locations=europe-west1"],
+        ["secrets", "create", "hamle-openai-api-key", "--replication-policy=user-managed", "--locations=europe-west1"]
+      ],
+      "readback": "Repeat exact-resource describes; verify region/type, private bucket settings and secrets with no version values. A second Firestore database must not be assumed free."
+    },
+    {
+      "order": 4,
+      "name": "Apply only approved runtime, control and build IAM",
+      "gate": "Every binding below approved and target resource exists; inspect current IAM before adding",
+      "mutations": true,
+      "commands": [
+        ["projects", "add-iam-policy-binding", "gamechangers-hamle", "--member=serviceAccount:hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com", "--role=roles/datastore.user", "--condition=expression=resource.name==\"projects/gamechangers-hamle/databases/hamle-operations\",title=hamle_operations_only"],
+        ["projects", "add-iam-policy-binding", "gamechangers-hamle", "--member=serviceAccount:hamle-control@gamechangers-hamle.iam.gserviceaccount.com", "--role=roles/datastore.user", "--condition=expression=resource.name==\"projects/gamechangers-hamle/databases/hamle-operations\",title=hamle_operations_only"],
+        ["secrets", "add-iam-policy-binding", "hamle-gmail-oauth", "--member=serviceAccount:hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com", "--role=roles/secretmanager.secretAccessor"],
+        ["secrets", "add-iam-policy-binding", "hamle-basecamp-credential", "--member=serviceAccount:hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com", "--role=roles/secretmanager.secretAccessor"],
+        ["secrets", "add-iam-policy-binding", "hamle-openai-api-key", "--member=serviceAccount:hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com", "--role=roles/secretmanager.secretAccessor"],
+        ["secrets", "add-iam-policy-binding", "hamle-gmail-oauth", "--member=serviceAccount:hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com", "--role=roles/secretmanager.secretVersionAdder"],
+        ["projects", "add-iam-policy-binding", "gamechangers-hamle", "--member=serviceAccount:hamle-build@gamechangers-hamle.iam.gserviceaccount.com", "--role=roles/logging.logWriter", "--condition=None"],
+        ["artifacts", "repositories", "add-iam-policy-binding", "hamle-runtime", "--location=europe-west1", "--member=serviceAccount:hamle-build@gamechangers-hamle.iam.gserviceaccount.com", "--role=roles/artifactregistry.writer"],
+        ["storage", "buckets", "add-iam-policy-binding", "gs://gamechangers-hamle-runtime-source-286533609595", "--member=serviceAccount:hamle-build@gamechangers-hamle.iam.gserviceaccount.com", "--role=roles/storage.objectViewer"]
+      ],
+      "conditional_basecamp_refresh_grant": {
+        "only_if": "Separate cloud rotating OAuth selected and its persistent refresh adapter accepted; not needed for PAT",
+        "argv": ["secrets", "add-iam-policy-binding", "hamle-basecamp-credential", "--member=serviceAccount:hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com", "--role=roles/secretmanager.secretVersionAdder"]
+      },
+      "readback": "Get IAM on project and each named secret/repository/bucket. Confirm no broad/unconditional database grant, no control/build secret access and no bindings added to probe accounts. Database condition is not collection-level security."
+    },
+    {
+      "order": 5,
+      "name": "Privately import credentials and build reviewed application",
+      "gate": "Approved cloud credential transfer, accepted adapters, known Basecamp credential method, reserved build budget",
+      "mutations": true,
+      "secret_values_in_commands": false,
+      "operations": [
+        "Validate Gmail Keychain record in memory and submit by Secret Manager API. Store only version resource ID/checksum confirmation in evidence.",
+        "Provision separate cloud Basecamp credential through its approved method; never clone the Mac rotating OAuth login.",
+        "Read the existing authorized OpenAI key privately and submit by Secret Manager API; no new key merely for deployment.",
+        "Seed stopped control and import existing shared budget/prepayment/reservation history transactionally. Do not initialize an empty 50 USD balance.",
+        "Explicitly allowlist source files, scan build context for secrets, build once with hamle-build and pin immutable image digest."
+      ],
+      "commands": [],
+      "why_no_secret_command": "A command embedding secret values or reading them to stdout is not a safe deployment recipe. Transfer helpers must be independently reviewable and quiet."
+    },
+    {
+      "order": 6,
+      "name": "Deploy stopped worker and authenticated control",
+      "gate": "Accepted worker/control entrypoints and signed IAP assertion validation; pinned image digest; stopped Firestore control",
+      "mutations": true,
+      "status": "No deploy command until the actual application entrypoint and image digest are verified; do not invent executable filenames",
+      "fixed_job_configuration": {"name": "hamle-account-manager", "region": "europe-west1", "service_account": "hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com", "tasks": 1, "parallelism": 1, "max_retries": 0, "timeout_seconds": 300, "cpu": 1, "memory": "512Mi", "execute_now": false},
+      "fixed_control_configuration": {"name": "hamle-control", "region": "europe-west1", "service_account": "hamle-control@gamechangers-hamle.iam.gserviceaccount.com", "iap": true, "allow_unauthenticated": false, "min_instances": 0, "max_instances": 1},
+      "post_deploy_iam_commands": [
+        ["run", "jobs", "add-iam-policy-binding", "hamle-account-manager", "--region=europe-west1", "--member=serviceAccount:hamle-scheduler@gamechangers-hamle.iam.gserviceaccount.com", "--role=roles/run.invoker"],
+        ["run", "services", "add-iam-policy-binding", "hamle-control", "--region=europe-west1", "--member=serviceAccount:service-286533609595@gcp-sa-iap.iam.gserviceaccount.com", "--role=roles/run.invoker"],
+        ["iap", "web", "add-iam-policy-binding", "--resource-type=cloud-run", "--service=hamle-control", "--region=europe-west1", "--member=user:ahmet@gamechangers.com.tr", "--role=roles/iap.httpsResourceAccessor"]
+      ],
+      "readback": "Verify IAP enabled, no allUsers/allAuthenticatedUsers invocation, exact runtime identity, no secret environment values, fixed retry/timeouts and stopped control. Then perform explicit bounded read-only identity checks."
+    },
+    {
+      "order": 7,
+      "name": "Internal live acceptance before recurring scheduling",
+      "gate": "Real model call accepted, visible immutable internal proposal approved, funded budget and cloud control verified",
+      "mutations": "only specifically approved internal outputs",
+      "acceptance": ["Exactly one approved response to Ahmet", "Exactly one approved task in Basecamp 49184053", "Provider receipts and readback", "Status/follow-up visible while local worker is off", "Authenticated stop fences pending work", "Unknown write is held without automatic retry"],
+      "scheduler_state": "not_created_or_paused",
+      "scheduler_activation_gate": "Verified cloud-side expiry pause of both schedules before 2026-10-12T23:59:59+03:00; remaining provider/storage costs addressed; durable budget reconciliation ready",
+      "scheduler_plan_reference": "cloud-launch.json schedule",
+      "customer_send_enabled": false,
+      "E04_resolved": false
+    }
+  ],
+  "no_execution_performed_by_this_preparation": true,
+  "official_command_sources": [
+    "https://docs.cloud.google.com/sdk/gcloud/reference/iam/service-accounts/create",
+    "https://docs.cloud.google.com/sdk/gcloud/reference/firestore/databases/create",
+    "https://docs.cloud.google.com/sdk/gcloud/reference/run/jobs/create",
+    "https://docs.cloud.google.com/run/docs/securing/identity-aware-proxy-cloud-run",
+    "https://docs.cloud.google.com/run/docs/execute/jobs-on-schedule",
+    "https://docs.cloud.google.com/secret-manager/docs/best-practices"
+  ]
+}

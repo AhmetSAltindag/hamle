@@ -1,0 +1,74 @@
+{
+  "ok": true,
+  "reason": null,
+  "comment_id": 10391852105,
+  "writes": 0,
+  "response_field_names": [
+    "app_url",
+    "bookmark_url",
+    "boosts_count",
+    "boosts_url",
+    "bucket",
+    "content",
+    "content_attachments",
+    "created_at",
+    "creator",
+    "id",
+    "inherits_status",
+    "parent",
+    "status",
+    "title",
+    "type",
+    "updated_at",
+    "url",
+    "visible_to_clients"
+  ],
+  "html_tag_shapes": [
+    {
+      "tag": "p",
+      "attribute_names": [
+        "dir"
+      ]
+    },
+    {
+      "tag": "bc-attachment",
+      "attribute_names": [
+        "sgid",
+        "content-type",
+        "href",
+        "filename",
+        "filesize",
+        "dir"
+      ]
+    },
+    {
+      "tag": "figure",
+      "attribute_names": []
+    },
+    {
+      "tag": "figcaption",
+      "attribute_names": []
+    }
+  ],
+  "attachments": [
+    {
+      "fields": [
+        "content_type",
+        "filename",
+        "filesize",
+        "sgid",
+        "url"
+      ],
+      "id": null,
+      "filename": "Hamle_B09_R1_UTF8.txt",
+      "content_type": "text/plain",
+      "byte_size": null,
+      "sgid_present": true,
+      "download_host": "",
+      "download_path_parts": [
+        ""
+      ],
+      "query_present": false
+    }
+  ]
+}

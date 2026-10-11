@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "recorded_date_local": "2026-10-10",
+  "timezone": "Europe/Istanbul",
+  "reviewer": "v11_acceptance",
+  "scope": "Independent read-only review of new isolated queue, delivery and fake-provider integration; source fixes were made by owning agents after review messages.",
+  "result": "No additional concrete blocking defect found within the documented trusted-adapter/offline-module contract after fixes. Live acceptance remains pending.",
+  "reviewed_contracts": [
+    "Per-work immutable brand/thread/project/service/task binding; source identity and ordered event deduplication",
+    "One claimant per work; generation/lease fencing; stop and takeover isolation; no retry of unknown provider writes",
+    "Trusted exact provider receipt binding and reconciliation after takeover",
+    "Firestore-style reads-before-writes transaction discipline; explicit separate collection opt-in",
+    "Latest trusted authority and recipient checks; per-action preflight; stale/mismatched work and source holds",
+    "Producer and QA proof tied to exact artifact, manifest, brief, source, recipients and policy",
+    "Todo-completed alone cannot authorize delivery; failed QA only creates private-project internal feedback",
+    "Last confirmed delivery preserved separately from subsequent observation status",
+    "Two distinct works integrated through queue, coordinator and fake provider; one needs revision, one is delivered; repeated sweep adds zero writes; unknown/stop stay isolated"
+  ],
+  "findings_fixed": [
+    {
+      "id": "R1",
+      "finding": "QA feedback action identity previously omitted artifact/manifest hash; changed bytes reusing v1 label and same defects could be suppressed by an old confirmed comment receipt.",
+      "fix": "Action identity now includes artifact SHA, version and manifest SHA; regression case added."
+    },
+    {
+      "id": "R2",
+      "finding": "Producer actor identifier accepted equality without exact integer type.",
+      "fix": "Exact int is required before verified-assignee membership."
+    },
+    {
+      "id": "R3",
+      "finding": "Queue write start previously accepted only action/payload hash with no structural prepared work/source binding.",
+      "fix": "Required prepared_binding checks exact work/brand/thread/account/project/list/service/task and queue-event fingerprint; cross-work integration test holds before provider call."
+    },
+    {
+      "id": "R4",
+      "finding": "Queue open operations lacked the original store clock-before-control fence.",
+      "fix": "Open checks include fresh clock ordering; rollback does not prevent stop."
+    },
+    {
+      "id": "R5",
+      "finding": "New provider observations could change visible delivery stage and obscure the previously confirmed delivery.",
+      "fix": "last_confirmed_delivery persists separately; README requires UI to show historical delivery independently; regression added."
+    }
+  ],
+  "independently_executed_tests": {
+    "command": "../hamle-gmail-connector/.venv/bin/python -B -m unittest test_v11_work_queue test_v11_delivery test_v11_queue_delivery",
+    "passed": 68,
+    "failed": 0,
+    "queue": 26,
+    "delivery": 38,
+    "integration": 4,
+    "runtime": "local Python, synthetic adapters only",
+    "real_provider_calls": 0,
+    "paid_calls": 0,
+    "total_unique_passed_including_supplement": 106
+  },
+  "not_proven": [
+    "No live Firestore transactions, indexes, IAM or persistent restoration acceptance for the new queue.",
+    "Concrete bounded read-only Basecamp transport/collector now exists, but Gmail multi-intake and the complete trusted authority/QA/release DeliveryAdapter do not. The V7 cloud worker is not wired to the new modules.",
+    "Delivery state persistence, queue/provider receipt reconciliation and crash recovery must be wired before live dispatch. The integration test keeps delivery state in a local dict.",
+    "A real dispatcher must persist started delivery state before any provider attempt, then atomically store or reconcile queue confirmation and delivery confirmation. Passing module tests alone does not close the crash gap.",
+    "One thread currently binds to one work and one task; multiple independent jobs/services inside a single thread are not implemented.",
+    "Queue claims do not grant customer authority. Actual trusted adapter identity, source authenticity, scope, per-action budget and post-claim control checks remain required.",
+    "True artifact bytes, visual/content quality evaluation, exact producer release, current source/delayed authority and customer delivery have no live acceptance in this turn.",
+    "A <=300-second authority window versus 15-minute polling does not fulfill routine autonomy by itself; visible revocation and fresh authority for delayed actions remain a product/runtime requirement.",
+    "The unseen CC-removal blind spot is not solved by refreshing Hamle mailbox.",
+    "No generic provider migration, model change, customer enablement or new spend was performed by this review."
+  ],
+  "form_review": {
+    "path": "../hamle-v11-marka-formu-20261010/Hamle_v1_1_Marka_ve_Hizmet_Formu.xlsx",
+    "review": "Authoring content inspected, no spreadsheet edits by this reviewer.",
+    "minimal_fields_sufficient": true,
+    "example_outside_live_tables": true,
+    "brands_separate": true,
+    "known_contacts_prefilled": true,
+    "no_api_secret_or_numeric_id_requested": true,
+    "filling_does_not_enable_live_sending": true
+  },
+  "progress": {
+    "baseline_file": "v11-acceptance-baseline.json",
+    "new_v11_baseline_points": 38,
+    "rounded_user_facing": "yaklaşık %40",
+    "increment_from_isolated_modules": 0,
+    "original_65_row_plan_unchanged": true
+  },
+  "source_sha256": {
+    "v11_work_queue.py": "537abcfa733144563f25dadb1b9b3def61435c55f030cbf0bb3b8105c93eec8f",
+    "v11_delivery.py": "a5a9be6b9f84533437937fd6de18dea051d24b4f5d0ef72e9a6678ecf753c3f1",
+    "test_v11_work_queue.py": "925221bdb89a06f6c5a0469334ea689d7eb451e068aaac397aaea1357b515f4d",
+    "test_v11_delivery.py": "bce852509919642e0115b4c89c97fb3525d537c312d2ee1debcb52de6f92b971",
+    "test_v11_queue_delivery.py": "83fc8d2869e340e271d713ace9d75743d1b873baec0e985093fcca379cea0f59",
+    "v11_basecamp_reader.py": "2758a5b61dee1b51ba42fd0b65d88e65a05560b7ef8c0cbfaa80bfae1379a458",
+    "test_v11_basecamp_reader.py": "34b92805c71531cac83bc94d3e83f173b26e7626a0aa36bf90385df016bac3e8",
+    "v11_poll_journal.py": "0a4e95580be6433c5552112540b39b93364fff6bca213a67fb9f85462fba45b6",
+    "test_v11_poll_journal.py": "8c6602e79cc51568ddbc5bcf2a24b67c3545de6da2f20057c9c6c44acce1c75b"
+  },
+  "review_side_effects": {
+    "network_calls": 0,
+    "paid_calls": 0,
+    "business_writes": 0,
+    "source_edits_by_reviewer": 0,
+    "written_artifacts": [
+      "v11-acceptance-baseline.json",
+      "v11-modules-independent-review.json"
+    ]
+  },
+  "supplementary_review": {
+    "modules": [
+      "v11_basecamp_reader.py",
+      "v11_poll_journal.py"
+    ],
+    "result": "No additional concrete blocking defect found in the bounded read-only collector and frozen observation journal contract.",
+    "reader_checks": [
+      "Exact HTTPS Basecamp host and current task/comment route allowlist before credential callback",
+      "Redirects disabled and conditional-header allowlist; no replayed Authorization/Cookie",
+      "One-MiB transport pages, bounded comments/page count, complete pagination required",
+      "Exact task/comment project-parent-record binding and task before/after comparison",
+      "Conditional ETag/Last-Modified reads also detect edits to older comments",
+      "Malformed checkpoint fails before any transport read",
+      "Ready text/completed todo remains untrusted observation and grants no QA or delivery authority"
+    ],
+    "journal_checks": [
+      "Freeze complete immutable batch in storage before enqueueing first event",
+      "Checkpoint compare-and-set against last committed digest",
+      "Drain prior frozen batch before accepting changed provider observation",
+      "Exact deterministic event IDs recomputed from binding/change/sequence; no caller-random IDs",
+      "Checkpoint advances only after exact queue source dedup record and event are read back",
+      "Crash after enqueue before acknowledgement replays identical event and deduplicates",
+      "Global stop blocks enqueue; resumed generation continues same frozen batch",
+      "In-memory transactions enforce the Firestore reads-before-writes contract"
+    ],
+    "tests": {
+      "reader_tests_passed": 22,
+      "journal_tests_passed_before_new_integration_case": 15,
+      "new_real_class_integration_case_passed": 1,
+      "reader_journal_queue_contract_independent_script": "Initial poll2 events; unchanged conditional poll0 changes; old-comment edit1 new event; durable queue source_order1,2,3; no network.",
+      "total_unique_additional_tests_passed": 38,
+      "initial_test_selection_typo": "A nonexistent new test method selector produced unittest AttributeError; corrected to the actual method name and passed. No application test failed."
+    },
+    "bounds": [
+      "Journal holds more than100 active-comment hashes or100 changes, checkpoint over20KB, batch over58KB. Initial100 comments plus task is101changes and therefore holds. Never truncate to claim success.",
+      "Reader default1000 comments is a standalone read bound; journal effective bound is lower and must be surfaced by the runner.",
+      "For each work, PollJournal must own all source_kind=basecamp enqueue ordering. Direct separate Basecamp enqueue paths cannot share its sequence stream.",
+      "No live network/authentication/Firestore query/index acceptance was performed.",
+      "Pagination is not an atomic provider snapshot; final delivery still needs fresh current-state and authority reads.",
+      "Collector stores task/comments as untrusted observations; journal persists hashes/change metadata only. It is not a complete DeliveryAdapter, file downloader, producer-release verifier or QA implementation."
+    ],
+    "live_deployment": false,
+    "new_progress_points": 0
+  }
+}

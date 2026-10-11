@@ -1,0 +1,97 @@
+[
+  {
+    "execution": "hamle-account-manager-q8s4l",
+    "timestamp": "2026-10-10T16:16:09.232665Z",
+    "receipt": {
+      "business_writes": 0,
+      "case": "a",
+      "new_model_calls": 0,
+      "result_sha256": "d7a452eaf969d002f320f1362795e73e129ed8ff8971dc17ca7953567005156d",
+      "state": "already_completed"
+    }
+  },
+  {
+    "execution": "hamle-account-manager-z7qt9",
+    "timestamp": "2026-10-10T16:15:05.513159Z",
+    "receipt": {
+      "business_writes": 0,
+      "case": "b",
+      "new_model_calls": 1,
+      "price_check_matches_historical_evidence": true,
+      "provisional_route": "quality_candidate",
+      "result_sha256": "301354f44c57bef1f130f9e6bc1f009bf7705264fe36d0074f76a490350048f1",
+      "state": "completed",
+      "token_cost_estimate_usd": 0.035342
+    }
+  },
+  {
+    "execution": "hamle-account-manager-z7qt9",
+    "timestamp": "2026-10-10T16:15:05.304197Z",
+    "receipt": {
+      "case": "b",
+      "event": "wat_shadow_model_receipt",
+      "response_id": "resp_0a312557970611d6016aca6474733887d1a80789089e162e00",
+      "usage": {
+        "input_tokens": 11871,
+        "input_tokens_details": {
+          "cached_tokens": 0
+        },
+        "output_tokens": 1160,
+        "output_tokens_details": {
+          "reasoning_tokens": 122
+        },
+        "total_tokens": 13031
+      }
+    }
+  },
+  {
+    "execution": "hamle-account-manager-ngn8b",
+    "timestamp": "2026-10-10T16:13:36.538822Z",
+    "receipt": {
+      "business_writes": 0,
+      "complete_visual_or_audio_acceptance": false,
+      "model_calls": 0,
+      "result_sha256": "46d6f60ae1a7766aa6c5a139c2254ac0282e5ec5d92e2e98f8299573d06448cb",
+      "state": "completed",
+      "technical_states": [
+        "passed",
+        "passed"
+      ],
+      "videos": 2
+    }
+  },
+  {
+    "execution": "hamle-account-manager-2cq6w",
+    "timestamp": "2026-10-10T16:11:38.263125Z",
+    "receipt": {
+      "business_writes": 0,
+      "case": "a",
+      "new_model_calls": 1,
+      "price_check_matches_historical_evidence": true,
+      "provisional_route": "revision_candidate",
+      "result_sha256": "d7a452eaf969d002f320f1362795e73e129ed8ff8971dc17ca7953567005156d",
+      "state": "completed",
+      "token_cost_estimate_usd": 0.035222
+    }
+  },
+  {
+    "execution": "hamle-account-manager-2cq6w",
+    "timestamp": "2026-10-10T16:11:38.042359Z",
+    "receipt": {
+      "case": "a",
+      "event": "wat_shadow_model_receipt",
+      "response_id": "resp_02804710f1e101ef016aca63a6356c87d1a7ae03fd5cbacfe4",
+      "usage": {
+        "input_tokens": 11876,
+        "input_tokens_details": {
+          "cached_tokens": 0
+        },
+        "output_tokens": 1147,
+        "output_tokens_details": {
+          "reasoning_tokens": 73
+        },
+        "total_tokens": 13023
+      }
+    }
+  }
+]

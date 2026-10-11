@@ -1,0 +1,16 @@
+# v1.1 internal chain image (worker.py --mode chain_tick). Build ONLY from the
+# context produced by package_chain_source.py. Running this build costs money.
+steps:
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - --platform=linux/amd64
+      - --tag=europe-west1-docker.pkg.dev/gamechangers-hamle/hamle-runtime/hamle-account-manager:20261012-v11-chain
+      - .
+images:
+  - europe-west1-docker.pkg.dev/gamechangers-hamle/hamle-runtime/hamle-account-manager:20261012-v11-chain
+serviceAccount: projects/gamechangers-hamle/serviceAccounts/hamle-build@gamechangers-hamle.iam.gserviceaccount.com
+timeout: 600s
+options:
+  machineType: E2_MEDIUM
+  logging: CLOUD_LOGGING_ONLY

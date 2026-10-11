@@ -1,0 +1,326 @@
+{
+  "schema_version": 1,
+  "plan_id": "hamle-scheduler-chain-20261012-v1",
+  "prepared_at": "2026-10-11T00:00:00Z",
+  "status": "local_plan_only_not_applied",
+  "project_id": "gamechangers-hamle",
+  "region": "europe-west1",
+  "timezone": "Europe/Istanbul",
+  "pilot_local_date": "2026-10-12",
+  "scheduled_slots": 41,
+  "interval_minutes": 15,
+  "first_slot_local": "2026-10-12T08:30:00+03:00",
+  "last_slot_local": "2026-10-12T18:30:00+03:00",
+  "authorization_deadline": "2026-10-12T23:59:59+03:00",
+  "scope": {
+    "work": "gamechangers_internal_chain_new_mail_threads_and_their_basecamp_tasks",
+    "creates_review_proposals_only": false,
+    "chain_writes": [
+      "basecamp_task_create",
+      "basecamp_internal_comment",
+      "gmail_same_thread_reply"
+    ],
+    "automatic_business_dispatch": "only_through_v11_chain_gates_quality_90_plus_send_authority_recipients_stop_checks",
+    "customer_operation_enabled": false,
+    "wat_or_customer_brands": false,
+    "new_service_accounts": 0,
+    "new_secrets": 0,
+    "new_iam_access_grants": 0,
+    "holds_while": [
+      "catalog live_enabled=false or list_id unverified",
+      "rubric weights_status=draft_not_accepted (every submission quality_held)",
+      "chain queue control not queue_open",
+      "no send authority (delegation / work-authority grant) for delayed delivery"
+    ]
+  },
+  "cloud_run": {
+    "job_id": "hamle-account-manager",
+    "resource": "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager",
+    "runtime_service_account": "hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com",
+    "image_policy": "explicit_chain_image_built_from_package_chain_source",
+    "command": [
+      "python"
+    ],
+    "args": [
+      "worker.py",
+      "--mode",
+      "chain_tick"
+    ],
+    "task_count": 1,
+    "parallelism": 1,
+    "max_retries": 0,
+    "task_timeout_seconds": 600,
+    "cpu": "1",
+    "memory": "512Mi",
+    "update_gcloud_args": [
+      "run",
+      "jobs",
+      "update",
+      "hamle-account-manager",
+      "--project=gamechangers-hamle",
+      "--region=europe-west1",
+      "--image=europe-west1-docker.pkg.dev/gamechangers-hamle/hamle-runtime/hamle-account-manager:20261012-v11-chain",
+      "--command=python",
+      "--args=worker.py,--mode,chain_tick",
+      "--tasks=1",
+      "--parallelism=1",
+      "--max-retries=0",
+      "--task-timeout=600s"
+    ],
+    "execution_request_overrides": false,
+    "before_update": [
+      "no_active_execution",
+      "chain_image_built_and_digest_recorded",
+      "chain_tick_present_in_image",
+      "offline_suite_passed_on_mac"
+    ],
+    "after_update": [
+      "command_args_exact",
+      "image_exact_chain_tag",
+      "runtime_identity_unchanged",
+      "limits_exact"
+    ],
+    "image": "europe-west1-docker.pkg.dev/gamechangers-hamle/hamle-runtime/hamle-account-manager:20261012-v11-chain",
+    "rollback_gcloud_args": [
+      "run",
+      "jobs",
+      "update",
+      "hamle-account-manager",
+      "--project=gamechangers-hamle",
+      "--region=europe-west1",
+      "--image=<previous verified image digest>",
+      "--command=python",
+      "--args=worker.py,--mode,scheduled_review"
+    ]
+  },
+  "iam": {
+    "member": "serviceAccount:hamle-scheduler@gamechangers-hamle.iam.gserviceaccount.com",
+    "role": "roles/run.invoker",
+    "operation": "replace_existing_unconditional_member_binding_with_conditional_member_binding",
+    "condition": {
+      "title": "hamle_scheduler_20261012_only",
+      "description": "Only 12 October 2026 internal review slots; no customer dispatch.",
+      "expression": "request.time >= timestamp(\"2026-10-12T05:30:00Z\") && request.time < timestamp(\"2026-10-12T15:35:00Z\")"
+    },
+    "get_policy_url": "https://run.googleapis.com/v2/projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager:getIamPolicy?options.requestedPolicyVersion=3",
+    "set_policy_url": "https://run.googleapis.com/v2/projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager:setIamPolicy",
+    "set_policy_body_rule": "Use complete freshly read policy, version 3 and its fresh etag; merge only this member; preserve other bindings and audit settings. Omit updateMask, whose API default is bindings,etag. Never submit this plan as a policy.",
+    "policy_version": 3,
+    "fresh_etag_required": true,
+    "preserve_other_bindings": true,
+    "unconditional_scheduler_member_must_be_absent_after_write": true,
+    "unexpected_or_broader_scheduler_access": "hold",
+    "api_rejects_or_strips_condition": "hold_no_project_wide_fallback",
+    "token_creator_or_impersonation_grant": false,
+    "later_deployment_warning": "Do not rerun unconditional scheduler invoker grant from historical deployment IAM phase. Preserve this condition."
+  },
+  "scheduler": {
+    "create_schedule_inert": "0 0 1 1 *",
+    "create_pause_patch_sequence_required": true,
+    "state_is_output_only": true,
+    "create_collection_url": "https://cloudscheduler.googleapis.com/v1/projects/gamechangers-hamle/locations/europe-west1/jobs",
+    "http_target": {
+      "uri": "https://run.googleapis.com/v2/projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager:run",
+      "httpMethod": "POST",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": "e30=",
+      "oauthToken": {
+        "serviceAccountEmail": "hamle-scheduler@gamechangers-hamle.iam.gserviceaccount.com",
+        "scope": "https://www.googleapis.com/auth/cloud-platform"
+      }
+    },
+    "decoded_http_body": {},
+    "retry_config": {
+      "retryCount": 0,
+      "maxRetryDuration": "0s"
+    },
+    "attempt_deadline": "30s",
+    "jobs": [
+      {
+        "id": "hamle-pilot-20261012-early",
+        "schedule": "30,45 8 12 10 *",
+        "slots": 2
+      },
+      {
+        "id": "hamle-pilot-20261012-day",
+        "schedule": "*/15 9-17 12 10 *",
+        "slots": 36
+      },
+      {
+        "id": "hamle-pilot-20261012-late",
+        "schedule": "0,15,30 18 12 10 *",
+        "slots": 3
+      }
+    ],
+    "rest_create_body_rule": "For each exact id use name=collection resource/id, schedule=create_schedule_inert, timeZone=Europe/Istanbul, httpTarget=http_target, retryConfig=retry_config, attemptDeadline=attempt_deadline. Do not send state.",
+    "rest_prepare_sequence": [
+      "POST collection with inert January 1 schedule, only after IAM condition verified",
+      "POST job resource:pause with empty body; GET and require PAUSED",
+      "PATCH job resource?updateMask=schedule with name and final schedule; GET and require PAUSED plus exact final configuration"
+    ],
+    "name_collision_policy": "read_and_compare_exact_known_plan_or_hold_never_overwrite_unknown_job",
+    "day_of_week_must_be_star": true,
+    "cron_has_year_or_end_date": false,
+    "future_annual_attempts_blocked_by_iam_condition": true,
+    "delivery_semantics": "at_least_once_not_exactly_41_container_starts",
+    "late_slot_policy": "worker_rejects_after_first_five_minutes_no_catch_up",
+    "activation": "resume_each_only_after_all_gates_and_readback_enabled",
+    "cleanup": "delete_exact_three_jobs_after_pilot_acceptance_before_authorization_deadline; keep evidence; do_not_restore_unconditional_invoker"
+  },
+  "budget": {
+    "shared_limit_usd": 50,
+    "additional_google_conservative_hold_usd": 1,
+    "separate_worker_new_model_call_reservation_usd": 2,
+    "planned_41_starts_vcpu_seconds": 24600,
+    "planned_41_starts_gib_seconds": 12300,
+    "duplicate_deliveries_in_nominal_capacity_sum": false,
+    "hold_key": "cloud-scheduler-pilot-20261012-v1",
+    "hold_before_activation": true,
+    "hold_idempotent": true,
+    "preserve_prior_holds": true,
+    "reconcile_from_current_shared_ledger": true,
+    "google_current_invoice_verified": false,
+    "provider_hard_cap": false,
+    "per_empty_slot_model_calls": 0,
+    "empty_slot_google_infrastructure_cost_may_be_nonzero": true,
+    "infrastructure_hold_is_exact_bill_or_guaranteed_cap": false,
+    "pricing_free_tier_scope": "first_three_scheduler_jobs_per_billing_account_including_paused_jobs; regional_empty_inventory_is_not_account_wide_proof",
+    "chain_model_call_reservation_usd": 2,
+    "chain_model_calls_per_slot": "0 when no new mail/comment; otherwise 1 per new mail (interpreter), 1 per new producer comment (classifier), +1 per question (answerer); each attempt keeps a 2 USD hold until billing reconciliation",
+    "throughput_note": "50 USD shared limit and 2 USD per-call holds allow at most ~24 chain model calls in the window minus earlier holds; budget_ok=false stops new model calls, never writes."
+  },
+  "phases": [
+    {
+      "name": "prepare",
+      "gates": [
+        "before_pilot_window",
+        "no_active_worker_execution",
+        "current_ledger_has_room_for_extra_hold",
+        "exact_existing_identity_and_resources",
+        "no_broader_scheduler_invoker_path_detected"
+      ],
+      "actions": [
+        "update_worker_image_and_args_to_chain_tick_and_readback",
+        "replace_invoker_with_fresh_etag_v3_conditional_policy_and_readback",
+        "create_inert_pause_patch_final_schedule_three_jobs",
+        "require_all_three_paused_and_exact_configuration"
+      ]
+    },
+    {
+      "name": "deny_outside",
+      "gates": [
+        "current_time_outside_iam_window",
+        "all_three_jobs_paused",
+        "current_v3_policy_exact"
+      ],
+      "actions": [
+        "record_cloud_run_execution_inventory",
+        "force_one_paused_scheduler_job_run_exactly_once_using_existing_admin",
+        "require_scheduler_attempt_finished_target_http_403",
+        "require_cloud_run_audit_permission_denied_with_exact_scheduler_principal",
+        "require_no_new_cloud_run_execution",
+        "require_all_three_still_paused"
+      ],
+      "delayed_logs": "poll_read_only_never_repeat_jobs_run",
+      "failure": "hold_no_activation_no_new_impersonation_grants"
+    },
+    {
+      "name": "activate",
+      "gates": [
+        "before_first_pilot_slot",
+        "exact_worker_image_args_limits",
+        "current_v3_policy_exact",
+        "actual_outside_window_deny_evidence",
+        "three_paused_exact_jobs",
+        "additional_1_usd_google_hold_committed_once",
+        "budget_deadline_valid",
+        "chain_queue_control_open_by_named_operator",
+        "catalog_and_rubric_accepted_by_ahmet"
+      ],
+      "actions": [
+        "resume_three_jobs",
+        "readback_enabled_final_schedules_and_next_times"
+      ],
+      "partial_failure": "pause_every_plan_job_and_readback_then_hold"
+    },
+    {
+      "name": "close",
+      "gates": [
+        "after_last_slot_or_emergency_stop"
+      ],
+      "actions": [
+        "python3 v11_chain_live.py queue stop",
+        "pause_three_jobs",
+        "delete_exact_three_jobs_and_verify_absent",
+        "retain_windowed_iam_or_remove_only_scheduler_member",
+        "preserve_slot_receipts_and_budget_holds_until_reconciled",
+        "revert_job_args_to_scheduled_review_or_previous_image"
+      ],
+      "automatic_cleanup_implemented_by_this_plan": false
+    }
+  ],
+  "proof_boundaries": {
+    "cloud_run_jobs_request_time_condition_live_enforcement": "not_yet_tested_require_api_acceptance_readback_and_actual_denial_before_activation",
+    "current_outside_window_denial_proves_future_cutoff_observed": false,
+    "future_cutoff": "configured_policy_plus_local_boundary_validation_not_a_future_runtime_observation",
+    "test_iam_permissions_as_ahmet_proves_scheduler_access": false,
+    "policy_troubleshooter_with_request_time": "optional_simulation_only_no_new_roles_or_api_enablement",
+    "scheduler_run_api_accepted_equals_target_denied": false,
+    "paused_force_run_unsupported_or_no_observable_target_attempt": "hold",
+    "missing_data_access_audit_logs": "held_no_activation_no_probe_resubmission",
+    "partial_activation_failure": "pause_all_exact_plan_jobs_and_verify; if_any_pause_unconfirmed_explicit_operator_required",
+    "billing_or_future_scheduler_storage_cost_zero_guaranteed": false
+  },
+  "observations_read_only_20261010": {
+    "job_iam": {
+      "version": 1,
+      "etag_observed_only_never_reuse": "BwZdcKY3UXU=",
+      "bindings": [
+        {
+          "role": "roles/run.invoker",
+          "members": [
+            "serviceAccount:hamle-scheduler@gamechangers-hamle.iam.gserviceaccount.com"
+          ]
+        }
+      ]
+    },
+    "scheduler_regional_inventory": [],
+    "scheduler_service_agent_role_present": true,
+    "scheduler_service_agent": "service-286533609595@gcp-sa-cloudscheduler.iam.gserviceaccount.com",
+    "scheduler_sa_explicit_iam_bindings": [],
+    "project_level_broad_scheduler_invoker_observed": false,
+    "inherited_folder_organization_policies_checked": false,
+    "read_only_offline_worker_store_tests_passed": 82,
+    "cloud_mutations_in_this_review": 0,
+    "note": "copied from base plan; must be re-read on Monday before any write"
+  },
+  "official_sources": [
+    "https://docs.cloud.google.com/scheduler/docs/configuring/cron-job-schedules",
+    "https://docs.cloud.google.com/scheduler/docs/reference/rest/v1/projects.locations.jobs",
+    "https://docs.cloud.google.com/scheduler/docs/reference/rest/v1/projects.locations.jobs/run",
+    "https://docs.cloud.google.com/run/docs/reference/rest/v2/projects.locations.jobs/setIamPolicy",
+    "https://docs.cloud.google.com/run/docs/reference/rest/Shared.Types/Policy",
+    "https://docs.cloud.google.com/iam/docs/resource-types-with-conditional-roles?hl=en",
+    "https://docs.cloud.google.com/iam/docs/conditions-attribute-reference",
+    "https://docs.cloud.google.com/run/docs/reference/rest/v2/projects.locations.jobs/testIamPermissions",
+    "https://docs.cloud.google.com/sdk/gcloud/reference/policy-troubleshoot/iam",
+    "https://cloud.google.com/scheduler/pricing"
+  ],
+  "based_on_plan_id": "hamle-scheduler-pilot-20261012-v1",
+  "mode": "chain_tick",
+  "tooling": {
+    "scheduler_pilot_py_usable": false,
+    "reason": "scheduler_pilot.py requires args == worker.py --mode scheduled_review (run_job_mode_invalid) at lines 143/303/514; it was intentionally not modified.",
+    "apply_with": "manual gcloud/REST steps below, same inert-create -> pause -> patch -> verify-paused -> resume order as the base plan",
+    "chain_queue_control": "python3 v11_chain_live.py queue status|open|stop --expected-generation N --actor ahmet@gamechangers.com.tr (Firestore collection hamle_v11_work_queue; separate from hamle_internal_v1 control)",
+    "gcloud_sequence_reference": [
+      "gcloud scheduler jobs create http <id> --project=gamechangers-hamle --location=europe-west1 --schedule='0 0 1 1 *' --time-zone=Europe/Istanbul --uri=<http_target.uri> --http-method=POST --message-body='{}' --headers=Content-Type=application/json --oauth-service-account-email=hamle-scheduler@gamechangers-hamle.iam.gserviceaccount.com --oauth-token-scope=https://www.googleapis.com/auth/cloud-platform --max-retry-attempts=0 --attempt-deadline=30s",
+      "gcloud scheduler jobs pause <id> --project=gamechangers-hamle --location=europe-west1",
+      "gcloud scheduler jobs update http <id> --project=gamechangers-hamle --location=europe-west1 --schedule='<final schedule>'",
+      "gcloud scheduler jobs describe <id> --project=gamechangers-hamle --location=europe-west1  (require state PAUSED + exact config)",
+      "gcloud scheduler jobs resume <id> --project=gamechangers-hamle --location=europe-west1  (activation; costs money per run)"
+    ]
+  }
+}

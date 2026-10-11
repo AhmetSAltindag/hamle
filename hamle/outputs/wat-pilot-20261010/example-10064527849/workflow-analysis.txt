@@ -1,0 +1,21 @@
+WAT Mobilite — 10064527849 örnek iş akışı
+
+71/71 yorum yalnız okuma ile incelendi. Gerçek müşteri akışı açılmadı.
+
+1. Tek görev içinde aşamalı onay ve alt teslim takibi gerekir. KV seçimi, storyboard, video, mailing, slider ve carousel ayrı kabul nesneleri olmalı; bir dosyanın hazır olması tüm işi bitirmez.
+Kanıt yorumları: 10069011369, 10069463856, 10235208015, 10273027864
+
+2. Kalite, ilk brief’e değil ilgili alt çıktının son yetkili brief sürümüne göre ölçülmeli. Tarih, slogan, fiyat ve lokasyon listesi değişiklikleri doğru varyantlara uygulanmalı; eski onay/dosya otomatik kullanılmamalı.
+Kanıt yorumları: 10208017792, 10217782980, 10222326922, 10254869933
+
+3. Devreden kişi, üretici, inceleyen ve dosyanın kullanım amacı birbirinden ayrılmalı. Güncel assignee veya son ZIP yeterli kanıt değildir; kaynak dosya, referans, ara taslak ve müşteri çıktısı ayrılmalı.
+Kanıt yorumları: 10070247757, 10074480672, 10236992280, 10254886054, 10254921532, 10259507951
+
+Kanıt sınırları
+- 71 yorumun tamamı okundu; görsel/ZIP/Excel/PSD/video baytları incelenmedi.
+- Bazı müşteri talepleri ve onaylar ekip üyelerinin aktardığı sözlü/toplantı/özel konuşma özetleridir; özgün müşteri maili veya WhatsApp kaydı yok.
+- Görev completed=true; tamamlanma anı, dış müşteriye gerçekten gönderilmiş son paket ve mail teslimi bu okumadan kanıtlanamaz.
+- Bu başlıkta storyboard ve motion PSD devri var; son render videonun varlığı ve kalite kabulü kanıtlanmadı.
+- Kırmızı renk istisnası, geçmiş fiyatlar, eski assignee/devirler ve lokasyonlar güncel WAT yetki/kılavuzu olarak otomatik benimsenemez.
+- Ek bilgileri bu raporda yorum metnindeki dosya adlarından anlamlandırıldı; tam dosya manifesti veya içerik doğruluğu çıkarılmadı.
+- Aynı dosya adları farklı tarihlerde tekrar kullanılıyor; içerik eşitliği veya final sürüm dosya adından belirlenemez.

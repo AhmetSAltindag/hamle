@@ -1,0 +1,20 @@
+{
+  "ok": true,
+  "reason": null,
+  "writes": 0,
+  "parent": {
+    "id": 10384126975,
+    "name": "İş Listesi",
+    "title": "İş Listesi",
+    "type": "Todoset",
+    "status": "active",
+    "visible_to_clients": false,
+    "bucket": {
+      "id": 49184053,
+      "name": "Hamle — İç Deneme",
+      "type": "Project"
+    },
+    "todos_url": "https://3.basecampapi.com/5898865/buckets/49184053/todosets/10384126975/todos.json",
+    "todolists_url": "https://3.basecampapi.com/5898865/buckets/49184053/todosets/10384126975/todolists.json"
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "version": "wat-samet-video-shadow-20261010-v1",
+  "live_enabled": false,
+  "brief": {
+    "task_id": 10317695863,
+    "initial_brief": "Her Salı WAT’la, Avantajı Katla! Kampanya her salı %10 indirim sunar. KV onayından sonra toggle hareketli reels uyarlaması; dark post için.",
+    "revision_sources": [
+      10335969966,
+      10336063984
+    ],
+    "motion": "Off→On; toggle önce yukarıda/ortada, sonra küçülerek yerleşimine geçsin. Başlık ve %10 indirim badge’i gelsin; icon/badge minimal hareketli kalsın.",
+    "timing": "Kampanya mesajı mümkünse en geç 2. saniyede görünmeye başlasın.",
+    "voiceover_source_comment": 10340298133,
+    "voiceover": "Özge sesi onayladığını söylüyor; dış dosyanın içeriği henüz dinlenmedi. Ek sesli ve müzikli versiyon dönüşümlü kullanılacak.",
+    "duration": "Revizyondan önce 8 saniye ifadesi kesin yeni süre şartı değildir.",
+    "dimensions": "1080×1920 native dosya ölçüsü; başlangıç briefinde sayısal teslim şartı yok.",
+    "unknowns": [
+      "Tam ses metni ve ses içeriği henüz doğrulanmadı.",
+      "Müzik/ses kullanım hakkı dosyası henüz doğrulanmadı.",
+      "Sesli son versiyona ayrı onay görülmedi."
+    ]
+  },
+  "brief_sha256": "998e210c1fc56f3331d9b0afe533f2e97a51c17993a0ef4c7ab8a869296e0ea3",
+  "items": [
+    {
+      "id": "samet-music",
+      "artifact": {
+        "task_id": 10317695863,
+        "comment_id": 10336607720,
+        "attachment_id": 897278053,
+        "producer_id": 50486696,
+        "sha256": "1b88ebfa84e979fbdbcdd29781694bcd76fbfaedffd8e11292aa545fbab6ae66",
+        "byte_size": 10151280
+      },
+      "historical_approval": {
+        "comment_id": 10340298133,
+        "actor_id": 52096503,
+        "basis": "son video onaylandı; önceki tek Samet MP4 ile zaman sırası bağı",
+        "exact_hash_approval": false,
+        "current_delivery_authority": false
+      },
+      "timing_required_phrases": [
+        "Her Salı WAT’la",
+        "Avantajı Katla",
+        "%10"
+      ]
+    },
+    {
+      "id": "samet-voiceover",
+      "artifact": {
+        "task_id": 10317695863,
+        "comment_id": 10343076732,
+        "attachment_id": 897985544,
+        "producer_id": 50486696,
+        "sha256": "b69614a7a6691a18fd306454111dbdfcd388218ff932a618206b37760b1bc58d",
+        "byte_size": 11168366
+      },
+      "historical_approval": {
+        "comment_id": null,
+        "actor_id": null,
+        "basis": "bu dosyadan sonra ayrı onay görülmedi",
+        "exact_hash_approval": false,
+        "current_delivery_authority": false
+      },
+      "timing_required_phrases": [
+        "Her Salı WAT’la",
+        "Avantajı Katla",
+        "%10"
+      ]
+    }
+  ]
+}

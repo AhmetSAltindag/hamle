@@ -1,0 +1,14 @@
+{
+  "date": "2026-10-10",
+  "openai_usage_ui": "authentication_issue_no_current_cost_observed",
+  "google_cloud_billing_ui": "error_page_no_current_cost_observed",
+  "current_invoice_reconciled": false,
+  "conservative_cloud_ledger_read": "hybrid-preparation-budget-read.json",
+  "unreconciled_prior_holds_released": false,
+  "ledger_total_committed_usd": 19,
+  "ledger_remaining_usd": 31,
+  "ledger_is_not_provider_invoice": true,
+  "new_evaluation_max_usd": 1,
+  "five_call_conservative_bound_usd": 0.832,
+  "ongoing_or_expanded_budget_authorization": false
+}

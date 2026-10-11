@@ -1,0 +1,148 @@
+{
+  "recorded_at": "2026-10-10T15:57:07.945500+00:00",
+  "task_id": 10317695863,
+  "comments_read": 33,
+  "comments_complete": true,
+  "comment_attachments": 22,
+  "source_type": "new_explicit_user_historical_reference",
+  "producer_id": 50486696,
+  "actual_mp4_downloads": [
+    {
+      "task_id": 10317695863,
+      "comment_id": 10336607720,
+      "creator": {
+        "id": 50486696,
+        "name": "Samet Göksu",
+        "title": "Motion Designer",
+        "employee": true
+      },
+      "selection": "samet-music-approved-candidate",
+      "attachment": {
+        "id": 897278053,
+        "filename": "WM_AVANTAJLARI_KATLA.mp4",
+        "content_type": "video/mp4",
+        "byte_size": 10151280,
+        "width": 1080,
+        "height": 1920,
+        "download_url_present": true,
+        "native_metadata_keys": [
+          "attachable_sgid",
+          "byte_size",
+          "caption",
+          "content_type",
+          "download_url",
+          "filename",
+          "height",
+          "id",
+          "key",
+          "preview_url",
+          "previewable",
+          "sgid",
+          "status_url",
+          "thumbnail_url",
+          "width"
+        ]
+      },
+      "path": "/Users/ahmetsaltindag/Documents/ChatGPT/Gamechangers AI Ajanı/hamle/outputs/wat-pilot-20261010/real-output-shadow/task-10317695863/artifacts/samet-music-approved-candidate/WM_AVANTAJLARI_KATLA.mp4",
+      "byte_size": 10151280,
+      "sha256": "1b88ebfa84e979fbdbcdd29781694bcd76fbfaedffd8e11292aa545fbab6ae66",
+      "magic_hex": "00000018667479706d703432",
+      "source_comment_created_at": "2026-09-24T11:55:16.447Z"
+    },
+    {
+      "task_id": 10317695863,
+      "comment_id": 10343076732,
+      "creator": {
+        "id": 50486696,
+        "name": "Samet Göksu",
+        "title": "Motion Designer",
+        "employee": true
+      },
+      "selection": "samet-later-voiceover-candidate",
+      "attachment": {
+        "id": 897985544,
+        "filename": "WM_AVANTAJLARI_KATLA_DIS_SES.mp4",
+        "content_type": "video/mp4",
+        "byte_size": 11168366,
+        "width": 1080,
+        "height": 1920,
+        "download_url_present": true,
+        "native_metadata_keys": [
+          "attachable_sgid",
+          "byte_size",
+          "caption",
+          "content_type",
+          "download_url",
+          "filename",
+          "height",
+          "id",
+          "key",
+          "preview_url",
+          "previewable",
+          "sgid",
+          "status_url",
+          "thumbnail_url",
+          "width"
+        ]
+      },
+      "path": "/Users/ahmetsaltindag/Documents/ChatGPT/Gamechangers AI Ajanı/hamle/outputs/wat-pilot-20261010/real-output-shadow/task-10317695863/artifacts/samet-later-voiceover-candidate/WM_AVANTAJLARI_KATLA_DIS_SES.mp4",
+      "byte_size": 11168366,
+      "sha256": "b69614a7a6691a18fd306454111dbdfcd388218ff932a618206b37760b1bc58d",
+      "magic_hex": "00000018667479706d703432",
+      "source_comment_created_at": "2026-09-25T21:22:42.947Z"
+    }
+  ],
+  "actual_byte_size_and_sha_verified": true,
+  "local_full_decode_verified": false,
+  "reason": "local_ffmpeg_ffprobe_not_installed_cloud_probe_owned_by_root",
+  "historical_approval": {
+    "comment_id": 10340298133,
+    "creator_id": 52096503,
+    "text": "son video onaylandı",
+    "nearest_preceding_samet_comment_id": 10336607720,
+    "nearest_preceding_attachment_id": 897278053,
+    "binding": "chronological_reference_not_explicit_file_hash_approval",
+    "later_voiceover_attachment_id": 897985544,
+    "later_voiceover_explicit_approval_found": false
+  },
+  "brief": {
+    "initial_request": "Tuesday 10 percent discount, headline Her Salı WAT'la, Avantajı Katla!, small on/off toggle; story/post then reels dark-post adaptation after KV approval.",
+    "later_required_timing": "Campaign message preferably starts appearing by 2 seconds at latest (source says mümkünse).",
+    "timing_source_comment_id": 10335969966,
+    "motion_source_comment_id": 10336063984,
+    "motion": "Start toggle OFF to ON higher and nearer center, then move to its existing position and shrink; title/icons/discount badge appear, minimal motion while held; fast/dynamic.",
+    "audio_source_comment_id": 10332729748,
+    "audio_fade_out_requested": true,
+    "voiceover_source_comment_id": 10340298133,
+    "voiceover": "Additional voice version to alternate with music version; recording begins after on/off.",
+    "eight_seconds_statement_is_final_duration_requirement": false,
+    "eight_seconds_statement": "Previous pre-revision video was 8 seconds, so voice recording was taken as 8 seconds.",
+    "explicit_numeric_output_width_or_height_required": false,
+    "observed_metadata_dimensions": [
+      1080,
+      1920
+    ],
+    "voice_source_reference": "samet-voice-source-reference.json",
+    "timing_source_exact_wording": "Kampanya mesajını mümkünse en geç 2. saniyede ekranda görmeye başlayalım.",
+    "timing_is_soft_preference": true,
+    "automatic_rejection_for_two_second_preference": false
+  },
+  "remaining_unknown": [
+    "Actual decoded duration/codec/audio, exact timing and frame evidence pending cloud probe.",
+    "Actual Drive WAV downloaded and PCM metadata verified; spoken text/listening, audio/video alignment and music rights remain unverified.",
+    "Later voiceover version has no separate approval in all 33 comments.",
+    "No current To/CC or delayed delivery authority established by this historical task."
+  ],
+  "business_writes": 0,
+  "mail_sends": 0,
+  "paid_model_calls": 0,
+  "customer_live_accepted": false,
+  "voice_source_verification": {
+    "metadata_file": "voice-source/audio-metadata.json",
+    "actual_bytes": 776074,
+    "sha256": "1bb6447f6d0a628e688e5c2533168b9a5069c8f372e5bd55a990119ee44f77c7",
+    "pcm_duration_seconds": 8.797369614512471,
+    "spoken_text_verified": false,
+    "audio_video_alignment_verified": false
+  }
+}

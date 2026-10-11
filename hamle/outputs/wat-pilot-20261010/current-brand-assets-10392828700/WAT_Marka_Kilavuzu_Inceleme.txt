@@ -1,0 +1,63 @@
+WAT Mobilite — kullanıcı tarafından seçilen güncel marka kılavuzu
+10 Ekim 2026
+
+KAYNAK VE SÜRÜM
+https://app.basecamp.com/5898865/buckets/40694338/uploads/10392828700
+WATMobilite-Brand Guideline.pdf — 9.910.859 bayt — 39 PDF sayfası.
+SHA256: 6be9fc432313ed5fd6d7741d52e83e584dddd26b8802238a01aee8b05ca3881c
+Ahmet, bu bağlantıyı güncel onaylı marka dosyası sorusuna yanıt olarak verdi.
+Onay bu dosya ve okunmuş sürüme ait; klasörün bütününe veya başka dosyalara değil.
+Dosya bugün 15:07 UTC / 18:07 İstanbul'da Ahmet tarafından WAT alanına yüklendi.
+Kapak 2024, PDF oluşturma/değiştirme tarihi 12 Haziran 2025. Bu tarihler kullanıcının
+bugünkü güncel sürüm seçimini geçersiz kılmaz. Basecamp ayrı sürüm numarası vermiyor;
+tekrar kullanılacak kesin sürüm dosya özetiyle sabitlendi.
+
+YAPILAN KONTROL
+39 sayfanın metni çıkarıldı ve tamamı görsel olarak incelendi. Logo, renk, yazı
+ve Koç kuralları için PDF 3–6, 8–10, 21–22 ayrıca yüksek çözünürlükte görüntülendi.
+Sayfa numaraları fiziksel PDF sırasıdır; çoğu sayfada iki karşılıklı baskı sayfası
+bulunur. Kılavuz içindekiler bölümünün numaralarıyla birebir aynı değildir.
+İndirme boyutu gerçek Basecamp metadata değeriyle eşleşti; PDF şifresiz,
+JavaScript ve form içermiyor. İmzalı indirme bağlantıları kayda yazılmadı.
+
+KULLANILABİLİR KURALLAR
+- Logo oranı, çevresindeki boşluk ve zemin kontrastı korunmalı; esnetme, döndürme,
+  bulanıklaştırma, keyfi renk/opaklık, gölge ve uygunsuz birleştirme yapılmamalı
+  (PDF 3–6). Minimum boyut şemasında 100 px var; tüm mecralara aynı mutlak
+  değerle uygulanacak otomatik kural henüz kabul edilmiş değil.
+- Açık renkler: Bunting #1C2041, Astronaout #273271, Colombia Blue #A6DBF8,
+  Bunker #2D2D2D (PDF 7–8). Bu dördünün RGB ve HEX değerleri tutarlı.
+  Zircon için kullanıcının kesinleştirdiği değer #E8E7E6; buradan türetilen RGB
+  232/231/230. Basılı farklı RGB değeri kaynak kanıtı olarak korundu.
+- Kullanıcı font kontrolünde PDF 9'u esas aldı: ana font Nunito Sans, yardımcı
+  font Josefin Sans. Fontun gerçek dosyası/lisansı bu PDF'den doğrulanmadı.
+- Sosyal paylaşım örneği 1080×1080, logo ve okunabilirlik/görsel kalite vurgusu var
+  (PDF 11–12). Bu örnek bütün gelecek taleplerin ölçüsü sayılmayacak; güncel brief
+  formatı belirler.
+- Koç beraber kullanımı için etkinlik/kurumsal ortam ve mecraya özgü oranlar var
+  (PDF 21–22). Bunlar her WAT gönderisine Koç logosu koyma talimatı değildir.
+- Kalan sayfalarda kurumsal kırtasiye, tanıtım, tabela, kıyafet ve araç uygulama
+  örnekleri var. Örnek Lorem ipsum, isim, telefon, QR, tarih ve görseller güncel
+  operasyon bilgisi veya bağımsız kullanım hakkı kanıtı sayılmadı.
+
+KULLANICI KARARIYLA ÇÖZÜLEN İKİ KAYNAK TUTARSIZLIĞI
+1. PDF 9 ana Nunito Sans / yardımcı Josefin Sans diyor; PDF 10 büyük örnek yazıda
+   LUCETTE HAAS DISPLAY yer alıyor. Ahmet 10 Ekim 2026'da font kontrolünde PDF 9'un
+   esas alınacağını açıkça belirtti: ana Nunito Sans, yardımcı Josefin Sans.
+   PDF 10 örneği bu kuralı değiştirmez veya başka fontları yetkilendirmez.
+   Eski çelişki kanıt olarak korundu; bu konu artık açık soru değil.
+2. PDF 8 Zircon açık gri için RGB 231/232/230 ve HEX E8E7E6 veriyor. İlki E7E8E6'ya
+   karşılık gelir; ikisi aynı renk kodu değil. Ahmet 10 Ekim 2026'da yazılan HEX
+   #E8E7E6 değerini esas seçti. Geçerli türetilmiş RGB 232/231/230'dur.
+   Basılı farklı RGB değiştirilmedi; kaynak kanıtı olarak kaldı. Konu çözüldü.
+
+Kaynak sayfaları, eski çelişkiler, kesinleşmiş değerler ve kullanıcı kararları
+brand-rules.json'da birlikte duruyor. Kullanıcının bu kararları otomatik logo/
+font görsel tanımanın veya canlı müşteri kalite kabulünün tamamlandığı anlamına
+gelmez. Hiçbir kural canlı otomatik kalite kapısına henüz etkinleştirilmedi.
+
+SINIR
+Bu bağlantıda tek PDF var. Ayrı SVG/AI/EPS logo ustası veya font dosyası alınmış
+değil. Kılavuzun okunması tek başına gerçek müşteri çıktısına 90/100 kalite
+verildiği anlamına gelmez. Basecamp yazımı, mail, ücretli model çağrısı veya
+bulut erişim değişikliği yapılmadı.

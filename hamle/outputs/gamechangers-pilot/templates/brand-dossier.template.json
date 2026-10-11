@@ -1,0 +1,167 @@
+{
+  "artifact_kind": "unpopulated_brand_dossier_template",
+  "configuration_status": "tasarlandı",
+  "brand_id": null,
+  "brand_name": null,
+  "dossier_version": null,
+  "created_at": null,
+  "updated_at": null,
+  "owner_person_or_agent_id": null,
+  "current_authority_record_ids": null,
+  "source_record_ids": [],
+  "scope": "Tüm markalar pilot kapsamındadır. Her marka için ayrı dosya; hazır marka diğer markaların tamamlanmasını beklemez.",
+  "brand_readiness": {
+    "discovered": false,
+    "authority_configured": false,
+    "sources_connected": false,
+    "current_work_reconciled": false,
+    "required_tests_passed": false,
+    "live_enabled": false
+  },
+  "sections": {
+    "brand_product_service_definition": {
+      "summary": null,
+      "knowledge_record_ids": [],
+      "status": "doğrulanmamış",
+      "last_checked_at": null,
+      "missing_information": [],
+      "responsible_person_id": null
+    },
+    "category_sector_competition": {
+      "summary": null,
+      "knowledge_record_ids": [],
+      "status": "doğrulanmamış",
+      "last_checked_at": null,
+      "missing_information": [],
+      "responsible_person_id": null
+    },
+    "current_position_and_targets": {
+      "summary": null,
+      "knowledge_record_ids": [],
+      "status": "doğrulanmamış",
+      "last_checked_at": null,
+      "missing_information": [],
+      "responsible_person_id": null
+    },
+    "target_audiences_and_needs": {
+      "summary": null,
+      "knowledge_record_ids": [],
+      "status": "doğrulanmamış",
+      "last_checked_at": null,
+      "missing_information": [],
+      "responsible_person_id": null
+    },
+    "positioning_value_proposition_message_priorities": {
+      "summary": null,
+      "knowledge_record_ids": [],
+      "status": "doğrulanmamış",
+      "last_checked_at": null,
+      "missing_information": [],
+      "responsible_person_id": null
+    },
+    "tone_good_examples_avoidances": {
+      "summary": null,
+      "knowledge_record_ids": [],
+      "status": "doğrulanmamış",
+      "last_checked_at": null,
+      "missing_information": [],
+      "responsible_person_id": null
+    },
+    "verified_product_facts_and_claim_evidence": {
+      "summary": null,
+      "knowledge_record_ids": [],
+      "status": "doğrulanmamış",
+      "last_checked_at": null,
+      "missing_information": [],
+      "responsible_person_id": null
+    },
+    "current_campaigns_terms_dates": {
+      "summary": null,
+      "knowledge_record_ids": [],
+      "status": "doğrulanmamış",
+      "last_checked_at": null,
+      "missing_information": [],
+      "responsible_person_id": null
+    },
+    "official_website_blog_social": {
+      "summary": null,
+      "knowledge_record_ids": [],
+      "status": "doğrulanmamış",
+      "last_checked_at": null,
+      "missing_information": [],
+      "responsible_person_id": null
+    },
+    "current_brand_guideline": {
+      "summary": null,
+      "knowledge_record_ids": [],
+      "status": "doğrulanmamış",
+      "last_checked_at": null,
+      "missing_information": [],
+      "responsible_person_id": null
+    },
+    "logos_fonts_colors_assets_templates": {
+      "summary": null,
+      "knowledge_record_ids": [],
+      "status": "doğrulanmamış",
+      "last_checked_at": null,
+      "missing_information": [],
+      "responsible_person_id": null
+    },
+    "approved_copy_design_video_last_6_to_12_months": {
+      "summary": null,
+      "knowledge_record_ids": [],
+      "status": "doğrulanmamış",
+      "last_checked_at": null,
+      "missing_information": [],
+      "responsible_person_id": null
+    },
+    "music_voice_motion_preferences": {
+      "summary": null,
+      "knowledge_record_ids": [],
+      "status": "doğrulanmamış",
+      "last_checked_at": null,
+      "missing_information": [],
+      "responsible_person_id": null
+    },
+    "authorized_client_people_and_agency_owners": {
+      "summary": null,
+      "knowledge_record_ids": [],
+      "status": "doğrulanmamış",
+      "last_checked_at": null,
+      "missing_information": [],
+      "responsible_person_id": null
+    },
+    "service_scope_revision_delivery_rules": {
+      "summary": null,
+      "knowledge_record_ids": [],
+      "status": "doğrulanmamış",
+      "last_checked_at": null,
+      "missing_information": [],
+      "responsible_person_id": null
+    },
+    "open_questions_conflicts_unreachable_sources": {
+      "summary": null,
+      "knowledge_record_ids": [],
+      "status": "doğrulanmamış",
+      "last_checked_at": null,
+      "missing_information": [],
+      "responsible_person_id": null
+    }
+  },
+  "coverage": {
+    "known_source_total": null,
+    "reviewed_date_ranges": [],
+    "reviewed_threads": 0,
+    "read_attachments": 0,
+    "unreadable_attachments": [],
+    "remaining_sources": null,
+    "completion_percentage": null,
+    "last_successful_checkpoint": null
+  },
+  "retrieval_rules": [
+    "İşin gerektirdiği alan ve kaynakları çağır; bütün dosyayı veya arşivi her üretime yükleme.",
+    "Geçmiş dönemdeki onayları güncel guideline yerine otomatik kullanma.",
+    "Son 6–12 ay örnek taraması tüm yetkili e-posta geçmişinin incelenmesi hedefini ortadan kaldırmaz.",
+    "Markalar arası özel veri aktarımı yoktur."
+  ]
+}

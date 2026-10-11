@@ -1,0 +1,16 @@
+{
+  "recorded_at": "2026-10-10T15:58:21.837702+00:00",
+  "source": "direct_user_answer_current_conversation",
+  "actor": "ahmet@gamechangers.com.tr",
+  "answer": "En fazla 2 iç tur, sonra insana devret",
+  "maximum_internal_quality_revision_rounds_per_work": 2,
+  "counts_only_after_confirmed_basecamp_revision_write": true,
+  "counter_separate_from_customer_revision_entitlement": true,
+  "does_not_reset_for_new_file_version": true,
+  "handoff_any_one_of": [
+    "ozge@gamechangers.com.tr",
+    "ahmet@gamechangers.com.tr",
+    "cansu@gamechangers.com.tr"
+  ],
+  "customer_live_enabled_by_this_decision": false
+}

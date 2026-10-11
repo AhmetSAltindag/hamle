@@ -1,0 +1,37 @@
+{
+  "name": "hamle-account-manager-d7d4b",
+  "status": {
+    "completionTime": "2026-10-10T15:01:41.326835Z",
+    "conditions": [
+      {
+        "lastTransitionTime": "2026-10-10T15:01:41.326835Z",
+        "message": "Task hamle-account-manager-d7d4b-task0 failed with exit code: 2 and message: The container exited with an error.",
+        "reason": "NonZeroExitCode",
+        "status": "False",
+        "type": "Completed"
+      },
+      {
+        "lastTransitionTime": "2026-10-10T15:00:29.970548Z",
+        "message": "Provisioned imported containers.",
+        "status": "True",
+        "type": "ResourcesAvailable"
+      },
+      {
+        "lastTransitionTime": "2026-10-10T15:01:08.720558Z",
+        "message": "Started deployed execution in 38.75s.",
+        "status": "True",
+        "type": "Started"
+      },
+      {
+        "lastTransitionTime": "2026-10-10T15:00:29.835460Z",
+        "message": "Imported container image in 11.82s.",
+        "status": "True",
+        "type": "ContainerReady"
+      }
+    ],
+    "failedCount": 1,
+    "logUri": "https://console.cloud.google.com/logs/viewer?project=gamechangers-hamle&advancedFilter=resource.type%3D%22cloud_run_job%22%0Aresource.labels.job_name%3D%22hamle-account-manager%22%0Aresource.labels.location%3D%22europe-west1%22%0Alabels.%22run.googleapis.com/execution_name%22%3D%22hamle-account-manager-d7d4b%22",
+    "observedGeneration": 1,
+    "startTime": "2026-10-10T15:00:34.080737Z"
+  }
+}

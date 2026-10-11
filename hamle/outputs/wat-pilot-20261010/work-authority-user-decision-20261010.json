@@ -1,0 +1,30 @@
+{
+  "source": "direct_user_answer_current_conversation",
+  "actor": "ahmet@gamechangers.com.tr",
+  "recorded_at": "2026-10-10T15:41:33.218450+00:00",
+  "decision": "accept_visible_stop_work_authority",
+  "answer": "Bu görünür durdurma kuralını kabul ediyorum",
+  "brand_id": "wat_mobilite",
+  "terms": {
+    "allowed_scope": "verified_WAT_routine_services_only",
+    "entry": "authorized_sender_actual_latest_email_with_Hamle_in_To_or_CC",
+    "same_scope_and_recipients_only": true,
+    "maximum_business_days": 2,
+    "timezone": "Europe/Istanbul",
+    "stop_methods": [
+      "message_received_by_Hamle_stop_or_takeover",
+      "authenticated_control_screen"
+    ],
+    "unseen_cc_removal_alone_cannot_be_treated_as_cancellation": true,
+    "renewal_required_on": [
+      "expiry",
+      "scope_change",
+      "recipient_change",
+      "visible_stop_or_takeover"
+    ],
+    "does_not_solve_invisible_email_observation": true,
+    "does_not_extend_budget_deadline": true,
+    "does_not_enable_live_customer_flow_by_itself": true
+  },
+  "samet_reference_task_url": "https://app.basecamp.com/5898865/buckets/40694338/todos/10317695863"
+}

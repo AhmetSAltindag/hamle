@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="csrf-token" content="__CSRF_TOKEN__"><title>Hamle · İç işler ve kontrol</title>
+<style nonce="__CSP_NONCE__">
+:root{color-scheme:light;--ink:#182e34;--muted:#526970;--teal:#086d68;--line:#d4e1df}*{box-sizing:border-box}body{margin:0;background:#f3f7f6;color:var(--ink);font:15px/1.55 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}main{max-width:960px;margin:0 auto;padding:34px 24px 48px}header{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px}.logo{font-size:27px;font-weight:850;letter-spacing:-1px}.logo span{color:var(--teal)}.badge{font-size:12px;background:#deeee8;color:#225244;border:1px solid #accfc3;padding:6px 12px;border-radius:30px}h1{font-size:36px;letter-spacing:-1px;margin:0 0 10px}h2{font-size:21px;margin:0 0 14px}h3{font-size:16px;margin:22px 0 8px}p{margin:0 0 12px}.muted{color:var(--muted)}.card{background:white;border:1px solid var(--line);border-radius:16px;padding:24px;margin:20px 0}.control{background:#183039;color:white}.control .muted{color:#d3e2e3}.status{font-weight:750;color:var(--teal)}.control .status{color:#aeebd7}.buttons{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}button{font:inherit;font-weight:700;min-height:43px;padding:10px 16px;cursor:pointer;border:1px solid var(--line);border-radius:9px;background:white;color:var(--ink)}button:focus-visible{outline:3px solid #df9635;outline-offset:3px}button:disabled{opacity:.48;cursor:default}.approve,#takeover{background:var(--teal);color:white;border-color:var(--teal)}#stop{color:#943621}.small{font-size:13px}.draft{white-space:pre-wrap;overflow-wrap:anywhere;background:#f6f9f8;padding:16px;border-radius:9px;max-height:440px;overflow:auto}.target{font-weight:650}.divider{border-top:1px solid var(--line);margin-top:20px;padding-top:4px}.details{margin-top:20px;font-size:12px;color:var(--muted)}summary{cursor:pointer;font-weight:650}.warning{border-left:3px solid #cba86e;padding-left:14px;color:var(--muted);font-size:13px}#message{min-height:24px;font-weight:650;margin:16px 0}ul{padding-left:22px}dl{display:grid;grid-template-columns:140px 1fr;gap:7px}dt{font-weight:650}dd{margin:0;overflow-wrap:anywhere}a{color:var(--teal)}.receipt{padding:9px 0;border-bottom:1px solid var(--line)}.row{display:flex;justify-content:space-between;align-items:center;gap:16px}@media(max-width:600px){main{padding:22px 16px}h1{font-size:29px}.card{padding:18px}.buttons{flex-direction:column}dl{grid-template-columns:1fr;gap:3px}dd{margin-bottom:8px}.row{align-items:flex-start}}
+</style></head>
+<body><main>
+<header><div class="logo">hamle<span>.</span></div><span class="badge">Gamechangers · Yalnız iç kapsam</span></header>
+<h1>İç işler ve kontrol</h1>
+<p class="muted">Google kimliği doğrulandı: ahmet@gamechangers.com.tr</p>
+<section class="card control" aria-labelledby="control-title">
+<h2 id="control-title">Kontrol sende</h2><p id="control-state" class="status">Kalıcı kayıt okunuyor…</p>
+<p class="muted small">Durdur veya devral: bekleyen işler durur. Sağlayıcıya zaten ulaşmış bir işlem geri alınamaz; sonucu aşağıda ayrı gösterilir.</p>
+<div class="buttons"><button id="stop" disabled>Durdur</button><button id="takeover" disabled>Ben devralıyorum</button><button id="resume" disabled>Yalnız incelemeyi yeniden aç</button></div>
+<p class="muted small">İncelemeyi açmak eski iptalleri yeniden çalıştırmaz. Yeni okuma, yeni öneri ve yeni onay gerekir.</p>
+</section>
+<section class="card" aria-labelledby="work-authority-title"><div class="row"><h2 id="work-authority-title">İş bazında kontrol</h2><button id="refresh-authority">İşleri yenile</button></div><p class="muted small">Buradan devraldığın işin bekleyen aksiyonları durur. Diğer işler ve genel kontrol değişmez.</p><div id="authority-works">İş kayıtları okunuyor…</div><p id="authority-message" role="status" aria-live="polite" class="small"></p></section>
+<section class="card"><h2>Mevcut işlerin takibi</h2><div id="works">Kalıcı iş bağlantıları okunuyor…</div><p class="muted small">Görev durumu son başarılı okumayı gösterir. Sürekli izleme veya yeni yorum gönderildiği anlamına gelmez.</p></section>
+<div class="row"><h2>Onay bekleyen çıktılar</h2><button id="refresh">Durumu yenile</button></div>
+<p class="muted small">Onay, yanıtı aşağıda gösterilen Kime/CC alıcılarına ve görev işlemini yalnız “Hamle — İç Deneme” projesine bağlar. Gönderim öncesi yetki, son mailin alıcıları ve kaynak tekrar kontrol edilir.</p>
+<p id="message" role="status" aria-live="polite"></p>
+<div id="proposals"><p class="muted">Yükleniyor…</p></div>
+<section class="card"><h2>İşlem kanıtları</h2><div id="receipts">Henüz okunmadı.</div></section>
+<p id="budget" class="muted small"></p>
+<p class="warning">Müşteri otomasyonu açık değildir. Bu panel, Hamle’nin CC’den çıkarıldığı ve kendisine ulaşmayan bir maili saptamaz. Ortak bütçe ve son tarih kontrolleri ayrı uygulanır; bütçe alarmı tek başına faturayı kesmez.</p>
+</main>
+<script nonce="__CSP_NONCE__">
+'use strict';
+const csrf = document.querySelector('meta[name="csrf-token"]').content;
+const el = id => document.getElementById(id);
+let busy = false;
+const modes = {review_open:'İç inceleme açık · Her çıktı için ayrı onay gerekir',stopped:'Durduruldu',takeover:'İnsan devraldı'};
+const states = {awaiting_human_review:'Onayın bekleniyor',approved:'Onay kaydedildi · Gönderim kanıtı aşağıda',cancelled:'İptal edildi · Eski onay kullanılamaz'};
+const intents = {routine_request:'Rutin talep',commercial:'Ticari karar',complaint_strategy:'Sorun, şikâyet veya strateji',social_planning:'Sosyal içerik planı',unclear:'Açıklama gerekiyor'};
+const owners = {none:'Ek yönlendirme yok',ahmet:'Ahmet',cansu_and_ahmet:'Cansu ve Ahmet',ozge_and_hamle:'Özge ve Hamle',human_review:'İnsan incelemesi'};
+const kindNames = {gmail_reply:'Mail yanıtı',basecamp_todo:'Basecamp görevi',basecamp_comment:'Basecamp yorumu'};
+const receiptStates = {leased:'Hazırlık ayrıldı; gönderim başlamadı',dispatch_started:'Gönderim başladı; sonuç henüz doğrulanmadı',accepted:'Sağlayıcı kabul etti; geri okuma bekleniyor',verified:'Geri okuma ile doğrulandı',unknown:'Sonuç belirsiz; otomatik tekrar kapalı',cancelled:'Bekleyen işlem iptal edildi'};
+const errors = {iap_identity_required:'Google girişi gerekli. Sayfayı yenile.',iap_identity_not_authorized:'Bu panel yalnız Ahmet’in doğrulanmış hesabına açık.',reload_authenticated_panel:'Panel oturumu yenilenmeli. Sayfayı yeniden aç.',proposal_not_currently_displayed:'Öneri değişmiş. Durumu yenileyip tekrar incele.',control_changed_refresh_required:'Kontrol veya öneri değişmiş olabilir. Durumu yenile; işlemi kendiliğinden tekrar etme.',control_unavailable:'Kalıcı kayıt şu an okunamıyor. İşlem sonucu doğrulanmadı.',invalid_internal_proposal:'Önerinin iç kapsamı doğrulanamadı; onay kapalı.',invalid_control_state:'Kalıcı kayıt doğrulanamadı; onay kapalı.'};
+function node(tag,text,cls){const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(cls)n.className=cls;return n;}
+function paragraph(parent,label,value){parent.append(node('h3',label),node('p',value===null?'Belirlenmedi':String(value)));}
+function list(parent,label,values){parent.append(node('h3',label));if(!values.length){parent.append(node('p','Yok','muted small'));return;}const u=node('ul');values.forEach(v=>u.append(node('li',v)));parent.append(u);}
+function facts(parent,entries){const d=node('dl');entries.forEach(([k,v])=>d.append(node('dt',k),node('dd',v===null?'Belirlenmedi':String(v))));parent.append(d);}
+function taskLink(id,label='Mevcut iç görevi aç'){const link=node('a',label);link.href='https://app.basecamp.com/5898865/buckets/49184053/todos/'+String(id);link.target='_blank';link.rel='noopener noreferrer';return link;}
+function checkedAt(value){const date=new Date(value);return Number.isFinite(date.getTime())?new Intl.DateTimeFormat('tr-TR',{dateStyle:'short',timeStyle:'short',timeZone:'Europe/Istanbul'}).format(date)+' · İstanbul':value;}
+let authorityBusy=false;
+const authorityErrors={work_not_currently_displayed:'Bu işin güncel kaydını önce yenile.',work_changed_refresh_required:'İş değişmiş olabilir. Yenileyip sonucu kontrol et; işlem kendiliğinden tekrarlanmaz.',work_stop_readback_unverified:'Durdurmanın geri okuması henüz doğrulanamadı. Durumu yenile.',invalid_work_authority_state:'İş kaydı doğrulanamadı; kontrol kapalı.'};
+function renderAuthority(state){
+ const box=el('authority-works');box.replaceChildren();
+ if(!state.works.length)box.append(node('p','Bu kontrol akışına bağlanmış iş henüz yok. Mevcut iç görevler aşağıda gösterilir.','muted'));
+ state.works.forEach(w=>{
+  const card=node('article',undefined,'receipt');
+  card.append(node('h3',w.synthetic?'Sentetik deneme · İş bazlı devralma':({'wat_mobilite':'WAT Mobilite'})[w.brand_id]||'İş takibi'));
+  if(w.synthetic)card.append(node('p','Gerçek müşteri maili veya üretim görevi değildir. Bu kayıt yalnız devralma kontrolünü sınamak için oluşturuldu.','warning'));
+  facts(card,[['İşin durumu',({active:'Aktif takip',takeover:'İnsan devraldı',stopped:'Durduruldu'})[w.mode]],['İşlem yetkisi',({active:'Kayıtlı · Her işlem öncesi tekrar kontrol gerekir',revoked:'İptal edildi',not_granted:'Verilmedi'})[w.grant_status]],['Son okuma',checkedAt(w.observed_at)]]);
+  if(w.inflight_outcome_pending)card.append(node('p','Daha önce başlamış bir işlemin sonucu belirsiz; otomatik tekrar yapılmaz.','warning'));
+  if(w.task_id&&!w.synthetic){const link=node('a','Bağlı Basecamp görevini aç');link.href='https://app.basecamp.com/'+w.account_id+'/buckets/'+w.project_id+'/todos/'+w.task_id;link.target='_blank';link.rel='noopener noreferrer';card.append(link);}
+  const detail=node('details',undefined,'details');detail.append(node('summary','İş ve kontrol kaydı'));facts(detail,[['İş kimliği',w.work_id],['İş kontrol sürümü',w.work_generation],['Yetki sürümü',w.grant_revision],['Durdurma kanıtı',w.last_stop_ref]]);card.append(detail);
+  const button=node('button','Bu işi ben devralıyorum');button.disabled=authorityBusy||w.mode!=='active';
+  button.addEventListener('click',()=>authorityRequest({action:'takeover',work_id:w.work_id,snapshot_sha256:w.snapshot_sha256,work_generation:w.work_generation,global_generation:w.global_generation}));
+  const buttons=node('div',undefined,'buttons');buttons.append(button);card.append(buttons);box.append(card);
+ });
+ if(state.more_available)box.append(node('p','İlk 25 iş gösteriliyor.','muted small'));
+}
+async function authorityRequest(data){
+ if(authorityBusy)return;authorityBusy=true;el('refresh-authority').disabled=true;el('authority-works').querySelectorAll('button').forEach(b=>b.disabled=true);
+ el('authority-message').textContent=data?'Bu iş için devralma kaydı ve geri okuması bekleniyor…':'';
+ try{const response=await fetch(data?'/api/work-control':'/api/work-authority',{method:data?'POST':'GET',credentials:'same-origin',cache:'no-store',headers:data?{'Content-Type':'application/json','X-CSRF-Token':csrf}:{},body:data?JSON.stringify(data):undefined});const state=await response.json();if(!response.ok)throw new Error(authorityErrors[state.error]||errors[state.error]||'İş kontrol kaydı okunamadı. Yenileyip kontrol et.');authorityBusy=false;renderAuthority(state);if(data)el('authority-message').textContent=state.stop_receipt_verified?'Bu iş için devralma kalıcı kayıttan doğrulandı. Bekleyen aksiyonlar durduruldu.':'Devralma sonucu doğrulanamadı.';
+ }catch(error){authorityBusy=false;el('authority-message').textContent=error.message||'Sonuç doğrulanamadı; otomatik tekrar yapılmaz.';}finally{el('refresh-authority').disabled=false;}
+}
+function render(state){
+ el('control-state').textContent=modes[state.control.mode];
+ el('stop').disabled=busy||state.control.mode==='stopped';
+ el('takeover').disabled=busy||state.control.mode==='takeover';
+ el('resume').disabled=busy||state.control.mode==='review_open';
+ el('refresh').disabled=busy;
+ const works=el('works');works.replaceChildren();
+ if(!state.works.length)works.append(node('p','Henüz doğrulanmış bir kalıcı iş bağlantısı yok.','muted'));
+ state.works.forEach(w=>{
+  const card=node('article',undefined,'receipt'),o=w.latest_observation;
+  card.append(taskLink(w.task_id));
+  const status=o?({active:o.completed?'Tamamlandı':'Açık',archived:'Arşivlendi',trashed:'Çöpe taşındı'})[o.status]:'Henüz doğrulanmadı';
+  facts(card,[['Görev durumu',status],['Son teslim',o?o.due_on:null],['Son kontrol',o?checkedAt(o.observed_at):'Henüz okunmadı'],['Doğrulanmış takip turu',w.revision_count],['İnsan değerlendirmesi',w.pending_escalation?'Cansu ve Ahmet · açık':'Açık yönlendirme yok']]);
+  if(w.followup_status){const f=w.followup_status;const label=state.control.mode!=='review_open'?'Takip durduruldu.':f.state==='claimed'?'Devam yanıtı hazırlanıyor.':f.state==='proposed'?'Devam yanıtı aşağıda incelemeni bekliyor.':f.reason==='response_incomplete'?'Yanıt tamamlanamadı; takip durdu ve otomatik tekrar yapılmayacak.':'Takip durdu; insan incelemesi gerekiyor.';card.append(node('p',label,f.state==='held'?'warning':'muted'));}
+  if(w.pending_escalation)card.append(node('p','İş takibi strateji veya üretim kararı vermez. Cansu’nun CC’de bulunması, görüşünün alındığını göstermez.','warning'));
+  works.append(card);
+ });
+ const target=el('proposals');target.replaceChildren();
+ if(!state.proposals.length)target.append(node('p','Henüz gösterilecek bir iç öneri yok.','muted'));
+ state.proposals.forEach(p=>{
+  const box=node('article',undefined,'card');const a=p.payload.analysis,r=p.payload.reply,t=p.payload.task,s=p.payload.source,w=p.payload.work,c=p.payload.comment;
+  box.append(node('h2',a.request_summary),node('p',states[p.status],'status'));
+  const coordination=p.available_approval_purpose==='internal_coordination_only';
+  if(coordination){box.append(node('h3','Strateji kararı insan incelemesinde'),node('p','Bu onay yalnız aşağıda gösterilen Kime/CC alıcılarına yanıtı ve özel Hamle iç görev işlemini kapsar. Strateji, üretim, bütçe veya teslim kararı vermez. Cansu ve Özge’ye danışıldığı doğrulanmış değildir; Cansu’nun CC’de bulunması görüşünün alındığını göstermez. İnsan değerlendirmesi açık kalır.','warning'));}
+  else if(p.human_escalation_open){box.append(node('p','Bu konuda insan değerlendirmesi gerekiyor; bu panelden iş gönderimi onayı açık değil.','warning'));}
+  paragraph(box,'Değerlendirme',intents[a.intent]);list(box,'Bilinenler',a.known_facts);list(box,'Eksik sorular',a.missing_questions);
+  list(box,'Brief · Üretilecekler',a.brief.deliverables);
+  facts(box,[['Hedef kitle',a.brief.audience],['İstenen teslim',a.brief.requested_deadline],['Onaylı teslim',a.brief.confirmed_deadline]]);
+  paragraph(box,'Yönlendirme',owners[a.escalation.owner]);if(a.escalation.reason)box.append(node('p',a.escalation.reason));
+  const reply=node('section',undefined,'divider');reply.append(node('h3','Gönderilecek yanıt'));
+  facts(reply,[['Kimden',r.from],['Kime',r.to.join(', ')],['CC',r.cc.length?r.cc.join(', '):'Yok'],['Konu',r.subject]]);
+  reply.append(node('p',r.body,'draft'));box.append(reply);
+  const task=node('section',undefined,'divider');
+  if(w){task.append(node('h3','Mevcut göreve eklenecek takip notu'),taskLink(w.task_id));facts(task,[['Proje','Hamle — İç Deneme'],['Görev kaydı',w.task_id],['İş listesi',c.todo_parent_id],['Devreden insan değerlendirmesi',w.escalation_status==='open'?'Cansu ve Ahmet · açık':'Açık yönlendirme yok']]);task.append(node('p',c.body,'draft'));}
+  else{task.append(node('h3','Oluşturulacak iç görev'));facts(task,[['Proje','Hamle — İç Deneme'],['Atanan','Hamle'],['İş listesi',String(t.todo_parent_id)],['Başlık',t.title],['Teslim',t.due_at]]);task.append(node('p',t.description,'draft'));}
+  box.append(task);
+  const detail=node('details',undefined,'details');detail.append(node('summary','Kaynak ve onaya bağlanan teknik alanlar'));
+  facts(detail,[['Kapsam',p.payload.scope],['Kaynak okunma',s.captured_at],['Kaynak thread',s.thread_id],['Kaynak mesaj',s.message_id],['Gmail gözlem izi',s.snapshot_fingerprint],['Birleşik kaynak izi',p.source_fingerprint],['Yanıt thread',r.thread_id],['In-Reply-To',r.in_reply_to],['References',r.references||'Boş'],['Basecamp hesabı',(w||t).account_id],['Basecamp projesi',(w||t).project_id],['Basecamp üst kayıt türü',(c||t).todo_parent_type],['Öneri kimliği',p.proposal_id],['Tam çıktı izi',p.proposal_hash],['Kontrol sürümü',p.generation]]);
+  if(w)facts(detail,[['Kalıcı iş kimliği',w.work_id],['İş sürümü',w.version],['Görev durum izi',c.task_fingerprint]]);else facts(detail,[['Atanan kişi kimliği',t.assignee_id]]);
+  detail.append(node('h3','Modelin yanıt taslağı'),node('p',a.reply_draft.subject),node('p',a.reply_draft.body,'draft'),node('h3','Modelin görev taslağı'),node('p',a.task_draft.title),node('p',a.task_draft.description,'draft'));
+  facts(detail,[['Model atanan',a.task_draft.assignee],['Model teslim',a.task_draft.due_at]]);box.append(detail);
+  const b=node('button',coordination?'Yalnız iç koordinasyonu onayla':w?'Bu yanıtı ve takip notunu onayla':'Bu yanıtı ve iç görevi onayla','approve');b.disabled=busy||state.control.mode!=='review_open'||p.status!=='awaiting_human_review'||!p.available_approval_purpose;
+  b.addEventListener('click',()=>request({action:'approve',proposal_id:p.proposal_id,proposal_hash:p.proposal_hash,generation:state.control.generation,purpose:p.available_approval_purpose}));
+  const controls=node('div',undefined,'buttons');controls.append(b);box.append(controls,node('p','Onay kaydı gönderim veya teslim kanıtı değildir.','muted small'));
+  if(p.recorded_approval_purpose==='internal_coordination_only')box.append(node('p','Yalnız iç koordinasyon onaylandı. Cansu ve Ahmet’in strateji değerlendirmesi açık; üretim kararı verilmedi.','warning'));
+  target.append(box);
+ });
+ const receipts=el('receipts');receipts.replaceChildren();
+ if(!state.actions.length)receipts.append(node('p','Henüz kayıtlı bir dış işlem kanıtı yok.','muted'));
+ state.actions.forEach(a=>{
+   const line=node('div',undefined,'receipt');line.append(node('strong',kindNames[a.kind]+': '),node('span',receiptStates[a.state]));
+   if(a.receipt_id){line.append(node('p','Sağlayıcı kaydı: '+a.receipt_id,'muted small'));
+    if(a.kind==='basecamp_todo'&&/^[0-9]{1,20}$/.test(a.receipt_id))line.append(taskLink(a.receipt_id,'İç görev kaydını aç'));
+    if(a.kind==='basecamp_comment'){const p=state.proposals.find(p=>p.proposal_id===a.proposal_id);if(p&&p.payload.work)line.append(taskLink(p.payload.work.task_id));}}
+   receipts.append(line);
+ });
+ if(state.budget){const usd=n=>(n/1000000).toLocaleString('tr-TR',{maximumFractionDigits:4})+' USD';el('budget').textContent='Ortak bütçe: '+usd(state.budget.limit_microdollars)+' · Bağlı tutar (ön ödeme ve rezerv dahil): '+usd(state.budget.total_committed_microdollars)+' · Serbest: '+usd(state.budget.remaining_microdollars)+(state.budget.overrun_hold?' · Bütçe durdurması etkin':'');}else el('budget').textContent='Ortak bütçe kaydı henüz doğrulanmadı.';
+}
+async function request(data){if(busy)return;busy=true;document.querySelectorAll('button').forEach(b=>{if(b.id!=='refresh-authority'&&!el('authority-works').contains(b))b.disabled=true;});el('message').textContent=data?'Kalıcı kontrol kaydediliyor…':'';
+ try{const response=await fetch(data?'/api/control':'/api/state',{method:data?'POST':'GET',credentials:'same-origin',cache:'no-store',headers:data?{'Content-Type':'application/json','X-CSRF-Token':csrf}:{},body:data?JSON.stringify(data):undefined});const state=await response.json();if(!response.ok)throw new Error(errors[state.error]||'İstek doğrulanamadı. Sayfayı yenileyip durumu kontrol et.');busy=false;render(state);if(data)el('message').textContent=data.action==='approve'?(data.purpose==='internal_coordination_only'?'Yalnız iç koordinasyon onayı kaydedildi; strateji ve üretim kararı açık kaldı. Gönderim sonucu ayrıca doğrulanacak.':'Tam çıktı onayı kaydedildi. Gönderim sonucu ayrıca doğrulanacak.'):data.action==='resume_review_only'?'Yalnız yeni inceleme açıldı; eski iptaller kapalı kalır.':'Durdurma/devralma kaydedildi. Başlamış işlemlerin sonucu aşağıda ayrı gösterilir.';
+ }catch(error){busy=false;el('refresh').disabled=false;el('message').textContent=error.message||'Bağlantı sonucu doğrulanamadı.';}}
+el('stop').addEventListener('click',()=>request({action:'stop'}));el('takeover').addEventListener('click',()=>request({action:'takeover'}));el('resume').addEventListener('click',()=>request({action:'resume_review_only'}));el('refresh').addEventListener('click',()=>{request();authorityRequest();});el('refresh-authority').addEventListener('click',()=>authorityRequest());request();authorityRequest();
+</script></body></html>

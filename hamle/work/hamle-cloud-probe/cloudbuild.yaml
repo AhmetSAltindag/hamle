@@ -1,0 +1,10 @@
+steps:
+  - name: gcr.io/cloud-builders/docker
+    args: ['build', '-t', 'europe-west1-docker.pkg.dev/gamechangers-hamle/hamle-probe/synthetic:20261010-v1', '.']
+images:
+  - europe-west1-docker.pkg.dev/gamechangers-hamle/hamle-probe/synthetic:20261010-v1
+timeout: 300s
+serviceAccount: projects/gamechangers-hamle/serviceAccounts/hamle-probe-build@gamechangers-hamle.iam.gserviceaccount.com
+options:
+  logging: CLOUD_LOGGING_ONLY
+  machineType: E2_MEDIUM

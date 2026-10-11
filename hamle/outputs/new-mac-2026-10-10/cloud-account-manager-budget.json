@@ -1,0 +1,25 @@
+{
+  "recorded_at": "2026-10-10T01:59:36.771558+03:00",
+  "reservation": {
+    "reservation_key": "cloud-account-manager-foundation-20261010-v1",
+    "provider": "google_cloud",
+    "reserved_microdollars": 5000000,
+    "state": "reserved",
+    "newly_reserved": true
+  },
+  "status": {
+    "policy_id": "hamle-shared-20261009-20261012",
+    "limit_microdollars": 50000000,
+    "all_provider_baselines_and_billing_known": true,
+    "accounted_spend_microdollars": 0,
+    "held_microdollars": 9000000,
+    "prepaid_purchases_microdollars": 10000000,
+    "prepaid_unallocated_hold_microdollars": 9000000,
+    "total_committed_microdollars": 18000000,
+    "remaining_microdollars": 32000000,
+    "overrun_hold": false,
+    "provider_hard_cap_installed": false,
+    "provider_reconciliation_connected": false
+  },
+  "authorization": "User explicitly approved four cloud identities and private provider credential transfer in current turn."
+}

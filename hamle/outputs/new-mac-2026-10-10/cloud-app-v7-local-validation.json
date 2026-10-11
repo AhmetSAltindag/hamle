@@ -1,0 +1,42 @@
+{
+  "recorded_at": "2026-10-10T11:12:48.478733+03:00",
+  "status": "passed",
+  "tests_run": 261,
+  "failures": 0,
+  "errors": 0,
+  "modules": [
+    "test_cloud_store",
+    "test_worker",
+    "test_dispatch",
+    "test_followup_dispatch",
+    "test_cloud_control",
+    "test_cloud_providers",
+    "test_business_writers",
+    "test_basecamp_cloud_auth",
+    "test_model",
+    "test_seed_cloud_state"
+  ],
+  "source_files": {
+    "Dockerfile": "2fbb754316b55af2c8aa3b6ba1328e795b4a901a963122c42c975008fe7ba7e0",
+    "requirements-cloud.txt": "1e8ad2d56a0abc7a1f2087624baf8c8eb46806006a1af3af3b5bf45cceca3aa8",
+    "cloudbuild.yaml": "fa6f3a953bad5b7f4328d0bf78041c987f58fe336a93af00d102e0a8e80b619d",
+    "work/hamle-account-manager/cloud_control.py": "b6e5480ee5386a45b212f1ffd34a958d731ba054792e69a1380065a96b495bd7",
+    "work/hamle-account-manager/cloud_ui.html": "ec7a212793fb738bb039bbd361aef6d341ce226cb1b0ab55b19797a04d95679f",
+    "work/hamle-account-manager/cloud_store.py": "3d4e01224110b7762f55e5593fcfbcde9c4744dc3d6f3a7a06a41f6547e61012",
+    "work/hamle-account-manager/cloud_providers.py": "134cbd4a4c4bf849dd22cc947a07907d1e713998c7eb0c8e8d485209ef96bf77",
+    "work/hamle-account-manager/basecamp_cloud_auth.py": "bb0f02690cc3f890a4acbf594c5b78ddd8f00e2ca5a48c274a7abe11b23ecb3b",
+    "work/hamle-account-manager/worker.py": "61f2fb7d8f0942b7a3cba26640bc1dec8c652cabc13f13642a2c1ee472eb4f0f",
+    "work/hamle-account-manager/dispatch.py": "8b53ed9490b0a0f3dfdc4cdedaee3c5963d291c1f3a43d54b12decd2bff94319",
+    "work/hamle-account-manager/recipient_policy.py": "8bfdb7788b3c9933d11e0b629740f708df39988af8dc25ca25eb4d30b178a380",
+    "work/hamle-account-manager/business_writers.py": "d4ee1fb48d2cb34f6cdaede6cf0005b6a70367b6acf513cdd73503d1a959aa27",
+    "work/hamle-account-manager/model.py": "92b423549277e7fa76304edb97da5042128ed21cdd7355579976c16a2b523bfa",
+    "work/hamle-account-manager/account_manager_prompt.txt": "47e93b3d5de26c0d880144f9a468713fb57c78faa66752eeda9bd0b0b13e55e2",
+    "work/hamle-gmail-connector/hamle_gmail.py": "f3ca3a6353ab5be1f9f0fe87c566b5f48fd64e6e41c99aed5cd2db816d7cddcd",
+    "work/hamle-workflow/gmail_full_reader.py": "efed6de0e8c89f1e2cd9f16529a05a7280158f7970b2daea1a9bba0c2ffeaf0e",
+    "work/hamle-workflow/mail_ingest.py": "fdd50ac28f2efd5fb1d52630fc22afe70461268e649afed26549384331c35427",
+    "work/hamle-internal-intake/intake.py": "e5fc976a7753f39865a47fbee651a78b6063714ea5b0a60f945be785c0728286",
+    "SOURCE_MANIFEST.json": "c6ad2105f7aff08393eb8e261e82f48c1cc822d7a10332e37521c53f9d2232ea"
+  },
+  "network_calls": 0,
+  "business_writes": 0
+}

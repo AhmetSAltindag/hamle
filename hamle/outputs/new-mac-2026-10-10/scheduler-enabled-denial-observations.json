@@ -1,0 +1,43 @@
+[
+  {
+    "timestamp": "2026-10-10T08:33:29.802880450Z",
+    "insertId": "svqiv9f4z5bib",
+    "jsonPayload": {
+      "@type": "type.googleapis.com/google.cloud.scheduler.logging.AttemptFinished",
+      "targetType": "HTTP",
+      "url": "https://run.googleapis.com/v2/projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager:run",
+      "jobName": "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-pilot-20261012-early",
+      "debugInfo": "URL_ERROR-ERROR_OTHER. Original HTTP response code number = 403",
+      "status": "PERMISSION_DENIED"
+    },
+    "http_status": 403,
+    "audit": {
+      "serviceName": null,
+      "methodName": null,
+      "resourceName": null,
+      "status": null,
+      "authenticationInfo": null,
+      "authorizationInfo": null
+    }
+  },
+  {
+    "timestamp": "2026-10-10T08:33:29.768177086Z",
+    "insertId": "6oxukdf57njff",
+    "jsonPayload": {
+      "scheduledTime": "2026-10-10T08:33:24.974384Z",
+      "url": "https://run.googleapis.com/v2/projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager:run",
+      "jobName": "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-pilot-20261012-early",
+      "targetType": "HTTP",
+      "@type": "type.googleapis.com/google.cloud.scheduler.logging.AttemptStarted"
+    },
+    "http_status": null,
+    "audit": {
+      "serviceName": null,
+      "methodName": null,
+      "resourceName": null,
+      "status": null,
+      "authenticationInfo": null,
+      "authorizationInfo": null
+    }
+  }
+]

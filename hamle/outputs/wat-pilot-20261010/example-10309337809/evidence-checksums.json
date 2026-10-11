@@ -1,0 +1,17 @@
+[
+  {
+    "file": "task-and-comments-read-evidence.json",
+    "sha256": "bb22a96e8368ffc0f5d7e294d3e0a56bd2575156eaf20c8d10ad3dbd5dd32d17",
+    "bytes": 25045
+  },
+  {
+    "file": "artifact-manifest.json",
+    "sha256": "b323b9080457b7fc86e9d0908316b37f38ff1ab3941542fb7475cffaee8ef112",
+    "bytes": 3443
+  },
+  {
+    "file": "analysis-report.json",
+    "sha256": "26fe7947685dfef6f040057558fbbfe05f5a0c59a4938e3704f1fe1a2beb9a15",
+    "bytes": 7218
+  }
+]

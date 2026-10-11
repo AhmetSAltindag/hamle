@@ -1,0 +1,6 @@
+**
+!Dockerfile
+!requirements.txt
+!core.py
+!firestore_store.py
+!main.py

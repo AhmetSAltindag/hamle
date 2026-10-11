@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "observed_at": "2026-10-10T14:30:15.810246+00:00",
+  "source_task_url": "https://app.basecamp.com/5898865/buckets/40694338/todos/10309337809",
+  "title": "WM // Ekim Tek Fiyat Kampanyası KV",
+  "account_id": 5898865,
+  "project_id": 40694338,
+  "list_id": 8231779952,
+  "creator_id": 52096503,
+  "assignee_ids": [
+    47658175
+  ],
+  "scope": {
+    "task_read": true,
+    "comments_read": 21,
+    "comments_complete": true,
+    "selected_files_downloaded_and_visually_read": 6,
+    "all_other_attachment_bytes_read": false,
+    "provider_writes": 0,
+    "paid_model_calls": 0
+  },
+  "brief": {
+    "initial_source": "task description",
+    "core_request": "Campaign KV first, then approved KV adaptations: social post/story, web sliders and page/banner sizes, mailing. Later three-panel grid and reels cover were added.",
+    "mandatory_price": "10,99 TL/kWh",
+    "headline": "Tüm İstasyonlarda Tek Fiyat",
+    "initial_campaign_dates": "30 Eylül–7 Ekim",
+    "later_effective_disclaimer": "Kampanya 7 Ekim gün sonuna kadar geçerlidir. AC tarifelerde değişiklik gösterebilir.",
+    "later_disclaimer_source_comment_id": 10317818651,
+    "visual_direction": "Autumn theme; AI reference is directional, not a copy instruction; WAT brand identity governs.",
+    "approved_concept_before_adaptations": true,
+    "social_shapes_in_observed_files": [
+      "1080x1350 post",
+      "1080x1920 story"
+    ],
+    "web_dimensions_explicit": [
+      "1920x570",
+      "430x500",
+      "1920x554",
+      "1000x666",
+      "620x399"
+    ],
+    "late_safe_area_instruction_comment_id": 10328301172,
+    "late_reels_cover_instruction_comment_id": 10336586781,
+    "undocumented_phone_revision": {
+      "comment_id": 10328077641,
+      "actor": "Özge Yağmur",
+      "content": "A further revision arrived by phone; author says she cannot write it and requests a call.",
+      "actual_revision_details_available": false,
+      "impact": "The complete final brief cannot be reconstructed from this task alone. Do not guess or ask the user to reconstruct it for this historical calibration run."
+    }
+  },
+  "approval_analysis": {
+    "explicit_statement": {
+      "comment_id": 10328301172,
+      "actor_id": 52096503,
+      "actor": "Özge Yağmur",
+      "created_at": "2026-09-22T14:10:58.435Z",
+      "text": "tasarım onaylandı"
+    },
+    "best_candidate": {
+      "comment_id": 10328180313,
+      "file": "EKIM_KAMPANYA_KV_1.png",
+      "sha256": "0b855872d2104e3dcebcb260cccdd5bf16adf123f05567ea44eb7c10f1eb4bbf",
+      "basis": "Nearest preceding revision attachment before the explicit concept approval.",
+      "binding_type": "chronological_inference_not_explicit_file_hash_approval"
+    },
+    "later_package_comment_id": 10328578907,
+    "later_cover_comment_id": 10336611199,
+    "separate_approval_seen_for_later_package_or_cover": false,
+    "completed_task_proves_final_delivery_or_all_file_approval": false,
+    "whole_package_verified_release": false,
+    "customer_email_delivery_verified": false,
+    "later_package_same_name_kv_is_different_bytes_and_pixels": {
+      "byte_equal": false,
+      "pixels_equal": false,
+      "changed_pixel_bounding_box": [
+        722,
+        480,
+        866,
+        686
+      ],
+      "interpretation": "Later package is a different artifact; time-adjacent KV approval cannot be automatically inherited."
+    }
+  },
+  "visual_findings": [
+    {
+      "selection": "pre-price-kv",
+      "comment_id": 10317954872,
+      "observed": "Headline, one-week badge and final end-date/disclaimer visible; required price absent.",
+      "check": "required_price",
+      "result": "fail",
+      "corroborating_revision_comment_id": 10327675636,
+      "calibration_use": "Critical factual-missing-item example. This alone blocks sending; no invented numerical score."
+    },
+    {
+      "selection": "approved-kv-candidate",
+      "comment_id": 10328180313,
+      "observed": "10,99 TL/kWh present under main headline; one-week badge and final disclaimer visible.",
+      "check": "required_price",
+      "result": "pass_for_this_check_only",
+      "full_brief_quality_verified": false
+    },
+    {
+      "selection": "final-package-kv",
+      "comment_id": 10328578907,
+      "observed": "Price/headline/badge/disclaimer visibly present. Same filename as approved candidate but both byte and decoded-pixel hashes differ.",
+      "check": "version_binding",
+      "result": "must_rebind_to_this_file_not_filename"
+    },
+    {
+      "selection": "final-package-story",
+      "comment_id": 10328578907,
+      "observed": "1080x1920 actual image with headline, price, one-week badge and final disclaimer.",
+      "check": "observed_facts",
+      "result": "visible_core_copy_present",
+      "all_safe_area_checks_complete": false
+    },
+    {
+      "selection": "final-package-horizontal",
+      "comment_id": 10328578907,
+      "observed": "1920x1080 background scene with car/charging station/autumn. No campaign headline, price or disclaimer.",
+      "check": "artifact_purpose",
+      "result": "purpose_unknown_hold",
+      "not_automatically_a_fault": "May be an intentional background/source asset. Must not score as a finished campaign ad or send every attachment automatically."
+    },
+    {
+      "selection": "latest-reels-cover-candidate",
+      "comment_id": 10336611199,
+      "observed": "1080x1920 cropped car/charging station/autumn background with disclaimer; no full campaign headline/price badge.",
+      "check": "artifact_purpose",
+      "result": "purpose_unknown_hold",
+      "not_automatically_a_fault": "Related to requested center grid crop/reels cover; final composition purpose and linked presentation content were not inspected."
+    }
+  ],
+  "score_calibration": {
+    "numeric_score": null,
+    "rubric_calibrated": false,
+    "human_visual_labels_collected": false,
+    "known_fail_example": "Required factual campaign price missing from pre-price KV.",
+    "known_single_check_pass_example": "Price present on candidate approved KV.",
+    "unknown_purpose_example": "Background horizontal/cover assets; hold purpose classification rather than automatic revision.",
+    "lessons": [
+      "Compare against latest versioned brief, not only original task text.",
+      "An explicit required price/date/disclaimer cannot be averaged away by a high aesthetics score.",
+      "Group assets by deliverable role and release stage; concept approval does not imply all later files approved.",
+      "Bind file hashes, not names; repeated filenames here have different real bytes/pixels.",
+      "Unrecorded phone revisions remain unknown facts.",
+      "No inference of email authority or recipient loop can be made from this Basecamp example."
+    ]
+  },
+  "remaining_evidence_limits": [
+    "Linked Google presentation was not opened; only link metadata retained.",
+    "Only six selected images inspected; not all attachments or source design documents.",
+    "No accepted current WAT brand guideline comparison.",
+    "No exact artifact-hash approval record for candidate KV; approval association is chronological.",
+    "No numerical-quality calibration claim or live automatic-release permission established."
+  ]
+}

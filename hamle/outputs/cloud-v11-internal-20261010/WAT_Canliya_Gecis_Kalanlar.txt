@@ -1,0 +1,117 @@
+WAT Mobilite — canlıya geçişte kalan işler
+10 Ekim 2026 / Hamle v1.1
+
+DURUM
+Bu değerlendirme, WAT formu ve doğrulanmış proje/kişi/listeleri ile mevcut
+kaynak koduna dayanır. Yeni iç üretim denemesi gerçek bulut çalışmasında geçti:
+iki bağlı görev, gerçek dosya/OCR, revizyon, iki PNG ile aynı zincirde teslim
+ve tekrar çalıştırmada sıfır yeni işlem doğrulandı. Ahmet iki ekli maili gelen
+kutusunda gördüğünü doğruladı. Kanıt: acceptance-summary.json. Bu dar teknik
+kabul, gerçek WAT üretim kabulü değildir. WAT otomatik gönderimi kapalıdır.
+Eski 65 iş ve ağırlıkları değiştirilmedi; bu belge yeni yüzde üretmez.
+
+İÇ DENEMEDE DOĞRULANAN KANIT
+Ahmet'in HAMLE-IC-URETIM-20261010-01 mailinden başlayan iş, özel Basecamp
+49184053 projesinde ana görev 10392824665 ve bağlı story 10392833077 olarak
+işlendi. İlk PNG'nin eksik tarihi gerçek OCR ile bulundu: 65/100, revizyon.
+Aynı görevin düzeltilen PNG'si 100/100 kabul edildi; story bundan sonra
+açılarak kendi ölçü ve metin kontrolünden 100/100 geçti. İki nihai dosya tekrar
+indirilip kontrol edildi; aynı mail zincirinde tek teslim yapıldı. Gönderilen
+MIME içindeki iki ekin hash'i Basecamp dosyalarıyla birebir eşleşti. Ahmet
+iki ekli maili gelen kutusunda da doğruladı. Son yeniden çalıştırmada 12
+doğrulanmış işlem sayısı ve durum hash'i değişmedi; yeni yazım oluşmadı.
+İlk turdaki zaman sıralaması hatası ve güvenli bekleme kanıtı korunuyor;
+düzeltme aynı görev/dosyayı kullandı. Bu turda gerçek insan devralma veya
+belirsiz ağ gönderimi enjekte edilmedi; bu senaryoların önceki/yerel kanıtları
+yeni bir canlı kabul gibi sayılmıyor.
+
+Bu denemede dosyalar açıkça teknik örnek olarak programla hazırlanır; Berkay'ın
+tasarımı veya Samet'in videosu değildir. İki PNG aşaması, gerçek video üretim
+kabulü değildir. OCR ve ölçü kontrolünün başarılı olması WAT marka, estetik,
+anlam veya kullanım hakkı onayı vermez. Manuel tetiklenmiş bulut çalışması da
+mesai içindeki 15 dakikalık zamanlayıcının gerçek tur kanıtı yerine geçmez.
+
+ÖNCELİK 1 — DAR WAT AKIŞINI GERÇEK EKİBE BAĞLAMAK
+Doğrulanmış WAT projesi 40694338; sosyal statik ve sosyal video Sosyal Medya'da,
+statik ATL/BTL/saha Projeler'de, sosyal dışı video Motion'dadır. Berkay 47658175,
+Samet 50486696; iç takipçiler Özge, Ahmet ve Cansu'dur. Yeni bulut bağdaştırıcısı
+şimdilik yalnız iç proje 49184053 ve Hamle'nin ürettiği teknik örneklerle sınırlı.
+WAT için görev oluşturma/atama ve Basecamp dönüşlerini okuma ayrı, dar yetkili
+bağlantıya taşınmalı. Gerçek üreticinin kimliği, görevi, dosya sürümü ve hangi
+briefi yanıtladığı doğrulanmalı; yorumdaki bir isim veya 'hazır' sözü yetmez.
+İlk kabul statik sosyal görsel + uyarlama ile yapılabilir. Tasarım+video sırası
+Berkay → Samet olarak zaten kararlaştırıldı; yeniden sorulması gerekmiyor.
+
+ÖNCELİK 2 — GERÇEK WAT KALİTE ÖLÇÜTLERİNİ KABUL ETMEK
+90–100 Hamle, 80–90 altı Özge/Ahmet/Cansu'dan biri, 80 altı üreticiye revizyon
+kuralı kesin. Zorunlu hata yüksek puanla geçemez. Ancak %40 brief / %25 marka /
+%25 uygulama / %10 metin ağırlıkları hâlâ taslak. İncelenen iki eski WAT işinde
+kalibre edilmiş sayısal puan yok. Seçilen doğru ve hatalı gerçek çıktılarda,
+insan kararlarıyla karşılaştırılan marka/anlam/okunabilirlik denetimi kurulmalı.
+İşletilen denetim yöntemi ve sürümü kayda bağlanmalı; iç teknik örneğe verilen
+100 puan WAT kalite başarısı diye sunulmamalı.
+
+ÖNCELİK 3 — GEÇERLİ DOSYALAR VE ÇIKTI KAPSAMI
+Ahmet'in güncel kaynak olarak verdiği WATMobilite-Brand Guideline.pdf
+(Basecamp yükleme 10392828700) indirildi; 39 sayfası metin ve görsel olarak
+incelendi, SHA256 ile sürümü sabitlendi. Onay yalnız bu PDF'ye aittir; bütün
+klasöre yayılmaz. Font ve açık gri kaynak tutarsızlıkları kullanıcı kararıyla
+çözüldü: PDF 9 esas; ana Nunito Sans, yardımcı Josefin Sans. Açık gri #E8E7E6
+esas (türetilmiş RGB 232/231/230). Eski çelişkiler kanıt olarak korunuyor ve
+artık açık soru değil. Otomatik görsel tanıma ve müşteri kabulü ayrı. Ayrı logo/font
+kaynak dosyaları, işin güncel fiyat/tarih/açıklaması ve kullanım hakkı dayanağı
+bu PDF'den doğrulanmış sayılmaz. Eski mail eki güncel kılavuz yerine geçmez.
+Mevcut deneme bulutta PNG taşıyor; JPEG/PDF inceleme modülleri yerelde hazır
+olsa da gerçek WAT akışında kabul edilmedi. Video süre/kare/ses/altyazı/içerik
+kontrolü ve büyük dosya teslimi ayrı eksik. PSD/ZIP üretim kaynağıdır; otomatik
+müşteri teslimi sayılmaz. Her uyarlama kendi güncel briefiyle denetlenmeli.
+
+ÖNCELİK 4 — SORULAR, REVİZYONLAR VE ÇOKLU İŞLER
+Yerel iş kuyruğu, brief değişikliği, üretici sorusu ve kalite notu kuralları
+mevcut; bunlar WAT'ın gerçek mail ve Basecamp olaylarını birlikte işleyen
+bulut akışına bağlanmalı. Yeni müşteri cevabı mevcut işe bağlanmalı; farklı
+çıktı/iş aynı göreve yanlışlıkla birleştirilmemeli. Yetkili brief değişikliği
+eski kalite kararını ve bekleyen teslimi geçersiz kılmalı. Çözümsüz ekip sorusu
+varken teslim durmalı. Eş zamanlı işler, tekrar gelen yorumlar ve editlenen
+mesajlar ile gerçek kabul yapılmalı. İç kalite düzeltme turu, müşterinin iki
+revizyon hakkından ayrı tutulmalı; sınırsız otomatik revizyon olmayacak.
+
+ÖNCELİK 5 — GECİKEN TESLİMDE YETKİ VE İNSAN DEVRALMA
+Hamle'nin görmediği bir mailde CC'den çıkarılmasını kendi kutusundan anlama
+sorunu çözülmedi. Posta kutusunu yeniden okumak bu eksik mesajı görünür kılmaz.
+Yerel 300 saniyelik kontrolün 15 dakikalık taramayla uyumlu olduğu varsayılamaz.
+Görünür durdurma/devralma ve gecikmiş aksiyonun hangi açık güncel yetkiyle
+ilerleyeceği karara bağlanıp uçtan uca sınanmalı. Bu kural sessizce genişletilmeden
+ilgili otomatik müşteri teslimi açılamaz. Ahmet'in kutusunu izleme veya otomatik
+yönlendirme bu planın parçası değildir.
+
+SON KABUL
+Bu bağlar tamamlanınca önce WAT geçmiş işlerinde gönderimsiz gölge çalışma,
+ardından seçilen dar rutin kapsamda gerçek müşteri kabulü yapılır. Ticari karar
+Ahmet'te, şikâyet/strateji Cansu+Ahmet'te, sosyal plan Özge ile kalır. 12 Ekim
+23.59 İstanbul'a kadar ortak 50 USD izni dışında yeni süre/bütçe kendiliğinden
+oluşmaz. O tarihten sonraki işletim bütçesi ayrıca kesinleşmeli.
+
+SADECE GERÇEKTEN EKSİK İNSAN GİRDİLERİ
+- Güncel kılavuz ve font/renk tercihleri kesinleşti; yeniden sorulmaz. Yalnız
+  ilgili üretimde gerekiyorsa ayrı onaylı logo/font dosyaları açık. PDF'deki
+  bütün dosyaları yeniden isteme.
+- Kalite ölçütlerinin gerçek örneklerle kabulü ve iç kalite düzeltmesinin kaç
+  turda insana aktarılacağı. Eşikler ve üç onaylayıcı zaten kesin; yeniden sorulmaz.
+- Gecikmiş otomatik teslimin görünür yetki/devralma düzenine ilişkin ürün kararı.
+- 12 Ekim sonrası ortak işletim bütçesi. Mevcut kredi veya rezerv bunu uzatmaz.
+
+Ek bilgi yalnız ilgili kapsam açılacaksa gerekir: sosyal dışı birleşik tasarım+
+video işinin tamamını tek Motion listesinde tutmak şu an planlama varsayımıdır;
+statik sosyal pilotu engellemesi gerekmez. Aylık 30 içerik, iki müşteri revizyonu
+ve iki iş günü sosyal satırından gelir; ATL/video için otomatik kopyalanmaz.
+Berkay ve Samet'in e-posta adreslerine Basecamp ataması için ihtiyaç yoktur;
+kimlikleri doğrulanmıştır. Müşteri adresleri ve Özge adresi tekrar istenmez.
+
+Kaynaklar: wat-pilot-20261010/wat-planning-catalog.json,
+wat-quality-rubric-draft.json, user-decisions.json, iki WAT örnek incelemesi;
+current-brand-assets-10392828700/metadata.json, brand-rules.json ve
+WAT_Marka_Kilavuzu_Inceleme.txt;
+v11_internal_worker.py, v11_internal_providers.py, v11_internal_quality.py,
+v11_artifact_inspector.py, v11_intake_plan.py, v11_work_queue.py,
+v11_basecamp_reader.py, v11_delivery.py ve ilgili kılavuzlar.

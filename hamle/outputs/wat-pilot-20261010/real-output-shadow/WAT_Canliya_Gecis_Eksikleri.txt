@@ -1,0 +1,54 @@
+WAT — CANLIYA GEÇİŞ KABUL HARİTASI
+Kanıt kesim zamanı: 10 Ekim 2026, 19.18 İstanbul (16.18 UTC).
+Kapsam: mevcut yerel kod ve kaydedilmiş gerçek sağlayıcı kanıtlarının bağımsız incelemesi. Bu inceleme sağlayıcı çağrısı, model çağrısı, müşteri işlemi veya kod değişikliği yapmadı. Sonraki bulut sonuçları kendi tarihli kanıtlarıyla bu kaydı tamamlar.
+
+SONUÇ
+WAT’ın gerçek üretim dosyalarını inceleyen dört bulut çalışması başarıyla tamamlandı: iki Berkay PNG incelemesi, iki Samet videosunu kapsayan teknik inceleme ve ilk PNG sonucunun ek model çağrısı yapmadan tekrar okunması. Müşteriye kendiliğinden iş açıp sonuç gönderen WAT operasyonu henüz açılmadı. Dar iç denemedeki çalışan üretim/teslim zinciri, WAT’ın gerçek müşteri akışı için otomatik kabul sayılmaz. Marka kataloğunda canlı kullanım kapalı; gerçek müşteri işleri için çalışma yetkisi sayısı 0.
+
+DOĞRULANANLAR VE KABUL SINIRI
+
+1. Gerçek Berkay üretimi ve statik kalite kontrolü
+   İki tarihsel görevdeki 17 seçili PNG incelendi; gerçek Basecamp kaynak kimlikleri, üretici, dosya baytları ve SHA-256 eşleşmeleri kayıtlı. V10 ilk gölge denemesi gerçek Berkay görselinde zorunlu “10,99 TL/kWh” bilgisinin eksikliğini buldu. 83,5 puan yalnız taslak ağırlıklarla oluşturulmuş gözlemdir; kritik fiyat eksikliği nedeniyle revizyon adayıdır. İkinci gerçek PNG’de altı yazılı gereksinim geçti; 94,0 taslak puanla kalite adayı oluştu. Her iki durumda eylem yetkisi kapalıdır. İki gerçek Sol çağrısı tamamlandı; teknik PNG okuma, boyut ve OCR kanıtı aynı dosya karmasına bağlıdır.
+   İki çağrının toplam token maliyeti tahmini 0,070564 USD’dir; fatura veya toplam bulut maliyeti değildir. İlk deneme tekrar çalıştırıldığında yeni model çağrısı 0 ve sonuç karması aynı kaldı (d7a452eaf969d002f320f1362795e73e129ed8ff8971dc17ca7953567005156d). Bu tekrar dahil gölge işlemlerinde müşteri maili/görev/yorum yazımı 0’dır.
+   Bu kanıt bütün WAT arşivinin incelendiği, yaratıcı kalite puanlamasının kalibre edildiği veya müşteriye gönderim kabulü anlamına gelmez. Raster görsel tam font dosyasını, kesin logo master eşliğini, lisansı ve kesin HEX uyumunu tek başına kanıtlamaz.
+   Kanıt: real-output-audit.json; selected-file-inspection.json; cloud-v10/shadow-private-readback.json; cloud-v10/execution-receipts.json; cloud-v10/hamle-account-manager-2cq6w-status.json; cloud-v10/hamle-account-manager-z7qt9-status.json; cloud-v10/hamle-account-manager-q8s4l-status.json.
+
+2. Gerçek Samet üretimi ve video kontrolü
+   10317695863 numaralı görevde Samet’in müzikli ve seslendirmeli iki gerçek MP4’ü ile kaynak ses dosyası indirildi; kaynak ilişkisi, üretici, bayt uzunluğu ve karma değerleri doğrulandı. Özge’nin tarihsel onayı önceki müzikli sürümden sonra gelir; sonraki seslendirmeli sürümün dosya karmasına özel onay diye genişletilemez. Kaynak WAV yaklaşık 8,8 saniyedir; konuşma içeriği ve video ile ses uyumu henüz kabul edilmedi.
+   V10 video incelemesi iki gerçek dosyada teknik olarak geçti: 1080×1920, 25 kare/saniye; müzikli sürüm 10,72, seslendirmeli sürüm 11,8 saniye. Gerçek kareler çözümlendi ve OCR işlendi. Dosya karmasına bağlı, zaman damgası doğrulanmış 2. saniye kontrolünün OCR sonucu “değerlendirilemedi” kaldı; eksik metin otomatik olarak kanıtlanmış sayılmadı. Tüm videonun eksiksiz çözümleme, yaratıcı içerik ve ses kabulü hâlâ kapalıdır.
+   Ana çalışmanın yerel AVFoundation görsel gözlemi: 2. saniyede “Salı Modu ON” görünürken kampanya başlığı ve %10 görünmüyor; 3. saniyede başlık görünür, %10 görünmüyor. Bu yerel gözlem bulut OCR’ı başarılıymış gibi sunulmaz. Kaynak talepte “mümkünse en geç 2. saniyede” denildiği için bu zamanlama bir tercihtir; tek başına zorunlu ret şartına çevrilmez. Tam seslendirme/müzik dengesi, mesaj akışı ve yaratıcı kalite için ayrıca kanıt gerekir.
+   Kanıt: samet-output-audit.json; samet-file-downloads.json; samet-workflow-evidence.json; samet-voice-source-reference.json; voice-source/audio-metadata.json; cloud-v10/shadow-private-readback.json; cloud-v10/execution-receipts.json; cloud-v10/hamle-account-manager-ngn8b-status.json. Yerel görsel gözlem ana çalışma tarafından ayrıca bildirildi.
+
+3. İş bazlı yetki ve görünür devralma
+   Ahmet görünür durdurma kuralını kabul etti: doğrulanmış rutin kapsam ve alıcılar içinde, en çok iki iş günü; kapsam/alıcı değişikliği, süre bitimi veya görünür durdurmada yeniden yetki gerekir. Hamle’ye ulaşmayan CC’den çıkarılma hâlâ gözlenemez. Bu kabul kararı tekrar sorulacak bir eksik değildir; mevcut bütçe süresini de uzatmaz.
+   Gerçek Firestore’da sentetik bir işin yetkisi iptal edildi, kiralama kaydı silindi ve eski nesille işlem reddedildi; ayrı okumada sonuç korundu. Kimliği doğrulanmış Ahmet kontrol ekranında iş bazlı devralma, CSRF ve görülmüş kayıt/nesil kontrolü uygulandı. Kontrol servisi V10’a dağıtıldı. Ana çalışmanın dağıtım sonrası tarayıcı gözlemi, Ahmet IAP kimliğiyle sentetik kaydın “İnsan devraldı / Yetki iptal edildi” durumunu ve devre dışı düğmeyi gösterdiğini bildirdi. Yeni düğme tıklaması yapılmadı; bu gözlem yeni kullanıcı devralması kanıtı değildir. Bu kanıt gerçek bir WAT müşteri işinin alınması veya gerçek müşteri durdurma mailinin zamanlanmış akışta işlendiği anlamına gelmez.
+   Zamanlanmış worker içinde mevcut V11 işlerinin durdurma mesajlarını okumaya yönelik bağlantı bulunuyor. Bu bağlantı yeni WAT işini keşfetmez, çalışma yetkisi oluşturmaz ve müşteriye yanıt vermez.
+   Kanıt: ../work-authority-user-decision-20261010.json; authority-cloud-probe.json; authority-cloud-probe-revalidation.json; cloud-v10/release-deploy-control.json; worker.py; v11_stop_intake.py; v11_work_authority_store.py; cloud_control.py.
+
+4. En fazla iki iç revizyon turu
+   Kullanıcının kararı kayıtlıdır: en fazla iki iç kalite revizyonu, sonra Özge/Ahmet/Cansu’dan birine devret. Müşterinin sözleşmesel revizyon hakkından ayrıdır. Kod yalnız Basecamp’e yazıldığı doğrulanmış iç revizyonu sayar; aynı işlemin tekrar okunması sayıyı artırmaz, yeni dosya yüklemek sayacı sıfırlamaz. Bu davranış karar modülünde uygulanmıştır; gerçek WAT görevine yazma ve bulut takibi zincirine henüz bağlanmamıştır.
+   Kanıt: ../internal-quality-rework-user-decision-20261010.json; v11_delivery.py (quality_revision_count / awaiting_human_takeover).
+
+5. Bulut sürümü
+   V10 derleme, işçi güncellemesi ve kontrol servisi dağıtımı doğrulandı. İmaj: sha256:351ad45315de569881aa064a32f5578b14960f3f4d535b8a875b2e7e28ca2e5e. İki PNG, video incelemesi ve ek model çağrısı yapmayan tekrar bu imajla başarıyla tamamlandı. Genel zamanlanmış işçinin kaydı hâlâ iç talep akışına bağlıdır; bağımsız gölge komutlarının çalışması tüm WAT operasyonunun zamanlayıcıya bağlandığını göstermez.
+   Kanıt: cloud-v10/build-verified.json; cloud-v10/release-deploy.json; cloud-v10/release-deploy-control.json; cloud-v10/release-run-a-1.json; cloud-v10/release-run-b-1.json; cloud-v10/release-run-video-1.json; cloud-v10/release-run-a-2.json; cloud-v10/execution-receipts.json ve dört tarihli execution durum kaydı.
+
+CANLIYI GERÇEKTEN ENGELLEYEN BEŞ BAĞLANTI VE SONRAKİ İŞ
+
+1. Gerçek WAT mailinden kalıcı işe giriş.
+   worker.py hâlâ sabit iç deneme talebini alıyor; WAT için plan_intake ve install_grant üretim çağrı zincirinde yok. Son gelen mailin gerçek To/CC’si, yetkili gönderen, marka/hizmet ve alıcı kapsamı doğrulanıp aynı iş kimliğine bağlanmalı. Onaylanmış rutin Sol / gerektiğinde Astra seçimi gerçek müşteri girişine bağlanmalı. Rutin işler için yeni bir genel insan onayı gereksinimi eklenmemeli.
+
+2. Doğru WAT Basecamp listesine gerçek üretim görevi ve bağlı aşamalar.
+   Mevcut business_writers özel iç proje ve Hamle atamasıyla sınırlandırılmıştır. WAT’ın doğrulanmış listesini, Berkay → Samet aşamalarını ve ilgili katılımcıları kullanan dar yazıcı bağlanmalı. Her yazımdan hemen önce güncel çalışma yetkisi/nesli doğrulanmalı; sağlayıcı kimliği saklanıp geri okunmalı. Sonucu belirsiz yazım yeniden üretilmemeli.
+
+3. Zamanlanmış Basecamp takibi ve soruların aynı işe işlenmesi.
+   BasecampReader, PollJournal ve DeliveryCoordinator mevcut modüllerdir; WAT’ın zamanlanmış üretim takibine çağrılmıyorlar. Son okunan olay kaydı, ekip soruları, brief değişiklikleri, gerçek dosya sürümleri ve aşama geçişleri kalıcı iş durumuna bağlanmalı. Brief değişikliği eski kalite/teslim kanıtını geçersiz kılmalı. İki iç revizyon sayacı gerçek doğrulanmış yazımda artmalı; sınırda otomatik insan devralma uygulanmalı.
+
+4. Gerçek dosya incelemesinden teslim kararına kanıt bağlantısı.
+   Şimdiki WAT görsel/model sonucu bilinçli olarak gölge gözlemidir; action_eligible=false, ağırlıklar taslaktır. Güncel brief, onaylı marka kılavuzu, tam dosya karması ve gerçek inceleme sonuçları üretim kalite kapısına bağlanmalı. 90+ adayı / 80–89 insan onayı / 80 altı revizyon kararında kritik hata ve bilinmeyen zorunlu ölçüt puanla örtülmemeli. Berkay örnekleriyle dar statik ölçütler; Samet örnekleriyle ayrı hareket/ses ölçütleri doğrulanmalı. Video ve statik için aynı “tam inceleme” iddiası yapılmamalı.
+
+5. Kalite notundan aynı mail zincirine tek teslim.
+   Genel teslim koordinatöründeki niyet henüz WAT’ın gerçek Gmail yazıcısı değildir. Kalite notunun Basecamp geri okuması, güncel yetki/nesil, son mailin doğrulanmış To/CC’si, aynı zincir ve aynı dosya manifesti gönderim öncesinde yeniden bağlanmalı. Gönderim kimliği ve teslim kanıtı saklanmalı; sonucu belirsiz mail otomatik tekrar edilmemeli. Bu bağlantılar önce özel iç denemede gerçek yazım/geri okuma ve devam mesajı ile doğrulanıp sonra kabulü geçen dar WAT rutin kapsamına açılmalı.
+
+NOT
+Bu belge genel 65 iş/100 puan takip planını değiştirmez ve yeni tamamlanma yüzdesi üretmez. “Karar verildi”, “yerel modül mevcut”, “buluta dağıtıldı”, “gerçek bulut denemesi geçti” ve “müşteri canlı kabulü geçti” ayrı durumlardır. Mevcut kararlarda yeniden onay istenecek bir belirsizlik saptanmadı; kalan iş ağırlıkla bu kanıtları gerçek WAT çalışma zincirine bağlama ve doğrulamadır.

@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "brand_id": "wat_mobilite",
+  "version": "wat-rubric-proposal-v1",
+  "status": "draft_requires_real_output_calibration",
+  "thresholds_confirmed": {
+    "human_min": 80,
+    "candidate_min": 90
+  },
+  "approval_actors_confirmed": [
+    "ozge@gamechangers.com.tr",
+    "ahmet@gamechangers.com.tr",
+    "cansu@gamechangers.com.tr"
+  ],
+  "proposed_weighted_criteria": [
+    {
+      "name": "Briefteki mesaj, amaç ve istenen içerikle uyum",
+      "weight": 40
+    },
+    {
+      "name": "Onaylı marka kimliği ve diline uyum",
+      "weight": 25
+    },
+    {
+      "name": "Uygulama kalitesi ve okunabilirlik/izlenebilirlik",
+      "weight": 25
+    },
+    {
+      "name": "Metin doğruluğu ve tutarlılık",
+      "weight": 10
+    }
+  ],
+  "mandatory_checks": [
+    "Doğru marka ve güncel onaylı kaynaklar",
+    "İstenen çıktıların tamamı ve doğru dosya sürümü",
+    "Çıktı bazında güncel briefin zorunlu mesajları; örneğin onaylı fiyat, tarih ve açıklama metni",
+    "Zorunlu format, ölçü, süre, adet",
+    "Kullanım hakkı ve gerekli bilgilendirmeler",
+    "İç notların müşteriye sızmaması"
+  ],
+  "score_meaning": "Brief/ölçüt uyum puanı; model güven olasılığı veya kanıtlanmış doğruluk oranı değildir",
+  "unknown_check": "Hold; do not fabricate score or silently give100",
+  "critical_failure": "Revision regardless weighted score",
+  "policy_acceptance": "Weights, inspection methods and output-kind rubrics not yet validated on real WAT deliverables",
+  "reference_findings": {
+    "task_id": 10309337809,
+    "evidence": "example-10309337809/task-and-comments-read-evidence.json",
+    "first_observation": "Historical KV omitted mandatory10.99TL/kWh; omission seen in actualPNG and confirmed by Özge's revision comment10327675636",
+    "version_rule": "Identical filenames are not identical versions; approved candidate and later package must retain separate byte hashes",
+    "brief_rule": "Use the latest authorized written brief; comment10328077641 refers to an unrecorded verbal change whose exact contents remain unknown",
+    "purpose_rule": "Background/source assets are not automatically final campaign deliverables; classify purpose before testing required campaign text",
+    "stage_rule": "Main KV approval is not evidence of inspection of every later resized file;90+automatic QA remains possible only against its own accepted output criteria",
+    "numeric_score_assigned": false,
+    "automated_cloud_inspection_accepted": false
+  },
+  "live_enabled": false,
+  "second_reference_findings": {
+    "task_id": 10064527849,
+    "evidence": "example-10064527849/workflow-analysis.json",
+    "per_output_scope": "Date/price/location amendments apply only to identified outputs and stages",
+    "additional_output_is_not_a_defect": "1000x666 request was extra work, not evidence previous1920x570 was wrong",
+    "source_transfer_is_not_delivery": "Production ZIP/PSD is not customer-ready output",
+    "current_roster_not_inferred_from_history": true,
+    "automated_cloud_inspection_accepted": false
+  },
+  "internal_revision_limit": 2,
+  "internal_revision_limit_evidence": "internal-quality-rework-user-decision-20261010.json",
+  "revision_limit_handoff_actors": [
+    "ozge@gamechangers.com.tr",
+    "ahmet@gamechangers.com.tr",
+    "cansu@gamechangers.com.tr"
+  ]
+}

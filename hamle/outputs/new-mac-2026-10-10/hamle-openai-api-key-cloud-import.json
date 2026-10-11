@@ -1,0 +1,10 @@
+{
+  "recorded_at": "2026-10-10T02:03:54.442455+03:00",
+  "secret": "hamle-openai-api-key",
+  "version": "projects/286533609595/secrets/hamle-openai-api-key/versions/1",
+  "status": "passed",
+  "private_memory_transfer": true,
+  "exact_readback": true,
+  "secret_printed": false,
+  "user_explicitly_approved_cloud_transfer": true
+}

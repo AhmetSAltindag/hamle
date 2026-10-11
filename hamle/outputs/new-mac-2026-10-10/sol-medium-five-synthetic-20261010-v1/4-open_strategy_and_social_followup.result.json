@@ -1,0 +1,69 @@
+{
+  "case_id": "open_strategy_and_social_followup",
+  "completed_at": "2026-10-10T11:57:22.093942+00:00",
+  "result": {
+    "status": "review_required",
+    "action_eligible": false,
+    "model": "gpt-6.1-sol",
+    "reasoning_effort": "medium",
+    "provider": "openai",
+    "profile_id": "sol-medium-evaluation-v1",
+    "response_id": "resp_0fffcc35afeb38d5016aca28169a9887d1b10672f7593be0cd",
+    "analysis": {
+      "request_summary": "WAT Mobilite'nin açık strateji şikâyeti devamında LinkedIn ve kurumsal filo yöneticileri odağı netleşti; gündeme uygun içerik planı önerisi istendi.",
+      "intent": "complaint_strategy",
+      "known_facts": [
+        "Vaka sentetiktir; gerçek müşteri verisi içermez.",
+        "Müşteri iletişim stratejisinden memnun olmadığını belirtmiştir.",
+        "Stratejik değerlendirme Cansu ve Ahmet'in kararına açık durumdadır; şikâyet çözülmemiş ve onay verilmemiştir.",
+        "Öncelikli kanal LinkedIn, hedef kitle kurumsal filo yöneticileridir.",
+        "Gündeme göre yeni içerik planı önerisi istenmiştir.",
+        "Özge henüz değerlendirme yapmamıştır.",
+        "Fiyat değişikliği konuşulmamıştır."
+      ],
+      "missing_questions": [
+        "İçerik planı hangi dönemi kapsasın?"
+      ],
+      "brief": {
+        "deliverables": [
+          "Açık strateji değerlendirmesine LinkedIn ve hedef kitle bilgilerinin eklenmesi",
+          "Stratejik karar doğrultusunda değerlendirilmek üzere gündeme uygun LinkedIn içerik planı önerisi"
+        ],
+        "audience": "Kurumsal filo yöneticileri",
+        "requested_deadline": null,
+        "confirmed_deadline": null
+      },
+      "reply_draft": {
+        "subject": "WAT Mobilite | Strateji değerlendirmesi ve LinkedIn içerik planı",
+        "body": "Öncelikli kanalın LinkedIn, hedef kitlenin kurumsal filo yöneticileri olduğunu netleştirdik. Bu bilgileri devam eden strateji değerlendirmesine dahil edeceğiz; mevcut stratejiyle ilgili memnuniyetsizliğinizi çözülmüş kabul etmiyoruz.\n\nSonraki adım, Cansu ve Ahmet'in açık stratejik konuyu değerlendirmesi; içerik planı önerisinin de bu doğrultuda Özge ve Hamle tarafından ele alınması olacak. İçerik planı hangi dönemi kapsasın?"
+      },
+      "task_draft": {
+        "title": "WAT Mobilite | Mevcut strateji değerlendirmesine takip notu",
+        "description": "Mevcut göreve takip notu: Öncelikli kanal LinkedIn, hedef kitle kurumsal filo yöneticileri olarak netleşti. Gündeme uygun içerik planı önerisi talep ediliyor; plan dönemi henüz belirtilmedi. Strateji şikâyeti ve Cansu–Ahmet kararı açık; onay yok. Özge henüz değerlendirme yapmadı, fiyat değişikliği konuşulmadı. Sonraki adım: yeni bilgileri Cansu ve Ahmet'in değerlendirmesine sunmak; stratejik yön doğrultusunda içerik planını Özge ve Hamle ile ele almak.",
+        "assignee": null,
+        "due_at": null
+      },
+      "escalation": {
+        "owner": "cansu_and_ahmet",
+        "reason": "Çözülmemiş strateji şikâyeti önceliklidir. Ek içerik planı talebi sosyal planlama kapsamında Özge ve Hamle'nin değerlendirmesini gerektirir; Özge'nin görüşü veya onayı henüz yoktur."
+      }
+    },
+    "usage": {
+      "input_tokens": 1503,
+      "output_tokens": 747,
+      "total_tokens": 2250,
+      "input_tokens_details": {
+        "cached_tokens": 1304
+      },
+      "output_tokens_details": {
+        "reasoning_tokens": 0
+      }
+    },
+    "automatic_retry_allowed": false
+  },
+  "routing_check_passed": true,
+  "token_cost_estimate_usd": 0.0079984,
+  "is_invoice": false,
+  "human_semantic_review_required": true,
+  "business_writes": 0
+}

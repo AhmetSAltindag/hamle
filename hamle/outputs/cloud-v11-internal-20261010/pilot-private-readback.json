@@ -1,0 +1,530 @@
+{
+  "expires_at": 1791655274.805335,
+  "source_evidence_sha256": "461a1d323cf16dd45517e35e285c035a85f578200aac08029b5c8a3330211d02",
+  "initial_state_sha256": "466c2cc85ea2e8378d4d5bc3a20d60f88de5a36cd934b03692599d39fafab0c3",
+  "action_keys": [
+    "main-task",
+    "main-v1-upload",
+    "main-v1-submission-comment"
+  ],
+  "created_at": 1791644474.824171,
+  "state_sha256": "065767fcc8e47f1a6a9476fa4d127f9b6671a107401f30527fd226c47dc95509",
+  "schema_version": 1,
+  "generation": 1,
+  "revision": 4,
+  "state": {
+    "stages": {
+      "main": {
+        "history": [],
+        "status": "quality_held",
+        "submission": {
+          "evidence_ref": "provider-readback:main-v1-submission-comment",
+          "brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92",
+          "origin": "internal_fixture",
+          "manifest_sha256": "66d8249dec3112f0f33cd6e63ac588a7833a090289cec81818120d4df26cf275",
+          "outputs": [
+            {
+              "evidence_ref": "sha256:f4077545a8af0ed1e75b15a423b9870af60ae3193f555669537bb1e0a2881188",
+              "inspection": {
+                "evidence_ref": "sha256:f4077545a8af0ed1e75b15a423b9870af60ae3193f555669537bb1e0a2881188",
+                "readable": true,
+                "inspected_at": "2026-10-10T15:01:34.230318+00:00",
+                "verified": true,
+                "sha256": "53dc068bbd9aaa167399d1ba6a8410f7870dc4948509639decc5ed241e781e44",
+                "size_bytes": 17414,
+                "bytes_read": true
+              },
+              "kind": "graphic",
+              "size_bytes": 17414,
+              "provider_attachment_id": "903245587",
+              "mime_type": "image/png",
+              "sha256": "53dc068bbd9aaa167399d1ba6a8410f7870dc4948509639decc5ed241e781e44",
+              "facts": {
+                "height": 1080,
+                "width": 1080,
+                "bit_depth": 8
+              },
+              "purpose": "final",
+              "id": "main",
+              "facts_bound_sha256": "53dc068bbd9aaa167399d1ba6a8410f7870dc4948509639decc5ed241e781e44"
+            }
+          ],
+          "submitted_at": "2026-10-10T15:01:34.230278+00:00",
+          "producer_id": 53358100,
+          "verified": true,
+          "dependency_acceptances": {},
+          "task_id": 10392824665,
+          "artifact": {
+            "sha256": "53dc068bbd9aaa167399d1ba6a8410f7870dc4948509639decc5ed241e781e44",
+            "version": "v1"
+          }
+        },
+        "started_brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92",
+        "task": {
+          "evidence_ref": "provider-readback:main-task",
+          "provider": "basecamp",
+          "list_id": 10384126975,
+          "account_id": 5898865,
+          "project_id": 49184053,
+          "assignee_ids": [
+            53358100
+          ],
+          "verified": true,
+          "customer_visible": false,
+          "task_id": 10392824665,
+          "brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92"
+        },
+        "acceptance": null,
+        "quality": {
+          "live_enabled": false,
+          "network_writes": 0,
+          "requires_producer_submission": true,
+          "unassessed_checks": [],
+          "release_policy_enforced_by_dispatcher": true,
+          "reason": "current_safety_evidence_stale",
+          "score_meaning": "weighted_rubric_conformance_not_probability",
+          "score": null,
+          "model_calls": 0,
+          "schema_version": 1,
+          "requires_action_authority": true,
+          "criteria": [],
+          "send_allowed": false,
+          "route": "held",
+          "critical_failures": []
+        },
+        "dependency_acceptances": {},
+        "spec": {
+          "assignee_ids": [
+            53358100
+          ],
+          "kinds": [
+            "graphic"
+          ],
+          "id": "main",
+          "output_ids": [
+            "main"
+          ],
+          "depends_on": []
+        }
+      },
+      "story": {
+        "history": [],
+        "status": "waiting",
+        "submission": null,
+        "spec": {
+          "assignee_ids": [
+            53358100
+          ],
+          "kinds": [
+            "graphic"
+          ],
+          "id": "story",
+          "output_ids": [
+            "story"
+          ],
+          "depends_on": [
+            "main"
+          ]
+        },
+        "task": null,
+        "acceptance": null,
+        "quality": null
+      }
+    },
+    "status": "awaiting_production",
+    "customer_send_allowed": false,
+    "history": [
+      {
+        "evidence_ref": "internal-cloud:bind_stage_task",
+        "event_id": "internal-production-20261010-01:0:bind_stage_task",
+        "occurred_at": "2026-10-10T15:01:20.334181+00:00",
+        "event_type": "bind_stage_task"
+      },
+      {
+        "evidence_ref": "internal-cloud:begin_stage",
+        "event_id": "internal-production-20261010-01:1:begin_stage",
+        "occurred_at": "2026-10-10T15:01:20.468745+00:00",
+        "event_type": "begin_stage"
+      },
+      {
+        "evidence_ref": "internal-cloud:submit_outputs",
+        "event_id": "internal-production-20261010-01:2:submit_outputs",
+        "occurred_at": "2026-10-10T15:01:35.241028+00:00",
+        "event_type": "submit_outputs"
+      },
+      {
+        "evidence_ref": "inspection:231130374363db7eb756001df9de18bf31f97e928c3b23ed3dc7c94cf39dbc20",
+        "event_id": "internal-quality-d2790f5d5449ea678903a393edb0893c5262fc710fb788b06123be2fa8f50714",
+        "occurred_at": "2026-10-10T15:01:37.784073+00:00",
+        "event_type": "assess_stage"
+      }
+    ],
+    "events": {
+      "internal-production-20261010-01:2:submit_outputs": "417c30efffab76a78393d3654fa860ca2bca03366614c289ac0b2f0acee2a91a",
+      "internal-quality-d2790f5d5449ea678903a393edb0893c5262fc710fb788b06123be2fa8f50714": "67193890f072458160131371c9c122b0a51a4aea6bc4ff959f8aefb1e9af1275",
+      "internal-production-20261010-01:1:begin_stage": "71a16bf07d2cefe52862f0742c0b22915417516af379d0ab17f1779e47c06398",
+      "internal-production-20261010-01:0:bind_stage_task": "b25d7b7c4690057c1b350ed7ce4e03c8b551aebbfd345f4f26d1b81ecf53761f"
+    },
+    "work_id": "internal-production-20261010-01",
+    "control": "active",
+    "schema_version": 1,
+    "questions": {},
+    "revision": 4,
+    "internal_run": {
+      "wat_live_enabled": false,
+      "model_calls": 0,
+      "artifacts": {
+        "main-v1": {
+          "expected_failure": true,
+          "submission_comment_id": "10392824791",
+          "task_id": 10392824665,
+          "inspection": {
+            "artifact": {
+              "evidence_ref": "sha256:f4077545a8af0ed1e75b15a423b9870af60ae3193f555669537bb1e0a2881188",
+              "sha256": "53dc068bbd9aaa167399d1ba6a8410f7870dc4948509639decc5ed241e781e44",
+              "facts_bound_sha256": "53dc068bbd9aaa167399d1ba6a8410f7870dc4948509639decc5ed241e781e44",
+              "id": "main",
+              "size_bytes": 17414,
+              "facts": {
+                "height": 1080,
+                "width": 1080,
+                "bit_depth": 8
+              },
+              "mime_type": "image/png"
+            },
+            "network_writes": 0,
+            "semantic_review_required": true,
+            "output_spec_sha256": "61d7db0d68c14ec8c9375ac8b003272d9cdeb0f5ab5332dbe895f8a86545a996",
+            "checks": {
+              "text_inspection": {
+                "evidence_ref": "sha256:f4077545a8af0ed1e75b15a423b9870af60ae3193f555669537bb1e0a2881188",
+                "method": "deterministic",
+                "finding": "Bounded eng+tur OCR completed.",
+                "artifact_sha256": "53dc068bbd9aaa167399d1ba6a8410f7870dc4948509639decc5ed241e781e44",
+                "result": "pass",
+                "location": "actual image pixel OCR process",
+                "evaluator_id": "hamle-byte-inspector-v1",
+                "critical": true,
+                "brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92"
+              },
+              "fact:height": {
+                "evidence_ref": "sha256:f4077545a8af0ed1e75b15a423b9870af60ae3193f555669537bb1e0a2881188",
+                "method": "deterministic",
+                "finding": "Expected height=1080; measured=1080",
+                "artifact_sha256": "53dc068bbd9aaa167399d1ba6a8410f7870dc4948509639decc5ed241e781e44",
+                "result": "pass",
+                "location": "decoded file structure",
+                "evaluator_id": "hamle-byte-inspector-v1",
+                "critical": true,
+                "brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92"
+              },
+              "required_text:disclosure": {
+                "evidence_ref": "sha256:f4077545a8af0ed1e75b15a423b9870af60ae3193f555669537bb1e0a2881188",
+                "method": "deterministic",
+                "finding": "Required literal detected in actual pixel OCR.",
+                "artifact_sha256": "53dc068bbd9aaa167399d1ba6a8410f7870dc4948509639decc5ed241e781e44",
+                "result": "pass",
+                "location": "actual image pixels via OCR",
+                "evaluator_id": "hamle-byte-inspector-v1",
+                "critical": true,
+                "brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92"
+              },
+              "required_text:title": {
+                "evidence_ref": "sha256:f4077545a8af0ed1e75b15a423b9870af60ae3193f555669537bb1e0a2881188",
+                "method": "deterministic",
+                "finding": "Required literal detected in actual pixel OCR.",
+                "artifact_sha256": "53dc068bbd9aaa167399d1ba6a8410f7870dc4948509639decc5ed241e781e44",
+                "result": "pass",
+                "location": "actual image pixels via OCR",
+                "evaluator_id": "hamle-byte-inspector-v1",
+                "critical": true,
+                "brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92"
+              },
+              "mime_type": {
+                "evidence_ref": "sha256:f4077545a8af0ed1e75b15a423b9870af60ae3193f555669537bb1e0a2881188",
+                "method": "deterministic",
+                "finding": "Measured MIME: image/png",
+                "artifact_sha256": "53dc068bbd9aaa167399d1ba6a8410f7870dc4948509639decc5ed241e781e44",
+                "result": "pass",
+                "location": "file signature and decoded format",
+                "evaluator_id": "hamle-byte-inspector-v1",
+                "critical": true,
+                "brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92"
+              },
+              "required_text:date": {
+                "evidence_ref": "sha256:f4077545a8af0ed1e75b15a423b9870af60ae3193f555669537bb1e0a2881188",
+                "method": "deterministic",
+                "finding": "Literal not detected by pixel OCR; this is not proof of visual absence.",
+                "artifact_sha256": "53dc068bbd9aaa167399d1ba6a8410f7870dc4948509639decc5ed241e781e44",
+                "result": "fail",
+                "location": "actual image pixels via OCR",
+                "evaluator_id": "hamle-byte-inspector-v1",
+                "critical": true,
+                "brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92"
+              },
+              "size_bytes": {
+                "evidence_ref": "sha256:f4077545a8af0ed1e75b15a423b9870af60ae3193f555669537bb1e0a2881188",
+                "method": "deterministic",
+                "finding": "Measured bytes: 17414",
+                "artifact_sha256": "53dc068bbd9aaa167399d1ba6a8410f7870dc4948509639decc5ed241e781e44",
+                "result": "pass",
+                "location": "complete file bytes",
+                "evaluator_id": "hamle-byte-inspector-v1",
+                "critical": true,
+                "brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92"
+              },
+              "fact:width": {
+                "evidence_ref": "sha256:f4077545a8af0ed1e75b15a423b9870af60ae3193f555669537bb1e0a2881188",
+                "method": "deterministic",
+                "finding": "Expected width=1080; measured=1080",
+                "artifact_sha256": "53dc068bbd9aaa167399d1ba6a8410f7870dc4948509639decc5ed241e781e44",
+                "result": "pass",
+                "location": "decoded file structure",
+                "evaluator_id": "hamle-byte-inspector-v1",
+                "critical": true,
+                "brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92"
+              }
+            },
+            "inspection_status": "failed",
+            "evidence_sha256": "231130374363db7eb756001df9de18bf31f97e928c3b23ed3dc7c94cf39dbc20",
+            "text_sha256": "b68567bf5cea3f4cad3cc9586683351e842617e2a243d642adaeb290c0dc5a7c",
+            "checked_at": "2026-10-10T15:01:34.230318+00:00",
+            "inspector_id": "hamle-byte-inspector-v1",
+            "parser": "stdlib-png-crc-zlib-v1",
+            "delivery_authorized": false,
+            "ocr": {
+              "status": "completed",
+              "languages": [
+                "eng",
+                "tur"
+              ],
+              "parser": "tesseract 5.5.0",
+              "normalization": "nfkd-casefold-marks-whitespace-v1"
+            },
+            "model_calls": 0,
+            "limitations": [
+              "Deterministic checks do not establish brand meaning, visual quality, rights or current send authority.",
+              "No visual-semantic review or approved-logo comparison was performed.",
+              "OCR is fallible and cannot prove that undetected text is visually absent."
+            ],
+            "source": {
+              "evidence_ref": "provider-readback:main-v1-submission-comment",
+              "attachment_id": 903245587,
+              "verified": true,
+              "task_id": 10392824665,
+              "project_id": 49184053,
+              "account_id": 5898865
+            },
+            "schema_version": 1,
+            "source_sha256": "939af700d749d0b14da047462111222031f22ff0de6eeee71354892d1bba8390",
+            "resource_limits": "bounded-byte-pixel-zlib",
+            "extracted_text": "HAMLE İÇ DENEME\nBu bir teknik denemedir.\n",
+            "brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92"
+          },
+          "attachment": {
+            "sha256": "53dc068bbd9aaa167399d1ba6a8410f7870dc4948509639decc5ed241e781e44",
+            "attachable_sgid": "BAh7BkkiC19yYWlscwY6BkVUewdJIglkYXRhBjsAVEkiLmdpZDovL2JjMy9BdHRhY2htZW50LzkwMzI0NTU4Nz9leHBpcmVzX2luBjsAVEkiCHB1cgY7AFRJIg9hdHRhY2hhYmxlBjsAVA==--365b3fb9afea2abcca8bd3ac54c7b8aef466acfb",
+            "provider_id": "903245587",
+            "byte_size": 17414,
+            "filename": "hamle-main-v1.png",
+            "identifier_kind": "native_id",
+            "content_type": "image/png"
+          },
+          "quality": {
+            "send_allowed": false,
+            "network_writes": 0,
+            "requires_producer_submission": true,
+            "unassessed_checks": [],
+            "release_policy_enforced_by_dispatcher": true,
+            "reason": "current_safety_evidence_stale",
+            "score_meaning": "weighted_rubric_conformance_not_probability",
+            "score": null,
+            "model_calls": 0,
+            "schema_version": 1,
+            "requires_action_authority": true,
+            "criteria": [],
+            "critical_failures": [],
+            "route": "held",
+            "live_enabled": false
+          }
+        }
+      },
+      "kind": "technical_fixture_only",
+      "source": {
+        "source_subject": "HAMLE-IC-URETIM-20261010-01",
+        "token_refreshed": false,
+        "mailbox_writes": 0,
+        "subject": "HAMLE-IC-URETIM-20261010-01",
+        "latest_to": [
+          "hamle@gamechangers.com.tr"
+        ],
+        "root_message_id": "1a12646136af37f0",
+        "unseen_cc_removal_resolved": false,
+        "body_in_memory_only": true,
+        "in_reply_to": "<CAOOr=FgeQLR6dwc+7ZpLYmsSnh-1JOAcv6uQvjQYtb9NHemuFw@mail.gmail.com>",
+        "message_id": "1a12646136af37f0",
+        "root_rfc_message_id": "<CAOOr=FgeQLR6dwc+7ZpLYmsSnh-1JOAcv6uQvjQYtb9NHemuFw@mail.gmail.com>",
+        "attachments_fetched": false,
+        "action_eligible": false,
+        "hamle_direct_recipient": true,
+        "snapshot_fingerprint": "e6d184f3cf67ba5ffaa00ea44c801af36eb1e03691416551a95d31a5be9a1492",
+        "is_continuation": false,
+        "sender": "ahmet@gamechangers.com.tr",
+        "source_sha256": "654bc946013f3d2bf8f73d65c9110780288c024d4c3ce01e24185fdfb5063fec",
+        "latest_cc": [],
+        "captured_at": "2026-10-10T15:01:13.963585+00:00",
+        "thread_id": "1a12646136af37f0",
+        "references": "<CAOOr=FgeQLR6dwc+7ZpLYmsSnh-1JOAcv6uQvjQYtb9NHemuFw@mail.gmail.com>"
+      },
+      "delivery": null
+    },
+    "mode": "internal_pilot",
+    "brief": {
+      "reply_envelope": {
+        "in_reply_to_message_id": "1a12646136af37f0",
+        "cc": [],
+        "thread_id": "1a12646136af37f0",
+        "to": [
+          "ahmet@gamechangers.com.tr"
+        ]
+      },
+      "source_message_id": "1a12646136af37f0",
+      "binding": {
+        "category_name": "Hamle — İç Deneme",
+        "production_stages": [
+          {
+            "assignee_ids": [
+              53358100
+            ],
+            "kinds": [
+              "graphic"
+            ],
+            "id": "main",
+            "output_ids": [
+              "main"
+            ],
+            "depends_on": []
+          },
+          {
+            "assignee_ids": [
+              53358100
+            ],
+            "kinds": [
+              "graphic"
+            ],
+            "id": "story",
+            "output_ids": [
+              "story"
+            ],
+            "depends_on": [
+              "main"
+            ]
+          }
+        ],
+        "list_id": 10384126975,
+        "project_id": 49184053,
+        "subscriber_ids": [
+          53358100
+        ],
+        "account_id": 5898865
+      },
+      "deliverables": [
+        {
+          "purpose": "final",
+          "id": "main",
+          "kind": "graphic",
+          "spec": {
+            "text_inspection": "tesseract",
+            "required_text": [
+              {
+                "text": "HAMLE İÇ DENEME",
+                "id": "title",
+                "critical": true
+              },
+              {
+                "text": "12 EKİM 2026",
+                "id": "date",
+                "critical": true
+              },
+              {
+                "text": "Bu bir teknik denemedir.",
+                "id": "disclosure",
+                "critical": true
+              }
+            ],
+            "height": 1080,
+            "id": "main",
+            "min_bytes": 9,
+            "width": 1080,
+            "max_bytes": 2097152,
+            "mime": "image/png"
+          }
+        },
+        {
+          "purpose": "final",
+          "id": "story",
+          "kind": "graphic",
+          "spec": {
+            "text_inspection": "tesseract",
+            "required_text": [
+              {
+                "text": "HAMLE İÇ DENEME",
+                "id": "title",
+                "critical": true
+              },
+              {
+                "text": "12 EKİM 2026",
+                "id": "date",
+                "critical": true
+              },
+              {
+                "text": "Bu bir teknik denemedir.",
+                "id": "disclosure",
+                "critical": true
+              }
+            ],
+            "height": 1920,
+            "id": "story",
+            "min_bytes": 9,
+            "width": 1080,
+            "max_bytes": 2097152,
+            "mime": "image/png"
+          }
+        }
+      ],
+      "version": 1,
+      "assets_ref": "internal-generated-fixture-no-external-assets",
+      "objective": "İç teknik üretim ve dosya kontrolü provası",
+      "evidence_ref": "gmail:1a12646136af37f0",
+      "brand_id": "gamechangers",
+      "deadline": "2026-10-10T18:01:14.805335+00:00",
+      "audience": "Yalnız Ahmet ve Hamle",
+      "internal_technical_policy": {
+        "expires_at": "2026-10-10T18:01:14.805335+00:00",
+        "accepted_at": "2026-10-10T15:01:14.805335+00:00",
+        "customer_live_enabled": false,
+        "control_generation": 1,
+        "id": "hamle-internal-technical-png-20261010-v1",
+        "artistic_or_brand_quality_claim": false
+      },
+      "verified": true,
+      "service_id": "internal-technical-png-proof",
+      "title": "HAMLE-IC-URETIM-20261010-01",
+      "source_fingerprint": "e6d184f3cf67ba5ffaa00ea44c801af36eb1e03691416551a95d31a5be9a1492"
+    },
+    "brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92"
+  },
+  "pilot_id": "HAMLE-IC-URETIM-20261010-01",
+  "source_evidence": {
+    "evidence_ref": "gmail-read:1a12646136af37f0",
+    "expires_at": "2026-10-10T18:01:14.805335+00:00",
+    "subject": "HAMLE-IC-URETIM-20261010-01",
+    "message_id": "1a12646136af37f0",
+    "verified": true,
+    "control_generation": 1,
+    "captured_at": "2026-10-10T15:01:13.963585+00:00",
+    "thread_id": "1a12646136af37f0",
+    "source_fingerprint": "e6d184f3cf67ba5ffaa00ea44c801af36eb1e03691416551a95d31a5be9a1492"
+  },
+  "updated_at": 1791644497.792724
+}

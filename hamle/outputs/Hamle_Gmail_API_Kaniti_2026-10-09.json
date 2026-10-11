@@ -1,0 +1,43 @@
+{
+  "verified_at": "2026-10-09T23:53:24.991384+03:00",
+  "status": "oauth_profile_read_send_and_recipient_delivery_verified",
+  "account": "hamle@gamechangers.com.tr",
+  "app": "Gamechangers Hamle",
+  "scopes": [
+    "https://www.googleapis.com/auth/gmail.readonly",
+    "https://www.googleapis.com/auth/gmail.send"
+  ],
+  "storage": "macOS Keychain",
+  "consent_explicitly_approved": true,
+  "api_profile_verified": true,
+  "api_minimal_thread_read_verified": true,
+  "read_thread_id": "1a12270588d30c79",
+  "read_message_count": 1,
+  "read_body_or_headers_requested": false,
+  "test_id": "GC-HAMLE-GMAIL-20261009-01",
+  "send_calls": 1,
+  "automatic_retry": false,
+  "sender": "hamle@gamechangers.com.tr",
+  "recipient": "ahmet@gamechangers.com.tr",
+  "sender_message_id": "1a12270588d30c79",
+  "recipient_message_id": "1a12270636663c94",
+  "recipient_profile_verified": "ahmet@gamechangers.com.tr",
+  "recipient_inbox_verified": true,
+  "recipient_header_X_Hamle_Test_ID": "GC-HAMLE-GMAIL-20261009-01",
+  "subject": "HAMLE — manuel iç Gmail bağlantı testi",
+  "body_verified_against_fixed_technical_test": true,
+  "recipient_rfc_message_id": "<CAG20L6XB2HayqRMSP7rJiOshYxNoWjMke5usSauTrHo1SxC_NA@mail.gmail.com>",
+  "rfc_message_id_note": "Google rewrote the requested RFC Message-ID. Receipt correlation verified by unique X-Hamle-Test-ID plus From/To/subject/body/time. Never use Message-ID as provider dedup guarantee.",
+  "recipient_received_at": "2026-10-09T20:52:33Z",
+  "display_url": "https://mail.google.com/mail/u/#all/1a12270636663c94",
+  "limitations": [
+    "Gmail refresh and separate-process restart tested; revocation and Basecamp refresh tests remain pending.",
+    "Read test was minimal IDs only, not real To/CC or full attachment ingest.",
+    "No scheduler or cloud autonomous worker deployed.",
+    "No customer message sent."
+  ],
+  "autonomous_runtime_deployed": false,
+  "customer_actions_enabled": false,
+  "gmail_refresh_and_process_restart_verified": true,
+  "refresh_evidence": "outputs/Hamle_Gmail_Refresh_Kaniti_2026-10-09.json"
+}

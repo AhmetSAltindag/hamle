@@ -1,0 +1,30 @@
+{
+  "checked_at": "2026-10-10T01:25:58.786540+03:00",
+  "subject": "HAMLE-IC-PROVA-20261010-YENIMAC-01",
+  "source_mailbox": "hamle@gamechangers.com.tr",
+  "expected_sender": "ahmet@gamechangers.com.tr",
+  "local_tests": 30,
+  "independent_review": "no_blocker_for_narrow_manual_read",
+  "real_read_only_preflight": {
+    "status": "held",
+    "reason": "test_not_found",
+    "exit_code": 2,
+    "mailbox_writes": 0,
+    "external_actions_enabled": false,
+    "action_eligible": false
+  },
+  "old_test_thread_excluded": "1a12270588d30c79",
+  "awaiting": "One new internal email from Ahmet to Hamle with the exact test subject; no attachment needed for this stage",
+  "limitations": [
+    "full payload may enter reader memory but body not returned",
+    "one-shot review inbox not persistent human takeover",
+    "unseen CC removal unresolved",
+    "no model, brief generation, Basecamp write, send or production automation"
+  ],
+  "source_hashes": {
+    "intake.py": "e5fc976a7753f39865a47fbee651a78b6063714ea5b0a60f945be785c0728286",
+    "capture_internal_test.py": "8af51ad025b62394654f55c12616a721e15d286045f5f76a02058f91a5b97556",
+    "test_intake.py": "9bb89a92de1b2174b89f05e21753789a6ed2e06a0733344eff5f83de91d83fcb",
+    "test_capture.py": "03b49ee96912282dae6cbea6f0d557d54546909e7762a4424244b68bd3106d83"
+  }
+}

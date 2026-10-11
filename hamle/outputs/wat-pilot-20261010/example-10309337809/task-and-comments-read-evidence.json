@@ -1,0 +1,702 @@
+{
+  "id": 10309337809,
+  "title": "WM // Ekim Tek Fiyat Kampanyası KV",
+  "status": "active",
+  "completed": true,
+  "created_at": "2026-09-16T11:29:56.957Z",
+  "updated_at": "2026-09-24T12:00:01.101Z",
+  "due_on": "2026-09-24",
+  "starts_on": null,
+  "comments_count": 21,
+  "visible_to_clients": false,
+  "bucket": {
+    "id": 40694338,
+    "name": "WAT Mobilite",
+    "type": "Project"
+  },
+  "parent": {
+    "id": 8231779952,
+    "title": "Sosyal Medya ",
+    "type": "Todolist"
+  },
+  "creator": {
+    "id": 52096503,
+    "name": "Özge Yağmur",
+    "title": "Sr. Social Media & Project, Team Lead",
+    "employee": true
+  },
+  "assignees": [
+    {
+      "id": 47658175,
+      "name": "Berkay Kayaköylü",
+      "title": "Art Director",
+      "employee": true
+    }
+  ],
+  "description": {
+    "text": "Selamlar \n  \n  \n    Berkay\n  \n , \n  \n  \n    Barış\n  \n ,\n\n30 Eylül-7 Ekim tarihleri arasında, 1 haftaya özel olarak tüm istasyonlarda birim fiyatımız 10,99 TL/kWh olacak. Bu doğrultuda iletişim materyallerinin hazırlamaya başlayacağız. Önce sm post üzerinden KV'ye onay alalım, sonra story ve diğer assetlere geçebiliriz.\n\nAkıllarındaki yaklaşımı daha net aktarabilmek adına AI ile oluşturdukları örnek tasarımı da referans olarak paylaşıyorum. Birebir uygulanması gerekmiyor, daha çok kampanyanın genel hissi ve görsel yönü açısından değerlendirebilirsiniz. Badge, renk kullanımı ve diğer görsel detaylarda marka kimliğimize uygun olacak şekilde revize yapmanızda herhangi bir problem olmaz. Konsept tarafında ise döneme uygun olarak sonbahar temasının kullanılması güzel bir alternatif olabilir diye düşünüyoruz.\n\nAna söylemimiz ve başlığımız: Tüm İstasyonlarda Tek Fiyat\n\nBununla birlikte kampanyanın yalnızca 1 haftaya özel olduğu ve 30 Eylül–7 Ekim tarihleri arasında geçerli olduğu KV üzerinde mutlaka görünür olmalı. Bunu şu ifadeyle badge/etiket/patlangaç içerisinde öne çıkarabiliriz:\n30 Eylül-7 Ekim tarihleri arasında geçerli!\n\nKV’nin alt bölümünde küçük bir disclaimer olacak:\n*AC tarifelerinde farklılık gösterebilir.\n\nBirkaç farklı iletişimi aynı anda yürüttüğümüz için bu KV tasarımını iş listenizde önceliklendirerek önümüzdeki hafta Pazartesi gününe kadar iletmenizi rica ederiz demişler, deadline'ı buna göre giriyorum.\n\n    \n  \n    unnamed.png\n  \n\nKV onayı sonrası şu kalemlere geçeceğiz, takibi sende olur \n  \n  \n    Aleyna\n  \n 'cım bu kısmın:\n____________________\nStory + post boyutlarının akabinde aşağıda ilettiğim boyutlarına da ihtiyacım olacak. Tek bir formatta antant kaldıktan sonra bunları da hazırlamanızı rica edeceğim. \n\nSlider Masaüstü: 1920 x 570px\n\nSlider mobil: 430x500px\n\nAlt sayfalar için page title alanı: 1920x554px\n\nHaber, blog, kampanya kapak ve detay sayfa görseli: 1000x666px\n\nAlt sayfa sayfa içi görsel örnek: 620x399px\n\nMailing hazırlanması",
+    "attachments": [
+      {
+        "content-type": "image/png",
+        "filename": "unnamed.png",
+        "filesize": "2011227",
+        "width": "1254",
+        "height": "1254",
+        "caption": ""
+      }
+    ],
+    "link_metadata": []
+  },
+  "comments": [
+    {
+      "id": 10313145529,
+      "created_at": "2026-09-17T08:59:34.28Z",
+      "updated_at": "2026-09-17T09:06:24.998Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 47658175,
+        "name": "Berkay Kayaköylü",
+        "title": "Art Director",
+        "employee": true
+      },
+      "content": {
+        "text": "Özge\n  \n Selam iki versiyon hazırlandı ektedir\n\n  \n    \n  \n    EKIM_KAMPANYA_KV_1_YATAY.png\n  \n\n    \n  \n    EKIM_KAMPANYA_KV_1.png\n  \n\n    \n  \n    EKIM_KAMPANYA_KV_2_YATAY.png\n  \n\n    \n  \n    EKIM_KAMPANYA_KV_2.png\n  \n\n  \n  \n    Barış",
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "filename": "EKIM_KAMPANYA_KV_1_YATAY.png",
+            "filesize": "4104322",
+            "width": "1920",
+            "height": "1080",
+            "caption": ""
+          },
+          {
+            "content-type": "image/png",
+            "filename": "EKIM_KAMPANYA_KV_1.png",
+            "filesize": "2253404",
+            "width": "1080",
+            "height": "1350",
+            "caption": ""
+          },
+          {
+            "content-type": "image/png",
+            "filename": "EKIM_KAMPANYA_KV_2_YATAY.png",
+            "filesize": "4583890",
+            "width": "1920",
+            "height": "1080",
+            "caption": ""
+          },
+          {
+            "content-type": "image/png",
+            "filename": "EKIM_KAMPANYA_KV_2.png",
+            "filesize": "2683698",
+            "width": "1080",
+            "height": "1350",
+            "caption": ""
+          }
+        ],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10313726224,
+      "created_at": "2026-09-17T12:37:46.837Z",
+      "updated_at": "2026-09-17T12:55:53.299Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 52096503,
+        "name": "Özge Yağmur",
+        "title": "Sr. Social Media & Project, Team Lead",
+        "employee": true
+      },
+      "content": {
+        "text": "Berkay\n  \n 'cım eline sağlık, şöyle döndüler:\n\nBurada söylemi öne çıkarmak istiyoruz, ayrıca tarihleri CTA butonu olarak göstermek istemiyoruz. Aşağıdaki minvalde bir tasarıma evriltebilir misiniz? Sadece yazıların konumlanmasını görmeniz için AI olarak tasarım iletiyorum, bizim marka dilimize uyarlayabilirsiniz.\n    \n  \n    image.png",
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "filename": "image.png",
+            "filesize": "3016818",
+            "width": "1132",
+            "height": "1390",
+            "caption": ""
+          }
+        ],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10314412735,
+      "created_at": "2026-09-17T15:00:45.494Z",
+      "updated_at": "2026-09-17T15:32:39.589Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 47658175,
+        "name": "Berkay Kayaköylü",
+        "title": "Art Director",
+        "employee": true
+      },
+      "content": {
+        "text": "Özge\n  \n Selam revize ektedir\n    \n  \n    EKIM_KAMPANYA_KV_1.png\n  \n\n  \n  \n    Barış",
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "filename": "EKIM_KAMPANYA_KV_1.png",
+            "filesize": "2271858",
+            "width": "1080",
+            "height": "1350",
+            "caption": ""
+          }
+        ],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10314848970,
+      "created_at": "2026-09-17T16:25:38.774Z",
+      "updated_at": "2026-09-17T16:25:38.774Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 52096503,
+        "name": "Özge Yağmur",
+        "title": "Sr. Social Media & Project, Team Lead",
+        "employee": true
+      },
+      "content": {
+        "text": "Berkay\n  \n 'cım eline sağlık, son yorumları aldık, yarın bakarız:\nEn alttakini uçurup ana söylemin tam altında bir disclaimler kullanacağız, metin:\n*Kampanya, 30 Eylül-7 Ekim tarihleri arasında geçerlidir. AC tarifelerde değişiklik gösterebilir.\n\n\"Sadece bir hafta!\" badge'ini de daha sakin ele alarak uygun bir yere yeniden ekleyelim.",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10317634617,
+      "created_at": "2026-09-18T09:58:33.326Z",
+      "updated_at": "2026-09-18T09:58:33.326Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 52096503,
+        "name": "Özge Yağmur",
+        "title": "Sr. Social Media & Project, Team Lead",
+        "employee": true
+      },
+      "content": {
+        "text": "sen çalışırken ek bir yorum daha geldi \n  \n  \n    Berkay\n  \n 'cım,\n\nBelirttiğiniz Sadece 7 Gün badgeini kullanabiliriz. Göze çarpması iyi olacaktır. Tarihleri disclaimer'a yedirelim isteriz. Yukarıdan kaldırıyoruz yani tarihleri.\nEk olarak aracın çok devasa konumlanmamasını rica ediyoruz görsel dinamik açısından. Bir tur onu da kontrol edebilirseniz çok sevinirim demişler.",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10317679578,
+      "created_at": "2026-09-18T10:19:58.641Z",
+      "updated_at": "2026-09-18T10:19:58.674Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 47658175,
+        "name": "Berkay Kayaköylü",
+        "title": "Art Director",
+        "employee": true
+      },
+      "content": {
+        "text": "Özge\n  \n Selam revize ektedir\n    \n  \n    EKIM_KAMPANYA_KV_1.png\n  \n\n  \n  \n    Barış",
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "filename": "EKIM_KAMPANYA_KV_1.png",
+            "filesize": "2384070",
+            "width": "1080",
+            "height": "1350",
+            "caption": ""
+          }
+        ],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10317818651,
+      "created_at": "2026-09-18T11:23:37.128Z",
+      "updated_at": "2026-09-18T11:24:06.451Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 52096503,
+        "name": "Özge Yağmur",
+        "title": "Sr. Social Media & Project, Team Lead",
+        "employee": true
+      },
+      "content": {
+        "text": "Berkay\n  \n sadece disclaimerı şöyle güncelliyoruz, sonra tamamız: \n\n*Kampanya 7 Ekim gün sonuna kadar geçerlidir. AC tarifelerde değişiklik gösterebilir. \n\nSonra da boyutlandırmalara başlayabiliriz. \n  \n  \n    Aleyna\n  \n fyi,",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10317954872,
+      "created_at": "2026-09-18T12:16:35.55Z",
+      "updated_at": "2026-09-18T12:37:45.162Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 47658175,
+        "name": "Berkay Kayaköylü",
+        "title": "Art Director",
+        "employee": true
+      },
+      "content": {
+        "text": "Özge\n  \n Selam revize ektedir\nBoyutlandırmalara pazartesi başlayacağız \n  \n  \n    Barış\n  \n \n    \n  \n    EKIM_KAMPANYA_KV_1.png",
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "filename": "EKIM_KAMPANYA_KV_1.png",
+            "filesize": "2383471",
+            "width": "1080",
+            "height": "1350",
+            "caption": ""
+          }
+        ],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10322647877,
+      "created_at": "2026-09-21T08:15:30.752Z",
+      "updated_at": "2026-09-21T08:15:30.867Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 47658175,
+        "name": "Berkay Kayaköylü",
+        "title": "Art Director",
+        "employee": true
+      },
+      "content": {
+        "text": "Özge\n  \n Selam boyutlar hazır ektedir\n\n  \n    \n  \n    620x399.png\n  \n\n    \n  \n    1000x666.png\n  \n\n    \n  \n    1920x554.png\n  \n\n    \n  \n    Slider Masaüstü 1920x570.png\n  \n\n    \n  \n    Slider mobil 430x500.png\n  \n\n  \n  \n    Barış",
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "filename": "620x399.png",
+            "filesize": "565803",
+            "width": "620",
+            "height": "399",
+            "caption": ""
+          },
+          {
+            "content-type": "image/png",
+            "filename": "1000x666.png",
+            "filesize": "1441882",
+            "width": "1000",
+            "height": "666",
+            "caption": ""
+          },
+          {
+            "content-type": "image/png",
+            "filename": "1920x554.png",
+            "filesize": "2138371",
+            "width": "1920",
+            "height": "554",
+            "caption": ""
+          },
+          {
+            "content-type": "image/png",
+            "filename": "Slider Masaüstü 1920x570.png",
+            "filesize": "2167620",
+            "width": "1920",
+            "height": "570",
+            "caption": ""
+          },
+          {
+            "content-type": "image/png",
+            "filename": "Slider mobil 430x500.png",
+            "filesize": "421271",
+            "width": "430",
+            "height": "500",
+            "caption": ""
+          }
+        ],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10322731392,
+      "created_at": "2026-09-21T08:46:50.016Z",
+      "updated_at": "2026-09-21T08:46:50.016Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 49858132,
+        "name": "Aleyna Efe",
+        "title": "Project Manager",
+        "employee": true
+      },
+      "content": {
+        "text": "Berkay\n  \n  story boyutta alim mi?",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10322767302,
+      "created_at": "2026-09-21T08:59:56.948Z",
+      "updated_at": "2026-09-21T08:59:56.994Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 47658175,
+        "name": "Berkay Kayaköylü",
+        "title": "Art Director",
+        "employee": true
+      },
+      "content": {
+        "text": "Aleyna\n  \n \n  \n  \n    Özge\n  \n Selam mailing ve story boyutu ektedir\n\n  \n    \n  \n    EKIM_KAMPANYA_MAILING.png\n  \n\n    \n  \n    EKIM_KAMPANYA_STORY.png\n  \n\n  \n  \n    Barış",
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "filename": "EKIM_KAMPANYA_MAILING.png",
+            "filesize": "7328364",
+            "width": "2311",
+            "height": "2613",
+            "caption": ""
+          },
+          {
+            "content-type": "image/png",
+            "filename": "EKIM_KAMPANYA_STORY.png",
+            "filesize": "2829430",
+            "width": "1080",
+            "height": "1920",
+            "caption": ""
+          }
+        ],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10327675636,
+      "created_at": "2026-09-22T11:40:52.213Z",
+      "updated_at": "2026-09-22T11:40:52.213Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 52096503,
+        "name": "Özge Yağmur",
+        "title": "Sr. Social Media & Project, Team Lead",
+        "employee": true
+      },
+      "content": {
+        "text": "Berkay\n  \n 'ım canım 10,99 TL/kWh bilgisini vermeyi unutmuşuz bu tasarımda. Hızlıca düzenleyebilir miyiz? Önce sm uyarlamasına onay alalım, sonra diğer assetlere geçeriz.\n\nHepsinden önemli bu iş. Öne çekelim.",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10327815180,
+      "created_at": "2026-09-22T12:25:16.041Z",
+      "updated_at": "2026-09-22T12:40:58.059Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 47658175,
+        "name": "Berkay Kayaköylü",
+        "title": "Art Director",
+        "employee": true
+      },
+      "content": {
+        "text": "Özge\n  \n Selam revize ektedir\n    \n  \n    EKIM_KAMPANYA_KV_1.png\n  \n\n  \n  \n    Barış",
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "filename": "EKIM_KAMPANYA_KV_1.png",
+            "filesize": "2397531",
+            "width": "1080",
+            "height": "1350",
+            "caption": ""
+          }
+        ],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10327927767,
+      "created_at": "2026-09-22T12:55:14.668Z",
+      "updated_at": "2026-09-22T12:55:14.668Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 52096503,
+        "name": "Özge Yağmur",
+        "title": "Sr. Social Media & Project, Team Lead",
+        "employee": true
+      },
+      "content": {
+        "text": "hellooo, şöyle bir yorum geldi \n  \n  \n    Berkay\n  \n iki adet mavi buton kullanmak yerine, 10,99 TL/kWh fiyat bilgisini daha canlı bir tonda, arkasında mavi bir buton olmadan alternatif bir versiyon da görebilir miyiz?",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10328014117,
+      "created_at": "2026-09-22T13:15:38.362Z",
+      "updated_at": "2026-09-22T13:25:06.269Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 47658175,
+        "name": "Berkay Kayaköylü",
+        "title": "Art Director",
+        "employee": true
+      },
+      "content": {
+        "text": "Özge\n  \n Selam revize ektedir\n    \n  \n    EKIM_KAMPANYA_KV_1.png\n  \n\n  \n  \n    Barış",
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "filename": "EKIM_KAMPANYA_KV_1.png",
+            "filesize": "2368741",
+            "width": "1080",
+            "height": "1350",
+            "caption": ""
+          }
+        ],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10328077641,
+      "created_at": "2026-09-22T13:29:09.077Z",
+      "updated_at": "2026-09-22T13:29:09.077Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 52096503,
+        "name": "Özge Yağmur",
+        "title": "Sr. Social Media & Project, Team Lead",
+        "employee": true
+      },
+      "content": {
+        "text": "bir rev daha verdi şimdi arayıp ama bunun için bağlanalım yazamayacağım artık \n  \n  \n    Berkay",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10328180313,
+      "created_at": "2026-09-22T13:47:10.346Z",
+      "updated_at": "2026-09-22T13:47:10.385Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 47658175,
+        "name": "Berkay Kayaköylü",
+        "title": "Art Director",
+        "employee": true
+      },
+      "content": {
+        "text": "Özge\n  \n Revize ektedir\n    \n  \n    EKIM_KAMPANYA_KV_1.png\n  \n\n  \n  \n    Barış",
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "filename": "EKIM_KAMPANYA_KV_1.png",
+            "filesize": "2360008",
+            "width": "1080",
+            "height": "1350",
+            "caption": ""
+          }
+        ],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10328301172,
+      "created_at": "2026-09-22T14:10:58.435Z",
+      "updated_at": "2026-09-22T14:17:29.709Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 52096503,
+        "name": "Özge Yağmur",
+        "title": "Sr. Social Media & Project, Team Lead",
+        "employee": true
+      },
+      "content": {
+        "text": "Berkay\n  \n tasarım onaylandı. Desteğin için teşekkürlerrr.\nReklam versiyonlarını hazırlarken isterlerin safe alanda kalmasına dikkat edebilirsek çok sevinirim. \n\nStory, üçlü grid ve diğer tüm assetleri alabiliriz.\n\n  \n  \n    Aleyna\n  \n fyi.",
+        "attachments": [],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10328578907,
+      "created_at": "2026-09-22T15:00:27.55Z",
+      "updated_at": "2026-09-22T15:02:12.137Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 47658175,
+        "name": "Berkay Kayaköylü",
+        "title": "Art Director",
+        "employee": true
+      },
+      "content": {
+        "text": "Özge\n  \n Selam tüm boyutlandırmalar ektedir\n\n  \n    \n  \n    EKIM_KAMPANYA_3LU_GRIDv2.png\n  \n\n    \n  \n    620x399.png\n  \n\n    \n  \n    1000x666.png\n  \n\n    \n  \n    1920x554.png\n  \n\n    \n  \n    EKIM_KAMPANYA_KV_1_YATAY.png\n  \n\n    \n  \n    EKIM_KAMPANYA_KV_1.png\n  \n\n    \n  \n    EKIM_KAMPANYA_MAILING.png\n  \n\n    \n  \n    EKIM_KAMPANYA_STORY.png\n  \n\n    \n  \n    Slider Masaüstü 1920x570.png\n  \n\n    \n  \n    Slider mobil 430x500.png\n  \n\n  \n  \n    Barış",
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "filename": "EKIM_KAMPANYA_3LU_GRIDv2.png",
+            "filesize": "6703923",
+            "width": "3240",
+            "height": "1440",
+            "caption": ""
+          },
+          {
+            "content-type": "image/png",
+            "filename": "620x399.png",
+            "filesize": "567444",
+            "width": "620",
+            "height": "399",
+            "caption": ""
+          },
+          {
+            "content-type": "image/png",
+            "filename": "1000x666.png",
+            "filesize": "1424891",
+            "width": "1000",
+            "height": "666",
+            "caption": ""
+          },
+          {
+            "content-type": "image/png",
+            "filename": "1920x554.png",
+            "filesize": "2076709",
+            "width": "1920",
+            "height": "554",
+            "caption": ""
+          },
+          {
+            "content-type": "image/png",
+            "filename": "EKIM_KAMPANYA_KV_1_YATAY.png",
+            "filesize": "4104322",
+            "width": "1920",
+            "height": "1080",
+            "caption": ""
+          },
+          {
+            "content-type": "image/png",
+            "filename": "EKIM_KAMPANYA_KV_1.png",
+            "filesize": "2361738",
+            "width": "1080",
+            "height": "1350",
+            "caption": ""
+          },
+          {
+            "content-type": "image/png",
+            "filename": "EKIM_KAMPANYA_MAILING.png",
+            "filesize": "7278205",
+            "width": "2311",
+            "height": "2613",
+            "caption": ""
+          },
+          {
+            "content-type": "image/png",
+            "filename": "EKIM_KAMPANYA_STORY.png",
+            "filesize": "2795464",
+            "width": "1080",
+            "height": "1920",
+            "caption": ""
+          },
+          {
+            "content-type": "image/png",
+            "filename": "Slider Masaüstü 1920x570.png",
+            "filesize": "2128057",
+            "width": "1920",
+            "height": "570",
+            "caption": ""
+          },
+          {
+            "content-type": "image/png",
+            "filename": "Slider mobil 430x500.png",
+            "filesize": "429125",
+            "width": "430",
+            "height": "500",
+            "caption": ""
+          }
+        ],
+        "link_metadata": []
+      }
+    },
+    {
+      "id": 10336586781,
+      "created_at": "2026-09-24T11:47:21.307Z",
+      "updated_at": "2026-09-24T11:47:55.43Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 52096503,
+        "name": "Özge Yağmur",
+        "title": "Sr. Social Media & Project, Team Lead",
+        "employee": true
+      },
+      "content": {
+        "text": "Berkay\n  \n 'cım 3'lü grid'in ortadaki görselini reels cover boyutunda hazırlar mısın [linked URL] video cover'ı olarak kullanacağım.\n\nBir de tekli olarak da atmanı rica ederim o seti.",
+        "attachments": [],
+        "link_metadata": [
+          {
+            "host": "docs.google.com",
+            "path": "/presentation/d/1ZM9Hy8VWjnTi5QwXiWfnYsovdI0263l_9q5qc7b0B5w/edit",
+            "has_query": true
+          }
+        ]
+      }
+    },
+    {
+      "id": 10336611199,
+      "created_at": "2026-09-24T11:56:35.199Z",
+      "updated_at": "2026-09-24T11:59:10.399Z",
+      "visible_to_clients": false,
+      "status": "active",
+      "creator": {
+        "id": 47658175,
+        "name": "Berkay Kayaköylü",
+        "title": "Art Director",
+        "employee": true
+      },
+      "content": {
+        "text": "Özge\n  \n Selam kapak hazır ektedir.\n\n  \n    \n  \n    EKIM_KAMPANYA_06.png\n  \n\n    \n  \n    EKIM_KAMPANYA_03.png\n  \n\n    \n  \n    EKIM_KAMPANYA_07.png\n  \n\n  \n  \n    Barış",
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "filename": "EKIM_KAMPANYA_06.png",
+            "filesize": "1958316",
+            "width": "1080",
+            "height": "1440",
+            "caption": ""
+          },
+          {
+            "content-type": "image/png",
+            "filename": "EKIM_KAMPANYA_03.png",
+            "filesize": "2102199",
+            "width": "1080",
+            "height": "1920",
+            "caption": ""
+          },
+          {
+            "content-type": "image/png",
+            "filename": "EKIM_KAMPANYA_07.png",
+            "filesize": "1959726",
+            "width": "1080",
+            "height": "1440",
+            "caption": ""
+          }
+        ],
+        "link_metadata": []
+      }
+    }
+  ],
+  "observed_at": "2026-10-10T14:23:16.561495+00:00",
+  "reads_only": true,
+  "network_writes": 0,
+  "paid_model_calls": 0,
+  "fetched_comment_count": 21,
+  "comments_complete": true
+}

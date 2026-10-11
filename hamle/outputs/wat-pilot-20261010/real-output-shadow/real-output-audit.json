@@ -1,0 +1,352 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-10-10T15:34:01.564057+00:00",
+  "source_type": "user_selected_historical_references_only",
+  "scope": {
+    "account_id": 5898865,
+    "project_id": 40694338,
+    "tasks": [
+      {
+        "task_id": 10309337809,
+        "title": "WM // Ekim Tek Fiyat Kampanyası KV",
+        "task_completed": true,
+        "comments_complete": true,
+        "comments_count": 21,
+        "native_comment_attachments": 31,
+        "native_description_attachments": 1,
+        "attachment_types": {
+          "image/png": 31
+        },
+        "comment_producer_ids": [
+          47658175,
+          52096503
+        ],
+        "samet_comments": 0,
+        "native_video_attachments": 0,
+        "native_pdf_attachments": 0,
+        "all_attachment_bytes_downloaded": false,
+        "customer_email_delivery_verified": false,
+        "source_read_at": "2026-10-10T15:29:17.409269+00:00"
+      },
+      {
+        "task_id": 10064527849,
+        "title": "WM // Temmuz Ağustos Yaz Kampanyası İletişimi ",
+        "task_completed": true,
+        "comments_complete": true,
+        "comments_count": 71,
+        "native_comment_attachments": 112,
+        "native_description_attachments": 0,
+        "attachment_types": {
+          "image/png": 106,
+          "image/jpeg": 1,
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": 2,
+          "application/zip": 3
+        },
+        "comment_producer_ids": [
+          47658175,
+          49858132,
+          51207148,
+          52096503
+        ],
+        "samet_comments": 0,
+        "native_video_attachments": 0,
+        "native_pdf_attachments": 0,
+        "all_attachment_bytes_downloaded": false,
+        "customer_email_delivery_verified": false,
+        "source_read_at": "2026-10-10T15:29:21.792545+00:00"
+      }
+    ],
+    "selected_pngs_visually_inspected": 17,
+    "new_native_downloads": 11,
+    "new_downloaded_bytes": 33056937,
+    "previous_local_files_hash_decode_checked": 6,
+    "business_writes": 0,
+    "mail_sends": 0,
+    "paid_model_calls": 0,
+    "signed_urls_or_tokens_persisted": false,
+    "all_source_design_files_read": false
+  },
+  "production_identity": {
+    "Berkay": {
+      "id": 47658175,
+      "evidence": "Native creator of selected design upload comments in both tasks. Upload authorship is verified; no inference that every graphic was solely authored by him."
+    },
+    "Samet": {
+      "id": 50486696,
+      "verified_in_these_tasks": false,
+      "evidence": "No native comments by Samet and no video MIME attachments in either complete comment list."
+    },
+    "Ipek": {
+      "id": 51207148,
+      "evidence": "Native creator of the final selected September desktop slider and extra 1000x666 deliverable; historical handoff is recorded."
+    }
+  },
+  "findings": [
+    {
+      "id": "october_missing_required_price",
+      "artifacts": [
+        {
+          "selection": "pre-price-kv",
+          "task_id": 10309337809,
+          "comment_id": 10317954872,
+          "attachment_id": 895203774,
+          "sha256": "af2cedaa20b48305e5bd35b9b18216e9af7247561dbf9d9b0e2aef71cc7b5dd5",
+          "path": "/Users/ahmetsaltindag/Documents/ChatGPT/Gamechangers AI Ajanı/hamle/outputs/wat-pilot-20261010/example-10309337809/artifacts/pre-price-kv/EKIM_KAMPANYA_KV_1.png",
+          "bytes": 2383471
+        },
+        {
+          "selection": "approved-kv-candidate",
+          "task_id": 10309337809,
+          "comment_id": 10328180313,
+          "attachment_id": 896341819,
+          "sha256": "0b855872d2104e3dcebcb260cccdd5bf16adf123f05567ea44eb7c10f1eb4bbf",
+          "path": "/Users/ahmetsaltindag/Documents/ChatGPT/Gamechangers AI Ajanı/hamle/outputs/wat-pilot-20261010/example-10309337809/artifacts/approved-kv-candidate/EKIM_KAMPANYA_KV_1.png",
+          "bytes": 2360008
+        }
+      ],
+      "brief_comment_ids": [
+        10327675636,
+        10317818651
+      ],
+      "observed": "Pre-price PNG visibly lacks required 10,99 TL/kWh. Later candidate visibly contains it; campaign headline, one-week badge and final 7 Ekim disclaimer are present.",
+      "safe_label": "Known factual omission for the first artifact; presence check only for later artifact, not total-quality pass.",
+      "numeric_score": null
+    },
+    {
+      "id": "october_approval_and_same_name_version",
+      "artifacts": [
+        {
+          "selection": "approved-kv-candidate",
+          "task_id": 10309337809,
+          "comment_id": 10328180313,
+          "attachment_id": 896341819,
+          "sha256": "0b855872d2104e3dcebcb260cccdd5bf16adf123f05567ea44eb7c10f1eb4bbf",
+          "path": "/Users/ahmetsaltindag/Documents/ChatGPT/Gamechangers AI Ajanı/hamle/outputs/wat-pilot-20261010/example-10309337809/artifacts/approved-kv-candidate/EKIM_KAMPANYA_KV_1.png",
+          "bytes": 2360008
+        },
+        {
+          "selection": "final-package-kv",
+          "task_id": 10309337809,
+          "comment_id": 10328578907,
+          "attachment_id": 896385526,
+          "sha256": "1946fe106830e97ed8b2640c692fa030904dfaa4739b15f7bef7816bf100888e",
+          "path": "/Users/ahmetsaltindag/Documents/ChatGPT/Gamechangers AI Ajanı/hamle/outputs/wat-pilot-20261010/example-10309337809/artifacts/final-package-kv/EKIM_KAMPANYA_KV_1.png",
+          "bytes": 2361738
+        }
+      ],
+      "approval_comment_id": 10328301172,
+      "approver_id": 52096503,
+      "observed": "Özge says tasarım onaylandı after the candidate. Later package uses the same filename but differs in both bytes and pixels.",
+      "binding": "Candidate association is chronological, not exact hash approval. Later package and cover have no separate explicit approval in the complete task comments.",
+      "automatic_release_permitted": false
+    },
+    {
+      "id": "october_artifact_purpose",
+      "artifacts": [
+        {
+          "selection": "final-package-story",
+          "task_id": 10309337809,
+          "comment_id": 10328578907,
+          "attachment_id": 896385527,
+          "sha256": "38c8bc95e12874f06783ec66a17fc4dcd6e3bf8c3a328a08e66222479246a531",
+          "path": "/Users/ahmetsaltindag/Documents/ChatGPT/Gamechangers AI Ajanı/hamle/outputs/wat-pilot-20261010/example-10309337809/artifacts/final-package-story/EKIM_KAMPANYA_STORY.png",
+          "bytes": 2795464
+        },
+        {
+          "selection": "final-package-horizontal",
+          "task_id": 10309337809,
+          "comment_id": 10328578907,
+          "attachment_id": 896385524,
+          "sha256": "9b849553ecca11ecab651d24269b91c89aa8ea034859c44bbe304a5a3727d4af",
+          "path": "/Users/ahmetsaltindag/Documents/ChatGPT/Gamechangers AI Ajanı/hamle/outputs/wat-pilot-20261010/example-10309337809/artifacts/final-package-horizontal/EKIM_KAMPANYA_KV_1_YATAY.png",
+          "bytes": 4104322
+        },
+        {
+          "selection": "latest-reels-cover-candidate",
+          "task_id": 10309337809,
+          "comment_id": 10336611199,
+          "attachment_id": 897279447,
+          "sha256": "c02e6c57a4db6ebf29ba05afecb9b46dd0814d025162841605dd021a96180373",
+          "path": "/Users/ahmetsaltindag/Documents/ChatGPT/Gamechangers AI Ajanı/hamle/outputs/wat-pilot-20261010/example-10309337809/artifacts/latest-reels-cover-candidate/EKIM_KAMPANYA_03.png",
+          "bytes": 2102199
+        }
+      ],
+      "observed": "Story is an actual 1080x1920 campaign layout. Horizontal is a 1920x1080 background scene without campaign copy. Latest cover is a 1080x1920 crop with disclaimer but not full campaign copy.",
+      "safe_label": "Background/cover purpose needs its own brief; do not mark every attachment as a finished full campaign ad or send all attachments.",
+      "remaining_unknown": "One telephone revision at comment10328077641 was not written down; original complete final brief cannot be reconstructed."
+    },
+    {
+      "id": "summer_creative_selection_overrides_chronological_guess",
+      "artifacts": [
+        {
+          "selection": "berkay-before-summer-revision",
+          "task_id": 10064527849,
+          "comment_id": 10066292943,
+          "attachment_id": 867813967,
+          "sha256": "6252e5d30dc1eab5eb3cab338b8dd6e5a606f3112b94dae5fc70bda32e3f4e3b",
+          "path": "/Users/ahmetsaltindag/Documents/ChatGPT/Gamechangers AI Ajanı/hamle/outputs/wat-pilot-20261010/real-output-shadow/task-10064527849/artifacts/berkay-before-summer-revision/WM_TEMMUZ_YAZ_KAMPANYA_02.png",
+          "bytes": 8922222
+        },
+        {
+          "selection": "berkay-after-summer-revision",
+          "task_id": 10064527849,
+          "comment_id": 10066653968,
+          "attachment_id": 867849925,
+          "sha256": "a88e2e3e8a9dd6cff596abc6c67291c6051b6280cfd0dd7234a92283b7851930",
+          "path": "/Users/ahmetsaltindag/Documents/ChatGPT/Gamechangers AI Ajanı/hamle/outputs/wat-pilot-20261010/real-output-shadow/task-10064527849/artifacts/berkay-after-summer-revision/WM_TEMMUZ_YAZ_KAMPANYA_02.png",
+          "bytes": 9444569
+        },
+        {
+          "selection": "ozge-selected-kv-reference",
+          "task_id": 10064527849,
+          "comment_id": 10069011369,
+          "attachment_id": 868149456,
+          "sha256": "eb8ca99abae26a07fb051b9a9faa9964d1ea1d4d8740ae26bd92eb502c7921ed",
+          "path": "/Users/ahmetsaltindag/Documents/ChatGPT/Gamechangers AI Ajanı/hamle/outputs/wat-pilot-20261010/real-output-shadow/task-10064527849/artifacts/ozge-selected-kv-reference/unnamed (1).png",
+          "bytes": 2458668
+        }
+      ],
+      "revision_comment_id": 10066343162,
+      "selection_comment_id": 10069011369,
+      "selector_id": 52096503,
+      "observed": "A summer-theme revision adds umbrella, beach ball, swim ring and foreground leaves. The next-day explicitly selected image attached by Özge does not contain these added items and visually follows the earlier cleaner approach.",
+      "safe_label": "The selected attachment is directly bound to Özge selection, but is a separate 2048x1214 reference, not byte-identical approval of the 3240x1920 production file.",
+      "consequence": "Do not turn the earlier creative criticism into a permanent universal failed-example label or assume latest uploaded design is selected.",
+      "numeric_score": null
+    },
+    {
+      "id": "storyboard_is_not_video",
+      "artifacts": [
+        {
+          "selection": "berkay-storyboard-latest",
+          "task_id": 10064527849,
+          "comment_id": 10074218937,
+          "attachment_id": 868763586,
+          "sha256": "a664d71f06eec91b5d23fa244a5500390858a51c201573a0e098be501d49d428",
+          "path": "/Users/ahmetsaltindag/Documents/ChatGPT/Gamechangers AI Ajanı/hamle/outputs/wat-pilot-20261010/real-output-shadow/task-10064527849/artifacts/berkay-storyboard-latest/STB.png",
+          "bytes": 3723568
+        }
+      ],
+      "producer_id": 47658175,
+      "observed": "Actual file is one 1988x1112 PNG with three vertical storyboard panels. It has campaign frames and final social/store logo panel; no motion, duration, audio or video stream exists in this file.",
+      "related_source_handoff_comment_ids": [
+        10070247757,
+        10074218937
+      ],
+      "safe_label": "Verified storyboard/source handoff evidence only. Samet video production and render quality remain unverified."
+    },
+    {
+      "id": "summer_last_berkay_carousel",
+      "artifacts": [
+        {
+          "selection": "berkay-last-carousel-1",
+          "task_id": 10064527849,
+          "comment_id": 10255366389,
+          "attachment_id": 888457312,
+          "sha256": "58eed0eb6103bcddd016097efffbefc0952ae035852851d6be83e3101986c340",
+          "path": "/Users/ahmetsaltindag/Documents/ChatGPT/Gamechangers AI Ajanı/hamle/outputs/wat-pilot-20261010/real-output-shadow/task-10064527849/artifacts/berkay-last-carousel-1/KAMPANYA_C_01.png",
+          "bytes": 2196981
+        },
+        {
+          "selection": "berkay-last-carousel-2",
+          "task_id": 10064527849,
+          "comment_id": 10255366389,
+          "attachment_id": 888457314,
+          "sha256": "858a9aea4bb8bc03564e89ef34184c52cbc704d76987b3f8d8d7a8433bdab54c",
+          "path": "/Users/ahmetsaltindag/Documents/ChatGPT/Gamechangers AI Ajanı/hamle/outputs/wat-pilot-20261010/real-output-shadow/task-10064527849/artifacts/berkay-last-carousel-2/KAMPANYA_C_02.png",
+          "bytes": 832797
+        },
+        {
+          "selection": "berkay-last-carousel-3",
+          "task_id": 10064527849,
+          "comment_id": 10255366389,
+          "attachment_id": 888457313,
+          "sha256": "dcb68d9023f3e3eb1fbe08c0d247d2e60f853124ab670eef7993360a0f40e3ac",
+          "path": "/Users/ahmetsaltindag/Documents/ChatGPT/Gamechangers AI Ajanı/hamle/outputs/wat-pilot-20261010/real-output-shadow/task-10064527849/artifacts/berkay-last-carousel-3/KAMPANYA_C_03.png",
+          "bytes": 870517
+        },
+        {
+          "selection": "berkay-last-carousel-4",
+          "task_id": 10064527849,
+          "comment_id": 10255366389,
+          "attachment_id": 888457315,
+          "sha256": "aeecff70017268bc40ca592d1fbf3390a463fb5dab34b55811a94c08f9225ecd",
+          "path": "/Users/ahmetsaltindag/Documents/ChatGPT/Gamechangers AI Ajanı/hamle/outputs/wat-pilot-20261010/real-output-shadow/task-10064527849/artifacts/berkay-last-carousel-4/KAMPANYA_C_04.png",
+          "bytes": 899274
+        },
+        {
+          "selection": "berkay-last-carousel-5",
+          "task_id": 10064527849,
+          "comment_id": 10255366389,
+          "attachment_id": 888457316,
+          "sha256": "ae3d39f3198190a6285b49e7e4d6d6497c8f4f665d19bf76463cd6048bfe9cac",
+          "path": "/Users/ahmetsaltindag/Documents/ChatGPT/Gamechangers AI Ajanı/hamle/outputs/wat-pilot-20261010/real-output-shadow/task-10064527849/artifacts/berkay-last-carousel-5/KAMPANYA_C_05.png",
+          "bytes": 847093
+        }
+      ],
+      "brief_comment_ids": [
+        10254869933,
+        10254611661
+      ],
+      "observed": "Berkay uploaded five actual 1080x1350 PNGs: campaign cover; Ankara; Antalya+Bursa; Istanbul; Istanbul+Izmir+website CTA. The cover includes Eylül Boyunca, 10,99 and selected-DC disclaimer. Oksijen Tesisleri appears in the listed content.",
+      "safe_label": "Visible structural response to the recorded five-city simplification. Exact location spelling/completeness and sorting were not verified against the undownloaded source XLSX.",
+      "customer_final_approval_found": false,
+      "brand_exception_note": "Red badge follows a documented historical request after a brand-color discussion; not a blanket current WAT palette exception."
+    },
+    {
+      "id": "latest_output_is_ipek_and_extra_size_not_defect",
+      "artifacts": [
+        {
+          "selection": "ipek-last-desktop-slider",
+          "task_id": 10064527849,
+          "comment_id": 10259647116,
+          "attachment_id": 888883561,
+          "sha256": "fc78287e722d051d3644fd052be30e84f63aa6920587555c51f1e05ce774fe3f",
+          "path": "/Users/ahmetsaltindag/Documents/ChatGPT/Gamechangers AI Ajanı/hamle/outputs/wat-pilot-20261010/real-output-shadow/task-10064527849/artifacts/ipek-last-desktop-slider/WM_KAMPANYA_SLIDER_MASAUSTU.png",
+          "bytes": 1776008
+        },
+        {
+          "selection": "ipek-last-added-cover",
+          "task_id": 10064527849,
+          "comment_id": 10273236434,
+          "attachment_id": 890327530,
+          "sha256": "0eed8c0fea04576014c6c2e23e0686f6e3924cea900237cdaec39f3b69bb7c4c",
+          "path": "/Users/ahmetsaltindag/Documents/ChatGPT/Gamechangers AI Ajanı/hamle/outputs/wat-pilot-20261010/real-output-shadow/task-10064527849/artifacts/ipek-last-added-cover/1000X666.png",
+          "bytes": 1085240
+        }
+      ],
+      "producer_id": 51207148,
+      "clarification_comment_ids": [
+        10264266104,
+        10273027864,
+        10273085260
+      ],
+      "observed": "Actual desktop slider is1920x570. The later artifact is1000x666. The request explicitly says original dimensions were not wrong and asks for an additional size.",
+      "safe_label": "Existing correct-size artifact plus added deliverable, not a required-fix label. The task is completed but no later explicit approval of all files or email delivery proof is present."
+    }
+  ],
+  "brand_rule_application": {
+    "current_guide_upload_id": 10392828700,
+    "current_guide_sha256": "6be9fc432313ed5fd6d7741d52e83e584dddd26b8802238a01aee8b05ca3881c",
+    "confirmed_main_font": "Nunito Sans",
+    "confirmed_support_font": "Josefin Sans",
+    "confirmed_zircon_hex": "#E8E7E6",
+    "comparison": "Selected visuals were reviewed alongside the now-confirmed guide. No exact font identity, logo geometry, palette/ICC tolerance, usage-rights verification or numerical brand quality score was established from raster appearance alone.",
+    "historical_exceptions_are_current_blanket_rules": false
+  },
+  "open_inputs_for_root": [
+    "Samet source now supplied as task10317695863; see samet-output-audit.json. Actual cloud media/content inspection and later voiceover approval remain separate.",
+    "A small human-labeled acceptance set is still required to calibrate 80/90 routing; these observations alone do not calibrate numerical quality.",
+    "Historical tasks do not establish current Gmail To/CC authority, late-delivery permission or real recipient delivery."
+  ],
+  "prohibitions_on_inference": [
+    "No live WAT customer acceptance granted.",
+    "No historical prices, dates, staff handoff or exceptions copied into current rules.",
+    "Completed task is not proof of approved full package or delivered email."
+  ],
+  "new_user_source_supplement": {
+    "task_id": 10317695863,
+    "report": "samet-output-audit.json",
+    "effect": "Samet final MP4 source now received; previous no-Samet statements remain true only within the first two referenced tasks."
+  }
+}

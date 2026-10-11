@@ -1,0 +1,31 @@
+{
+  "recorded_at": "2026-10-10T01:33:41.107837+03:00",
+  "scope": "offline_internal_metadata_review_preparation_only",
+  "tests_passed": 30,
+  "source_kind": "synthetic Gmail responses through unchanged original normalizer",
+  "network_calls": 0,
+  "mailbox_reads": 0,
+  "external_writes": 0,
+  "model_calls": 0,
+  "action_eligibility_enabled": false,
+  "persistent_queue": false,
+  "e04_unseen_cc_removal_resolved": false,
+  "original_sources_modified": false,
+  "test_command": "../hamle-gmail-connector/.venv/bin/python -B -m unittest discover -p 'test_*.py' -v",
+  "sha256": {
+    "intake.py": "e5fc976a7753f39865a47fbee651a78b6063714ea5b0a60f945be785c0728286",
+    "test_intake.py": "9bb89a92de1b2174b89f05e21753789a6ed2e06a0733344eff5f83de91d83fcb",
+    "capture_internal_test.py": "0de7104b85ef8511c43c70d31b4272a9e9a7578d2fc6843213f545f62bcf03d4",
+    "test_capture.py": "b3acd97332b748bfb328116b321f6887090410e2a08da701c936461a8be70274",
+    "README.txt": "8523abdc8ff844dda0ec11bc1c32c9fb031d5df067590823c1cf1926f2322f0f"
+  },
+  "offline_intake_tests": 21,
+  "capture_fake_tests": 9,
+  "live_wrapper_implemented": true,
+  "live_wrapper_run": true,
+  "review_fixes": [
+    "missing nullable normalizer keys explicitly rejected before retained snapshot copy"
+  ],
+  "capture_timestamp_bound": true,
+  "live_read_evidence": "../../outputs/new-mac-2026-10-10/internal-intake-live-read.json"
+}

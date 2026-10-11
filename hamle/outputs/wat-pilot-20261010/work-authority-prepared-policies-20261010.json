@@ -1,0 +1,165 @@
+{
+  "schema_version": 1,
+  "kind": "prepared_work_authority_policies",
+  "brand_id": "wat_mobilite",
+  "live_enabled": false,
+  "prepared_only": true,
+  "active_grants_created": 0,
+  "firestore_policy_installed": false,
+  "user_decision_ref": "work-authority-user-decision-20261010.json#sha256=4f104643113008e0fb083f6e20ff7332f72381344f444593eb46053228098f45",
+  "prospective_from": "2026-10-10T15:41:33.218450+00:00",
+  "planning_catalog_sha256": "0b6d5eebf60e28192ea11895d5957d9604ec551fedd0733e783765d697e62f00",
+  "services": [
+    {
+      "service_id": "wat_social",
+      "live_enabled": false,
+      "work_authority_policy": {
+        "schema_version": 1,
+        "kind": "visible_stop_work_policy_v1",
+        "enabled": true,
+        "status": "accepted",
+        "brand_id": "wat_mobilite",
+        "service_id": "wat_social",
+        "max_business_days": 2,
+        "timezone": "Europe/Istanbul",
+        "calendar": "weekends_only",
+        "observation_max_age_seconds": 300,
+        "visible_stop_required": true,
+        "unseen_cc_removal_detectable": false,
+        "unseen_cc_removal_is_revocation": false,
+        "allowed_issuers": [
+          "ahmet@gamechangers.com.tr",
+          "cansu@gamechangers.com.tr",
+          "ozge@gamechangers.com.tr"
+        ],
+        "actions": [
+          "acknowledge",
+          "add_comment",
+          "assign_task",
+          "clarify_brief",
+          "create_task",
+          "deliver_file",
+          "remind",
+          "update_task"
+        ],
+        "acceptance": {
+          "verified": true,
+          "authenticated": true,
+          "actor": "ahmet@gamechangers.com.tr",
+          "decision": "accept_visible_stop_work_authority",
+          "evidence_ref": "work-authority-user-decision-20261010.json#sha256=4f104643113008e0fb083f6e20ff7332f72381344f444593eb46053228098f45",
+          "accepted_at": "2026-10-10T15:41:33.218450+00:00",
+          "expires_at": "2026-10-12T23:59:59+03:00",
+          "source": "direct_user_answer_current_conversation",
+          "expiry_basis": "conservative_current_budget_authorization_window_not_new_spending_permission",
+          "policy_terms_sha256": "7e35ee24766ba5e08b6333a7e181ae4ce883393f5078b1f48ee5ec634358c5a0"
+        }
+      },
+      "scope_installation_required": true,
+      "delivery_qa_acceptance_required": true
+    },
+    {
+      "service_id": "wat_design",
+      "live_enabled": false,
+      "work_authority_policy": {
+        "schema_version": 1,
+        "kind": "visible_stop_work_policy_v1",
+        "enabled": true,
+        "status": "accepted",
+        "brand_id": "wat_mobilite",
+        "service_id": "wat_design",
+        "max_business_days": 2,
+        "timezone": "Europe/Istanbul",
+        "calendar": "weekends_only",
+        "observation_max_age_seconds": 300,
+        "visible_stop_required": true,
+        "unseen_cc_removal_detectable": false,
+        "unseen_cc_removal_is_revocation": false,
+        "allowed_issuers": [
+          "ahmet@gamechangers.com.tr",
+          "cansu@gamechangers.com.tr",
+          "ozge@gamechangers.com.tr"
+        ],
+        "actions": [
+          "acknowledge",
+          "add_comment",
+          "assign_task",
+          "clarify_brief",
+          "create_task",
+          "deliver_file",
+          "remind",
+          "update_task"
+        ],
+        "acceptance": {
+          "verified": true,
+          "authenticated": true,
+          "actor": "ahmet@gamechangers.com.tr",
+          "decision": "accept_visible_stop_work_authority",
+          "evidence_ref": "work-authority-user-decision-20261010.json#sha256=4f104643113008e0fb083f6e20ff7332f72381344f444593eb46053228098f45",
+          "accepted_at": "2026-10-10T15:41:33.218450+00:00",
+          "expires_at": "2026-10-12T23:59:59+03:00",
+          "source": "direct_user_answer_current_conversation",
+          "expiry_basis": "conservative_current_budget_authorization_window_not_new_spending_permission",
+          "policy_terms_sha256": "f502e5ef848910d9e0b62f0ac3f6ca4e7a3391f25224cb3d81970da3b500b499"
+        }
+      },
+      "scope_installation_required": true,
+      "delivery_qa_acceptance_required": true
+    },
+    {
+      "service_id": "wat_motion",
+      "live_enabled": false,
+      "work_authority_policy": {
+        "schema_version": 1,
+        "kind": "visible_stop_work_policy_v1",
+        "enabled": true,
+        "status": "accepted",
+        "brand_id": "wat_mobilite",
+        "service_id": "wat_motion",
+        "max_business_days": 2,
+        "timezone": "Europe/Istanbul",
+        "calendar": "weekends_only",
+        "observation_max_age_seconds": 300,
+        "visible_stop_required": true,
+        "unseen_cc_removal_detectable": false,
+        "unseen_cc_removal_is_revocation": false,
+        "allowed_issuers": [
+          "ahmet@gamechangers.com.tr",
+          "cansu@gamechangers.com.tr",
+          "ozge@gamechangers.com.tr"
+        ],
+        "actions": [
+          "acknowledge",
+          "add_comment",
+          "assign_task",
+          "clarify_brief",
+          "create_task",
+          "deliver_file",
+          "remind",
+          "update_task"
+        ],
+        "acceptance": {
+          "verified": true,
+          "authenticated": true,
+          "actor": "ahmet@gamechangers.com.tr",
+          "decision": "accept_visible_stop_work_authority",
+          "evidence_ref": "work-authority-user-decision-20261010.json#sha256=4f104643113008e0fb083f6e20ff7332f72381344f444593eb46053228098f45",
+          "accepted_at": "2026-10-10T15:41:33.218450+00:00",
+          "expires_at": "2026-10-12T23:59:59+03:00",
+          "source": "direct_user_answer_current_conversation",
+          "expiry_basis": "conservative_current_budget_authorization_window_not_new_spending_permission",
+          "policy_terms_sha256": "7753b8101cbef1a7276926e8cb5a1973c28ae50935418d32e8b749646673a35b"
+        }
+      },
+      "scope_installation_required": true,
+      "delivery_qa_acceptance_required": true
+    }
+  ],
+  "notes": [
+    "Accepted visible-stop terms only; live services remain closed.",
+    "Historical mail before prospective_from cannot derive a new grant automatically.",
+    "Exact verified service action subsets and current dispatch scope must be validated before installation.",
+    "No same-scope follow-up extends original expiry or shared budget deadline.",
+    "Stop UI supports the agency decision makers; received customer stop ingestion still needs trusted role adapter."
+  ]
+}

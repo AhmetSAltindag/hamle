@@ -1,0 +1,15 @@
+{
+  "recorded_at": "2026-10-10T01:20:11.593848+03:00",
+  "reason": "All probe outcomes known; actual provider costs await billing reconciliation, so entire3USD remains held.",
+  "status": {
+    "policy_id": "hamle-shared-20261009-20261012",
+    "limit_microdollars": 50000000,
+    "all_provider_baselines_and_billing_known": true,
+    "accounted_spend_microdollars": 0,
+    "held_microdollars": 3000000,
+    "remaining_microdollars": 47000000,
+    "overrun_hold": false,
+    "provider_hard_cap_installed": false,
+    "provider_reconciliation_connected": false
+  }
+}

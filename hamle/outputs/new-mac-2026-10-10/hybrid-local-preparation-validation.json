@@ -1,0 +1,27 @@
+{
+  "recorded_date": "2026-10-10",
+  "stage": "local_preparation_not_deployed",
+  "test_result": "passed",
+  "test_count": 319,
+  "test_log": "hybrid-local-tests.log",
+  "package_allowlist_compiles": true,
+  "package_allowlist_files": 20,
+  "new_source_files": [
+    "model_profiles.py",
+    "test_model_profiles.py",
+    "autonomy_policy.py",
+    "test_autonomy_policy.py",
+    "customer_scope_template.json",
+    "model-evaluation-cases.json",
+    "evaluate_sol_once.py"
+  ],
+  "source_sha256": {
+    "model.py": "8bb4eaa5135c7cb8465bddd2b5faa18a5ca6068d80d5a89b99071c1093927dc5",
+    "model_profiles.py": "21c772f3fac46eb4c46dc5a86310f521f3a7fa886b7e1872a9f23db38597cd13",
+    "autonomy_policy.py": "2cf1bda66ad464a16bd905295f2f345ab0cf5f0b4ca9af3d3ab0c98c09087218",
+    "evaluate_sol_once.py": "65b881d946869cf290d952072fbb3f587cad3674db115a433c12b9fb8be0f394"
+  },
+  "customer_scope_enabled": false,
+  "default_live_cloud_model_changed": false,
+  "scope_inputs_pending_user": true
+}

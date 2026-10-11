@@ -1,0 +1,38 @@
+{
+  "recorded_at": "2026-10-10T10:46:03.370827+03:00",
+  "openai_usage": {
+    "source": "https://platform.openai.com/usage",
+    "project": "Default project",
+    "range": "Last 7 days, Oct 03 through Oct 10",
+    "displayed_total_spend_usd": "0.47",
+    "requests": 2,
+    "input_tokens": 2553,
+    "screenshot": "openai-usage-before-followup.png",
+    "rounded_display_not_exact_per_request_bill": true
+  },
+  "google_cloud": {
+    "current_report": "failed_to_load_after_one_retry",
+    "last_known_usage_try": "0.00",
+    "last_known_observed_at": "2026-10-10T01:04:53+03:00",
+    "current_actual_spend_verified": false,
+    "existing_holds_usd": 8,
+    "holds_retained": true
+  },
+  "shared_budget": {
+    "limit_usd": 50,
+    "committed_including_prepayment_and_holds_usd": 18,
+    "uncommitted_usd": 32,
+    "prepaid_openai_usd": 10,
+    "provider_hard_cap_installed": false,
+    "authorization_deadline": "2026-10-12T23:59:59+03:00"
+  },
+  "followup_plan": {
+    "max_new_model_attempts": 1,
+    "model": "gpt-6-astra",
+    "reasoning": "max",
+    "new_reservation_usd": 1,
+    "automatic_retry": false,
+    "no_business_write_before_content_approval": true
+  },
+  "google_incremental_work": "Existing 5 USD foundation reserve retained for one v6 build/deployment and bounded internal executions; no scheduler activation in this preflight."
+}

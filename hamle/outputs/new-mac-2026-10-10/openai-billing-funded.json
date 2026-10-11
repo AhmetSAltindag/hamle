@@ -1,0 +1,19 @@
+{
+  "recorded_at": "2026-10-10T01:51:08.529872+03:00",
+  "provider": "openai",
+  "organization": "Personal",
+  "project_id": "proj_4I4cIPYSwrQKz5Xh3F58Xgj8",
+  "source": "Live signed-in OpenAI Platform Billing overview and history",
+  "api_credit_balance_usd": "10.00",
+  "invoice_id": "PT7UPH7U-0001",
+  "invoice_status": "Paid",
+  "paid_amount_usd": "10.00",
+  "invoice_created_ui_istanbul": "2026-10-10 01:47",
+  "auto_reload_initially_enabled": true,
+  "auto_reload_now_enabled": false,
+  "auto_reload_off_ui_verified": true,
+  "screenshot": "openai-credit-10-auto-reload-off.jpg",
+  "card_data_recorded": false,
+  "initial_model_usage_zero": true,
+  "budget_note": "Full10USD purchase counts against shared50USD; subsequent usage funded by these credits is not charged to the aggregate twice."
+}

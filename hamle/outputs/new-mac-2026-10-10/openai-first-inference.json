@@ -1,0 +1,103 @@
+{
+  "recorded_at": "2026-10-10T01:52:54.074843+03:00",
+  "scope": "customer_free_internal_request",
+  "model_requested": "gpt-6-astra",
+  "reasoning_requested": "max",
+  "model_call_count": 1,
+  "customer_data_sent": false,
+  "status": "passed",
+  "error_code": null,
+  "result": {
+    "status": "review_required",
+    "action_eligible": false,
+    "model": "gpt-6-astra",
+    "reasoning_effort": "max",
+    "response_id": "resp_06015e0cbc7b0a0b016ac96fef3b7487d1ab0cfe4ed9748479",
+    "analysis": {
+      "request_summary": "Gamechangers'a yeni katılan ekip arkadaşları için talebin alınması, brief oluşturulması ve revizyon takibini anlatan tek sayfalık, sade Türkçe başlangıç rehberi talebi.",
+      "intent": "routine_request",
+      "known_facts": [
+        "Talep Gamechangers iç eğitimi için; hedef kitle yeni katılan ekip arkadaşları.",
+        "İstenen çıktı tek sayfalık, sade Türkçe metin. Kapsam: talebin alınması, brief oluşturulması ve revizyon takibi.",
+        "Girdi, müşteri verisi içermeyen sentetik bir Gamechangers iç denemesi olarak belirtiliyor.",
+        "Üretim kapasitesi henüz kontrol edilmedi; görev ataması ve teslim tarihi onaylanmadı."
+      ],
+      "missing_questions": [
+        "Esas alınacak mevcut iç süreç dokümanı veya şablon var mı?",
+        "Rehberin çıktı formatı ne olmalı?"
+      ],
+      "brief": {
+        "deliverables": [
+          "Talebin alınması, brief oluşturulması ve revizyon takibi bölümlerinden oluşan tek sayfalık, sade Türkçe başlangıç rehberi."
+        ],
+        "audience": "Gamechangers'a yeni katılan ekip arkadaşları",
+        "requested_deadline": "2026-10-12T15:00:00+03:00",
+        "confirmed_deadline": null
+      },
+      "reply_draft": {
+        "subject": "Ynt: İç eğitim için tek sayfalık başlangıç rehberi",
+        "body": "Merhaba,\n\nYeni katılan Gamechangers ekip arkadaşları için talebin alınması, brief oluşturulması ve revizyon takibini kapsayan tek sayfalık, sade Türkçe rehber talebinizi anladım.\n\nVarsa esas alınacak iç süreç dokümanı veya şablonu ve tercih ettiğiniz çıktı formatını paylaşabilir misiniz?\n\nİstanbul saatiyle 12 Ekim 2026 saat 15.00, talep edilen tarihtir; kapasite ve teslim onayı bulunmadığından kesin teslim tarihi değildir. Sonraki adım, bu bilgilerle içerik kapsamının ve kapasite/termin uygunluğunun insan incelemesinde değerlendirilmesidir.\n\nHamle"
+      },
+      "task_draft": {
+        "title": "Gamechangers | Tek sayfalık başlangıç rehberi",
+        "description": "İnsan incelemesi için görev taslağı: Gamechangers'a yeni katılan ekip arkadaşlarına yönelik tek sayfalık, sade Türkçe başlangıç rehberi hazırlanması. Bölümler: talebin alınması, brief oluşturulması ve revizyon takibi. İç süreç referansı veya şablon ile çıktı formatı netleştirilmeli; kaynakta bulunmayan süreç ayrıntıları varsayılmamalı. Talep edilen tarih: 12 Ekim 2026 saat 15.00 İstanbul. Üretim kapasitesi, görev ataması ve teslim tarihi onaylanmış değil; bu tarih teslim taahhüdü değildir.",
+        "assignee": null,
+        "due_at": null
+      },
+      "escalation": {
+        "owner": "none",
+        "reason": null
+      }
+    },
+    "usage": {
+      "input_tokens": 1251,
+      "output_tokens": 4064,
+      "total_tokens": 5315,
+      "input_tokens_details": {
+        "cached_tokens": 0
+      },
+      "output_tokens_details": {
+        "reasoning_tokens": 3338
+      }
+    },
+    "automatic_retry_allowed": false
+  },
+  "usage": {
+    "input_tokens": 1251,
+    "output_tokens": 4064,
+    "total_tokens": 5315,
+    "input_tokens_details": {
+      "cached_tokens": 0
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 3338
+    }
+  },
+  "standard_uncached_token_cost_estimate_usd": "0.21571",
+  "estimate_is_provider_invoice": false,
+  "budget_reservation_key": "astra-max-first-internal-20261010-v1",
+  "budget_hold_retained_usd": "1",
+  "budget": {
+    "policy_id": "hamle-shared-20261009-20261012",
+    "limit_microdollars": 50000000,
+    "all_provider_baselines_and_billing_known": true,
+    "accounted_spend_microdollars": 0,
+    "held_microdollars": 4000000,
+    "prepaid_purchases_microdollars": 10000000,
+    "prepaid_unallocated_hold_microdollars": 9000000,
+    "total_committed_microdollars": 13000000,
+    "remaining_microdollars": 37000000,
+    "overrun_hold": false,
+    "provider_hard_cap_installed": false,
+    "provider_reconciliation_connected": false
+  },
+  "external_business_writes": 0,
+  "automatic_retry": false,
+  "cloud_execution_verified": false,
+  "request_sha256": "c05885ef77edd8e079726638eb8fb8a6cc7e682e722b9d08d75cefa3b81755a9",
+  "source_sha256": {
+    "live_once.py": "c4deb9d9707b60195aeaef3684168e2be1e8269ebb02141c157572fee49700ef",
+    "model.py": "40788922befb54420ef3d6b1094f0c903dd1f8730c668cb76aebdd3540648260",
+    "account_manager_prompt.txt": "c13358adc1bffb8e3e350dfc00959ad4b180035e74b56a96255a193768e581a8"
+  }
+}

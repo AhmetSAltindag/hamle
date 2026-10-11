@@ -1,0 +1,154 @@
+{
+  "recorded_at": "2026-10-10T11:32:02.264352+00:00",
+  "proposal_id": "p-22e2a5f455020a4445403ea203c4aa6083c4c14b185ec67d52b1c1211129fd67",
+  "proposal_hash": "92a57c92cbe88b041dbdac1dabf01d6c0288c3e5288e28c1ae09d8c428082707",
+  "approval_source": "Ahmet instructed assistant to approve the existing draft on his behalf",
+  "reply_to": [
+    "ahmet@gamechangers.com.tr"
+  ],
+  "reply_cc": [
+    "cansu@gamechangers.com.tr"
+  ],
+  "works": [
+    {
+      "revision_count": 1,
+      "seed_reply_message_id": "1a12316fc6221a84",
+      "last_completed_at": 1791631709.872461,
+      "account_id": 5898865,
+      "root_rfc_message_id": "<CAOOr=FimfFb65F0oZKxUtJHAsfk5-M5SrHzBZt9ZRB5s8LGe2g@mail.gmail.com>",
+      "thread_id": "1a122eec4ccdb53a",
+      "latest_observation": {
+        "account_id": 5898865,
+        "title": "Gamechangers | Son çeyrek strateji ve içerik yaklaşımı taslağı",
+        "status": "active",
+        "completed": false,
+        "description": "Amaç: Ajans hesabının aktifliğini ve sektörel farklılaşmasını artırırken iç iletişimi ve ekip motivasyonunu desteklemek.\n\nHazırlık: Öncelikli kanalları, dış hedef kitleyi ve paylaşılabilir malzemeleri netleştir. Strateji görüşmesi için trend seçme ölçütleri, içerik temaları, ekip katılımı seçenekleri ve başarı göstergeleri önerileri hazırla. Yayın ritmi önerisini kapasite değerlendirmesine bağlı tut.\n\nDeğerlendirme önerisi: Stratejik çerçeve Cansu ve Ahmet; sosyal medya gündemi ve içerik planı Özge ve Hamle tarafından ele alınmalı.\n\nSon çeyrek planlama dönemidir, onaylanmış teslim tarihi değildir. Teslim tarihi ve görev ataması açık; üretim kapasitesi değerlendirmesi gerekli.",
+        "todo_parent_type": "Todoset",
+        "identity_verified": true,
+        "task_id": 10392247471,
+        "due_on": null,
+        "assignee_ids": [
+          53358100
+        ],
+        "project_id": 49184053,
+        "todo_parent_id": 10384126975,
+        "updated_at": "2026-10-10T11:28:22.360Z",
+        "task_fingerprint": "506630075fc8e20a0798587de71c3a132e872749faec9ad40e6c08643b0526dd",
+        "observed_at": "2026-10-10T11:31:10.980796+00:00"
+      },
+      "version": 1,
+      "event_ids": [
+        "evt-22e2a5f455020a4445403ea203c4aa6083c4c14b185ec67d52b1c1211129fd67"
+      ],
+      "escalation_owner": "cansu_and_ahmet",
+      "last_message_id": "1a124c2cc6542718",
+      "work_id": "w-675aa8f8f399be886498c8b43ee6c0fa59d572ebc2012ce5650fbc4f244ad129",
+      "pending_event_id": null,
+      "todo_parent_type": "Todoset",
+      "task_id": 10392247471,
+      "created_at": 1791618942.296947,
+      "seed_proposal_id": "p-a0627d6de33573f9284e8799b2b537af6da59d22bdfcff812158e64f3490067d",
+      "todo_parent_id": 10384126975,
+      "project_id": 49184053,
+      "root_message_id": "1a122eec4ccdb53a",
+      "seed_proposal_hash": "fd6389d4d9a39a2ac9707503fad3c1947bbba2b32ccb66a8a4c7706b6db7f9ae",
+      "escalation_status": "open",
+      "last_reply_message_id": "1a1259253846f6ea",
+      "followup_status": null
+    }
+  ],
+  "actions": [
+    {
+      "created_at": 1791631704.519665,
+      "action_id": "5a67853a3fe378d8991039bee1c3a7b45db22ffb7803f788a7ea4615a18b1a5d",
+      "payload_hash": "92a57c92cbe88b041dbdac1dabf01d6c0288c3e5288e28c1ae09d8c428082707",
+      "readback_at": 1791631778.671761,
+      "lease_until": 1791631764.519665,
+      "provider_id": "1a1259253846f6ea",
+      "dispatched_at": 1791631708.736931,
+      "finished_at": 1791631709.379801,
+      "state": "verified",
+      "kind": "gmail_reply",
+      "proposal_id": "p-22e2a5f455020a4445403ea203c4aa6083c4c14b185ec67d52b1c1211129fd67",
+      "worker": "internal-dispatch",
+      "generation": 1
+    },
+    {
+      "created_at": 1791631692.408533,
+      "action_id": "440966a28cf46a4130eb15f1493120901db7b11e7f9246939feee2924bf7447b",
+      "payload_hash": "92a57c92cbe88b041dbdac1dabf01d6c0288c3e5288e28c1ae09d8c428082707",
+      "readback_at": 1791631777.66415,
+      "lease_until": 1791631752.408533,
+      "provider_id": "10392670403",
+      "dispatched_at": 1791631702.202543,
+      "finished_at": 1791631702.492655,
+      "state": "verified",
+      "kind": "basecamp_comment",
+      "proposal_id": "p-22e2a5f455020a4445403ea203c4aa6083c4c14b185ec67d52b1c1211129fd67",
+      "worker": "internal-dispatch",
+      "generation": 1
+    }
+  ],
+  "budget": {
+    "limit_microdollars": 50000000,
+    "accounted_spend_microdollars": 0,
+    "held_microdollars": 14000000,
+    "prepaid_purchases_microdollars": 10000000,
+    "total_committed_microdollars": 19000000,
+    "remaining_microdollars": 31000000,
+    "overrun_hold": false,
+    "provider_hard_cap_installed": false
+  },
+  "weighted_progress_percent": 30,
+  "original_work_items": 65,
+  "completed_items": 21,
+  "customer_automation_enabled": false,
+  "cloud_checks": {
+    "v7-first-followup-dispatch": {
+      "execution": "hamle-account-manager-9jz8v",
+      "status": "completed",
+      "results": [
+        {
+          "automatic_retry_allowed": false,
+          "comment_id": "10392670403",
+          "new_task_count": 0,
+          "new_write_count": 2,
+          "reply_id": "1a1259253846f6ea",
+          "status": "internal_actions_readback_verified",
+          "task_id": 10392247471
+        }
+      ]
+    },
+    "v7-followup-reconciliation": {
+      "execution": "hamle-account-manager-5vsf8",
+      "status": "completed",
+      "results": [
+        {
+          "automatic_retry_allowed": false,
+          "comment_id": "10392670403",
+          "new_task_count": 0,
+          "new_write_count": 0,
+          "reply_id": "1a1259253846f6ea",
+          "status": "internal_actions_readback_verified",
+          "task_id": 10392247471
+        }
+      ]
+    },
+    "v7-followup-own-reply-check": {
+      "execution": "hamle-account-manager-tr4wt",
+      "status": "completed",
+      "results": [
+        {
+          "action_eligible": false,
+          "business_writes": 0,
+          "model_calls": 0,
+          "proposal_id": "p-22e2a5f455020a4445403ea203c4aa6083c4c14b185ec67d52b1c1211129fd67",
+          "reason": "known_sent_receipt_is_latest",
+          "status": "no_new_work"
+        }
+      ]
+    }
+  },
+  "internal_followup_acceptance": "passed",
+  "broad_customer_autonomy_acceptance": "not_open"
+}

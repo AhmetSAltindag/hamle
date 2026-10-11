@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "observed_at": "2026-10-10T08:26:24.164750+00:00",
+  "status": "scheduler_paused_run_rejected_before_target",
+  "source": "read_only_live_scheduler_metadata_cloud_run_execution_inventory_and_cloud_logging",
+  "original_journal": "scheduler-pilot-journal.json",
+  "original_submission": "2026-10-10T08:24:59.722932+00:00",
+  "original_step_preserved": {
+    "state": "started_do_not_retry",
+    "started_at": "2026-10-10T08:24:59.725402+00:00"
+  },
+  "audits": [
+    {
+      "timestamp": "2026-10-10T08:24:59.940546485Z",
+      "insert_id": "1wjv3u4dc1fj",
+      "log_name": "projects/gamechangers-hamle/logs/cloudaudit.googleapis.com%2Factivity",
+      "service": "cloudscheduler.googleapis.com",
+      "method": "google.cloud.scheduler.v1.CloudScheduler.RunJob",
+      "resource": "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-pilot-20261012-early",
+      "principal": "ahmet@gamechangers.com.tr",
+      "rpc_status": {
+        "code": 9,
+        "name": "FAILED_PRECONDITION",
+        "message": "spanner.RunInTransaction: generic::failed_precondition: Job.state must be ENABLED for RunJob."
+      },
+      "http_status": null
+    },
+    {
+      "timestamp": "2026-10-10T08:24:59.837918511Z",
+      "insert_id": "t5xflrd161q",
+      "log_name": "projects/gamechangers-hamle/logs/cloudaudit.googleapis.com%2Factivity",
+      "service": "cloudscheduler.googleapis.com",
+      "method": "google.cloud.scheduler.v1.CloudScheduler.RunJob",
+      "resource": "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-pilot-20261012-early",
+      "principal": "ahmet@gamechangers.com.tr",
+      "rpc_status": {
+        "code": 9,
+        "name": "FAILED_PRECONDITION",
+        "message": "spanner.RunInTransaction: generic::failed_precondition: Job.state must be ENABLED for RunJob."
+      },
+      "http_status": null
+    }
+  ],
+  "duplicate_audit_entries_do_not_prove_multiple_requests": true,
+  "http_response_status_not_preserved": true,
+  "target_cloud_run_403_proven": false,
+  "jobs": [
+    {
+      "name": "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-pilot-20261012-early",
+      "state": "PAUSED",
+      "schedule": "30,45 8 12 10 *",
+      "timeZone": "Europe/Istanbul",
+      "status": {
+        "code": -1
+      }
+    },
+    {
+      "name": "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-pilot-20261012-day",
+      "state": "PAUSED",
+      "schedule": "*/15 9-17 12 10 *",
+      "timeZone": "Europe/Istanbul",
+      "status": {
+        "code": -1
+      }
+    },
+    {
+      "name": "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-pilot-20261012-late",
+      "state": "PAUSED",
+      "schedule": "0,15,30 18 12 10 *",
+      "timeZone": "Europe/Istanbul",
+      "status": {
+        "code": -1
+      }
+    }
+  ],
+  "all_jobs_paused": true,
+  "conditional_iam_v3_verified": true,
+  "execution_ids_before": [
+    "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager/executions/hamle-account-manager-22ml9",
+    "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager/executions/hamle-account-manager-46djb",
+    "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager/executions/hamle-account-manager-5fz67",
+    "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager/executions/hamle-account-manager-6p2px",
+    "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager/executions/hamle-account-manager-9fqp5",
+    "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager/executions/hamle-account-manager-frvbr",
+    "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager/executions/hamle-account-manager-jfhw4",
+    "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager/executions/hamle-account-manager-n9dxp",
+    "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager/executions/hamle-account-manager-ncwfr",
+    "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager/executions/hamle-account-manager-rr4jw",
+    "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager/executions/hamle-account-manager-wkv5h"
+  ],
+  "execution_ids_after": [
+    "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager/executions/hamle-account-manager-22ml9",
+    "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager/executions/hamle-account-manager-46djb",
+    "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager/executions/hamle-account-manager-5fz67",
+    "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager/executions/hamle-account-manager-6p2px",
+    "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager/executions/hamle-account-manager-9fqp5",
+    "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager/executions/hamle-account-manager-frvbr",
+    "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager/executions/hamle-account-manager-jfhw4",
+    "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager/executions/hamle-account-manager-n9dxp",
+    "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager/executions/hamle-account-manager-ncwfr",
+    "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager/executions/hamle-account-manager-rr4jw",
+    "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager/executions/hamle-account-manager-wkv5h"
+  ],
+  "execution_ids_unchanged": true,
+  "new_execution_ids": [],
+  "log_query_since": "2026-10-10T08:24:55Z",
+  "log_query_next_page": false,
+  "cloud_mutations_during_diagnosis": 0,
+  "jobs_run_resubmissions_during_diagnosis": 0,
+  "conclusion": "The Scheduler admin RunJob operation rejected PAUSED state. This is not the required Scheduler-service-account denial at the Cloud Run target. Activation remains blocked."
+}

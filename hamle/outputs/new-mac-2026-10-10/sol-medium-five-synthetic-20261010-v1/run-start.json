@@ -1,0 +1,10 @@
+{
+  "created_at": "2026-10-10T11:56:23.635986+00:00",
+  "reservation_key": "sol-medium-five-synthetic-20261010-v1",
+  "fixture_sha256": "3aa25e0633e9f72cfd2782489bd65bd2e32ef4ec55fff7221812c387ae7173e3",
+  "profile_id": "sol-medium-evaluation-v1",
+  "max_calls": 5,
+  "approved_max_usd": 1,
+  "conservative_max_usd": 0.832,
+  "automatic_retry": false
+}

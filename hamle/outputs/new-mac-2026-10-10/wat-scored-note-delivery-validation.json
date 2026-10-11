@@ -1,0 +1,38 @@
+{
+  "recorded_at": "2026-10-10T14:25:30.149018+00:00",
+  "status": "local_validation_passed_not_live",
+  "test_command": "../hamle-gmail-connector/.venv/bin/python -m unittest test_v11_quality_gate test_v11_delivery test_v11_scored_delivery test_v11_queue_delivery test_scored_autonomy -q",
+  "test_result": {
+    "tests_run": 149,
+    "failures": 0,
+    "errors": 0,
+    "exit_code": 0
+  },
+  "scope": "quality_note_confirmed_before_customer_delivery",
+  "external_writes": 0,
+  "paid_model_calls": 0,
+  "cloud_deployed": false,
+  "verified_local_cases": [
+    "quality_note_then_delivery_each_once_after_exact_receipts",
+    "unknown_or_started_note_blocks_both_retry_and_mail",
+    "confirmed_note_does_not_increment_quality_revision_count",
+    "exact_receipt_survives_json_state_restart",
+    "changed_brief_artifact_policy_recipients_or_control_generation_requires_new_note",
+    "midband_approval_revoked_after_note_holds_delivery",
+    "shared_authority_gate_requires_matching_quality_note_proof",
+    "legacy_release_path_unchanged",
+    "receipt_itself_binds_immutable_quality_context_and_cannot_be_rewrapped"
+  ],
+  "limitations": [
+    "No real WAT artifact visual or video quality acceptance",
+    "No live provider write or deployed dispatcher integration",
+    "Current participation and hidden CC removal boundary remain subject to existing authority policy"
+  ],
+  "sha256": {
+    "v11_quality_gate.py": "29682b3c9811986c5cd9f1e2820d0fb9f568ca1cdbae35803aaacf615e35afd8",
+    "test_v11_quality_gate.py": "da3a556a1cacbc69024fa9e5a72b78af6c1651f8e78bc6063e0a2f436228af96",
+    "v11_delivery.py": "50132c6a5fdd525391565b4fd37382ea21568f4aeadcb3c54e296410382f7746",
+    "test_v11_scored_delivery.py": "11ea351b6c96b7cef1430a50f61991953a1c32cfed5fe0b449b01014e41c2824",
+    "README-v11-quality-gate.txt": "ce2ef7b10c548c42b8c950a0471a19262405a5734fd0b56a4877dae5691c3894"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "verified_at": "2026-10-10T00:52:26.778942+03:00",
+  "mode": "local_synthetic_only",
+  "tests": {
+    "schedule": 9,
+    "budget": 18,
+    "action_ledger": 22,
+    "total": 49,
+    "passed": 49,
+    "failures": 0
+  },
+  "integration_rehearsal": {
+    "passed": true,
+    "scheduled_slots": 21,
+    "first_slot": "08:30",
+    "last_slot": "18:30",
+    "timezone": "Europe/Istanbul",
+    "summary_sent": false,
+    "duplicate_intent_deduplicated": true,
+    "takeover_cancels_pending": true,
+    "unknown_result_retry_blocked": true,
+    "unknown_budget_blocks": true
+  },
+  "external_calls": 0,
+  "external_writes": 0,
+  "paid_calls": 0,
+  "cloud_deployed": false,
+  "provider_hard_cap_installed": false,
+  "unseen_cc_removal_solved": false,
+  "source_sha256": {
+    "dry_run.py": "4dbc877b77da3838597506379b15aba9e31238c73d8fbe6738670791da1e90da",
+    "budget.py": "c2be9aa847664c5f1353e7661a0b0ec04c2b9f3acb8e0ef9d4a9c6a7f9c2c3b7",
+    "ledger.py": "234e50b3719e1ffab142492568a76351e31a55bb699117c431e4e18cd8faa1ba",
+    "test_schedule.py": "ab43bcbba54d3bab38c42e14337417d419052276bd429995317663d802021234",
+    "schedule.py": "9b54edf8d553d589347950a3d1b303fdf6e5c7744760ad0aa6b8045d69bb3259",
+    "test_budget.py": "769c79e79d55feb811feb504c0f11012b8a2e93ae5cfbdd4ecfa8c00d474cf44",
+    "test_ledger.py": "115ddfe5b2b67405887e4f687d7bc45480fae5e200d50cfc3eedfc52fafb4752"
+  },
+  "independent_code_review": "no actionable defects found; local-only limitations preserved"
+}

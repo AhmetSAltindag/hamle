@@ -1,0 +1,323 @@
+{
+  "execution": {
+    "apiVersion": "run.googleapis.com/v1",
+    "kind": "Execution",
+    "metadata": {
+      "annotations": {
+        "run.googleapis.com/client-name": "gcloud",
+        "run.googleapis.com/client-version": "588.0.0",
+        "run.googleapis.com/creator": "ahmet@gamechangers.com.tr",
+        "run.googleapis.com/execution-environment": "gen2",
+        "run.googleapis.com/lastModifier": "ahmet@gamechangers.com.tr",
+        "run.googleapis.com/operation-id": "2e6abd96-23a8-48e1-b0ed-907d62486721"
+      },
+      "creationTimestamp": "2026-10-09T23:28:54.585469Z",
+      "generation": 1,
+      "labels": {
+        "client.knative.dev/nonce": "haw_qeg_xod",
+        "cloud.googleapis.com/location": "europe-west1",
+        "run.googleapis.com/job": "hamle-account-manager",
+        "run.googleapis.com/jobGeneration": "1",
+        "run.googleapis.com/jobResourceVersion": "1791588241789923",
+        "run.googleapis.com/jobUid": "37e16aea-2407-42c1-80f0-1f22aa872bab"
+      },
+      "name": "hamle-account-manager-9fqp5",
+      "namespace": "286533609595",
+      "ownerReferences": [
+        {
+          "apiVersion": "serving.knative.dev/v1",
+          "blockOwnerDeletion": true,
+          "controller": true,
+          "kind": "Job",
+          "name": "hamle-account-manager",
+          "uid": "37e16aea-2407-42c1-80f0-1f22aa872bab"
+        }
+      ],
+      "resourceVersion": "AAZdcLgpbNc",
+      "selfLink": "/apis/run.googleapis.com/v1/namespaces/286533609595/executions/hamle-account-manager-9fqp5",
+      "uid": "0d36feef-70ad-4e93-a0dc-63b4856ec252"
+    },
+    "spec": {
+      "parallelism": 1,
+      "taskCount": 1,
+      "template": {
+        "spec": {
+          "containers": [
+            {
+              "args": [
+                "worker.py",
+                "--mode",
+                "verify"
+              ],
+              "command": [
+                "python"
+              ],
+              "env": [
+                {
+                  "name": "HAMLE_ALLOW_FIRESTORE_OPERATIONS",
+                  "value": "yes"
+                },
+                {
+                  "name": "HAMLE_PROJECT_ID",
+                  "value": "gamechangers-hamle"
+                },
+                {
+                  "name": "HAMLE_FIRESTORE_DATABASE",
+                  "value": "hamle-operations"
+                }
+              ],
+              "image": "europe-west1-docker.pkg.dev/gamechangers-hamle/hamle-runtime/hamle-account-manager@sha256:fb4c5556117db1321fff62bab98ea2ba2cbe9f842d31cbfc0f339496f14ce2e0",
+              "resources": {
+                "limits": {
+                  "cpu": "1",
+                  "memory": "512Mi"
+                }
+              }
+            }
+          ],
+          "maxRetries": 0,
+          "serviceAccountName": "hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com",
+          "timeoutSeconds": "300"
+        }
+      }
+    },
+    "status": {
+      "completionTime": "2026-10-09T23:29:26.089927Z",
+      "conditions": [
+        {
+          "lastTransitionTime": "2026-10-09T23:29:26.089927Z",
+          "message": "Task hamle-account-manager-9fqp5-task0 failed with exit code: 2 and message: The container exited with an error.",
+          "reason": "NonZeroExitCode",
+          "status": "False",
+          "type": "Completed"
+        },
+        {
+          "lastTransitionTime": "2026-10-09T23:28:55.369525Z",
+          "message": "Provisioned imported containers.",
+          "status": "True",
+          "type": "ResourcesAvailable"
+        },
+        {
+          "lastTransitionTime": "2026-10-09T23:29:21.679219Z",
+          "message": "Started deployed execution in 26.3s.",
+          "status": "True",
+          "type": "Started"
+        },
+        {
+          "lastTransitionTime": "2026-10-09T23:28:55.276140Z",
+          "message": "Imported container image.",
+          "status": "True",
+          "type": "ContainerReady"
+        }
+      ],
+      "failedCount": 1,
+      "logUri": "https://console.cloud.google.com/logs/viewer?project=gamechangers-hamle&advancedFilter=resource.type%3D%22cloud_run_job%22%0Aresource.labels.job_name%3D%22hamle-account-manager%22%0Aresource.labels.location%3D%22europe-west1%22%0Alabels.%22run.googleapis.com/execution_name%22%3D%22hamle-account-manager-9fqp5%22",
+      "observedGeneration": 1,
+      "startTime": "2026-10-09T23:29:00.045406Z"
+    }
+  },
+  "logs": [
+    {
+      "insertId": "a00o3cdxi48",
+      "labels": {
+        "run.googleapis.com/execution_name": "hamle-account-manager-9fqp5"
+      },
+      "logName": "projects/gamechangers-hamle/logs/cloudaudit.googleapis.com%2Fsystem_event",
+      "protoPayload": {
+        "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+        "methodName": "/Jobs.RunJob",
+        "resourceName": "namespaces/gamechangers-hamle/executions/hamle-account-manager-9fqp5",
+        "response": {
+          "@type": "type.googleapis.com/google.cloud.run.v1.Execution",
+          "apiVersion": "run.googleapis.com/v1",
+          "kind": "Execution",
+          "metadata": {
+            "annotations": {
+              "run.googleapis.com/client-name": "gcloud",
+              "run.googleapis.com/client-version": "588.0.0",
+              "run.googleapis.com/creator": "ahmet@gamechangers.com.tr",
+              "run.googleapis.com/execution-environment": "gen2",
+              "run.googleapis.com/lastModifier": "ahmet@gamechangers.com.tr",
+              "run.googleapis.com/operation-id": "2e6abd96-23a8-48e1-b0ed-907d62486721"
+            },
+            "creationTimestamp": "2026-10-09T23:28:54.585469Z",
+            "generation": 1,
+            "labels": {
+              "client.knative.dev/nonce": "haw_qeg_xod",
+              "cloud.googleapis.com/location": "europe-west1",
+              "run.googleapis.com/job": "hamle-account-manager",
+              "run.googleapis.com/jobGeneration": "1",
+              "run.googleapis.com/jobResourceVersion": "1791588241789923",
+              "run.googleapis.com/jobUid": "37e16aea-2407-42c1-80f0-1f22aa872bab"
+            },
+            "name": "hamle-account-manager-9fqp5",
+            "namespace": "286533609595",
+            "ownerReferences": [
+              {
+                "apiVersion": "serving.knative.dev/v1",
+                "blockOwnerDeletion": true,
+                "controller": true,
+                "kind": "Job",
+                "name": "hamle-account-manager",
+                "uid": "37e16aea-2407-42c1-80f0-1f22aa872bab"
+              }
+            ],
+            "resourceVersion": "AAZdcLgodrs",
+            "selfLink": "/apis/run.googleapis.com/v1/namespaces/286533609595/executions/hamle-account-manager-9fqp5",
+            "uid": "0d36feef-70ad-4e93-a0dc-63b4856ec252"
+          },
+          "spec": {
+            "parallelism": 1,
+            "taskCount": 1,
+            "template": {
+              "spec": {
+                "containers": [
+                  {
+                    "args": [
+                      "worker.py",
+                      "--mode",
+                      "verify"
+                    ],
+                    "command": [
+                      "python"
+                    ],
+                    "env": [
+                      {
+                        "name": "HAMLE_ALLOW_FIRESTORE_OPERATIONS",
+                        "value": "yes"
+                      },
+                      {
+                        "name": "HAMLE_PROJECT_ID",
+                        "value": "gamechangers-hamle"
+                      },
+                      {
+                        "name": "HAMLE_FIRESTORE_DATABASE",
+                        "value": "hamle-operations"
+                      }
+                    ],
+                    "image": "europe-west1-docker.pkg.dev/gamechangers-hamle/hamle-runtime/hamle-account-manager@sha256:fb4c5556117db1321fff62bab98ea2ba2cbe9f842d31cbfc0f339496f14ce2e0",
+                    "resources": {
+                      "limits": {
+                        "cpu": "1",
+                        "memory": "512Mi"
+                      }
+                    }
+                  }
+                ],
+                "maxRetries": 0,
+                "serviceAccountName": "hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com",
+                "timeoutSeconds": "300"
+              }
+            }
+          },
+          "status": {
+            "completionTime": "2026-10-09T23:29:26.089927Z",
+            "conditions": [
+              {
+                "lastTransitionTime": "2026-10-09T23:29:26.089927Z",
+                "message": "Task hamle-account-manager-9fqp5-task0 failed with exit code: 2 and message: The container exited with an error.",
+                "reason": "NonZeroExitCode",
+                "status": "False",
+                "type": "Completed"
+              },
+              {
+                "lastTransitionTime": "2026-10-09T23:28:55.369525Z",
+                "message": "Provisioned imported containers.",
+                "status": "True",
+                "type": "ResourcesAvailable"
+              },
+              {
+                "lastTransitionTime": "2026-10-09T23:29:21.679219Z",
+                "message": "Started deployed execution in 26.3s.",
+                "status": "True",
+                "type": "Started"
+              },
+              {
+                "lastTransitionTime": "2026-10-09T23:28:55.276140Z",
+                "message": "Imported container image.",
+                "status": "True",
+                "type": "ContainerReady"
+              },
+              {
+                "lastTransitionTime": "2026-10-09T23:29:27.643835Z",
+                "message": "System will retry after 00:00 from lastTransitionTime for attempt 0.",
+                "reason": "ImmediateRetry",
+                "severity": "Info",
+                "status": "True",
+                "type": "Retry"
+              }
+            ],
+            "failedCount": 1,
+            "logUri": "https://console.cloud.google.com/logs/viewer?project=gamechangers-hamle&advancedFilter=resource.type%3D%22cloud_run_job%22%0Aresource.labels.job_name%3D%22hamle-account-manager%22%0Aresource.labels.location%3D%22europe-west1%22%0Alabels.%22run.googleapis.com/execution_name%22%3D%22hamle-account-manager-9fqp5%22",
+            "observedGeneration": 1,
+            "startTime": "2026-10-09T23:29:00.045406Z"
+          }
+        },
+        "serviceName": "run.googleapis.com",
+        "status": {
+          "code": 10,
+          "message": "Execution hamle-account-manager-9fqp5 has failed to complete, 0/1 tasks were a success."
+        }
+      },
+      "receiveTimestamp": "2026-10-09T23:29:28.558350385Z",
+      "resource": {
+        "labels": {
+          "job_name": "hamle-account-manager",
+          "location": "europe-west1",
+          "project_id": "gamechangers-hamle"
+        },
+        "type": "cloud_run_job"
+      },
+      "severity": "ERROR",
+      "timestamp": "2026-10-09T23:29:27.661064Z"
+    },
+    {
+      "insertId": "6ac978d3000f230bc9d8975d",
+      "labels": {
+        "container_name": "worker",
+        "instanceId": "0010dd8607f97c7f8284bb8c5fe8531c4366570b0e9630440f19a06553b04ad9192fc87f80e71522adfd18c8aed888cbaa152fc99a064fd027488bccc9d15b09d02103038c30a7c0cce34bc55f0b8d1cd182de17c48ad262ff92ce",
+        "run.googleapis.com/execution_name": "hamle-account-manager-9fqp5",
+        "run.googleapis.com/task_attempt": "0",
+        "run.googleapis.com/task_index": "0"
+      },
+      "logName": "projects/gamechangers-hamle/logs/run.googleapis.com%2Fvarlog%2Fsystem",
+      "receiveTimestamp": "2026-10-09T23:29:23.998003140Z",
+      "resource": {
+        "labels": {
+          "job_name": "hamle-account-manager",
+          "location": "europe-west1",
+          "project_id": "gamechangers-hamle"
+        },
+        "type": "cloud_run_job"
+      },
+      "severity": "WARNING",
+      "textPayload": "Container called exit(2).",
+      "timestamp": "2026-10-09T23:29:23.991950Z"
+    },
+    {
+      "insertId": "6ac978d3000d51de8ef6e0fb",
+      "jsonPayload": {
+        "business_writes": 0,
+        "reason": "worker_bootstrap_failed",
+        "status": "held"
+      },
+      "labels": {
+        "instanceId": "0010dd8607f97c7f8284bb8c5fe8531c4366570b0e9630440f19a06553b04ad9192fc87f80e71522adfd18c8aed888cbaa152fc99a064fd027488bccc9d15b09d02103038c30a7c0cce34bc55f0b8d1cd182de17c48ad262ff92ce",
+        "run.googleapis.com/execution_name": "hamle-account-manager-9fqp5",
+        "run.googleapis.com/task_attempt": "0",
+        "run.googleapis.com/task_index": "0"
+      },
+      "logName": "projects/gamechangers-hamle/logs/run.googleapis.com%2Fstdout",
+      "receiveTimestamp": "2026-10-09T23:29:23.885010497Z",
+      "resource": {
+        "labels": {
+          "job_name": "hamle-account-manager",
+          "location": "europe-west1",
+          "project_id": "gamechangers-hamle"
+        },
+        "type": "cloud_run_job"
+      },
+      "timestamp": "2026-10-09T23:29:23.872926Z"
+    }
+  ]
+}

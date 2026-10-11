@@ -1,0 +1,35 @@
+{
+  "status": "historical_passed_current_role_contracts_updated",
+  "validation_type": "configuration_static_checks_only",
+  "files_checked": 10,
+  "role_count": 4,
+  "schema_validation": "JSON sözdizimi ve temel yapı kontrol edildi; jsonschema bulunmadığı için metaschema doğrulaması yapılmadı",
+  "checks": [
+    "Bütün dosyalar JSON olarak açıldı.",
+    "Dört ayrı rol ve talep edilen model/ayar doğrulandı.",
+    "Tüm markalar, yalnız öğrenme, dış yazma kapalı durumları tutarlı.",
+    "Ahmet hesabı yetkili okuma; Hamle hesabı gelecek gönderim planı olarak ayrıldı.",
+    "Bilinmeyen canlı/test alıcıları, marka kayıtları, proje ve bütçeler null.",
+    "Rutin işlem başına yeniden onay kuralı yok."
+  ],
+  "not_tested": [
+    "Canlı ajan kurulumu",
+    "Bulut zamanlama",
+    "Gmail veya Basecamp dış yazma",
+    "Model API ultra desteği",
+    "Gerçek üretim araçları"
+  ],
+  "files": [
+    "outputs/gamechangers-pilot/roles/account_manager.json",
+    "outputs/gamechangers-pilot/roles/copywriter.json",
+    "outputs/gamechangers-pilot/roles/graphic_designer.json",
+    "outputs/gamechangers-pilot/roles/motion_designer.json",
+    "outputs/gamechangers-pilot/templates/brand-dossier.template.json",
+    "outputs/gamechangers-pilot/templates/brief-version.template.json",
+    "outputs/gamechangers-pilot/templates/handoff.template.json",
+    "outputs/gamechangers-pilot/templates/knowledge-record.schema.json",
+    "outputs/gamechangers-pilot/templates/knowledge-zones.template.json",
+    "outputs/gamechangers-pilot/templates/onboarding.template.json"
+  ],
+  "scope": "v01 initial configuration; retained historical validation"
+}

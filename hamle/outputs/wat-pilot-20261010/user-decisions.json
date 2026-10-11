@@ -1,0 +1,29 @@
+{
+  "recorded_at": "2026-10-10T14:04:27.754534+00:00",
+  "source": "User request + three explicit async question answers in this turn",
+  "entry": "Always mail with Hamle in actual latest To/CC; WhatsApp request may be relayed by authorized Gamechangers account manager with named original requester",
+  "qa_thresholds": {
+    "automatic_candidate_min": 90,
+    "human_review_min_inclusive": 80,
+    "below80": "internal_quality_revision"
+  },
+  "human_quality_approvers": [
+    "ozge@gamechangers.com.tr",
+    "ahmet@gamechangers.com.tr",
+    "cansu@gamechangers.com.tr"
+  ],
+  "social_video_list": "Sosyal Medya",
+  "design_and_animation_sequence": [
+    "Berkay Kayaköylü",
+    "Samet Göksu"
+  ],
+  "supersedes": "Workbook Özge-only final-ready field for quality>=90 and broadens80-89humanquality approval to any one of the three named agency people",
+  "unchanged_requirements": [
+    "Exact work/brief/file/recipient binding",
+    "No commercial or strategic decision by Hamle",
+    "Actual current mail To/CC and visible per-work stop; unseen CC removal remains a known limitation",
+    "Unknown provider writes never automatically retried",
+    "Shared budget and post12October decision"
+  ],
+  "live_enabled": false
+}

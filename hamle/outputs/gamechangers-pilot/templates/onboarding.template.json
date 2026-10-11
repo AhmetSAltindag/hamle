@@ -1,0 +1,252 @@
+{
+  "artifact_kind": "configuration_template_not_live_setup",
+  "schema_version": "1.0.0",
+  "configuration_status": "tasarlandı",
+  "deployment_status": "not_deployed",
+  "source_precedence": {
+    "latest_user_decisions": [
+      "Tüm markalar pilot kapsamındadır; belirli marka seçimi gerekmez.",
+      "Şimdi ahmet@gamechangers.com.tr hesabının işle ilgili tüm geçmişi, ekip yanıtları dahil okunarak öğrenilecek.",
+      "Gelecekte müşteri temsilcisi gönderimleri hamle@gamechangers.com.tr hesabına taşınacak.",
+      "Basecamp proje, görünürlük ve sorumlular daha sonra verilecek.",
+      "Marka varlıkları daha sonra verilecek.",
+      "Test muhatapları, deneme Basecamp alanı, çalışma kapsamı ve bütçe sınırları henüz tanımlanmadı."
+    ],
+    "effect": "Özgün tek marka pilotu tüm ajans markaları olarak güncellendi. Şimdiki yetki okuma/öğrenme; dış yazma etkin değil."
+  },
+  "current_phase": "learning_only",
+  "external_write_enabled": false,
+  "agency": {
+    "name": "Gamechangers",
+    "owner_name": "Ahmet Şükrü Altındağ",
+    "owner_person_id": null
+  },
+  "pilot_mode": "all_agency_brands",
+  "specific_brand_selection_required": false,
+  "brand_registry": null,
+  "brand_registry_entry_template": {
+    "brand_id": null,
+    "brand_name": null,
+    "authorized_client_people": null,
+    "agency_owner_id": null,
+    "production_team_ids": null,
+    "mailbox_scope": null,
+    "send_account_id": null,
+    "allowed_recipients": null,
+    "basecamp_account_id": null,
+    "basecamp_project_id": null,
+    "basecamp_task_list_ids": null,
+    "customer_visibility": null,
+    "source_locations": null,
+    "service_scope_record_id": null,
+    "revision_rules_record_id": null,
+    "delivery_rules_record_id": null,
+    "authority_limits_record_id": null,
+    "budget_limits": null,
+    "crisis_authority_record_id": null,
+    "followup_rules": null,
+    "live_start_at": null,
+    "authority_status": "pending_configuration",
+    "readiness": "not_verified",
+    "live_enabled": false
+  },
+  "brand_rollout_policy": [
+    "Tüm markalar kapsamda kalır; liste ve marka bazlı bağlantılar yetkili kaynaklardan oluşturulur.",
+    "Hazır ve testten geçmiş marka kendi yetkileri içinde çalışabilir; eksik başka marka tüm portföyü durdurmaz.",
+    "Marka eşleşmesi bilinmeyen olay hiçbir marka hafızasına tahminle yazılmaz.",
+    "Her markanın özel verisi, muhatapları, görünürlüğü ve harcama yetkisi ayrı uygulanır."
+  ],
+  "requested_runtime": {
+    "model": "gpt-6-astra",
+    "reasoning_effort": "ultra",
+    "actual_cloud_runtime": null,
+    "actual_model": null,
+    "actual_reasoning_effort": null,
+    "cloud_execution_verified": false,
+    "app_subagent_ultra_available": true,
+    "api_portability_status": "test_required",
+    "api_note": "API model belgeleri low–max seçeneklerini gösteriyor; ultra cloud/API hedefinde doğrulanmalıdır. Sessiz model veya ayar değişimi yapılmaz.",
+    "silent_fallback_allowed": false
+  },
+  "schedule": {
+    "timezone": "Europe/Istanbul",
+    "weekdays": [
+      "MO",
+      "TU",
+      "WE",
+      "TH",
+      "FR"
+    ],
+    "start": "08:30",
+    "end_inclusive": "18:30",
+    "interval_minutes": 30,
+    "runs_per_workday": 21,
+    "holiday_calendar_id": null,
+    "without_holiday_calendar": "Pazartesi–Cuma kuralı uygulanır; bu durum görünür belirtilir.",
+    "outside_hours": "Bir sonraki çalışma başlangıcında işle.",
+    "final_run": "18:30 turunu kontrollü tamamla, yeni turu sonraki çalışma gününe bırak.",
+    "scheduler_id": null,
+    "schedule_created": false
+  },
+  "discovered_connections": {
+    "gmail": {
+      "provider": "Google Workspace / Gmail",
+      "observed_profile_email": "ahmet@gamechangers.com.tr",
+      "connection_status": "bağlantısı doğrulandı",
+      "evidence_source": "Ana kurulum incelemesinde profil okuması",
+      "profile_connection_does_not_authorize_all_read_or_send": true,
+      "history_read_test": null,
+      "full_thread_test": null,
+      "attachment_test": null,
+      "send_test": null
+    },
+    "basecamp": {
+      "connection_status": null,
+      "observed_account_id": null
+    }
+  },
+  "authorized_accounts": {
+    "gmail_read_mailboxes": [
+      "ahmet@gamechangers.com.tr"
+    ],
+    "gmail_read_authority_source": "Bu oturumdaki doğrudan kullanıcı talimatı",
+    "gmail_read_scope": {
+      "all_business_history": true,
+      "include_received": true,
+      "include_sent": true,
+      "include_archived": true,
+      "include_full_threads": true,
+      "include_relevant_attachments": true,
+      "include_staff_responses": true,
+      "include_personal_unrelated_sensitive_content_in_brand_memory": false
+    },
+    "gmail_send_accounts": null,
+    "gmail_allowed_aliases": null,
+    "basecamp_account_ids": null,
+    "basecamp_project_ids": null,
+    "scope_authority_record_id": null
+  },
+  "future_send_migration": {
+    "planned_account_email": "hamle@gamechangers.com.tr",
+    "connection_verified": false,
+    "live_sending_authorized": false,
+    "migration_completed": false,
+    "required_checks": [
+      "Google Workspace hesabı veya takma ad niteliğini doğrula.",
+      "Yetkili gönderim bağlantısını ve izinlerini doğrula.",
+      "Gönderen kimliği, yanıt zinciri, test alıcısı ve teslim sonucunu sınayarak kaydet.",
+      "Marka/alıcı/kapsam yetkileri tanımlanınca ilgili hazır markalarda etkinleştir."
+    ]
+  },
+  "historical_learning": {
+    "phase": "authorized_not_completion_claim",
+    "priority": "Tüm markaların güncel/açık işleri ve yakın geçmiş; ardından tüm yetkili iş geçmişi.",
+    "complete_archive_required": true,
+    "date_ranges": null,
+    "pagination_checkpoint": null,
+    "processed_thread_count": 0,
+    "read_attachment_count": 0,
+    "unreadable_attachments": [],
+    "known_total_thread_count": null,
+    "completion_percentage": null,
+    "old_messages_create_new_tasks": false,
+    "reply_to_old_messages": false,
+    "reopen_closed_work": false,
+    "source_backlinks_required": true,
+    "persistent_coverage_report_location": null,
+    "staff_response_handling": "Zincirdeki ekip yanıtlarını talep, verilen yanıt, karar ve tamamlanan işlem açısından öğren; geçmiş insan yanıtını bugün tekrar gönderme.",
+    "read_failure_is_no_new_mail": false
+  },
+  "test_environment": {
+    "email_recipient_allowlist": null,
+    "basecamp_project_id": null,
+    "basecamp_task_list_id": null,
+    "test_brand_records_location": null,
+    "test_results_location": null,
+    "external_sends_enabled": false,
+    "historical_replay_cutoff": null
+  },
+  "production_environment": {
+    "email_recipient_allowlist": null,
+    "basecamp_project_ids": null,
+    "brand_registry_location": null,
+    "live_start_at": null,
+    "open_work_reconciliation_record_id": null,
+    "enabled": false
+  },
+  "storage": {
+    "provider": null,
+    "agency_zone": null,
+    "brand_zone": null,
+    "work_zone": null,
+    "external_reputation_zone": null,
+    "checkpoint_store": null,
+    "action_ledger": null,
+    "source_event_store": null,
+    "audit_store": null,
+    "secret_manager_reference": null,
+    "credentials_in_config_allowed": false,
+    "persistent_write_read_test_passed": false
+  },
+  "authority": {
+    "routine_per_message_approval_required": false,
+    "routine_actions": [
+      "read_authorized_correspondence",
+      "clarification",
+      "verified_status",
+      "brief_create_update",
+      "basecamp_task_create_assign_track",
+      "configured_followup",
+      "checked_delivery",
+      "plan_within_verified_capacity_and_scope"
+    ],
+    "routine_actions_state": "Gelecekte marka bazlı canlı yetki ve testler tamamlandığında bu eylemler her seferinde yeni onay istemeden yürür; şu anda yalnızca okuma/öğrenme etkindir.",
+    "commercial_limit_amount": null,
+    "commercial_limit_currency": null,
+    "discount_limit": null,
+    "tool_spending_limit": null,
+    "spending_period": null,
+    "escalation_person_ids": null,
+    "crisis_statement_limits": null,
+    "unconfigured_budget_means_unlimited": false,
+    "authority_change_requires_authorized_source": true
+  },
+  "activation_gates": [
+    "Hedef cloud ortamı gerçek cihazdan bağımsız çalışma ve istenen model/ayar yönünden doğrulandı.",
+    "Kalıcı kayıt, kilit, tekilleştirme, kesinti sonrası devam ve durdurma testleri geçti.",
+    "İlgili marka için hesap, proje, muhatap, sorumlu, kapsam ve yetki sınırları tanımlandı.",
+    "Tanımlı test alıcıları ve deneme Basecamp alanıyla gerekli akış testleri geçti.",
+    "Canlı başlangıç anı ve mevcut açık işlerin uzlaştırılması kaydedildi.",
+    "Hazır marka bu kapsamda otonom işler; rutin işlem başına yeni onay istenmez."
+  ],
+  "capability_gap_policy": "Bir üretim aracının eksikliği hazır müşteri temsilcisi veya metin akışını durdurmaz. Yapılabilir işleri ilerlet, gerekli üretimi kabul ve kapasitesi doğrulanan insan ekibe devret.",
+  "whatsapp": {
+    "phase": "later",
+    "one_to_one_api_verified": false,
+    "group_api_verified": false,
+    "existing_group_access_tested": false,
+    "account_id": null,
+    "phone_number_id": null,
+    "authorized_participants": null,
+    "enabled": false
+  },
+  "notification_policy": {
+    "daily_summary_recipient_ids": null,
+    "daily_summary_channel": null,
+    "notify_meaningful_changes_only": true,
+    "repeat_same_question_every_30_minutes": false,
+    "empty_cycle_messages": false
+  },
+  "stop_control": {
+    "configured_endpoint_or_command": null,
+    "queue_stop_verified": false,
+    "active_external_write_stop_verified": false
+  },
+  "configuration_notes": [
+    "Bu dosya başlangıç yapılandırma şablonudur; gerçek ajan, bulut hizmeti, zamanlayıcı veya kalıcı veritabanı kurulumu değildir.",
+    "Okuma yetkisi kullanıcıdan alınmıştır; profil bağlantısı gönderim yetkisi olarak yorumlanmaz.",
+    "Parola veya API anahtarı buraya yazılmaz; güvenli bağlantı/secret manager referansı kullanılır.",
+    "Null alanlar bilinmeyendir; kaynaklardan veya kullanıcıdan gelen bilgi dışında yetki tahmini yoktur.",
+    "Dört rol dosyası dört kalıcı ajan kurulduğunun kanıtı değildir."
+  ]
+}

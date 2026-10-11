@@ -1,0 +1,201 @@
+{
+  "recorded_at": "2026-10-10T00:23:00.993316+03:00",
+  "new_mac_user": "ahmetsaltindag",
+  "project_root": "/Users/ahmetsaltindag/Documents/ChatGPT/Gamechangers AI Ajanı/hamle",
+  "manifest_verified_files": 60,
+  "tests": [
+    {
+      "suite": 1,
+      "exit_code": 0,
+      "command": [
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "work/hamle-gmail-connector",
+        "-p",
+        "test_*.py"
+      ]
+    },
+    {
+      "suite": 2,
+      "exit_code": 0,
+      "command": [
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "work/hamle-workflow",
+        "-p",
+        "test_*.py"
+      ]
+    },
+    {
+      "suite": 3,
+      "exit_code": 0,
+      "command": [
+        "-B",
+        "outputs/gamechangers-pilot/offline/run_tests.py"
+      ]
+    }
+  ],
+  "historical_baseline": {
+    "tasks": 65,
+    "accepted": 19,
+    "points": 27,
+    "total_points": 100
+  },
+  "live_connections_verified": {
+    "gmail_read": true,
+    "basecamp_read": true,
+    "new_mac_writes_tested": false,
+    "production_runtime_accepted": false
+  },
+  "cloud_deployed": true,
+  "paid_calls": 0,
+  "gmail_keychain_status": "connected; macOS Keychain and real minimal API read verified",
+  "openai_key_presence": "created and safely stored; model call deferred",
+  "browser_tools": "available; Google billing reports successfully read",
+  "openai_key_setup": {
+    "created": true,
+    "key_name": "Codex",
+    "organization": "Personal",
+    "project": "Default project",
+    "project_id": "proj_4I4cIPYSwrQKz5Xh3F58Xgj8",
+    "local_path": "/Users/ahmetsaltindag/Documents/ChatGPT/Gamechangers AI Ajanı/hamle/.env.local",
+    "permissions": "0600",
+    "api_model_access_verified": false,
+    "billing_verified": false,
+    "metadata_access_verified": true
+  },
+  "basecamp_cli": {
+    "version": "0.13.0",
+    "architecture": "arm64",
+    "archive_and_binary_hash_verified": true,
+    "connection": "connected; identity, keyring, internal project members and client visibility verified"
+  },
+  "budget_observation": {
+    "openai_org": "Personal",
+    "project": "Default project",
+    "selected_window": "last 7 days",
+    "requests": 0,
+    "displayed_october_spend_usd": 0,
+    "credit_remaining_verified": false,
+    "google_cloud_spend_verified": true,
+    "visual_provider_spend_verified": "user_confirmed_no_other_hamle_spending",
+    "aggregate_remaining_verified": "Initial baseline0USD;3USD reserved; actual post-probe cost pending",
+    "paid_test_preference": "defer until required before operational acceptance",
+    "google_cloud_displayed_cost_try": "0.00"
+  },
+  "historical_files_restored_after_test": [
+    "outputs/gamechangers-pilot/offline/test-results.json"
+  ],
+  "google_cloud_ui": {
+    "signed_in_account": "ahmet@gamechangers.com.tr",
+    "project_name": "Gamechangers Hamle",
+    "project_id": "gamechangers-hamle",
+    "project_number": "286533609595",
+    "billing_account_linked": true,
+    "existing_desktop_client": "Hamle Gmail - Local Connection Test",
+    "client_created": "2026-10-09",
+    "oauth_client_details": "verified",
+    "gmail_api_current_state": "enabled; verified via gcloud services list",
+    "ai_agent_designation": true,
+    "enabled_client_secret_count": 2,
+    "existing_client_secret_download_available": false,
+    "add_secret_enabled": false,
+    "gmail_reconnection_blocker": null
+  },
+  "gmail_new_mac": {
+    "verified_at": "2026-10-10T00:41:05.175740+03:00",
+    "status": "connected_and_api_read_verified",
+    "email": "hamle@gamechangers.com.tr",
+    "scopes": [
+      "gmail.readonly",
+      "gmail.send"
+    ],
+    "storage": "macOS Keychain",
+    "read_test_thread": "1a12270588d30c79",
+    "message_count": 1,
+    "body_or_headers_requested": false,
+    "token_refreshed": false,
+    "mail_send_calls": 0,
+    "client_secret_rotation_pending": true
+  },
+  "historical_new_mac_checks": [
+    {
+      "gmail_keychain_status": "not_connected; confirmed outside sandbox without network",
+      "openai_key_presence": "absent in environment and workspace env files",
+      "gmail_reconnection_blocker": "existing OAuth client JSON required; no secret disabled or rotated"
+    }
+  ],
+  "basecamp_new_mac": {
+    "verified_at": "2026-10-10T00:46:58.167477+03:00",
+    "device": "new_mac",
+    "verification_kind": "read_only",
+    "authenticated": true,
+    "credential_storage": "keyring",
+    "token_valid": true,
+    "email": "hamle@gamechangers.com.tr",
+    "account_id": "5898865",
+    "oauth_login_identity_id": "28787068",
+    "account_person_id": "53358100",
+    "identity_note": "OAuth login identity and account person ID are distinct namespaces.",
+    "provider_scope": "full",
+    "broad_provider_scope_user_approved": true,
+    "project_id": "49184053",
+    "project_name": "Hamle — İç Deneme",
+    "clients_enabled": false,
+    "project_member_ids": [
+      "47470759",
+      "53358100"
+    ],
+    "unknown_members": false,
+    "existing_test_todo_read": "10391849167",
+    "todo_visible_to_clients": false,
+    "basecamp_content_writes": 0,
+    "paid_model_calls": 0
+  },
+  "last_updated_istanbul": "2026-10-10T01:40:56.891179+03:00",
+  "openai_metadata_verification": {
+    "checked_at": "2026-10-10T00:48:59.928959+03:00",
+    "requested_model": "gpt-6-astra",
+    "method": "GET",
+    "endpoint": "https://api.openai.com/v1/models/gpt-6-astra",
+    "inference_calls": 0,
+    "customer_data_sent": false,
+    "reasoning_max_live_verified": false,
+    "billing_verified": false,
+    "http_status": 200,
+    "metadata_access_verified": true,
+    "model_id": "gpt-6-astra",
+    "owned_by": "system"
+  },
+  "local_runtime_verification": "outputs/new-mac-2026-10-10/runtime-local-verification.json",
+  "google_cloud_billing_next": "Billing connected; bounded synthetic proof complete; post-probe billing reconciliation pending",
+  "cloud_setup_verification": "outputs/new-mac-2026-10-10/cloud-setup-verification.json",
+  "cloud_deployment_kind": "synthetic_probe_only",
+  "production_runtime_deployed": false,
+  "cloud_foundation_verification": "outputs/new-mac-2026-10-10/cloud-foundation.json",
+  "next_scope": "Deliver the first integrated senior account-manager workflow: substantive internal request to understanding, brief, Basecamp, reply and follow-up; integrate necessary cloud controls in this path; specialists follow.",
+  "internal_intake_preflight": "outputs/new-mac-2026-10-10/internal-intake-preflight.json",
+  "next_required_user_step": null,
+  "internal_intake_new_mac": {
+    "read_passed": true,
+    "subject": "HAMLE-IC-PROVA-20261010-YENIMAC-01",
+    "evidence": "outputs/new-mac-2026-10-10/internal-intake-live-read.json",
+    "outgoing_actions": 0
+  },
+  "local_review_control": {
+    "ready": true,
+    "tests_passed": 38,
+    "human_click_acceptance": "passed_for_local_demo_only",
+    "production_control_accepted": false,
+    "evidence": "outputs/new-mac-2026-10-10/internal-review-control-verification.json",
+    "takeover_evidence": "outputs/new-mac-2026-10-10/internal-review-human-takeover.json",
+    "control_mode": "takeover"
+  },
+  "delivery_priority_decision": "work/project-tracker/delivery-priority-2026-10-10.json"
+}

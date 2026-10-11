@@ -1,0 +1,220 @@
+{
+  "schema_version": 1,
+  "prepared_for_date": "2026-10-10",
+  "status": "proposal_not_deployed",
+  "purpose": "Mac kapalıyken çalışan, önce yalnız Gamechangers iç taleplerinde insan onaylı kıdemli müşteri temsilcisi akışı",
+  "project": "gamechangers-hamle",
+  "project_number": "286533609595",
+  "region": "europe-west1",
+  "baseline": {"tasks": 65, "accepted_tasks": 19, "accepted_points": 27, "total_points": 100, "live_accepted_agents": 0},
+  "architecture": {
+    "application_count": 1,
+    "container_image_count": 1,
+    "worker": {"kind": "Cloud Run Job", "proposed_name": "hamle-account-manager", "tasks": 1, "parallelism": 1, "max_retries": 0, "timeout_seconds": 300, "cpu": 1, "memory": "512Mi", "initial_mode": "stopped"},
+    "control": {"kind": "Cloud Run service", "proposed_name": "hamle-control", "same_image_different_entrypoint": true, "authentication": "direct Cloud Run IAP", "allow_unauthenticated": false, "human_allowlist": ["ahmet@gamechangers.com.tr"], "min_instances": 0, "max_instances": 1, "external_provider_secret_access": false, "actions": ["view", "stop", "takeover", "approve_exact_internal_proposal", "resume_review_only"]},
+    "reason_for_two_entrypoints": "Tek işçi ve küçük kontrol yüzeyi. IAP ile insan girişi, Scheduler Jobs API çağrısından ayrılır; varsayılan IAP OAuth istemcisinin programmatic OIDC sınırlaması için yeni OAuth giriş sistemi gerekmez.",
+    "ledger": {"kind": "Firestore Native", "proposed_database": "hamle-operations", "shared_between_worker_and_control": true, "sqlite_allowed_in_cloud": false, "collections": ["control", "requests", "proposals", "actions", "schedule_slots", "budget_reservations", "audit_events", "credential_locks"], "raw_secrets_allowed": false},
+    "proposed_image_repository": "hamle-runtime",
+    "proposed_source_bucket": "gamechangers-hamle-runtime-source-286533609595",
+    "existing_probe_resources_reused_or_expanded": false,
+    "source_packaging": "Explicit file allowlist, secret scan, immutable digest; no work/private-connections, .env.local, Keychain, raw mail, evidence archive or development caches in build context."
+  },
+  "proposed_service_accounts": [
+    {
+      "name": "hamle-runtime",
+      "email": "hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com",
+      "purpose": "One bounded account-manager worker",
+      "grants": [
+        {"role": "roles/datastore.user", "scope": "project with database condition", "condition": "resource.name==\"projects/gamechangers-hamle/databases/hamle-operations\""},
+        {"role": "roles/secretmanager.secretAccessor", "scope": "each of the three named Hamle secrets only"},
+        {"role": "roles/secretmanager.secretVersionAdder", "scope": "Gmail refresh record only; Basecamp only if rotating OAuth fallback is selected"}
+      ],
+      "not_granted": ["project editor", "project owner", "IAM administration", "secret administration", "other projects", "synthetic database"],
+      "user_managed_keys": false
+    },
+    {
+      "name": "hamle-control",
+      "email": "hamle-control@gamechangers-hamle.iam.gserviceaccount.com",
+      "purpose": "Authenticated human review and durable stop",
+      "grants": [{"role": "roles/datastore.user", "scope": "project with database condition", "condition": "resource.name==\"projects/gamechangers-hamle/databases/hamle-operations\""}],
+      "provider_secret_access": false,
+      "user_managed_keys": false,
+      "limit": "Firestore server IAM scopes the database, not individual collections; endpoint code must enforce control/proposal-only mutations."
+    },
+    {
+      "name": "hamle-scheduler",
+      "email": "hamle-scheduler@gamechangers-hamle.iam.gserviceaccount.com",
+      "purpose": "Start the fixed worker job only",
+      "grants": [{"role": "roles/run.invoker", "scope": "Cloud Run job hamle-account-manager only"}],
+      "provider_secret_access": false,
+      "database_access": false,
+      "user_managed_keys": false
+    },
+    {
+      "name": "hamle-build",
+      "email": "hamle-build@gamechangers-hamle.iam.gserviceaccount.com",
+      "purpose": "Build the single application image",
+      "grants": [
+        {"role": "roles/logging.logWriter", "scope": "gamechangers-hamle"},
+        {"role": "roles/storage.objectViewer", "scope": "gamechangers-hamle-runtime-source-286533609595 only"},
+        {"role": "roles/artifactregistry.writer", "scope": "europe-west1/hamle-runtime only"}
+      ],
+      "provider_secret_access": false,
+      "database_access": false,
+      "user_managed_keys": false
+    }
+  ],
+  "managed_identity_and_human_access": {
+    "iap_service_agent": "service-286533609595@gcp-sa-iap.iam.gserviceaccount.com",
+    "iap_grant": {"role": "roles/run.invoker", "scope": "hamle-control service only"},
+    "human_grant": {"principal": "user:ahmet@gamechangers.com.tr", "role": "roles/iap.httpsResourceAccessor", "scope": "hamle-control IAP resource only"},
+    "application_verification": "Validate IAP signed assertion issuer, signature, audience and expiration; require exact allowed email and stable subject. Do not trust a plain email header or browser-supplied actor string.",
+    "csrf": "Same-origin POST with server nonce; no mutation on GET; exact action/proposal digest and generation required.",
+    "sdk_admin_credential_uploaded": false
+  },
+  "secrets": [
+    {
+      "proposed_name": "hamle-gmail-oauth",
+      "identity": "hamle@gamechangers.com.tr",
+      "exact_scopes": ["https://www.googleapis.com/auth/gmail.readonly", "https://www.googleapis.com/auth/gmail.send"],
+      "existing_source": "MacKeychainStore.load() validated record; read source only in this preparation",
+      "safe_import": "After authorized cloud transfer: read native Keychain into memory, validate record and exact identity, add secret version directly by Secret Manager API, log only secret version resource and verification status.",
+      "cloud_adapter_required": true,
+      "refresh_behavior": "Persist replacement record safely before mailbox action. Never output token, client secret, raw record or HTTP diagnostic. Fail closed if credential update is not durable.",
+      "client_secret_rotation": "Previously screenshot-exposed client secret remains a pending rotation item; identify the used secret before changing it, do not disable an arbitrary existing secret."
+    },
+    {
+      "proposed_name": "hamle-basecamp-credential",
+      "identity": "hamle@gamechangers.com.tr",
+      "account_id": "5898865",
+      "account_person_id": "53358100",
+      "oauth_identity_id": "28787068",
+      "allowed_project_id": "49184053",
+      "preferred_cloud_credential": "Separate Hamle personal access token, if this account offers it; provision through provider UI and ingest into Secret Manager without conversation, command-line argument or log exposure.",
+      "availability_verified": false,
+      "fallback": "Separate cloud-only Hamle OAuth login, shared rotating refresh record, Firestore credential lock/fencing and atomic version pointer. Stop on uncertain refresh persistence; require reauthorization rather than token replay.",
+      "existing_oauth_copy_allowed": false,
+      "reason": "Official installed CLI v0.13.0 documents refresh-token rotation and session revocation if independent copies reuse replaced refresh tokens.",
+      "source_export_ready": false,
+      "provider_scope_limit": "Provider credential may reach more than one project; application allowlist 5898865/49184053 is mandatory and must not be described as provider-enforced project scope."
+    },
+    {
+      "proposed_name": "hamle-openai-api-key",
+      "existing_source": "Private .env.local; contents were not read during this preparation",
+      "project_id": "proj_4I4cIPYSwrQKz5Xh3F58Xgj8",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "max",
+      "fallback_model_allowed": false,
+      "api_inference_verified": true,
+      "api_inference_status": "passed_customer_data_free_astra_max_local_call_cloud_execution_not_yet_verified",
+      "api_inference_evidence": "../../outputs/new-mac-2026-10-10/openai-first-inference.json",
+      "billing_status": "10_USD_prepaid_paid_and_auto_reload_off_verified",
+      "billing_evidence": "../../outputs/new-mac-2026-10-10/openai-billing-funded.json",
+      "safe_import": "Use existing authorized dedicated key if still suitable; memory-to-Secret-Manager transfer, no plaintext output. Do not create another key merely for deployment.",
+      "first_inference": "Passed one customer-data-free Astra/max case: 1251 input, 4064 output tokens (3338 reasoning); estimated token cost 0.21571 USD, not invoice. Its 1 USD hold remains until reconciliation. No business action was authorized by the output."
+    }
+  ],
+  "flow": [
+    "Read durable control and budget policy before provider access; claim one scheduled slot transactionally.",
+    "Verify live Gmail identity and exact scopes; read only Hamle mailbox in explicitly enabled internal scope. Record source message IDs/hash, not a fabricated authoritative order.",
+    "Check actual latest observed sender, exact To/CC, auto-reply/self-mail, allowlisted source and duplicate key. Attachments require explicit bounded reader and cannot silently be marked inspected.",
+    "Run fixed Astra/max to propose request summary, missing questions, draft reply, brief, task and next follow-up. Model has no direct write tool or secret. Treat mail and attachments as untrusted source content.",
+    "Persist proposal with source fingerprint, action digest, control generation and cost reservation. Human sees exact recipient, reply, Basecamp destination and task in authenticated panel.",
+    "Human approves only this immutable internal proposal. Stop/takeover transaction increments generation and cancels all pending proposals/actions; resume does not resurrect them.",
+    "Immediately before each effect, reread source and control, reverify identity/project/membership/visibility/authorization/approval age, then atomically reserve action and mark dispatch_started. No external API inside retryable Firestore transaction.",
+    "Perform one non-retrying provider write outside transaction. Save provider receipt; read created resource back. Timeout/crash/unknown result remains held for reconciliation and never auto-resends.",
+    "Poll known internal task/revision status, propose next response or follow-up, and show human audit. Morning summary is a separately deduplicated send after first successful 08:30 slot."
+  ],
+  "dispatch_limits": {
+    "initial_customer_send_enabled": false,
+    "initial_internal_send_enabled": false,
+    "initial_basecamp_write_enabled": false,
+    "internal_recipient_allowlist": ["ahmet@gamechangers.com.tr"],
+    "basecamp_project_name": "Hamle — İç Deneme",
+    "basecamp_expected_members": ["47470759", "53358100"],
+    "basecamp_clients_enabled_required": false,
+    "old_test_mail_or_comment_reproduction_allowed": false,
+    "E04_resolved": false,
+    "E04_policy": "Customer scope remains shadow/review-only. A fresh read of Hamle mailbox cannot prove a later unseen CC removal. Visible cloud stop alone does not solve E04; delayed customer actions need an agreed visible authorization/renewal procedure before opening that scope.",
+    "takeover_limit": "A stop cancels pending work. A request already handed to Gmail/Basecamp may complete; show in-flight/unknown state and do not promise recall."
+  },
+  "schedule": {
+    "status": "not_created_keep_paused_until_acceptance_and_expiry_control",
+    "timezone": "Europe/Istanbul",
+    "slots_per_weekday": 21,
+    "triggers": [
+      {"proposed_name": "hamle-weekday-0830", "cron": "30 8 * * 1-5"},
+      {"proposed_name": "hamle-weekday-halfhour", "cron": "0,30 9-18 * * 1-5"}
+    ],
+    "target": "https://run.googleapis.com/v2/projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager:run",
+    "method": "POST",
+    "authentication": "OAuth from hamle-scheduler; not OIDC to an IAP panel",
+    "retry_count": 0,
+    "duplicate_delivery_gate": "Firestore slot key plus action ledger; Scheduler or Jobs at-least-once effects must not create duplicate actions.",
+    "holiday_calendar": "not_yet_authoritative"
+  },
+  "budget": {
+    "common_limit_usd": "50.00",
+    "deadline_inclusive": "2026-10-12T23:59:59+03:00",
+    "providers": ["Google Cloud", "OpenAI", "visual_generation"],
+    "last_accounted_baseline_usd": "0.00",
+    "existing_unreconciled_hold_usd": "3.00",
+    "new_infrastructure_reservation_usd": "5.00",
+    "new_infrastructure_reservation_key": "cloud-account-manager-foundation-20261010-v1",
+    "openai_prepaid_purchase_usd": "10.00",
+    "openai_prepaid_unallocated_hold_usd": "10.00",
+    "last_total_committed_usd": "18.00",
+    "last_available_after_holds_usd": "32.00",
+    "openai_auto_reload_enabled": false,
+    "funding_evidence": "../../outputs/new-mac-2026-10-10/shared-budget-after-openai-funding.json",
+    "prepaid_accounting": "The whole 10 USD purchase counts against the shared 50 USD. Consumption funded by that prepaid balance is not counted against the aggregate a second time; track remaining credits and reservation allocations separately.",
+    "fresh_reconciliation_required_before_deploy": true,
+    "provider_hard_cap_verified": false,
+    "required_controls": [
+      "One shared Firestore budget ledger; transfer existing reservation and baseline exactly once, never reset on cloud deployment.",
+      "Reserve bounded infrastructure and model maximums before calls; hold unknown outcomes; reconcile provider actuals without double counting.",
+      "Check current time before each new model/provider action; stop new operations at deadline and bound already-started work with shorter request timeouts.",
+      "Before enabling recurring triggers, implement and verify a cloud-side expiry shutdown that pauses both named schedules before the deadline; it must work with the Mac off.",
+      "Export audit and address remaining service/storage/registry/Scheduler charges at shutdown; an application deadline, paused job or billing alert is not a provider-wide hard cap."
+    ],
+    "expiry_shutdown_implemented": false,
+    "unattended_scheduler_activation_blocked": true
+  },
+  "deployment_order": [
+    "Finish provider adapters, Firestore action/control/budget implementation and immutable proposal approval; test failure cases locally.",
+    "Resolve exact scoped credential-transfer/IAM consent; confirm new billing balance and reserve infrastructure maximum.",
+    "Create proposed resources only after checking names for existing resources; keep worker control stopped and schedules paused. Never expand probe identities.",
+    "Transfer secrets privately, deploy one pinned image, verify cloud-only provider identities and read-only internal permissions.",
+    "Open IAP panel as Ahmet from browser; verify durable stop and access denial for unauthenticated caller.",
+    "Run bounded customer-data-free Astra/max call, then one internal complete flow with explicit exact-output approval and unique action IDs.",
+    "Verify write/readback, stop during queued work, duplicate handling and independent follow-up while local worker is off.",
+    "Install verified deadline shutdown and shared budget reconciliation; enable internal schedule only within remaining authorization.",
+    "Historical shadow work; then separately accept routine customer scopes after E04, service/brand/contact/revision authority is resolved."
+  ],
+  "human_steps": [
+    {"step": "cloud_access", "status": "approved_do_not_ask_again", "plain_language": "Kullanıcı üç bağlantının Secret Manager'a aktarımını, dört dar hizmet hesabını ve yalnız Ahmet'e açık paneli açıkça onayladı; ortak 50 USD değişmedi.", "why_new": "New explicit approval supersedes the earlier synthetic-only identity limitation for these proposed resources; it does not expand old probe identities."},
+    {"step": "basecamp_cloud_login", "when": "cloud credential method is verified", "plain_language": "Gerekirse Basecamp'in açacağımız resmî sayfasında Hamle olarak tek bir yeni bulut erişimini onayla; şifre/token paylaşma.", "why_new": "Mac'teki dönen OAuth oturumunu kopyalamak uygun değil; PAT availability or separate login is not yet verified."},
+    {"step": "openai_billing_completed", "status": "completed_do_not_ask_again", "plain_language": "10 USD kredi ödendi; otomatik yükleme kapatıldı ve doğrulandı. Bu ödeme ortak 50 USD içindedir.", "evidence": "../../outputs/new-mac-2026-10-10/openai-billing-funded.json"},
+    {"step": "internal_output_acceptance", "when": "one actual proposal and full outputs are visible", "plain_language": "Hazırlanan yanıtı ve görevi kontrol ekranında görüp tek iş için onayla; sonra Mac kapalıyken takip ve durdurmayı birlikte doğrulayalım.", "why_new": "User should approve a concrete reviewable output; existing test read is not authorization to resend old test mail."},
+    {"step": "customer_scope_inputs", "when": "internal flow passes, before customer launch", "plain_language": "Her marka için doğru proje/kişiler/hizmet/revizyon sınırını ve Hamle görünmüyorken işi durdurma kuralını tamamlayacağız. Cansu/Özge adreslerini tahmin etmeyeceğim.", "why_new": "Real missing operational inputs, not repeated technical permission."}
+  ],
+  "local_evidence_references": [
+    "../../outputs/new-mac-2026-10-10/cloud-foundation.json",
+    "../../outputs/new-mac-2026-10-10/shared-budget-after-probe.json",
+    "../../outputs/new-mac-2026-10-10/shared-budget-after-openai-funding.json",
+    "../../outputs/new-mac-2026-10-10/openai-billing-funded.json",
+    "../../outputs/new-mac-2026-10-10/basecamp-read-verification.json",
+    "../../outputs/new-mac-2026-10-10/internal-review-control-verification.json",
+    "../hamle-gmail-connector/hamle_gmail.py",
+    "../verify_basecamp_new_mac.py"
+  ],
+  "official_sources_checked": [
+    "https://docs.cloud.google.com/run/docs/securing/identity-aware-proxy-cloud-run",
+    "https://docs.cloud.google.com/iap/docs/authentication-howto",
+    "https://docs.cloud.google.com/run/docs/execute/jobs-on-schedule",
+    "https://docs.cloud.google.com/firestore/native/docs/security/iam",
+    "https://docs.cloud.google.com/secret-manager/docs/best-practices",
+    "https://docs.cloud.google.com/secret-manager/docs/add-secret-version",
+    "https://raw.githubusercontent.com/basecamp/basecamp-cli/v0.13.0/README.md"
+  ]
+}

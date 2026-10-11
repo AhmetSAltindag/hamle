@@ -1,0 +1,27 @@
+{
+  "verified_at": "2026-10-10T00:46:58.167477+03:00",
+  "device": "new_mac",
+  "verification_kind": "read_only",
+  "authenticated": true,
+  "credential_storage": "keyring",
+  "token_valid": true,
+  "email": "hamle@gamechangers.com.tr",
+  "account_id": "5898865",
+  "oauth_login_identity_id": "28787068",
+  "account_person_id": "53358100",
+  "identity_note": "OAuth login identity and account person ID are distinct namespaces.",
+  "provider_scope": "full",
+  "broad_provider_scope_user_approved": true,
+  "project_id": "49184053",
+  "project_name": "Hamle — İç Deneme",
+  "clients_enabled": false,
+  "project_member_ids": [
+    "47470759",
+    "53358100"
+  ],
+  "unknown_members": false,
+  "existing_test_todo_read": "10391849167",
+  "todo_visible_to_clients": false,
+  "basecamp_content_writes": 0,
+  "paid_model_calls": 0
+}

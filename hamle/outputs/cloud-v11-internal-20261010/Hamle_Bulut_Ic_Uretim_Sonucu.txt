@@ -1,0 +1,74 @@
+Hamle v1.1 — bulutta iç üretim sonucu
+10 Ekim 2026
+
+SONUÇ: Dar iç teknik üretim akışı uçtan uca geçti.
+
+Gerçek başlangıç: Ahmet'in HAMLE-IC-URETIM-20261010-01 konulu maili.
+Kaynak ve teslim zinciri: 1a12646136af37f0.
+Bulut: gamechangers-hamle / europe-west1 / hamle-account-manager.
+Kalıcı kayıt: hamle-operations Firestore veritabanı.
+
+1. Özel Basecamp projesinde ana görsel görevi oluşturuldu:
+   https://app.basecamp.com/5898865/buckets/49184053/todos/10392824665
+2. Tarihi kasıtlı eksik teknik PNG yüklendi ve gerçek dosya geri indirildi.
+   OCR eksik tarihi tespit etti; 65/100 ile revizyon notu kaydedildi.
+3. Düzeltilen PNG aynı göreve eklendi; ölçü ve üç zorunlu metin doğrulandı.
+   Teknik sonuç 100/100. Önceki sürüm ve revizyon kanıtı korundu.
+4. Ana görsel kabulünden sonra bağlı story görevi oluşturuldu:
+   https://app.basecamp.com/5898865/buckets/49184053/todos/10392833077
+   1080×1920 PNG gerçek dosya/OCR kontrolünden 100/100 geçti.
+5. İki nihai dosya tekrar indirilip doğrulandı ve aynı mail zincirinde
+   Ahmet'e tek kez gönderildi. Gönderilen mail kimliği 1a126653276ea37b.
+   Gönderilen kopyada alıcı, zincir, metin ve iki ekin byte/hash'i doğrulandı.
+   Ahmet: “Evet, iki PNG ekli mail geldi” diyerek gelen kutusunu doğruladı.
+6. Tamamlanmış bulut işi yeniden çalıştırıldı. Kalıcı durum hash'i ve
+   12 doğrulanmış işlem değişmedi; yeni mail/görev/yorum oluşturulmadı.
+
+DOSYALAR
+hamle-main-v2.png — 1080×1080 — 23.387 bayt
+SHA256: 61fd4477a1be147ad29a4d98b0dffff72a6182af8e77eb8f7ff689220dadf46f
+hamle-story-v1.png — 1080×1920 — 28.060 bayt
+SHA256: 5ac2d21705136c1a424b2d8de8e018d4ed4efe9423b697e7885ea8c3e2342862
+
+DOĞRULAMA
+777 testlik yerel takım başarılı: 773 geçti; isteğe bağlı bağımlılıklar
+nedeniyle 4 test atlandı.
+Dosya denetleyicisinin ayrı ortamda 41 testi JPEG/PDF dahil geçti.
+Linux imaj derlemesinde üç gerçek OCR örneği geçti.
+V9'un dört gerçek Cloud Run çalışması başarıyla tamamlandı.
+Bağımsız kanıt denetimi ve verify_internal_acceptance.py sonucu: passed.
+İlk V8 turunun zaman sıralaması hatası gizlenmedi; V9 düzeltmesi mevcut
+görevi ve dosyayı yeniden kullandı. Eski Gmail/Basecamp testleri tekrarlanmadı.
+
+KAPSAM
+Dosyalar programla üretilen teknik deneme örnekleridir. Berkay/Samet üretimi,
+WAT tasarım kalitesi veya bağımsız animasyon üretimi kabulü değildir.
+Görevlerin üretim kabulü kalıcı iş kaydında tutulur; Basecamp tamamlandı
+kutularının işaretlendiği iddia edilmez. Bu denemede Cloud Run elle
+uyandırıldı. Mevcut 15 dakikalık zamanlayıcının gerçek mesai turu ayrı kanıttır.
+Görülmeyen CC çıkarma sorunu çözülmüş sayılmaz. WAT müşteri gönderimi kapalı.
+
+WAT MARKA KAYNAĞI
+Onaylı PDF: WATMobilite-Brand Guideline.pdf, Basecamp yükleme 10392828700.
+39 sayfa incelendi. Ahmet'in açıklamasıyla ana font Nunito Sans, yardımcı
+Josefin Sans ve açık gri #E8E7E6 (RGB 232/231/230) esas alındı.
+Bu kaynak kararı, otomatik görsel/font tanıma başarısı anlamına gelmez.
+
+MALİYET
+Bu aşamada ücretli model çağrısı yapılmadı. İki derleme/çalıştırma paketi için
+ortak onaylı bütçede toplam 2 USD rezerv tutuldu. Rezerv gerçek fatura değildir;
+Cloud faturasıyla nihai mutabakat bu raporun kapsamında yapılmadı.
+
+SONRAKİ WAT KABULÜ
+Gerçek ekip atamaları ve Basecamp dönüşleri, marka/içerik kalite kontrolü,
+brief değişiklikleri, insan devralma ve gecikmiş teslim yetkisi WAT akışında
+bağlanıp gönderimsiz gölge çalışmada doğrulanmalı. Ayrıntılar:
+WAT_Canliya_Gecis_Kalanlar.txt. Bu rapor eski 65 işin ağırlıklarını veya
+genel ilerleme yüzdesini değiştirmez.
+
+MAKİNEYLE KONTROL EDİLEN KANIT
+acceptance-summary.json
+recipient-confirmation.json
+v9/pilot-private-readback.json (özel kaynak/durum; herkese açık paylaşılmaz)
+v9/final-journal-summary.json
+v9/before-replay.json

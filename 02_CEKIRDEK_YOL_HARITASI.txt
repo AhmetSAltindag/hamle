@@ -1,0 +1,65 @@
+ÇEKİRDEK GELİŞTİRME HARİTASI
+Ana klasör: hamle/work/hamle-account-manager/
+
+1. Giriş ve iş kimliği
+worker.py bugün sabit iç talebi alıyor. v11_intake_plan.py, v11_work_queue.py,
+v11_work_authority.py ve v11_work_authority_store.py mevcut. Doğrulanmış Gmail
+son mesajını, marka profilini ve Sol/Astra analizini kalıcı işe bağla. Bir mailde
+birden fazla iş, devam maili, eksik brief, tekrar okuma ayrı ele alınmalı.
+Yeni rutin işte kaynak gerçek To/CC; ileri tarihli eylemde kabul edilen görünür
+durdurma/iki iş günü yetkisi uygulanmalı. Genel onay mekanizması yeniden icat etme.
+
+2. Marka profili üzerinden görev ve üretim aşaması
+v11_intake_plan.py, v11_production_stages.py, business_writers.py, dispatch.py.
+Mevcut business_writers yalnız özel iç proje/Hamle ataması için sınırlı.
+Profil doğrulamasıyla gerçek marka hedefini kullanan dar yazıcı bağla; sınırı
+sadece kaldırma. WAT: sosyal statik VE sosyal video Sosyal Medya listesi;
+tasarım Berkay; animasyon Samet; birlikteyse önce Berkay sonra Samet.
+Ticari karar Ahmet; strateji/şikâyet Cansu+Ahmet; sosyal planlama Özge+Hamle.
+
+3. Basecamp takibi
+v11_basecamp_reader.py, v11_delivery.py, v11_production_stages.py ve ilgili
+README/test dosyaları. BasecampReader/PollJournal/DeliveryCoordinator henüz
+WAT zamanlanmış işçi zincirine bağlı değil. Olay imlecini, üretici sorularını,
+brief değişikliklerini, dosya sürümlerini ve aşama geçişlerini kalıcı işle bağla.
+Brief değişince eski kalite/teslim kanıtı geçersiz olmalı. Atanan kişinin soru
+sorması ile işi bitirdiğini bildirmesi farklı olaydır; görevdeki tamamlandı tiki
+tek başına teslim izni değildir. Günde mesai içi 41 kontrol: hafta içi İstanbul
+08.30–18.30 dahil 15 dakikada bir. Yeni iş yoksa model çağrısı yapma.
+
+4. Modüler kalite kapısı
+v11_quality_gate.py, v11_artifact_inspector.py, v11_internal_quality.py,
+v11_wat_media_inspector.py, v11_wat_vision.py. Teknik/ortak kontrol çekirdekte;
+logo, font, içerik, referans ve özel şartlar sürümlü marka/iş profilinde.
+90+ otomatik TESLİM ADAYI; 80–89 Özge/Ahmet/Cansu'dan biri; 80 altı iç düzeltme.
+Sayı tek başına kaynak, yetki veya bilinmeyen zorunlu koşulu aşamaz. İki iç
+düzeltme turundan sonra insana devret; yalnız doğrulanmış düzeltme yazımı sayılır,
+yeni dosya sayacı sıfırlamaz. Müşterinin 2 revizyon hakkından ayrı tutulur.
+Gölge WAT puanları 83,5/94 taslak; genel güvenilirlik oranı değildir.
+Ses/yaratıcı video kontrolünde kanıt yetmezse insan değerlendirmesine git.
+'Mümkünse' gibi tercih ifadelerini katı teslim şartına dönüştürme.
+
+5. Aynı zincire teslim
+v11_delivery.py, recipient_policy.py, business_writers.py ve dispatch.py.
+Kalite notu ve dosya sürümü Basecamp'ten geri okunmalı; aynı iş/brief/dosya
+manifesti, güncel alıcılar, kapsam, yetki ve durdurma nesli son anda bağlanmalı.
+Mail CC'leri koru; yeni kişiye yetkisiz genişleme yok. Önce işlem niyetini kalıcı
+kaydet; gönderim kimliğini geri oku. Sonucu belirsiz gönderim otomatik tekrarlanmaz.
+
+MEVCUT KARAR/KANIT DOSYALARI
+original-handover/Hamle_v1_1_Marka_ve_Hizmet_Formu.xlsx
+hamle/outputs/wat-pilot-20261010/wat-planning-catalog.json
+hamle/outputs/wat-pilot-20261010/user-decisions.json
+hamle/outputs/wat-pilot-20261010/work-authority-user-decision-20261010.json
+hamle/outputs/wat-pilot-20261010/internal-quality-rework-user-decision-20261010.json
+hamle/outputs/wat-pilot-20261010/real-output-shadow/acceptance-summary.json
+hamle/outputs/cloud-v11-internal-20261010/acceptance-summary.json
+
+KABUL YOLU
+Çekirdeği önce mevcut özel iç projede gerçek girdi, iki aşama, devam mesajı,
+dosya, düzeltme, teslim ve durdurma üzerinden doğrula. Tamamlanmış eski testleri
+yeniden gönderme. Ardından geçmiş WAT taleplerinde salt okunur gölge, sonra
+kabul edilmiş dar rutin kapsam. Diğer marka profillerini ayrı yaygınlaştırma
+işi olarak tut; çekirdeğin tamamlanma ölçüsünü her markanın tüm arşivini öğrenmeye
+bağlama. Eski 65 işlik planın ağırlıkları korunur. Son 46/100 değerlendirmesi
+eski sabit v1.1 kabul ölçeğinin alt sınırıdır; çekirdeğin yazılmış kod yüzdesi değildir.

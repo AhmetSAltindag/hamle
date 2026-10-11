@@ -1,0 +1,613 @@
+{
+  "schema_version": "1.1.0",
+  "reviewed_at": "2026-10-07T18:25:15.333627+00:00",
+  "account": "ahmet@gamechangers.com.tr",
+  "phase": "learning_only",
+  "external_writes": 0,
+  "additional_detailed_topic_count": 60,
+  "by_brand": [
+    {
+      "brand_id": "wat_mobilite",
+      "brand": "WAT Mobilite",
+      "detailed_topics": 27,
+      "new_threads_read": 33,
+      "new_messages_read": 441,
+      "source_date_start": "2026-05-12T11:31:58+00:00",
+      "source_date_end": "2026-10-07T14:27:17+03:00",
+      "report": "learning-round2/wat_mobilite/report.json",
+      "summary": "learning-round2/wat_mobilite/summary.txt"
+    },
+    {
+      "brand_id": "rabam",
+      "brand": "Rabam",
+      "detailed_topics": 26,
+      "new_threads_read": 37,
+      "new_messages_read": 176,
+      "source_date_start": "2026-06-17T18:38:19+00:00",
+      "source_date_end": "2026-10-06T16:46:19+00:00",
+      "report": "learning-round2/rabam/report.json",
+      "summary": "learning-round2/rabam/summary.txt"
+    },
+    {
+      "brand_id": "yada_multicosmetics",
+      "brand": "ya da Multicosmetics / Remedium",
+      "detailed_topics": 7,
+      "new_threads_read": 23,
+      "new_messages_read": 78,
+      "source_date_start": "2026-07-03T08:04:16+00:00",
+      "source_date_end": "2026-10-05T14:46:32+03:00",
+      "report": "learning-round2/yada_multicosmetics/report.json",
+      "summary": "learning-round2/yada_multicosmetics/summary.txt"
+    }
+  ],
+  "additional_unique_threads_read": 93,
+  "additional_unique_messages_read": 695,
+  "cumulative_unique_threads_read": 105,
+  "cumulative_unique_messages_read": 763,
+  "topic_count_note": "A detailed topic can span multiple email threads; supplementary short records are read but not counted as detailed topics. Distinct Basecamp jobs can share one Gmail notification thread.",
+  "previous_overlap_threads": 0,
+  "previous_overlap_messages": 0,
+  "attachments_read_as_text": 1,
+  "linked_documents_read_as_text": 2,
+  "visually_reviewed_attachments": 0,
+  "archive_total": null,
+  "whole_archive_learned": false,
+  "topics": [
+    {
+      "topic_id": "WAT-R2-01",
+      "brand_id": "wat_mobilite",
+      "title": "Filo çözümü için genel WAT kreatifi",
+      "source_thread_ids": [
+        "1a10bef29969c359",
+        "1a11092091d87658"
+      ],
+      "report": "learning-round2/wat_mobilite/report.json"
+    },
+    {
+      "topic_id": "WAT-R2-02",
+      "brand_id": "wat_mobilite",
+      "title": "Ekim sosyal medya planı ve içerik bazında onay",
+      "source_thread_ids": [
+        "1a0a4fe2dc284358"
+      ],
+      "report": "learning-round2/wat_mobilite/report.json"
+    },
+    {
+      "topic_id": "WAT-R2-03",
+      "brand_id": "wat_mobilite",
+      "title": "Yönetim sunumu kapağı: acil brief ve geri çekilme",
+      "source_thread_ids": [
+        "1a1102c4448d227a"
+      ],
+      "report": "learning-round2/wat_mobilite/report.json"
+    },
+    {
+      "topic_id": "WAT-R2-04",
+      "brand_id": "wat_mobilite",
+      "title": "Opet market puanı kampanyası KV ve partner revizeleri",
+      "source_thread_ids": [
+        "1a0b3c716c333b35"
+      ],
+      "report": "learning-round2/wat_mobilite/report.json"
+    },
+    {
+      "topic_id": "WAT-R2-05",
+      "brand_id": "wat_mobilite",
+      "title": "Cihaz kullanım kılavuzu sticker'ının sadeleştirilmesi",
+      "source_thread_ids": [
+        "1a0f7b062249f962",
+        "1a10c8fd7a39d7f0"
+      ],
+      "report": "learning-round2/wat_mobilite/report.json"
+    },
+    {
+      "topic_id": "WAT-R2-06",
+      "brand_id": "wat_mobilite",
+      "title": "WAT Flex cihaz giydirmesi ve bıçak izi bağımlılığı",
+      "source_thread_ids": [
+        "1a0f7a86a72518e9",
+        "1a10af6dd1878f1d",
+        "1a10ad2aaf5ef686"
+      ],
+      "report": "learning-round2/wat_mobilite/report.json"
+    },
+    {
+      "topic_id": "WAT-R2-07",
+      "brand_id": "wat_mobilite",
+      "title": "WAT Flex ana görseli: ürün doğruluğu ve format sırası",
+      "source_thread_ids": [
+        "1a0f6aaf98ea5c55"
+      ],
+      "report": "learning-round2/wat_mobilite/report.json"
+    },
+    {
+      "topic_id": "WAT-R2-08",
+      "brand_id": "wat_mobilite",
+      "title": "WAT Flex flyer: içerik mimarisi ve eksik üretim bilgisi",
+      "source_thread_ids": [
+        "1a0f1fdbc557b5db",
+        "1a10b28c0b009f75"
+      ],
+      "report": "learning-round2/wat_mobilite/report.json"
+    },
+    {
+      "topic_id": "WAT-R2-09",
+      "brand_id": "wat_mobilite",
+      "title": "Always-on uygulama indirme kreatifi ve A/B yön değişimi",
+      "source_thread_ids": [
+        "19f6a9771b1d2aed"
+      ],
+      "report": "learning-round2/wat_mobilite/report.json"
+    },
+    {
+      "topic_id": "WAT-R2-10",
+      "brand_id": "wat_mobilite",
+      "title": "Proaktif sosyal etkileşim: seçici pilot ve yumuşak ton",
+      "source_thread_ids": [
+        "1a0e7480086fe5ac"
+      ],
+      "report": "learning-round2/wat_mobilite/report.json"
+    },
+    {
+      "topic_id": "WAT-R2-11",
+      "brand_id": "wat_mobilite",
+      "title": "Mobilcar ofis tabelası: uzaktan okunurluk ve fiziksel pay",
+      "source_thread_ids": [
+        "1a0d89bae70df09b"
+      ],
+      "report": "learning-round2/wat_mobilite/report.json"
+    },
+    {
+      "topic_id": "WAT-R2-12",
+      "brand_id": "wat_mobilite",
+      "title": "B2B filo ve sertifikalı yatırımcı iletişimi",
+      "source_thread_ids": [
+        "1a0ebf0cc2bcf7a5"
+      ],
+      "report": "learning-round2/wat_mobilite/report.json"
+    },
+    {
+      "topic_id": "WAT-R2-13",
+      "brand_id": "wat_mobilite",
+      "title": "Salı kampanyası: söylem, KV, motion ve ölçü revizyonları",
+      "source_thread_ids": [
+        "1a0a9f527f16fec5"
+      ],
+      "report": "learning-round2/wat_mobilite/report.json"
+    },
+    {
+      "topic_id": "WAT-R2-14",
+      "brand_id": "wat_mobilite",
+      "title": "Yandex Maps profil ve YAN reklam görselleri",
+      "source_thread_ids": [
+        "1a0c960fa533065f"
+      ],
+      "report": "learning-round2/wat_mobilite/report.json"
+    },
+    {
+      "topic_id": "WAT-R2-15",
+      "brand_id": "wat_mobilite",
+      "title": "Always-on Instagram takipçi kazanımı ve kontrollü mesaj testi",
+      "source_thread_ids": [
+        "1a0673e398f681bc"
+      ],
+      "report": "learning-round2/wat_mobilite/report.json"
+    },
+    {
+      "topic_id": "WAT-R2-16",
+      "brand_id": "wat_mobilite",
+      "title": "Ödeme altyapısı bakımı için bilgilendirme mailing'i",
+      "source_thread_ids": [
+        "1a0d343af572a042"
+      ],
+      "report": "learning-round2/wat_mobilite/report.json"
+    },
+    {
+      "topic_id": "WAT-R2-17",
+      "brand_id": "wat_mobilite",
+      "title": "Konya Sunpet lokasyon kreatifi ve gerçek alan uyumu",
+      "source_thread_ids": [
+        "1a0cde7194230acd"
+      ],
+      "report": "learning-round2/wat_mobilite/report.json"
+    },
+    {
+      "topic_id": "WAT-R2-18",
+      "brand_id": "wat_mobilite",
+      "title": "Hepsiburada mağaza/ürün görselleri ve Home Master uyarlaması",
+      "source_thread_ids": [
+        "19e1bf569e992343"
+      ],
+      "report": "learning-round2/wat_mobilite/report.json"
+    },
+    {
+      "topic_id": "WAT-R2-19",
+      "brand_id": "wat_mobilite",
+      "title": "Tek fiyat kampanyası: KV ve kullanıcı yorumlu video",
+      "source_thread_ids": [
+        "1a0a9df39987bae5",
+        "1a0a9ebc9dfd5678"
+      ],
+      "report": "learning-round2/wat_mobilite/report.json"
+    },
+    {
+      "topic_id": "WAT-R2-20",
+      "brand_id": "wat_mobilite",
+      "title": "AW cihaz üzerindeki Ford logosunu kapatan sticker",
+      "source_thread_ids": [
+        "1a0c926e484e09d2"
+      ],
+      "report": "learning-round2/wat_mobilite/report.json"
+    },
+    {
+      "topic_id": "WAT-R2-21",
+      "brand_id": "wat_mobilite",
+      "title": "ChatGPT Ads olarak adlandırılan pilot için iki kreatif",
+      "source_thread_ids": [
+        "1a0c94f3f9d1a017"
+      ],
+      "report": "learning-round2/wat_mobilite/report.json"
+    },
+    {
+      "topic_id": "WAT-R2-22",
+      "brand_id": "wat_mobilite",
+      "title": "Faturada yenilenebilir enerji iletişim alanı",
+      "source_thread_ids": [
+        "1a0ae0c7c1bcb3d1"
+      ],
+      "report": "learning-round2/wat_mobilite/report.json"
+    },
+    {
+      "topic_id": "WAT-R2-23",
+      "brand_id": "wat_mobilite",
+      "title": "DC flyer'ın İngilizce uyarlaması",
+      "source_thread_ids": [
+        "1a0c91a720e8d6a3"
+      ],
+      "report": "learning-round2/wat_mobilite/report.json"
+    },
+    {
+      "topic_id": "WAT-R2-24",
+      "brand_id": "wat_mobilite",
+      "title": "Eylül sosyal medya planının ajans içi üretim/revizyon zinciri",
+      "source_thread_ids": [
+        "1a01468414acffd4"
+      ],
+      "report": "learning-round2/wat_mobilite/report.json"
+    },
+    {
+      "topic_id": "WAT-R2-25",
+      "brand_id": "wat_mobilite",
+      "title": "Provizyon geçişi için kart yenileme pop-up ve mailing tasarımı",
+      "source_thread_ids": [
+        "1a0aa369f07d00f8"
+      ],
+      "report": "learning-round2/wat_mobilite/report.json"
+    },
+    {
+      "topic_id": "WAT-R2-26",
+      "brand_id": "wat_mobilite",
+      "title": "Eylül iş hacmi ve aylık kapsamın görünür kılınması",
+      "source_thread_ids": [
+        "1a0f24927b4172b8"
+      ],
+      "report": "learning-round2/wat_mobilite/report.json"
+    },
+    {
+      "topic_id": "WAT-R2-27",
+      "brand_id": "wat_mobilite",
+      "title": "Yıllık değerlendirme ve 2027 karar soruları",
+      "source_thread_ids": [
+        "1a0d433e55b7518d"
+      ],
+      "report": "learning-round2/wat_mobilite/report.json"
+    },
+    {
+      "topic_id": "RABAM-R2-01",
+      "brand_id": "rabam",
+      "title": "Ajans başlangıcı, yıllık çatı planı ve hizmet dilinin öğrenilmesi",
+      "source_thread_ids": [
+        "1a01462f6904f196"
+      ],
+      "report": "learning-round2/rabam/report.json"
+    },
+    {
+      "topic_id": "RABAM-R2-02",
+      "brand_id": "rabam",
+      "title": "Hizmet sözleşmesi inceleme ve hukuk takibi",
+      "source_thread_ids": [
+        "1a0a591383ada8cc"
+      ],
+      "report": "learning-round2/rabam/report.json"
+    },
+    {
+      "topic_id": "RABAM-R2-03",
+      "brand_id": "rabam",
+      "title": "Sosyal hesap yetkilendirme ve Meta davetinin çözülmesi",
+      "source_thread_ids": [
+        "1a090186cfb7cf7f"
+      ],
+      "report": "learning-round2/rabam/report.json"
+    },
+    {
+      "topic_id": "RABAM-R2-04",
+      "brand_id": "rabam",
+      "title": "Global benchmark ve aşamalı lansman stratejisi önerisi",
+      "source_thread_ids": [
+        "1a0a9a367d338b52"
+      ],
+      "report": "learning-round2/rabam/report.json"
+    },
+    {
+      "topic_id": "RABAM-R2-05",
+      "brand_id": "rabam",
+      "title": "Eylül sosyal medya planı ve kurucu videosu varyant seçimi",
+      "source_thread_ids": [
+        "1a0901a8b0773887"
+      ],
+      "report": "learning-round2/rabam/report.json"
+    },
+    {
+      "topic_id": "RABAM-R2-06",
+      "brand_id": "rabam",
+      "title": "Ekim sosyal medya planı ve özel gün logo revizyonu",
+      "source_thread_ids": [
+        "1a0c3fd324270f70"
+      ],
+      "report": "learning-round2/rabam/report.json"
+    },
+    {
+      "topic_id": "RABAM-R2-07",
+      "brand_id": "rabam",
+      "title": "Moderasyon yanıtlarının kısaltılması ve fiyat eleştirisi çerçevesi",
+      "source_thread_ids": [
+        "1a0a4066b28a702e"
+      ],
+      "report": "learning-round2/rabam/report.json"
+    },
+    {
+      "topic_id": "RABAM-R2-08",
+      "brand_id": "rabam",
+      "title": "Packshot alternatif tercihi ve hareketlendirme devri",
+      "source_thread_ids": [
+        "1a0c46c9c746c7c0"
+      ],
+      "report": "learning-round2/rabam/report.json"
+    },
+    {
+      "topic_id": "RABAM-R2-09",
+      "brand_id": "rabam",
+      "title": "How-to serisinin ekran kaydı ve gerçek kullanım ayrımı",
+      "source_thread_ids": [
+        "1a0c3fff23e094f3"
+      ],
+      "report": "learning-round2/rabam/report.json"
+    },
+    {
+      "topic_id": "RABAM-R2-10",
+      "brand_id": "rabam",
+      "title": "Barter içerik akışı ve ek kapsamın ayrılması",
+      "source_thread_ids": [
+        "1a0d39b28a64aa46",
+        "1a0d3b3f83220e0c"
+      ],
+      "report": "learning-round2/rabam/report.json"
+    },
+    {
+      "topic_id": "RABAM-R2-11",
+      "brand_id": "rabam",
+      "title": "Always-on çekim paketinin önerilmesi",
+      "source_thread_ids": [
+        "1a0c3ac51f08e885"
+      ],
+      "report": "learning-round2/rabam/report.json"
+    },
+    {
+      "topic_id": "RABAM-R2-12",
+      "brand_id": "rabam",
+      "title": "Kimya Gökçe Aytaç teklifindeki mecra ve kullanım hakkı kapsamı",
+      "source_thread_ids": [
+        "1a0d7f2eb96838e3",
+        "1a0d8065c3052d01"
+      ],
+      "report": "learning-round2/rabam/report.json"
+    },
+    {
+      "topic_id": "RABAM-R2-13",
+      "brand_id": "rabam",
+      "title": "Seda karakteri için oyunculuk odaklı alternatif cast brief’i",
+      "source_thread_ids": [
+        "1a0cf70361712bac"
+      ],
+      "report": "learning-round2/rabam/report.json"
+    },
+    {
+      "topic_id": "RABAM-R2-14",
+      "brand_id": "rabam",
+      "title": "Lansman prodüksiyon tekliflerinin karşılaştırılması ve kapsamın küçülmesi",
+      "source_thread_ids": [
+        "1a0d43ff94db7b49",
+        "1a0c2a9f18a5d035",
+        "1a0b5daa918a9244",
+        "1a10c1d9c6f52c6f"
+      ],
+      "report": "learning-round2/rabam/report.json"
+    },
+    {
+      "topic_id": "RABAM-R2-15",
+      "brand_id": "rabam",
+      "title": "Kampanya sloganının jingle öncesinde netleştirilmesi",
+      "source_thread_ids": [
+        "1a0cf7664fa3b783"
+      ],
+      "report": "learning-round2/rabam/report.json"
+    },
+    {
+      "topic_id": "RABAM-R2-16",
+      "brand_id": "rabam",
+      "title": "Jingle için 8 ve 15 saniyelik versiyon brief’i",
+      "source_thread_ids": [
+        "1a10b23f642bb388"
+      ],
+      "report": "learning-round2/rabam/report.json"
+    },
+    {
+      "topic_id": "RABAM-R2-17",
+      "brand_id": "rabam",
+      "title": "Basın bülteni görselinde uygulama ve marka bütünlüğü",
+      "source_thread_ids": [
+        "1a0f2aa7cb6ec885"
+      ],
+      "report": "learning-round2/rabam/report.json"
+    },
+    {
+      "topic_id": "RABAM-R2-18",
+      "brand_id": "rabam",
+      "title": "Ajans seçimi haberinin basına iletilmesi ve editoryal takip",
+      "source_thread_ids": [
+        "1a0c8410ff1ed91d"
+      ],
+      "report": "learning-round2/rabam/report.json"
+    },
+    {
+      "topic_id": "RABAM-R2-19",
+      "brand_id": "rabam",
+      "title": "Sosyal medya rapor şablonu ve veri kaynağı ayrımı",
+      "source_thread_ids": [
+        "1a0fbcf20ced3b98"
+      ],
+      "report": "learning-round2/rabam/report.json"
+    },
+    {
+      "topic_id": "RABAM-R2-20",
+      "brand_id": "rabam",
+      "title": "Instagram’a özel bakım indirimi ve kampanya sınırlamasının netleştirilmesi",
+      "source_thread_ids": [
+        "1a0d29a265fdb2d3"
+      ],
+      "report": "learning-round2/rabam/report.json"
+    },
+    {
+      "topic_id": "RABAM-R2-21",
+      "brand_id": "rabam",
+      "title": "İlk hizmet teklifi ve kurumsal kimlik kaynaklarının teslimi",
+      "source_thread_ids": [
+        "19ed6d8225375c36"
+      ],
+      "report": "learning-round2/rabam/report.json"
+    },
+    {
+      "topic_id": "RABAM-R2-22",
+      "brand_id": "rabam",
+      "title": "Konkur sunumunda içerik dikeyleri ve üç yaratıcı yolun paketlenmesi",
+      "source_thread_ids": [
+        "19f70b637d02935b"
+      ],
+      "report": "learning-round2/rabam/report.json"
+    },
+    {
+      "topic_id": "RABAM-R2-23",
+      "brand_id": "rabam",
+      "title": "Rabam’la Tekte yaratıcı yolunun geniş format brief’i",
+      "source_thread_ids": [
+        "19fc7fa238993769",
+        "19fcba3c4c295510"
+      ],
+      "report": "learning-round2/rabam/report.json"
+    },
+    {
+      "topic_id": "RABAM-R2-24",
+      "brand_id": "rabam",
+      "title": "Yüzde 50 yıkama kampanyasının tasarım brief’i ve revizyon aralığı",
+      "source_thread_ids": [
+        "1a0c3ee05e8b49d1"
+      ],
+      "report": "learning-round2/rabam/report.json"
+    },
+    {
+      "topic_id": "RABAM-R2-25",
+      "brand_id": "rabam",
+      "title": "Yeni kullanıcı hoş geldin mailing’inin dört metin yaklaşımı",
+      "source_thread_ids": [
+        "1a0d403f8d9a6f72",
+        "1a0d3b3f83220e0c"
+      ],
+      "report": "learning-round2/rabam/report.json"
+    },
+    {
+      "topic_id": "RABAM-R2-26",
+      "brand_id": "rabam",
+      "title": "Ecem Erkek için trend ve persona odaklı içerik önerileri",
+      "source_thread_ids": [
+        "1a0818645c9201fb",
+        "1a0b4a0c8c73a095"
+      ],
+      "report": "learning-round2/rabam/report.json"
+    },
+    {
+      "topic_id": "YADA-R2-01",
+      "brand_id": "yada_multicosmetics",
+      "title": "Dijital proje fikirleri için yaratıcı yazar brief’i ve teslimi",
+      "source_thread_ids": [
+        "19f820ac360a5494"
+      ],
+      "report": "learning-round2/yada_multicosmetics/report.json"
+    },
+    {
+      "topic_id": "YADA-R2-02",
+      "brand_id": "yada_multicosmetics",
+      "title": "Şehre dönüş sunumundan ajans işbirliğine: teklif ve başlangıç kapsamı",
+      "source_thread_ids": [
+        "19fa8edb606e1735"
+      ],
+      "report": "learning-round2/yada_multicosmetics/report.json"
+    },
+    {
+      "topic_id": "YADA-R2-03",
+      "brand_id": "yada_multicosmetics",
+      "title": "Marka stratejisi, doğru ad yazımı ve çalışma ritminin netleşmesi",
+      "source_thread_ids": [
+        "1a0bf9a8a2a4ef28"
+      ],
+      "report": "learning-round2/yada_multicosmetics/report.json"
+    },
+    {
+      "topic_id": "YADA-R2-04",
+      "brand_id": "yada_multicosmetics",
+      "title": "Hizmet sözleşmesi ve cari hesap için başlangıç bilgilerinin toplanması",
+      "source_thread_ids": [
+        "1a0c3e72a9488819"
+      ],
+      "report": "learning-round2/yada_multicosmetics/report.json"
+    },
+    {
+      "topic_id": "YADA-R2-05",
+      "brand_id": "yada_multicosmetics",
+      "title": "İlk içerik planına geçiş için beş başlıklı strateji soru seti",
+      "source_thread_ids": [
+        "1a0d88b1d3957ffc"
+      ],
+      "report": "learning-round2/yada_multicosmetics/report.json"
+    },
+    {
+      "topic_id": "YADA-R2-06",
+      "brand_id": "yada_multicosmetics",
+      "title": "Remedium DS lansman brief’i, tarih değişimi ve kreatif yön revizyonu",
+      "source_thread_ids": [
+        "1a0ebe5146d11f6c",
+        "1a0ed61ede00c195",
+        "1a0ed692d329d041"
+      ],
+      "report": "learning-round2/yada_multicosmetics/report.json"
+    },
+    {
+      "topic_id": "YADA-R2-07",
+      "brand_id": "yada_multicosmetics",
+      "title": "Yıllık iletişim takviminin satış, stok ve Medical kontrolüyle revizyonu",
+      "source_thread_ids": [
+        "1a0f1f7ee0beaea1"
+      ],
+      "report": "learning-round2/yada_multicosmetics/report.json"
+    }
+  ]
+}

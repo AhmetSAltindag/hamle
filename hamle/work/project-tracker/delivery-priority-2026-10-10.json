@@ -1,0 +1,84 @@
+{
+  "recorded_at": "2026-10-10T01:40:56.891179+03:00",
+  "artifact_kind": "delivery_priority_decision_not_deployment_or_runtime_authority",
+  "source": "User in this conversation: accelerate delivery, senior client representative first; specialists follow; WhatsApp desired as an additional channel.",
+  "primary_deliverable": {
+    "role": "Hamle — senior müşteri temsilcisi",
+    "purpose": "Müşterinin ilk temasından brief, görevlendirme, revizyon, teslim ve kapanışa kadar hesap verebilir iş takibi",
+    "first_channel": "Gmail",
+    "subsequent_channel": "WhatsApp; account connection and channel-specific authority remain unverified",
+    "requested_model": "gpt-6-astra",
+    "requested_reasoning_effort": "max",
+    "real_api_inference_verified": false
+  },
+  "next_integrated_delivery": [
+    "One substantive authorized Gamechangers internal request with real body access explicitly scoped to that request",
+    "Hamle interprets request, separates known facts from missing inputs, prepares a concise response and versioned brief",
+    "Same work record produces a scoped internal Basecamp task and one internal response after the necessary acceptance/authorization; result readback and unknown-outcome protection",
+    "Same workflow runs on Cloud with shared durable work/control state, action-level authorization, protected secrets, bounded cost and human stop",
+    "Historical authorized shadow evaluation, then accepted routine customer scope activation"
+  ],
+  "business_acceptance": [
+    "Understands the requested business result and does not invent brand facts, capacity, prices or promises",
+    "Asks only unanswered necessary questions together; does not keep returning routine work to Ahmet",
+    "Maintains one work record, current brief, responsible owner and requested/planned/confirmed dates separately",
+    "Routes commercial decisions to Ahmet, complaints/strategy to Cansu and Ahmet, social planning to Özge and Hamle",
+    "Closes the loop with evidence of task, communication, revision and delivery, not only successful API responses"
+  ],
+  "work_sequence": {
+    "first": "Account manager and the infrastructure required by this actual workflow",
+    "after": "Copywriter, narrow graphic design; broad independent animation needs separate acceptance",
+    "not_launch_prerequisites": [
+      "All four roles fully independent",
+      "Birthday and special-day automation",
+      "WhatsApp before the existing email path works",
+      "A new standalone technical demonstration for each component"
+    ]
+  },
+  "verification_discipline": {
+    "reuse_passed_evidence": true,
+    "repeat_only_for": "Changed behavior, a discovered defect, or an unresolved acceptance requirement",
+    "progress_report_unit": "A business request and its actual resulting brief/task/response/follow-up",
+    "technical_checks": "Implement inside the delivery path; no claim that tests alone prove live agent readiness"
+  },
+  "preserved_constraints": {
+    "portfolio": [
+      "WAT Mobilite",
+      "Rabam",
+      "ya da",
+      "Multicosmetics",
+      "Altınmarka",
+      "Bikaldi",
+      "HAN Spaces",
+      "Gamechangers"
+    ],
+    "activation_per_brand_service": true,
+    "latest_actual_to_cc_gate_required": true,
+    "unseen_cc_removal_resolved": false,
+    "no_ahmet_mailbox_monitoring_or_automatic_forwarding": true,
+    "human_takeover_must_stop_pending_actions": true,
+    "unknown_send_must_not_auto_retry": true,
+    "cansu_email_verified_in_current_handoff": false,
+    "ozge_email_verified_in_current_handoff": false,
+    "shared_budget_usd": 50,
+    "budget_authorized_through_istanbul": "2026-10-12T23:59:59+03:00",
+    "paid_model_tests_deferred_until_needed_for_integrated_acceptance": true,
+    "no_model_substitution": true,
+    "routine_reapproval_not_required_after_scope_acceptance": true
+  },
+  "current_state": {
+    "cloud": "Stopped synthetic probe only; no production agent or scheduler",
+    "connections": "Gmail/Basecamp read verified on new Mac; no cloud provider adapters accepted",
+    "model": "Metadata access verified; no actual Astra inference",
+    "control": "Local human takeover accepted; cloud control not integrated",
+    "live_customer_operations": false
+  },
+  "historical_baseline_unchanged": {
+    "tasks": 65,
+    "accepted": 19,
+    "points": 27,
+    "total_points": 100,
+    "live_roles_accepted": 0
+  },
+  "source_precedence": "Latest direct user decisions and new-Mac evidence override historical 8–9 October pending statuses, ultra reasoning preference and older one-day budget statements. Historical source files are preserved."
+}

@@ -1,0 +1,17 @@
+{
+  "recorded_at": "2026-10-10T01:51:08.529872+03:00",
+  "status": {
+    "policy_id": "hamle-shared-20261009-20261012",
+    "limit_microdollars": 50000000,
+    "all_provider_baselines_and_billing_known": true,
+    "accounted_spend_microdollars": 0,
+    "held_microdollars": 3000000,
+    "prepaid_purchases_microdollars": 10000000,
+    "prepaid_unallocated_hold_microdollars": 10000000,
+    "total_committed_microdollars": 13000000,
+    "remaining_microdollars": 37000000,
+    "overrun_hold": false,
+    "provider_hard_cap_installed": false,
+    "provider_reconciliation_connected": false
+  }
+}

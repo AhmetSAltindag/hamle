@@ -1,0 +1,83 @@
+{
+  "date": "2026-10-10",
+  "precedence": "This record and referenced current evidence supersede older 8–9 October pending-connection notes. Original handover is preserved.",
+  "user_choices": {
+    "routine_model": "gpt-6.1-sol",
+    "complex_model": "gpt-6-astra",
+    "cadence": "weekdays 08:30–18:30 Europe/Istanbul every 15 minutes",
+    "brand_scope_list": "pending_user_will_supply_later",
+    "ozge_email": "ozge@gamechangers.com.tr",
+    "ozge_basecamp_display_name": "Özge Yağmur",
+    "ozge_basecamp_id_not_verified": true,
+    "post_oct12_budget_not_approved": true
+  },
+  "completed_this_preparation": [
+    "Portable model profile boundary with existing Astra default preserved",
+    "Five real customer-free Sol/medium calls completed; routing checks all passed",
+    "Independent AI semantic review found no critical violation; one wording improvement noted",
+    "Offline per-brand/per-work authorization and exact artifact/recipient binding foundation",
+    "319 local app tests passed",
+    "Current credential-free cloud business/dedup state exported for stopped restore"
+  ],
+  "sol_evaluation": {
+    "status": "five_synthetic_responses_completed_pending_semantic_review",
+    "completed_at": "2026-10-10T11:57:33.389158+00:00",
+    "model": "gpt-6.1-sol",
+    "reasoning_effort": "medium",
+    "call_count": 5,
+    "routing_checks_passed": true,
+    "estimated_total_token_cost_usd": 0.0434176,
+    "is_invoice": false,
+    "reservation_retained_usd": 1,
+    "new_astra_calls": 0,
+    "customer_data_sent": false,
+    "business_writes": 0,
+    "production_model_changed": false,
+    "customer_autonomy_accepted": false
+  },
+  "semantic_review": "sol-evaluation-semantic-review.json; preliminary independent AI review, not human acceptance",
+  "weekly_cost_planning": {
+    "conservative_250_incoming_including_replies_usd": [
+      35,
+      60
+    ],
+    "250_combined_assuming_half_incoming_usd": [
+      20,
+      35
+    ],
+    "basis": "hybrid-weekly-cost-planning.json",
+    "not_invoice_or_guaranteed_cap": true,
+    "existing_subscriptions_taxes_graphic_animation_production_excluded": true
+  },
+  "live_state": {
+    "current_cloud_default_model": "gpt-6-astra",
+    "reasoning": "max",
+    "hybrid_production_routing_enabled": false,
+    "customer_autonomy_enabled": false,
+    "known_real_internal_followup": "same Basecamp task10392247471, comment10392670403, reply1a1259253846f6ea with Cansu CC",
+    "pilot_scheduler": "12 October bounded date only; 15-minute review, no automatic business dispatch",
+    "new_business_writes_this_preparation": 0
+  },
+  "required_before_routine_customer_enable": [
+    "Verified brand/service/revision/project/contact scope rows",
+    "Production intake and durable queue for multiple threads, removing pilot storage caps",
+    "Model routing bound to reserved budget/receipt and representative shadow acceptance",
+    "Authenticated per-work takeover/control with action-time enforcement",
+    "Visible stop protocol and fresh authority for delayed actions; unseen CC-removal remains unresolved by mailbox alone",
+    "Actual attachment/version/QA/producer release and customer-delivery pipeline",
+    "Ongoing budget authorization and dated recurring schedule within it"
+  ],
+  "portable_state_precedence": [
+    "portable-business-state-post-eval.json",
+    "portable-business-state.json"
+  ],
+  "restore_requirement": "Use newest state, preserve immutable receipts and unknown holds, reset control to stopped, reauthenticate and reconcile read-only before enabling any write.",
+  "progress": {
+    "weighted_total": 100,
+    "completed_points": 30,
+    "original_task_count": 65,
+    "completed_task_count": 21,
+    "independent_live_accepted_agents": 0,
+    "new_acceptance_points_from_this_preparation": 0
+  }
+}

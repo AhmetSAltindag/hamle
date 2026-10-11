@@ -1,0 +1,89 @@
+WAT — gerçek üretim dosyalarının salt okunur gölge incelemesi
+10 Ekim 2026
+
+İNCELENEN KAPSAM
+Kullanıcının verdiği 10309337809 ve 10064527849 numaralı iki görev güncel native
+Basecamp API ile tekrar okundu. 21 + 71 yorumun tamamı alındı. Yorumlarda
+31 + 112 ek kaydı, ilk görevin açıklamasında ayrıca bir referans PNG var.
+İkinci iş için 11 gerçek PNG indirildi: 33.056.937 bayt. İlk işten önceden alınan
+altı PNG'nin yerel hash, gerçek ölçü ve çözülebilirliği kontrol edildi; yeni
+native yorum/ek kimliği ve boyut bilgisiyle eşleştirildi. Bu altı dosyanın baytları
+bu tur yeniden indirilmedi. Seçilmiş 17 görselin tamamı görsel olarak incelendi.
+Tüm eklerin içeriğinin okunduğu iddia edilmiyor.
+
+KİMİN ÜRETİMİ?
+Ekim işindeki incelenen dosyaların yükleme yorumları Berkay Kayaköylü'nün
+47658175 numaralı gerçek hesabından. Yaz işinde Berkay ve İpek Tunalı (51207148)
+arasında kayıtlı üretim devirleri var; en son 1000×666 çıktıyı İpek yüklüyor.
+Yükleyen kimlik doğrulandı; her pikselin tek başına o kişi tarafından üretildiği
+anlamına gelmez.
+
+Her iki görevin bütün yorumlarında Samet'in 50486696 kimliği bulunmuyor.
+Native ek türleri PNG/JPEG/ZIP/XLSX; bu görevlerde doğrudan video veya PDF eki
+yok. PSD bağlantısı ve STB, Samet'in bitmiş video teslimi değildir. Üç panelli
+STB.png gerçekten 1988×1112 boyutlu tek sabit görsel; süre, hareket, ses veya
+altyazı kalitesi bu dosyadan kabul edilemez. Harici bağlantıların dosya içerikleri
+bu okumada açılmadı. Gerçek Samet videosu için ilgili ayrı görev örneği gerekiyor.
+
+BRİEF, REVİZYON VE SON DOSYA
+Ekim: 10,99 TL/kWh fiyatı bir taslakta gerçekten yok, sonraki taslakta var.
+Bu somut zorunlu bilgi eksikliği, yüksek estetik puanla geçiştirilemez.
+Özge'nin 'tasarım onaylandı' yorumu 10328301172; hemen öncesindeki dosyayla
+ilişki zaman sırasına dayanıyor, kesin dosya hash onayı değil. Sonraki paket aynı
+adı kullansa da farklı bayt ve piksellere sahip. Son pakete ve reels kapağına
+ayrı açık onay görülmedi. Bir revizyonun telefonla verildiği ama yazılamadığı
+belirtilmiş; o içeriği tahmin etmiyoruz.
+
+Yaz: İlk kreatif yorumu daha güçlü yaz hissi istiyor; sonraki görselde şemsiye,
+top ve simit var. Fakat ertesi gün Özge'nin 'bu tasarımla ilerleyeceğiz' diyerek
+eklediği seçili referans, bu ilave öğeleri içermeyen önceki sade yaklaşımı
+gösteriyor. Dolayısıyla eski eleştiriden evrensel 'başarısız kreatif' etiketi
+çıkarılamaz. Son yüklenen her dosya seçilmiş dosya değildir. Özge'nin seçtiği
+2048×1214 referansın onayı, 3240×1920 üretim dosyasının hash onayı sayılmaz.
+
+Berkay'ın son beşli carousel seti gerçekten 1080×1350 beş PNG'den oluşuyor:
+kapak, Ankara, Antalya+Bursa, İstanbul, İstanbul+İzmir+web sitesi çağrısı.
+Bu yapı, son beş şehirle sadeleştirme briefine gözlemlenebilir biçimde yanıt
+veriyor. Kaynak XLSX indirilmediği için bütün lokasyonların yazımı, eksiksizliği
+ve sıralamasına kabul verilmedi. Kırmızı fiyat rozeti eski işte kayıtlı istisna
+isteğiyle üretilmiş; güncel kılavuza evrensel kırmızı izni olarak taşınmıyor.
+
+Son İpek dosyaları: masaüstü slider gerçek 1920×570; ardından gelen gerçek
+1000×666 ek uyarlama. İlgili yorum, eski ölçünün yanlış olmadığını açıkça
+belirtiyor. Ek boyut ihtiyacı, önceki üretimin kusuru diye puanlanmamalı.
+
+MARKA KONTROLÜNÜN BUGÜNKÜ SINIRI
+Güncel kılavuz ve kullanıcı kararları kesin: ana Nunito Sans, yardımcı Josefin
+Sans, açık gri #E8E7E6. Seçilmiş görseller bunlarla birlikte incelendi; fakat
+raster dosyadan kesin font tanıma, logo geometri toleransı, renk profili,
+görsel hakları veya yüzde kalite sonucu doğrulanmış sayılmaz. Gölgede kaynak
+kimliği, ölçü, sürüm ve somut metin/brief kontrolleri için gerçek kanıt üretildi.
+80/90 eşiklerinin sayısal kalibrasyonu veya otomatik müşteri teslim kabulü
+tamamlandı denmiyor. Eski marka yorumları güncel kullanıcı kararlarını değiştirmez.
+
+SONUÇ VE GEREKEN SONRAKİ KANIT
+Berkay'ın gerçek statik çıktıları, revizyonları, seçilmiş referansı ve aşamalı
+devirleri okunabiliyor. Samet'in gerçek son videosu bu örneklerde yok; ayrı
+görev gerekir. Dosya bazında onay ve insan etiketleriyle küçük bir kabul seti
+oluşturulmalı. Tamamlanmış görev, tüm paketin müşteriye gönderilip ulaştığını
+kanıtlamaz. Bu eski görevler bugünkü Gmail alıcı/CC yetkisini veya gecikmiş
+teslim iznini de kanıtlamaz.
+
+Makinece okunabilir rapor: real-output-audit.json.
+Gerçek dosya ID, yorum, kişi, SHA256 ve yollar: existing-file-revalidation.json
+ve selected-file-inspection.json. Native görev/yorum kayıtları task-* klasöründe.
+İmzalı URL/token kaydedilmedi. Görev/yorum/mail yazılmadı; ücretli model çağrısı yok.
+
+YENİ KULLANICI KAYNAĞI — SAMET ÖRNEĞİ GELDİ
+Kullanıcı daha sonra görev10317695863 bağlantısını verdi. 33 yorum ve 22 ek
+okundu; Samet50486696 tarafından yüklenen iki gerçek MP4 indirildi. Müzikli
+video10.151.280bayt, seslendirmeli ek sürüm11.168.366bayt. Özge10340298133
+yorumunda önceki son videoyu onaylıyor; sonradan gelen seslendirmeli sürüme
+ayrı onay yok. Önceki rapordaki Samet eksikliği yalnız ilk iki görevin kapsamını
+anlatır; artık gerçek Samet video kaynağı elimizde. Kesin2sn mesaj görünmesi
+şartı10335969966 yorumunda var; önceki8sn sözü yeni kesin süre şartı sayılmaz.
+Tam bayt/hash/onay/brief kaynakları samet-output-audit.json içinde. Yerel medya
+çözücü yok; gerçek süre/kare/ses ve2sn koşulu için bulut teknik incelemesi ayrı.
+
+Ses kaynağı ek doğrulaması:
+Özge’nin 10340298133 yorumunda paylaştığı wat_4.wav gerçek dosyası mevcut Google Drive bağlantısıyla salt okunur indirildi. 776.074 bayt; PCM mono, 44.100 Hz, 16-bit; gerçek süre 8,7973696 saniye. SHA256: 1bb6447f6d0a628e688e5c2533168b9a5069c8f372e5bd55a990119ee44f77c7. Konuşulan metin, videoya yerleşimi ve dinleme kalitesi bu doğrulamada kabul edilmedi. Kaynağın 8,797 sn olması tarihsel mesajdaki yaklaşık 8 sn ifadesini kesin final video süresi şartına dönüştürmez. Ayrıntı: voice-source/audio-metadata.json.

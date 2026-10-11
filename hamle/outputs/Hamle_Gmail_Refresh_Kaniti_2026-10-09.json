@@ -1,0 +1,19 @@
+{
+  "status": "read_test_passed",
+  "email": "hamle@gamechangers.com.tr",
+  "thread_id": "1a12270588d30c79",
+  "message_ids": [
+    "1a12270588d30c79"
+  ],
+  "message_count": 1,
+  "body_or_headers_requested": false,
+  "token_refreshed": true,
+  "send_mode": "manual_fixed_internal_test_only",
+  "verification": "manual_forced_refresh_then_real_profile_and_test_thread_read",
+  "credentials_printed_or_written_to_file": false,
+  "verified_at": "2026-10-09T23:56:30.186839+03:00",
+  "separate_process_reopen_and_read_passed": true,
+  "separate_process_required_refresh": false,
+  "revocation_not_tested": true,
+  "basecamp_refresh_not_in_this_test": true
+}

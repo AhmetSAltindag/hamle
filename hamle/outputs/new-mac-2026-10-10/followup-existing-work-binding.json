@@ -1,0 +1,31 @@
+{
+  "recorded_at": "2026-10-10T10:55:43.222974+03:00",
+  "status": "existing_verified_work_bound",
+  "work": {
+    "work_id": "w-675aa8f8f399be886498c8b43ee6c0fa59d572ebc2012ce5650fbc4f244ad129",
+    "version": 1,
+    "thread_id": "1a122eec4ccdb53a",
+    "root_message_id": "1a122eec4ccdb53a",
+    "root_rfc_message_id": "<CAOOr=FimfFb65F0oZKxUtJHAsfk5-M5SrHzBZt9ZRB5s8LGe2g@mail.gmail.com>",
+    "seed_proposal_id": "p-a0627d6de33573f9284e8799b2b537af6da59d22bdfcff812158e64f3490067d",
+    "seed_proposal_hash": "fd6389d4d9a39a2ac9707503fad3c1947bbba2b32ccb66a8a4c7706b6db7f9ae",
+    "account_id": 5898865,
+    "project_id": 49184053,
+    "task_id": 10392247471,
+    "todo_parent_id": 10384126975,
+    "todo_parent_type": "Todoset",
+    "seed_reply_message_id": "1a12316fc6221a84",
+    "escalation_owner": "cansu_and_ahmet",
+    "escalation_status": "open",
+    "revision_count": 0,
+    "pending_event_id": null,
+    "event_ids": [],
+    "last_reply_message_id": "1a12316fc6221a84",
+    "last_message_id": "1a122eec4ccdb53a",
+    "latest_observation": null,
+    "created_at": 1791618942.296947
+  },
+  "business_writes": 0,
+  "model_calls": 0,
+  "old_evidence_preserved": true
+}

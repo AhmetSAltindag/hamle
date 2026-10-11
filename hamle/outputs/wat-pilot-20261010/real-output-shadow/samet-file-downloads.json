@@ -1,0 +1,86 @@
+[
+  {
+    "task_id": 10317695863,
+    "comment_id": 10336607720,
+    "creator": {
+      "id": 50486696,
+      "name": "Samet Göksu",
+      "title": "Motion Designer",
+      "employee": true
+    },
+    "selection": "samet-music-approved-candidate",
+    "attachment": {
+      "id": 897278053,
+      "filename": "WM_AVANTAJLARI_KATLA.mp4",
+      "content_type": "video/mp4",
+      "byte_size": 10151280,
+      "width": 1080,
+      "height": 1920,
+      "download_url_present": true,
+      "native_metadata_keys": [
+        "attachable_sgid",
+        "byte_size",
+        "caption",
+        "content_type",
+        "download_url",
+        "filename",
+        "height",
+        "id",
+        "key",
+        "preview_url",
+        "previewable",
+        "sgid",
+        "status_url",
+        "thumbnail_url",
+        "width"
+      ]
+    },
+    "path": "/Users/ahmetsaltindag/Documents/ChatGPT/Gamechangers AI Ajanı/hamle/outputs/wat-pilot-20261010/real-output-shadow/task-10317695863/artifacts/samet-music-approved-candidate/WM_AVANTAJLARI_KATLA.mp4",
+    "byte_size": 10151280,
+    "sha256": "1b88ebfa84e979fbdbcdd29781694bcd76fbfaedffd8e11292aa545fbab6ae66",
+    "magic_hex": "00000018667479706d703432",
+    "source_comment_created_at": "2026-09-24T11:55:16.447Z"
+  },
+  {
+    "task_id": 10317695863,
+    "comment_id": 10343076732,
+    "creator": {
+      "id": 50486696,
+      "name": "Samet Göksu",
+      "title": "Motion Designer",
+      "employee": true
+    },
+    "selection": "samet-later-voiceover-candidate",
+    "attachment": {
+      "id": 897985544,
+      "filename": "WM_AVANTAJLARI_KATLA_DIS_SES.mp4",
+      "content_type": "video/mp4",
+      "byte_size": 11168366,
+      "width": 1080,
+      "height": 1920,
+      "download_url_present": true,
+      "native_metadata_keys": [
+        "attachable_sgid",
+        "byte_size",
+        "caption",
+        "content_type",
+        "download_url",
+        "filename",
+        "height",
+        "id",
+        "key",
+        "preview_url",
+        "previewable",
+        "sgid",
+        "status_url",
+        "thumbnail_url",
+        "width"
+      ]
+    },
+    "path": "/Users/ahmetsaltindag/Documents/ChatGPT/Gamechangers AI Ajanı/hamle/outputs/wat-pilot-20261010/real-output-shadow/task-10317695863/artifacts/samet-later-voiceover-candidate/WM_AVANTAJLARI_KATLA_DIS_SES.mp4",
+    "byte_size": 11168366,
+    "sha256": "b69614a7a6691a18fd306454111dbdfcd388218ff932a618206b37760b1bc58d",
+    "magic_hex": "00000018667479706d703432",
+    "source_comment_created_at": "2026-09-25T21:22:42.947Z"
+  }
+]

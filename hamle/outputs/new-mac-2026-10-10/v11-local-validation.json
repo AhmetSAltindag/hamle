@@ -1,0 +1,29 @@
+{
+  "recorded_at": "2026-10-10T12:22:42.928851+00:00",
+  "status": "passed",
+  "tests_run": 425,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "new_v11_test_count": 106,
+  "previous_application_test_count": 319,
+  "test_scope": "Local deterministic tests with synthetic providers; no live customer acceptance",
+  "cloud_deployed": false,
+  "provider_writes": 0,
+  "paid_model_calls": 0,
+  "files": {
+    "README-v11-basecamp-reader.txt": "6ff12ed3b21c0064a174c78751b94f8e6926805c1637c63b0aa2191641ca69ef",
+    "README-v11-delivery.txt": "82fa72dd3e46f03f4b9ef15f1f60f24f57519415958c68ab2c4d09b59a264e56",
+    "README-v11-work-queue.txt": "fa6240e5cfa0fbb47256fcfc93d56a47483428f9f482b05b05ada033ce0e6703",
+    "test_v11_basecamp_reader.py": "34b92805c71531cac83bc94d3e83f173b26e7626a0aa36bf90385df016bac3e8",
+    "test_v11_delivery.py": "bce852509919642e0115b4c89c97fb3525d537c312d2ee1debcb52de6f92b971",
+    "test_v11_poll_journal.py": "8c6602e79cc51568ddbc5bcf2a24b67c3545de6da2f20057c9c6c44acce1c75b",
+    "test_v11_queue_delivery.py": "83fc8d2869e340e271d713ace9d75743d1b873baec0e985093fcca379cea0f59",
+    "test_v11_work_queue.py": "925221bdb89a06f6c5a0469334ea689d7eb451e068aaac397aaea1357b515f4d",
+    "v11_basecamp_reader.py": "2758a5b61dee1b51ba42fd0b65d88e65a05560b7ef8c0cbfaa80bfae1379a458",
+    "v11_delivery.py": "a5a9be6b9f84533437937fd6de18dea051d24b4f5d0ef72e9a6678ecf753c3f1",
+    "v11_poll_journal.py": "0a4e95580be6433c5552112540b39b93364fff6bca213a67fb9f85462fba45b6",
+    "v11_work_queue.py": "537abcfa733144563f25dadb1b9b3def61435c55f030cbf0bb3b8105c93eec8f"
+  },
+  "log": "/Users/ahmetsaltindag/Documents/ChatGPT/Gamechangers AI Ajanı/hamle/outputs/new-mac-2026-10-10/v11-local-validation.log"
+}

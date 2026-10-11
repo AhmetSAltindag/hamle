@@ -1,0 +1,1273 @@
+{
+  "schema_version": "1.0",
+  "learning_date": "2026-10-07",
+  "language": "tr",
+  "source_account": "ahmet@gamechangers.com.tr",
+  "purpose": "Tüm ajans markalarına açık öğrenme kapsamı için sınırlı ilk e-posta örnekleminin kanıt kaydı. Operasyon çalıştırma, görev oluşturma veya dış gönderim değildir.",
+  "coverage": {
+    "retrieved_threads": 12,
+    "retrieved_messages": 68,
+    "message_date_min_istanbul": "2026-09-15T23:27:01+03:00",
+    "message_date_max_istanbul": "2026-10-07T19:46:23+03:00",
+    "observed_external_brand_labels": 8,
+    "internal_brand_labels": 1,
+    "is_full_brand_registry": false,
+    "is_complete_mailbox_or_thread_history": false,
+    "exhaustiveness": "Kaynaklar alınmış pencereyi gösterir; sağlayıcının toplam ileti sayısı doğrulanmamış. Alıntılı tekrarlar bağımsız talepler sayılmadı.",
+    "by_brand": {
+      "Bikaldi": {
+        "thread_count": 1,
+        "message_count": 1,
+        "thread_ids": [
+          "1a10fd1092562eb3"
+        ]
+      },
+      "Cacaonly": {
+        "thread_count": 1,
+        "message_count": 1,
+        "thread_ids": [
+          "1a1100cb5509857b"
+        ]
+      },
+      "WAT Mobilite": {
+        "thread_count": 2,
+        "message_count": 5,
+        "thread_ids": [
+          "1a116747b8f8823f",
+          "1a115dbfd5ad8f30"
+        ]
+      },
+      "Gamechangers (iç iletişim)": {
+        "thread_count": 1,
+        "message_count": 2,
+        "thread_ids": [
+          "1a1164fab391dd76"
+        ]
+      },
+      "BWI": {
+        "thread_count": 1,
+        "message_count": 29,
+        "thread_ids": [
+          "1a10fff86843c43d"
+        ]
+      },
+      "Rabam": {
+        "thread_count": 1,
+        "message_count": 3,
+        "thread_ids": [
+          "1a0e78aea1837965"
+        ]
+      },
+      "ya da Multicosmetics": {
+        "thread_count": 3,
+        "message_count": 5,
+        "thread_ids": [
+          "1a1172b73da899f5",
+          "1a11636397e5303a",
+          "1a10c9aa88d9c8a0"
+        ]
+      },
+      "HAN Spaces": {
+        "thread_count": 1,
+        "message_count": 21,
+        "thread_ids": [
+          "1a0a6c065721af08"
+        ]
+      },
+      "Altınmarka": {
+        "thread_count": 1,
+        "message_count": 1,
+        "thread_ids": [
+          "1a10fe3a6e2d6f5d"
+        ]
+      }
+    }
+  },
+  "provenance_rules": [
+    "Doğrudan müşteri talebi, ekip içi yorum, başkasından aktarılan onay ve sistem durum bildirimi ayrı tutuldu.",
+    "Basecamp e-postası, canlı Basecamp kaydına erişim veya güncel görev durumu kanıtı değildir.",
+    "Ekte/dosyada teslim edildi ifadesi içerik kalitesinin veya gerçek yayın/baskının doğrulandığı anlamına gelmez.",
+    "Katılım daveti kabul edilmiş katılım/gerçekleşmiş toplantı olarak yorumlanmadı.",
+    "Kişilerin bu dizilerdeki eylemleri rol kanıtıdır; resmî unvan veya genel yetki matrisi değildir.",
+    "İç görevin müşteriye kapalı olduğu bildirilen dizilerde ekip görüşleri müşteri tercihi olarak etiketlenmedi.",
+    "Token içerebilen URL, toplantı erişim bilgisi ve özel mali ayrıntılar çıktıdan çıkarıldı."
+  ],
+  "source_anomalies": [
+    {
+      "thread_id": "1a116747b8f8823f",
+      "message_id": "1a116747b8f8823f",
+      "type": "mojibake",
+      "handling": "Temiz karşılık aynı dizideki 1a116a0dd3b5c4f6, 1a116a13de983669 ve 1a116c539fd7bd87 mesajlarının Selina alıntılarında mevcut. Özet bu alıntılarla okundu; ilk mesaj sessizce düzeltilmedi.",
+      "quoted_copies_are_independent_client_messages": false
+    }
+  ],
+  "observations": [
+    {
+      "observation_id": "OBS-01",
+      "brand": "WAT Mobilite",
+      "title": "Stand briefi ürün, ölçü ve marka öğelerini birlikte tanımlıyor",
+      "kind": "dogrudan_musteri_briefi",
+      "source_scoped_observation": "Selina Mirçavi 7 Ekim e-postasında eski logolu Koçtaş standının güncel WAT Mobilite kimliğine uyarlanmasını istedi. Kaynaktaki ölçüler stand için 125 × 206 cm, cihaz alanı için 290 × 420 × 172 mm. Başlık, üç fayda alanı, Koç logosu ve uygulama QR/CTA tarif edildi; biri minimal, diğeri daha grafik iki alternatif ile ön mockup istendi.",
+      "bounded_learning": "Bu işte müşteri beklentisi yalnız görsel yön değil, fiziksel ürün boşluğu ve marka öğelerinin birlikte ele alınmasıydı. Ölçüler bu briefin beyanıdır; teknik üretim uygunluğu değildir.",
+      "historical_status": "7 Ekim 2026 tarihinde iletilmiş müşteri talebi; bu kesitte tasarım teslimi veya üretim onayı yok.",
+      "current_status": "Doğrulanmadı. Bu öğrenme kaydı yeni bir görev, gönderim veya operasyon talimatı oluşturmaz.",
+      "approval_or_rejection_evidence": "Yok; bu kayıtlardan müşteri onayı veya genel onay yetkisi çıkarılmaz.",
+      "limitations": [
+        "İlk iletide mojibake/kodlama bozulması var. Anlam, aynı dizide Esma ve Ahmet yanıtlarının temiz Selina alıntıları üzerinden okundu; bağımsız yeni müşteri mesajları sayılmadı.",
+        "Esma’nın dua ve başparmak emojileri görsel/tasarım onayı veya açık iş üstlenme beyanı sayılmadı.",
+        "Stand eki, QR kodu, logo kuralları ve mockup görülmedi."
+      ],
+      "evidence": [
+        {
+          "thread_id": "1a116747b8f8823f",
+          "message_id": "1a116747b8f8823f",
+          "sent_at_original": "Wed, 7 Oct 2026 13:01:20 +0000",
+          "sent_at_istanbul": "2026-10-07T16:01:20+03:00",
+          "author_display": "Selina Mirçavi",
+          "from_header": "\"Selina Mirçavi\" <selina.mircavi@watmobilite.com>",
+          "subject": "Koçtaş Mağaza Standı - Tasarım Briefi",
+          "provenance": "Gmail e-posta metni.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        },
+        {
+          "thread_id": "1a116747b8f8823f",
+          "message_id": "1a116a0dd3b5c4f6",
+          "sent_at_original": "Wed, 7 Oct 2026 16:49:45 +0300",
+          "sent_at_istanbul": "2026-10-07T16:49:45+03:00",
+          "author_display": "Esma Zeki",
+          "from_header": "Esma Zeki <esma@gamechangers.com.tr>",
+          "subject": "Re: Koçtaş Mağaza Standı - Tasarım Briefi",
+          "provenance": "Gmail e-posta metni.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        },
+        {
+          "thread_id": "1a116747b8f8823f",
+          "message_id": "1a116c539fd7bd87",
+          "sent_at_original": "Wed, 7 Oct 2026 17:29:45 +0300",
+          "sent_at_istanbul": "2026-10-07T17:29:45+03:00",
+          "author_display": "Ahmet Şükrü Altındağ",
+          "from_header": "\"Ahmet Şükrü Altındağ\" <ahmet@gamechangers.com.tr>",
+          "subject": "Re: Koçtaş Mağaza Standı - Tasarım Briefi",
+          "provenance": "Gmail e-posta metni.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        }
+      ],
+      "version": 1,
+      "last_checked_on": "2026-10-07",
+      "knowledge_status": "historical",
+      "validity_scope": "specific_source_events_only",
+      "superseded_by": null,
+      "general_authority_verified": false
+    },
+    {
+      "observation_id": "OBS-02",
+      "brand": "WAT Mobilite",
+      "title": "Ahmet talebi kabul ederken teknik açığı işaret ediyor",
+      "kind": "kapsam_ve_ustlenme",
+      "source_scoped_observation": "Ahmet Şükrü Altındağ aynı dizide talebi anladığını, cihaz boşluğunu yerleştirme konusu için bıçak izi ihtiyacını ve AI desteğiyle çözümü araştıracağını yazdı. Bu işi de yapmayı kabul etti; sonraki benzer işlerin kapsamının ayrıca ele alınmasını istedi.",
+      "bounded_learning": "Buradaki iş üstlenme kanıtı Ahmet’in bu tek işe ilişkin yanıtıdır. Teknik dosya araştırması, ölçülerin üretime hazır olduğu veya tüm benzer işlerin önceden kabul edildiği anlamına gelmez.",
+      "historical_status": "7 Ekim 2026 tarihli kabul ve araştırma niyeti; sonraki sonuç görünmüyor.",
+      "current_status": "Doğrulanmadı. Bu öğrenme kaydı yeni bir görev, gönderim veya operasyon talimatı oluşturmaz.",
+      "approval_or_rejection_evidence": "Ahmet’in bu talebi üstlenme ifadesi var. Tasarım/üretim onayı yok; mali ayrıntılar bu öğrenme kaydına taşınmadı.",
+      "limitations": [],
+      "evidence": [
+        {
+          "thread_id": "1a116747b8f8823f",
+          "message_id": "1a116c539fd7bd87",
+          "sent_at_original": "Wed, 7 Oct 2026 17:29:45 +0300",
+          "sent_at_istanbul": "2026-10-07T17:29:45+03:00",
+          "author_display": "Ahmet Şükrü Altındağ",
+          "from_header": "\"Ahmet Şükrü Altındağ\" <ahmet@gamechangers.com.tr>",
+          "subject": "Re: Koçtaş Mağaza Standı - Tasarım Briefi",
+          "provenance": "Gmail e-posta metni.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        }
+      ],
+      "version": 1,
+      "last_checked_on": "2026-10-07",
+      "knowledge_status": "historical",
+      "validity_scope": "specific_source_events_only",
+      "superseded_by": null,
+      "general_authority_verified": false
+    },
+    {
+      "observation_id": "OBS-03",
+      "brand": "WAT Mobilite",
+      "title": "Mailing kaydı yalnız başlık düzeyinde",
+      "kind": "baslik_duzeyinde_kanit",
+      "source_scoped_observation": "Esma Zeki kaynakta “WM // %15 Bakiye Kampanyası Mailing Brief’i” başlıklı işte Ahmet’i etiketledi. Bildirim gövdesinde brief içeriği bulunmuyor.",
+      "bounded_learning": "İş başlığı iletişim türünü gösterir; kampanya koşulları, hedef kitle, metin, onay veya teslim tarihi öğrenilmiş değildir.",
+      "historical_status": "7 Ekim 2026 tarihli etiketleme bildirimi.",
+      "current_status": "Doğrulanmadı. Bu öğrenme kaydı yeni bir görev, gönderim veya operasyon talimatı oluşturmaz.",
+      "approval_or_rejection_evidence": "Yok; bu kayıtlardan müşteri onayı veya genel onay yetkisi çıkarılmaz.",
+      "limitations": [
+        "Kampanya oranı yalnız kaynak başlığında geçiyor; yürürlükte teklif veya doğrulanmış koşul olarak kullanılamaz."
+      ],
+      "evidence": [
+        {
+          "thread_id": "1a115dbfd5ad8f30",
+          "message_id": "1a115dbfd5ad8f30",
+          "sent_at_original": "Wed, 07 Oct 2026 10:15:00 +0000",
+          "sent_at_istanbul": "2026-10-07T13:15:00+03:00",
+          "author_display": "Esma Zeki (Basecamp)",
+          "from_header": "\"Esma Zeki (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "(WAT Mobilite) Esma Z. @mentioned you in WM // %15 Bakiye Kampanyası Mailing Brief’i",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        }
+      ],
+      "version": 1,
+      "last_checked_on": "2026-10-07",
+      "knowledge_status": "historical",
+      "validity_scope": "specific_source_events_only",
+      "superseded_by": null,
+      "general_authority_verified": false
+    },
+    {
+      "observation_id": "OBS-04",
+      "brand": "HAN Spaces",
+      "title": "Bilgi toplama, açık üstlenme ve tasarım teslimi ayrı adımlar",
+      "kind": "rol_ve_ustlenme_kaniti",
+      "source_scoped_observation": "Cansu 15 Eylül’de Beyza ve Elvan Hanım’dan istenen bilgilerin tamamının gelmediğini bildirdi. Esma 23 Eylül’de “Tamamdır ilgileniyorum” dedi, sonra üç panelli akordiyon flyer briefini Barış’a iletti. İpek 24 Eylül’de tasarım ve mockup teslim etti; Esma satış ekibinden onay alıp geri döneceğini yazdı.",
+      "bounded_learning": "Bu kesitte Esma’nın ilgilenme kabulü, brief yazması ve onay toplama niyeti; İpek’in tasarım üretimi ayrı ayrı kanıtlıdır. Bunlardan şirket geneli görev unvanı veya nihai müşteri onay yetkisi çıkarılmaz.",
+      "historical_status": "15–24 Eylül 2026 olay sırası; tasarım tesliminden sonra onay alma adımı belirtilmiş.",
+      "current_status": "Doğrulanmadı. Bu öğrenme kaydı yeni bir görev, gönderim veya operasyon talimatı oluşturmaz.",
+      "approval_or_rejection_evidence": "24 Eylül mesajı gelecekte onay alma niyetidir; alınmış onay değildir.",
+      "limitations": [
+        "Basecamp bildirimleri işin müşteriye kapalı olduğunu açıkça belirtiyor."
+      ],
+      "evidence": [
+        {
+          "thread_id": "1a0a6c065721af08",
+          "message_id": "1a0a6c065721af08",
+          "sent_at_original": "Tue, 15 Sep 2026 20:27:01 +0000",
+          "sent_at_istanbul": "2026-09-15T23:27:01+03:00",
+          "author_display": "Cansu Akiş Kabil (Basecamp)",
+          "from_header": "\"Cansu Akiş Kabil (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (HAN Spaces) Han Spaces // Flyer",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        },
+        {
+          "thread_id": "1a0a6c065721af08",
+          "message_id": "1a0cd03e0e1f2599",
+          "sent_at_original": "Wed, 23 Sep 2026 06:46:18 +0000",
+          "sent_at_istanbul": "2026-09-23T09:46:18+03:00",
+          "author_display": "Esma Zeki (Basecamp)",
+          "from_header": "\"Esma Zeki (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (HAN Spaces) Han Spaces // Flyer",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        },
+        {
+          "thread_id": "1a0a6c065721af08",
+          "message_id": "1a0ce562c70cb63d",
+          "sent_at_original": "Wed, 23 Sep 2026 12:55:48 +0000",
+          "sent_at_istanbul": "2026-09-23T15:55:48+03:00",
+          "author_display": "Esma Zeki (Basecamp)",
+          "from_header": "\"Esma Zeki (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (HAN Spaces) Han Spaces // Flyer",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        },
+        {
+          "thread_id": "1a0a6c065721af08",
+          "message_id": "1a0d407c3383769d",
+          "sent_at_original": "Thu, 24 Sep 2026 15:27:52 +0000",
+          "sent_at_istanbul": "2026-09-24T18:27:52+03:00",
+          "author_display": "İpek Tunalı (Basecamp)",
+          "from_header": "\"İpek Tunalı (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (HAN Spaces) Han Spaces // Flyer",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        },
+        {
+          "thread_id": "1a0a6c065721af08",
+          "message_id": "1a0d41abee83e6ef",
+          "sent_at_original": "Thu, 24 Sep 2026 15:48:37 +0000",
+          "sent_at_istanbul": "2026-09-24T18:48:37+03:00",
+          "author_display": "Esma Zeki (Basecamp)",
+          "from_header": "\"Esma Zeki (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (HAN Spaces) Han Spaces // Flyer",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        }
+      ],
+      "version": 1,
+      "last_checked_on": "2026-10-07",
+      "knowledge_status": "historical",
+      "validity_scope": "specific_source_events_only",
+      "superseded_by": null,
+      "general_authority_verified": false
+    },
+    {
+      "observation_id": "OBS-05",
+      "brand": "HAN Spaces",
+      "title": "Lokasyon bilgisi revize edilerek dört uyarlamaya dönüyor",
+      "kind": "is_akisi",
+      "source_scoped_observation": "Esma 25 Eylül’de Piyalepaşa’nın eksik olduğunu söyleyip lokasyon bilgisini yeniden teyit ettiğini bildirdi; ardından genişletilmiş liste iletti. 30 Eylül briefi 4. Levent, Etiler, Çankaya ve Piyalepaşa için dört farklı renk, lokasyon fotoğrafı ve lokasyona özgü çözüm listesi istedi. İpek 1 Ekim’de ilgili tasarım ve mockup dosyalarını iletti.",
+      "bounded_learning": "Bu flyer işinde ortak tasarımın lokasyona göre renk, görsel ve hizmet içeriğiyle uyarlanması istenmiş. Eski lokasyon listesi veya bir şubenin hizmetleri diğerlerine otomatik taşınmamalı.",
+      "historical_status": "25 Eylül–1 Ekim 2026 arasında bilgi düzeltme ve dört uyarlama teslimi bildirilmiş.",
+      "current_status": "Doğrulanmadı. Bu öğrenme kaydı yeni bir görev, gönderim veya operasyon talimatı oluşturmaz.",
+      "approval_or_rejection_evidence": "Yok; bu kayıtlardan müşteri onayı veya genel onay yetkisi çıkarılmaz.",
+      "limitations": [
+        "Kaynak listeleri güncel şube/hizmet envanteri sayılmaz; görseller incelenmedi."
+      ],
+      "evidence": [
+        {
+          "thread_id": "1a0a6c065721af08",
+          "message_id": "1a0d7638a8186c2c",
+          "sent_at_original": "Fri, 25 Sep 2026 07:06:59 +0000",
+          "sent_at_istanbul": "2026-09-25T10:06:59+03:00",
+          "author_display": "Esma Zeki (Basecamp)",
+          "from_header": "\"Esma Zeki (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (HAN Spaces) Han Spaces // Flyer",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        },
+        {
+          "thread_id": "1a0a6c065721af08",
+          "message_id": "1a0d808e0d3eb9ad",
+          "sent_at_original": "Fri, 25 Sep 2026 10:07:35 +0000",
+          "sent_at_istanbul": "2026-09-25T13:07:35+03:00",
+          "author_display": "Esma Zeki (Basecamp)",
+          "from_header": "\"Esma Zeki (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (HAN Spaces) Han Spaces // Flyer",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        },
+        {
+          "thread_id": "1a0a6c065721af08",
+          "message_id": "1a0f2574d12d5747",
+          "sent_at_original": "Wed, 30 Sep 2026 12:43:22 +0000",
+          "sent_at_istanbul": "2026-09-30T15:43:22+03:00",
+          "author_display": "Esma Zeki (Basecamp)",
+          "from_header": "\"Esma Zeki (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (HAN Spaces) Han Spaces // Flyer",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        },
+        {
+          "thread_id": "1a0a6c065721af08",
+          "message_id": "1a0f7cfcfc679646",
+          "sent_at_original": "Thu, 01 Oct 2026 14:13:06 +0000",
+          "sent_at_istanbul": "2026-10-01T17:13:06+03:00",
+          "author_display": "İpek Tunalı (Basecamp)",
+          "from_header": "\"İpek Tunalı (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (HAN Spaces) Han Spaces // Flyer",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        }
+      ],
+      "version": 1,
+      "last_checked_on": "2026-10-07",
+      "knowledge_status": "historical",
+      "validity_scope": "specific_source_events_only",
+      "superseded_by": null,
+      "general_authority_verified": false
+    },
+    {
+      "observation_id": "OBS-06",
+      "brand": "HAN Spaces",
+      "title": "Dış kapak görseli değişikliği somut revizeye dönüşüyor",
+      "kind": "is_akisi",
+      "source_scoped_observation": "Esma 5 Ekim’de Çankaya dış kapaktaki sağ görselin bağlantıdaki görselle değiştirilmesini ve insanların kaldırılmasını istedi. İpek aynı gün revize dosyalarını iletti.",
+      "bounded_learning": "Bu işte revize isteği görselin yeri ve yapılacak müdahaleyle tarif edilmiş; yanıt revize dosyası teslimi düzeyinde.",
+      "historical_status": "5 Ekim 2026 tarihinde revize istendi ve teslim edildiği bildirildi.",
+      "current_status": "Doğrulanmadı. Bu öğrenme kaydı yeni bir görev, gönderim veya operasyon talimatı oluşturmaz.",
+      "approval_or_rejection_evidence": "Yok; bu kayıtlardan müşteri onayı veya genel onay yetkisi çıkarılmaz.",
+      "limitations": [
+        "Ekler görülmediği için insanların kaldırıldığı veya doğru görselin kullanıldığı görsel olarak doğrulanmadı."
+      ],
+      "evidence": [
+        {
+          "thread_id": "1a0a6c065721af08",
+          "message_id": "1a10c3c729a03df2",
+          "sent_at_original": "Mon, 05 Oct 2026 13:24:10 +0000",
+          "sent_at_istanbul": "2026-10-05T16:24:10+03:00",
+          "author_display": "Esma Zeki (Basecamp)",
+          "from_header": "\"Esma Zeki (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (HAN Spaces) Han Spaces // Flyer",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        },
+        {
+          "thread_id": "1a0a6c065721af08",
+          "message_id": "1a10c4e24a9d6e1c",
+          "sent_at_original": "Mon, 05 Oct 2026 13:43:29 +0000",
+          "sent_at_istanbul": "2026-10-05T16:43:29+03:00",
+          "author_display": "İpek Tunalı (Basecamp)",
+          "from_header": "\"İpek Tunalı (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (HAN Spaces) Han Spaces // Flyer",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        }
+      ],
+      "version": 1,
+      "last_checked_on": "2026-10-07",
+      "knowledge_status": "historical",
+      "validity_scope": "specific_source_events_only",
+      "superseded_by": null,
+      "general_authority_verified": false
+    },
+    {
+      "observation_id": "OBS-07",
+      "brand": "HAN Spaces",
+      "title": "Baskı hazırlığı teslimden ayrı teknik şart taşıyor",
+      "kind": "is_akisi",
+      "source_scoped_observation": "Esma 6 Ekim’de dijital baskı için JPEG istedi. Barış her yöne 3 mm taşma payı eklenebileceğini belirtti. İpek aynı gün iki baskı ZIP teslimi bildirdi.",
+      "bounded_learning": "Bu örnekte teslim biçimi ve taşma payı ayrıca konuşulmuş. Ekte baskı dosyası bulunması, baskının gerçekleştiğini veya teknik kontrolün geçtiğini göstermez.",
+      "historical_status": "6 Ekim 2026 tarihli baskı dosyası hazırlama ve teslim beyanları.",
+      "current_status": "Doğrulanmadı. Bu öğrenme kaydı yeni bir görev, gönderim veya operasyon talimatı oluşturmaz.",
+      "approval_or_rejection_evidence": "Yok; bu kayıtlardan müşteri onayı veya genel onay yetkisi çıkarılmaz.",
+      "limitations": [
+        "ZIP içerikleri ve baskı şartları incelenmedi."
+      ],
+      "evidence": [
+        {
+          "thread_id": "1a0a6c065721af08",
+          "message_id": "1a1118e42795ff5d",
+          "sent_at_original": "Tue, 06 Oct 2026 14:11:37 +0000",
+          "sent_at_istanbul": "2026-10-06T17:11:37+03:00",
+          "author_display": "Esma Zeki (Basecamp)",
+          "from_header": "\"Esma Zeki (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (HAN Spaces) Han Spaces // Flyer",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        },
+        {
+          "thread_id": "1a0a6c065721af08",
+          "message_id": "1a1118f848dfe35e",
+          "sent_at_original": "Tue, 06 Oct 2026 14:13:00 +0000",
+          "sent_at_istanbul": "2026-10-06T17:13:00+03:00",
+          "author_display": "Barış Sülün (Basecamp)",
+          "from_header": "\"Barış Sülün (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (HAN Spaces) Han Spaces // Flyer",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        },
+        {
+          "thread_id": "1a0a6c065721af08",
+          "message_id": "1a111b6687372010",
+          "sent_at_original": "Tue, 06 Oct 2026 14:55:28 +0000",
+          "sent_at_istanbul": "2026-10-06T17:55:28+03:00",
+          "author_display": "İpek Tunalı (Basecamp)",
+          "from_header": "\"İpek Tunalı (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (HAN Spaces) Han Spaces // Flyer",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        },
+        {
+          "thread_id": "1a0a6c065721af08",
+          "message_id": "1a1123ebdd3836f5",
+          "sent_at_original": "Tue, 06 Oct 2026 17:24:23 +0000",
+          "sent_at_istanbul": "2026-10-06T20:24:23+03:00",
+          "author_display": "İpek Tunalı (Basecamp)",
+          "from_header": "\"İpek Tunalı (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (HAN Spaces) Han Spaces // Flyer",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        }
+      ],
+      "version": 1,
+      "last_checked_on": "2026-10-07",
+      "knowledge_status": "historical",
+      "validity_scope": "specific_source_events_only",
+      "superseded_by": null,
+      "general_authority_verified": false
+    },
+    {
+      "observation_id": "OBS-08",
+      "brand": "HAN Spaces",
+      "title": "Daha koyu mavi revizesinden sonra açık baskı uygunluğu",
+      "kind": "acik_ic_onay_ve_teslim",
+      "source_scoped_observation": "Barış 7 Ekim’de mavi flyer tonunu koyulaştırma ve diğer örneklerdeki gibi tüm metinleri verme revizesi istedi; mockup yerine düz tasarımın önce onaylaşılmasını belirtti. İpek revizeyi iletti; Esma “Baskı için uygundur” dedi ve baskı dosyasını istedi. İpek ardından Piyalepaşa baskı ZIP dosyasını paylaştı.",
+      "bounded_learning": "Bu kesitte açık uygunluk beyanı var ve bunu izleyen belirli bir baskı dosyası teslimi var. Önceki günün baskı ZIP teslimi nihai revizyon kapanışı yerine geçmemiş.",
+      "historical_status": "7 Ekim 2026 11:25 İstanbul: Esma’nın baskı uygunluğu; 11:43:56: Piyalepaşa baskı dosyası teslim beyanı.",
+      "current_status": "Doğrulanmadı. Bu öğrenme kaydı yeni bir görev, gönderim veya operasyon talimatı oluşturmaz.",
+      "approval_or_rejection_evidence": "Esma’nın bu revizeye ilişkin açık baskı uygunluğu kanıtlı. Müşteri tarafından doğrudan verilmiş onay veya fiilî baskı kanıtı değil.",
+      "limitations": [
+        "7 Ekim renk revizesinde lokasyon adı yazmıyor; sonraki teslim Piyalepaşa olarak adlandırılmış. Dosyalar görülmedi."
+      ],
+      "evidence": [
+        {
+          "thread_id": "1a0a6c065721af08",
+          "message_id": "1a1151dadfea186e",
+          "sent_at_original": "Wed, 07 Oct 2026 06:47:08 +0000",
+          "sent_at_istanbul": "2026-10-07T09:47:08+03:00",
+          "author_display": "Barış Sülün (Basecamp)",
+          "from_header": "\"Barış Sülün (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (HAN Spaces) Han Spaces // Flyer",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        },
+        {
+          "thread_id": "1a0a6c065721af08",
+          "message_id": "1a1156aee54693b2",
+          "sent_at_original": "Wed, 07 Oct 2026 08:11:31 +0000",
+          "sent_at_istanbul": "2026-10-07T11:11:31+03:00",
+          "author_display": "İpek Tunalı (Basecamp)",
+          "from_header": "\"İpek Tunalı (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (HAN Spaces) Han Spaces // Flyer",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        },
+        {
+          "thread_id": "1a0a6c065721af08",
+          "message_id": "1a1157816a9161e4",
+          "sent_at_original": "Wed, 07 Oct 2026 08:25:53 +0000",
+          "sent_at_istanbul": "2026-10-07T11:25:53+03:00",
+          "author_display": "Esma Zeki (Basecamp)",
+          "from_header": "\"Esma Zeki (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (HAN Spaces) Han Spaces // Flyer",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        },
+        {
+          "thread_id": "1a0a6c065721af08",
+          "message_id": "1a115889f68f9bbe",
+          "sent_at_original": "Wed, 07 Oct 2026 08:43:56 +0000",
+          "sent_at_istanbul": "2026-10-07T11:43:56+03:00",
+          "author_display": "İpek Tunalı (Basecamp)",
+          "from_header": "\"İpek Tunalı (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (HAN Spaces) Han Spaces // Flyer",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        }
+      ],
+      "version": 1,
+      "last_checked_on": "2026-10-07",
+      "knowledge_status": "historical",
+      "validity_scope": "specific_source_events_only",
+      "superseded_by": null,
+      "general_authority_verified": false
+    },
+    {
+      "observation_id": "OBS-09",
+      "brand": "BWI",
+      "title": "Sabit şablon istenirken .ai paketi eksik kalıyor",
+      "kind": "girdi_ve_format_kisiti",
+      "source_scoped_observation": "Barış 6 Ekim’de klasik assetbank üzerinden ilerlenmesini ve toplu .ai dosyasının kullanılmasını aktardı. Cansu tekli/ikili/üçlü örneklerde fotoğraf ve bilgilerin hizasının korunacağı sabit formatı paylaştı. Barış .ai dosyasının paketlenmiş hâlini istedi. Cansu istediğini, ancak aynı gün yayın ihtiyacı ve yavaş geri dönüş nedeniyle beklemeden yapılıp yapılamayacağını sordu.",
+      "bounded_learning": "Bu işte yaratıcı yön sabit şablona bağlı; eksik .ai paketi bir üretim girdisi sorunu. İlerleme talebi, paketin sonradan geldiğine veya dosya bağımlılıklarının tamam olduğuna kanıt değil.",
+      "historical_status": "6 Ekim 2026 sabahı paket talebi ve teslim baskısı konuşulmuş; bu kesitte paketin gelişi doğrulanmıyor.",
+      "current_status": "Doğrulanmadı. Bu öğrenme kaydı yeni bir görev, gönderim veya operasyon talimatı oluşturmaz.",
+      "approval_or_rejection_evidence": "Yok; bu kayıtlardan müşteri onayı veya genel onay yetkisi çıkarılmaz.",
+      "limitations": [
+        "“İstiyorlar” aktarımı dış tarafın kimliğini/onay makamını belirtmiyor; .ai/Report/font/görsel bağımlılıkları incelenmedi."
+      ],
+      "evidence": [
+        {
+          "thread_id": "1a10fff86843c43d",
+          "message_id": "1a10fff86843c43d",
+          "sent_at_original": "Tue, 06 Oct 2026 06:56:06 +0000",
+          "sent_at_istanbul": "2026-10-06T09:56:06+03:00",
+          "author_display": "Barış Sülün (Basecamp)",
+          "from_header": "\"Barış Sülün (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (BWI) BWI // Program Takvimi",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        },
+        {
+          "thread_id": "1a10fff86843c43d",
+          "message_id": "1a1102bfde940fed",
+          "sent_at_original": "Tue, 06 Oct 2026 07:44:40 +0000",
+          "sent_at_istanbul": "2026-10-06T10:44:40+03:00",
+          "author_display": "Cansu Akiş Kabil (Basecamp)",
+          "from_header": "\"Cansu Akiş Kabil (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (BWI) BWI // Program Takvimi",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        },
+        {
+          "thread_id": "1a10fff86843c43d",
+          "message_id": "1a110376f35ec3e6",
+          "sent_at_original": "Tue, 06 Oct 2026 07:57:10 +0000",
+          "sent_at_istanbul": "2026-10-06T10:57:10+03:00",
+          "author_display": "Barış Sülün (Basecamp)",
+          "from_header": "\"Barış Sülün (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (BWI) BWI // Program Takvimi",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        },
+        {
+          "thread_id": "1a10fff86843c43d",
+          "message_id": "1a1108867ae47231",
+          "sent_at_original": "Tue, 06 Oct 2026 09:25:36 +0000",
+          "sent_at_istanbul": "2026-10-06T12:25:36+03:00",
+          "author_display": "Cansu Akiş Kabil (Basecamp)",
+          "from_header": "\"Cansu Akiş Kabil (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (BWI) BWI // Program Takvimi",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        }
+      ],
+      "version": 1,
+      "last_checked_on": "2026-10-07",
+      "knowledge_status": "historical",
+      "validity_scope": "specific_source_events_only",
+      "superseded_by": null,
+      "general_authority_verified": false
+    },
+    {
+      "observation_id": "OBS-10",
+      "brand": "BWI",
+      "title": "Revizeler okunurluk ve hiyerarşi üzerinden; onay örnekle sınırlı",
+      "kind": "revize_ve_onay_ayrimi",
+      "source_scoped_observation": "Cansu tarih/saat ve salon bilgisinin büyümesini, üçlü kullanımda CMO unvanı ve marka logolarının yer almasını, dosya adının içeriğe uymasını istedi. İpek Alex Jenkins revizesini gönderip diğerlerine onay sonrası devam edeceğini belirtti. Cansu bu örneğe “ok” dedi; Adam Biddle için üst alan büyüdüyse okey dendiğini aktardı, İpek dosyayı gönderdi.",
+      "bounded_learning": "Bu dizide tarihin/saatin okunurluğu ve logo/unvan hiyerarşisi belirgin kontrol noktaları. Tek örneğin onayı, tüm program görsellerine verilmiş toplu onay değildir.",
+      "historical_status": "6 Ekim 2026 revize ve örnek onayları.",
+      "current_status": "Doğrulanmadı. Bu öğrenme kaydı yeni bir görev, gönderim veya operasyon talimatı oluşturmaz.",
+      "approval_or_rejection_evidence": "Alex Jenkins: Cansu’nun doğrudan örnek onayı. Adam Biddle: Cansu’nun kimliği belirtilmeyen tarafın koşullu onayını aktarması. Yayın gerçekleştiği doğrulanmıyor.",
+      "limitations": [],
+      "evidence": [
+        {
+          "thread_id": "1a10fff86843c43d",
+          "message_id": "1a111044512a24a3",
+          "sent_at_original": "Tue, 06 Oct 2026 11:40:54 +0000",
+          "sent_at_istanbul": "2026-10-06T14:40:54+03:00",
+          "author_display": "Cansu Akiş Kabil (Basecamp)",
+          "from_header": "\"Cansu Akiş Kabil (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (BWI) BWI // Program Takvimi",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        },
+        {
+          "thread_id": "1a10fff86843c43d",
+          "message_id": "1a111052cce54840",
+          "sent_at_original": "Tue, 06 Oct 2026 11:41:53 +0000",
+          "sent_at_istanbul": "2026-10-06T14:41:53+03:00",
+          "author_display": "Cansu Akiş Kabil (Basecamp)",
+          "from_header": "\"Cansu Akiş Kabil (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (BWI) BWI // Program Takvimi",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        },
+        {
+          "thread_id": "1a10fff86843c43d",
+          "message_id": "1a111130b14aea00",
+          "sent_at_original": "Tue, 06 Oct 2026 11:57:02 +0000",
+          "sent_at_istanbul": "2026-10-06T14:57:02+03:00",
+          "author_display": "İpek Tunalı (Basecamp)",
+          "from_header": "\"İpek Tunalı (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (BWI) BWI // Program Takvimi",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        },
+        {
+          "thread_id": "1a10fff86843c43d",
+          "message_id": "1a1112913791f01d",
+          "sent_at_original": "Tue, 06 Oct 2026 12:21:06 +0000",
+          "sent_at_istanbul": "2026-10-06T15:21:06+03:00",
+          "author_display": "Cansu Akiş Kabil (Basecamp)",
+          "from_header": "\"Cansu Akiş Kabil (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (BWI) BWI // Program Takvimi",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        },
+        {
+          "thread_id": "1a10fff86843c43d",
+          "message_id": "1a11129fbfa513d5",
+          "sent_at_original": "Tue, 06 Oct 2026 12:22:05 +0000",
+          "sent_at_istanbul": "2026-10-06T15:22:05+03:00",
+          "author_display": "Cansu Akiş Kabil (Basecamp)",
+          "from_header": "\"Cansu Akiş Kabil (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (BWI) BWI // Program Takvimi",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        },
+        {
+          "thread_id": "1a10fff86843c43d",
+          "message_id": "1a1112dd65281603",
+          "sent_at_original": "Tue, 06 Oct 2026 12:26:18 +0000",
+          "sent_at_istanbul": "2026-10-06T15:26:18+03:00",
+          "author_display": "İpek Tunalı (Basecamp)",
+          "from_header": "\"İpek Tunalı (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (BWI) BWI // Program Takvimi",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        }
+      ],
+      "version": 1,
+      "last_checked_on": "2026-10-07",
+      "knowledge_status": "historical",
+      "validity_scope": "specific_source_events_only",
+      "superseded_by": null,
+      "general_authority_verified": false
+    },
+    {
+      "observation_id": "OBS-11",
+      "brand": "BWI",
+      "title": "Üretim sırası aynı gün değiştirilebiliyor",
+      "kind": "is_akisi",
+      "source_scoped_observation": "Cansu 7 Ekim sabahı iki Inspiration ve iki Brands & Trends görseli istedi; kısa süre sonra Brands & Trends’in bekletilip Inspiration Hall programının önceliklendirilmesini yazdı. Önceki gün Cansu ile Barış eksik girdilerin üretim sırasında belirlenip istenmesinde anlaştılar.",
+      "bounded_learning": "Bu örnekte öncelik, aynı dizideki sonraki talimatla değişmiş. Önceki istekler aynı anda etkinmiş gibi birleştirilmemeli; üretim anında eksik bildirme yaklaşımı bu olaya özgü.",
+      "historical_status": "6–7 Ekim 2026 tarihli planlama kararları; güncel üretim sırası yeniden doğrulanmadı.",
+      "current_status": "Doğrulanmadı. Bu öğrenme kaydı yeni bir görev, gönderim veya operasyon talimatı oluşturmaz.",
+      "approval_or_rejection_evidence": "İç ekip öncelik değişikliği ve karşılıklı yöntem kabulü; genel müşteri kuralı değil.",
+      "limitations": [],
+      "evidence": [
+        {
+          "thread_id": "1a10fff86843c43d",
+          "message_id": "1a111913ef21a626",
+          "sent_at_original": "Tue, 06 Oct 2026 14:14:53 +0000",
+          "sent_at_istanbul": "2026-10-06T17:14:53+03:00",
+          "author_display": "Cansu Akiş Kabil (Basecamp)",
+          "from_header": "\"Cansu Akiş Kabil (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (BWI) BWI // Program Takvimi",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        },
+        {
+          "thread_id": "1a10fff86843c43d",
+          "message_id": "1a111e2580ea64bc",
+          "sent_at_original": "Tue, 06 Oct 2026 15:43:28 +0000",
+          "sent_at_istanbul": "2026-10-06T18:43:28+03:00",
+          "author_display": "Cansu Akiş Kabil (Basecamp)",
+          "from_header": "\"Cansu Akiş Kabil (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (BWI) BWI // Program Takvimi",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        },
+        {
+          "thread_id": "1a10fff86843c43d",
+          "message_id": "1a111fda244b0f00",
+          "sent_at_original": "Tue, 06 Oct 2026 16:13:16 +0000",
+          "sent_at_istanbul": "2026-10-06T19:13:16+03:00",
+          "author_display": "Barış Sülün (Basecamp)",
+          "from_header": "\"Barış Sülün (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (BWI) BWI // Program Takvimi",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        },
+        {
+          "thread_id": "1a10fff86843c43d",
+          "message_id": "1a112412748de361",
+          "sent_at_original": "Tue, 06 Oct 2026 17:27:01 +0000",
+          "sent_at_istanbul": "2026-10-06T20:27:01+03:00",
+          "author_display": "Cansu Akiş Kabil (Basecamp)",
+          "from_header": "\"Cansu Akiş Kabil (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (BWI) BWI // Program Takvimi",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        },
+        {
+          "thread_id": "1a10fff86843c43d",
+          "message_id": "1a1158dd19e751e5",
+          "sent_at_original": "Wed, 07 Oct 2026 08:49:37 +0000",
+          "sent_at_istanbul": "2026-10-07T11:49:37+03:00",
+          "author_display": "Cansu Akiş Kabil (Basecamp)",
+          "from_header": "\"Cansu Akiş Kabil (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (BWI) BWI // Program Takvimi",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        },
+        {
+          "thread_id": "1a10fff86843c43d",
+          "message_id": "1a1159e18a828a96",
+          "sent_at_original": "Wed, 07 Oct 2026 09:07:24 +0000",
+          "sent_at_istanbul": "2026-10-07T12:07:24+03:00",
+          "author_display": "Cansu Akiş Kabil (Basecamp)",
+          "from_header": "\"Cansu Akiş Kabil (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (BWI) BWI // Program Takvimi",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        }
+      ],
+      "version": 1,
+      "last_checked_on": "2026-10-07",
+      "knowledge_status": "historical",
+      "validity_scope": "specific_source_events_only",
+      "superseded_by": null,
+      "general_authority_verified": false
+    },
+    {
+      "observation_id": "OBS-12",
+      "brand": "BWI",
+      "title": "Eksik varlık için kullanılan çözüm açıkça raporlanıyor",
+      "kind": "eksik_girdi_ve_istisna",
+      "source_scoped_observation": "Berkay 7 Ekim’de Pelin Özkan’ın görselini dekupeler klasöründe bulamadığı için geçen yıldan görsel kullandığını bildirdi. İpek Mehmet Tüfekçi fotoğrafının eksik olduğunu ve marka gönderince güncelleyeceğini, konuşmacısız ödül töreni için uygun düz format bulunmadığından o kısmı iletemediğini yazdı.",
+      "bounded_learning": "Tasarım teslimine eşlik eden istisna notları, dosyanın içerik bakımından tam/final sayılmasını engelliyor. Eski fotoğraf kullanımı açıkça bildirilmiş olsa da onaylandığı kanıtlanmıyor.",
+      "historical_status": "7 Ekim 2026 16:54–17:22 İstanbul saatindeki teslim notları; sonraki bazı dosyalar OBS-13’te.",
+      "current_status": "Doğrulanmadı. Bu öğrenme kaydı yeni bir görev, gönderim veya operasyon talimatı oluşturmaz.",
+      "approval_or_rejection_evidence": "Yok; bu kayıtlardan müşteri onayı veya genel onay yetkisi çıkarılmaz.",
+      "limitations": [
+        "Fotoğraflar/şablonlar görülmedi; eksiklik ve kullanılan çözüm gönderenin beyanı."
+      ],
+      "evidence": [
+        {
+          "thread_id": "1a10fff86843c43d",
+          "message_id": "1a116a4825f149ac",
+          "sent_at_original": "Wed, 07 Oct 2026 13:54:01 +0000",
+          "sent_at_istanbul": "2026-10-07T16:54:01+03:00",
+          "author_display": "Berkay Kayaköylü (Basecamp)",
+          "from_header": "\"Berkay Kayaköylü (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (BWI) BWI // Program Takvimi",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        },
+        {
+          "thread_id": "1a10fff86843c43d",
+          "message_id": "1a116be9f5aacf55",
+          "sent_at_original": "Wed, 07 Oct 2026 14:22:32 +0000",
+          "sent_at_istanbul": "2026-10-07T17:22:32+03:00",
+          "author_display": "İpek Tunalı (Basecamp)",
+          "from_header": "\"İpek Tunalı (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (BWI) BWI // Program Takvimi",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        }
+      ],
+      "version": 1,
+      "last_checked_on": "2026-10-07",
+      "knowledge_status": "historical",
+      "validity_scope": "specific_source_events_only",
+      "superseded_by": null,
+      "general_authority_verified": false
+    },
+    {
+      "observation_id": "OBS-13",
+      "brand": "BWI",
+      "title": "Yeni versiyon teslimi ile yeni talep aynı şey değil",
+      "kind": "is_akisi",
+      "source_scoped_observation": "Berkay logo probleminin Barış’ın iletimiyle giderildiğini ve güncel kullanılacak versiyonları paylaştığını yazdı. Sonra sponsor logolu ve farklı logo konumlu iki varyasyon teslim edildi. İpek Mehmet Tüfekçi boyutlandırmalarını ve META ikili içeriğini iletti. Cansu dizinin son mesajında Gülse Birsel görselinin saatli program formatını, 5 Kasım 14:00–14:25 ve Ford logosuyla sabah erken almak istediğini yineledi.",
+      "bounded_learning": "Dosya sürümü için gönderenin “güncel” işareti izlenebilir; tüm varyasyonlar onaylı kabul edilemez. Son istek bir talep kaydıdır; bugünün yeni yapılacak işi veya teslim edilmiş iş hâline çevrilmez.",
+      "historical_status": "7 Ekim 2026 içinde yeni sürümler ve yeni/tekrarlanan talep var; son Gülse talebinin yanıtı bu pencerede yok.",
+      "current_status": "Doğrulanmadı. Bu öğrenme kaydı yeni bir görev, gönderim veya operasyon talimatı oluşturmaz.",
+      "approval_or_rejection_evidence": "Tasarımcıların güncel sürüm/teslim beyanı var; müşteri final seçimi veya yayın kanıtı yok.",
+      "limitations": [
+        "Mehmet fotoğrafı veya ödül töreni şablonu sorununun çözümü yalnız dosya adlarından çıkarılmadı."
+      ],
+      "evidence": [
+        {
+          "thread_id": "1a10fff86843c43d",
+          "message_id": "1a116d94645fe88b",
+          "sent_at_original": "Wed, 07 Oct 2026 14:51:40 +0000",
+          "sent_at_istanbul": "2026-10-07T17:51:40+03:00",
+          "author_display": "Berkay Kayaköylü (Basecamp)",
+          "from_header": "\"Berkay Kayaköylü (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (BWI) BWI // Program Takvimi",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        },
+        {
+          "thread_id": "1a10fff86843c43d",
+          "message_id": "1a116e9915a84015",
+          "sent_at_original": "Wed, 07 Oct 2026 15:09:26 +0000",
+          "sent_at_istanbul": "2026-10-07T18:09:26+03:00",
+          "author_display": "Berkay Kayaköylü (Basecamp)",
+          "from_header": "\"Berkay Kayaköylü (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (BWI) BWI // Program Takvimi",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        },
+        {
+          "thread_id": "1a10fff86843c43d",
+          "message_id": "1a116ea8722fcbed",
+          "sent_at_original": "Wed, 07 Oct 2026 15:10:30 +0000",
+          "sent_at_istanbul": "2026-10-07T18:10:30+03:00",
+          "author_display": "İpek Tunalı (Basecamp)",
+          "from_header": "\"İpek Tunalı (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (BWI) BWI // Program Takvimi",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        },
+        {
+          "thread_id": "1a10fff86843c43d",
+          "message_id": "1a1170557d837cf2",
+          "sent_at_original": "Wed, 07 Oct 2026 15:39:46 +0000",
+          "sent_at_istanbul": "2026-10-07T18:39:46+03:00",
+          "author_display": "İpek Tunalı (Basecamp)",
+          "from_header": "\"İpek Tunalı (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (BWI) BWI // Program Takvimi",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        },
+        {
+          "thread_id": "1a10fff86843c43d",
+          "message_id": "1a117425032f322f",
+          "sent_at_original": "Wed, 07 Oct 2026 16:46:23 +0000",
+          "sent_at_istanbul": "2026-10-07T19:46:23+03:00",
+          "author_display": "Cansu Akiş Kabil (Basecamp)",
+          "from_header": "\"Cansu Akiş Kabil (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (BWI) BWI // Program Takvimi",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        }
+      ],
+      "version": 1,
+      "last_checked_on": "2026-10-07",
+      "knowledge_status": "historical",
+      "validity_scope": "specific_source_events_only",
+      "superseded_by": null,
+      "general_authority_verified": false
+    },
+    {
+      "observation_id": "OBS-14",
+      "brand": "Rabam",
+      "title": "Dosya teslimi sonrasında durum sorulup kapanış bildirilmiş",
+      "kind": "bildirilen_teslim_ve_kapanis",
+      "source_scoped_observation": "Barış 28 Eylül’de “Rabam Kimdir?” tanıtım çalışmasının PNG/PDF dosyalarını iletti. 6 Ekim’de akıbetini sordu. Cansu Cenk Bey’in aldığını ve taskı kapattığını yazdı.",
+      "bounded_learning": "Bu örnekte teslim → akıbet sorusu → alındı/kapatıldı bildirimi ayrımı var. Alıcının aldığı bilgisi, açık içerik onayıyla aynı değil.",
+      "historical_status": "6 Ekim 2026’da Cansu tarafından alındı ve görev kapatıldı diye raporlanmış.",
+      "current_status": "Doğrulanmadı. Bu öğrenme kaydı yeni bir görev, gönderim veya operasyon talimatı oluşturmaz.",
+      "approval_or_rejection_evidence": "Cansu’nun alındı ve kapanış bildirimi. Cenk Bey’in doğrudan yanıtı veya içerik onayı bu kesitte yok.",
+      "limitations": [],
+      "evidence": [
+        {
+          "thread_id": "1a0e78aea1837965",
+          "message_id": "1a0e78aea1837965",
+          "sent_at_original": "Mon, 28 Sep 2026 10:23:55 +0000",
+          "sent_at_istanbul": "2026-09-28T13:23:55+03:00",
+          "author_display": "Barış Sülün (Basecamp)",
+          "from_header": "\"Barış Sülün (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (Rabam) Rabam // Rabam Kimdir? Tanıtım Dosyası",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        },
+        {
+          "thread_id": "1a0e78aea1837965",
+          "message_id": "1a110511203d1086",
+          "sent_at_original": "Tue, 06 Oct 2026 08:25:10 +0000",
+          "sent_at_istanbul": "2026-10-06T11:25:10+03:00",
+          "author_display": "Barış Sülün (Basecamp)",
+          "from_header": "\"Barış Sülün (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (Rabam) Rabam // Rabam Kimdir? Tanıtım Dosyası",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        },
+        {
+          "thread_id": "1a0e78aea1837965",
+          "message_id": "1a11067afa824af8",
+          "sent_at_original": "Tue, 06 Oct 2026 08:49:52 +0000",
+          "sent_at_istanbul": "2026-10-06T11:49:52+03:00",
+          "author_display": "Cansu Akiş Kabil (Basecamp)",
+          "from_header": "\"Cansu Akiş Kabil (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (Rabam) Rabam // Rabam Kimdir? Tanıtım Dosyası",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        }
+      ],
+      "version": 1,
+      "last_checked_on": "2026-10-07",
+      "knowledge_status": "historical",
+      "validity_scope": "specific_source_events_only",
+      "superseded_by": null,
+      "general_authority_verified": false
+    },
+    {
+      "observation_id": "OBS-15",
+      "brand": "ya da Multicosmetics",
+      "title": "Görsel tutarlılık önerisi tartışmalı kalıyor",
+      "kind": "oneri_itiraz_ve_karar_boslugu",
+      "source_scoped_observation": "Barış 5 Ekim’de Ekim planından tamamladığı görselleri paylaştı; o anda GPT görsel oluşturma hakkının bittiğini ve kalana ertesi gün devam edeceğini bildirdi. Cansu görselleri beğenip her ay tek arka plan tonu önerdi. Barış ürün hero renkleriyle bunun karmaşa yaratabileceğini, doku tutarlılığı üzerinden ilerlediğini söyledi ve devam etmeden konuşmayı önerdi.",
+      "bounded_learning": "Görsellerin beğenilmesi tek ton önerisinin kabul edildiği anlamına gelmiyor. Barış’ın itirazı tasarım gerekçesi; müşteri reddi veya kesinleşmiş marka kuralı değil. O günkü üretim limiti bugünkü teknik kapasite değildir.",
+      "historical_status": "5 Ekim 2026 iç ekip görüş ayrılığı; nihai karar bu kesitte bulunmuyor.",
+      "current_status": "Doğrulanmadı. Bu öğrenme kaydı yeni bir görev, gönderim veya operasyon talimatı oluşturmaz.",
+      "approval_or_rejection_evidence": "Cansu’nun olumlu yorumu ve önerisi; Barış’ın karşı gerekçesi var. Nihai uzlaşma/onay yok.",
+      "limitations": [
+        "Dizi müşteriye kapalı olarak işaretli; görseller incelenmedi."
+      ],
+      "evidence": [
+        {
+          "thread_id": "1a10c9aa88d9c8a0",
+          "message_id": "1a10c9aa88d9c8a0",
+          "sent_at_original": "Mon, 05 Oct 2026 15:07:04 +0000",
+          "sent_at_istanbul": "2026-10-05T18:07:04+03:00",
+          "author_display": "Barış Sülün (Basecamp)",
+          "from_header": "\"Barış Sülün (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (ya da Multicosmetics) ya da // Ekim 26",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        },
+        {
+          "thread_id": "1a10c9aa88d9c8a0",
+          "message_id": "1a10ca41d6187f93",
+          "sent_at_original": "Mon, 05 Oct 2026 15:17:23 +0000",
+          "sent_at_istanbul": "2026-10-05T18:17:23+03:00",
+          "author_display": "Cansu Akiş Kabil (Basecamp)",
+          "from_header": "\"Cansu Akiş Kabil (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (ya da Multicosmetics) ya da // Ekim 26",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        },
+        {
+          "thread_id": "1a10c9aa88d9c8a0",
+          "message_id": "1a10caab929185d7",
+          "sent_at_original": "Mon, 05 Oct 2026 15:24:36 +0000",
+          "sent_at_istanbul": "2026-10-05T18:24:36+03:00",
+          "author_display": "Barış Sülün (Basecamp)",
+          "from_header": "\"Barış Sülün (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (ya da Multicosmetics) ya da // Ekim 26",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        }
+      ],
+      "version": 1,
+      "last_checked_on": "2026-10-07",
+      "knowledge_status": "historical",
+      "validity_scope": "specific_source_events_only",
+      "superseded_by": null,
+      "general_authority_verified": false
+    },
+    {
+      "observation_id": "OBS-16",
+      "brand": "ya da Multicosmetics",
+      "title": "Eğitim ve görsel dünya sunumu davetleri ayrı kanıt",
+      "kind": "takvim_daveti",
+      "source_scoped_observation": "Esma 8 Ekim 14:00–15:00 Türkiye saati için “ya da Eğitim” davetini; Cansu 9 Ekim 10:00–11:00 için “ya da - Sosyal medya görsel dünya sunumu” davetini oluşturmuş. İkinci davet ajans isimleriyle iki yadacosmetics.com adresini içeriyor.",
+      "bounded_learning": "Davetler hazırlık/sunum koordinasyonunu gösteriyor. Gönderici düzenleyici olarak görülebilir; katılanların unvanı, katılım kabulü veya sunum sonucuna ilişkin kanıt yok.",
+      "historical_status": "7 Ekim’de gönderilmiş, sonraki iki güne ait davetler; gerçekleşme/katılım durumu doğrulanmadı.",
+      "current_status": "Doğrulanmadı. Bu öğrenme kaydı yeni bir görev, gönderim veya operasyon talimatı oluşturmaz.",
+      "approval_or_rejection_evidence": "Yok; bu kayıtlardan müşteri onayı veya genel onay yetkisi çıkarılmaz.",
+      "limitations": [
+        "Telefon, PIN, Meet ve yanıt bağlantıları kopyalanmadı; kişi e-posta yerel parçalarından unvan/isim çıkarılmadı."
+      ],
+      "evidence": [
+        {
+          "thread_id": "1a11636397e5303a",
+          "message_id": "1a11636397e5303a",
+          "sent_at_original": "Wed, 07 Oct 2026 11:53:31 +0000",
+          "sent_at_istanbul": "2026-10-07T14:53:31+03:00",
+          "author_display": "Esma Zeki",
+          "from_header": "Esma Zeki <esma@gamechangers.com.tr>",
+          "subject": "Davetiye: ya da Eğitim, Per 8 Eki 2026 2pm - 3pm (GMT+3) (Ahmet Şükrü Altındağ)",
+          "provenance": "Gmail ile ulaşan takvim davetiyesi; takvim durumu canlı doğrulanmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        },
+        {
+          "thread_id": "1a1172b73da899f5",
+          "message_id": "1a1172b73da899f5",
+          "sent_at_original": "Wed, 07 Oct 2026 16:21:25 +0000",
+          "sent_at_istanbul": "2026-10-07T19:21:25+03:00",
+          "author_display": "Cansu Akiş Kabil",
+          "from_header": "\"Cansu Akiş Kabil\" <cansu@gamechangers.com.tr>",
+          "subject": "Davetiye: ya da - Sosyal medya görsel dünya sunumu, Cum 9 Eki 2026 10am - 11am (GMT+3) (Ahmet Şükrü Altındağ)",
+          "provenance": "Gmail ile ulaşan takvim davetiyesi; takvim durumu canlı doğrulanmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        }
+      ],
+      "version": 1,
+      "last_checked_on": "2026-10-07",
+      "knowledge_status": "historical",
+      "validity_scope": "specific_source_events_only",
+      "superseded_by": null,
+      "general_authority_verified": false
+    },
+    {
+      "observation_id": "OBS-17",
+      "brand": "Bikaldi",
+      "title": "Gecikme bildirimi tarihsel bir durum sinyali",
+      "kind": "tarihsel_sistem_durumu",
+      "source_scoped_observation": "6 Ekim Basecamp e-postası “Bikaldi // 2027 SM Önerileri” işini 29 Eylül terminli ve bir hafta gecikmiş gösteriyor; atananlar Ahmet Ş. ile Özge Y. olarak yazılmış.",
+      "bounded_learning": "Sadece bildirim anındaki görev adı, tarih ve kısaltılmış atama bilgisi öğrenildi. İçerik beklentisi ve bugünkü açık/kapalı durumu bilinmiyor.",
+      "historical_status": "6 Ekim 2026 tarihli sistem gecikme bildirimi.",
+      "current_status": "Doğrulanmadı. Bu öğrenme kaydı yeni bir görev, gönderim veya operasyon talimatı oluşturmaz.",
+      "approval_or_rejection_evidence": "Yok; bu kayıtlardan müşteri onayı veya genel onay yetkisi çıkarılmaz.",
+      "limitations": [
+        "İsim kısaltmaları bu mesajdan tam kimlik/rol olarak genişletilmedi; canlı Basecamp durumu okunmadı."
+      ],
+      "evidence": [
+        {
+          "thread_id": "1a10fd1092562eb3",
+          "message_id": "1a10fd1092562eb3",
+          "sent_at_original": "Tue, 06 Oct 2026 06:05:19 +0000",
+          "sent_at_istanbul": "2026-10-06T09:05:19+03:00",
+          "author_display": "Basecamp (Gamechangers)",
+          "from_header": "\"Basecamp (Gamechangers)\" <notifications@app.basecamp.com>",
+          "subject": "(Bikaldi) Overdue by a week: Bikaldi // 2027 SM Önerileri",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        }
+      ],
+      "version": 1,
+      "last_checked_on": "2026-10-07",
+      "knowledge_status": "historical",
+      "validity_scope": "specific_source_events_only",
+      "superseded_by": null,
+      "general_authority_verified": false
+    },
+    {
+      "observation_id": "OBS-18",
+      "brand": "Altınmarka",
+      "title": "Rapor işi tamamlandı bildirimi sonuç dosyası değildir",
+      "kind": "tarihsel_sistem_durumu",
+      "source_scoped_observation": "6 Ekim bildirimi Esma Z.’nin “Altınmarka // Eylül ’26 SM Raporu” görevini tamamladığını söylüyor. Görev metninde rapor hazır olunca bağlantısının buradan paylaşılması istenmiş.",
+      "bounded_learning": "Rapor teslimi için aynı görev üzerinden bağlantı paylaşma beklentisi görülüyor. Tamamlandı işareti rapor içeriğini, sonuçlarını veya müşteriye iletildiğini kanıtlamıyor.",
+      "historical_status": "6 Ekim 2026 tarihli sistem tamamlanma bildirimi.",
+      "current_status": "Doğrulanmadı. Bu öğrenme kaydı yeni bir görev, gönderim veya operasyon talimatı oluşturmaz.",
+      "approval_or_rejection_evidence": "Yok; bu kayıtlardan müşteri onayı veya genel onay yetkisi çıkarılmaz.",
+      "limitations": [
+        "Rapora ait bağlantı/içerik bu kesitte görünmüyor; gövdedeki eski talep metninin yazarı ayrı olarak tanımlanmamış."
+      ],
+      "evidence": [
+        {
+          "thread_id": "1a10fe3a6e2d6f5d",
+          "message_id": "1a10fe3a6e2d6f5d",
+          "sent_at_original": "Tue, 06 Oct 2026 06:25:39 +0000",
+          "sent_at_istanbul": "2026-10-06T09:25:39+03:00",
+          "author_display": "Esma Zeki (Basecamp)",
+          "from_header": "\"Esma Zeki (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "(Altınmarka) Esma Z. completed a to-do",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        }
+      ],
+      "version": 1,
+      "last_checked_on": "2026-10-07",
+      "knowledge_status": "historical",
+      "validity_scope": "specific_source_events_only",
+      "superseded_by": null,
+      "general_authority_verified": false
+    },
+    {
+      "observation_id": "OBS-19",
+      "brand": "Cacaonly",
+      "title": "Eksik font için benzerlik yönlendirmesi görev metninde",
+      "kind": "girdi_eksikligi_ve_tarihsel_kapanis",
+      "source_scoped_observation": "6 Ekim bildirimi Cansu A.’nın “CO // Eylül ’26 İletişim Planı + Moodboard” işini tamamladığını gösteriyor. Görev metninde görsel örnekleri ve tasarım briefleri bulunduğu, fontların elde olmaması nedeniyle sitedekine benzer fontla ilerlenmesi istendiği yazıyor; atananlar Barış S. ve İpek T.",
+      "bounded_learning": "Bu örnekte eksik font girdisine bir benzerlik çözümü tarif edilmiş. Hangi fontun seçildiği, lisansı veya marka tarafından onaylandığı öğrenilmiş değil.",
+      "historical_status": "6 Ekim 2026’da görev tamamlandı diye bildirilmiş; başlık Eylül planına ait.",
+      "current_status": "Doğrulanmadı. Bu öğrenme kaydı yeni bir görev, gönderim veya operasyon talimatı oluşturmaz.",
+      "approval_or_rejection_evidence": "Sistem tamamlanma bildirimi; müşteri görsel/font onayı değil.",
+      "limitations": [
+        "Görev metninin özgün yazarı bildirimden kesinleşmiyor; tamamlayan ile brief yazarı aynı kabul edilmedi.",
+        "Kaynak etiketi tam olarak “Cacaonly”; başka yazıma düzeltilmedi."
+      ],
+      "evidence": [
+        {
+          "thread_id": "1a1100cb5509857b",
+          "message_id": "1a1100cb5509857b",
+          "sent_at_original": "Tue, 06 Oct 2026 07:10:30 +0000",
+          "sent_at_istanbul": "2026-10-06T10:10:30+03:00",
+          "author_display": "Cansu Akiş Kabil (Basecamp)",
+          "from_header": "\"Cansu Akiş Kabil (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "(Cacaonly) Cansu A. completed a to-do",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        }
+      ],
+      "version": 1,
+      "last_checked_on": "2026-10-07",
+      "knowledge_status": "historical",
+      "validity_scope": "specific_source_events_only",
+      "superseded_by": null,
+      "general_authority_verified": false
+    },
+    {
+      "observation_id": "OBS-20",
+      "brand": "Gamechangers (iç iletişim)",
+      "title": "İç marka briefi cam malzemeyi ve formatları açık tarif ediyor",
+      "kind": "ic_marka_briefi",
+      "source_scoped_observation": "Esma 7 Ekim’de Ahmet’e gönderdiği Basecamp notunda yarı saydam, derinlik hissi veren cam objeleri, kalınlık hiyerarşisi ve yumuşak gölgeleri ortak tasarım dili olarak istedi. Story serileri, özel gün içerikleri ve 25 Kasım için 20–30 saniyelik AI farkındalık filmi tarif edildi; sonraki mesaj yalnız hatırlatma.",
+      "bounded_learning": "Bu, ajansın kendi içeriğine ait belirli bir brief. Metinlerin/filmin onaylandığı, üretildiği veya yayınlandığı varsayılmaz; diğer markalara otomatik taşınmaz.",
+      "historical_status": "7 Ekim 2026 tarihli ayrıntılı iç brief ve hatırlatma.",
+      "current_status": "Doğrulanmadı. Bu öğrenme kaydı yeni bir görev, gönderim veya operasyon talimatı oluşturmaz.",
+      "approval_or_rejection_evidence": "Yok; bu kayıtlardan müşteri onayı veya genel onay yetkisi çıkarılmaz.",
+      "limitations": [
+        "Özet tabloda bazı tarihler boş, ayrıntı başlıklarında 19 Ekim ve 11 Kasım var; bu dosya kesinleşmiş takvim oluşturmaz.",
+        "29 Ekim özet listede yer alıyor, bu kesitte ayrıntılı alt brief görünmüyor.",
+        "Referans görselleri görülmedi."
+      ],
+      "evidence": [
+        {
+          "thread_id": "1a1164fab391dd76",
+          "message_id": "1a1164fab391dd76",
+          "sent_at_original": "Wed, 07 Oct 2026 12:21:21 +0000",
+          "sent_at_istanbul": "2026-10-07T15:21:21+03:00",
+          "author_display": "Esma Zeki (Basecamp)",
+          "from_header": "\"Esma Zeki (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "(Gamechangers) Esma Z. @mentioned you in Re: GC // Eylül, Ekim, Kasım'26 SM Planı",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        },
+        {
+          "thread_id": "1a1164fab391dd76",
+          "message_id": "1a116cf9f27d57fc",
+          "sent_at_original": "Wed, 07 Oct 2026 14:41:07 +0000",
+          "sent_at_istanbul": "2026-10-07T17:41:07+03:00",
+          "author_display": "Esma Zeki (Basecamp)",
+          "from_header": "\"Esma Zeki (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "(Gamechangers) Esma Z. @mentioned you in Re: GC // Eylül, Ekim, Kasım'26 SM Planı",
+          "provenance": "Gmail içindeki Basecamp bildirim metni; Basecamp kaydı canlı okunmadı.",
+          "evidence_scope": "İleti gövdesi; ekler, görseller ve bağlantı hedefleri incelenmedi."
+        }
+      ],
+      "version": 1,
+      "last_checked_on": "2026-10-07",
+      "knowledge_status": "historical",
+      "validity_scope": "specific_source_events_only",
+      "superseded_by": null,
+      "general_authority_verified": false
+    }
+  ],
+  "role_evidence_examples": [
+    {
+      "person": "Esma Zeki",
+      "evidence_scope": "HAN Flyer dizisinde ilgilenmeyi açıkça kabul etme, brief iletme, revize isteme ve belirli tasarım için baskı uygunluğu bildirme.",
+      "message_ids": [
+        "1a0cd03e0e1f2599",
+        "1a0ce562c70cb63d",
+        "1a1157816a9161e4"
+      ]
+    },
+    {
+      "person": "Cansu Akiş Kabil",
+      "evidence_scope": "BWI dizisinde sabit format ve öncelik iletme, örneğe onay verme; Rabam dizisinde alındı/kapanış bildirme.",
+      "message_ids": [
+        "1a1102bfde940fed",
+        "1a1112913791f01d",
+        "1a1159e18a828a96",
+        "1a11067afa824af8"
+      ]
+    },
+    {
+      "person": "İpek Tunalı",
+      "evidence_scope": "HAN ve BWI dizilerinde tasarım/revize teslimleri ve eksik girdi açıklamaları.",
+      "message_ids": [
+        "1a0d407c3383769d",
+        "1a115889f68f9bbe",
+        "1a116be9f5aacf55"
+      ]
+    },
+    {
+      "person": "Barış Sülün",
+      "evidence_scope": "BWI dosya paketi isteme; HAN teknik baskı ve renk revizesi yönlendirme; ya da tasarım önerisine gerekçeli karşılık.",
+      "message_ids": [
+        "1a110376f35ec3e6",
+        "1a1118f848dfe35e",
+        "1a1151dadfea186e",
+        "1a10caab929185d7"
+      ]
+    },
+    {
+      "person": "Berkay Kayaköylü",
+      "evidence_scope": "BWI iş paylaşımında kendi bölümünü teslim etme ve eski görsel kullandığını açıklama.",
+      "message_ids": [
+        "1a116a4825f149ac",
+        "1a116d94645fe88b"
+      ]
+    },
+    {
+      "person": "Ahmet Şükrü Altındağ",
+      "evidence_scope": "WAT stand talebini bu işe özgü üstlenme ve teknik çözümü araştıracağını belirtme.",
+      "message_ids": [
+        "1a116c539fd7bd87"
+      ]
+    },
+    {
+      "person": "Selina Mirçavi",
+      "evidence_scope": "watmobilite.com adresinden WAT standı için doğrudan müşteri briefi gönderme; unvan veya genel onay yetkisi saptanmadı.",
+      "message_ids": [
+        "1a116747b8f8823f"
+      ]
+    }
+  ],
+  "non_actions": {
+    "emails_sent": 0,
+    "basecamp_records_changed": 0,
+    "calendar_responses_sent": 0,
+    "tasks_created": 0,
+    "present_tasks_inferred_from_old_requests": 0,
+    "attachments_or_link_targets_reviewed": 0
+  }
+}

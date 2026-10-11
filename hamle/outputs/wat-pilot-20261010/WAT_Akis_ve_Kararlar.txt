@@ -1,0 +1,107 @@
+WAT Mobilite — Hamle v1.1 çalışma akışı
+10 Ekim 2026 / Kullanıcının doldurduğu form ve son cevapları
+
+Bu kayıt çalışma kararlarını ve yerel hazırlığı anlatır. Yeni WAT akışı henüz
+buluttaki işçiye bağlanmadı; müşteriye otomatik gönderim açık değildir.
+
+1. İŞ GİRİŞİ
+İş mail ile başlar. Hamle işlem konusu gerçek son mailin To/CC alanında olmalı.
+WhatsApp veya toplantıdan gelen bir talebi Ahmet, Cansu ya da Özge, konuştuğu
+yetkili müşteri kişisini belirterek mail ile aktarabilir. Aktarılan metin tek
+başına yetki oluşturmaz. Yanıtta gerçek mail zincirinin To/CC'si korunur;
+yalnızca adı geçti diye yeni müşteri alıcısı eklenmez.
+
+2. BRIEF
+Amaç, hedef kitle, istenen çıktılar, adet, format/ölçü, hareketli işin süresi,
+istenen tarih ve kullanılacak onaylı marka dosyaları belirlenir. Eksik konu
+sorulur. Müşterinin istediği tarih, ekipçe teyit edilmiş teslim tarihi sayılmaz.
+Tasarım mı, video mu, ikisi birden mi istendiği varsayılmaz.
+
+3. BASECAMP YÖNLENDİRMESİ
+Proje: WAT Mobilite / 40694338. Hamle'nin erişimi, kişilerin üyeliği ve
+müşteri görünürlüğünün kapalı olduğu gerçek API okumasıyla doğrulandı.
+
+İş                                    Liste           Üretim sorumlusu
+Statik sosyal içerik                  Sosyal Medya    Berkay
+Sosyal medya videosu/animasyonu        Sosyal Medya    Samet
+Sosyal tasarım + animasyon/video       Sosyal Medya    Önce Berkay, sonra Samet
+ATL/BTL/saha statik tasarımı            Projeler        Berkay
+Sosyal medya dışı animasyon/video      Motion          Samet
+
+Sosyal medya dışı birleşik tasarım+animasyon için aynı Motion listesinde
+Berkay → Samet sırası yerel planlama varsayımıdır; canlı kabul yapılmadı.
+Yalnız statik tasarım Motion'a yönlendirilmez.
+
+İç görev takipçileri: Özge, Ahmet ve Cansu. Müşteriler iç Basecamp görevine
+eklenmez. İki aşamalı işin ilk görevi yalnız Berkay ile başlar; Samet aşaması
+tasarım aşamasının tamamlandığı doğrulanmadan başlatılmamalıdır. Aşama geçişini
+gerçek Basecamp dönüşleriyle yürütecek bulut bağlantısı henüz tamamlanmadı.
+
+4. SORULAR VE DEĞİŞİKLİKLER
+Üreticinin sorusu ilgili işte izlenir; çözümsüz soru varken teslim tutulur.
+Özge, Ahmet veya Cansu'nun yetkili değişikliği briefin yeni sürümünü oluşturur.
+Önceki dosya değerlendirmesi ve bekleyen teslim yeni sürüm için geçerli olmaz.
+Aynı yorum veya mail tekrar işlendiğinde yeni iş/yorum/teslim üretilmez.
+
+5. KALİTE VE TESLİM KARARI
+Puan, çıktı ile kabul edilmiş briefin uyumunu ölçer; modelin güven oranı değildir.
+
+90–100: Hamle teslim adayı olarak ilerletir; ayrıca insan kalite onayı aranmaz.
+80–90 altı: Özge, Ahmet veya Cansu'dan herhangi BİR kişinin onayı gerekir.
+80 altı: Basecamp'te üreticiye somut düzeltme/revizyon notu hazırlanır.
+
+Yanlış marka, eksik zorunlu çıktı, yanlış sürüm/format/ölçü gibi zorunlu bir
+hata varsa yüksek toplam puan teslimi açmaz. İncelenmemiş dosyaya puan uydurulmaz.
+Kalite notu ölçütleri ve tespitleriyle iç göreve bağlanır. Müşteriye gönderim,
+güncel yetki, doğru alıcılar, bütçe ve insan devralma denetimlerinden de geçer.
+Sonucu belirsiz mail veya yorum otomatik tekrarlanmaz.
+
+Öneri aşamasındaki puan ağırlıkları: brief/mesaj %40, marka uyumu %25,
+uygulama/okunabilirlik %25, metin doğruluğu %10. Bu ağırlıklar gerçek WAT
+çıktısıyla karşılaştırılmadı; canlı kabul edilmiş kalite politikası değildir.
+
+6. SINIRLAR
+Sosyal içerik satırındaki aylık 30 toplam post/story, 2 müşteri revizyonu ve
+2 iş günü bilgisi kaydedildi. Bu şartlar her ATL/video işine otomatik yayılmaz.
+Hamle'nin iç kalite düzeltmeleri müşteri revizyon hakkından ayrı sayılır.
+İç düzeltmelerin kaç turdan sonra insana aktarılacağı canlı politika kabulünde
+belirlenecek; sistem sınırsız otomatik revizyon yapmayacak.
+
+Fiyat/ticari karar: Ahmet. Şikâyet/strateji: Cansu ve Ahmet.
+Sosyal gündem ve içerik planı: Hamle + Özge. Konkur: Ahmet ve Cansu.
+
+7. GERÇEK KABUL İÇİN KALANLAR
+- Tamamlanmış gerçek WAT briefi ile onaylanmış çıktısını karşılaştırmak.
+- Güncel onaylı marka dosyalarını sürümleriyle doğrulamak; klasörün varlığı yeterli değil.
+- Gerçek dosya/görsel/video incelemesini ve aşama takibini bulut işçisine bağlamak.
+- Çoklu mail ve Basecamp dönüşlerini kalıcı iş kayıtlarıyla birlikte çalıştırmak.
+- Gecikmiş aksiyonlar için görünür durdurma ve güncel yetki düzenini tamamlamak.
+- Önce iç uçtan uca, sonra geçmiş işte gölge ve sınırları belli müşteri kabulü.
+
+Hamle'ye ulaşmayan, CC'den çıkarıldığı yeni maili yalnız Hamle kutusundan görme
+sorunu çözülmedi. Yerel 300 saniyelik yetki kuralı 15 dakikalık taramayla otomatik
+uyumlu sayılmaz; bu açık sessizce süre uzatarak kapatılmayacak.
+
+Bu çalışma sırasında yeni müşteri maili, Basecamp görevi veya yorum gönderilmedi;
+ücretli model çağrısı yapılmadı. Eski canlı testlerin kayıtları korundu.
+
+8. GERÇEK WAT ÖRNEKLERİNDEN ÇIKAN KONTROLLER
+10309337809 — Ekim Tek Fiyat Kampanyası:
+21 yorum ve seçilen 6 PNG incelendi. İlk KV'deki eksik fiyat, Özge'nin sonradan
+verdiği revizyonla ve gerçek görsel içeriğiyle doğrulandı. Sonraki sürümde fiyat
+var. Aynı dosya adı farklı sürümlerde tekrar kullanılmış; yalnız dosya adıyla
+karar verilemez. Onay yorumunun önceki KV'ye ait olduğu zaman sırasından çıkarım;
+tam dosya parmak iziyle bağlanmış bir geçmiş onay kaydı değil. Yazılmayan bir
+telefon revizyonu da var; içeriği biliniyor sayılmadı. Arka plan asseti, metinli
+nihai kampanya görseliyle aynı ölçütlerde değerlendirilmemeli.
+
+10064527849 — Temmuz Ağustos Yaz Kampanyası İletişimi:
+71 yorum okundu. Ana tasarım seçimi, ardından Reels/STB/grid/mailing/web
+uyarlamaları ve sonraki dönem değişiklikleri ayrı aşamalar. Bir aşamadaki tarih
+talimatı bütün sonraki çıktılara taşınmamalı; her çıktı kendi güncel briefine bağlı
+olmalı. Yorumlardaki ekip devirleri, görev başlığındaki atama listesiyle aynı bilgi
+değil. ZIP/PSD ile üreticiye kaynak aktarımı, müşteriye hazır teslim anlamına gelmez.
+
+Bu iki inceleme geçmiş işlerden ders çıkarma çalışmasıdır. Canlı Hamle işçisinin
+bu dosyaları otomatik incelediği veya bütün WAT işlerinde kalite kabulünü geçtiği
+anlamına gelmez. Sayısal başarı puanı uydurulmadı; puan ağırlıkları taslak kalıyor.

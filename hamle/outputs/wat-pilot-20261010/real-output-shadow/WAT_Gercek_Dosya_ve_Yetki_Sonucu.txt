@@ -1,0 +1,38 @@
+WAT — Gerçek dosya kontrolü ve çalışma yetkisi
+10 Ekim 2026, son kayıt 2026-10-10T16:19:59.507395+00:00
+
+Sonuç: Gerçek dosyalarda bulut gölge kontrolleri tamamlandı. WAT müşteri otomasyonu açılmadı. Bu sonuç, bağımsız müşteri temsilcisi akışının uçtan uca kabulü değildir.
+
+DOĞRULANANLAR
+• Berkay'ın gerçek iki PNG dosyası: eksik 10,99 TL/kWh doğru yakalandı; fiyatın eklendiği sürüm doğru ayrıldı. Taslak puanlar 83,5 ve 94. Puanlar iki örneklik gözlemdir; bütün işler için doğruluk oranı veya kabul edilmiş genel rubrik değildir.
+• Samet'in gerçek iki MP4 dosyası: 1080×1920, 25 fps, H.264/AAC; süreler 10,72 ve 11,80 sn. Toplam 16 örnek kare ile iki gerçek 2,000 sn karesi bulutta çözümlendi. Tam video/ses kalite kabulü yapılmadı.
+• Yerel doğrudan kare incelemesi:2. saniyede Salı Modu ON var, kampanya başlığı/indirim rozeti yok.3. saniyede başlık var, indirim rozeti görünmüyor. Yazışmadaki “mümkünse” ifadesi bir tercih; otomatik ret şartı olarak katılaştırılmadı. Bu gözlem tam ilk görünme anını belirlemez.
+• Müzikli son video için tarihsel onay var; sonraki seslendirmeli sürümün ayrı onayı görülmedi. Onaylı ses kaynağı, son video miksinin onayı sayılmadı.
+• İki iş günlük görünür durdurma kuralı kodlandı. Gerçek bulut veritabanında sentetik iş devralındığında yetkisi iptal edildi, bekleyen çalışma kilidi kaldırıldı ve eski işlem yetkisi reddedildi. Hamle'nin görmediği CC'den çıkarma teknik olarak saptanmıyor.
+• İş bazında kontrol ekranı yayımlandı; Ahmet kimliğiyle kalıcı devralma durumu okundu. Bu aşamada yeni bir insan tıklaması yapılmadı.
+• En fazla 2 iç kalite düzeltme turu; sonra Özge/Ahmet/Cansu'dan birine devir. Müşterinin 2 revizyon hakkından ayrı, yalnız doğrulanmış düzeltme gönderimleri sayılıyor. Yeni dosya sürümü sayacı sıfırlamıyor.
+• Bulut işçisi ve kontrol servisi V10'a güncellendi. Dört elle başlatılan gölge çalışması başarılı. Tamamlanmış dosyanın tekrarında 0 yeni model çağrısı ve 0 iş yazımı var.
+
+DOĞRULAMA SINIRI
+Yerel ana takım 963 test: 957 geçti, 6 atlandı. Paketli Python medya takımı 71 test: 70 geçti, 1 atlandı. Bulut derlemesi gerçek OCR ve ffmpeg zaman damgası denemesini de geçti; ardından gerçek dosyalar bulutta işlendi. Bu test sayıları, canlı müşteri operasyonu kanıtı değildir.
+
+MALİYET
+İki Sol çağrısının token kaydına göre tahmini bedeli 0.070564USD (yaklaşık 7 sent). Fatura değildir; bulut maliyeti ayrıca mutabakat bekliyor. Ortak 50 USD bütçe kaydında ön ödeme ve rezervler dahil 22 USD bağlı, 28 USD serbest. Sağlayıcı düzeyinde sert harcama kesici kurulmuş değildir. Yetki 12 Ekim 2026 23.59 İstanbul sınırıyla devam eder.
+
+CANLIYA KALAN
+1. WAT mailini gerçek iş ve çalışma yetkisine bağlamak.
+2. Doğru marka listesinde Berkay→Samet görevlerini, tekrar yazmayı önleyen kalıcı kayıtla açmak.
+3. Basecamp değişikliklerini periyodik takibe, sorulara, aşamalara ve 2 iç tur sayacına bağlamak.
+4. Gerçek dosyanın marka/içerik/video/ses bulgularını kabul edilmiş kalite kararına bağlamak.
+5. Güncel alıcılar, aynı mail zinciri, doğru dosya sürümü ve durdurma kontrolüyle son teslimi uçtan uca kabul etmek.
+
+Bu aşamada müşteriye mail veya Basecamp'e yorum/görev gönderilmedi. Senden şu anda yeni bilgi gerekmiyor. Önceki 65 işlik planın ağırlıkları değiştirilmedi; gölge test sayısından yeni yüzde üretilmedi.
+
+KANITLAR
+acceptance-summary.json
+cloud-v10/shadow-private-readback.json
+cloud-v10/execution-receipts.json
+authority-cloud-probe.json
+samet-local-frame-observation.json
+WAT_Samet_Bulut_Dogrulama.txt
+WAT_Canliya_Gecis_Eksikleri.txt

@@ -1,0 +1,100 @@
+{
+  "recorded_at": "2026-10-10T02:44:59.345509+03:00",
+  "execution": "hamle-account-manager-6p2px",
+  "status": "human_strategy_review_required",
+  "proposal": {
+    "source_fingerprint": "cd7d0ff20a139272d56dc1c34aa2137db04448df1a1e4f13ff8a4318c1625209",
+    "approval": null,
+    "proposal_id": "p-a0627d6de33573f9284e8799b2b537af6da59d22bdfcff812158e64f3490067d",
+    "status": "awaiting_human_review",
+    "proposal_hash": "fd6389d4d9a39a2ac9707503fad3c1947bbba2b32ccb66a8a4c7706b6db7f9ae",
+    "created_at": 1791589321.445361,
+    "generation": 1,
+    "payload": {
+      "source": {
+        "thread_id": "1a122eec4ccdb53a",
+        "captured_at": "2026-10-09T23:40:29.656656+00:00",
+        "snapshot_fingerprint": "fb0f84f42ac7e49cd43fd58f9833c8861a002f722f4b6330c793b253255ce92f",
+        "message_id": "1a122eec4ccdb53a"
+      },
+      "analysis": {
+        "escalation": {
+          "owner": "cansu_and_ahmet",
+          "reason": "Talep stratejik konumlandırma, son çeyrek öncelikleri ve sektörel farklılaşma içerdiği için öncelikle Cansu ve Ahmet’in değerlendirmesine yönlendirilmeli. Sosyal medya gündemi, trendler ve dönemsel içerik planı boyutunu ise Özge ve Hamle birlikte ele almalı."
+        },
+        "task_draft": {
+          "due_at": null,
+          "description": "Amaç: Ajans hesabının aktifliğini ve sektörel farklılaşmasını artırırken iç iletişimi ve ekip motivasyonunu desteklemek.\n\nHazırlık: Öncelikli kanalları, dış hedef kitleyi ve paylaşılabilir malzemeleri netleştir. Strateji görüşmesi için trend seçme ölçütleri, içerik temaları, ekip katılımı seçenekleri ve başarı göstergeleri önerileri hazırla. Yayın ritmi önerisini kapasite değerlendirmesine bağlı tut.\n\nDeğerlendirme önerisi: Stratejik çerçeve Cansu ve Ahmet; sosyal medya gündemi ve içerik planı Özge ve Hamle tarafından ele alınmalı.\n\nSon çeyrek planlama dönemidir, onaylanmış teslim tarihi değildir. Teslim tarihi ve görev ataması açık; üretim kapasitesi değerlendirmesi gerekli.",
+          "title": "Gamechangers | Son çeyrek strateji ve içerik yaklaşımı taslağı",
+          "assignee": null
+        },
+        "intent": "complaint_strategy",
+        "missing_questions": [
+          "Hangi sosyal medya kanallarını önceliklendirelim?",
+          "Ajans hesabında öncelikli dış hedef kitle kim?",
+          "Son çeyrekte paylaşılabilecek proje, vaka ve ekip hikâyeleri neler?"
+        ],
+        "reply_draft": {
+          "body": "Selam Ahmet,\n\nSon çeyrekte Gamechangers hesabını daha aktif ve trendlerle uyumlu yönetirken iç iletişimi, ekip motivasyonunu ve sektörel görünürlüğü birlikte güçlendirmeyi hedefliyorsun.\n\nBaşlangıç için üç içerik ekseni öneriyorum:\n- Ajansın uzmanlığıyla örtüşen trendlere özgün yorumlar.\n- Paylaşımı uygun proje ve vakalarda yaklaşımımızı görünür kılan anlatılar.\n- Gönüllü ekip katkısıyla hazırlanan süreç ve öğrenim paylaşımları.\n\nHer akıma katılmak yerine bize uygun olanları seçmek ve yayın ritmini ekip kapasitesine göre belirlemek önemli. Önce stratejik öncelikleri sen ve Cansu’yla değerlendirmeyi; ardından içerik ve trend planını Özge’yle birlikte ele almayı öneriyorum.\n\nGörüşme taslağını şekillendirmek için:\n- Hangi sosyal medya kanallarını önceliklendirelim?\n- Ajans hesabında öncelikli dış hedef kitle kim?\n- Son çeyrekte paylaşılabilecek proje, vaka ve ekip hikâyeleri neler?\n\nSevgiler,\nHamle",
+          "subject": "Re: HAMLE-IC-IS-20261010-01"
+        },
+        "brief": {
+          "deliverables": [
+            "Son çeyrek strateji görüşmesi için öncelik ve sektörel farklılaşma önerileri",
+            "Trend seçme ölçütleri ve örnek içerik başlıkları",
+            "İç iletişimi ve ekip motivasyonunu destekleyen katılım önerileri",
+            "Kanallar ve hedef kitle netleştikten sonra değerlendirilecek içerik planı ve başarı göstergeleri taslağı"
+          ],
+          "audience": "İç iletişim boyutunda Gamechangers ekibi; ajans hesabının dış hedef kitlesi henüz belirtilmemiş.",
+          "requested_deadline": null,
+          "confirmed_deadline": null
+        },
+        "known_facts": [
+          "Talep Gamechangers’ın kendi ajans hesabıyla ilgili.",
+          "Hesabın daha aktif, trendlere ve akımlara uygun yönetilmesi hedefleniyor.",
+          "İç iletişimin ve ekip motivasyonunun desteklenmesi isteniyor.",
+          "Odak dönem yılın son çeyreği; teslim tarihi belirtilmemiş.",
+          "Kaynakta talebin yalnız Gamechangers iç denemesi olduğu ve müşteri gönderimi yetkisi bulunmadığı belirtiliyor."
+        ],
+        "request_summary": "Gamechangers’ın ajans hesabı için son çeyrekte trendlerle uyumlu, ekip motivasyonunu destekleyen ve sektörel farklılaşma sağlayacak bir yaklaşımın görüşülmesi isteniyor."
+      },
+      "reply": {
+        "thread_id": "1a122eec4ccdb53a",
+        "references": "<CAOOr=FimfFb65F0oZKxUtJHAsfk5-M5SrHzBZt9ZRB5s8LGe2g@mail.gmail.com>",
+        "body": "Selam Ahmet,\n\nSon çeyrekte Gamechangers hesabını daha aktif ve trendlerle uyumlu yönetirken iç iletişimi, ekip motivasyonunu ve sektörel görünürlüğü birlikte güçlendirmeyi hedefliyorsun.\n\nBaşlangıç için üç içerik ekseni öneriyorum:\n- Ajansın uzmanlığıyla örtüşen trendlere özgün yorumlar.\n- Paylaşımı uygun proje ve vakalarda yaklaşımımızı görünür kılan anlatılar.\n- Gönüllü ekip katkısıyla hazırlanan süreç ve öğrenim paylaşımları.\n\nHer akıma katılmak yerine bize uygun olanları seçmek ve yayın ritmini ekip kapasitesine göre belirlemek önemli. Önce stratejik öncelikleri sen ve Cansu’yla değerlendirmeyi; ardından içerik ve trend planını Özge’yle birlikte ele almayı öneriyorum.\n\nGörüşme taslağını şekillendirmek için:\n- Hangi sosyal medya kanallarını önceliklendirelim?\n- Ajans hesabında öncelikli dış hedef kitle kim?\n- Son çeyrekte paylaşılabilecek proje, vaka ve ekip hikâyeleri neler?\n\nSevgiler,\nHamle",
+        "to": [
+          "ahmet@gamechangers.com.tr"
+        ],
+        "from": "hamle@gamechangers.com.tr",
+        "cc": [],
+        "subject": "Re: HAMLE-IC-IS-20261010-01",
+        "in_reply_to": "<CAOOr=FimfFb65F0oZKxUtJHAsfk5-M5SrHzBZt9ZRB5s8LGe2g@mail.gmail.com>"
+      },
+      "task": {
+        "due_at": null,
+        "description": "Amaç: Ajans hesabının aktifliğini ve sektörel farklılaşmasını artırırken iç iletişimi ve ekip motivasyonunu desteklemek.\n\nHazırlık: Öncelikli kanalları, dış hedef kitleyi ve paylaşılabilir malzemeleri netleştir. Strateji görüşmesi için trend seçme ölçütleri, içerik temaları, ekip katılımı seçenekleri ve başarı göstergeleri önerileri hazırla. Yayın ritmi önerisini kapasite değerlendirmesine bağlı tut.\n\nDeğerlendirme önerisi: Stratejik çerçeve Cansu ve Ahmet; sosyal medya gündemi ve içerik planı Özge ve Hamle tarafından ele alınmalı.\n\nSon çeyrek planlama dönemidir, onaylanmış teslim tarihi değildir. Teslim tarihi ve görev ataması açık; üretim kapasitesi değerlendirmesi gerekli.",
+        "title": "Gamechangers | Son çeyrek strateji ve içerik yaklaşımı taslağı",
+        "todo_parent_id": 10384126975,
+        "project_id": 49184053,
+        "assignee_id": 53358100,
+        "account_id": 5898865,
+        "todo_parent_type": "Todoset"
+      },
+      "scope": "gamechangers_internal"
+    }
+  },
+  "model": "gpt-6-astra",
+  "reasoning_effort": "max",
+  "model_calls": 1,
+  "usage": {
+    "input_tokens": 1302,
+    "output_tokens": 4672,
+    "reasoning_tokens": 3624,
+    "total_tokens": 5974
+  },
+  "standard_uncached_token_cost_estimate_usd": "0.24662",
+  "estimate_is_provider_invoice": false,
+  "budget_hold_retained_usd": "1",
+  "business_writes": 0,
+  "strategy_escalation_resolved": false
+}

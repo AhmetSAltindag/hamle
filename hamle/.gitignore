@@ -1,0 +1,5 @@
+.env*
+work/private-connections/
+**/.venv/
+**/__pycache__/
+work/cloud-tools/

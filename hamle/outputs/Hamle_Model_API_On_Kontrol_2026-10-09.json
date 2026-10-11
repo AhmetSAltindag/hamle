@@ -1,0 +1,24 @@
+{
+  "checked_at": "2026-10-09T23:57:40.483707+03:00",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning": "ultra",
+  "official_model_present": true,
+  "official_supported_reasoning": [
+    "low",
+    "medium",
+    "high",
+    "xhigh",
+    "max"
+  ],
+  "ultra_documented": false,
+  "source": "https://developers.openai.com/api/docs/models/gpt-6-astra",
+  "account_api_access_verified": false,
+  "fallback_selected": false,
+  "api_key_created": false,
+  "plugin_suggested": "OpenAI Developers",
+  "proposed_alternative_requires_user_decision": null,
+  "selected_model": "gpt-6-astra",
+  "selected_reasoning": "max",
+  "user_approved_api_reasoning": true,
+  "user_approval": "Evet, Astra + max ile dene."
+}

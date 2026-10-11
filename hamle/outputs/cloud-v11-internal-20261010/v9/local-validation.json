@@ -1,0 +1,8 @@
+{
+  "status": "passed",
+  "recorded_at": "2026-10-10T15:06:09.466953+00:00",
+  "result": "----------------------------------------------------------------------\nRan 777 tests in 1.904s\n\nOK (skipped=4)",
+  "regression": "real advancing clock + same-provider-file QA recovery",
+  "model_calls": 0,
+  "business_writes": 0
+}

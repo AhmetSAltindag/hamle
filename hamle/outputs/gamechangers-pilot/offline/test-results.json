@@ -1,0 +1,270 @@
+{
+  "mode": "offline_synthetic_only",
+  "fixture_time": "2026-10-07T09:00:00+03:00",
+  "executed_at_utc": "2026-10-10T16:42:44.881886+00:00",
+  "requested_scenarios": 14,
+  "requested_scenario_rule_tests": 14,
+  "additional_to_cc_authority_tests": 13,
+  "mail_authority_rule": "latest_observed_verified_inbound_direct_to_or_cc_exact_hamle_address",
+  "total_tests": 35,
+  "passed": 35,
+  "failed": 0,
+  "errors": 0,
+  "real_provider_sends": 0,
+  "llm_calls": 0,
+  "production_acceptance": "NOT_EVALUATED",
+  "unverified": [
+    "Gmail / Basecamp / cloud runtime / scheduler delivery",
+    "Authenticity of provider headers/order, mailbox visibility and real adapter parsing",
+    "Semantic classification, brand matching and cross-channel correlation",
+    "LLM prompt injection resilience and factual extraction",
+    "Real artifact QA, end-to-end human workflow and production race safety"
+  ],
+  "tests": [
+    {
+      "id": "test_01_complete_and_incomplete_brief",
+      "status": "passed",
+      "description": "Required structured fields pass; absent production blocker rejects.",
+      "level": "offline_rule_fixture",
+      "real_provider_delivery_tested": false
+    },
+    {
+      "id": "test_02_previously_answered_question",
+      "status": "passed",
+      "description": "A structured historical answer suppresses repeating that question.",
+      "level": "offline_rule_fixture",
+      "real_provider_delivery_tested": false
+    },
+    {
+      "id": "test_03_unreadable_attachment",
+      "status": "passed",
+      "description": "Attachment read/verification failure cannot be treated as reviewed.",
+      "level": "offline_rule_fixture",
+      "real_provider_delivery_tested": false
+    },
+    {
+      "id": "test_04_wrong_brand_asset",
+      "status": "passed",
+      "description": "Cross-brand asset rejected before action; cross-brand read rejected.",
+      "level": "offline_rule_fixture",
+      "real_provider_delivery_tested": false
+    },
+    {
+      "id": "test_05_expired_campaign_information",
+      "status": "passed",
+      "description": "A past valid-until date blocks use despite a current metadata label.",
+      "level": "offline_rule_fixture",
+      "real_provider_delivery_tested": false
+    },
+    {
+      "id": "test_06_conflicting_customer_instructions",
+      "status": "passed",
+      "description": "Structured unresolved conflict blocks related commitment.",
+      "level": "offline_rule_fixture",
+      "real_provider_delivery_tested": false
+    },
+    {
+      "id": "test_07_last_minute_scope_change",
+      "status": "passed",
+      "description": "Prior brief remains immutable; changed scope blocks only new commitment.",
+      "level": "offline_rule_fixture",
+      "real_provider_delivery_tested": false
+    },
+    {
+      "id": "test_08_same_request_across_channels",
+      "status": "passed",
+      "description": "Explicitly correlated channel IDs share one job and one action key.",
+      "level": "offline_rule_fixture",
+      "real_provider_delivery_tested": false
+    },
+    {
+      "id": "test_09_disconnect_during_send",
+      "status": "passed",
+      "description": "Uncertain simulated transport survives restart; replay is blocked.",
+      "level": "offline_rule_fixture",
+      "real_provider_delivery_tested": false
+    },
+    {
+      "id": "test_10_human_already_answered",
+      "status": "passed",
+      "description": "Human takeover blocks pending/active replies and further brief edits.",
+      "level": "offline_rule_fixture",
+      "real_provider_delivery_tested": false
+    },
+    {
+      "id": "test_11_rejected_or_late_producer",
+      "status": "passed",
+      "description": "Rejection/lateness requests reassignment; no invented capacity promise.",
+      "level": "offline_rule_fixture",
+      "real_provider_delivery_tested": false
+    },
+    {
+      "id": "test_12_unauthorized_approval",
+      "status": "passed",
+      "description": "Only listed approver plus exact file version and evidence is accepted.",
+      "level": "offline_rule_fixture",
+      "real_provider_delivery_tested": false
+    },
+    {
+      "id": "test_13_unsupported_product_claim",
+      "status": "passed",
+      "description": "A structured product claim lacking verified source is blocked.",
+      "level": "offline_rule_fixture",
+      "real_provider_delivery_tested": false
+    },
+    {
+      "id": "test_14_external_instruction_cannot_change_grants",
+      "status": "passed",
+      "description": "Body remains inert data; unauthorized recipient remains blocked.",
+      "level": "offline_rule_fixture",
+      "real_provider_delivery_tested": false
+    },
+    {
+      "id": "test_15_schedule_21_weekday_controls",
+      "status": "passed",
+      "description": "Inclusive 08:30–18:30 Istanbul, half-hours, no weekend control.",
+      "level": "offline_rule_fixture",
+      "real_provider_delivery_tested": false
+    },
+    {
+      "id": "test_16_stop_pending_and_active_boundary",
+      "status": "passed",
+      "description": "Stop is rechecked after dispatch intent and before synthetic effect.",
+      "level": "offline_rule_fixture",
+      "real_provider_delivery_tested": false
+    },
+    {
+      "id": "test_17_checkpoint_and_read_failure",
+      "status": "passed",
+      "description": "Read failure preserves last success and is recorded as failure.",
+      "level": "offline_rule_fixture",
+      "real_provider_delivery_tested": false
+    },
+    {
+      "id": "test_18_competing_workers_and_one_dispatch",
+      "status": "passed",
+      "description": "Two database connections cannot both lease or dispatch one action.",
+      "level": "offline_rule_fixture",
+      "real_provider_delivery_tested": false
+    },
+    {
+      "id": "test_19_archive_and_autoreply_do_not_open_jobs",
+      "status": "passed",
+      "description": "Backfill and automatic messages stay non-actionable.",
+      "level": "offline_rule_fixture",
+      "real_provider_delivery_tested": false
+    },
+    {
+      "id": "test_20_wrong_recipient_thread_role_and_private_fields",
+      "status": "passed",
+      "description": "Explicit routing/role guards plus narrow production-brief projection.",
+      "level": "offline_rule_fixture",
+      "real_provider_delivery_tested": false
+    },
+    {
+      "id": "test_21_key_collision_and_dispatch_intent_crash",
+      "status": "passed",
+      "description": "Changed payload cannot reuse key; crash after intent becomes unknown.",
+      "level": "offline_rule_fixture",
+      "real_provider_delivery_tested": false
+    },
+    {
+      "id": "test_22_stale_active_brief_rechecked",
+      "status": "passed",
+      "description": "Brief revision after dispatch intent invalidates old outgoing action.",
+      "level": "offline_rule_fixture",
+      "real_provider_delivery_tested": false
+    },
+    {
+      "id": "test_23_exact_current_to_or_cc_allows_event",
+      "status": "passed",
+      "description": "Exact address in verified direct To OR CC grants only that event.",
+      "level": "offline_rule_fixture",
+      "real_provider_delivery_tested": false
+    },
+    {
+      "id": "test_24_indirect_mentions_and_similar_addresses_never_grant",
+      "status": "passed",
+      "description": "Body/quoted headers/BCC/mailbox/delivery copy/near-address are not To/CC.",
+      "level": "offline_rule_fixture",
+      "real_provider_delivery_tested": false
+    },
+    {
+      "id": "test_25_latest_removal_stops_email_and_basecamp_actions",
+      "status": "passed",
+      "description": "A legitimately observed removal stops existing outbound actions and briefs.",
+      "level": "offline_rule_fixture",
+      "real_provider_delivery_tested": false
+    },
+    {
+      "id": "test_26_missing_uncertain_or_mismatched_evidence_fails_closed",
+      "status": "passed",
+      "description": "Missing/uncertain/current-message-mismatched headers cannot authorize.",
+      "level": "offline_rule_fixture",
+      "real_provider_delivery_tested": false
+    },
+    {
+      "id": "test_27_own_outbound_mail_cannot_loop_or_revoke",
+      "status": "passed",
+      "description": "Own From or outbound direction is inert even when To/CC includes Hamle.",
+      "level": "offline_rule_fixture",
+      "real_provider_delivery_tested": false
+    },
+    {
+      "id": "test_28_archive_learning_and_autoreply_cannot_reauthorize",
+      "status": "passed",
+      "description": "Archive replay/automated mail never reopens a revoked live grant.",
+      "level": "offline_rule_fixture",
+      "real_provider_delivery_tested": false
+    },
+    {
+      "id": "test_29_explicit_reinclusion_is_new_authority_not_old_action_replay",
+      "status": "passed",
+      "description": "Fresh direct inclusion authorizes a fresh brief; old actions stay stopped.",
+      "level": "offline_rule_fixture",
+      "real_provider_delivery_tested": false
+    },
+    {
+      "id": "test_30_out_of_order_and_ambiguous_mail_order",
+      "status": "passed",
+      "description": "Older fetched mail never reopens or revokes; equal new order fails closed.",
+      "level": "offline_rule_fixture",
+      "real_provider_delivery_tested": false
+    },
+    {
+      "id": "test_31_removal_at_boundary_preserves_unknown_and_accepted_results",
+      "status": "passed",
+      "description": "Observed removal stops pre-effect intent; accepted/unknown effects are not undone.",
+      "level": "offline_rule_fixture",
+      "real_provider_delivery_tested": false
+    },
+    {
+      "id": "test_32_event_bound_brief_and_native_basecamp_cannot_bypass_removal",
+      "status": "passed",
+      "description": "An unauthorized mail cannot drive a brief; another channel cannot reset its gate.",
+      "level": "offline_rule_fixture",
+      "real_provider_delivery_tested": false
+    },
+    {
+      "id": "test_33_revocation_survives_restart_and_is_thread_scoped",
+      "status": "passed",
+      "description": "Revocation is durable; independently included other-thread work remains runnable.",
+      "level": "offline_rule_fixture",
+      "real_provider_delivery_tested": false
+    },
+    {
+      "id": "test_34_archive_duplicate_of_live_id_is_not_actionable",
+      "status": "passed",
+      "description": "Replaying an already live message as archive/automatic does not return a job.",
+      "level": "offline_rule_fixture",
+      "real_provider_delivery_tested": false
+    },
+    {
+      "id": "test_35_unknown_order_needs_explicit_freshness_resolution",
+      "status": "passed",
+      "description": "Higher sequence cannot outrank unknown-order mail without trusted resolution.",
+      "level": "offline_rule_fixture",
+      "real_provider_delivery_tested": false
+    }
+  ]
+}

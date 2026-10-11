@@ -1,0 +1,425 @@
+{
+  "recorded_at": "2026-10-10T16:19:59.507395+00:00",
+  "stage": "wat_real_output_shadow_and_work_authority_v10",
+  "previous_status_preserved": "wat-status-before-real-shadow-20261010.json",
+  "wat_customer_live_enabled": false,
+  "new_customer_intake_to_delivery_acceptance": false,
+  "cloud": {
+    "build_id": "4a73cbff-7401-44d1-a7a7-8db36fc6cf18",
+    "image_digest": "sha256:351ad45315de569881aa064a32f5578b14960f3f4d535b8a875b2e7e28ca2e5e",
+    "job_deployed": true,
+    "control_revision": "hamle-control-00007-lpd",
+    "control_traffic_percent": 100,
+    "default_entrypoint": [
+      "worker.py",
+      "--mode",
+      "scheduled_review"
+    ],
+    "manual_shadow_execution_names": [
+      "hamle-account-manager-2cq6w",
+      "hamle-account-manager-z7qt9",
+      "hamle-account-manager-ngn8b",
+      "hamle-account-manager-q8s4l"
+    ],
+    "not_proof_of_scheduler_trigger": true
+  },
+  "user_choices": {
+    "human_quality_approval_any_one": [
+      "Özge",
+      "Ahmet",
+      "Cansu"
+    ],
+    "score_bands": {
+      "automatic_candidate": "90 through100",
+      "human_review": "80 inclusive to90 exclusive",
+      "revision": "below80"
+    },
+    "social_video_list": "Sosyal Medya",
+    "design_then_animation": [
+      "Berkay",
+      "Samet"
+    ],
+    "maximum_internal_quality_revision_rounds_per_work": 2,
+    "separate_from_customer_revision_limit": true,
+    "after_limit": "any_one_ozge_ahmet_cansu",
+    "visible_stop_two_business_day_work_authority_accepted": true
+  },
+  "image_shadow": {
+    "a": {
+      "source_sha256": "af2cedaa20b48305e5bd35b9b18216e9af7247561dbf9d9b0e2aef71cc7b5dd5",
+      "assessment": {
+        "full_video_review": false,
+        "rights_verified": false,
+        "live_enabled": false,
+        "exact_logo_master_verified": false,
+        "provisional_weighted_score": 83.5,
+        "failed_requirements": [
+          "price"
+        ],
+        "customer_approval_verified": false,
+        "unknown_requirements": [],
+        "provisional_route": "revision_candidate",
+        "action_eligible": false,
+        "weights_status": "draft_not_accepted",
+        "exact_font_verified": false
+      },
+      "expected_price_check_passed": true,
+      "response_id": "resp_02804710f1e101ef016aca63a6356c87d1a7ae03fd5cbacfe4",
+      "usage": {
+        "input_tokens": 11876,
+        "output_tokens": 1147,
+        "input_tokens_details": {
+          "cached_tokens": 0
+        },
+        "total_tokens": 13023,
+        "output_tokens_details": {
+          "reasoning_tokens": 73
+        }
+      }
+    },
+    "b": {
+      "source_sha256": "0b855872d2104e3dcebcb260cccdd5bf16adf123f05567ea44eb7c10f1eb4bbf",
+      "assessment": {
+        "full_video_review": false,
+        "rights_verified": false,
+        "exact_font_verified": false,
+        "customer_approval_verified": false,
+        "provisional_weighted_score": 94.0,
+        "failed_requirements": [],
+        "live_enabled": false,
+        "unknown_requirements": [],
+        "provisional_route": "quality_candidate",
+        "action_eligible": false,
+        "weights_status": "draft_not_accepted",
+        "exact_logo_master_verified": false
+      },
+      "expected_price_check_passed": true,
+      "response_id": "resp_0a312557970611d6016aca6474733887d1a80789089e162e00",
+      "usage": {
+        "input_tokens": 11871,
+        "input_tokens_details": {
+          "cached_tokens": 0
+        },
+        "output_tokens": 1160,
+        "total_tokens": 13031,
+        "output_tokens_details": {
+          "reasoning_tokens": 122
+        }
+      }
+    }
+  },
+  "video_shadow": {
+    "real_videos": 2,
+    "technical_checks_passed": 2,
+    "sampled_frames_with_ocr": 16,
+    "timestamp_verified_frames": 2,
+    "two_second_cloud_text_check": "unassessed",
+    "local_direct_frame_review": "samet-local-frame-observation.json",
+    "full_semantic_audio_acceptance": false,
+    "timing_word_mumkunse_is_soft_preference": true
+  },
+  "authority": {
+    "decision_file": "work-authority-user-decision-20261010.json",
+    "real_firestore_synthetic_stop_probe": "real-output-shadow/authority-cloud-probe.json",
+    "grant_revoked_and_stale_write_refused": true,
+    "iap_control_work_view_readback_verified": true,
+    "new_human_ui_click_this_stage": false,
+    "received_stop_scan_wired_before_scheduled_model_work": true,
+    "new_customer_grant_intake_wiring_complete": false,
+    "unseen_cc_removal_detected": false
+  },
+  "validation": {
+    "status": "passed",
+    "checked_at": "2026-10-10T16:03:24.122370+00:00",
+    "tests_run": 963,
+    "tests_passed": 957,
+    "skipped": 6,
+    "failed": 0,
+    "log_sha256": "208690ff6ebb3e9df764ad944734fa3b3895fc4714b40178d3bcf18ba3b967b5",
+    "source_manifest": {
+      "schema_version": 1,
+      "package": "app-source-20261010-v10",
+      "source_allowlist_count": 45,
+      "credentials_included": false,
+      "files": [
+        {
+          "path": "Dockerfile",
+          "bytes": 1420,
+          "sha256": "28066c229b74a5ed56d74e4da59184b7d91f26a0987fc11174b1577c2e5497cb"
+        },
+        {
+          "path": "cloudbuild.yaml",
+          "bytes": 522,
+          "sha256": "6e54b4e82b75ef37c58bb46ce27c1219f35011e1444f2237992cbd045baaa077"
+        },
+        {
+          "path": "requirements-cloud.txt",
+          "bytes": 820,
+          "sha256": "75e6dd8b114f6a33110d11f3a8060a957ee10a6a9080135e1faeafc779b04d1d"
+        },
+        {
+          "path": "work/hamle-account-manager/account_manager_prompt.txt",
+          "bytes": 4034,
+          "sha256": "47e93b3d5de26c0d880144f9a468713fb57c78faa66752eeda9bd0b0b13e55e2"
+        },
+        {
+          "path": "work/hamle-account-manager/autonomy_policy.py",
+          "bytes": 27241,
+          "sha256": "e2c7a7a795e6878a55e86d4f18864e564f63b44249f70549d05a02f1ef52b6f8"
+        },
+        {
+          "path": "work/hamle-account-manager/basecamp_cloud_auth.py",
+          "bytes": 22065,
+          "sha256": "bb0f02690cc3f890a4acbf594c5b78ddd8f00e2ca5a48c274a7abe11b23ecb3b"
+        },
+        {
+          "path": "work/hamle-account-manager/business_writers.py",
+          "bytes": 22845,
+          "sha256": "d4ee1fb48d2cb34f6cdaede6cf0005b6a70367b6acf513cdd73503d1a959aa27"
+        },
+        {
+          "path": "work/hamle-account-manager/cloud_control.py",
+          "bytes": 34676,
+          "sha256": "662c7f2af6e7b2a2c54d3f0c452cbd69d46fb069fdc627435169f4a9cfb040fd"
+        },
+        {
+          "path": "work/hamle-account-manager/cloud_providers.py",
+          "bytes": 33198,
+          "sha256": "f9609bf99290e2b8fd6cf0e9f7dbd54bbaa99e3bb36e702c6b752a16740d844e"
+        },
+        {
+          "path": "work/hamle-account-manager/cloud_store.py",
+          "bytes": 55939,
+          "sha256": "3d4e01224110b7762f55e5593fcfbcde9c4744dc3d6f3a7a06a41f6547e61012"
+        },
+        {
+          "path": "work/hamle-account-manager/cloud_ui.html",
+          "bytes": 21454,
+          "sha256": "29be2ddbe6c0403888d2b9fdc2af476af11f533a8d8be31de75de250c4f39413"
+        },
+        {
+          "path": "work/hamle-account-manager/dispatch.py",
+          "bytes": 12589,
+          "sha256": "8b53ed9490b0a0f3dfdc4cdedaee3c5963d291c1f3a43d54b12decd2bff94319"
+        },
+        {
+          "path": "work/hamle-account-manager/internal_ocr_smoke.py",
+          "bytes": 3062,
+          "sha256": "01213bfce76eddc18ca30035470fa1e54d696af43d7951a77a158d09695e47e7"
+        },
+        {
+          "path": "work/hamle-account-manager/model.py",
+          "bytes": 15881,
+          "sha256": "8bb4eaa5135c7cb8465bddd2b5faa18a5ca6068d80d5a89b99071c1093927dc5"
+        },
+        {
+          "path": "work/hamle-account-manager/model_profiles.py",
+          "bytes": 2381,
+          "sha256": "21c772f3fac46eb4c46dc5a86310f521f3a7fa886b7e1872a9f23db38597cd13"
+        },
+        {
+          "path": "work/hamle-account-manager/recipient_policy.py",
+          "bytes": 1679,
+          "sha256": "8bfdb7788b3c9933d11e0b629740f708df39988af8dc25ca25eb4d30b178a380"
+        },
+        {
+          "path": "work/hamle-account-manager/v11_artifact_inspector.py",
+          "bytes": 26895,
+          "sha256": "122706f2bde627a1479c49351f98db09f49e8a0b9ff21c87ffe724048e159a07"
+        },
+        {
+          "path": "work/hamle-account-manager/v11_delivery.py",
+          "bytes": 35594,
+          "sha256": "c5481512fc86844cbdc40a6fcce7a145778d12be081e80f414c784be29456574"
+        },
+        {
+          "path": "work/hamle-account-manager/v11_internal_providers.py",
+          "bytes": 23513,
+          "sha256": "91b9d4d25f44640326d0112de7ef0e1e3474ba7c22bacc92c6cc3d975716778c"
+        },
+        {
+          "path": "work/hamle-account-manager/v11_internal_quality.py",
+          "bytes": 17811,
+          "sha256": "2a3f7624b5f29d3cf9e2e632bb41b491645fa2d2aa5e600821d0d549c289fe40"
+        },
+        {
+          "path": "work/hamle-account-manager/v11_internal_state.py",
+          "bytes": 15317,
+          "sha256": "b4093aa1fab15c3b94f7da28235ef89474863e22136afa69a15785bcae14ef26"
+        },
+        {
+          "path": "work/hamle-account-manager/v11_internal_worker.py",
+          "bytes": 24821,
+          "sha256": "76a3a95f54b706a8ad529bca62bbff5e22e6a1db7361b81486dfd230ecf29939"
+        },
+        {
+          "path": "work/hamle-account-manager/v11_production_stages.py",
+          "bytes": 20691,
+          "sha256": "bc71e93a00895545595ab4c249efa975162d46b905ef64cf74c7c53b7b9fada8"
+        },
+        {
+          "path": "work/hamle-account-manager/v11_quality_gate.py",
+          "bytes": 19084,
+          "sha256": "29682b3c9811986c5cd9f1e2820d0fb9f568ca1cdbae35803aaacf615e35afd8"
+        },
+        {
+          "path": "work/hamle-account-manager/v11_stop_intake.py",
+          "bytes": 7896,
+          "sha256": "859a2c9daf7b878191ddcf8cac30d16aa4497b9bb3979cc7340223d2c2d70797"
+        },
+        {
+          "path": "work/hamle-account-manager/v11_wat_media_inspector.py",
+          "bytes": 19627,
+          "sha256": "d0e601e898d5c3d1159fc3dbb3b2c261c74a44a7b9fa63dc968099d3092807d7"
+        },
+        {
+          "path": "work/hamle-account-manager/v11_wat_readonly.py",
+          "bytes": 10868,
+          "sha256": "b02c8a354c3f4eb24d784ea2dc79e1d94fbace84ceede712bb5e751a94807f51"
+        },
+        {
+          "path": "work/hamle-account-manager/v11_wat_shadow_worker.py",
+          "bytes": 10654,
+          "sha256": "dc85d14d7f0e316179f0f4df2b1f804282d46e9d0b6ce015decaaa0a31157ea7"
+        },
+        {
+          "path": "work/hamle-account-manager/v11_wat_timed_frame.py",
+          "bytes": 9992,
+          "sha256": "43dae3c550b386d9ac978293624f1bd49105bf279489a35a08b55d8bbe173b1c"
+        },
+        {
+          "path": "work/hamle-account-manager/v11_wat_video_shadow.py",
+          "bytes": 9081,
+          "sha256": "194da0e42a1f092444b07619ab06356f04c91da9cd9d40bd50ebecb5959d09e7"
+        },
+        {
+          "path": "work/hamle-account-manager/v11_wat_vision.py",
+          "bytes": 15453,
+          "sha256": "ca5b50177308f85bf0ec24f16fbae6428d041076ab46015688776d2fc0fc907d"
+        },
+        {
+          "path": "work/hamle-account-manager/v11_work_authority.py",
+          "bytes": 28395,
+          "sha256": "b5c77d09c8719a652ac62c430395a97cde29ca80db2dbecc906a689b31bb1715"
+        },
+        {
+          "path": "work/hamle-account-manager/v11_work_authority_store.py",
+          "bytes": 23129,
+          "sha256": "42bdaa25df500746171ba3b12672f2b53f49953b89405b919c41200002230a8b"
+        },
+        {
+          "path": "work/hamle-account-manager/v11_work_queue.py",
+          "bytes": 23062,
+          "sha256": "537abcfa733144563f25dadb1b9b3def61435c55f030cbf0bb3b8105c93eec8f"
+        },
+        {
+          "path": "work/hamle-account-manager/wat-reference/detail-03.png",
+          "bytes": 267961,
+          "sha256": "ddac364723e25ae8c78a4c4212103e9178bd66f700e7ca710edea5beceb84d72"
+        },
+        {
+          "path": "work/hamle-account-manager/wat-reference/detail-08.png",
+          "bytes": 160386,
+          "sha256": "5b4b424b37eda89f31e7c9aad47ba71a3d8fc79c6822a47e6b9bf0bc600cb0f8"
+        },
+        {
+          "path": "work/hamle-account-manager/wat-reference/detail-09.png",
+          "bytes": 282937,
+          "sha256": "2721cfa364853e90999ba80dee2890948f8fb714e18c6aad398484a721729dcb"
+        },
+        {
+          "path": "work/hamle-account-manager/wat-shadow-cases.json",
+          "bytes": 9337,
+          "sha256": "a3256215fe0781af1c13ce78c60adbd90ce4febfe4622282a10d1d27d4242a53"
+        },
+        {
+          "path": "work/hamle-account-manager/wat-video-shadow-cases.json",
+          "bytes": 2743,
+          "sha256": "4e00cfb7f5c81bf0f4d2979a7bb47f56e4ff8a50dbdec3e0a10e53ae9c4a43b1"
+        },
+        {
+          "path": "work/hamle-account-manager/wat_media_smoke.py",
+          "bytes": 2882,
+          "sha256": "a82bcc6a1c75db6047f115508acebff0a0dd0336a92900cc6270b907e79b14b1"
+        },
+        {
+          "path": "work/hamle-account-manager/worker.py",
+          "bytes": 35184,
+          "sha256": "95c9808818a04d7b604bb755ca4a9442dd80565ffba2b7b1ab6f0eabac330fcc"
+        },
+        {
+          "path": "work/hamle-gmail-connector/hamle_gmail.py",
+          "bytes": 21747,
+          "sha256": "f3ca3a6353ab5be1f9f0fe87c566b5f48fd64e6e41c99aed5cd2db816d7cddcd"
+        },
+        {
+          "path": "work/hamle-internal-intake/intake.py",
+          "bytes": 13260,
+          "sha256": "e5fc976a7753f39865a47fbee651a78b6063714ea5b0a60f945be785c0728286"
+        },
+        {
+          "path": "work/hamle-workflow/gmail_full_reader.py",
+          "bytes": 7664,
+          "sha256": "efed6de0e8c89f1e2cd9f16529a05a7280158f7970b2daea1a9bba0c2ffeaf0e"
+        },
+        {
+          "path": "work/hamle-workflow/mail_ingest.py",
+          "bytes": 15681,
+          "sha256": "fdd50ac28f2efd5fb1d52630fc22afe70461268e649afed26549384331c35427"
+        }
+      ]
+    },
+    "container_real_media_smoke_required": true,
+    "model_calls": 0,
+    "business_writes": 0
+  },
+  "cost": {
+    "paid_model_calls": 2,
+    "model": "gpt-6.1-sol",
+    "reasoning_effort": "medium",
+    "token_estimate_usd": 0.070564,
+    "estimate_is_invoice": false,
+    "cloud_invoice_reconciliation_pending": true,
+    "budget_readback": {
+      "limit_microdollars": 50000000,
+      "accounted_spend_microdollars": 0,
+      "held_microdollars": 19000000,
+      "prepaid_purchases_microdollars": 10000000,
+      "total_committed_microdollars": 22000000,
+      "remaining_microdollars": 28000000,
+      "overrun_hold": false,
+      "provider_hard_cap_installed": false
+    },
+    "shared_budget_deadline_istanbul": "2026-10-12T23:59:59+03:00"
+  },
+  "replay": {
+    "business_writes": 0,
+    "case": "a",
+    "new_model_calls": 0,
+    "result_sha256": "d7a452eaf969d002f320f1362795e73e129ed8ff8971dc17ca7953567005156d",
+    "state": "already_completed"
+  },
+  "actions_this_stage": {
+    "gmail_sends": 0,
+    "basecamp_business_writes": 0,
+    "new_iam_or_secret_permissions": false,
+    "customer_live_activated": false
+  },
+  "remaining_required": [
+    "Connect authorized WAT email intake to durable work, classification and current work grant.",
+    "Connect WAT lists/real producer assignment to durable fenced Basecamp writes.",
+    "Connect periodic Basecamp changes, staged progression and confirmed two-round counter.",
+    "Connect calibrated real-file visual/video/audio evidence to actual delivery decisions.",
+    "Accept final same-thread delivery with exact current recipient, scope, file-version and stop checks."
+  ],
+  "original_plan_unchanged": {
+    "total_items": 65,
+    "completed_items": 21,
+    "open_items": 44,
+    "weighted_points": 30,
+    "total_points": 100,
+    "weights_changed": false
+  },
+  "no_new_percentage_claim": "Original65item plan weights unchanged; no completion percentage recomputed from shadow tests.",
+  "current_user_input_needed": "None for next technical integration. Existing scope/decisions must not be asked again."
+}

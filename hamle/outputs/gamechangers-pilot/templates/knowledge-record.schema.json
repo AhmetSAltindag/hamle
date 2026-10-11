@@ -1,0 +1,509 @@
+{
+  "type": "object",
+  "required": [
+    "schema_version",
+    "record_id",
+    "zone",
+    "record_version",
+    "brand_id",
+    "subject",
+    "content",
+    "sources",
+    "authority",
+    "validity",
+    "status",
+    "created_at",
+    "updated_at",
+    "supersedes_record_id",
+    "superseded_by_record_id",
+    "access",
+    "review"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "record_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "zone": {
+      "enum": [
+        "agency",
+        "brand",
+        "work",
+        "external_reputation"
+      ]
+    },
+    "record_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "brand_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "subject": {
+      "type": "object",
+      "required": [
+        "title",
+        "product_id",
+        "campaign_id",
+        "work_id"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "product_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "campaign_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "work_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "content": {
+      "type": "object",
+      "description": "Alanların kaynakları farklıysa ayrı kayıt oluştur veya alan düzeyinde kaynak eşlemesi tut."
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/source"
+      },
+      "minItems": 1
+    },
+    "authority": {
+      "$ref": "#/$defs/authority"
+    },
+    "validity": {
+      "type": "object",
+      "required": [
+        "valid_from",
+        "valid_until",
+        "scope",
+        "channels",
+        "territories",
+        "checked_at"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "valid_from": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "valid_until": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "scope": {
+          "type": "string",
+          "minLength": 1
+        },
+        "channels": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "territories": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "checked_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        }
+      }
+    },
+    "status": {
+      "enum": [
+        "güncel",
+        "geçmiş",
+        "öneri",
+        "reddedilmiş",
+        "tartışmalı",
+        "doğrulanmamış"
+      ]
+    },
+    "created_at": {
+      "type": "string",
+      "minLength": 1,
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "minLength": 1,
+      "format": "date-time"
+    },
+    "supersedes_record_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "superseded_by_record_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "access": {
+      "type": "object",
+      "required": [
+        "classification",
+        "allowed_roles",
+        "brand_partition",
+        "client_visible",
+        "redactions_applied"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "classification": {
+          "enum": [
+            "agency_internal",
+            "brand_private",
+            "work_private",
+            "client_deliverable",
+            "public_source"
+          ]
+        },
+        "allowed_roles": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "account_manager",
+              "copywriter",
+              "graphic_designer",
+              "motion_designer",
+              "authorized_human"
+            ]
+          },
+          "minItems": 1
+        },
+        "brand_partition": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "client_visible": {
+          "type": "boolean"
+        },
+        "redactions_applied": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "review": {
+      "type": "object",
+      "required": [
+        "checked_by",
+        "checked_at",
+        "conflicts_with",
+        "missing_evidence",
+        "next_review_at",
+        "decision_required"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "checked_by": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "checked_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "conflicts_with": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "missing_evidence": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "next_review_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "decision_required": {
+          "type": "boolean"
+        }
+      }
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:gamechangers:knowledge-record:1.0.0",
+  "title": "Gamechangers kaynaklı bilgi kaydı",
+  "description": "Gerçek kalıcı bilgi kayıtları içindir. Null alanlı başlangıç şablonları doğrulanmış bilgi değildir. Rol ve marka ayrımı ayrıca altyapıda uygulanır.",
+  "$defs": {
+    "source": {
+      "type": "object",
+      "required": [
+        "source_type",
+        "source_uri",
+        "source_record_id",
+        "source_date",
+        "retrieved_at",
+        "last_checked_at",
+        "author_id",
+        "author_display_name",
+        "attachment_status",
+        "content_hash",
+        "source_field_map"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "source_type": {
+          "enum": [
+            "email",
+            "basecamp",
+            "official_web",
+            "client_document",
+            "agency_document",
+            "public_web",
+            "human_decision",
+            "tool_observation"
+          ]
+        },
+        "source_uri": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_record_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_date": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "retrieved_at": {
+          "type": "string",
+          "minLength": 1,
+          "format": "date-time"
+        },
+        "last_checked_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "author_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "author_display_name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "attachment_status": {
+          "enum": [
+            "not_applicable",
+            "read",
+            "partially_read",
+            "unreadable",
+            "not_yet_read"
+          ]
+        },
+        "content_hash": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_field_map": {
+          "type": [
+            "object",
+            "null"
+          ]
+        }
+      },
+      "anyOf": [
+        {
+          "properties": {
+            "source_uri": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        {
+          "properties": {
+            "source_record_id": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      ]
+    },
+    "authority": {
+      "type": "object",
+      "required": [
+        "assessment",
+        "provided_by_id",
+        "approved_by_id",
+        "authority_record_id",
+        "approval_event_id",
+        "approval_scope",
+        "approval_date",
+        "authority_expiry"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "assessment": {
+          "enum": [
+            "pending",
+            "verified",
+            "disputed",
+            "not_required_for_public_observation"
+          ]
+        },
+        "provided_by_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "approved_by_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "authority_record_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "approval_event_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "approval_scope": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "approval_date": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "authority_expiry": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "zone": {
+            "enum": [
+              "brand",
+              "work",
+              "external_reputation"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "brand_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "access": {
+            "properties": {
+              "brand_partition": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

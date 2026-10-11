@@ -1,0 +1,227 @@
+{
+  "version": "wat-real-output-shadow-20261010-v1",
+  "live_enabled": false,
+  "reference_images": [
+    {
+      "filename": "detail-03.png",
+      "sha256": "ddac364723e25ae8c78a4c4212103e9178bd66f700e7ca710edea5beceb84d72",
+      "label": "Kılavuz fiziksel sayfa3: logo"
+    },
+    {
+      "filename": "detail-08.png",
+      "sha256": "5b4b424b37eda89f31e7c9aad47ba71a3d8fc79c6822a47e6b9bf0bc600cb0f8",
+      "label": "Kılavuz fiziksel sayfa8: renkler"
+    },
+    {
+      "filename": "detail-09.png",
+      "sha256": "2721cfa364853e90999ba80dee2890948f8fb714e18c6aad398484a721729dcb",
+      "label": "Kılavuz fiziksel sayfa9: fontlar"
+    }
+  ],
+  "cases": {
+    "a": {
+      "artifact": {
+        "task_id": 10309337809,
+        "comment_id": 10317954872,
+        "attachment_id": 895203774,
+        "byte_size": 2383471,
+        "sha256": "af2cedaa20b48305e5bd35b9b18216e9af7247561dbf9d9b0e2aef71cc7b5dd5",
+        "producer_id": 47658175
+      },
+      "context": {
+        "brand": "WAT Mobilite",
+        "output_id": "ekim-kv-a",
+        "brief": {
+          "scope": "Tek sosyal medya ana görseli; diğer uyarlamalar ayrı değerlendirilir.",
+          "message": "Tüm İstasyonlarda Tek Fiyat",
+          "price": "10,99 TL/kWh",
+          "disclosure": "Kampanya 7 Ekim gün sonuna kadar geçerlidir. AC tarifelerde değişiklik gösterebilir.",
+          "duration_badge": "Sadece bir hafta / Sadece 7 gün",
+          "visual_direction": "Sonbahar teması; WAT kimliği; elektrikli araç/şarj bağlamı.",
+          "written_sources": {
+            "task": 10309337809,
+            "disclosure_comment": 10317818651,
+            "price_reminder_comment": 10327675636
+          },
+          "unknown": "Kayda geçmeyen telefon revizyonunun içeriği bilinmiyor; bu değerlendirme yalnız yazılı şartları sınar."
+        },
+        "brief_sha256": "6170a84866a934e91ec6b97048eea1a4ee7582ae26ecac80c7b54b6f70b9f107",
+        "guide_sha256": "6be9fc432313ed5fd6d7741d52e83e584dddd26b8802238a01aee8b05ca3881c",
+        "source_binding": {
+          "verified": true,
+          "account_id": 5898865,
+          "project_id": 40694338,
+          "task_id": 10309337809,
+          "comment_id": 10317954872,
+          "attachment_id": 895203774,
+          "byte_size": 2383471,
+          "sha256": "af2cedaa20b48305e5bd35b9b18216e9af7247561dbf9d9b0e2aef71cc7b5dd5",
+          "producer_id": 47658175
+        },
+        "brand_rules": {
+          "fonts": {
+            "source": "explicit_user_decision",
+            "decided_on": "2026-10-10",
+            "decided_by": "Ahmet Şükrü Altındağ",
+            "typography_authoritative_pdf_page": 9,
+            "main_font": "Nunito Sans",
+            "support_font": "Josefin Sans",
+            "zircon_authoritative_representation": "printed_hex",
+            "zircon_hex": "#E8E7E6",
+            "scope": "Resolves the two guide interpretation questions only; does not activate automatic visual recognition or WAT customer acceptance."
+          },
+          "logo": [
+            "Preserve the selected WAT logo proportions and circular mark.",
+            "Use the approved palette and sufficient surrounding clear space.",
+            "Do not stretch, squash, rotate, blur, change opacity or arbitrary colors, add shadows, or combine with unrelated graphics.",
+            "Select a contrast-appropriate illustrated logo variant; the guide rejects a white logo on light gray and distorted proportions."
+          ],
+          "palette": [
+            "#1C2041",
+            "#273271",
+            "#A6DBF8",
+            "#2D2D2D",
+            "#E8E7E6"
+          ],
+          "caveat": "Kılavuz resimleri seçilmiş referans sayfalardır. Kesin font dosyası ve logo master incelemesi değildir."
+        },
+        "requirements": [
+          {
+            "id": "brand_logo",
+            "description": "Çıktıda WAT logosu görünür ve belirgin bir yanlış marka/logo bozulması yok.",
+            "critical": true
+          },
+          {
+            "id": "headline",
+            "description": "Ana söylem Tüm İstasyonlarda Tek Fiyat görünür.",
+            "critical": true
+          },
+          {
+            "id": "price",
+            "description": "10,99 TL/kWh fiyatı ve birimi açıkça görünür.",
+            "critical": true
+          },
+          {
+            "id": "campaign_end",
+            "description": "Kampanyanın 7 Ekim gün sonuna kadar geçerli olduğu görünür.",
+            "critical": true
+          },
+          {
+            "id": "ac_disclosure",
+            "description": "AC tarifelerde değişiklik gösterebilir açıklaması görünür.",
+            "critical": true
+          },
+          {
+            "id": "one_week",
+            "description": "Sadece bir hafta veya Sadece 7 Gün vurgusu görünür.",
+            "critical": true
+          }
+        ]
+      },
+      "expected_price_result": "fail",
+      "historical_selection": "pre-price-kv"
+    },
+    "b": {
+      "artifact": {
+        "task_id": 10309337809,
+        "comment_id": 10328180313,
+        "attachment_id": 896341819,
+        "byte_size": 2360008,
+        "sha256": "0b855872d2104e3dcebcb260cccdd5bf16adf123f05567ea44eb7c10f1eb4bbf",
+        "producer_id": 47658175
+      },
+      "context": {
+        "brand": "WAT Mobilite",
+        "output_id": "ekim-kv-b",
+        "brief": {
+          "scope": "Tek sosyal medya ana görseli; diğer uyarlamalar ayrı değerlendirilir.",
+          "message": "Tüm İstasyonlarda Tek Fiyat",
+          "price": "10,99 TL/kWh",
+          "disclosure": "Kampanya 7 Ekim gün sonuna kadar geçerlidir. AC tarifelerde değişiklik gösterebilir.",
+          "duration_badge": "Sadece bir hafta / Sadece 7 gün",
+          "visual_direction": "Sonbahar teması; WAT kimliği; elektrikli araç/şarj bağlamı.",
+          "written_sources": {
+            "task": 10309337809,
+            "disclosure_comment": 10317818651,
+            "price_reminder_comment": 10327675636
+          },
+          "unknown": "Kayda geçmeyen telefon revizyonunun içeriği bilinmiyor; bu değerlendirme yalnız yazılı şartları sınar."
+        },
+        "brief_sha256": "6170a84866a934e91ec6b97048eea1a4ee7582ae26ecac80c7b54b6f70b9f107",
+        "guide_sha256": "6be9fc432313ed5fd6d7741d52e83e584dddd26b8802238a01aee8b05ca3881c",
+        "source_binding": {
+          "verified": true,
+          "account_id": 5898865,
+          "project_id": 40694338,
+          "task_id": 10309337809,
+          "comment_id": 10328180313,
+          "attachment_id": 896341819,
+          "byte_size": 2360008,
+          "sha256": "0b855872d2104e3dcebcb260cccdd5bf16adf123f05567ea44eb7c10f1eb4bbf",
+          "producer_id": 47658175
+        },
+        "brand_rules": {
+          "fonts": {
+            "source": "explicit_user_decision",
+            "decided_on": "2026-10-10",
+            "decided_by": "Ahmet Şükrü Altındağ",
+            "typography_authoritative_pdf_page": 9,
+            "main_font": "Nunito Sans",
+            "support_font": "Josefin Sans",
+            "zircon_authoritative_representation": "printed_hex",
+            "zircon_hex": "#E8E7E6",
+            "scope": "Resolves the two guide interpretation questions only; does not activate automatic visual recognition or WAT customer acceptance."
+          },
+          "logo": [
+            "Preserve the selected WAT logo proportions and circular mark.",
+            "Use the approved palette and sufficient surrounding clear space.",
+            "Do not stretch, squash, rotate, blur, change opacity or arbitrary colors, add shadows, or combine with unrelated graphics.",
+            "Select a contrast-appropriate illustrated logo variant; the guide rejects a white logo on light gray and distorted proportions."
+          ],
+          "palette": [
+            "#1C2041",
+            "#273271",
+            "#A6DBF8",
+            "#2D2D2D",
+            "#E8E7E6"
+          ],
+          "caveat": "Kılavuz resimleri seçilmiş referans sayfalardır. Kesin font dosyası ve logo master incelemesi değildir."
+        },
+        "requirements": [
+          {
+            "id": "brand_logo",
+            "description": "Çıktıda WAT logosu görünür ve belirgin bir yanlış marka/logo bozulması yok.",
+            "critical": true
+          },
+          {
+            "id": "headline",
+            "description": "Ana söylem Tüm İstasyonlarda Tek Fiyat görünür.",
+            "critical": true
+          },
+          {
+            "id": "price",
+            "description": "10,99 TL/kWh fiyatı ve birimi açıkça görünür.",
+            "critical": true
+          },
+          {
+            "id": "campaign_end",
+            "description": "Kampanyanın 7 Ekim gün sonuna kadar geçerli olduğu görünür.",
+            "critical": true
+          },
+          {
+            "id": "ac_disclosure",
+            "description": "AC tarifelerde değişiklik gösterebilir açıklaması görünür.",
+            "critical": true
+          },
+          {
+            "id": "one_week",
+            "description": "Sadece bir hafta veya Sadece 7 Gün vurgusu görünür.",
+            "critical": true
+          }
+        ]
+      },
+      "expected_price_result": "pass",
+      "historical_selection": "approved-kv-candidate"
+    }
+  }
+}

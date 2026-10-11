@@ -1,0 +1,8 @@
+{
+  "status": "passed",
+  "tests": 197,
+  "network_calls": 0,
+  "model_calls": 0,
+  "package_sha256": "75b803c555818bb9dcfc306cb995f6dfd2b6f8f5d283c433f8cbcaf7c7de89e0",
+  "scope": "Exact authenticated human approval for internal coordination only; strategy escalation remains open; original model proposal unchanged"
+}

@@ -1,0 +1,38 @@
+{
+  "status": "empty_template_not_real_client_data",
+  "records": [],
+  "record_template": {
+    "event_id": null,
+    "brand_id": null,
+    "person_id": null,
+    "person_name": null,
+    "event_type": "birthday_or_brand_date",
+    "event_name": null,
+    "day": null,
+    "month": null,
+    "year_if_required": null,
+    "timezone": "Europe/Istanbul",
+    "source_url_or_record_id": null,
+    "source_date": null,
+    "verified_by": null,
+    "last_verified_at": null,
+    "status": "unverified",
+    "recurrence": "annual_or_one_off",
+    "brand_relevance": null,
+    "preparation_owner": "Hamle",
+    "content_partner": null,
+    "internal_reminder_recipients": [
+      "ahmet@gamechangers.com.tr"
+    ],
+    "client_message_recipient": null,
+    "greeting_style": null,
+    "approval_scope": null,
+    "reminder_stage_log": []
+  },
+  "rules": [
+    "Day/month are sufficient for birthdays; no inferred year/age.",
+    "Update changing official dates for the relevant year.",
+    "A proposed product launch is not a confirmed anniversary.",
+    "One reminder per occurrence and preparation stage; internal visibility and client greeting are separate."
+  ]
+}

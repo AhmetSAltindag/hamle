@@ -1,0 +1,32 @@
+{
+  "success": {
+    "usage_is_invoice": false,
+    "reservation_key": "model-22e2a5f455020a4445403ea203c4aa6083c4c14b185ec67d52b1c1211129fd67-attempt2",
+    "receipt": {
+      "model": "gpt-6-astra",
+      "usage": {
+        "total_tokens": 12064,
+        "output_tokens": 8827,
+        "input_tokens_details": {
+          "cached_tokens": 1304
+        },
+        "output_tokens_details": {
+          "reasoning_tokens": 7250
+        },
+        "input_tokens": 3237
+      },
+      "reasoning_effort": "max",
+      "response_id": "resp_0f1c80f4f613d5bf016ac9f45bbbe887d18a98ce024d8fc754"
+    },
+    "recorded_at": 1791620354.081552
+  },
+  "first_failure": {
+    "evidence_sha256": "2f1f60ba4ea0e629deac62162d343d515535dcf17d766538c639d412c623cd6a",
+    "reason": "response_incomplete",
+    "legacy_observability_gap": true,
+    "usage_is_invoice": false,
+    "reservation_key": "model-22e2a5f455020a4445403ea203c4aa6083c4c14b185ec67d52b1c1211129fd67",
+    "receipt": null,
+    "recorded_at": 1791620186.544549
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "apiVersion": "run.googleapis.com/v1",
+  "kind": "Execution",
+  "metadata": {
+    "annotations": {
+      "run.googleapis.com/client-name": "gcloud",
+      "run.googleapis.com/client-version": "588.0.0",
+      "run.googleapis.com/creator": "ahmet@gamechangers.com.tr",
+      "run.googleapis.com/execution-environment": "gen2",
+      "run.googleapis.com/lastModifier": "ahmet@gamechangers.com.tr",
+      "run.googleapis.com/operation-id": "787334bc-3ce1-4dcf-8238-f472c704eda0"
+    },
+    "creationTimestamp": "2026-10-09T23:30:46.310112Z",
+    "generation": 1,
+    "labels": {
+      "client.knative.dev/nonce": "haw_qeg_xod",
+      "cloud.googleapis.com/location": "europe-west1",
+      "run.googleapis.com/job": "hamle-account-manager",
+      "run.googleapis.com/jobGeneration": "1",
+      "run.googleapis.com/jobResourceVersion": "1791588567694813",
+      "run.googleapis.com/jobUid": "37e16aea-2407-42c1-80f0-1f22aa872bab"
+    },
+    "name": "hamle-account-manager-frvbr",
+    "namespace": "286533609595",
+    "ownerReferences": [
+      {
+        "apiVersion": "serving.knative.dev/v1",
+        "blockOwnerDeletion": true,
+        "controller": true,
+        "kind": "Job",
+        "name": "hamle-account-manager",
+        "uid": "37e16aea-2407-42c1-80f0-1f22aa872bab"
+      }
+    ],
+    "resourceVersion": "AAZdcLzY0OA",
+    "selfLink": "/apis/run.googleapis.com/v1/namespaces/286533609595/executions/hamle-account-manager-frvbr",
+    "uid": "91c691de-37c6-46f1-a03a-af8d692c32ba"
+  },
+  "spec": {
+    "parallelism": 1,
+    "taskCount": 1,
+    "template": {
+      "spec": {
+        "containers": [
+          {
+            "args": [
+              "-c",
+              "import json,traceback\nstage=\"imports\"\ntry:\n from cloud_store import FirestoreBackend,OperationsStore\n import cloud_providers as p\n from basecamp_cloud_auth import access_token\n stage=\"firestore\"\n backend=FirestoreBackend(opt_in=\"yes\")\n store=OperationsStore(backend)\n control=store.control()\n print(json.dumps({\"stage\":stage,\"ok\":True,\"mode\":control[\"mode\"]}),flush=True)\n stage=\"dependencies\"\n p._modules()\n print(json.dumps({\"stage\":stage,\"ok\":True}),flush=True)\n secrets=p.GoogleSecretManager()\n gmail=p.GmailSecretStore(secrets)\n stage=\"gmail_identity\"\n result=p.verify_gmail_identity(gmail)\n print(json.dumps({\"stage\":stage,\"ok\":True,\"result\":result}),flush=True)\n stage=\"basecamp_credential\"\n token=access_token(secrets,claim_refresh=store.claim_credential_refresh)\n print(json.dumps({\"stage\":stage,\"ok\":True}),flush=True)\n stage=\"basecamp_identity\"\n result=p.verify_basecamp_internal(token)\n print(json.dumps({\"stage\":stage,\"ok\":True,\"result\":result}),flush=True)\nexcept Exception as e:\n code=getattr(e,\"code\",None)\n if not isinstance(code,str) or not code.replace(\"_\",\"\").isalnum():code=None\n print(json.dumps({\"stage\":stage,\"ok\":False,\"exception_type\":type(e).__name__,\"reason\":code,\"frames\":[{\"file\":f.filename.split(\"/\")[-1],\"line\":f.lineno,\"function\":f.name} for f in traceback.extract_tb(e.__traceback__)]}),flush=True)\n raise SystemExit(2)\n"
+            ],
+            "command": [
+              "python"
+            ],
+            "env": [
+              {
+                "name": "HAMLE_ALLOW_FIRESTORE_OPERATIONS",
+                "value": "yes"
+              },
+              {
+                "name": "HAMLE_PROJECT_ID",
+                "value": "gamechangers-hamle"
+              },
+              {
+                "name": "HAMLE_FIRESTORE_DATABASE",
+                "value": "hamle-operations"
+              }
+            ],
+            "image": "europe-west1-docker.pkg.dev/gamechangers-hamle/hamle-runtime/hamle-account-manager@sha256:fb4c5556117db1321fff62bab98ea2ba2cbe9f842d31cbfc0f339496f14ce2e0",
+            "resources": {
+              "limits": {
+                "cpu": "1",
+                "memory": "512Mi"
+              }
+            }
+          }
+        ],
+        "maxRetries": 0,
+        "serviceAccountName": "hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com",
+        "timeoutSeconds": "300"
+      }
+    }
+  },
+  "status": {
+    "logUri": "https://console.cloud.google.com/logs/viewer?project=gamechangers-hamle&advancedFilter=resource.type%3D%22cloud_run_job%22%0Aresource.labels.job_name%3D%22hamle-account-manager%22%0Aresource.labels.location%3D%22europe-west1%22%0Alabels.%22run.googleapis.com/execution_name%22%3D%22hamle-account-manager-frvbr%22"
+  }
+}

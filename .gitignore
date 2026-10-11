@@ -1,0 +1,7 @@
+
+# kept out of the repo
+hamle/outputs/new-mac-2026-10-10/*credential*.json
+private-connections/
+__pycache__/
+*.pyc
+.venv/

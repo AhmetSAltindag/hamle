@@ -1,0 +1,161 @@
+{
+  "status": "confirmed",
+  "recorded_at": "2026-10-10T16:10:13.228889+00:00",
+  "argv": [
+    "run",
+    "services",
+    "update",
+    "hamle-control",
+    "--region=europe-west1",
+    "--image=europe-west1-docker.pkg.dev/gamechangers-hamle/hamle-runtime/hamle-account-manager@sha256:351ad45315de569881aa064a32f5578b14960f3f4d535b8a875b2e7e28ca2e5e"
+  ],
+  "budget_before": {
+    "limit_microdollars": 50000000,
+    "accounted_spend_microdollars": 0,
+    "held_microdollars": 18000000,
+    "prepaid_purchases_microdollars": 10000000,
+    "total_committed_microdollars": 22000000,
+    "remaining_microdollars": 28000000,
+    "overrun_hold": false,
+    "provider_hard_cap_installed": false
+  },
+  "customer_scope_enabled": false,
+  "new_iam_or_secrets": false,
+  "result": {
+    "@type": "type.googleapis.com/google.cloud.run.v1.Service",
+    "apiVersion": "serving.knative.dev/v1",
+    "kind": "Service",
+    "metadata": {
+      "annotations": {
+        "run.googleapis.com/client-name": "gcloud",
+        "run.googleapis.com/client-version": "588.0.0",
+        "run.googleapis.com/iap-enabled": "true",
+        "run.googleapis.com/ingress": "all",
+        "run.googleapis.com/ingress-status": "all",
+        "run.googleapis.com/maxScale": "1",
+        "run.googleapis.com/operation-id": "2e9f81d8-4965-43b2-b9b4-74816557b29b",
+        "run.googleapis.com/urls": "[\"https://hamle-control-286533609595.europe-west1.run.app\",\"https://hamle-control-aludfxyq3a-ew.a.run.app\"]",
+        "serving.knative.dev/creator": "ahmet@gamechangers.com.tr",
+        "serving.knative.dev/lastModifier": "ahmet@gamechangers.com.tr"
+      },
+      "creationTimestamp": "2026-10-09T23:24:05.808367Z",
+      "generation": 7,
+      "labels": {
+        "cloud.googleapis.com/location": "europe-west1"
+      },
+      "name": "hamle-control",
+      "namespace": "286533609595",
+      "resourceVersion": "AAZdfrRBfaE",
+      "selfLink": "/apis/serving.knative.dev/v1/namespaces/286533609595/services/hamle-control",
+      "uid": "3f505075-3ecd-4591-beca-7ce82dbdd0d5"
+    },
+    "spec": {
+      "template": {
+        "metadata": {
+          "annotations": {
+            "autoscaling.knative.dev/maxScale": "1",
+            "run.googleapis.com/client-name": "gcloud",
+            "run.googleapis.com/client-version": "588.0.0",
+            "run.googleapis.com/cpu-throttling": "true",
+            "run.googleapis.com/startup-cpu-boost": "false"
+          },
+          "labels": {
+            "client.knative.dev/nonce": "gqluxacril",
+            "run.googleapis.com/startupProbeType": "Default"
+          }
+        },
+        "spec": {
+          "containerConcurrency": 4,
+          "containers": [
+            {
+              "args": [
+                "--bind",
+                ":8080",
+                "cloud_control:create_app()"
+              ],
+              "command": [
+                "gunicorn"
+              ],
+              "env": [
+                {
+                  "name": "HAMLE_ALLOW_FIRESTORE_OPERATIONS",
+                  "value": "yes"
+                },
+                {
+                  "name": "IAP_AUDIENCE",
+                  "value": "/projects/286533609595/locations/europe-west1/services/hamle-control"
+                },
+                {
+                  "name": "PUBLIC_ORIGIN",
+                  "value": "https://hamle-control-286533609595.europe-west1.run.app"
+                }
+              ],
+              "image": "europe-west1-docker.pkg.dev/gamechangers-hamle/hamle-runtime/hamle-account-manager@sha256:351ad45315de569881aa064a32f5578b14960f3f4d535b8a875b2e7e28ca2e5e",
+              "ports": [
+                {
+                  "containerPort": 8080,
+                  "name": "http1"
+                }
+              ],
+              "resources": {
+                "limits": {
+                  "cpu": "1",
+                  "memory": "512Mi"
+                }
+              },
+              "startupProbe": {
+                "failureThreshold": 1,
+                "periodSeconds": 240,
+                "tcpSocket": {
+                  "port": 8080
+                },
+                "timeoutSeconds": 240
+              }
+            }
+          ],
+          "serviceAccountName": "hamle-control@gamechangers-hamle.iam.gserviceaccount.com",
+          "timeoutSeconds": 60
+        }
+      },
+      "traffic": [
+        {
+          "latestRevision": true,
+          "percent": 100
+        }
+      ]
+    },
+    "status": {
+      "address": {
+        "url": "https://hamle-control-aludfxyq3a-ew.a.run.app"
+      },
+      "conditions": [
+        {
+          "lastTransitionTime": "2026-10-10T16:10:31.717281Z",
+          "status": "True",
+          "type": "Ready"
+        },
+        {
+          "lastTransitionTime": "2026-10-10T16:10:27.577157Z",
+          "status": "True",
+          "type": "ConfigurationsReady"
+        },
+        {
+          "lastTransitionTime": "2026-10-10T16:10:31.661917Z",
+          "status": "True",
+          "type": "RoutesReady"
+        }
+      ],
+      "latestCreatedRevisionName": "hamle-control-00007-lpd",
+      "latestReadyRevisionName": "hamle-control-00007-lpd",
+      "observedGeneration": 7,
+      "traffic": [
+        {
+          "latestRevision": true,
+          "percent": 100,
+          "revisionName": "hamle-control-00007-lpd"
+        }
+      ],
+      "url": "https://hamle-control-aludfxyq3a-ew.a.run.app"
+    }
+  }
+}

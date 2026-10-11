@@ -1,0 +1,21 @@
+{
+  "recorded_at": "2026-10-09T23:57:40.483096+03:00",
+  "authorized_by": "Ahmet Şükrü Altındağ",
+  "authorization_source": "direct user reply: Toplam 50 USD.",
+  "starts_at": "2026-10-09",
+  "ends_at": "2026-10-12T23:59:59+03:00",
+  "currency": "USD",
+  "aggregate_limit": 50,
+  "providers": [
+    "Google Cloud",
+    "OpenAI",
+    "visual generation"
+  ],
+  "purpose": "Hamle cloud and model setup/tests",
+  "automatic_renewal_authorized": false,
+  "authorization_is_not_actual_billing_configuration": true,
+  "actual_paid_resource_created_by_agent_this_turn": false,
+  "billing_accounts_and_usage_total_not_verified": true,
+  "provider_budget_alert_is_not_hard_spend_cap": true,
+  "new_paid_work_requires_budget_preflight_and_account_setup": true
+}

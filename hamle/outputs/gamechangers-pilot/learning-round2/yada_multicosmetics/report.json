@@ -1,0 +1,908 @@
+{
+  "schema_version": 1,
+  "brand": "ya da Multicosmetics / Remedium",
+  "source_account": "ahmet@gamechangers.com.tr",
+  "phase": "learning_only",
+  "external_writes": 0,
+  "checked_at": "2026-10-07",
+  "requested_brand_target": 20,
+  "completed_detailed_topics": 7,
+  "target_shortfall": 13,
+  "allocation_note": "Root ile kapsam uzlaştırıldı: bu markada 7 güçlü konu; toplam 60 ek ayrıntılı konu için diğer öncelikli markalarda dengeleme. 20 tamamlandı iddiası yok.",
+  "counts": {
+    "new_threads_read": 23,
+    "new_messages_read": 78,
+    "primary_topic_threads": 9,
+    "primary_topic_messages": 56,
+    "support_or_excluded_threads_read": 14,
+    "support_or_excluded_messages_read": 22,
+    "attachment_occurrences_inventory": 28,
+    "attachments_full_text_reviewed": 1,
+    "attachments_visual_reviewed": 0,
+    "thread_read_cap": 100,
+    "threads_reaching_cap": 0,
+    "search_calls": 10,
+    "distinct_targeted_header_threads": 85
+  },
+  "all_read_message_date_range_istanbul": {
+    "from": "2026-07-03T11:04:16+03:00",
+    "to": "2026-10-05T14:46:32+03:00"
+  },
+  "counted_primary_date_range_istanbul": {
+    "from": "2026-07-21T03:31:12+03:00",
+    "to": "2026-10-04T16:41:16+03:00"
+  },
+  "completeness": {
+    "queried_archive_total": null,
+    "percentage": null,
+    "all_history_learned": false,
+    "thread_reads": "23 retrieved threads all below requested 100-message cap; provider total was not independently supplied. All stored plain-text/HTML-derived bodies reviewed; repeated quote lines deduplicated for reading.",
+    "searches": "Targeted subject, body and verified-domain queries exhausted. Initial common-phrase query superseded because “ya da” produced unrelated mail. Targeted searches are not a proof that no other alias/account contains work."
+  },
+  "deduplication_audit": {
+    "previous_coverage_processed_thread_ids": [
+      "1a0a6c065721af08",
+      "1a0e78aea1837965",
+      "1a10c9aa88d9c8a0",
+      "1a10fd1092562eb3",
+      "1a10fe3a6e2d6f5d",
+      "1a10fff86843c43d",
+      "1a1100cb5509857b",
+      "1a115dbfd5ad8f30",
+      "1a11636397e5303a",
+      "1a1164fab391dd76",
+      "1a116747b8f8823f",
+      "1a1172b73da899f5"
+    ],
+    "primary_thread_overlap": [],
+    "previous_yada_topic": "ya da // Ekim 26 — 5 Ekim görsel üretimi ve arka plan renk yorumu",
+    "previous_yada_basecamp_task": "https://app.basecamp.com/5898865/buckets/48917059/todos/10361683960",
+    "same_task_mention_thread_excluded": "1a10af4ece69335f",
+    "remedium_three_threads_counted_as": 1,
+    "summer_basecamp_10065145234_threads_counted_separately": 0,
+    "audit_conclusion": "7 başlık önceki turdaki Ekim tasarım görevinin tekrarı değildir. Strateji soru seti ve yıllık plan aynı markanın ayrı belge/karar işleridir; tekrar görsel yorumu eklenmedi."
+  },
+  "verified_sender_domains": [
+    "yadacosmetics.com",
+    "gamechangers.com.tr",
+    "app.basecamp.com"
+  ],
+  "role_and_authority_observations": [
+    {
+      "person": "Tuba Çalık",
+      "evidence": "Marka felsefesi/yazımı ve 1 Ekim lansman tarihi yönlendirmelerini veren müşteri muhatabı. Resmî unvan/limitsiz ticari yetki bu turdan çıkarılmadı."
+    },
+    {
+      "person": "Tuğba Erdoğan",
+      "evidence": "Pazarlama brief’i, takvim revizyonu ve 1 Ekim’den itibaren lansman koordinasyon sorumluluğu yazışmada açık."
+    },
+    {
+      "person": "Elif Onur",
+      "evidence": "Ürün mock-up, ambalaj, logo ve arşiv kaynaklarını paylaşan müşteri muhatabı; final yaratıcı onay yetkisi varsayılmadı."
+    },
+    {
+      "person": "Berk Varol",
+      "evidence": "Tüzel kişi/cari bilgisini teyit eden müşteri muhatabı; sözleşme imzası/ödeme yetkisinin tüm kapsamı doğrulanmadı."
+    },
+    {
+      "person": "Esma Zeki",
+      "evidence": "23 Eylül kaynaklı ilk kontak ve pazartesi status dokümanı sorumlusu. 16 Eylül Aleyna kaydından daha yeni."
+    },
+    {
+      "person": "Cansu Akiş Kabil",
+      "evidence": "Kreatif/strateji yazışmaları, takvim revizyonu ve içerik planı sorumluluğu kaynaklarda görülüyor."
+    }
+  ],
+  "medical_claim_policy": "Müşteri sağlık, etkinlik, güvenlilik ve içerik söylemleri, yalnız kimin ne istediğini gösterir. Bilimsel/klinik doğrulama veya yayına uygun onay olarak kaydedilmedi. Croda web kaynağı ve medikal ekler okunmadı.",
+  "critical_updates": [
+    {
+      "source_message_id": "1a0f819b3ba39c40",
+      "finding": "19 Ekim lansman/duyuru planı, 15 Ekim koşullu ürün hazır olma öngörüsünden ayrılmalı."
+    },
+    {
+      "source_message_id": "1a0f88d3b087e7c0",
+      "finding": "Erkek odağı korunuyor, klasik kepek/siyah tişört anlatımına sıkışma istenmiyor; özgürlük/renk/görünürlük yönü var."
+    },
+    {
+      "source_message_id": "1a0fd2191912cda6",
+      "finding": "Yıllık takvim Medical kontrolüne gönderildi; final onaylandığı görülmedi."
+    }
+  ],
+  "topics": [
+    {
+      "id": "YADA-R2-01",
+      "title": "Dijital proje fikirleri için yaratıcı yazar brief’i ve teslimi",
+      "thread_ids": [
+        "19f820ac360a5494"
+      ],
+      "supporting_thread_ids": [
+        "19f3bd6eff7727ef",
+        "19f3d45e468183aa",
+        "19f7fa283f86b917",
+        "19fa9010af37b48e"
+      ],
+      "distinct_work_reason": "Hacer Yenişar’a verilmiş ayrı yaratıcı üretim brief’i ve fikir sunumu teslimi. Müşteriye ticari teklif/işbirliği konusu YADA-R2-02 ile bağlantılıdır; aynı üretim kalemi ikinci kez sayılmadı.",
+      "customer_ask": "Müşterinin birebir yeni talebi bu iç ekip zincirinde bulunmuyor. Ahmet, markanın “size dayatılanlar ya da bilinçli seçiminiz” söyleminden hareketle uygulanması kolay, giriş bütçeli dijital proje fikirleri istiyor.",
+      "staff_replies_and_actions": [
+        {
+          "message_id": "19f821578ffdbd71",
+          "author": "Ahmet Şükrü Altındağ",
+          "date": "2026-07-21",
+          "detail": "İçeride uygun yaratıcı yazar olmadığını belirterek işi Hacer’e aktardı; genel toplantı notları ve action items ayrı mesajda paylaşıldı."
+        },
+        {
+          "message_id": "19f8813cbc82f0f6",
+          "author": "Hacer Yenişar",
+          "date": "2026-07-22",
+          "detail": "Doğal, sakin, tüketim baskısını artırmayan yaklaşımı okuduğunu ve yüksek sesle satın almaya çağırmaktan uzak durmayı düşündüğünü teyide açtı."
+        },
+        {
+          "message_id": "19f8975becdecd55",
+          "author": "Ahmet Şükrü Altındağ",
+          "date": "2026-07-22",
+          "detail": "Sakin tonun satış beklentisini yok saymaması gerektiğini belirtti; dört kategori için bilinçli seçim mesajını önerdi."
+        },
+        {
+          "message_id": "19f8f85678d5108f",
+          "author": "Hacer Yenişar",
+          "date": "2026-07-23",
+          "detail": "Farklı tonlarda dijital proje önerilerini PPTX ekiyle teslim ettiğini bildirdi; satış çağrısının bağırmadan yapılmasını savundu."
+        },
+        {
+          "message_id": "1a0155d763f64c5f",
+          "author": "Ahmet Şükrü Altındağ",
+          "date": "2026-08-18",
+          "detail": "Fikirlerin proje ve sosyal medya uygulamasına dönüşebilirliğini Barış’ın incelemesini istedi."
+        }
+      ],
+      "revisions_and_directions": {
+        "accepted": "Hacer’in sakin ton okumasına Ahmet olumlu yanıt veriyor; satış hedefiyle denge ekliyor. Bu iç yönlendirmedir, müşteri kreatif onayı değildir.",
+        "proposed": "Estetik dikey video paketi, multikozmetik etkinin anlaşılır anlatımı, farklı personalardan “ya da kadınları”, “Bir ürün kaç üründür?” ve Infinite Zoom gibi yollar önerildi.",
+        "rejected": "Belirli bir fikrin açık reddi görülmedi. “Satış beklentisi yok” yorumu düzeltiliyor; naif ton reddedilmiyor."
+      },
+      "reported_outcome": "Fikir sunumu e-postayla iletilmiş; Basecamp’te 7–28 Temmuz boyunca aynı 10065145234 numaralı sunum işinin dosya paylaşımları görülüyor. Dosyaların içeriği veya müşteride seçilen fikir bu turda doğrulanmadı.",
+      "bounded_learning_rules": [
+        "Bu kayda göre ya da için sakin satış dili yaratıcı hedeflerden biridir; bunu bütün markalara yayma.",
+        "Fikir teslimi, fikir seçimi ve üretime onayı ayrı kaydet.",
+        "Somut yaratıcı uzman ihtiyacı varsa brief ve kaynaklarla dış/insan yaratıcıya devir yapılmış bir örnek var."
+      ],
+      "unknowns": [
+        "PPTX içindeki önerilerin ayrıntıları ve müşteri seçimi okunmadı.",
+        "Lisans, üretim bütçesi ve seçilen yöntem için uygulama onayı yok."
+      ],
+      "source_message_count": 9,
+      "source_message_ids": [
+        "19f821578ffdbd71",
+        "19f822066b589b0c",
+        "19f865eee7e832ee",
+        "19f8813cbc82f0f6",
+        "19f8975becdecd55",
+        "19f8b727e8c0ffcf",
+        "19f8b7afb5240703",
+        "19f8f85678d5108f",
+        "1a0155d763f64c5f"
+      ],
+      "source_date_range_istanbul": {
+        "from": "2026-07-21T03:31:12+03:00",
+        "to": "2026-08-18T17:54:01+03:00"
+      },
+      "source_links": [
+        {
+          "thread_id": "19f820ac360a5494",
+          "url": "https://mail.google.com/mail/u/0/#all/19f820ac360a5494"
+        }
+      ],
+      "learning_status": "source_scoped_historical_learning_not_live_task",
+      "last_checked_at": "2026-10-07"
+    },
+    {
+      "id": "YADA-R2-02",
+      "title": "Şehre dönüş sunumundan ajans işbirliğine: teklif ve başlangıç kapsamı",
+      "thread_ids": [
+        "19fa8edb606e1735"
+      ],
+      "supporting_thread_ids": [],
+      "distinct_work_reason": "Müşteriyle ajans hizmet kapsamı/teklif ve işe başlama mutabakatına ilişkin ticari iş. İç yaratıcı üretim brief’inden ve sonraki sözleşme/cari açılış işleminden ayrı karar ve çıktı içeriyor.",
+      "customer_ask": "Tuğba Erdoğan 29 Temmuz’da sunumu beğendiğini bildirerek hızlı 360 sosyal medya ve ajans yönetimi bütçe çalışması istiyor. 16 Eylül’de işbirliğinin başladığını belirterek ekibin tanışması, marka yaklaşımı ve iş kalemlerinin netleştirilmesi için toplantı talep ediyor.",
+      "staff_replies_and_actions": [
+        {
+          "message_id": "19fa8edb606e1735",
+          "author": "Cansu Akiş Kabil",
+          "date": "2026-07-28",
+          "detail": "Şehir hayatı, mevsim geçişi ve günlük bakım ihtiyaçlarına dayalı şehre dönüş proje sunumu gönderildi."
+        },
+        {
+          "message_id": "19fadb5ffecfbeb6",
+          "author": "Cansu Akiş Kabil",
+          "date": "2026-07-29",
+          "detail": "Sosyal medya iletişimi ve kreatif tasarım teklifi ekte iletildi; kapsamın birlikte revize edilebileceği belirtildi."
+        },
+        {
+          "message_id": "1a022e30bef05aab",
+          "author": "Ahmet Şükrü Altındağ",
+          "date": "2026-08-21",
+          "detail": "Strateji/brand house temelinde uzun vadeli iş ortaklığı önerildi; teklifte ticari revizyon iletildi. Ticari bilgi yalnız ajans hesap yönetimi erişiminde tutulmalı."
+        },
+        {
+          "message_id": "1a03337f5039aa22",
+          "author": "Cansu Akiş Kabil",
+          "date": "2026-08-24",
+          "detail": "Instagram ve TikTok sunumu, eczacı bakışı ve bilimsel yaklaşımı görünür kılma ve yeni jenerasyonla bağ kurma çerçevesiyle paylaşıldı."
+        },
+        {
+          "message_id": "1a0adf6fd90757d8",
+          "author": "Ahmet Şükrü Altındağ",
+          "date": "2026-09-17",
+          "detail": "Pazar, hedef kitle, sektör ve rakip araştırması; brand guide, 90 günlük öncelikler, 12 aylık çalışma ve KPI çıktıları hazırlanacağı bildirildi."
+        }
+      ],
+      "revisions_and_directions": {
+        "accepted": "Müşteri 29 Temmuz’da sunuma olumlu yanıt verdi; 16 Eylül’de “ajans işbirliğimiz hayırlı olsun” diyerek başlangıç toplantısı istedi. Her sunum fikrinin ayrı kabulü yok.",
+        "proposed": "Ajansın yalnız sosyal medya paylaşımı değil stratejik ve kreatif iş ortaklığı olarak konumlanması; kapsamın korunmasına çalışılarak ücret revizyonu.",
+        "rejected": "Zincirde belirli kreatif işin açık reddi yok."
+      },
+      "reported_outcome": "İşbirliği başlangıcı yazışmada bildirilmiş, 23 Eylül 11.00 toplantısı önerisi ajans tarafından uygun bulunmuş. İmzalı sözleşme ve tüm hizmet eklerinin kabulü bu zincirden kanıtlanmıyor.",
+      "bounded_learning_rules": [
+        "Sunuma genel beğeni, tüm fikir ve bütçelerin sınırsız onayı değildir.",
+        "Araştırma, strateji ve içerik yürütmesini ayrı teslimler olarak takip et.",
+        "16 Eylül’deki Aleyna odaklı iletişim atamasını güncel sayma: 23 Eylül tarihli ayrı zincirde ilk kontak Esma olarak güncellenmiş."
+      ],
+      "unknowns": [
+        "İmzalı kapsam ve nihai fiyat/ödeme koşulları bu turda doğrulanmadı.",
+        "Araştırmaya bağlanan istatistiklerin dayanakları okunmadı; sunumdaki iddialar doğrulanmış genel gerçek sayılmadı."
+      ],
+      "source_message_count": 15,
+      "source_message_ids": [
+        "19fa8edb606e1735",
+        "19faca9e7b6662f4",
+        "19fadb5ffecfbeb6",
+        "19fc73b1340eca9c",
+        "1a022e30bef05aab",
+        "1a03337f5039aa22",
+        "1a0aaacbbf3ca806",
+        "1a0aab269d5606fb",
+        "1a0aab5e1be05851",
+        "1a0abaeb5e5c957e",
+        "1a0adf6fd90757d8",
+        "1a0ae01837e75c0e",
+        "1a0ae57433bf3884",
+        "1a0ae8eba6834078",
+        "1a0aeba8872a3539"
+      ],
+      "source_date_range_istanbul": {
+        "from": "2026-07-28T16:32:30+03:00",
+        "to": "2026-09-17T12:37:24+03:00"
+      },
+      "source_links": [
+        {
+          "thread_id": "19fa8edb606e1735",
+          "url": "https://mail.google.com/mail/u/0/#all/19fa8edb606e1735"
+        }
+      ],
+      "learning_status": "source_scoped_historical_learning_not_live_task",
+      "last_checked_at": "2026-10-07"
+    },
+    {
+      "id": "YADA-R2-03",
+      "title": "Marka stratejisi, doğru ad yazımı ve çalışma ritminin netleşmesi",
+      "thread_ids": [
+        "1a0bf9a8a2a4ef28"
+      ],
+      "supporting_thread_ids": [
+        "1a0cd88c05996459"
+      ],
+      "distinct_work_reason": "20–25 Eylül tarihli strateji/marka çerçevesi ve strateji sunumu teslimi. Önceki turdaki 5 Ekim görsel arka plan revizyonu aynı iş değildir.",
+      "customer_ask": "Tuba Çalık, markanın varoluşunu etkililik hedefi ile güvenlilik hassasiyetini birlikte ele alan, şefkatli/güçlü, bilimsel/sıcak, premium/ulaşılabilir bir dilde anlatma brief’i veriyor. Bilimsel altyapıyı korkutmadan, ders vermeden, karmaşıklaştırmadan aktarmayı istiyor.",
+      "staff_replies_and_actions": [
+        {
+          "message_id": "1a0bfdef3e18f4da",
+          "author": "Ahmet Şükrü Altındağ",
+          "date": "2026-09-20",
+          "detail": "Strateji kütüphanesinin önce kurulması, ilk 2–3 haftada konumlamada mutabakat ve pazartesi online iş takip dokümanı önerildi."
+        },
+        {
+          "message_id": "1a0c26f0d41bda9f",
+          "author": "Tuğba Erdoğan",
+          "date": "2026-09-21",
+          "detail": "Pazarlama ekibinin gerekli bilgi, veri ve öncelikleri hazırlayarak strateji sürecini destekleyeceği bildirildi."
+        },
+        {
+          "message_id": "1a0cf4b38e8d1cc3",
+          "author": "Ahmet Şükrü Altındağ",
+          "date": "2026-09-23",
+          "detail": "Toplantı sonrası stratejiyi yorumlarla sonlandırmak için bir hafta ihtiyacı; yaklaşık 12 Ekim hesap devralma ve Ekim planı hedefi; ilk kontak Esma, destek Cansu/Ahmet olarak bildirildi."
+        },
+        {
+          "message_id": "1a0d1c411b9b9dcc",
+          "author": "Tuba Çalık",
+          "date": "2026-09-24",
+          "detail": "Marka yazımını küçük harfle “ya da” olarak açıkladı; bağlaç/alternatif seçimi felsefesini aktardı; ayın son perşembesi 11.00 toplantısı önerdi."
+        },
+        {
+          "message_id": "1a0d275047fc126e",
+          "author": "Cansu Akiş Kabil",
+          "date": "2026-09-24",
+          "detail": "Doğru yazımı teyit etti; Ekim son perşembesi 29 Ekim olduğu için ilk toplantıyı 22 Ekim 11.00 önerdi; podcast/çocuk kitabı/felsefe kaynaklarını inceleyeceklerini bildirdi."
+        },
+        {
+          "message_id": "1a0d80931a032997",
+          "author": "Cansu Akiş Kabil",
+          "date": "2026-09-25",
+          "detail": "Marka stratejisi ve ön çalışma sunumunu PDF ekiyle iletti; ürün aileleri bazlı rakip çalışması eklenerek tamamlanacağını belirtti."
+        }
+      ],
+      "revisions_and_directions": {
+        "accepted": "Tuba tarafından “ya da” yazımı açıkça tarif edildi. 22 Eylül’de paylaştığı referansı basit ve duyguya dokunan anlatımı için beğendi; referansın görseli bu turda incelenmedi.",
+        "proposed": "“Derde deva kozmetik” ifadesi müşteri yönlendirmesinde geçiyor; dış yayına uygunluk veya iddia onayı anlamına gelmez. 2027 ABD çevrimiçi satış planı gelecek niyetidir.",
+        "rejected": "Markayı yalnız “temiz/güvenli/hassas” ekseninde anlatmanın eksik kalacağı müşteri tarafından belirtildi; bağıran veya korkutan iletişim istenmiyor."
+      },
+      "reported_outcome": "Strateji PDF’sinin gönderildiği görülüyor; rakip eki ve tam strateji final onayı bekleyen unsurlar olarak kalıyor. Hesap devralmanın gerçekten tamamlandığı bu yazışmadan kanıtlanmıyor.",
+      "bounded_learning_rules": [
+        "Marka adını bu kaynak kapsamıyla “ya da” yaz.",
+        "Markanın iletişim niyeti ile etkinlik/güvenlilik bilimsel kanıtını farklı bilgi alanlarında tut.",
+        "Temas kişisi ve çalışma takviminde daha yeni kaynakları esas al; önerilmiş toplantıyı gerçekleşmiş toplantı olarak kaydetme."
+      ],
+      "unknowns": [
+        "Bilimsel/medikal üstünlük iddialarının dayanakları doğrulanmadı.",
+        "PDF sunumu görsel/metin içeriği bu turda okunmadı.",
+        "22 Ekim toplantısı için nihai takvim kabulü ve hesap devralma gerçekleşmesi test edilmedi."
+      ],
+      "source_message_count": 10,
+      "source_message_ids": [
+        "1a0bf9a8a2a4ef28",
+        "1a0bfdef3e18f4da",
+        "1a0c21f43605736c",
+        "1a0c26f0d41bda9f",
+        "1a0ca268517d6b74",
+        "1a0cf4b38e8d1cc3",
+        "1a0d1c411b9b9dcc",
+        "1a0d275047fc126e",
+        "1a0d2ebd7139762d",
+        "1a0d80931a032997"
+      ],
+      "source_date_range_istanbul": {
+        "from": "2026-09-20T19:15:59+03:00",
+        "to": "2026-09-25T13:07:27+03:00"
+      },
+      "source_links": [
+        {
+          "thread_id": "1a0bf9a8a2a4ef28",
+          "url": "https://mail.google.com/mail/u/0/#all/1a0bf9a8a2a4ef28"
+        }
+      ],
+      "learning_status": "source_scoped_historical_learning_not_live_task",
+      "last_checked_at": "2026-10-07"
+    },
+    {
+      "id": "YADA-R2-04",
+      "title": "Hizmet sözleşmesi ve cari hesap için başlangıç bilgilerinin toplanması",
+      "thread_ids": [
+        "1a0c3e72a9488819"
+      ],
+      "supporting_thread_ids": [],
+      "distinct_work_reason": "Tekliften sonraki sözleşme hazırlığı ve tüzel kişi/cari bilgi temini. Üretim brief’i veya önceki Ekim tasarım işi değildir.",
+      "access_scope": "agency_account_manager_and_authorized_finance_only",
+      "customer_ask": "Berk Varol 28 Eylül’de sözleşme/faturalama için kullanılacak şirketin cari bilgilerini iletip bu cari üzerinden ilerlemenin uygun olduğunu söylüyor.",
+      "staff_replies_and_actions": [
+        {
+          "message_id": "1a0c3ea5633f6b78",
+          "author": "Ahmet Şükrü Altındağ",
+          "date": "2026-09-21",
+          "detail": "Resmi çalışma sürecini başlatma bildirimi, kurum bilgileri talebi, ilk dönem faturası ve aylık kesim/ödeme yaklaşımı gönderildi."
+        },
+        {
+          "message_id": "1a0e80d005223eae",
+          "author": "Ahmet Şükrü Altındağ",
+          "date": "2026-09-28",
+          "detail": "Sözleşmenin 22 Eylül başlangıçlı hazırlanacağı; ilk dönem ve ardından 18–20’si arası faturalama/4–6 hafta ödeme yaklaşımı yeniden ifade edildi."
+        },
+        {
+          "message_id": "1a0e86d8b70fc44d",
+          "author": "Berk Varol",
+          "date": "2026-09-28",
+          "detail": "Kullanılacak tüzel kişi bilgisini sağladı ve cari hesabı teyit etti."
+        }
+      ],
+      "revisions_and_directions": {
+        "accepted": "Cari/tüzel kişi seçimi Berk’in açık yanıtıyla destekleniyor.",
+        "proposed": "Başlangıç ve ilk fatura dönemi 21 Eylül mesajı ile 28 Eylül mesajında farklı ifade edilmiş. Son mesajdaki öneri önceki metnin aynısı değildir.",
+        "rejected": "Açık ret yok; sessizlikten imzalı sözleşme veya tüm ödeme koşullarının kabulü çıkarılmadı."
+      },
+      "reported_outcome": "Sözleşme hazırlığı için şirket bilgileri alınmış. Sözleşmenin imzalandığı, faturanın kesildiği veya ödemenin gerçekleştiği doğrulanmadı.",
+      "bounded_learning_rules": [
+        "Fatura ve sözleşme tarihlerini teklif/taslak/karşı tarafça teyit edilmiş ayrımıyla sakla.",
+        "Cari bilgileri yaratıcı üretim ajanlarına aktarma.",
+        "Sonraki ticari belgeleri kontrol etmeden burada önerilen vadeyi yürürlükte sözleşme hükmü kabul etme."
+      ],
+      "unknowns": [
+        "İmzalı sözleşme, nihai başlangıç/fatura dönemi, ödeme vadesi ve ödeme gerçekleşmesi görülmedi."
+      ],
+      "source_message_count": 3,
+      "source_message_ids": [
+        "1a0c3ea5633f6b78",
+        "1a0e80d005223eae",
+        "1a0e86d8b70fc44d"
+      ],
+      "source_date_range_istanbul": {
+        "from": "2026-09-21T15:21:49+03:00",
+        "to": "2026-09-28T17:31:16+03:00"
+      },
+      "source_links": [
+        {
+          "thread_id": "1a0c3e72a9488819",
+          "url": "https://mail.google.com/mail/u/0/#all/1a0c3e72a9488819"
+        }
+      ],
+      "learning_status": "source_scoped_historical_learning_not_live_task",
+      "last_checked_at": "2026-10-07"
+    },
+    {
+      "id": "YADA-R2-05",
+      "title": "İlk içerik planına geçiş için beş başlıklı strateji soru seti",
+      "thread_ids": [
+        "1a0d88b1d3957ffc"
+      ],
+      "supporting_thread_ids": [],
+      "distinct_work_reason": "25 Eylül’de hazırlanıp müşteriye gönderilen ayrı araştırma/brief tamamlama teslimi; beş soruluk DOCX bütünüyle okundu. 5 Ekim’deki arka plan renk revizyonu tekrar sayılmadı.",
+      "customer_ask": "Bu zincirde müşterinin yeni yanıtı yok. Cansu, önceki toplantı doğrultusunda ilk içerik planına geçebilmek için müşteriden bilgi/tercih talep ediyor.",
+      "staff_replies_and_actions": [
+        {
+          "message_id": "1a0d88b1d3957ffc",
+          "author": "Cansu Akiş Kabil",
+          "date": "2026-09-25",
+          "detail": "Rakip haritası için 4–5 marka adı beklendiği, Caregiver arketipi doğrultusunda Ekim hazırlığına geçildiği ve ilk planın Ekim’in ikinci yarısını kapsayacağı bildirildi."
+        }
+      ],
+      "attachment_reviewed": {
+        "message_id": "1a0d88b1d3957ffc",
+        "filename": "yada-Multicosmetics_İletişimStratejisiSorular.docx",
+        "method": "Gmail read_attachment aracının DOCX metin çıkarımı; dönen content içindeki bütün metin okundu. content_truncated=false. Görsel/düzen incelemesi yapılmadı.",
+        "full_text_sections": [
+          "İlk 90 günün hedefi; öne çıkacak 2–3 ürün/seri; stok, kanal, lansman uygunluğu.",
+          "Satın alma bariyerleri; müşteri hizmetleri, eczane ve satış ekibi soruları; gerçek kanal/veri örnekleri.",
+          "Vaat, konumlandırma ve ton tercihleri; sakin/şefkatli rehber, Caregiver ve “Güvendesin” söyleminin değerlendirilmesi.",
+          "Ürün faydası, içerik gerekçesi, kullanıcı, kullanım şekli/sınırları ve güncel onaylı iddia dayanakları.",
+          "Yayın kanalları, fotoğraf/video arşivi, bilimsel kontrol ve son marka onay sorumluları ile dönüş süreleri."
+        ]
+      },
+      "revisions_and_directions": {
+        "accepted": "Caregiver konusunda mutabakat bulunduğu ajansın gönderdiği metinde ifade ediliyor; müşteri tarafından ayrıca yazılmış nihai kabul bu tek mesajda yok.",
+        "proposed": "“Güvendesin” metni DOCX’te değerlendirme konusu olarak yer alıyor; onaylı slogan diye kaydedilmedi.",
+        "rejected": "Müşteri cevabı olmadığı için reddedilmiş madde yok."
+      },
+      "reported_outcome": "Soru seti müşteriye gönderilmiş. Bu zincirde cevap, tamamlanmış ürün dosyası veya içerik planı finali yok.",
+      "bounded_learning_rules": [
+        "İlk içerik planından önce ticari hedef, stok/kanal, gerçek satın alma bariyeri ve onay sorumlularını ilişkilendir.",
+        "Önerilmiş söylemi onaylı marka ifadesi olarak kullanma.",
+        "Bu beş başlıklı form mevcut soruların tekrarı için değil eksik bilgi tespiti için referanstır."
+      ],
+      "unknowns": [
+        "Soru setinin cevapları ve 4–5 marka listesi bu zincirde bulunmuyor.",
+        "Onay kişileri ve yanıt süreleri hâlâ sorulmuş bilgi durumunda."
+      ],
+      "source_message_count": 1,
+      "source_message_ids": [
+        "1a0d88b1d3957ffc"
+      ],
+      "source_date_range_istanbul": {
+        "from": "2026-09-25T15:29:23+03:00",
+        "to": "2026-09-25T15:29:23+03:00"
+      },
+      "source_links": [
+        {
+          "thread_id": "1a0d88b1d3957ffc",
+          "url": "https://mail.google.com/mail/u/0/#all/1a0d88b1d3957ffc"
+        }
+      ],
+      "learning_status": "source_scoped_historical_learning_not_live_task",
+      "last_checked_at": "2026-10-07"
+    },
+    {
+      "id": "YADA-R2-06",
+      "title": "Remedium DS lansman brief’i, tarih değişimi ve kreatif yön revizyonu",
+      "thread_ids": [
+        "1a0ebe5146d11f6c",
+        "1a0ed61ede00c195",
+        "1a0ed692d329d041"
+      ],
+      "supporting_thread_ids": [
+        "1a10bd0b4997f6d9",
+        "1a0ed63c0c5ba5d9"
+      ],
+      "distinct_work_reason": "Üç e-posta zinciri aynı Remedium DS lansmanını sürdürüyor; yalnız bir ayrıntılı konu sayıldı. Kaynak/ürün görseli paylaşımları da yeni iş gibi çoğaltılmadı.",
+      "customer_ask": "29 Eylül’de Tuğba Erdoğan master kreatif dünya, ana KV, Cleanse–Target–Balance sistemi, Skin & Scalp yaklaşımı ve broşür kurgusu için öneri istiyor; ilk mesajında 15 Ekim saha çıkışı hedefini bildiriyor.",
+      "staff_replies_and_actions": [
+        {
+          "message_id": "1a0ed61ede00c195",
+          "author": "Cansu Akiş Kabil",
+          "date": "2026-09-29",
+          "detail": "Kreatif görünürlük ile ziyaret/sipariş odaklı performans hedefinin ayrıştırılması gerektiğini ifade ediyor."
+        },
+        {
+          "message_id": "1a0ed9a29e89e11c",
+          "author": "Ahmet Şükrü Altındağ",
+          "date": "2026-09-29",
+          "detail": "Ürün hazırlığı, saha/tüketici lansmanı ayrımı, ilk 90 gün kanal/bölge/hedefi ve medya bütçe aralığı soruldu; kremden başlayıp aileye genişleyen yapı önerildi."
+        },
+        {
+          "message_id": "1a0f0f2969fbf6b5",
+          "author": "Tuğba Erdoğan",
+          "date": "2026-09-30",
+          "detail": "İlk fazı kremle kurmayı uygun buldu; 1–2 Ekim saha, 15 Ekim tüketici iletişimi ayrımı yaptı; satış hedeflerini satış ekibine bağladı, minimum/optimum medya planı istedi."
+        },
+        {
+          "message_id": "1a0f1118aff8300e",
+          "author": "Ahmet Şükrü Altındağ",
+          "date": "2026-09-30",
+          "detail": "Medya bütçe planının Hande ve ilgili uzman ekip tarafından değerlendirilmesini istedi; örnek bütçeler bu işe verilmiş harcama yetkisi değildir."
+        },
+        {
+          "message_id": "1a0f819b3ba39c40",
+          "author": "Tuba Çalık",
+          "date": "2026-10-01",
+          "detail": "Tüp tedariği/gümrük, üretim ve serbest bırakmaya bağlı olarak 15 Ekim ürün hazır olma öngörüsü verdi; lansman/duyuru için 19 Ekim planlanmasını istedi. Pazarlama koordinasyonunu Tuğba’ya verdi; erkek odağı önerdi."
+        },
+        {
+          "message_id": "1a0f88d3b087e7c0",
+          "author": "Tuğba Erdoğan",
+          "date": "2026-10-01",
+          "detail": "Güçlü kreatif dünyayı öncelik, performansı devamı olarak tarif etti. 15–19 Ekim hazırlık bandı ve ikinci haftadan teaser önerdi; erkek odağını koruyup klasik kepek/siyah tişört gösteriminden ayrışma istedi."
+        }
+      ],
+      "revisions_and_directions": {
+        "accepted": "Kremle başlama ve erkek odağı yazışmada açıkça destekleniyor. 19 Ekim, Tuba’nın yeni lansman/duyuru planlama yönlendirmesi; ürünün fiilen hazır olduğu anlamına gelmiyor.",
+        "proposed": "Tuğba özgürlük, görünür olma, renklerden kaçmama ve özgüven üzerinden “Her renkte kendini göstermekten çekinme” benzeri yaratıcı alan istiyor; son slogan onayı değil.",
+        "rejected": "İletişimin klasik siyah tişörtte kepek veya sebore/kaşıntıyı doğrudan gösteren alışılmış dermokozmetik dünyaya sıkıştırılması istenmiyor."
+      },
+      "reported_outcome": "Brief ve görseller alındığı ajansça bildirildi; 1 Ekim’de tarih/yön güncellendi. Kreatif final, medya bütçesi onayı, üretim/depoya giriş, lansman veya yayın gerçekleşmesi görülmedi.",
+      "bounded_learning_rules": [
+        "29 Eylül’deki 15 Ekim tarihini tek güncel lansman gerçeği olarak kullanma; 1 Ekim revizyonunu ve koşullarını taşı.",
+        "Sağlık/etkinlik iddialarını müşteri talebi olarak tut; medikal eklerin varlığını doğrulanmış kanıt diye kullanma.",
+        "Tedarik riski, ürün hazır olma, eczane sevkiyatı ve tüketici duyurusunu ayrı olaylar olarak izlemek gerekir."
+      ],
+      "unknowns": [
+        "Medikal, klinik ve ürün sunum ekleri bu turda okunmadı/doğrulanmadı.",
+        "Nihai ürün sayısı, gerçek stok, tüketici çıkış tarihi, medya bütçesi ve yayına onay belirsiz.",
+        "Croda kaynağı 5 Ekim’de paylaşılmış ve Cansu yaklaşımı yorumlamış; harici web sayfası bu turda okunmadı."
+      ],
+      "source_message_count": 13,
+      "source_message_ids": [
+        "1a0ebe5146d11f6c",
+        "1a0ed4ce45fe2d29",
+        "1a0ed570098cf50b",
+        "1a0ed67ffde7543c",
+        "1a0ed9a9c25e6943",
+        "1a0ed9b16e66524a",
+        "1a0ed61ede00c195",
+        "1a0ed9a29e89e11c",
+        "1a0edc3b85bf4550",
+        "1a0f0f2969fbf6b5",
+        "1a0f1118aff8300e",
+        "1a0f819b3ba39c40",
+        "1a0f88d3b087e7c0"
+      ],
+      "source_date_range_istanbul": {
+        "from": "2026-09-29T09:40:40+03:00",
+        "to": "2026-10-01T20:39:47+03:00"
+      },
+      "source_links": [
+        {
+          "thread_id": "1a0ebe5146d11f6c",
+          "url": "https://mail.google.com/mail/u/0/#all/1a0ebe5146d11f6c"
+        },
+        {
+          "thread_id": "1a0ed61ede00c195",
+          "url": "https://mail.google.com/mail/u/0/#all/1a0ed61ede00c195"
+        },
+        {
+          "thread_id": "1a0ed692d329d041",
+          "url": "https://mail.google.com/mail/u/0/#all/1a0ed692d329d041"
+        }
+      ],
+      "learning_status": "source_scoped_historical_learning_not_live_task",
+      "last_checked_at": "2026-10-07"
+    },
+    {
+      "id": "YADA-R2-07",
+      "title": "Yıllık iletişim takviminin satış, stok ve Medical kontrolüyle revizyonu",
+      "thread_ids": [
+        "1a0f1f7ee0beaea1"
+      ],
+      "supporting_thread_ids": [],
+      "distinct_work_reason": "12 aylık çalışma/frekans takvimi ve Ekim–Aralık öncelik revizyonu ayrı planlama teslimidir. Önceki Ekim görsel arka plan yorumu bu konuya tekrar eklenmedi.",
+      "customer_ask": "Tuğba 2 Ekim’de Ekim–Aralık bölümünü güncel önceliklerle revize etmeyi, Ekim ana odağını DS krem yapmayı, yenilenen ambalaj/ürünleri eklemeyi; frekansı kanal-format-amaç, sorumlu, KPI ve stokla ilişkilendirmeyi istiyor.",
+      "staff_replies_and_actions": [
+        {
+          "message_id": "1a0f209be05c2ba3",
+          "author": "Ahmet Şükrü Altındağ",
+          "date": "2026-09-30",
+          "detail": "Yıllık iletişim takvimi ile özel günler/ürün rehberi/yöntem tablolarını içeren çalışma gönderildi; müşteri yorumları istendi."
+        },
+        {
+          "message_id": "1a0fcd3730a39a7a",
+          "author": "Ahmet Şükrü Altındağ",
+          "date": "2026-10-02",
+          "detail": "Finalleştirmek için müşterinin inceleme/dönüş durumu soruldu."
+        },
+        {
+          "message_id": "1a0fd1de220e88b8",
+          "author": "Tuğba Erdoğan",
+          "date": "2026-10-02",
+          "detail": "Takvimi kapsamlı/kaynaklı buldu; DS lansmanı, 5 Ekim itibarıyla siyah sprey başlık planlanan Viniferine Tonik ve yenilenen ürünleri öne alarak revizyon istedi. Uygulama planının aylık satış/stok/performans verisiyle güncellenmesini belirtti."
+        },
+        {
+          "message_id": "1a0fd2191912cda6",
+          "author": "Tuğba Erdoğan",
+          "date": "2026-10-02",
+          "detail": "Takvimi İrem’e göndererek içerik dili, ürün-kategori eşleşmesi, kullanım sınırları ve fayda söylemlerinin Medical kontrolünü istedi."
+        },
+        {
+          "message_id": "1a10725bf79b87e9",
+          "author": "Ahmet Şükrü Altındağ",
+          "date": "2026-10-04",
+          "detail": "Müşteri dönüşünü Cansu’ya, desteği Esma’ya yönlendirdi; sonraki aylık planların bu takvimden beslenmesini istedi."
+        }
+      ],
+      "revisions_and_directions": {
+        "accepted": "Müşteri 12 aylık çalışmanın ana yol haritası olarak kalmasını istiyor. Bu genel yaklaşım kabulü, hücre bazında final onay değildir.",
+        "proposed": "Ekim–Aralık öncelikleri, kanal/format/amaç bazlı frekanslar, sorumlu/KPI/stok bağlantısı ve aylık güncelleme.",
+        "rejected": "Sabit takvimi veri/ürün değişiminden bağımsız uygulama yaklaşımı yerine aylık güncelleme istendi; belirli postun açık reddi yok."
+      },
+      "reported_outcome": "İletişim takvimi Medical revizyona gönderilmiş. Revize son dosya ve Medical/final marka kabulü bu zincirde yok.",
+      "bounded_learning_rules": [
+        "Takvim skorunu veya planlanan sıklığı gerçekleşen satış/yayın sonucu sayma.",
+        "Yeni ambalajı kullanmadan güncel dosya sürümünü kontrol et.",
+        "Medical onay, ticari öncelik ve kreatif onayı ayrı kaydet; yalnız dosyanın iletilmesini final kabul etme."
+      ],
+      "unknowns": [
+        "Excel eki bu turda açılmadı; içerikteki hücre/formül veya ürün sınıflaması doğrulanmadı.",
+        "5 Ekim ambalaj geçişi müşteri planıdır; fiili stok/ürün görseli kontrol edilmedi.",
+        "Medical yanıtı ve revize takvim sürümü bulunmadı."
+      ],
+      "source_message_count": 5,
+      "source_message_ids": [
+        "1a0f209be05c2ba3",
+        "1a0fcd3730a39a7a",
+        "1a0fd1de220e88b8",
+        "1a0fd2191912cda6",
+        "1a10725bf79b87e9"
+      ],
+      "source_date_range_istanbul": {
+        "from": "2026-09-30T14:18:39+03:00",
+        "to": "2026-10-04T16:41:16+03:00"
+      },
+      "source_links": [
+        {
+          "thread_id": "1a0f1f7ee0beaea1",
+          "url": "https://mail.google.com/mail/u/0/#all/1a0f1f7ee0beaea1"
+        }
+      ],
+      "learning_status": "source_scoped_historical_learning_not_live_task",
+      "last_checked_at": "2026-10-07"
+    }
+  ],
+  "read_but_not_separately_counted": [
+    {
+      "thread_id": "19f3bd6eff7727ef",
+      "subject": "(New Biz) Özge Y. @mentioned you in Re: ya da Multicosmetics // Yaz Dönemi Projesi",
+      "messages": 1,
+      "date_range_istanbul": {
+        "from": "2026-07-07T12:09:28+03:00",
+        "to": "2026-07-07T12:09:28+03:00"
+      },
+      "reason_not_counted": "YADA-R2-01 ile aynı 10065145234 numaralı Basecamp işi; brief ekine/devir notuna ilişkin kısa yorum. Ayrı konu sayılmadı.",
+      "text_reviewed": true
+    },
+    {
+      "thread_id": "19f3d45e468183aa",
+      "subject": "Re: (New Biz) ya da Multicosmetics // Yaz Dönemi Projesi",
+      "messages": 2,
+      "date_range_istanbul": {
+        "from": "2026-07-07T18:50:17+03:00",
+        "to": "2026-07-10T19:12:56+03:00"
+      },
+      "reason_not_counted": "Aynı Basecamp işinin şablon ve sunum dosyası paylaşımları; ayrı konu sayılmadı.",
+      "text_reviewed": true
+    },
+    {
+      "thread_id": "19f7fa283f86b917",
+      "subject": "(New Biz) Aleyna E. @mentioned you in Re: ya da Multicosmetics // Yaz Dönemi Proje Sunumu",
+      "messages": 1,
+      "date_range_istanbul": {
+        "from": "2026-07-20T16:06:23+03:00",
+        "to": "2026-07-20T16:06:23+03:00"
+      },
+      "reason_not_counted": "Aynı Basecamp işinin sunum dosyası paylaşımı; ayrı konu sayılmadı.",
+      "text_reviewed": true
+    },
+    {
+      "thread_id": "19fa9010af37b48e",
+      "subject": "Re: (New Biz) ya da Multicosmetics // Yaz Dönemi Proje Sunumu",
+      "messages": 1,
+      "date_range_istanbul": {
+        "from": "2026-07-28T16:54:04+03:00",
+        "to": "2026-07-28T16:54:04+03:00"
+      },
+      "reason_not_counted": "Aynı Basecamp işinin son sunum dosyası paylaşımı; ayrı konu sayılmadı.",
+      "text_reviewed": true
+    },
+    {
+      "thread_id": "1a01ae2fb0737c47",
+      "subject": "ya da Multicosmetics_170826",
+      "messages": 2,
+      "date_range_istanbul": {
+        "from": "2026-08-19T19:37:56+03:00",
+        "to": "2026-08-20T08:47:13+03:00"
+      },
+      "reason_not_counted": "Google Slaytlar yorumu: moodboard’dan 4–5 örneği ayrı çalışma sayfalarına alma önerisi ve iki yorumun çözüldü bilgisi. Kısa destek kaydı; ayrı ayrıntılı iş sayılmadı.",
+      "text_reviewed": true
+    },
+    {
+      "thread_id": "1a01c83788acc9f4",
+      "subject": "ya da Sunum hk",
+      "messages": 3,
+      "date_range_istanbul": {
+        "from": "2026-08-20T03:24:04+03:00",
+        "to": "2026-08-20T09:47:36+03:00"
+      },
+      "reason_not_counted": "Sunumda stratejiyi Cansu’nun, son iki slaytı Ahmet’in anlatması ve ekranı bir kişinin yürütmesine ilişkin kısa görev paylaşımı. Ayrı ayrıntılı iş sayılmadı.",
+      "text_reviewed": true
+    },
+    {
+      "thread_id": "1a0d208845d38bb7",
+      "subject": "(ya da Multicosmetics) Esma Z. @mentioned you in Re: ya da Multicosmetics İlk Sunumlar",
+      "messages": 1,
+      "date_range_istanbul": {
+        "from": "2026-09-24T09:09:28+03:00",
+        "to": "2026-09-24T09:09:28+03:00"
+      },
+      "reason_not_counted": "İlk Sunumlar özel Basecamp görevinde yalnız “takipteyim” yanıtı; ayrıntılı konu sayılmadı.",
+      "text_reviewed": true
+    },
+    {
+      "thread_id": "1a0ed4a0f6368973",
+      "subject": "(Gamechangers) Barış S. @mentioned you in Re: GC // Ya da Multi 3'lü Grid",
+      "messages": 1,
+      "date_range_istanbul": {
+        "from": "2026-09-29T16:10:48+03:00",
+        "to": "2026-09-29T16:10:48+03:00"
+      },
+      "reason_not_counted": "GC iç hesabı için üçlü grid dosya paylaşımı/yorum talebi; gerçek dosya görülmedi ve bu turda ayrıntılı ya da müşteri işi sayılmadı.",
+      "text_reviewed": true
+    },
+    {
+      "thread_id": "1a0ed63c0c5ba5d9",
+      "subject": "(ya da Multicosmetics) Marka Dosyaları",
+      "messages": 2,
+      "date_range_istanbul": {
+        "from": "2026-09-29T16:38:52+03:00",
+        "to": "2026-09-30T16:58:23+03:00"
+      },
+      "reason_not_counted": "Ürün/katalog/çekim/logo kaynak dizini ve ürün/modelli-modelsiz dosyalama bilgisi. Kaynak haritası olarak öğrenildi; ayrı ayrıntılı konu sayılmadı.",
+      "text_reviewed": true
+    },
+    {
+      "thread_id": "1a10bd0b4997f6d9",
+      "subject": "Fwd: saç ürünleri için size ve ajansa kaynak",
+      "messages": 3,
+      "date_range_istanbul": {
+        "from": "2026-10-05T14:26:18+03:00",
+        "to": "2026-10-05T14:46:32+03:00"
+      },
+      "reason_not_counted": "Croda bağlantısı ve saç derisini günlük bakımın devamı olarak ele alma üzerine Cansu yorumu; Remedium bağlamına eklendi, ayrı ayrıntılı konu sayılmadı.",
+      "text_reviewed": true
+    },
+    {
+      "thread_id": "1a0ec35174df3247",
+      "subject": "bu sekıld euygun mudur?",
+      "messages": 1,
+      "date_range_istanbul": {
+        "from": "2026-09-29T11:07:50+03:00",
+        "to": "2026-09-29T11:07:50+03:00"
+      },
+      "reason_not_counted": "İşe alım adayına ya da üzerinden case brief’i. Müşteri üretim/teslim geçmişinden ayrı tutuldu; müşteri işi sayılmadı.",
+      "text_reviewed": true
+    },
+    {
+      "thread_id": "1a0cd88c05996459",
+      "subject": "Your meeting recap - Ya Da Multicosmetics",
+      "messages": 1,
+      "date_range_istanbul": {
+        "from": "2026-09-23T12:11:25+03:00",
+        "to": "2026-09-23T12:11:25+03:00"
+      },
+      "reason_not_counted": "23 Eylül toplantısının otomatik Fireflies özeti. İnsan kaynaklı strateji zincirine yardımcı, doğrulanmamış ikincil özet; ayrı konu sayılmadı.",
+      "text_reviewed": true
+    },
+    {
+      "thread_id": "1a0f18961ed50662",
+      "subject": "Your meeting recap - ya da SM içerik ve görsel dünyası",
+      "messages": 1,
+      "date_range_istanbul": {
+        "from": "2026-09-30T11:58:26+03:00",
+        "to": "2026-09-30T11:58:26+03:00"
+      },
+      "reason_not_counted": "30 Eylül Fireflies bağlantı/promosyon gövdesi; toplantı içeriği yok, ayrı konu sayılmadı.",
+      "text_reviewed": true
+    },
+    {
+      "thread_id": "19f2701cd3359bbe",
+      "subject": "Your meeting recap - Ya da cosmetics x Gamechangers Tanışma",
+      "messages": 2,
+      "date_range_istanbul": {
+        "from": "2026-07-03T11:04:16+03:00",
+        "to": "2026-07-03T11:05:45+03:00"
+      },
+      "reason_not_counted": "3 Temmuz tanışma toplantısı için iki Fireflies mesajı; birinde otomatik özet var. Tam kayıt/insan teyidi yok; ayrı ayrıntılı konu sayılmadı.",
+      "text_reviewed": true
+    }
+  ],
+  "query_checkpoint": [
+    {
+      "key": "initial_broad",
+      "query": "{\"ya da\" multicosmetics Remedium} after:2026/01/01 before:2026/10/08 -in:spam -in:trash",
+      "returned_messages": 94,
+      "state": "superseded_by_narrow_queries_common_phrase_noise"
+    },
+    {
+      "key": "remedium_subject",
+      "query": "subject:Remedium before:2026/10/08 -in:spam -in:trash",
+      "returned_messages": 13,
+      "state": "exhausted"
+    },
+    {
+      "key": "2026_subject_domain_page1",
+      "query": "{from:yadacosmetics.com to:yadacosmetics.com subject:\"ya da\" subject:multicosmetics subject:Remedium} after:2026/01/01 before:2026/10/08 -in:spam -in:trash",
+      "returned_messages": 100,
+      "state": "continued"
+    },
+    {
+      "key": "2026_subject_domain_page2",
+      "query": "{from:yadacosmetics.com to:yadacosmetics.com subject:\"ya da\" subject:multicosmetics subject:Remedium} after:2026/01/01 before:2026/10/08 -in:spam -in:trash",
+      "returned_messages": 0,
+      "state": "exhausted"
+    },
+    {
+      "key": "before_2026",
+      "query": "{from:yadacosmetics.com to:yadacosmetics.com subject:multicosmetics subject:Remedium subject:\"ya da\"} before:2026/01/01 -in:spam -in:trash",
+      "returned_messages": 6,
+      "state": "exhausted_no_brand_business_results"
+    },
+    {
+      "key": "yada_variant",
+      "query": "{subject:yada from:yadacosmetics.com to:yadacosmetics.com} before:2026/10/08 -in:spam -in:trash",
+      "returned_messages": 56,
+      "state": "exhausted"
+    },
+    {
+      "key": "human_subject",
+      "query": "{subject:\"ya da\" subject:multicosmetics subject:Remedium} -from:notifications@app.basecamp.com -from:noreply@wetransfer.com -from:fred@fireflies.ai before:2026/10/08 -in:spam -in:trash",
+      "returned_messages": 71,
+      "state": "exhausted"
+    },
+    {
+      "key": "human_body_domain",
+      "query": "{multicosmetics Remedium \"yadacosmetics.com\"} -from:notifications@app.basecamp.com -from:fred@fireflies.ai -from:noreply@wetransfer.com before:2026/10/08 -in:spam -in:trash",
+      "returned_messages": 78,
+      "state": "exhausted"
+    },
+    {
+      "key": "basecamp_subject",
+      "query": "{subject:\"ya da\" subject:multicosmetics subject:Remedium} from:notifications@app.basecamp.com before:2026/10/08 -in:spam -in:trash",
+      "returned_messages": 20,
+      "state": "exhausted"
+    },
+    {
+      "key": "basecamp_body",
+      "query": "{multicosmetics Remedium \"yadacosmetics.com\"} from:notifications@app.basecamp.com before:2026/10/08 -in:spam -in:trash",
+      "returned_messages": 51,
+      "state": "exhausted"
+    }
+  ],
+  "limitations": [
+    "Bu turda müşteriyle temas kurulmadı, görev açılmadı, eski iş yeniden başlatılmadı.",
+    "Gmail üzerinden Basecamp bildirimleri okundu; doğrudan Basecamp erişimi ve güncel görev tamlığı kanıtlanmadı.",
+    "Tek DOCX’in tüm çıkarılmış metni incelendi; diğer 27 ek kaydı/incelenmemiş dosyalar içerik öğrenimi sayılmadı.",
+    "Ürünler, kaynaklar ve insan görevleri için e-posta tarihinden sonraki gerçekleşme durumu doğrulanmadı."
+  ]
+}

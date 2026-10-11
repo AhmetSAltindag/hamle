@@ -1,0 +1,277 @@
+{
+  "version": "2026-10-08-user-recipient-gate-v2",
+  "status": "user_authorized_design_not_connected_runtime",
+  "source": "Ahmet’in 7 Ekim yönlendirme kararları; 8 Ekim mesaj bazlı gerçek To/CC şartı ve yalnız 8 Ekim denemelerine ortak toplam 50 USD harcama onayı",
+  "interpretation": "“tekli isterse” bağlam içinde teklif talebi olarak yorumlandı; tüm ajans teklif/fiyat talepleri Ahmet’e gider.",
+  "routes": [
+    {
+      "category": "agency_quote_price_discount_new_cost",
+      "decision_owners": [
+        "Ahmet Şükrü Altındağ"
+      ],
+      "hamle_actions": [
+        "acknowledge",
+        "collect_scope_and_missing_inputs",
+        "prepare_options",
+        "route_to_owner",
+        "track_response"
+      ],
+      "prohibited": [
+        "invent_price",
+        "reuse_old_quote_as_current",
+        "commit_budget_or_delivery_for_others"
+      ],
+      "precondition": "message_participation_gate passed for latest relevant incoming message; separate pre-authorized independent tasks use their own authority and no excluded-message input"
+    },
+    {
+      "category": "problem_complaint_strategic_decision",
+      "decision_owners": [
+        "Cansu Akiş Kabil",
+        "Ahmet Şükrü Altındağ"
+      ],
+      "hamle_actions": [
+        "acknowledge",
+        "collect_evidence",
+        "identify_affected_versions",
+        "prepare_resolution_options",
+        "route_and_track"
+      ],
+      "prohibited": [
+        "admit_unverified_fault",
+        "decide_brand_strategy_alone",
+        "promise_compensation"
+      ],
+      "precondition": "message_participation_gate passed for latest relevant incoming message; separate pre-authorized independent tasks use their own authority and no excluded-message input"
+    },
+    {
+      "category": "social_agenda_content_plan_trends_seasonal",
+      "decision_owners": [
+        "Özge Yağmur",
+        "Hamle"
+      ],
+      "hamle_actions": [
+        "prepare_ideas_and_calendar",
+        "collaborate_with_ozge",
+        "check_current_sources",
+        "reply_and_track"
+      ],
+      "requires": "Özge contribution or an applicable pre-agreed plan; do not claim consultation before it happens",
+      "precondition": "message_participation_gate passed for latest relevant incoming message; separate pre-authorized independent tasks use their own authority and no excluded-message input"
+    },
+    {
+      "category": "other_authorized_routine_work",
+      "decision_owners": [
+        "Hamle"
+      ],
+      "hamle_actions": [
+        "reply_directly",
+        "clarify",
+        "brief",
+        "dispatch",
+        "basecamp_comment_revision",
+        "track",
+        "checked_delivery"
+      ],
+      "requires": "Existing brand scope, verified capacity, tool access and authority. Unknown information is not invented.",
+      "precondition": "message_participation_gate passed for latest relevant incoming message; separate pre-authorized independent tasks use their own authority and no excluded-message input"
+    }
+  ],
+  "mixed_intent": "Yalnız katılım kapısı geçen mesaj için tek hesap verebilir iş oluştur; karma niyetleri ilgili sahiplerine ayır. Kapı geçmeyen mesajdan karma iş veya yönlendirme başlatma.",
+  "strategic_boundary": "Positioning, core brand claim, overall creative platform, channel/investment change: Cansu+Ahmet. Executing an approved content calendar/trend/seasonal idea: Özge+Hamle.",
+  "routine_revision_boundary": "Ordinary scoped revision stays with Hamle; dissatisfaction, repeated failure or delivery breakdown is a problem/complaint for Cansu+Ahmet.",
+  "single_customer_flow": "Hamle yalnız güncel katılım ve kapsam yetkisi içinde akışın sahibidir. İnsan devraldıysa tekrarlama; güncel ve yetkili son insan işlemini oku. Hamle son gelen mesajdan çıkarılmışsa eski katılımla devam etme; iç devir/bekleme uygula.",
+  "repeated_approval": "Kapsam içi rutin mesaj başına Ahmet’ten tekrar onay istenmez. Her mesajdaki gerçek To/CC kapısı teknik yetki kontrolüdür; eski katılım bu kontrolün yerine geçmez.",
+  "contact_routes": {
+    "Ahmet Şükrü Altındağ": "ahmet@gamechangers.com.tr",
+    "Cansu Akiş Kabil": "cansu@gamechangers.com.tr",
+    "Özge Yağmur": "ozge@gamechangers.com.tr"
+  },
+  "contact_route_basis": "Addresses observed in authorized business correspondence; platform identities and Basecamp permissions still require setup.",
+  "message_participation_gate": {
+    "version": "2026-10-08-user-recipient-gate-v2",
+    "source": "Ahmet’in 8 Ekim 2026 tarihli doğrudan kullanıcı kararı",
+    "status": "configured_policy_not_runtime_verified",
+    "address": "hamle@gamechangers.com.tr",
+    "rule": "İlgili son gelen mesajın sağlayıcıdan alınan gerçek To veya CC alıcılarında Hamle yoksa o mesajdan yanıt, iş, brief, revizyon, üretim, plan değişikliği, uzman görevi veya Basecamp aksiyonu başlatılamaz. Bu kapı yönlendirme ve içerikten eylem çıkarma işleminden önce uygulanır.",
+    "evaluate_message": "latest_relevant_incoming_message_not_latest_message_matching_hamle",
+    "accepted_recipient_fields": [
+      "To",
+      "Cc"
+    ],
+    "recipient_evidence": "Sağlayıcının ilgili mesaja ait gerçek başlık/alıcı alanları; Message-ID, thread/work kimliği ve başlık okuma zamanı ile kaydedilir. Görünen kişi adı yerine ayrıştırılmış tam e-posta adresi eşleştirilir.",
+    "address_matching": "Tam adres eşleşmesi; harf büyüklüğü ve çevre boşluğu normalleştirilebilir. Takma ad, grup adresi, plus adresi veya alan adı üzerinden örtük eşleştirme yapılmaz; bu kural için açık Hamle adresi gerekir.",
+    "allow_requires": [
+      "latest_relevant_message_identity_resolved",
+      "actual_To_or_Cc_contains_hamle",
+      "message_is_not_own_sent_echo",
+      "current_authority_revision_matches",
+      "separate_brand_sender_work_scope_and_tool_checks_pass"
+    ],
+    "presence_is_necessary_not_sufficient": true,
+    "not_authority": [
+      "previous_thread_participation",
+      "older_To_or_Cc_presence",
+      "message_visible_in_ahmet_mailbox",
+      "quoted_forwarded_body_mentions_hamle",
+      "Bcc_or_envelope_delivery_only",
+      "implicit_copy_or_automatic_forward",
+      "matching_customer_domain",
+      "own_sent_message",
+      "old_work_or_old_approval"
+    ],
+    "absent_or_unknown_result": "hold_no_message_derived_action",
+    "missing_headers_or_uncertain_latest_message": "Doğrulanamayan alanı yetki var gibi yorumlama; ilgili iş bekler. Son görünür mesajın bütün gerçek yazışmanın son mesajı olduğu garanti edilmez.",
+    "excluded_content_handling": "Hariç mesajı müşteri yanıtı, görev, revizyon, plan, Basecamp aksiyonu veya sabah özeti/takvim girdisi yapma. Yalnız kapı sonucunun, kaynak kimliğinin ve bekleme gerekçesinin en az veriyle iç denetim kaydı tutulabilir; bu kayıt iş başlatma yetkisi değildir.",
+    "removal_handling": {
+      "when": "İlgili daha yeni mesajda Hamle’nin gerçek To/CC dışında kaldığı doğrulanınca veya katılım/yetki bilgisi belirsizleşince",
+      "invalidate": "Önceki mesajın yetki sürümünü, sıradaki mail/teslim/iş/üretim/revizyon ve Basecamp aksiyonları için geçersiz kıl.",
+      "queue_and_workers": "İlgili akışın bekleyen ve devam eden otomatik işlemlerini güvenli duraklat; eldeki çıktıyı koru fakat teslim etme veya yeni sürüm/aksiyon üretme. Uzmanlara yalnız durdurma/yetki geri çekme sinyali ilet.",
+      "external_actions": "Önceki zincir yetkisiyle devam eden ilgili dış aksiyonları durdur; gönderim sonucu belirsizse tekrar gönderme. Zaten gerçekleşmiş işlem geri alınmış sayılmaz ve kendiliğinden silinmez.",
+      "handoff": "Yetkili iç sahibine mevcut, daha önce yetkili durum ve katılım kaybı/belirsizliği üzerinden kısa kontrol devri veya bekleme kaydı ver; hariç mesajın içeriğinden yeni brief çıkarma.",
+      "resume": "Yeni gelen bir mesajın gerçek To/CC alanında Hamle açıkça yeniden dahil edilirse o yeni mesajın açık iş kapsamını, güncel brief’i ve insanın son işlemini uzlaştırıp yeni yetki sürümü oluştur. Eski kuyruğu veya hariç mesajları topluca otomatik işletme."
+    },
+    "forward_semantics": "Yeni yönlendirme mesajı kendi gerçek To/CC alanında Hamle’yi açıkça içeriyor ve iş isteğini açıkça iletiyorsa yalnız o yeni mesajın kapsamı değerlendirilebilir. Alıntı içindeki adres veya eski ekli başlık tek başına yetki vermez.",
+    "historical_learning": "Ahmet hesabının yetkili iş geçmişi öğrenilebilir; bu erişim, Hamle’nin bulunmadığı bir mesajı canlı iş tetikleyicisine dönüştürmez. Canlı operasyonun posta kaynağı Hamle hesabıdır.",
+    "visibility_limit": "Hamle’ye ulaşmayan ve yetkili bir katılım bildirimiyle de görünür olmayan mesajın varlığını, içeriğini veya alıcılarını bildiğini iddia etme. Ahmet hesabını canlı akışı telafi eden ikinci posta kaynağı olarak kullanma; doğrulanamayan ilgili son durum için bekle ve erişim sınırını iç kayda yaz.",
+    "independent_authorization": "Kaynaklı doğum günü, sabah özeti veya ayrı açık görev gibi önceden yetkilendirilmiş bağımsız işler kendi kayıtlı yetkileriyle sürebilir. Hariç mesajı girdi yapamaz ve aynı engellenmiş işi başka görev adıyla sürdüremez.",
+    "no_automatic_global_forwarding": true,
+    "no_automatic_self_readd_to_To_or_Cc": true,
+    "checkpoints": [
+      "before_content_to_action",
+      "before_work_create_or_update",
+      "before_plan_or_revision",
+      "before_specialist_dispatch",
+      "before_production_step",
+      "before_any_Basecamp_mutation",
+      "immediately_before_external_send_or_delivery",
+      "before_retry_or_resume"
+    ],
+    "enforcement": "Çalışma altyapısı, iş kilidi altında en son katılım/yetki sürümünü her aksiyondan önce yeniden kontrol eder. Dosya talimatı tek başına çalışma zamanı koruması değildir.",
+    "routine_per_message_human_approval_required": false
+  },
+  "precedence": "Önce son gelen mesajın gerçek To/CC kapısı; sonra marka/kişi/iş yetkisi; sonra aşağıdaki karar rotası. Kapı geçmezse rota bir iş veya yanıt başlatmaz.",
+  "required_recipient_gate_tests": [
+    {
+      "case": "latest_incoming_explicit_To_hamle",
+      "expected": "eligible_only_if_other_scope_checks_pass",
+      "status": "required_not_verified"
+    },
+    {
+      "case": "latest_incoming_explicit_Cc_hamle",
+      "expected": "eligible_only_if_other_scope_checks_pass",
+      "status": "required_not_verified"
+    },
+    {
+      "case": "older_Cc_hamle_latest_absent",
+      "expected": "no_reply_no_work_no_revision_no_plan_no_Basecamp_pause_related_queue",
+      "status": "required_not_verified"
+    },
+    {
+      "case": "hamle_only_in_forwarded_body",
+      "expected": "hold_no_action",
+      "status": "required_not_verified"
+    },
+    {
+      "case": "hamle_only_Bcc_or_delivery_envelope",
+      "expected": "hold_no_action",
+      "status": "required_not_verified"
+    },
+    {
+      "case": "excluded_message_seen_via_ahmet_history",
+      "expected": "learning_only_no_live_trigger",
+      "status": "required_not_verified"
+    },
+    {
+      "case": "missing_actual_headers_or_uncertain_latest",
+      "expected": "hold_no_action",
+      "status": "required_not_verified"
+    },
+    {
+      "case": "new_explicit_To_Cc_reinclusion",
+      "expected": "reconcile_only_new_scope_no_backlog_auto_execution",
+      "status": "required_not_verified"
+    },
+    {
+      "case": "removal_after_dispatch_before_send",
+      "expected": "revoke_related_authority_and_block_pending_action",
+      "status": "required_not_verified"
+    },
+    {
+      "case": "specialist_revision_from_excluded_message",
+      "expected": "block_no_delegation_bypass",
+      "status": "required_not_verified"
+    },
+    {
+      "case": "preauthorized_birthday_or_morning_digest",
+      "expected": "continue_only_independent_authority_and_eligible_sources",
+      "status": "required_not_verified"
+    },
+    {
+      "case": "Ahmet_internal_demo_explicit_To_hamle",
+      "expected": "test_only_not_customer_authorization",
+      "status": "required_not_verified"
+    },
+    {
+      "case": "historical_replay_original_headers_exclude_hamle",
+      "expected": "shadow_evaluation_only_no_live_or_Basecamp_effect",
+      "status": "required_not_verified"
+    },
+    {
+      "case": "unseen_message",
+      "expected": "do_not_claim_seen_or_complete_coverage",
+      "status": "required_not_verified"
+    },
+    {
+      "case": "own_sent_echo",
+      "expected": "no_new_work_no_loop",
+      "status": "required_not_verified"
+    }
+  ],
+  "test_spending_authorization": {
+    "authorization_id": "2026-10-08-shared-test-budget-50-usd",
+    "source": "8 Ekim 2026 doğrudan kullanıcı onayı",
+    "status": "authorized_one_day_tests_not_spent_or_billing_verified",
+    "currency": "USD",
+    "aggregate_limit": 50,
+    "limit_type": "one_shared_pool_across_all_listed_providers_and_roles",
+    "provider_scopes": [
+      "Google Cloud test resources",
+      "OpenAI API tests",
+      "image generation tests"
+    ],
+    "purpose": "8 Ekim 2026 bağlantı, model/altyapı ve görsel üretim denemeleri",
+    "timezone": "Europe/Istanbul",
+    "valid_local_date": "2026-10-08",
+    "valid_until_exclusive": "2026-10-09T00:00:00+03:00",
+    "per_provider_limit": null,
+    "per_role_limit": null,
+    "unused_amount_rollover_authorized": false,
+    "automatic_renewal_authorized": false,
+    "next_month_subscription_authorized": false,
+    "future_days_or_live_operation_budget_authorized": false,
+    "not_authorized": [
+      "50_USD_for_each_provider",
+      "50_USD_for_each_role",
+      "recurring_subscription",
+      "automatic_topup",
+      "automatic_renewal",
+      "spend_after_8_October",
+      "client_campaign_budget",
+      "customer_sending_activation"
+    ],
+    "control": "Bütün sağlayıcı ve roller aynı toplam 50 USD havuzunu kullanır. Ücretli adım öncesi gerçekleşmiş, bekleyen ve ayrılmış test maliyetleri birlikte kontrol edilip kalan ortak tutar içinde en yüksek maliyet için kayıt ayrılır. Sağlayıcı başına ayrı 50 USD açılamaz; paralel adımlar aynı rezervasyon kaydını kullanmalıdır.",
+    "uncertain_cost": "Sağlayıcı ücreti veya bekleyen kullanım bilinmiyorsa toplam sınırın altında kalacak üst maliyet doğrulanmadan yeni ücretli adım başlatma. Bildirim eşiği gerçek harcama sınırı olarak sunulmaz.",
+    "expiry_and_resources": "8 Ekim denemesi için yeni kurulan ücretli kaynakların gün sonrasında yetkisiz maliyet üretmemesi için durdurma/temizlik planı gerekir. Önceden var olan şirket kaynakları bu bütçe kararıyla kapatılmaz veya silinmez.",
+    "recorded_agent_initiated_test_spend_usd": 0,
+    "recorded_spend_basis": "Bu oturumda henüz satın alma veya model API denemesi başlatılmadığına dair mevcut oturum kaydı; sağlayıcı fatura mutabakatı değildir.",
+    "provider_billing_checked": false,
+    "provider_billed_test_total_usd": null,
+    "provider_account_balance_usd": null,
+    "remaining_after_provider_reconciliation_usd": null,
+    "unverified_balance_note": "Bu oturumdaki kayıtlı yeni test harcamasının 0 olması, genel hesap bakiyesi veya sağlayıcının toplam faturasının 0 olduğu anlamına gelmez.",
+    "routine_reapproval_within_scope_required": false,
+    "does_not_override_message_participation_gate": true,
+    "does_not_enable_customer_sends": true
+  },
+  "test_budget_routing": "Önceden açıkça onaylanmış 8 Ekim test havuzu içinde her sağlayıcı/işlem için tekrar Ahmet onayı gerekmez; ortak toplam 50 USD kontrol edilir. Müşteri teklif/fiyat/indirim/yeni maliyet kararları yine Ahmet’e gider; test bütçesi müşteri harcama veya gönderim yetkisi değildir."
+}

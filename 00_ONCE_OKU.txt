@@ -1,0 +1,45 @@
+HAMLE CORE — ÖNCE BU DOSYAYI OKU
+10 Ekim 2026 / Europe/Istanbul / V10 bulut kanıtını içeren kaynak devri
+
+Ahmet'in son önceliği: en az model/kredi tüketimiyle çekirdek yazılımı tamamlamak.
+Marka bilgileri ayrı, sürümlü profil olmalı. Her yeni markada çekirdek yeniden
+yazılmamalı; bütün markaların eğitimini bitirmek çekirdeğin ön koşulu değildir.
+WAT ilk pilot. WhatsApp v1.2; bağımsız metin/grafik/animasyon üreticileri bu
+v1.1 çekirdek kabulünün dışında. Marka/genel öğrenim için söylenen %50/%50
+bir ürün yaklaşımıdır; otomatik kalite puanı formülü değildir.
+
+AZ OKUYARAK BAŞLA
+1. Bu dosya ve 02_CEKIRDEK_YOL_HARITASI.txt (ilk tur için yeterli).
+2. 03_KURULUM_VE_TASIMA.txt; ardından yalnız çalışacağın modül.
+3. Gerektikçe CURRENT_STATUS.json ve dosya haritasındaki kanıt.
+Bütün arşivi tek seferde modele yükleme. İncelemeyi dosya/ad aramasıyla daralt.
+Eski README/8–9 Ekim bekliyor notları ve V7 raporları tarihseldir.
+En yeni kullanıcı kararları ve V10 kanıtı önce gelir.
+
+NE GERÇEKTEN ÇALIŞTI?
+Cloud Run işçisi, özel kontrol ekranı, Firestore kalıcı kayıtları ve bulut
+Gmail/Basecamp/OpenAI bağlantıları var. Gerçek iç mail → iki üretim aşaması →
+eksik tarihe revizyon → düzeltilmiş iki PNG'nin aynı zincirde teslimi geçti;
+Ahmet gelen kutusunda teslimi doğruladı. Bunlar dar iç deneme kanıtıdır.
+WAT'ın iki gerçek PNG'sinde eksik/düzeltilmiş fiyat doğru ayrıldı. İki gerçek
+MP4'ün teknik/örnek kare kontrolleri geçti; tam video/ses kabulü yapılmadı.
+İş bazında görünür durdurma kodu ve gerçek Firestore sentetik devralma geçti.
+Bulut sürümü V10. WAT MÜŞTERİ OTOMASYONU KAPALI. Genel çalışan işçi hâlâ
+iç deneme girişine bağlı; ayrı gölge komutları gerçek müşteri işletimi değildir.
+
+EN ÖNEMLİ BEŞ ÇEKİRDEK BAĞLANTI
+Yetkili mail → kalıcı iş/brief/yetki; marka profilinden doğru görev/üretici;
+periyodik Basecamp olayları → aynı işin aşamaları; dosya/brief/marka kanıtı →
+kalite kararı; güncel yetki ve alıcılarla aynı zincire tek teslim.
+Modüller zaten mevcut. Önce bunları birbirine bağla, sıfırdan yeniden yazma.
+WAT'ın formu dolduruldu, kişiler ve listeler doğrulandı; bunları tekrar isteme.
+
+PAKET SINIRI
+Kod, test, konfigürasyon, kararlar, öğrenme özetleri ve tarihli kanıtlar var.
+Şifre, OAuth istemci sırrı, token, API anahtarı, SDK oturumu, Keychain ve
+sanal ortamlar yok. Büyük ham müşteri dosyaları, tam mail arşivi ve bütün sohbet
+yok. Üç küçük kılavuz referans PNG'si çalışma kodu için dahil edildi.
+Eski iş durumu dışa aktarımları güncel canlı veritabanı yedeği DEĞİLDİR.
+ZIP açılması bağlantı kurmaz, model değiştirmez veya bulutu taşımaz.
+Dosyalar özel şirket/müşteri bilgisi içerir; ZIP şifreli değildir.
+Bu paket oluşturulurken ücretli model/test, ağ çağrısı veya bulut değişikliği yok.

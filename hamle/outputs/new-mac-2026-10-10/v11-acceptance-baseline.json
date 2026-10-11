@@ -1,0 +1,556 @@
+{
+  "schema_version": 1,
+  "recorded_date_local": "2026-10-10",
+  "timezone": "Europe/Istanbul",
+  "assessment_kind": "new_v11_scope_baseline_separate_from_original_65_item_plan",
+  "scope_source": "User message defines v1.1 as cloud customer representative intake/clarification, correct team task assignment, Basecamp follow-up, QA of staff deliverables and same-thread customer delivery without per-routine Ahmet approval.",
+  "scope_includes": [
+    "Actual latest-message To/CC authority",
+    "All eight brands in pilot with separate service/contact acceptance before live operation",
+    "Email and Basecamp workflow",
+    "Review and delivery of staff-produced output",
+    "Exceptions, human takeover, deduplication and bounded costs"
+  ],
+  "scope_excludes": [
+    "WhatsApp: v1.2",
+    "Independent copywriter/graphic/animation agent production",
+    "A promise of zero human intervention for commercial/strategic/complaint exceptions"
+  ],
+  "scoring_method": {
+    "weights_fixed_for_this_baseline": true,
+    "subcriterion_points_only_when_listed_evidence_exists": true,
+    "partial_credit": "Narrow implemented/internal or local-tested building blocks receive only their named subcriterion points. Broad live customer conditions remain zero until accepted.",
+    "result_is": "Functional readiness estimate for the newly defined v1.1 scope",
+    "result_is_not": [
+      "Time spent or remaining time estimate",
+      "Model accuracy",
+      "Percentage of customers safely enabled",
+      "Proof of broad autonomous production"
+    ],
+    "critical_gate_rule": "Weighted progress does not override any authority, customer-data, delivery, budget or human-control gate. 100 requires every subcriterion accepted."
+  },
+  "earned_points": 38,
+  "total_points": 100,
+  "recommended_user_facing_rounding": "Yaklaşık %40; kanıtlı alt başlık hesabı 38/100.",
+  "milestones": [
+    {
+      "id": "V11-01",
+      "title_tr": "Mac kapalıyken çalışan bulut temeli",
+      "weight": 10,
+      "earned_points": 8,
+      "subcriteria": [
+        {
+          "criterion_tr": "Bulutta gerçek işçi yürütmesi",
+          "points": 3,
+          "earned": 3,
+          "evidence": "cloud-execution-v7-first-followup-dispatch.json"
+        },
+        {
+          "criterion_tr": "Gmail/Basecamp/model sırlarının bulut çalışma kimliğiyle erişimi",
+          "points": 2,
+          "earned": 2,
+          "evidence": "cloud-execution-v3-first-internal-dispatch.json"
+        },
+        {
+          "criterion_tr": "Kalıcı iş, olay ve eylem kayıtları",
+          "points": 2,
+          "earned": 2,
+          "evidence": "followup-completed-acceptance.json"
+        },
+        {
+          "criterion_tr": "Ahmet ile sınırlı doğrulanmış kontrol ekranı",
+          "points": 1,
+          "earned": 1,
+          "evidence": "cloud-app-v7-deployment-verified.json"
+        },
+        {
+          "criterion_tr": "Sürekli izinli takvimin gerçek mesai turu",
+          "points": 1,
+          "earned": 0,
+          "evidence": "scheduler-pilot-journal.json"
+        },
+        {
+          "criterion_tr": "Yeniden başlatma/geri yükleme ve bağımsız çalışma kabulü",
+          "points": 1,
+          "earned": 0,
+          "evidence": null
+        }
+      ],
+      "boundary_tr": "Bulut çalışıyor; 12 Ekim için 41 kontrollü inceleme turu etkin. İlk gerçek izinli zamanlayıcı turu, sonraki dönem ve geri yükleme kabulü henüz yok."
+    },
+    {
+      "id": "V11-02",
+      "title_tr": "Yetkili gelen maili güvenli ve çoklu iş olarak almak",
+      "weight": 10,
+      "earned_points": 4,
+      "subcriteria": [
+        {
+          "criterion_tr": "Gerçek son gelen To/CC ile kaynak denetimi",
+          "points": 2,
+          "earned": 2,
+          "evidence": "followup-completed-acceptance.json"
+        },
+        {
+          "criterion_tr": "Kendi gönderimini yeni talep saymama",
+          "points": 1,
+          "earned": 1,
+          "evidence": "cloud-execution-v7-followup-own-reply-check.json"
+        },
+        {
+          "criterion_tr": "Başlık/MIME ve kaynak parmak izi temeli",
+          "points": 1,
+          "earned": 1,
+          "evidence": "cloud-app-v7-local-validation.json"
+        },
+        {
+          "criterion_tr": "Sayfalı/kalıcı çoklu posta ve iş kuyruğu",
+          "points": 3,
+          "earned": 0,
+          "evidence": null
+        },
+        {
+          "criterion_tr": "Gerçek eklerin alımı ve güvenli sınıflandırması",
+          "points": 2,
+          "earned": 0,
+          "evidence": null
+        },
+        {
+          "criterion_tr": "Doğrulanmış markaya/işe bağlama kabulü",
+          "points": 1,
+          "earned": 0,
+          "evidence": null
+        }
+      ],
+      "boundary_tr": "Gerçek kanıt tek sabit iç mail zincirinde. Bütün marka kutusu, ekler ve çoklu iş alımı henüz üretimde değil."
+    },
+    {
+      "id": "V11-03",
+      "title_tr": "Talebi anlamak, eksikleri sormak ve profesyonel yanıt",
+      "weight": 12,
+      "earned_points": 6,
+      "subcriteria": [
+        {
+          "criterion_tr": "Gerçek iç talebi doğru özetleme",
+          "points": 2,
+          "earned": 2,
+          "evidence": "cloud-first-dispatch-state.json"
+        },
+        {
+          "criterion_tr": "Gerçek iç talepte eksik bilgileri soran yanıt ve devamını işleme",
+          "points": 2,
+          "earned": 2,
+          "evidence": "followup-completed-acceptance.json"
+        },
+        {
+          "criterion_tr": "Strateji/ticari/escalation ayrımının iç akışta korunması",
+          "points": 1,
+          "earned": 1,
+          "evidence": "followup-completed-acceptance.json"
+        },
+        {
+          "criterion_tr": "Ekonomik modelin beş sentetik örnekte ön kontrolü",
+          "points": 1,
+          "earned": 1,
+          "evidence": "sol-evaluation-semantic-review.json"
+        },
+        {
+          "criterion_tr": "Gerçek müşteri ve karışık/uzun zincirlerde temsilci kalitesi kabulü",
+          "points": 3,
+          "earned": 0,
+          "evidence": null
+        },
+        {
+          "criterion_tr": "Değişen briefin çoklu işte tutarlı takibi",
+          "points": 1,
+          "earned": 0,
+          "evidence": null
+        },
+        {
+          "criterion_tr": "Sol/Astra yönlendirmesinin entegre kalite ve maliyet kabulü",
+          "points": 2,
+          "earned": 0,
+          "evidence": null
+        }
+      ],
+      "boundary_tr": "İç örnekte gerçek soru-cevap var. Sol için beş sentetik örnek, geniş müşteri kalite kabulü değildir; bulut varsayılanı hâlâ Astra/max."
+    },
+    {
+      "id": "V11-04",
+      "title_tr": "Marka, hizmet ve rutin işlem yetkisi",
+      "weight": 10,
+      "earned_points": 1,
+      "subcriteria": [
+        {
+          "criterion_tr": "Sürüm/kaynak/eylem bağlayan yerel yetki politikası temeli",
+          "points": 1,
+          "earned": 1,
+          "evidence": "autonomy-gap-audit.json"
+        },
+        {
+          "criterion_tr": "Marka ve yetkili müşteri kişileri doğrulaması",
+          "points": 2,
+          "earned": 0,
+          "evidence": null
+        },
+        {
+          "criterion_tr": "Hizmet ve revizyon sınırlarının doğrulanmış kaydı",
+          "points": 2,
+          "earned": 0,
+          "evidence": null
+        },
+        {
+          "criterion_tr": "Marka için gerçek ekip/iş atama yetkisi",
+          "points": 2,
+          "earned": 0,
+          "evidence": null
+        },
+        {
+          "criterion_tr": "Güncel onaylı marka varlıkları ve teslim kuralları",
+          "points": 1,
+          "earned": 0,
+          "evidence": null
+        },
+        {
+          "criterion_tr": "Rutin eylemleri her seferinde Ahmet onayı olmadan yetkilendiren canlı entegrasyon",
+          "points": 2,
+          "earned": 0,
+          "evidence": null
+        }
+      ],
+      "boundary_tr": "Marka tablosu bekleniyor. Yerel kurallar mevcut ama aktif müşteri delegasyonu yok; tarihsel mail öğrenmesi canlı yetki yerine geçmez."
+    },
+    {
+      "id": "V11-05",
+      "title_tr": "Basecamp görevi ve aynı işte devam/revizyon",
+      "weight": 12,
+      "earned_points": 6,
+      "subcriteria": [
+        {
+          "criterion_tr": "Özel iç projede gerçek görev oluşturma ve Hamle’ye atama",
+          "points": 3,
+          "earned": 3,
+          "evidence": "cloud-execution-v3-first-internal-dispatch.json"
+        },
+        {
+          "criterion_tr": "Gerçek devam mailini yeni görev açmadan aynı göreve işleme",
+          "points": 2,
+          "earned": 2,
+          "evidence": "followup-completed-acceptance.json"
+        },
+        {
+          "criterion_tr": "Yazılan görevi/yorumu tam içerikle geri okuma",
+          "points": 1,
+          "earned": 1,
+          "evidence": "followup-completed-acceptance.json"
+        },
+        {
+          "criterion_tr": "Doğru gerçek ekip üyesine/üyelerine görevlendirme",
+          "points": 3,
+          "earned": 0,
+          "evidence": null
+        },
+        {
+          "criterion_tr": "Birden çok marka/işte bağımsız ilişki, durum ve revizyon yürütmesi",
+          "points": 3,
+          "earned": 0,
+          "evidence": null
+        }
+      ],
+      "boundary_tr": "Görev açma ve aynı göreve takip notu iç pilotta geçti. Üretici ekibe dinamik atama ve çoklu iş henüz kabul edilmedi."
+    },
+    {
+      "id": "V11-06",
+      "title_tr": "Basecamp dönüşünü, tarihi ve gecikmeyi takip",
+      "weight": 10,
+      "earned_points": 2,
+      "subcriteria": [
+        {
+          "criterion_tr": "Tek görevin gerçek durum/atama/tarih gözlemi",
+          "points": 2,
+          "earned": 2,
+          "evidence": "followup-completed-acceptance.json"
+        },
+        {
+          "criterion_tr": "Ekip yorumlarını/dosyalarını düzenli tarayıp yeni olayı ayırma",
+          "points": 3,
+          "earned": 0,
+          "evidence": null
+        },
+        {
+          "criterion_tr": "Yetkili gecikme hatırlatmaları ve bilgilendirme",
+          "points": 2,
+          "earned": 0,
+          "evidence": null
+        },
+        {
+          "criterion_tr": "İnsan cevabı/iş sahipliği değişikliğinde uygun devir",
+          "points": 1,
+          "earned": 0,
+          "evidence": null
+        },
+        {
+          "criterion_tr": "İstenen ve teyitli tarihi ayıran çalışan iş yaşam döngüsü",
+          "points": 2,
+          "earned": 0,
+          "evidence": null
+        }
+      ],
+      "boundary_tr": "Mevcut track modu bir görevden durum ve tarihi okuyor; ekibin üretim dönüşlerini düzenli tüketen uçtan uca takip henüz yok."
+    },
+    {
+      "id": "V11-07",
+      "title_tr": "Ekip çıktısını brief ve teslim şartlarına göre kontrol",
+      "weight": 12,
+      "earned_points": 0,
+      "subcriteria": [
+        {
+          "criterion_tr": "Gerçek çıktı dosyası/linki, sürümü ve içeriğini alma",
+          "points": 3,
+          "earned": 0,
+          "evidence": null
+        },
+        {
+          "criterion_tr": "İstenen brief/format/boyut/içerikle kontrol",
+          "points": 3,
+          "earned": 0,
+          "evidence": null
+        },
+        {
+          "criterion_tr": "Gereken metin/görsel kontrollerini güvenilir kaynakla uygulama",
+          "points": 2,
+          "earned": 0,
+          "evidence": null
+        },
+        {
+          "criterion_tr": "Yetkili üreticinin tam dosya sürümüne bağlı müşteriye hazır işareti",
+          "points": 2,
+          "earned": 0,
+          "evidence": null
+        },
+        {
+          "criterion_tr": "Eksik/uygunsuz çıktıyı aynı işte düzeltmeye gönderip tekrar denetleme",
+          "points": 2,
+          "earned": 0,
+          "evidence": null
+        }
+      ],
+      "boundary_tr": "Gerçek üretim dosyasında QA ve müşteriye hazır kararı kabul edilmedi. Yerel teslim bağlama kontrolleri bu başlığa canlı teslim puanı kazandırmaz."
+    },
+    {
+      "id": "V11-08",
+      "title_tr": "Doğru mail zincirinde müşteriye teslim ve revizyon döngüsü",
+      "weight": 8,
+      "earned_points": 3,
+      "subcriteria": [
+        {
+          "criterion_tr": "Aynı zincire gerçek yanıt, doğrulanmış To/CC ve gönderim geri okuması",
+          "points": 3,
+          "earned": 3,
+          "evidence": "followup-completed-acceptance.json"
+        },
+        {
+          "criterion_tr": "Doğru gerçek dosya sürümünü/içeriğini müşteriye tek kez teslim",
+          "points": 2,
+          "earned": 0,
+          "evidence": null
+        },
+        {
+          "criterion_tr": "Müşteri revizyonu → ekip düzeltmesi → tekrar teslim kabulü",
+          "points": 2,
+          "earned": 0,
+          "evidence": null
+        },
+        {
+          "criterion_tr": "Gecikmiş müşteri gönderiminden hemen önce geçerli görünür yetki",
+          "points": 1,
+          "earned": 0,
+          "evidence": null
+        }
+      ],
+      "boundary_tr": "Gerçek iç yanıt ve Cansu CC korunuyor; müşteri dosya teslimi ve üretim revizyonu henüz yok."
+    },
+    {
+      "id": "V11-09",
+      "title_tr": "Durdurma, tekrar önleme ve hata kontrolü",
+      "weight": 10,
+      "earned_points": 6,
+      "subcriteria": [
+        {
+          "criterion_tr": "Kalıcı eylem kimliği ve gerçek gönderim/yorum kayıtları",
+          "points": 2,
+          "earned": 2,
+          "evidence": "followup-completed-acceptance.json"
+        },
+        {
+          "criterion_tr": "Tekrar çalıştırmada sıfır yeni yazım",
+          "points": 1,
+          "earned": 1,
+          "evidence": "cloud-execution-v7-followup-reconciliation.json"
+        },
+        {
+          "criterion_tr": "Sonucu belirsiz yazımı otomatik yeniden göndermeme politikası ve yerel testleri",
+          "points": 1,
+          "earned": 1,
+          "evidence": "cloud-app-v7-local-validation.json"
+        },
+        {
+          "criterion_tr": "Global durdurma/nesil çiti yerel testleri ve yerel insan tıklaması",
+          "points": 1,
+          "earned": 1,
+          "evidence": "internal-review-human-takeover.json"
+        },
+        {
+          "criterion_tr": "Her gerçek iç yazım öncesi güncel kaynak/hedef/içerik denetimi",
+          "points": 1,
+          "earned": 1,
+          "evidence": "followup-completed-acceptance.json"
+        },
+        {
+          "criterion_tr": "Kimliği doğrulanmış iş bazında devir/durdurma canlı kabulü",
+          "points": 1,
+          "earned": 0,
+          "evidence": null
+        },
+        {
+          "criterion_tr": "Çoklu çalışan/çökme/bağlantı kaybı kabulü",
+          "points": 1,
+          "earned": 0,
+          "evidence": null
+        },
+        {
+          "criterion_tr": "Hamle’nin görmediği CC çıkarılmasına karşı görünür durdurma ve taze yetki protokolü",
+          "points": 1,
+          "earned": 0,
+          "evidence": null
+        },
+        {
+          "criterion_tr": "Belirsiz durum ve durma için çalışan sorumlu bildirimleri",
+          "points": 1,
+          "earned": 0,
+          "evidence": null
+        }
+      ],
+      "boundary_tr": "Tekrar önleme iç pilotta gerçek. Global insan tıklaması yalnız yerel demoda kabul edildi; müşteri iş bazlı bulut devri ve görünmeyen CC çıkarılması çözülmüş sayılmaz."
+    },
+    {
+      "id": "V11-10",
+      "title_tr": "Rutin otonomi için uçtan uca işletim ve maliyet kabulü",
+      "weight": 6,
+      "earned_points": 2,
+      "subcriteria": [
+        {
+          "criterion_tr": "Ortak bütçe rezervi/süre sınırı ve model kullanım kaydı",
+          "points": 1,
+          "earned": 1,
+          "evidence": "hybrid-preparation-budget-read.json"
+        },
+        {
+          "criterion_tr": "Sınırlı gerçek iç talepte uçtan uca işlem ve teslim gözlemi",
+          "points": 1,
+          "earned": 1,
+          "evidence": "followup-completed-acceptance.json"
+        },
+        {
+          "criterion_tr": "Temsilî geçmiş müşteri gölge karşılaştırması ve onaysız gerçek rutin kabulü",
+          "points": 2,
+          "earned": 0,
+          "evidence": null
+        },
+        {
+          "criterion_tr": "12 Ekim sonrası çalışma ve harcama sınırının kabulü",
+          "points": 1,
+          "earned": 0,
+          "evidence": null
+        },
+        {
+          "criterion_tr": "Süreklilik/izleme ve gerçek iş yükü altında kabul",
+          "points": 1,
+          "earned": 0,
+          "evidence": null
+        }
+      ],
+      "boundary_tr": "Müşteri otonomisi kapalı. 12 Ekim sonrası harcama onayı yok; kayıttaki muhasebeleştirilmiş sıfır tutar fatura sıfır demek değildir."
+    }
+  ],
+  "old_plan_unchanged": {
+    "original_item_count": 65,
+    "completed_items": 21,
+    "earned_points": 30,
+    "total_points": 100,
+    "independent_fully_live_accepted_agents": 0
+  },
+  "live_customer_autonomy_enabled": false,
+  "hybrid_live_routing_enabled": false,
+  "current_real_scope": "One internal Gamechangers thread, one private Basecamp task, one follow-up with verified Cansu CC; exact payload human approval remains required.",
+  "scheduler": "12 October 2026 only; 15-minute review slots, automatic business dispatch false; no actual allowed-window scheduled acceptance yet.",
+  "unknown_cc_removal_resolved": false,
+  "minimal_excel_input_guidance": [
+    {
+      "field_group": "Marka ve proje",
+      "required_user_input": "Marka adı + Basecamp proje bağlantısı",
+      "agent_resolves": "Hesap/proje/görev listesi kimlikleri; Hamle üyeliği ve müşteri görünürlüğü"
+    },
+    {
+      "field_group": "Yetkili kişiler",
+      "required_user_input": "Müşteri adı/e-posta + hangi marka ve hangi konuda talep/onay verebilir",
+      "agent_resolves": "Adres ve izinli alıcı eşleşmesi; mailde bulunmak tek başına ticari yetki vermez"
+    },
+    {
+      "field_group": "Ajans ekibi",
+      "required_user_input": "İş türü → sorumlu kişi adı/e-posta; gerekirse yedek kişi",
+      "agent_resolves": "Basecamp kişi kimliği, üyelik ve atama kapsamı; sayısal kimlik kullanıcıdan istenmez"
+    },
+    {
+      "field_group": "Hizmet ve revizyon",
+      "required_user_input": "Yapılan işler, kapsam dışı işler, revizyon sınırı veya bilinmiyor",
+      "agent_resolves": "Hizmet bazında deterministik sınır; boş/bilinmiyor alan otomatik sınırsız olmaz"
+    },
+    {
+      "field_group": "Teslim",
+      "required_user_input": "Hangi ekip üyesi müşteriye hazır diyebilir, nerede işaretler; teslim biçimi/formatı ve tarih kuralı",
+      "agent_resolves": "Hazır işaretini tam dosya sürümüne bağlama; bitti tikini tek başına teslim izni saymama"
+    },
+    {
+      "field_group": "Onaylı dosyalar",
+      "required_user_input": "Güncel logo/kılavuz/örnek/onaylı dosya klasörü bağlantısı veya bilinmiyor",
+      "agent_resolves": "Erişim, sürüm/tarih ve hangi kaynağın onaylı olduğu"
+    },
+    {
+      "field_group": "İstisna ve kontrol",
+      "required_user_input": "Varsa marka özelinde bilinen çalışma kuralı ve ilk devralacak kişi",
+      "agent_resolves": "Genel kararlardaki Ahmet/Cansu/Özge yönlendirmesini ön doldurma; tekrar sormama"
+    }
+  ],
+  "excel_safety_guidance": [
+    "Örnek satırlar açıkça hayalî/örnek olarak işaretlensin ve canlı içe aktarılmasın.",
+    "Marka şablonları varsayılan kapalı olsun; doldurulan tablo tek başına canlı gönderimi açmasın.",
+    "Bilinmeyen değer boş/bilinmiyor kalsın; müşteri adresi veya sınırsız revizyon uydurulmasın.",
+    "API anahtarı, parola, token, sayısal API kimliği istenmesin.",
+    "ya da ve Multicosmetics ayrı satırlardır.",
+    "Müşteri onayı gerektiren ticari/stratejik sınırlar korunur; Hamle ile Özge işbirliği yapılmış gibi yazılmaz.",
+    "Bir marka doldurulduğunda diğerlerini beklemeden o kapsam doğrulanabilir."
+  ],
+  "evidence_sha256": {
+    "autonomy-gap-audit.json": "931795741b5f9eecaab26c76d4cd38cb782c0ccb06034187aa800a1001a08de0",
+    "cloud-app-v7-deployment-verified.json": "b066bf62e9f812b3f9a6b96df638e00d413d9bb060322e5b4ce8e57e72b0fbc6",
+    "cloud-app-v7-local-validation.json": "df2dd1c601cd14e4777fb16bf833224714c1626219e1e36b8a706645e24deb47",
+    "cloud-execution-v3-first-internal-dispatch.json": "b5b83d4d6960de80df38deb8284331706911dd2d536b6e1b52ce604ebbb5ca31",
+    "cloud-execution-v7-first-followup-dispatch.json": "6a851b5887a66742afb88a7c9f781dad14aa344afa47d4923b6188597ddd4459",
+    "cloud-execution-v7-followup-own-reply-check.json": "6d05dc5bd370d6843696e5f1bf1527011bde76dfeca5c255bb8c6a0fab1da3b6",
+    "cloud-execution-v7-followup-reconciliation.json": "349fe18c0dbc82ff9051dd98cf024dfaf12c25793d07c18db0e48147c2447be4",
+    "cloud-first-dispatch-state.json": "cb629fab8028e1ccea5e74bb411b3dcd8801308756ee824895b0e1f19b41198b",
+    "followup-completed-acceptance.json": "41b48acef0cc3d4a9e65e92022ca993752f4e709e5af7b0f191f78ead00eb2ab",
+    "hybrid-preparation-budget-read.json": "a93f9c365045a0f009281fa94f373ec8f5328ad3c2219d300fc194cebe43e91a",
+    "internal-review-human-takeover.json": "5baa8c6153440080df9a4e518deb63b9472ef6e1957c67b8ca15d2144dd9303b",
+    "scheduler-pilot-journal.json": "338265832310d989fedd586887442abdd33814b5f9d59b9797229a19cd9b75c3",
+    "sol-evaluation-semantic-review.json": "2741e430c23a8bfb79735ec9fb00cb775efddf2543942c4ae7e021891ee25e18"
+  },
+  "side_effects": {
+    "live_api_calls": 0,
+    "paid_calls": 0,
+    "business_writes": 0,
+    "existing_progress_matrix_modified": false,
+    "application_code_modified": false
+  },
+  "inflight_work_not_counted": "This is a baseline preceding the current turn’s new multi-work and delivery modules. Subsequent isolated local tests do not create new live acceptance points automatically."
+}

@@ -1,0 +1,340 @@
+{
+  "artifact_kind": "unpopulated_configuration_template",
+  "status": "tasarlandı",
+  "live_store_created": false,
+  "schema_ref": "knowledge-record.schema.json",
+  "note": "Boş şablonlar null alanlar doldurulmadan gerçek kayıt sayılmaz. Üretim uzmanlarına görev için gerekli, ticari ve özel yazışmalardan arındırılmış alt küme verilir. Marka veya iş verisinin tamamına erişim verilmez.",
+  "rules": [
+    "Kaynak okumaları ile yetkili kararları ayrı değerlendir. Her bilginin asıl kaynağa geri bağlantısı bulunur.",
+    "Önemli çelişkide iki kaynağı da koru; tarih, yetki ve kapsam değerlendirmesini yaz.",
+    "Dış iddiayı marka gerçeğine kendiliğinden dönüştürme. Doğrulama/onayla yeni marka kaydı oluştur, dış kaydı koru.",
+    "Yeni karar eski kaydı silmez; sürüm ve supersedes/superseded_by bağlantıları tutulur.",
+    "Parolalar, erişim anahtarları ve işle ilgisiz hassas içerik bu depoya alınmaz.",
+    "Marka, iş ve dış kaynak kayıtlarında brand_id ile brand_partition eşit olmalıdır; çalışma altyapısı bu kuralı denetler."
+  ],
+  "zones": [
+    {
+      "zone": "agency",
+      "label": "Ajans bilgisi",
+      "record_template": {
+        "schema_version": "1.0.0",
+        "record_id": null,
+        "record_version": null,
+        "brand_id": null,
+        "subject": {
+          "title": null,
+          "product_id": null,
+          "campaign_id": null,
+          "work_id": null
+        },
+        "content": {
+          "working_method_record_ids": [],
+          "service_scope_record_ids": [],
+          "team_and_responsibility_record_ids": [],
+          "delivery_standard_record_ids": [],
+          "process_record_ids": []
+        },
+        "sources": [
+          {
+            "source_type": null,
+            "source_uri": null,
+            "source_record_id": null,
+            "source_date": null,
+            "retrieved_at": null,
+            "last_checked_at": null,
+            "author_id": null,
+            "author_display_name": null,
+            "attachment_status": "not_yet_read",
+            "content_hash": null,
+            "source_field_map": null
+          }
+        ],
+        "authority": {
+          "assessment": "pending",
+          "provided_by_id": null,
+          "approved_by_id": null,
+          "authority_record_id": null,
+          "approval_event_id": null,
+          "approval_scope": null,
+          "approval_date": null,
+          "authority_expiry": null
+        },
+        "validity": {
+          "valid_from": null,
+          "valid_until": null,
+          "scope": null,
+          "channels": null,
+          "territories": null,
+          "checked_at": null
+        },
+        "status": "doğrulanmamış",
+        "created_at": null,
+        "updated_at": null,
+        "supersedes_record_id": null,
+        "superseded_by_record_id": null,
+        "access": {
+          "classification": "agency_internal",
+          "allowed_roles": [
+            "account_manager",
+            "copywriter",
+            "graphic_designer",
+            "motion_designer"
+          ],
+          "brand_partition": null,
+          "client_visible": false,
+          "redactions_applied": []
+        },
+        "review": {
+          "checked_by": null,
+          "checked_at": null,
+          "conflicts_with": [],
+          "missing_evidence": [],
+          "next_review_at": null,
+          "decision_required": false
+        },
+        "zone": "agency"
+      }
+    },
+    {
+      "zone": "brand",
+      "label": "Marka bilgisi",
+      "record_template": {
+        "schema_version": "1.0.0",
+        "record_id": null,
+        "record_version": null,
+        "brand_id": null,
+        "subject": {
+          "title": null,
+          "product_id": null,
+          "campaign_id": null,
+          "work_id": null
+        },
+        "content": {
+          "strategy_record_ids": [],
+          "product_record_ids": [],
+          "tone_record_ids": [],
+          "guideline_record_ids": [],
+          "approved_example_record_ids": [],
+          "decision_record_ids": []
+        },
+        "sources": [
+          {
+            "source_type": null,
+            "source_uri": null,
+            "source_record_id": null,
+            "source_date": null,
+            "retrieved_at": null,
+            "last_checked_at": null,
+            "author_id": null,
+            "author_display_name": null,
+            "attachment_status": "not_yet_read",
+            "content_hash": null,
+            "source_field_map": null
+          }
+        ],
+        "authority": {
+          "assessment": "pending",
+          "provided_by_id": null,
+          "approved_by_id": null,
+          "authority_record_id": null,
+          "approval_event_id": null,
+          "approval_scope": null,
+          "approval_date": null,
+          "authority_expiry": null
+        },
+        "validity": {
+          "valid_from": null,
+          "valid_until": null,
+          "scope": null,
+          "channels": null,
+          "territories": null,
+          "checked_at": null
+        },
+        "status": "doğrulanmamış",
+        "created_at": null,
+        "updated_at": null,
+        "supersedes_record_id": null,
+        "superseded_by_record_id": null,
+        "access": {
+          "classification": "brand_private",
+          "allowed_roles": [
+            "account_manager"
+          ],
+          "brand_partition": null,
+          "client_visible": false,
+          "redactions_applied": []
+        },
+        "review": {
+          "checked_by": null,
+          "checked_at": null,
+          "conflicts_with": [],
+          "missing_evidence": [],
+          "next_review_at": null,
+          "decision_required": false
+        },
+        "zone": "brand"
+      }
+    },
+    {
+      "zone": "work",
+      "label": "İş kayıtları",
+      "record_template": {
+        "schema_version": "1.0.0",
+        "record_id": null,
+        "record_version": null,
+        "brand_id": null,
+        "subject": {
+          "title": null,
+          "product_id": null,
+          "campaign_id": null,
+          "work_id": null
+        },
+        "content": {
+          "brief_version_record_ids": [],
+          "correspondence_record_ids": [],
+          "owner_record_ids": [],
+          "date_record_ids": [],
+          "file_version_record_ids": [],
+          "revision_record_ids": [],
+          "approval_event_record_ids": []
+        },
+        "sources": [
+          {
+            "source_type": null,
+            "source_uri": null,
+            "source_record_id": null,
+            "source_date": null,
+            "retrieved_at": null,
+            "last_checked_at": null,
+            "author_id": null,
+            "author_display_name": null,
+            "attachment_status": "not_yet_read",
+            "content_hash": null,
+            "source_field_map": null
+          }
+        ],
+        "authority": {
+          "assessment": "pending",
+          "provided_by_id": null,
+          "approved_by_id": null,
+          "authority_record_id": null,
+          "approval_event_id": null,
+          "approval_scope": null,
+          "approval_date": null,
+          "authority_expiry": null
+        },
+        "validity": {
+          "valid_from": null,
+          "valid_until": null,
+          "scope": null,
+          "channels": null,
+          "territories": null,
+          "checked_at": null
+        },
+        "status": "doğrulanmamış",
+        "created_at": null,
+        "updated_at": null,
+        "supersedes_record_id": null,
+        "superseded_by_record_id": null,
+        "access": {
+          "classification": "work_private",
+          "allowed_roles": [
+            "account_manager"
+          ],
+          "brand_partition": null,
+          "client_visible": false,
+          "redactions_applied": []
+        },
+        "review": {
+          "checked_by": null,
+          "checked_at": null,
+          "conflicts_with": [],
+          "missing_evidence": [],
+          "next_review_at": null,
+          "decision_required": false
+        },
+        "zone": "work"
+      }
+    },
+    {
+      "zone": "external_reputation",
+      "label": "Dış kaynak ve itibar takibi",
+      "record_template": {
+        "schema_version": "1.0.0",
+        "record_id": null,
+        "record_version": null,
+        "brand_id": null,
+        "subject": {
+          "title": null,
+          "product_id": null,
+          "campaign_id": null,
+          "work_id": null
+        },
+        "content": {
+          "news_record_ids": [],
+          "comment_record_ids": [],
+          "complaint_record_ids": [],
+          "competitor_record_ids": [],
+          "unverified_claim_record_ids": []
+        },
+        "sources": [
+          {
+            "source_type": null,
+            "source_uri": null,
+            "source_record_id": null,
+            "source_date": null,
+            "retrieved_at": null,
+            "last_checked_at": null,
+            "author_id": null,
+            "author_display_name": null,
+            "attachment_status": "not_yet_read",
+            "content_hash": null,
+            "source_field_map": null
+          }
+        ],
+        "authority": {
+          "assessment": "pending",
+          "provided_by_id": null,
+          "approved_by_id": null,
+          "authority_record_id": null,
+          "approval_event_id": null,
+          "approval_scope": null,
+          "approval_date": null,
+          "authority_expiry": null
+        },
+        "validity": {
+          "valid_from": null,
+          "valid_until": null,
+          "scope": null,
+          "channels": null,
+          "territories": null,
+          "checked_at": null
+        },
+        "status": "doğrulanmamış",
+        "created_at": null,
+        "updated_at": null,
+        "supersedes_record_id": null,
+        "superseded_by_record_id": null,
+        "access": {
+          "classification": "brand_private",
+          "allowed_roles": [
+            "account_manager",
+            "copywriter"
+          ],
+          "brand_partition": null,
+          "client_visible": false,
+          "redactions_applied": []
+        },
+        "review": {
+          "checked_by": null,
+          "checked_at": null,
+          "conflicts_with": [],
+          "missing_evidence": [],
+          "next_review_at": null,
+          "decision_required": false
+        },
+        "zone": "external_reputation"
+      }
+    }
+  ]
+}

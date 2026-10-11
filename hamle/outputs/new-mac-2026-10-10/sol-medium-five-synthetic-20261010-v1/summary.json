@@ -1,0 +1,16 @@
+{
+  "status": "five_synthetic_responses_completed_pending_semantic_review",
+  "completed_at": "2026-10-10T11:57:33.389158+00:00",
+  "model": "gpt-6.1-sol",
+  "reasoning_effort": "medium",
+  "call_count": 5,
+  "routing_checks_passed": true,
+  "estimated_total_token_cost_usd": 0.0434176,
+  "is_invoice": false,
+  "reservation_retained_usd": 1,
+  "new_astra_calls": 0,
+  "customer_data_sent": false,
+  "business_writes": 0,
+  "production_model_changed": false,
+  "customer_autonomy_accepted": false
+}

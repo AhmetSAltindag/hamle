@@ -1,0 +1,40 @@
+{
+  "proposal_id": "p-22e2a5f455020a4445403ea203c4aa6083c4c14b185ec67d52b1c1211129fd67",
+  "proposal_hash": "92a57c92cbe88b041dbdac1dabf01d6c0288c3e5288e28c1ae09d8c428082707",
+  "status": "approved",
+  "approval": {
+    "decision_authorized": false,
+    "generation": 1,
+    "production_authorized": false,
+    "proposal_hash": "92a57c92cbe88b041dbdac1dabf01d6c0288c3e5288e28c1ae09d8c428082707",
+    "actor_subject": "accounts.google.com:101753770166685750662",
+    "escalation_status": "open",
+    "approved_at": 1791631620.937665,
+    "purpose": "internal_coordination_only"
+  },
+  "control": {
+    "work_ids": [
+      "w-675aa8f8f399be886498c8b43ee6c0fa59d572ebc2012ce5650fbc4f244ad129"
+    ],
+    "actor_subject": "accounts.google.com:101753770166685750662",
+    "changed_at": 1791589170.647069,
+    "proposal_ids": [
+      "p-a0627d6de33573f9284e8799b2b537af6da59d22bdfcff812158e64f3490067d",
+      "p-22e2a5f455020a4445403ea203c4aa6083c4c14b185ec67d52b1c1211129fd67"
+    ],
+    "generation": 1,
+    "mode": "review_open"
+  },
+  "budget": {
+    "limit_microdollars": 50000000,
+    "accounted_spend_microdollars": 0,
+    "held_microdollars": 14000000,
+    "prepaid_purchases_microdollars": 10000000,
+    "total_committed_microdollars": 19000000,
+    "remaining_microdollars": 31000000,
+    "overrun_hold": false,
+    "provider_hard_cap_installed": false
+  },
+  "authorization_source": "Ahmet explicitly requested assistant to click pending internal coordination approval in current chat",
+  "actor_action": "assistant clicked live control UI on behalf of Ahmet"
+}

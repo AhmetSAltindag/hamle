@@ -1,0 +1,47 @@
+{
+  "recorded_date": "2026-10-10",
+  "source": "direct_user_reply_in_current_conversation",
+  "model_choice": {
+    "routine": "gpt-6.1-sol",
+    "complex": "gpt-6-astra",
+    "selected": true,
+    "live_customer_routing_enabled": false
+  },
+  "evaluation_authorization": {
+    "max_usd": 1,
+    "within_existing_shared_50_usd_limit": true,
+    "existing_deadline": "2026-10-12T23:59:59+03:00",
+    "customer_auto_send_authorized_by_this_choice": false
+  },
+  "ongoing_weekly_budget": {
+    "approved": false,
+    "user_requested_approximate_recommendation": true,
+    "incoming_vs_combined_250_not_clarified": true,
+    "conservative_planning_assumption": "250 incoming messages with their replies",
+    "recommended_planning_range_usd": [
+      35,
+      60
+    ]
+  },
+  "contacts": {
+    "ozge": {
+      "email": "ozge@gamechangers.com.tr",
+      "basecamp_display_name": "Özge Yağmur",
+      "user_confirmed": true,
+      "basecamp_person_id": null,
+      "live_provider_identity_verified": false
+    },
+    "cansu": {
+      "email": "cansu@gamechangers.com.tr",
+      "prior_actual_incoming_cc_verified": true
+    }
+  },
+  "brand_scope_inputs": {
+    "current_list_exists": false,
+    "user_will_provide_later": true,
+    "do_not_reask_now": true,
+    "customer_scopes_remain_disabled": true
+  },
+  "portable_package_requested": true,
+  "provider_migration_requires_adapter_and_acceptance": true
+}

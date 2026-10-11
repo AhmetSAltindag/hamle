@@ -1,0 +1,20 @@
+{
+  "id": "95b0097d-ae15-41b2-9245-b91fcbdd2baf",
+  "status": "SUCCESS",
+  "startTime": "2026-10-09T23:21:07.359987050Z",
+  "finishTime": "2026-10-09T23:21:53.291548Z",
+  "statusDetail": null,
+  "failureInfo": null,
+  "images": [
+    {
+      "artifactRegistryPackage": "projects/gamechangers-hamle/locations/europe-west1/repositories/hamle-runtime/packages/hamle-account-manager/versions/sha256:fb4c5556117db1321fff62bab98ea2ba2cbe9f842d31cbfc0f339496f14ce2e0",
+      "digest": "sha256:fb4c5556117db1321fff62bab98ea2ba2cbe9f842d31cbfc0f339496f14ce2e0",
+      "name": "europe-west1-docker.pkg.dev/gamechangers-hamle/hamle-runtime/hamle-account-manager:20261010-v1",
+      "pushTiming": {
+        "endTime": "2026-10-09T23:21:54.048753629Z",
+        "startTime": "2026-10-09T23:21:40.327619007Z"
+      }
+    }
+  ],
+  "digest": "sha256:fb4c5556117db1321fff62bab98ea2ba2cbe9f842d31cbfc0f339496f14ce2e0"
+}

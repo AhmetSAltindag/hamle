@@ -1,0 +1,90 @@
+{
+  "scope": "readonly_historical_workflow_evidence_not_live_acceptance",
+  "task_url": "https://app.basecamp.com/5898865/buckets/40694338/todos/10317695863",
+  "task_id": 10317695863,
+  "comments_complete_count": 33,
+  "handoff_chain": [
+    {
+      "comment_id": 10335969966,
+      "person_id": 52096503,
+      "role": "customer_feedback_relay",
+      "fact": "Kampanya mesajı mümkünse en geç 2. saniyede görünmeye başlamalı; ON geçişi hızlansın."
+    },
+    {
+      "comment_id": 10336063984,
+      "person_id": 47658175,
+      "role": "berkay_handoff",
+      "fact": "PSD/müzik bağlantısı, STB.png ve hareket briefi Samet üretimi öncesinde paylaşıldı.",
+      "storyboard_attachment_id": 897203078
+    },
+    {
+      "comment_id": 10336607720,
+      "person_id": 50486696,
+      "role": "samet_video_delivery",
+      "attachment_id": 897278053
+    },
+    {
+      "comment_id": 10340298133,
+      "person_id": 52096503,
+      "role": "music_version_approval_and_new_voice_variant_request",
+      "fact": "Son video onaylandı; seslendirmeli ve müzikli iki versiyon dönüşümlü paylaşılacak; sesi onaylattım."
+    },
+    {
+      "comment_id": 10343076732,
+      "person_id": 50486696,
+      "role": "samet_voice_variant_delivery",
+      "attachment_id": 897985544
+    }
+  ],
+  "artifacts": [
+    {
+      "task_id": 10317695863,
+      "comment_id": 10336607720,
+      "producer_id": 50486696,
+      "attachment_id": 897278053,
+      "filename": "WM_AVANTAJLARI_KATLA.mp4",
+      "byte_size": 10151280,
+      "sha256": "1b88ebfa84e979fbdbcdd29781694bcd76fbfaedffd8e11292aa545fbab6ae66",
+      "path": "/Users/ahmetsaltindag/Documents/ChatGPT/Gamechangers AI Ajanı/hamle/outputs/wat-pilot-20261010/real-output-shadow/task-10317695863/artifacts/samet-music-approved-candidate/WM_AVANTAJLARI_KATLA.mp4",
+      "approval_status": "chronologically_approved_candidate",
+      "downloaded_actual_bytes": true,
+      "local_full_decode_verified": false
+    },
+    {
+      "task_id": 10317695863,
+      "comment_id": 10343076732,
+      "producer_id": 50486696,
+      "attachment_id": 897985544,
+      "filename": "WM_AVANTAJLARI_KATLA_DIS_SES.mp4",
+      "byte_size": 11168366,
+      "sha256": "b69614a7a6691a18fd306454111dbdfcd388218ff932a618206b37760b1bc58d",
+      "path": "/Users/ahmetsaltindag/Documents/ChatGPT/Gamechangers AI Ajanı/hamle/outputs/wat-pilot-20261010/real-output-shadow/task-10317695863/artifacts/samet-later-voiceover-candidate/WM_AVANTAJLARI_KATLA_DIS_SES.mp4",
+      "approval_status": "no_explicit_approval_found",
+      "downloaded_actual_bytes": true,
+      "local_full_decode_verified": false
+    }
+  ],
+  "voice_source": {
+    "url": "https://drive.google.com/file/d/1lrv157v-AGcGpd8l_bdE7_7A-wW-Nqrc/view",
+    "file_id": "1lrv157v-AGcGpd8l_bdE7_7A-wW-Nqrc",
+    "filename": "wat_4.wav",
+    "sha256": "1bb6447f6d0a628e688e5c2533168b9a5069c8f372e5bd55a990119ee44f77c7",
+    "size": 776074,
+    "duration_seconds": 8.797369614512471,
+    "local_path": "/Users/ahmetsaltindag/Documents/ChatGPT/Gamechangers AI Ajanı/hamle/outputs/wat-pilot-20261010/real-output-shadow/voice-source/wat_4.wav",
+    "approval_basis": "Özge shared this source as approved in native comment 10340298133; independent client approval not read.",
+    "source_approval_does_not_approve_final_mix": true,
+    "spoken_text_verified": false,
+    "audio_video_alignment_verified": false
+  },
+  "approval_boundaries": {
+    "music_version": "Özge approval follows Samet music version chronologically; no explicit hash reference.",
+    "later_voiceover_version": "No explicit approval found after later Samet voiceover upload in the complete 33-comment record.",
+    "task_completed_is_not_file_approval": true
+  },
+  "business_writes": 0,
+  "mail_sends": 0,
+  "paid_model_calls": 0,
+  "full_video_accepted": false,
+  "customer_live_accepted": false
+}

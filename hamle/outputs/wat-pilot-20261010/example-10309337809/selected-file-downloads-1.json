@@ -1,0 +1,44 @@
+[
+  {
+    "comment_id": "10317954872",
+    "selection": "pre-price-kv",
+    "success": true,
+    "reason": null,
+    "files": [
+      {
+        "filename": "EKIM_KAMPANYA_KV_1.png",
+        "local_path": "/Users/ahmetsaltindag/Documents/ChatGPT/Gamechangers AI Ajanı/hamle/outputs/wat-pilot-20261010/example-10309337809/artifacts/pre-price-kv/EKIM_KAMPANYA_KV_1.png",
+        "bytes": 2383471,
+        "sha256": "af2cedaa20b48305e5bd35b9b18216e9af7247561dbf9d9b0e2aef71cc7b5dd5"
+      }
+    ]
+  },
+  {
+    "comment_id": "10328180313",
+    "selection": "approved-kv-candidate",
+    "success": true,
+    "reason": null,
+    "files": [
+      {
+        "filename": "EKIM_KAMPANYA_KV_1.png",
+        "local_path": "/Users/ahmetsaltindag/Documents/ChatGPT/Gamechangers AI Ajanı/hamle/outputs/wat-pilot-20261010/example-10309337809/artifacts/approved-kv-candidate/EKIM_KAMPANYA_KV_1.png",
+        "bytes": 2360008,
+        "sha256": "0b855872d2104e3dcebcb260cccdd5bf16adf123f05567ea44eb7c10f1eb4bbf"
+      }
+    ]
+  },
+  {
+    "comment_id": "10328578907",
+    "selection": "final-package-horizontal",
+    "success": true,
+    "reason": null,
+    "files": [
+      {
+        "filename": "EKIM_KAMPANYA_KV_1_YATAY.png",
+        "local_path": "/Users/ahmetsaltindag/Documents/ChatGPT/Gamechangers AI Ajanı/hamle/outputs/wat-pilot-20261010/example-10309337809/artifacts/final-package-horizontal/EKIM_KAMPANYA_KV_1_YATAY.png",
+        "bytes": 4104322,
+        "sha256": "9b849553ecca11ecab651d24269b91c89aa8ea034859c44bbe304a5a3727d4af"
+      }
+    ]
+  }
+]

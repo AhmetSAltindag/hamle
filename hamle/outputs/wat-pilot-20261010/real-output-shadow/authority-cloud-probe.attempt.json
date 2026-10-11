@@ -1,0 +1,8 @@
+{
+  "run_id": "synthetic-authority-probe-6e11941f717d4d018b0a38340b7521fa",
+  "started_at": "2026-10-10T15:52:06.317963+00:00",
+  "customer_data": false,
+  "provider_writes": 0,
+  "model_calls": 0,
+  "automatic_replay_allowed": false
+}

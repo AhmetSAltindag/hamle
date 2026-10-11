@@ -1,0 +1,78 @@
+{
+  "read_at": "2026-10-10T15:09:13.167111+00:00",
+  "source_user_answer_current_approved": true,
+  "approval_scope": "Only user-linked upload10392828700; not all WAT folder files",
+  "user_source_url": "https://app.basecamp.com/5898865/buckets/40694338/uploads/10392828700",
+  "metadata": {
+    "id": 10392828700,
+    "title": "WATMobilite-Brand Guideline.pdf",
+    "filename": "WATMobilite-Brand Guideline.pdf",
+    "content_type": "application/pdf",
+    "byte_size": 9910859,
+    "width": 2880,
+    "height": 2037,
+    "status": "active",
+    "visible_to_clients": false,
+    "created_at": "2026-10-10T15:07:06.027Z",
+    "updated_at": "2026-10-10T15:07:06.025Z",
+    "version": null,
+    "version_count": null
+  },
+  "description": {
+    "text": "",
+    "attachments": [],
+    "link_metadata": []
+  },
+  "creator": {
+    "id": 47470759,
+    "name": "Ahmet Şükrü Altındağ"
+  },
+  "parent": {
+    "id": 10392826362,
+    "title": "Brand Guideline",
+    "type": "Vault"
+  },
+  "metadata_field_names": [
+    "id",
+    "status",
+    "visible_to_clients",
+    "created_at",
+    "updated_at",
+    "title",
+    "inherits_status",
+    "type",
+    "url",
+    "app_url",
+    "bookmark_url",
+    "subscription_url",
+    "comments_count",
+    "comments_url",
+    "boosts_count",
+    "boosts_url",
+    "position",
+    "parent",
+    "bucket",
+    "creator",
+    "description",
+    "description_attachments",
+    "content_type",
+    "byte_size",
+    "filename",
+    "download_url",
+    "app_download_url",
+    "width",
+    "height"
+  ],
+  "files_downloaded": 1,
+  "business_writes": 0,
+  "paid_model_calls": 0,
+  "cloud_iam_changes": 0,
+  "signed_urls_recorded": false,
+  "file": {
+    "name": "WATMobilite-Brand Guideline.pdf",
+    "path": "/Users/ahmetsaltindag/Documents/ChatGPT/Gamechangers AI Ajanı/hamle/outputs/wat-pilot-20261010/current-brand-assets-10392828700/WATMobilite-Brand Guideline.pdf",
+    "byte_size": 9910859,
+    "sha256": "6be9fc432313ed5fd6d7741d52e83e584dddd26b8802238a01aee8b05ca3881c",
+    "magic_hex": "255044462d312e370d25e2e3"
+  }
+}

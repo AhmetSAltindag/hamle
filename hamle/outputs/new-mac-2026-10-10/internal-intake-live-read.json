@@ -1,0 +1,41 @@
+{
+  "device": "new_mac",
+  "verification_kind": "one_explicit_internal_test_read",
+  "source_command_exit_code": 0,
+  "capture_timestamp_returned": false,
+  "use_as_fresh_durable_queue_input": false,
+  "result": {
+    "status": "review_ready",
+    "reason": "human_review_required",
+    "test_subject": "HAMLE-IC-PROVA-20261010-YENIMAC-01",
+    "review_item": {
+      "review_id": "107593e5aadcaa018b05c955ba0b34fe1cdc816fd55d6064bc2b2d5934987ad7",
+      "brand": "gamechangers_internal",
+      "thread_id": "1a122c8fb08321fb",
+      "message_id": "1a122c8fb08321fb",
+      "capture_fingerprint": "5fc1ba46c69e1cf5ee2b1c06eb26d11512711e266d0f6d20d37a2e62d4e11781",
+      "source": "captured_normalized",
+      "control_generation": 0,
+      "human_renewed_delayed_review": false,
+      "status": "awaiting_human_review",
+      "action_eligible": false,
+      "latest_scope": "latest_observed_in_captured_snapshot_only",
+      "unseen_cc_removal_resolved": false,
+      "body_or_attachments_included": false
+    },
+    "action_eligible": false,
+    "mailbox_writes": 0,
+    "external_actions_enabled": false,
+    "body_returned": false,
+    "attachments_fetched": false,
+    "token_refreshed": false,
+    "read_scope": "one_explicit_internal_test_thread_in_hamle_mailbox",
+    "unseen_cc_removal_resolved": false
+  },
+  "acceptance_limits": [
+    "Only the exact new internal test thread was read.",
+    "No outgoing email, Basecamp content write, or model inference.",
+    "Full Gmail thread payload is processed in memory; body is withheld from results and attachment content is not fetched.",
+    "This evidence is not customer workflow acceptance or resolution of unseen CC removal."
+  ]
+}

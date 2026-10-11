@@ -1,0 +1,237 @@
+{
+  "recorded_at": "2026-10-10T02:00:51.737397+03:00",
+  "phase": "identities",
+  "user_authorized": true,
+  "secret_values_handled": false,
+  "results": [
+    {
+      "argv": [
+        "iam",
+        "service-accounts",
+        "describe",
+        "hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com"
+      ],
+      "result": {
+        "absent": true
+      }
+    },
+    {
+      "argv": [
+        "iam",
+        "service-accounts",
+        "create",
+        "hamle-runtime",
+        "--display-name=Hamle internal account-manager runtime"
+      ],
+      "result": {
+        "displayName": "Hamle internal account-manager runtime",
+        "email": "hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com",
+        "etag": "MDEwMjE5MjA=",
+        "name": "projects/gamechangers-hamle/serviceAccounts/hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com",
+        "oauth2ClientId": "117801206211357673592",
+        "projectId": "gamechangers-hamle",
+        "uniqueId": "117801206211357673592"
+      }
+    },
+    {
+      "argv": [
+        "iam",
+        "service-accounts",
+        "describe",
+        "hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com"
+      ],
+      "result": {
+        "displayName": "Hamle internal account-manager runtime",
+        "email": "hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com",
+        "etag": "MDEwMjE5MjA=",
+        "name": "projects/gamechangers-hamle/serviceAccounts/hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com",
+        "oauth2ClientId": "117801206211357673592",
+        "projectId": "gamechangers-hamle",
+        "uniqueId": "117801206211357673592"
+      }
+    },
+    {
+      "argv": [
+        "iam",
+        "service-accounts",
+        "keys",
+        "list",
+        "--iam-account=hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com",
+        "--managed-by=user"
+      ],
+      "result": []
+    },
+    {
+      "argv": [
+        "iam",
+        "service-accounts",
+        "describe",
+        "hamle-control@gamechangers-hamle.iam.gserviceaccount.com"
+      ],
+      "result": {
+        "absent": true
+      }
+    },
+    {
+      "argv": [
+        "iam",
+        "service-accounts",
+        "create",
+        "hamle-control",
+        "--display-name=Hamle authenticated human control"
+      ],
+      "result": {
+        "displayName": "Hamle authenticated human control",
+        "email": "hamle-control@gamechangers-hamle.iam.gserviceaccount.com",
+        "etag": "MDEwMjE5MjA=",
+        "name": "projects/gamechangers-hamle/serviceAccounts/hamle-control@gamechangers-hamle.iam.gserviceaccount.com",
+        "oauth2ClientId": "109640848746089241913",
+        "projectId": "gamechangers-hamle",
+        "uniqueId": "109640848746089241913"
+      }
+    },
+    {
+      "argv": [
+        "iam",
+        "service-accounts",
+        "describe",
+        "hamle-control@gamechangers-hamle.iam.gserviceaccount.com"
+      ],
+      "result": {
+        "displayName": "Hamle authenticated human control",
+        "email": "hamle-control@gamechangers-hamle.iam.gserviceaccount.com",
+        "etag": "MDEwMjE5MjA=",
+        "name": "projects/gamechangers-hamle/serviceAccounts/hamle-control@gamechangers-hamle.iam.gserviceaccount.com",
+        "oauth2ClientId": "109640848746089241913",
+        "projectId": "gamechangers-hamle",
+        "uniqueId": "109640848746089241913"
+      }
+    },
+    {
+      "argv": [
+        "iam",
+        "service-accounts",
+        "keys",
+        "list",
+        "--iam-account=hamle-control@gamechangers-hamle.iam.gserviceaccount.com",
+        "--managed-by=user"
+      ],
+      "result": []
+    },
+    {
+      "argv": [
+        "iam",
+        "service-accounts",
+        "describe",
+        "hamle-scheduler@gamechangers-hamle.iam.gserviceaccount.com"
+      ],
+      "result": {
+        "absent": true
+      }
+    },
+    {
+      "argv": [
+        "iam",
+        "service-accounts",
+        "create",
+        "hamle-scheduler",
+        "--display-name=Hamle fixed-job scheduler"
+      ],
+      "result": {
+        "displayName": "Hamle fixed-job scheduler",
+        "email": "hamle-scheduler@gamechangers-hamle.iam.gserviceaccount.com",
+        "etag": "MDEwMjE5MjA=",
+        "name": "projects/gamechangers-hamle/serviceAccounts/hamle-scheduler@gamechangers-hamle.iam.gserviceaccount.com",
+        "oauth2ClientId": "117778362493865647822",
+        "projectId": "gamechangers-hamle",
+        "uniqueId": "117778362493865647822"
+      }
+    },
+    {
+      "argv": [
+        "iam",
+        "service-accounts",
+        "describe",
+        "hamle-scheduler@gamechangers-hamle.iam.gserviceaccount.com"
+      ],
+      "result": {
+        "displayName": "Hamle fixed-job scheduler",
+        "email": "hamle-scheduler@gamechangers-hamle.iam.gserviceaccount.com",
+        "etag": "MDEwMjE5MjA=",
+        "name": "projects/gamechangers-hamle/serviceAccounts/hamle-scheduler@gamechangers-hamle.iam.gserviceaccount.com",
+        "oauth2ClientId": "117778362493865647822",
+        "projectId": "gamechangers-hamle",
+        "uniqueId": "117778362493865647822"
+      }
+    },
+    {
+      "argv": [
+        "iam",
+        "service-accounts",
+        "keys",
+        "list",
+        "--iam-account=hamle-scheduler@gamechangers-hamle.iam.gserviceaccount.com",
+        "--managed-by=user"
+      ],
+      "result": []
+    },
+    {
+      "argv": [
+        "iam",
+        "service-accounts",
+        "describe",
+        "hamle-build@gamechangers-hamle.iam.gserviceaccount.com"
+      ],
+      "result": {
+        "absent": true
+      }
+    },
+    {
+      "argv": [
+        "iam",
+        "service-accounts",
+        "create",
+        "hamle-build",
+        "--display-name=Hamle application image build"
+      ],
+      "result": {
+        "displayName": "Hamle application image build",
+        "email": "hamle-build@gamechangers-hamle.iam.gserviceaccount.com",
+        "etag": "MDEwMjE5MjA=",
+        "name": "projects/gamechangers-hamle/serviceAccounts/hamle-build@gamechangers-hamle.iam.gserviceaccount.com",
+        "oauth2ClientId": "103467597988747400154",
+        "projectId": "gamechangers-hamle",
+        "uniqueId": "103467597988747400154"
+      }
+    },
+    {
+      "argv": [
+        "iam",
+        "service-accounts",
+        "describe",
+        "hamle-build@gamechangers-hamle.iam.gserviceaccount.com"
+      ],
+      "result": {
+        "displayName": "Hamle application image build",
+        "email": "hamle-build@gamechangers-hamle.iam.gserviceaccount.com",
+        "etag": "MDEwMjE5MjA=",
+        "name": "projects/gamechangers-hamle/serviceAccounts/hamle-build@gamechangers-hamle.iam.gserviceaccount.com",
+        "oauth2ClientId": "103467597988747400154",
+        "projectId": "gamechangers-hamle",
+        "uniqueId": "103467597988747400154"
+      }
+    },
+    {
+      "argv": [
+        "iam",
+        "service-accounts",
+        "keys",
+        "list",
+        "--iam-account=hamle-build@gamechangers-hamle.iam.gserviceaccount.com",
+        "--managed-by=user"
+      ],
+      "result": []
+    }
+  ],
+  "status": "passed"
+}

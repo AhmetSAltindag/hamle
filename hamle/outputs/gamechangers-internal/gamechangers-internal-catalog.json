@@ -1,0 +1,311 @@
+{
+  "schema_version": 1,
+  "brand_id": "gamechangers",
+  "version": "gc-internal-20261011-draft1",
+  "status": "draft",
+  "verified": false,
+  "verification_note": "DRAFT written offline on 2026-10-11. Top-level verified=false keeps plan_intake closed (catalog_unverified) until Ahmet reviews this file and the unconfirmed ids below are read back.",
+  "verification_ref": "draft: wat-planning-catalog.json people + cloud-v11-internal-20261010 readbacks",
+  "live_enabled": false,
+  "provider_mutation_allowed_by_this_file": false,
+  "verification_scope": "Gamechangers-internal requests only (scope 'internal live only', Monday 2026-10-12). No customer, WAT stays off.",
+  "contacts": [
+    {
+      "name": "Ahmet Şükrü Altındağ",
+      "email": "ahmet@gamechangers.com.tr",
+      "side": "agency",
+      "verified": true,
+      "verification_ref": "wat-planning-catalog.json contacts (user-provided agency emails)",
+      "service_ids": [
+        "gc_internal"
+      ],
+      "can_receive": true,
+      "can_request": true,
+      "can_relay": false,
+      "can_amend": true,
+      "basecamp_verified": true,
+      "basecamp_id": 47470759,
+      "project_member": true,
+      "agency_roles": [
+        "principal"
+      ],
+      "project_member_note": "observed member of 49184053"
+    },
+    {
+      "name": "Cansu Akiş Kabil",
+      "email": "cansu@gamechangers.com.tr",
+      "side": "agency",
+      "verified": true,
+      "verification_ref": "wat-planning-catalog.json contacts (user-provided agency emails)",
+      "service_ids": [
+        "gc_internal"
+      ],
+      "can_receive": true,
+      "can_request": true,
+      "can_relay": false,
+      "can_amend": true,
+      "basecamp_verified": true,
+      "basecamp_id": 48793256,
+      "project_member": false,
+      "agency_roles": [
+        "strategy_owner"
+      ],
+      "project_member_note": "Identity verified in WAT project roster, but NOT observed as a member of internal project 49184053 (only Ahmet+Hamle observed 2026-10-10). Add to project and re-read members, then set project_member=true."
+    },
+    {
+      "name": "Özge Yağmur",
+      "email": "ozge@gamechangers.com.tr",
+      "side": "agency",
+      "verified": true,
+      "verification_ref": "wat-planning-catalog.json contacts (user-provided agency emails)",
+      "service_ids": [
+        "gc_internal"
+      ],
+      "can_receive": true,
+      "can_request": true,
+      "can_relay": false,
+      "can_amend": true,
+      "basecamp_verified": true,
+      "basecamp_id": 52096503,
+      "project_member": false,
+      "agency_roles": [
+        "social_manager"
+      ],
+      "project_member_note": "Identity verified in WAT project roster, but NOT observed as a member of internal project 49184053 (only Ahmet+Hamle observed 2026-10-10). Add to project and re-read members, then set project_member=true."
+    }
+  ],
+  "basecamp_people": {
+    "47470759": {
+      "name": "Ahmet Şükrü Altındağ",
+      "basecamp_id": 47470759,
+      "side": "agency",
+      "basecamp_verified": true,
+      "project_member": true,
+      "agency_roles": [
+        "principal"
+      ],
+      "production_kinds": [
+        "graphic",
+        "animation",
+        "video",
+        "text"
+      ],
+      "service_ids": [
+        "gc_internal"
+      ],
+      "can_amend": true,
+      "verification_ref": "outputs/cloud-v11-internal-20261010/preflight-summary.json actual_basecamp_readback.member_ids=[47470759,53358100]",
+      "project_member_note": "Default producer for Monday (user decision 2026-10-11): only confirmed project member besides Hamle."
+    },
+    "48793256": {
+      "name": "Cansu Akiş Kabil",
+      "basecamp_id": 48793256,
+      "side": "agency",
+      "basecamp_verified": true,
+      "project_member": false,
+      "agency_roles": [
+        "strategy_owner"
+      ],
+      "production_kinds": [],
+      "service_ids": [
+        "gc_internal"
+      ],
+      "can_amend": true,
+      "verification_ref": "outputs/wat-pilot-20261010/wat-planning-catalog.json basecamp_people (WAT project 40694338 roster)",
+      "project_member_note": "Identity verified in WAT project roster, but NOT observed as a member of internal project 49184053 (only Ahmet+Hamle observed 2026-10-10). Add to project and re-read members, then set project_member=true."
+    },
+    "52096503": {
+      "name": "Özge Yağmur",
+      "basecamp_id": 52096503,
+      "side": "agency",
+      "basecamp_verified": true,
+      "project_member": false,
+      "agency_roles": [
+        "social_manager"
+      ],
+      "production_kinds": [],
+      "service_ids": [
+        "gc_internal"
+      ],
+      "can_amend": true,
+      "verification_ref": "outputs/wat-pilot-20261010/wat-planning-catalog.json basecamp_people (WAT project 40694338 roster)",
+      "project_member_note": "Identity verified in WAT project roster, but NOT observed as a member of internal project 49184053 (only Ahmet+Hamle observed 2026-10-10). Add to project and re-read members, then set project_member=true."
+    },
+    "47658175": {
+      "name": "Berkay Kayaköylü",
+      "basecamp_id": 47658175,
+      "side": "agency",
+      "basecamp_verified": true,
+      "project_member": false,
+      "agency_roles": [],
+      "production_kinds": [
+        "graphic"
+      ],
+      "service_ids": [
+        "gc_internal"
+      ],
+      "can_amend": false,
+      "verification_ref": "outputs/wat-pilot-20261010/wat-planning-catalog.json basecamp_people (WAT project 40694338 roster)",
+      "project_member_note": "Identity verified in WAT project roster, but NOT observed as a member of internal project 49184053 (only Ahmet+Hamle observed 2026-10-10). Add to project and re-read members, then set project_member=true."
+    },
+    "50486696": {
+      "name": "Samet Göksu",
+      "basecamp_id": 50486696,
+      "side": "agency",
+      "basecamp_verified": true,
+      "project_member": false,
+      "agency_roles": [],
+      "production_kinds": [
+        "animation",
+        "video"
+      ],
+      "service_ids": [
+        "gc_internal"
+      ],
+      "can_amend": false,
+      "verification_ref": "outputs/wat-pilot-20261010/wat-planning-catalog.json basecamp_people (WAT project 40694338 roster)",
+      "project_member_note": "Identity verified in WAT project roster, but NOT observed as a member of internal project 49184053 (only Ahmet+Hamle observed 2026-10-10). Add to project and re-read members, then set project_member=true."
+    }
+  },
+  "basecamp": {
+    "account_id": 5898865,
+    "project_id": 49184053,
+    "project_name": "Hamle — İç Deneme",
+    "customer_visible": false,
+    "verified": true,
+    "verification_ref": "cloud-v11-internal-20261010/preflight-internal-parent.json + preflight-summary.json (clients_enabled=false, visible_to_clients=false)",
+    "todoset_id": 10384126975,
+    "todoset_name": "İş Listesi"
+  },
+  "routes": [
+    {
+      "service_id": "gc_internal",
+      "category_key": "internal",
+      "category_name": "Hamle İç İşler",
+      "list_id": null,
+      "verified": false,
+      "verification_ref": "UNCONFIRMED",
+      "list_note": "No concrete Todolist id exists in the package. Earlier internal tasks (v11_internal_providers.PARENT) were created directly under Todoset 10384126975, but BrandTaskWriter and BasecampReader require a Todolist parent. Create (or pick) a Todolist inside Todoset 10384126975, read it back (type=Todolist, bucket 49184053, visible_to_clients=false), put its id here and set verified=true.",
+      "allowed_kinds": [
+        "graphic",
+        "animation",
+        "video",
+        "text"
+      ],
+      "assignee_ids_by_kind": {
+        "graphic": [
+          47470759
+        ],
+        "animation": [
+          47470759
+        ],
+        "video": [
+          47470759
+        ],
+        "text": [
+          47470759
+        ]
+      },
+      "producer_note": "Monday default producer is Ahmet (47470759). Berkay (47658175, graphic) and Samet (50486696, animation/video) can replace him per kind once they are members of project 49184053; changing this route changes the catalog digest and requires a fresh plan.",
+      "future_assignee_ids_by_kind": {
+        "graphic": [
+          47658175
+        ],
+        "animation": [
+          50486696
+        ],
+        "video": [
+          50486696
+        ]
+      },
+      "sequence_verified": false,
+      "sequence_note": "Multi-kind internal works stay held until a design->motion order is confirmed for the internal brand (WAT rule: graphic first, then animation).",
+      "production_sequences": {
+        "animation+graphic": [
+          {
+            "id": "design",
+            "kinds": [
+              "graphic"
+            ],
+            "depends_on": []
+          },
+          {
+            "id": "motion",
+            "kinds": [
+              "animation"
+            ],
+            "depends_on": [
+              "design"
+            ]
+          }
+        ],
+        "graphic+video": [
+          {
+            "id": "design",
+            "kinds": [
+              "graphic"
+            ],
+            "depends_on": []
+          },
+          {
+            "id": "motion",
+            "kinds": [
+              "video"
+            ],
+            "depends_on": [
+              "design"
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "terms": {
+    "internal_quality_rework_is_separate": true,
+    "internal_quality_revision_limit_per_work": 2,
+    "internal_quality_limit_handoff_to": [
+      "ozge@gamechangers.com.tr",
+      "ahmet@gamechangers.com.tr",
+      "cansu@gamechangers.com.tr"
+    ],
+    "internal_quality_limit_ref": "wat-pilot-20261010/internal-quality-rework-user-decision-20261010.json (same decision applied to internal brand)",
+    "quality_thresholds": {
+      "human_min": "80",
+      "candidate_min": "90"
+    },
+    "quality_policy_ref": null,
+    "quality_policy_note": "No accepted internal rubric exists for arbitrary internal works; the chain's injected assessor must return an accepted v11_quality_gate policy + assessment. Without it every submission is quality_held."
+  },
+  "human_exceptions": {
+    "commercial": [
+      "ahmet@gamechangers.com.tr"
+    ],
+    "complaint_strategy": [
+      "ahmet@gamechangers.com.tr",
+      "cansu@gamechangers.com.tr"
+    ],
+    "social_planning": [
+      "ozge@gamechangers.com.tr"
+    ]
+  },
+  "chain": {
+    "default_service_id": "gc_internal",
+    "default_category_key": "internal",
+    "quality_approver_basecamp_ids": [
+      52096503,
+      47470759,
+      48793256
+    ],
+    "agency_direct_request_counts_as_agreement": {
+      "value": true,
+      "verified": false,
+      "note": "Proposal: a direct mail from a verified agency requester (Hamle in actual To/CC) is the brief agreement for internal works. Needs Ahmet's confirmation; while verified=false complete briefs hold as brief_agreement_unverified."
+    },
+    "context_note_placement": "separate internal Basecamp comment on the new task (v11_brand_task description is profile-derived and must not be changed)"
+  },
+  "work_authority": {
+    "status": "internal_only",
+    "customer_live_enabled": false,
+    "wat_live_enabled": false
+  }
+}

@@ -1,0 +1,1988 @@
+{
+  "schema_version": "1.0.0",
+  "brand": "Rabam",
+  "brand_id": "rabam",
+  "round": 2,
+  "account": "ahmet@gamechangers.com.tr",
+  "phase": "learning_only",
+  "external_mutations": 0,
+  "checked_at_utc": "2026-10-07T18:13:12.812363+00:00",
+  "coverage": {
+    "detailed_topic_count": 26,
+    "retrieved_new_thread_count": 37,
+    "retrieved_unique_message_count": 176,
+    "topic_used_thread_count": 33,
+    "topic_used_unique_message_count": 171,
+    "first_message_utc": "2026-06-17T18:38:19.000Z",
+    "last_message_utc": "2026-10-06T16:46:19.000Z",
+    "prior_round_thread_overlap": 0,
+    "prior_round_message_overlap": 0,
+    "all_saved_message_text_reviewed": true,
+    "max_messages_per_thread_requested": 100,
+    "threads_reaching_cap": [],
+    "provider_total_messages_available": false,
+    "read_failures": [],
+    "attachment_mime_entries_including_signatures": 333,
+    "body_linked_file_entries": 91,
+    "attachments_inspected": 0,
+    "linked_document_targets_inspected": 2,
+    "archive_total": null,
+    "archive_completion_percentage": null,
+    "full_history_complete": false
+  },
+  "topic_counting_rules": [
+    "26 konu; iletiler veya bildirimler konu olarak sayılmadı.",
+    "Aynı prodüksiyon işi için müşteri ve iki tedarikçi zinciri tek konuda toplandı.",
+    "Kimya Gökçe Aytaç adına ajans ve menajer iletileri tek konu sayıldı.",
+    "Basecamp’te aynı görev URL’si taşıyan bildirimler tek görev kabul edildi.",
+    "Gmail tamamlandı bildirim zinciri birden çok task içerebildiği için mesajdaki task URL’si esas alındı.",
+    "Tek satırlık mentions, link paylaşımı, otomatik özet ve önceki turdaki tanıtım dosyası ayrıntılı konu sayılmadı.",
+    "Bir konu içindeki tarihli alt kararlar ayrıca konu sayılmadı; PR görseli, basın dağıtımı, cast karakter brief’i ve belirli aday hak teklifi farklı teslim/sorumluluk alanları olarak tutuldu."
+  ],
+  "limitations": [
+    "Bu arşiv okuması güncel sözleşme, görev durumu, erişim veya harcama yetkisi doğrulaması değildir.",
+    "Bütün alınan ileti gövdeleri ve iki bağlantılı belgenin dönen metni okundu; diğer ekler ve bağlantı hedefleri açılmadı.",
+    "Yanıt zincirindeki tekrar alıntılar ve imza/bildirim verileri ayıklandı; gerçek ileti kimlikleri ve tarihleri korundu.",
+    "Gizli erişim bilgileri kaynak kopyalarından çıkarıldı.",
+    "100 ileti sınırına ulaşan zincir yok; sağlayıcı toplam sayıyı vermediği için bağımsız tamlık garantisi yok.",
+    "Gmail tarih araması discovery amacıyla kullanıldı; yerel saat sınırlarında eksiksiz arşiv taraması iddia edilmedi.",
+    "Basecamp kayıtları doğrudan okunmadı; elde edilenler Gmail bildirimleri.",
+    "Gmail sorgusunda ilk rabam.com.tr alanı sonuç vermedi; geniş Rabam araması gerçek müşteri alanı rabam.com yazışmalarını buldu."
+  ],
+  "topics": [
+    {
+      "topic_id": "RABAM-R2-01",
+      "title": "Ajans başlangıcı, yıllık çatı planı ve hizmet dilinin öğrenilmesi",
+      "canonical_topic_key": "ajans başlangıcı, yıllık çatı planı ve hizmet dilinin öğrenilmesi",
+      "brand": "Rabam",
+      "thread_ids": [
+        "1a01462f6904f196"
+      ],
+      "source_urls": [
+        "https://mail.google.com/mail/u/0/#all/1a01462f6904f196"
+      ],
+      "dates_utc": {
+        "first": "2026-08-18T10:43:09.000Z",
+        "last": "2026-09-23T05:23:00.000Z"
+      },
+      "authors": [
+        "\"Ahmet Şükrü Altındağ\" <ahmet@gamechangers.com.tr>",
+        "\"Cansu Akiş Kabil\" <cansu@gamechangers.com.tr>",
+        "\"Cenk Yönezer\" <cenk.yonezer@aydoganlargrup.com>",
+        "\"Mert Batı\" <mert@rabam.com>",
+        "\"Murat Günay\" <murat@rabam.com>",
+        "Ozge Yagmur <ozge@gamechangers.com.tr>"
+      ],
+      "customer_request_or_business_need": "Rabam için yıllık iletişim ve prodüksiyon yaklaşımı, ajans kapsamı ve ekip çalışma biçimi netleştiriliyor. Müşteri hizmetleri içeriden bir çalışan kadar öğrenmesi için yarım günlük oturum öneriyor.",
+      "agency_and_staff_response": "Ahmet 12 aylık çatı planını ve üç prodüksiyon modelini anlatıyor; performans kreatiflerinin ilk bütçede eksik olduğunu ayrıca açıyor. Cansu Eylül ikinci yarı temalarını istiyor; Özge tema → tarihli mecra/metin/görsel takvimi akışını açıklıyor.",
+      "revision_and_feedback": "Mert havuz içeriklerin fazla randevu odaklı olduğunu ve bu biçimde randevulu hizmet bulunmadığını söylüyor; Özge wording düzeltmesini ve hizmet öğrenme görüşmesini kabul ediyor. 8 Eylül’de Rabam Mahallesi’nin Sensat benzerliği nedeniyle devreye alınamadığı yazılıyor.",
+      "decision_and_approval_scope": "25 Ağustos’ta Cenk son ajans teklifiyle yürümeyi kabul ediyor, Murat olumlu karşılıyor. Mert 14 Eylül sonrası içerik üretimi başlangıcını teyit ediyor. Bunlar ilgili tarih/kapsama ait; bugünkü sözleşme veya özerk harcama yetkisi değildir.",
+      "historical_outcome_reported": "İş birliği ve başlangıç hazırlığı yazışmaları var. 11 Eylül’de B2B referans/hizmet listesi iletilmiş; tüm 12 aylık planın uygulanması veya randevu kurgusunun güncel hâli doğrulanmış değil.",
+      "current_status": "Bu inceleme güncel iş durumunu doğrulamaz; geçmiş kayıt öğrenimidir.",
+      "bounded_learning": "Hizmet sunumu markadan doğrudan öğrenilmeli; yanlış hizmet kelimesi yaratıcı çalışmayı da hatalı kılıyor. Eski kreatif platformlar ve dönemsel teklif kararları güncel kural gibi geri çağrılmamalı.",
+      "unknowns_and_limits": [
+        "Ekli plan, teklif, hizmet listesi dosyaları okunmadı.",
+        "E-postadaki müşteri referansları ve hizmet kapsamı tarihli beyan; güncel doğrulama gerekir.",
+        "Bu zincirde farklı iş başlıkları bulunuyor; 39 ileti 39 konu sayılmadı."
+      ],
+      "classification": "restricted_commercial",
+      "knowledge_status": "historical_source_scoped",
+      "authority_not_extended": true,
+      "evidence": [
+        {
+          "thread_id": "1a01462f6904f196",
+          "message_id": "1a0253b91be8a7d2",
+          "date_utc": "2026-08-21T16:50:55.000Z",
+          "author": "\"Ahmet Şükrü Altındağ\" <ahmet@gamechangers.com.tr>",
+          "subject": "Re: Rabam: Prodüksiyon Süreci ve 12 Aylık İletişim Planı",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a01462f6904f196"
+        },
+        {
+          "thread_id": "1a01462f6904f196",
+          "message_id": "1a0392e645c7c847",
+          "date_utc": "2026-08-25T13:48:50.000Z",
+          "author": "\"Cenk Yönezer\" <cenk.yonezer@aydoganlargrup.com>",
+          "subject": "RE: Rabam: Prodüksiyon Süreci ve 12 Aylık İletişim Planı",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a01462f6904f196"
+        },
+        {
+          "thread_id": "1a01462f6904f196",
+          "message_id": "1a07b95d193cf08f",
+          "date_utc": "2026-09-07T11:16:45.000Z",
+          "author": "\"Mert Batı\" <mert@rabam.com>",
+          "subject": "Ynt: Rabam: Prodüksiyon Süreci ve 12 Aylık İletişim Planı",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a01462f6904f196"
+        },
+        {
+          "thread_id": "1a01462f6904f196",
+          "message_id": "1a07bd128051c316",
+          "date_utc": "2026-09-07T12:21:19.000Z",
+          "author": "\"Mert Batı\" <mert@rabam.com>",
+          "subject": "Ynt: Rabam: Prodüksiyon Süreci ve 12 Aylık İletişim Planı",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a01462f6904f196"
+        },
+        {
+          "thread_id": "1a01462f6904f196",
+          "message_id": "1a07f90ee9f91199",
+          "date_utc": "2026-09-08T05:50:00.000Z",
+          "author": "\"Ahmet Şükrü Altındağ\" <ahmet@gamechangers.com.tr>",
+          "subject": "Re: Rabam: Prodüksiyon Süreci ve 12 Aylık İletişim Planı",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a01462f6904f196"
+        },
+        {
+          "thread_id": "1a01462f6904f196",
+          "message_id": "1a0809e5128a07e1",
+          "date_utc": "2026-09-08T10:44:02.000Z",
+          "author": "\"Mert Batı\" <mert@rabam.com>",
+          "subject": "Ynt: Rabam: Prodüksiyon Süreci ve 12 Aylık İletişim Planı",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a01462f6904f196"
+        },
+        {
+          "thread_id": "1a01462f6904f196",
+          "message_id": "1a08133d06a655c1",
+          "date_utc": "2026-09-08T13:27:16.000Z",
+          "author": "Ozge Yagmur <ozge@gamechangers.com.tr>",
+          "subject": "Re: Rabam: Prodüksiyon Süreci ve 12 Aylık İletişim Planı",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a01462f6904f196"
+        },
+        {
+          "thread_id": "1a01462f6904f196",
+          "message_id": "1a08135d5011119e",
+          "date_utc": "2026-09-08T13:29:36.000Z",
+          "author": "\"Murat Günay\" <murat@rabam.com>",
+          "subject": "RE: Rabam: Prodüksiyon Süreci ve 12 Aylık İletişim Planı",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a01462f6904f196"
+        },
+        {
+          "thread_id": "1a01462f6904f196",
+          "message_id": "1a08fc91d022483f",
+          "date_utc": "2026-09-11T09:25:07.000Z",
+          "author": "\"Mert Batı\" <mert@rabam.com>",
+          "subject": "Ynt: Rabam: Prodüksiyon Süreci ve 12 Aylık İletişim Planı",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a01462f6904f196"
+        }
+      ],
+      "canonical_basecamp_task_urls": [],
+      "evidence_message_ids": [
+        "1a0253b91be8a7d2",
+        "1a0392e645c7c847",
+        "1a07b95d193cf08f",
+        "1a07bd128051c316",
+        "1a07f90ee9f91199",
+        "1a0809e5128a07e1",
+        "1a08133d06a655c1",
+        "1a08135d5011119e",
+        "1a08fc91d022483f"
+      ]
+    },
+    {
+      "topic_id": "RABAM-R2-02",
+      "title": "Hizmet sözleşmesi inceleme ve hukuk takibi",
+      "canonical_topic_key": "hizmet sözleşmesi inceleme ve hukuk takibi",
+      "brand": "Rabam",
+      "thread_ids": [
+        "1a0a591383ada8cc"
+      ],
+      "source_urls": [
+        "https://mail.google.com/mail/u/0/#all/1a0a591383ada8cc"
+      ],
+      "dates_utc": {
+        "first": "2026-09-15T15:06:43.000Z",
+        "last": "2026-09-29T14:31:00.000Z"
+      },
+      "authors": [
+        "\"Ahmet Şükrü Altındağ\" <ahmet@gamechangers.com.tr>",
+        "\"Cenk Yönezer\" <cenk.yonezer@aydoganlargrup.com>",
+        "\"Murat Günay\" <murat@rabam.com>"
+      ],
+      "customer_request_or_business_need": "Ajans hizmet sözleşmesinin müşteri ve hukuk incelemesiyle tamamlanması; fatura bilgilerinin alınması.",
+      "agency_and_staff_response": "Ahmet v2 taslağı gönderiyor, hizmet/haklar/ödeme yapısını anlatıyor ve 29 Eylül’de durum soruyor. Murat sözleşme sürecini Cenk’e yönlendiriyor.",
+      "revision_and_feedback": "Cenk 29 Eylül’de sözleşmenin avukattan henüz gelmediğini bildiriyor; maddelerle ilgili geri dönüş bu zincirde görünmüyor.",
+      "decision_and_approval_scope": "Murat’ın Cenk’e süreç sahipliği verdiği görülüyor; imza veya nihai hukuki onay yok. E-postadaki fatura zamanlama açıklaması imzalı koşul yerine geçmez.",
+      "historical_outcome_reported": "Son tarihli bildirime göre hukuk yanıtı bekleniyordu.",
+      "current_status": "Bu inceleme güncel iş durumunu doğrulamaz; geçmiş kayıt öğrenimidir.",
+      "bounded_learning": "Süreç sahibi, hukuk kontrolü ve imzalı sürüm ayrı kaydedilmeli; gönderilen taslak yürürlükte sözleşme diye kullanılmamalı.",
+      "unknowns_and_limits": [
+        "DOCX içeriği ve imzalı sürüm okunmadı.",
+        "29 Eylül sonrasındaki sonuç bu kayıtla bilinmiyor."
+      ],
+      "classification": "restricted_commercial",
+      "knowledge_status": "historical_source_scoped",
+      "authority_not_extended": true,
+      "evidence": [
+        {
+          "thread_id": "1a0a591383ada8cc",
+          "message_id": "1a0a59b276830adf",
+          "date_utc": "2026-09-15T15:06:43.000Z",
+          "author": "\"Ahmet Şükrü Altındağ\" <ahmet@gamechangers.com.tr>",
+          "subject": "Rabam x Gamechangers Sözleşmesi",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0a591383ada8cc"
+        },
+        {
+          "thread_id": "1a0a591383ada8cc",
+          "message_id": "1a0a62090bad3272",
+          "date_utc": "2026-09-15T17:32:22.000Z",
+          "author": "\"Murat Günay\" <murat@rabam.com>",
+          "subject": "RE: Rabam x Gamechangers Sözleşmesi",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0a591383ada8cc"
+        },
+        {
+          "thread_id": "1a0a591383ada8cc",
+          "message_id": "1a0ed35810a152ac",
+          "date_utc": "2026-09-29T12:48:20.000Z",
+          "author": "\"Ahmet Şükrü Altındağ\" <ahmet@gamechangers.com.tr>",
+          "subject": "Re: Rabam x Gamechangers Sözleşmesi",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0a591383ada8cc"
+        },
+        {
+          "thread_id": "1a0a591383ada8cc",
+          "message_id": "1a0ed938f13bcaa5",
+          "date_utc": "2026-09-29T14:31:00.000Z",
+          "author": "\"Cenk Yönezer\" <cenk.yonezer@aydoganlargrup.com>",
+          "subject": "Re: Rabam x Gamechangers Sözleşmesi",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0a591383ada8cc"
+        }
+      ],
+      "canonical_basecamp_task_urls": [],
+      "evidence_message_ids": [
+        "1a0a59b276830adf",
+        "1a0a62090bad3272",
+        "1a0ed35810a152ac",
+        "1a0ed938f13bcaa5"
+      ]
+    },
+    {
+      "topic_id": "RABAM-R2-03",
+      "title": "Sosyal hesap yetkilendirme ve Meta davetinin çözülmesi",
+      "canonical_topic_key": "sosyal hesap yetkilendirme ve meta davetinin çözülmesi",
+      "brand": "Rabam",
+      "thread_ids": [
+        "1a090186cfb7cf7f"
+      ],
+      "source_urls": [
+        "https://mail.google.com/mail/u/0/#all/1a090186cfb7cf7f"
+      ],
+      "dates_utc": {
+        "first": "2026-09-11T10:51:43.000Z",
+        "last": "2026-09-14T13:48:52.000Z"
+      },
+      "authors": [
+        "\"Mert Batı\" <mert@rabam.com>",
+        "Ozge Yagmur <ozge@gamechangers.com.tr>"
+      ],
+      "customer_request_or_business_need": "Ajansın Meta, LinkedIn ve diğer sosyal kanallara erişiminin kurulması.",
+      "agency_and_staff_response": "Özge yetki verilecek işletme/profil bilgisini iletiyor; Mert işlem yaptığını söylüyor. Ajans görünmeyen Meta davetini birkaç kez kontrol edip geri bildiriyor.",
+      "revision_and_feedback": "Davet gönderilmiş görünmesine rağmen ajans alamıyor. Mert ikinci yönetici onayını verdikten sonra Özge daveti kabul ettiğini bildiriyor. Ara aşamada IG üzerinden Facebook çapraz paylaşımı yaptıklarını, bunun raporlamayı zorlayacağını belirtiyor.",
+      "decision_and_approval_scope": "14 Eylül’de Özge’nin davet kabulü bildirimi var. Bu geçmiş insan erişiminin kanıtıdır; yapay zekâ ajanına bugün erişim verildiği anlamına gelmez. Gizli erişim satırları kaynak kopyasından çıkarıldı.",
+      "historical_outcome_reported": "Meta davet sorununun çözüldüğü bildirilmiş; YouTube’un ortak teknik hesaba bağlı olması ayrı konu olarak bırakılmış.",
+      "current_status": "Bu inceleme güncel iş durumunu doğrulamaz; geçmiş kayıt öğrenimidir.",
+      "bounded_learning": "Gönderilen davet ile kabul edilen yetki ayrılmalı; hesap bağımlılıkları ve geçici paylaşım yöntemlerinin raporlamaya etkisi kaydedilmeli.",
+      "unknowns_and_limits": [
+        "Canlı Meta/LinkedIn/TikTok/YouTube erişimi sınanmadı.",
+        "Gizli bilgiler rapora veya marka hafızasına alınmadı."
+      ],
+      "classification": "restricted_access_process",
+      "knowledge_status": "historical_source_scoped",
+      "authority_not_extended": true,
+      "evidence": [
+        {
+          "thread_id": "1a090186cfb7cf7f",
+          "message_id": "1a0911a690592325",
+          "date_utc": "2026-09-11T15:33:29.000Z",
+          "author": "Ozge Yagmur <ozge@gamechangers.com.tr>",
+          "subject": "Re: Yetkilendirmeler",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a090186cfb7cf7f"
+        },
+        {
+          "thread_id": "1a090186cfb7cf7f",
+          "message_id": "1a09fe045ef25809",
+          "date_utc": "2026-09-14T12:24:16.000Z",
+          "author": "Ozge Yagmur <ozge@gamechangers.com.tr>",
+          "subject": "Re: Yetkilendirmeler",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a090186cfb7cf7f"
+        },
+        {
+          "thread_id": "1a090186cfb7cf7f",
+          "message_id": "1a09fe2390013fa7",
+          "date_utc": "2026-09-14T12:26:29.000Z",
+          "author": "\"Mert Batı\" <mert@rabam.com>",
+          "subject": "Ynt: Yetkilendirmeler",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a090186cfb7cf7f"
+        },
+        {
+          "thread_id": "1a090186cfb7cf7f",
+          "message_id": "1a0a0299429b36b1",
+          "date_utc": "2026-09-14T13:44:29.000Z",
+          "author": "\"Mert Batı\" <mert@rabam.com>",
+          "subject": "Ynt: Yetkilendirmeler",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a090186cfb7cf7f"
+        },
+        {
+          "thread_id": "1a090186cfb7cf7f",
+          "message_id": "1a0a02db7479c57d",
+          "date_utc": "2026-09-14T13:48:52.000Z",
+          "author": "Ozge Yagmur <ozge@gamechangers.com.tr>",
+          "subject": "Re: Yetkilendirmeler",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a090186cfb7cf7f"
+        }
+      ],
+      "canonical_basecamp_task_urls": [],
+      "evidence_message_ids": [
+        "1a0911a690592325",
+        "1a09fe045ef25809",
+        "1a09fe2390013fa7",
+        "1a0a0299429b36b1",
+        "1a0a02db7479c57d"
+      ]
+    },
+    {
+      "topic_id": "RABAM-R2-04",
+      "title": "Global benchmark ve aşamalı lansman stratejisi önerisi",
+      "canonical_topic_key": "global benchmark ve aşamalı lansman stratejisi önerisi",
+      "brand": "Rabam",
+      "thread_ids": [
+        "1a0a9a367d338b52"
+      ],
+      "source_urls": [
+        "https://mail.google.com/mail/u/0/#all/1a0a9a367d338b52"
+      ],
+      "dates_utc": {
+        "first": "2026-09-16T09:54:00.000Z",
+        "last": "2026-09-17T17:38:05.000Z"
+      },
+      "authors": [
+        "\"Ahmet Şükrü Altındağ\" <ahmet@gamechangers.com.tr>",
+        "\"Hakan Görgülü\" <hakan@gamechangers.com.tr>"
+      ],
+      "customer_request_or_business_need": "Rabam’ın geniş hizmet dünyası için uygulanabilir başlangıç ve büyüme yönü geliştirmek.",
+      "agency_and_staff_response": "Hakan Tuhu, Ping An Auto Owner, Park+, myRAC ve Jerry incelemesini paylaşıyor. Otomobil sahipliğini kolaylaştıran tek marka fikri, kapasitesi doğrulanmış bölgelerde yıkama/bakımla deneme ve ilk 90 günde kalite/tekrar kullanım/ekonomik katkı ölçümü öneriyor. Ahmet raporun incelenmesini takip ediyor.",
+      "revision_and_feedback": "Müşteri yorumu veya revizyonu bu iki iletide bulunmuyor.",
+      "decision_and_approval_scope": "Ajans önerisidir; müşteri tarafından seçildiği veya uygulamaya alındığı gösterilmiyor.",
+      "historical_outcome_reported": "Rapor gönderimi ve hatırlatma var; büyüme pilotu yürütüldüğü kanıtlanmıyor.",
+      "current_status": "Bu inceleme güncel iş durumunu doğrulamaz; geçmiş kayıt öğrenimidir.",
+      "bounded_learning": "Araştırma önerileri onaylı stratejiden ayrı tutulmalı. Kapasite teyidi ve ölçülebilir pilot koşulları kaybolmamalı.",
+      "unknowns_and_limits": [
+        "Ekli rapor okunmadı; öğrenim e-posta gövdesiyle sınırlı.",
+        "90 günlük önerinin fiilen başlatılması bilinmiyor."
+      ],
+      "classification": "brand_private",
+      "knowledge_status": "historical_source_scoped",
+      "authority_not_extended": true,
+      "evidence": [
+        {
+          "thread_id": "1a0a9a367d338b52",
+          "message_id": "1a0a9a367d338b52",
+          "date_utc": "2026-09-16T09:54:00.000Z",
+          "author": "\"Hakan Görgülü\" <hakan@gamechangers.com.tr>",
+          "subject": "Rabam // Global Benchmark Raporu ve Lansman Stratejimiz hk",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0a9a367d338b52"
+        },
+        {
+          "thread_id": "1a0a9a367d338b52",
+          "message_id": "1a0b0727487c1928",
+          "date_utc": "2026-09-17T17:38:05.000Z",
+          "author": "\"Ahmet Şükrü Altındağ\" <ahmet@gamechangers.com.tr>",
+          "subject": "Re: Rabam // Global Benchmark Raporu ve Lansman Stratejimiz hk",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0a9a367d338b52"
+        }
+      ],
+      "canonical_basecamp_task_urls": [],
+      "evidence_message_ids": [
+        "1a0a9a367d338b52",
+        "1a0b0727487c1928"
+      ]
+    },
+    {
+      "topic_id": "RABAM-R2-05",
+      "title": "Eylül sosyal medya planı ve kurucu videosu varyant seçimi",
+      "canonical_topic_key": "eylül sosyal medya planı ve kurucu videosu varyant seçimi",
+      "brand": "Rabam",
+      "thread_ids": [
+        "1a0901a8b0773887"
+      ],
+      "source_urls": [
+        "https://mail.google.com/mail/u/0/#all/1a0901a8b0773887"
+      ],
+      "dates_utc": {
+        "first": "2026-09-11T10:54:01.000Z",
+        "last": "2026-09-30T12:56:21.000Z"
+      },
+      "authors": [
+        "\"Mert Batı\" <mert@rabam.com>",
+        "\"Murat Günay\" <murat@rabam.com>",
+        "Ozge Yagmur <ozge@gamechangers.com.tr>"
+      ],
+      "customer_request_or_business_need": "Eylül ikinci yarısı için paylaşım planını onaya sunmak ve kurucu röportajını duyurmak.",
+      "agency_and_staff_response": "Özge ilk taslağı tek yazışma zincirinde topluyor; iki revizyonun uygulandığını bildirip paylaşım öncesi onay istiyor. 30 Eylül’de Kaan Aydoğan’ın egirişim videosu için iki görsel ve iki metin alternatifi sunuyor.",
+      "revision_and_feedback": "Mert 14 Eylül’de planı uygun buluyor ve Murat’ın ek yorumunu soruyor; Murat teşekkür ediyor. 30 Eylül’de Mert görsel ve metinde ikinci alternatifi seçiyor.",
+      "decision_and_approval_scope": "İkinci alternatif tercihi kurucu videosu duyurusuna özgüdür. Plan hakkındaki olumlu yanıt bütün gelecek içeriklere koşulsuz onay değildir.",
+      "historical_outcome_reported": "Revize plan ve daha sonra V2 tercih bildirimi görüldü; yayınlanmış gönderiler kontrol edilmedi.",
+      "current_status": "Bu inceleme güncel iş durumunu doğrulamaz; geçmiş kayıt öğrenimidir.",
+      "bounded_learning": "Aylık plan onayı ile aynı zincire sonradan gelen içeriğin seçimi ayrı dosya/sürüm olayları olarak tutulmalı.",
+      "unknowns_and_limits": [
+        "Google Slides ve görseller incelenmedi.",
+        "İlk iki revizyonun ayrıntıları mail gövdesinde açıklanmıyor."
+      ],
+      "classification": "brand_private",
+      "knowledge_status": "historical_source_scoped",
+      "authority_not_extended": true,
+      "evidence": [
+        {
+          "thread_id": "1a0901a8b0773887",
+          "message_id": "1a0901a8b0773887",
+          "date_utc": "2026-09-11T10:54:01.000Z",
+          "author": "Ozge Yagmur <ozge@gamechangers.com.tr>",
+          "subject": "Rabam Eylül '26 SM Planı",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0901a8b0773887"
+        },
+        {
+          "thread_id": "1a0901a8b0773887",
+          "message_id": "1a09fe6d32e245dd",
+          "date_utc": "2026-09-14T12:31:27.000Z",
+          "author": "Ozge Yagmur <ozge@gamechangers.com.tr>",
+          "subject": "Re: Rabam Eylül '26 SM Planı",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0901a8b0773887"
+        },
+        {
+          "thread_id": "1a0901a8b0773887",
+          "message_id": "1a0a02f5f1bdc080",
+          "date_utc": "2026-09-14T13:50:49.000Z",
+          "author": "\"Mert Batı\" <mert@rabam.com>",
+          "subject": "Ynt: Rabam Eylül '26 SM Planı",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0901a8b0773887"
+        },
+        {
+          "thread_id": "1a0901a8b0773887",
+          "message_id": "1a0a0310b6e00bec",
+          "date_utc": "2026-09-14T13:52:41.000Z",
+          "author": "\"Murat Günay\" <murat@rabam.com>",
+          "subject": "RE: Rabam Eylül '26 SM Planı",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0901a8b0773887"
+        },
+        {
+          "thread_id": "1a0901a8b0773887",
+          "message_id": "1a0f26167f9003f6",
+          "date_utc": "2026-09-30T12:54:09.000Z",
+          "author": "Ozge Yagmur <ozge@gamechangers.com.tr>",
+          "subject": "Re: Rabam Eylül '26 SM Planı",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0901a8b0773887"
+        },
+        {
+          "thread_id": "1a0901a8b0773887",
+          "message_id": "1a0f263389066134",
+          "date_utc": "2026-09-30T12:56:21.000Z",
+          "author": "\"Mert Batı\" <mert@rabam.com>",
+          "subject": "Ynt: Rabam Eylül '26 SM Planı",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0901a8b0773887"
+        }
+      ],
+      "canonical_basecamp_task_urls": [],
+      "evidence_message_ids": [
+        "1a0901a8b0773887",
+        "1a09fe6d32e245dd",
+        "1a0a02f5f1bdc080",
+        "1a0a0310b6e00bec",
+        "1a0f26167f9003f6",
+        "1a0f263389066134"
+      ]
+    },
+    {
+      "topic_id": "RABAM-R2-06",
+      "title": "Ekim sosyal medya planı ve özel gün logo revizyonu",
+      "canonical_topic_key": "ekim sosyal medya planı ve özel gün logo revizyonu",
+      "brand": "Rabam",
+      "thread_ids": [
+        "1a0c3fd324270f70"
+      ],
+      "source_urls": [
+        "https://mail.google.com/mail/u/0/#all/1a0c3fd324270f70"
+      ],
+      "dates_utc": {
+        "first": "2026-09-21T12:42:12.000Z",
+        "last": "2026-09-23T15:03:54.000Z"
+      },
+      "authors": [
+        "\"Mert Batı\" <mert@rabam.com>",
+        "Ozge Yagmur <ozge@gamechangers.com.tr>"
+      ],
+      "customer_request_or_business_need": "Toplantı ve müşteri tema akışı üzerinden Ekim içerik planını hazırlamak.",
+      "agency_and_staff_response": "Özge planı sunuyor; how-to akışını ayrı iletiyor ve çekimleri akış onayına bağlıyor. Instagram’a özel kampanyalar için en az iki gün önce brief rica ediyor, son dakika kampanyalarına şablon öneriyor.",
+      "revision_and_feedback": "Mert haftalık veya iki haftada bir Instagram’a özel kampanya öneriyor. 29 Ekim logosu daha yumuşak kullanımına revize ediliyor; Mert yeni hâlini daha iyi buluyor.",
+      "decision_and_approval_scope": "23 Eylül olumlu dönüşü o gönderilen çalışma ve 29 Ekim revizyonuna aittir. Özel günlerde logo kullanımının bütün mecralar için süresiz kural olduğu çıkarılamaz.",
+      "historical_outcome_reported": "İkinci persona içeriğinin hazırlandığı ve 29 Ekim görselinin olumlu değerlendirildiği bildirilmiş.",
+      "current_status": "Bu inceleme güncel iş durumunu doğrulamaz; geçmiş kayıt öğrenimidir.",
+      "bounded_learning": "Planlı takvim ile anlık kampanyanın eklenme kuralı ayrılmalı; üretim süresi talebi müşteriye somut söylenmeli.",
+      "unknowns_and_limits": [
+        "Plan dosyası ve son görsel sürümleri açılmadı.",
+        "Kampanyaların gerçek erişim/takipçi etkisi yalnız müşterinin yorumudur."
+      ],
+      "classification": "brand_private",
+      "knowledge_status": "historical_source_scoped",
+      "authority_not_extended": true,
+      "evidence": [
+        {
+          "thread_id": "1a0c3fd324270f70",
+          "message_id": "1a0c3fd324270f70",
+          "date_utc": "2026-09-21T12:42:12.000Z",
+          "author": "Ozge Yagmur <ozge@gamechangers.com.tr>",
+          "subject": "Rabam Ekim '26 SM Planı",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0c3fd324270f70"
+        },
+        {
+          "thread_id": "1a0c3fd324270f70",
+          "message_id": "1a0ca176a128f4ca",
+          "date_utc": "2026-09-22T17:08:40.000Z",
+          "author": "\"Mert Batı\" <mert@rabam.com>",
+          "subject": "Ynt: Rabam Ekim '26 SM Planı",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0c3fd324270f70"
+        },
+        {
+          "thread_id": "1a0c3fd324270f70",
+          "message_id": "1a0cd09ea9e4cb25",
+          "date_utc": "2026-09-23T06:52:41.000Z",
+          "author": "Ozge Yagmur <ozge@gamechangers.com.tr>",
+          "subject": "Re: Rabam Ekim '26 SM Planı",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0c3fd324270f70"
+        },
+        {
+          "thread_id": "1a0c3fd324270f70",
+          "message_id": "1a0cebc162abbf2c",
+          "date_utc": "2026-09-23T14:46:53.000Z",
+          "author": "Ozge Yagmur <ozge@gamechangers.com.tr>",
+          "subject": "Re: Rabam Ekim '26 SM Planı",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0c3fd324270f70"
+        },
+        {
+          "thread_id": "1a0c3fd324270f70",
+          "message_id": "1a0cecabbc53e957",
+          "date_utc": "2026-09-23T15:03:04.000Z",
+          "author": "\"Mert Batı\" <mert@rabam.com>",
+          "subject": "Ynt: Rabam Ekim '26 SM Planı",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0c3fd324270f70"
+        }
+      ],
+      "canonical_basecamp_task_urls": [],
+      "evidence_message_ids": [
+        "1a0c3fd324270f70",
+        "1a0ca176a128f4ca",
+        "1a0cd09ea9e4cb25",
+        "1a0cebc162abbf2c",
+        "1a0cecabbc53e957"
+      ]
+    },
+    {
+      "topic_id": "RABAM-R2-07",
+      "title": "Moderasyon yanıtlarının kısaltılması ve fiyat eleştirisi çerçevesi",
+      "canonical_topic_key": "moderasyon yanıtlarının kısaltılması ve fiyat eleştirisi çerçevesi",
+      "brand": "Rabam",
+      "thread_ids": [
+        "1a0a4066b28a702e"
+      ],
+      "source_urls": [
+        "https://mail.google.com/mail/u/0/#all/1a0a4066b28a702e"
+      ],
+      "dates_utc": {
+        "first": "2026-09-15T07:44:27.000Z",
+        "last": "2026-09-23T15:03:23.000Z"
+      },
+      "authors": [
+        "\"Mert Batı\" <mert@rabam.com>",
+        "Ozge Yagmur <ozge@gamechangers.com.tr>"
+      ],
+      "customer_request_or_business_need": "SSS ve yorum yanıtları için aylık tablara ayrılmış takip; acil durumların ayrıca bildirilmesi ve taslak cevapların onaylanması.",
+      "agency_and_staff_response": "Özge haftalık cuma 16:00 paylaşımı öneriyor, mevcut SSS veya hukuk değerlendirmesi istiyor. Cevapları kısaltıyor ve önceki ayrıntılı taslakları koruyor. Biriken iki özel soruya yanıt istiyor.",
+      "revision_and_feedback": "Mert fiyat eleştirisine cevabın yalnız araç bakımına değil tüm hizmetlere hitap etmesini istiyor ve örnek metin veriyor. İki özel sorunun yanıtlarını tabloya eklediğini bildiriyor.",
+      "decision_and_approval_scope": "Mert’in yönlendirmesi fiyat eleştirisi yanıtı ve ilgili sorularla sınırlı. Örnek metindeki garanti/kalite ifadeleri güncel kanıtlı ürün gerçeği sayılmadı. Easy-checkout yaklaşık bir ay sonrası için anlatılmış ve açıkça o günün iletişim planına alınmaması istenmiş.",
+      "historical_outcome_reported": "Yanıt taslakları revize edilmiş, müşteri yanıt eklediğini bildirmiş; yorumların gerçekten cevaplandığı bu zincirden doğrulanmıyor.",
+      "current_status": "Bu inceleme güncel iş durumunu doğrulamaz; geçmiş kayıt öğrenimidir.",
+      "bounded_learning": "Eski ayrıntılı yanıtı koruyarak kısa sürüm oluşturma yararlı. Gelecek özellikler, mevcut hizmetler ve onaylı moderasyon ifadeleri ayrı statü taşımalı.",
+      "unknowns_and_limits": [
+        "Sheet’in yanıt satırları açılmadı.",
+        "Hukuk onayının tamamlandığına dair kanıt yok."
+      ],
+      "classification": "brand_private",
+      "knowledge_status": "historical_source_scoped",
+      "authority_not_extended": true,
+      "evidence": [
+        {
+          "thread_id": "1a0a4066b28a702e",
+          "message_id": "1a0a4066b28a702e",
+          "date_utc": "2026-09-15T07:44:27.000Z",
+          "author": "Ozge Yagmur <ozge@gamechangers.com.tr>",
+          "subject": "Rabam // Eylül 2026 Moderasyon Raporu",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0a4066b28a702e"
+        },
+        {
+          "thread_id": "1a0a4066b28a702e",
+          "message_id": "1a0b4b990b7e3aba",
+          "date_utc": "2026-09-18T13:34:08.000Z",
+          "author": "\"Mert Batı\" <mert@rabam.com>",
+          "subject": "Ynt: Rabam // Eylül 2026 Moderasyon Raporu",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0a4066b28a702e"
+        },
+        {
+          "thread_id": "1a0a4066b28a702e",
+          "message_id": "1a0c3a19b5fad53f",
+          "date_utc": "2026-09-21T11:02:10.000Z",
+          "author": "Ozge Yagmur <ozge@gamechangers.com.tr>",
+          "subject": "Re: Rabam // Eylül 2026 Moderasyon Raporu",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0a4066b28a702e"
+        },
+        {
+          "thread_id": "1a0a4066b28a702e",
+          "message_id": "1a0cdef08007ce5b",
+          "date_utc": "2026-09-23T11:02:56.000Z",
+          "author": "Ozge Yagmur <ozge@gamechangers.com.tr>",
+          "subject": "Re: Rabam // Eylül 2026 Moderasyon Raporu",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0a4066b28a702e"
+        },
+        {
+          "thread_id": "1a0a4066b28a702e",
+          "message_id": "1a0ce03bc954cfd2",
+          "date_utc": "2026-09-23T11:25:41.000Z",
+          "author": "\"Mert Batı\" <mert@rabam.com>",
+          "subject": "Ynt: Rabam // Eylül 2026 Moderasyon Raporu",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0a4066b28a702e"
+        },
+        {
+          "thread_id": "1a0a4066b28a702e",
+          "message_id": "1a0ceca67e19e685",
+          "date_utc": "2026-09-23T15:02:39.000Z",
+          "author": "\"Mert Batı\" <mert@rabam.com>",
+          "subject": "Ynt: Rabam // Eylül 2026 Moderasyon Raporu",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0a4066b28a702e"
+        }
+      ],
+      "canonical_basecamp_task_urls": [],
+      "evidence_message_ids": [
+        "1a0a4066b28a702e",
+        "1a0b4b990b7e3aba",
+        "1a0c3a19b5fad53f",
+        "1a0cdef08007ce5b",
+        "1a0ce03bc954cfd2",
+        "1a0ceca67e19e685"
+      ]
+    },
+    {
+      "topic_id": "RABAM-R2-08",
+      "title": "Packshot alternatif tercihi ve hareketlendirme devri",
+      "canonical_topic_key": "packshot alternatif tercihi ve hareketlendirme devri",
+      "brand": "Rabam",
+      "thread_ids": [
+        "1a0c46c9c746c7c0"
+      ],
+      "source_urls": [
+        "https://mail.google.com/mail/u/0/#all/1a0c46c9c746c7c0"
+      ],
+      "dates_utc": {
+        "first": "2026-09-21T14:43:53.000Z",
+        "last": "2026-09-23T12:58:44.000Z"
+      },
+      "authors": [
+        "\"Ahmet Şükrü Altındağ\" <ahmet@gamechangers.com.tr>",
+        "\"Cenk Yönezer\" <cenk.yonezer@aydoganlargrup.com>",
+        "\"Mert Batı\" <mert@rabam.com>",
+        "Ozge Yagmur <ozge@gamechangers.com.tr>"
+      ],
+      "customer_request_or_business_need": "Video sonları için dört alternatiften packshot seçmek.",
+      "agency_and_staff_response": "Özge dört şablon paylaşıyor; seçim sonrasında hareketlendirmeyi planlıyor. Tercih geldikten sonra üçüncü alternatifi hareketlendireceklerini ve sonra dosya bağlantısını iletiyor.",
+      "revision_and_feedback": "Mert üçüncü görseli beğeniyor ancak Murat/Cenk uygunluğuna bağlıyor; Cenk Mert’e katıldığını söylüyor.",
+      "decision_and_approval_scope": "Üçüncü statik alternatif için Mert ve Cenk tercihleri var. Son hareketli dosyaya ait doğrudan müşteri final onayı bu zincirde yok.",
+      "historical_outcome_reported": "23 Eylül’de hareketli versiyonun bağlantıyla gönderildiği bildirilmiş.",
+      "current_status": "Bu inceleme güncel iş durumunu doğrulamaz; geçmiş kayıt öğrenimidir.",
+      "bounded_learning": "Statik tercih → animasyon üretimi → hareketli final onayı üç ayrı olaydır; birini ötekine dönüştürme.",
+      "unknowns_and_limits": [
+        "Statik ekler ve video bağlantısı görüntülenmedi.",
+        "Videonun ses dengesi, teknik kalitesi ve güncel kullanımı bilinmiyor."
+      ],
+      "classification": "brand_private",
+      "knowledge_status": "historical_source_scoped",
+      "authority_not_extended": true,
+      "evidence": [
+        {
+          "thread_id": "1a0c46c9c746c7c0",
+          "message_id": "1a0c46c9c746c7c0",
+          "date_utc": "2026-09-21T14:43:53.000Z",
+          "author": "Ozge Yagmur <ozge@gamechangers.com.tr>",
+          "subject": "Rabam Packshot Alternatifleri",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0c46c9c746c7c0"
+        },
+        {
+          "thread_id": "1a0c46c9c746c7c0",
+          "message_id": "1a0ca27a21945970",
+          "date_utc": "2026-09-22T17:26:26.000Z",
+          "author": "\"Mert Batı\" <mert@rabam.com>",
+          "subject": "Ynt: Rabam Packshot Alternatifleri",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0c46c9c746c7c0"
+        },
+        {
+          "thread_id": "1a0c46c9c746c7c0",
+          "message_id": "1a0ccfa5f7c62096",
+          "date_utc": "2026-09-23T06:35:48.000Z",
+          "author": "\"Cenk Yönezer\" <cenk.yonezer@aydoganlargrup.com>",
+          "subject": "RE: Rabam Packshot Alternatifleri",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0c46c9c746c7c0"
+        },
+        {
+          "thread_id": "1a0c46c9c746c7c0",
+          "message_id": "1a0cd03da9ded413",
+          "date_utc": "2026-09-23T06:46:03.000Z",
+          "author": "Ozge Yagmur <ozge@gamechangers.com.tr>",
+          "subject": "Re: Rabam Packshot Alternatifleri",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0c46c9c746c7c0"
+        },
+        {
+          "thread_id": "1a0c46c9c746c7c0",
+          "message_id": "1a0ce563affe119b",
+          "date_utc": "2026-09-23T12:55:39.000Z",
+          "author": "Ozge Yagmur <ozge@gamechangers.com.tr>",
+          "subject": "Re: Rabam Packshot Alternatifleri",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0c46c9c746c7c0"
+        }
+      ],
+      "canonical_basecamp_task_urls": [],
+      "evidence_message_ids": [
+        "1a0c46c9c746c7c0",
+        "1a0ca27a21945970",
+        "1a0ccfa5f7c62096",
+        "1a0cd03da9ded413",
+        "1a0ce563affe119b"
+      ]
+    },
+    {
+      "topic_id": "RABAM-R2-09",
+      "title": "How-to serisinin ekran kaydı ve gerçek kullanım ayrımı",
+      "canonical_topic_key": "how-to serisinin ekran kaydı ve gerçek kullanım ayrımı",
+      "brand": "Rabam",
+      "thread_ids": [
+        "1a0c3fff23e094f3"
+      ],
+      "source_urls": [
+        "https://mail.google.com/mail/u/0/#all/1a0c3fff23e094f3"
+      ],
+      "dates_utc": {
+        "first": "2026-09-21T12:45:13.000Z",
+        "last": "2026-09-23T07:04:35.000Z"
+      },
+      "authors": [
+        "\"Mert Batı\" <mert@rabam.com>",
+        "Ozge Yagmur <ozge@gamechangers.com.tr>"
+      ],
+      "customer_request_or_business_need": "Ekimden itibaren planlanan how-to serisi için intro/outro akışı, güncel ekranlar ve müşteri yönlendirmesi.",
+      "agency_and_staff_response": "Özge akış taslağını paylaşıyor ve gerekli ekranları istiyor. Mert ekranları gönderdiğini söylüyor; gerçek hizmet deneyimini anlatan ayrı çekim ihtiyacını açıklıyor. Özge kısa netleştirme toplantısı düzenliyor.",
+      "revision_and_feedback": "Mert mevcut referans videoda fiyatların eskime riski nedeniyle doğrudan kullanımın uygun olmayabileceğini, benzerinin yeniden çekilebileceğini anlatıyor. Daha önce yıkama hediyesiyle üretildiğini not ediyor.",
+      "decision_and_approval_scope": "Referans için kullanım izni olduğu müşteri beyanı var; belirli yeni videoların veya bütün mecraların lisansı kanıtlanmış değil. Toplantı saati 23 Eylül 13:30–14:00 olarak bildiriliyor.",
+      "historical_outcome_reported": "Akış ve ekran talebi aşamasıyla netleştirme toplantısı görülüyor; seri renderı veya yayını yok.",
+      "current_status": "Bu inceleme güncel iş durumunu doğrulamaz; geçmiş kayıt öğrenimidir.",
+      "bounded_learning": "Ekran rehberi ile deneyim/barter anlatımı ayrı üretim türleri; uygulama akışı ve fiyat bilgisi çekim öncesi güncellenmeli.",
+      "unknowns_and_limits": [
+        "Görüntüler, akış belgesi ve referans video incelenmedi.",
+        "Kullanım izninin belgesi/kapsamı doğrulanmadı."
+      ],
+      "classification": "brand_private",
+      "knowledge_status": "historical_source_scoped",
+      "authority_not_extended": true,
+      "evidence": [
+        {
+          "thread_id": "1a0c3fff23e094f3",
+          "message_id": "1a0c3fff23e094f3",
+          "date_utc": "2026-09-21T12:45:13.000Z",
+          "author": "Ozge Yagmur <ozge@gamechangers.com.tr>",
+          "subject": "Rabam // How to Videoları",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0c3fff23e094f3"
+        },
+        {
+          "thread_id": "1a0c3fff23e094f3",
+          "message_id": "1a0ca25c52b57704",
+          "date_utc": "2026-09-22T17:24:17.000Z",
+          "author": "\"Mert Batı\" <mert@rabam.com>",
+          "subject": "Ynt: Rabam // How to Videoları",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0c3fff23e094f3"
+        },
+        {
+          "thread_id": "1a0c3fff23e094f3",
+          "message_id": "1a0cd0d4b0ac2d3c",
+          "date_utc": "2026-09-23T06:56:22.000Z",
+          "author": "Ozge Yagmur <ozge@gamechangers.com.tr>",
+          "subject": "Re: Rabam // How to Videoları",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0c3fff23e094f3"
+        },
+        {
+          "thread_id": "1a0c3fff23e094f3",
+          "message_id": "1a0cd14d0fb10712",
+          "date_utc": "2026-09-23T07:04:35.000Z",
+          "author": "Ozge Yagmur <ozge@gamechangers.com.tr>",
+          "subject": "Re: Rabam // How to Videoları",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0c3fff23e094f3"
+        }
+      ],
+      "canonical_basecamp_task_urls": [],
+      "evidence_message_ids": [
+        "1a0c3fff23e094f3",
+        "1a0ca25c52b57704",
+        "1a0cd0d4b0ac2d3c",
+        "1a0cd14d0fb10712"
+      ]
+    },
+    {
+      "topic_id": "RABAM-R2-10",
+      "title": "Barter içerik akışı ve ek kapsamın ayrılması",
+      "canonical_topic_key": "barter içerik akışı ve ek kapsamın ayrılması",
+      "brand": "Rabam",
+      "thread_ids": [
+        "1a0d39b28a64aa46",
+        "1a0d3b3f83220e0c"
+      ],
+      "source_urls": [
+        "https://mail.google.com/mail/u/0/#all/1a0d39b28a64aa46",
+        "https://mail.google.com/mail/u/0/#all/1a0d3b3f83220e0c"
+      ],
+      "dates_utc": {
+        "first": "2026-09-24T13:29:03.000Z",
+        "last": "2026-09-24T15:23:39.000Z"
+      },
+      "authors": [
+        "\"Özge Yağmur (Basecamp)\" <notifications@app.basecamp.com>",
+        "Ozge Yagmur <ozge@gamechangers.com.tr>"
+      ],
+      "customer_request_or_business_need": "Müşterinin gerçek kullanım deneyimi gösteren referansına benzer içerikler ve iletişim ağı için öneriler.",
+      "agency_and_staff_response": "Özge how-to ile barter talebini ayrı başlığa taşıyor. Her hizmet için 20–30 saniye, tek soruya bağlanan doğal anlatım, ekran kaydı ve gerçek hizmet görüntüsü öneriyor; buton/adımların güncel uygulamayla eşleşmesini istiyor.",
+      "revision_and_feedback": "İç Basecamp notunda isim/çalışma önerisi ve kişilerle iletişim organizasyonunun ek bütçe gerektirebileceğini belirterek Cansu ve Ahmet’ten destek istiyor.",
+      "decision_and_approval_scope": "Müşteriye gönderilen e-postada barter/how-to başlıklarının kapsam dışı olabileceği açıklanıyor. Ek kapsam onayı veya ücret anlaşması yok; tamamlandı bildirimi ticari onay değildir.",
+      "historical_outcome_reported": "Akış önerileri e-posta ekiyle paylaşılmış ve iç görev tamamlandı bildirimi görülmüş; iş birliklerinin gerçekleştiği kanıtlanmıyor.",
+      "current_status": "Bu inceleme güncel iş durumunu doğrulamaz; geçmiş kayıt öğrenimidir.",
+      "bounded_learning": "Teknik how-to ile influencer/barter organizasyonu birleştirilmemeli; içerik önerisi, ilişki yönetimi ve ücret yetkisi ayrı tutulmalı.",
+      "unknowns_and_limits": [
+        "DOCX içeriği ve referans video açılmadı.",
+        "Aynı Gmail bildirim zincirindeki hoş geldin görevi bu konuya dahil edilmedi."
+      ],
+      "classification": "restricted_commercial",
+      "knowledge_status": "historical_source_scoped",
+      "authority_not_extended": true,
+      "evidence": [
+        {
+          "thread_id": "1a0d39b28a64aa46",
+          "message_id": "1a0d39b28a64aa46",
+          "date_utc": "2026-09-24T13:29:03.000Z",
+          "author": "Ozge Yagmur <ozge@gamechangers.com.tr>",
+          "subject": "Rabam // Barter İletişim",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0d39b28a64aa46"
+        },
+        {
+          "thread_id": "1a0d3b3f83220e0c",
+          "message_id": "1a0d3b3f83220e0c",
+          "date_utc": "2026-09-24T13:56:22.000Z",
+          "author": "\"Özge Yağmur (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "(Rabam) Özge Y. completed a to-do",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0d3b3f83220e0c"
+        }
+      ],
+      "canonical_basecamp_task_urls": [
+        "https://app.basecamp.com/5898865/buckets/48639990/todos/10336391204"
+      ],
+      "evidence_message_ids": [
+        "1a0d39b28a64aa46",
+        "1a0d3b3f83220e0c"
+      ]
+    },
+    {
+      "topic_id": "RABAM-R2-11",
+      "title": "Always-on çekim paketinin önerilmesi",
+      "canonical_topic_key": "always-on çekim paketinin önerilmesi",
+      "brand": "Rabam",
+      "thread_ids": [
+        "1a0c3ac51f08e885"
+      ],
+      "source_urls": [
+        "https://mail.google.com/mail/u/0/#all/1a0c3ac51f08e885"
+      ],
+      "dates_utc": {
+        "first": "2026-09-21T11:13:38.000Z",
+        "last": "2026-09-23T10:52:35.000Z"
+      },
+      "authors": [
+        "\"Cansu Akiş Kabil\" <cansu@gamechangers.com.tr>",
+        "Ozge Yagmur <ozge@gamechangers.com.tr>"
+      ],
+      "customer_request_or_business_need": "Ana reklam filmi beklenirken sosyal medya için gerçek çekimli, dikey, canlı anlatımlı içerikler hazırlamak.",
+      "agency_and_staff_response": "Cansu tek çekim gününde dört video ve 2026 için 75.000 TL rate-card teklifini iletiyor. Bilgilendirici içerik, POV, OK/NOK ve Birini Seç formatlarını sayıyor; bütçe → akış → çekim günü sıralaması öneriyor. Özge Mert’i zincire ekleyip dönüş istiyor.",
+      "revision_and_feedback": "İçerik önerileri ilk mailden hemen sonra ayrıca gönderiliyor; müşterinin revizyon veya onayı yok.",
+      "decision_and_approval_scope": "Fiyat ve paket ajansın dönemsel teklifidir, harcama yetkisi veya kabul edilmiş sipariş değildir.",
+      "historical_outcome_reported": "Teklif ve içerik önerisi gönderilmiş; çekim günü belirlenmesi veya çekim tamamlanması doğrulanmamış.",
+      "current_status": "Bu inceleme güncel iş durumunu doğrulamaz; geçmiş kayıt öğrenimidir.",
+      "bounded_learning": "Always-on üretim paketi büyük lansman prodüksiyonundan ayrı iş ve bütçe olarak izlenmeli.",
+      "unknowns_and_limits": [
+        "Ekli akış dosyası okunmadı.",
+        "Teklifin kabulü, kapsam değişikliği ve güncel fiyat bilinmiyor."
+      ],
+      "classification": "restricted_commercial",
+      "knowledge_status": "historical_source_scoped",
+      "authority_not_extended": true,
+      "evidence": [
+        {
+          "thread_id": "1a0c3ac51f08e885",
+          "message_id": "1a0c3ac51f08e885",
+          "date_utc": "2026-09-21T11:13:38.000Z",
+          "author": "\"Cansu Akiş Kabil\" <cansu@gamechangers.com.tr>",
+          "subject": "Rabam Always On Video Çekimleri",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0c3ac51f08e885"
+        },
+        {
+          "thread_id": "1a0c3ac51f08e885",
+          "message_id": "1a0c40f49a234d23",
+          "date_utc": "2026-09-21T13:01:42.000Z",
+          "author": "\"Cansu Akiş Kabil\" <cansu@gamechangers.com.tr>",
+          "subject": "Re: Rabam Always On Video Çekimleri",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0c3ac51f08e885"
+        },
+        {
+          "thread_id": "1a0c3ac51f08e885",
+          "message_id": "1a0cde58d2531c7f",
+          "date_utc": "2026-09-23T10:52:35.000Z",
+          "author": "Ozge Yagmur <ozge@gamechangers.com.tr>",
+          "subject": "Re: Rabam Always On Video Çekimleri",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0c3ac51f08e885"
+        }
+      ],
+      "canonical_basecamp_task_urls": [],
+      "evidence_message_ids": [
+        "1a0c3ac51f08e885",
+        "1a0c40f49a234d23",
+        "1a0cde58d2531c7f"
+      ]
+    },
+    {
+      "topic_id": "RABAM-R2-12",
+      "title": "Kimya Gökçe Aytaç teklifindeki mecra ve kullanım hakkı kapsamı",
+      "canonical_topic_key": "kimya gökçe aytaç teklifindeki mecra ve kullanım hakkı kapsamı",
+      "brand": "Rabam",
+      "thread_ids": [
+        "1a0d7f2eb96838e3",
+        "1a0d8065c3052d01"
+      ],
+      "source_urls": [
+        "https://mail.google.com/mail/u/0/#all/1a0d7f2eb96838e3",
+        "https://mail.google.com/mail/u/0/#all/1a0d8065c3052d01"
+      ],
+      "dates_utc": {
+        "first": "2026-09-25T09:43:08.000Z",
+        "last": "2026-09-25T10:08:09.000Z"
+      },
+      "authors": [
+        "\"Cansu Akiş Kabil\" <cansu@gamechangers.com.tr>",
+        "\"Fulya Kurtuluş\" <fulya@glorytalenttr.com>"
+      ],
+      "customer_request_or_business_need": "Belirli oyuncu adayının üç dikey film, teaser ve sette fotoğraf üretimi için uygunluğu/fiyatı.",
+      "agency_and_staff_response": "Cansu dijital mecraları Instagram/YouTube/TikTok, ek fotoğraf kullanımını İstanbul outdoor olarak tarif ediyor; sürecin Fulya üzerinden ilerleyeceğini bildiriyor. Fulya adayı oyuncu olarak konumlandıran üç dikey video + teaser ve 4–6 fotoğraflı kapsamı iletiyor.",
+      "revision_and_feedback": "Fulya’nın kapsamı ilk video için collaboration, fotoğraflar için 1 yıl veya 3 yıl outdoor alternatifini ayrıca içeriyor.",
+      "decision_and_approval_scope": "Oyuncu/menajer kabulü, fiyat cevabı ve lisans anlaşması bu kaynaklarda yok. İlk collaboration talebi tüm videolara yaygınlaştırılmamalı.",
+      "historical_outcome_reported": "İki kanal/mesaj aynı aday görüşmesi olarak birleştirildi; teklif aşamasında.",
+      "current_status": "Bu inceleme güncel iş durumunu doğrulamaz; geçmiş kayıt öğrenimidir.",
+      "bounded_learning": "Dijital yayın, collaboration ve outdoor süresi ayrı hak kalemleri; tek genel oyuncu ücreti gibi ele alınmamalı.",
+      "unknowns_and_limits": [
+        "Adayın cevabı ve güncel müsaitliği bilinmiyor.",
+        "1 veya 3 yıllık hak seçimi sonuçlanmış görünmüyor."
+      ],
+      "classification": "restricted_commercial",
+      "knowledge_status": "historical_source_scoped",
+      "authority_not_extended": true,
+      "evidence": [
+        {
+          "thread_id": "1a0d7f2eb96838e3",
+          "message_id": "1a0d7f2eb96838e3",
+          "date_utc": "2026-09-25T09:43:08.000Z",
+          "author": "\"Cansu Akiş Kabil\" <cansu@gamechangers.com.tr>",
+          "subject": "Rabam // Dijital Kanallar ve Sosyal Medya Film Çekimi hk",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0d7f2eb96838e3"
+        },
+        {
+          "thread_id": "1a0d7f2eb96838e3",
+          "message_id": "1a0d809d09c5aef2",
+          "date_utc": "2026-09-25T10:08:09.000Z",
+          "author": "\"Cansu Akiş Kabil\" <cansu@gamechangers.com.tr>",
+          "subject": "Re: Rabam // Dijital Kanallar ve Sosyal Medya Film Çekimi hk",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0d7f2eb96838e3"
+        },
+        {
+          "thread_id": "1a0d8065c3052d01",
+          "message_id": "1a0d8065c3052d01",
+          "date_utc": "2026-09-25T10:04:38.000Z",
+          "author": "\"Fulya Kurtuluş\" <fulya@glorytalenttr.com>",
+          "subject": "Rabam x Kimya Gökçe Aytaç İşbirliği",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0d8065c3052d01"
+        }
+      ],
+      "canonical_basecamp_task_urls": [],
+      "evidence_message_ids": [
+        "1a0d7f2eb96838e3",
+        "1a0d809d09c5aef2",
+        "1a0d8065c3052d01"
+      ]
+    },
+    {
+      "topic_id": "RABAM-R2-13",
+      "title": "Seda karakteri için oyunculuk odaklı alternatif cast brief’i",
+      "canonical_topic_key": "seda karakteri için oyunculuk odaklı alternatif cast brief’i",
+      "brand": "Rabam",
+      "thread_ids": [
+        "1a0cf70361712bac"
+      ],
+      "source_urls": [
+        "https://mail.google.com/mail/u/0/#all/1a0cf70361712bac"
+      ],
+      "dates_utc": {
+        "first": "2026-09-23T18:10:19.000Z",
+        "last": "2026-09-23T18:10:19.000Z"
+      },
+      "authors": [
+        "\"Ahmet Şükrü Altındağ\" <ahmet@gamechangers.com.tr>"
+      ],
+      "customer_request_or_business_need": "Sinopsideki Seda karakterine uygun, rol taşıyabilen kadın oyuncu adayının bulunması.",
+      "agency_and_staff_response": "Ahmet Özgün’e sinopsisi iletiyor; 28–40 yaş aralığında, oyunculuğu güçlü ve gülümseten bir aday istiyor. Film başı 1.000 dolar bütçe varsayımını yazıyor.",
+      "revision_and_feedback": "Kaynakta geri dönüş, aday listesi veya revizyon bulunmuyor.",
+      "decision_and_approval_scope": "Bu, casting arayışı için gönderilmiş tarihli brief/bütçe ifadesi; belirli oyuncuyla anlaşma, hak devri veya genel ücret tarifesi değil.",
+      "historical_outcome_reported": "23 Eylül’de arayış talebi gönderilmiş.",
+      "current_status": "Bu inceleme güncel iş durumunu doğrulamaz; geçmiş kayıt öğrenimidir.",
+      "bounded_learning": "Oyuncu ismi seçilmeden karakter ihtiyacı ve performans ölçütü tarif edilmiş. Şöhret düzeyi ile oyunculuk ihtiyacı ayrı değerlendirme alanları.",
+      "unknowns_and_limits": [
+        "Sinopsis eki açılmadı.",
+        "Aday, nihai ücret ve kullanım hakları belli değil."
+      ],
+      "classification": "restricted_commercial",
+      "knowledge_status": "historical_source_scoped",
+      "authority_not_extended": true,
+      "evidence": [
+        {
+          "thread_id": "1a0cf70361712bac",
+          "message_id": "1a0cf761ffed3205",
+          "date_utc": "2026-09-23T18:10:19.000Z",
+          "author": "\"Ahmet Şükrü Altındağ\" <ahmet@gamechangers.com.tr>",
+          "subject": "Rabam // Oyuncu Cast konusu hk",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0cf70361712bac"
+        }
+      ],
+      "canonical_basecamp_task_urls": [],
+      "evidence_message_ids": [
+        "1a0cf761ffed3205"
+      ]
+    },
+    {
+      "topic_id": "RABAM-R2-14",
+      "title": "Lansman prodüksiyon tekliflerinin karşılaştırılması ve kapsamın küçülmesi",
+      "canonical_topic_key": "lansman prodüksiyon tekliflerinin karşılaştırılması ve kapsamın küçülmesi",
+      "brand": "Rabam",
+      "thread_ids": [
+        "1a0d43ff94db7b49",
+        "1a0c2a9f18a5d035",
+        "1a0b5daa918a9244",
+        "1a10c1d9c6f52c6f"
+      ],
+      "source_urls": [
+        "https://mail.google.com/mail/u/0/#all/1a0d43ff94db7b49",
+        "https://mail.google.com/mail/u/0/#all/1a0c2a9f18a5d035",
+        "https://mail.google.com/mail/u/0/#all/1a0b5daa918a9244",
+        "https://mail.google.com/mail/u/0/#all/1a10c1d9c6f52c6f"
+      ],
+      "dates_utc": {
+        "first": "2026-09-18T18:49:47.000Z",
+        "last": "2026-10-06T16:46:19.000Z"
+      },
+      "authors": [
+        "\"Ahmet Şükrü Altındağ\" <ahmet@gamechangers.com.tr>",
+        "\"Cansu Akiş Kabil\" <cansu@gamechangers.com.tr>",
+        "\"Tansu Tunçel\" <tansu@dikeyfilmler.com>",
+        "osman niyazi telci <osmaniyazitelci@gmail.com>"
+      ],
+      "customer_request_or_business_need": "Ana kampanya için kalite, mecra ve bütçeyi karşılaştırarak prodüksiyon modeli seçmek.",
+      "agency_and_staff_response": "Cansu Dikey Filmler’e 1 teaser + 3 film, yaklaşık süreler, bir çekim günü, dikey öncelik yanında yatay materyal ve ortak lokasyon ihtiyacını anlatıyor. Sonrasında teklifler müşteriye sunuluyor; dijital odaklı Dikey Filmler öneriliyor. 5 Ekim statusunda cast’in aslen PR ajansı sorumluluğunda olduğu, ajansın hızlandırıcı destek verdiği açıklanıyor.",
+      "revision_and_feedback": "Niyazi ilk teklif dosyasını düzelterek son ekin esas alınmasını istiyor; hakları Türkiye internet/sosyal ve bir yıl diye tanımlıyor. 6 Ekim’de Cansu yüksek bütçeler nedeniyle ana prodüksiyon yerine dikey formatlara geçildiğini bildiriyor.",
+      "decision_and_approval_scope": "Tedarikçiye 29 Eylül’de sıcak bakıldığı ve ikna hissi aktarılıyor; bu satın alma/PPM onayı değildir. 6 Ekim kapsam değişimi ajansın ilettiği müşteri kararı olarak kayıtlı; imzalı tedarik sözleşmesi yok.",
+      "historical_outcome_reported": "Çoklu teklif değerlendirmesi ve Niyazi’ye ana prodüksiyon yolundan çıkıldığı bildirimi var. Nihai çekim ya da tedarikçi seçimi bu incelemeyle doğrulanmadı.",
+      "current_status": "Bu inceleme güncel iş durumunu doğrulamaz; geçmiş kayıt öğrenimidir.",
+      "bounded_learning": "Teklif sürümü, hak süresi, mecra ve prodüksiyon kapsamı ayrı kayıtlanmalı. Olumlu görüşme satın alma sayılmamalı; bütçe gerekçeli yön değişikliği eski planın üzerine yazılmamalı.",
+      "unknowns_and_limits": [
+        "Excel/PDF teklifleri ve bütçe bağlantısı açılmadı.",
+        "E-posta içindeki kısa sayısal ifadelerden KDV/para birimi/teslim kapsamı türetilmedi.",
+        "Ticari içerik yalnız yetkili hesap sorumlusu ve ajans sahibine ayrılmalıdır."
+      ],
+      "classification": "restricted_commercial",
+      "knowledge_status": "historical_source_scoped",
+      "authority_not_extended": true,
+      "evidence": [
+        {
+          "thread_id": "1a0c2a9f18a5d035",
+          "message_id": "1a0c2a9f18a5d035",
+          "date_utc": "2026-09-21T06:30:00.000Z",
+          "author": "\"Cansu Akiş Kabil\" <cansu@gamechangers.com.tr>",
+          "subject": "Rabam // Dikey Filmler Prodüksiyon Teklifi",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0c2a9f18a5d035"
+        },
+        {
+          "thread_id": "1a0c2a9f18a5d035",
+          "message_id": "1a0eeaa03b1729bf",
+          "date_utc": "2026-09-29T19:35:14.000Z",
+          "author": "\"Ahmet Şükrü Altındağ\" <ahmet@gamechangers.com.tr>",
+          "subject": "Re: Rabam // Dikey Filmler Prodüksiyon Teklifi",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0c2a9f18a5d035"
+        },
+        {
+          "thread_id": "1a0d43ff94db7b49",
+          "message_id": "1a0d43ff94db7b49",
+          "date_utc": "2026-09-24T16:28:47.000Z",
+          "author": "\"Cansu Akiş Kabil\" <cansu@gamechangers.com.tr>",
+          "subject": "Rabam Lansman Filmleri // Prodüksiyon teklifleri ve önerimiz",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0d43ff94db7b49"
+        },
+        {
+          "thread_id": "1a0b5daa918a9244",
+          "message_id": "1a0b5daa918a9244",
+          "date_utc": "2026-09-18T18:49:47.000Z",
+          "author": "osman niyazi telci <osmaniyazitelci@gmail.com>",
+          "subject": "Rabam Bütçe Teklifi",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0b5daa918a9244"
+        },
+        {
+          "thread_id": "1a0b5daa918a9244",
+          "message_id": "1a0b5e2ffa0ca6ad",
+          "date_utc": "2026-09-18T18:58:52.000Z",
+          "author": "osman niyazi telci <osmaniyazitelci@gmail.com>",
+          "subject": "Re: Rabam Bütçe Teklifi",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0b5daa918a9244"
+        },
+        {
+          "thread_id": "1a10c1d9c6f52c6f",
+          "message_id": "1a10c1d9c6f52c6f",
+          "date_utc": "2026-10-05T12:50:02.000Z",
+          "author": "\"Cansu Akiş Kabil\" <cansu@gamechangers.com.tr>",
+          "subject": "Rabam // 5 Ekim - Haftalık İş Takip Dokümanı",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a10c1d9c6f52c6f"
+        },
+        {
+          "thread_id": "1a0b5daa918a9244",
+          "message_id": "1a1121c54cca7eb5",
+          "date_utc": "2026-10-06T16:46:19.000Z",
+          "author": "\"Cansu Akiş Kabil\" <cansu@gamechangers.com.tr>",
+          "subject": "Re: Rabam Bütçe Teklifi",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0b5daa918a9244"
+        }
+      ],
+      "canonical_basecamp_task_urls": [],
+      "evidence_message_ids": [
+        "1a0c2a9f18a5d035",
+        "1a0eeaa03b1729bf",
+        "1a0d43ff94db7b49",
+        "1a0b5daa918a9244",
+        "1a0b5e2ffa0ca6ad",
+        "1a10c1d9c6f52c6f",
+        "1a1121c54cca7eb5"
+      ]
+    },
+    {
+      "topic_id": "RABAM-R2-15",
+      "title": "Kampanya sloganının jingle öncesinde netleştirilmesi",
+      "canonical_topic_key": "kampanya sloganının jingle öncesinde netleştirilmesi",
+      "brand": "Rabam",
+      "thread_ids": [
+        "1a0cf7664fa3b783"
+      ],
+      "source_urls": [
+        "https://mail.google.com/mail/u/0/#all/1a0cf7664fa3b783"
+      ],
+      "dates_utc": {
+        "first": "2026-09-23T18:23:05.000Z",
+        "last": "2026-09-23T18:23:05.000Z"
+      },
+      "authors": [
+        "\"Ahmet Şükrü Altındağ\" <ahmet@gamechangers.com.tr>"
+      ],
+      "customer_request_or_business_need": "Reklam filmi ve jingle çalışmaları ilerlerken ana söylemin belirsiz kalmasının giderilmesi.",
+      "agency_and_staff_response": "Ahmet son fiziksel sunumdaki Arabasını Satan Şehirli kampanyası söylemini hatırlatıyor: Arabanı elden çıkarma, işlerini aradan çıkar; yıkamadan bakıma, muayeneden valeye tüm işlerin Rabam’da toplandığı destek mesajı. Jingle ve outro brief’ine bu çerçevenin verilmesini istiyor.",
+      "revision_and_feedback": "Bu iç yazışmada müşteri geri dönüşü bulunmuyor. Daha sonraki jingle brief’inde başka nakarat ifadesi kullanılması sürüm ilişkisini ayrıca netleştirmeyi gerektirir.",
+      "decision_and_approval_scope": "İç ekip yönlendirmesi ve müşteriye toparlayıp gönderme niyeti var; müşteri tarafından final slogan kabulü gösterilmiyor.",
+      "historical_outcome_reported": "23 Eylül’de söylem belirsizliği somutlaştırılmış ve sonraki adım önerilmiş.",
+      "current_status": "Bu inceleme güncel iş durumunu doğrulamaz; geçmiş kayıt öğrenimidir.",
+      "bounded_learning": "Kampanya sloganı, kalıcı marka mottosu ve işitsel nakarat farklı öğeler olabilir; tek bir geçmiş iç maille hepsini eşitleme.",
+      "unknowns_and_limits": [
+        "Müşteriye final gönderim/onay bu kaynakta yok.",
+        "Sloganların geçerli dönem ve kullanım rolleri ayrıca doğrulanmalı."
+      ],
+      "classification": "brand_private",
+      "knowledge_status": "historical_source_scoped",
+      "authority_not_extended": true,
+      "evidence": [
+        {
+          "thread_id": "1a0cf7664fa3b783",
+          "message_id": "1a0cf81cf42fe7bf",
+          "date_utc": "2026-09-23T18:23:05.000Z",
+          "author": "\"Ahmet Şükrü Altındağ\" <ahmet@gamechangers.com.tr>",
+          "subject": "Rabam hk // Bugün Sana Anlatmayı Atladığım Eksiğimiz",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0cf7664fa3b783"
+        }
+      ],
+      "canonical_basecamp_task_urls": [],
+      "evidence_message_ids": [
+        "1a0cf81cf42fe7bf"
+      ]
+    },
+    {
+      "topic_id": "RABAM-R2-16",
+      "title": "Jingle için 8 ve 15 saniyelik versiyon brief’i",
+      "canonical_topic_key": "jingle için 8 ve 15 saniyelik versiyon brief’i",
+      "brand": "Rabam",
+      "thread_ids": [
+        "1a10b23f642bb388"
+      ],
+      "source_urls": [
+        "https://mail.google.com/mail/u/0/#all/1a10b23f642bb388"
+      ],
+      "dates_utc": {
+        "first": "2026-10-05T08:40:29.000Z",
+        "last": "2026-10-05T08:40:29.000Z"
+      },
+      "authors": [
+        "\"Ahmet Şükrü Altındağ\" <ahmet@gamechangers.com.tr>"
+      ],
+      "customer_request_or_business_need": "Mevcut yapay zekâ şarkısından kısa marka sinyali ve video arkası müzik hazırlanması.",
+      "agency_and_staff_response": "Ahmet Seda’ya yalnız MP3 bulunduğunu belirtiyor; 40–50 saniyelik dikey film için altyapı/fon, packshotta Konu aracınsa tüm yollar Rabam’a çıkar nakaratından 8 saniyelik jingle ve önde müzik içeren 15 saniyelik versiyon istiyor.",
+      "revision_and_feedback": "Söz ve müziğin marka tarafından beğenildiği Ahmet’in bildirimi; doğrudan müşteri yanıtı bu zincirde yok. Uzun sözlü müziğin bütün filmin arkasında kullanılmasına gerek olmadığı belirtiliyor.",
+      "decision_and_approval_scope": "Gönderilmiş üretim brief’i var; bestecinin kabulü, telif kapsamı veya bitmiş ses onayı yok.",
+      "historical_outcome_reported": "5 Ekim’de MP3 eki ile brief gönderilmiş; ses üretimi ve dinleme kontrolü bu turda yapılmadı.",
+      "current_status": "Bu inceleme güncel iş durumunu doğrulamaz; geçmiş kayıt öğrenimidir.",
+      "bounded_learning": "Yalnız mix MP3 ile orijinal stüdyo kanalları aynı değil; 8 saniye logo sinyali ile 15 saniye kullanım varyantı teslimde ayrı tanımlanmalı.",
+      "unknowns_and_limits": [
+        "MP3 dinlenmedi.",
+        "Stems, kullanım lisansı, final ses dosyaları ve marka final onayı bilinmiyor."
+      ],
+      "classification": "brand_private",
+      "knowledge_status": "historical_source_scoped",
+      "authority_not_extended": true,
+      "evidence": [
+        {
+          "thread_id": "1a10b23f642bb388",
+          "message_id": "1a10b38bc92bbd24",
+          "date_utc": "2026-10-05T08:40:29.000Z",
+          "author": "\"Ahmet Şükrü Altındağ\" <ahmet@gamechangers.com.tr>",
+          "subject": "Rabam Markası için Jingle Hazırlık",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a10b23f642bb388"
+        }
+      ],
+      "canonical_basecamp_task_urls": [],
+      "evidence_message_ids": [
+        "1a10b38bc92bbd24"
+      ]
+    },
+    {
+      "topic_id": "RABAM-R2-17",
+      "title": "Basın bülteni görselinde uygulama ve marka bütünlüğü",
+      "canonical_topic_key": "basın bülteni görselinde uygulama ve marka bütünlüğü",
+      "brand": "Rabam",
+      "thread_ids": [
+        "1a0f2aa7cb6ec885"
+      ],
+      "source_urls": [
+        "https://mail.google.com/mail/u/0/#all/1a0f2aa7cb6ec885"
+      ],
+      "dates_utc": {
+        "first": "2026-09-30T14:13:46.000Z",
+        "last": "2026-09-30T14:13:46.000Z"
+      },
+      "authors": [
+        "\"Cansu Akiş Kabil\" <cansu@gamechangers.com.tr>"
+      ],
+      "customer_request_or_business_need": "Basın haberlerine eşlik edecek, farklı yayınlarda Rabam’ı tanınır kılacak görsel seçimi.",
+      "agency_and_staff_response": "Cansu tek hizmeti öne çıkarmak yerine uygulamayı anlatan, marka renklerini ve görsel öğeleri güçlü taşıyan tasarım öneriyor; Cenk’in uygunluğunu istiyor.",
+      "revision_and_feedback": "Müşteri yanıtı veya tasarım revizyonu bu tek iletide yok.",
+      "decision_and_approval_scope": "Onaya sunulan görsel yaklaşımıdır; bütün PR görselleri için kalıcı kılavuz veya yayın izni değildir.",
+      "historical_outcome_reported": "1920_1080.png dosyasıyla öneri iletilmiş; kullanım onayı doğrulanmadı.",
+      "current_status": "Bu inceleme güncel iş durumunu doğrulamaz; geçmiş kayıt öğrenimidir.",
+      "bounded_learning": "Basın görselinin amacı hizmet kampanyasından farklı: tanınırlık ve görsel tutarlılık. Amaçla görsel tercih arasındaki gerekçe hafızada korunmalı.",
+      "unknowns_and_limits": [
+        "PNG görsel incelenmedi.",
+        "Cenk’in cevabı ve yayın mecralarındaki uygulama bilinmiyor."
+      ],
+      "classification": "brand_private",
+      "knowledge_status": "historical_source_scoped",
+      "authority_not_extended": true,
+      "evidence": [
+        {
+          "thread_id": "1a0f2aa7cb6ec885",
+          "message_id": "1a0f2aa7cb6ec885",
+          "date_utc": "2026-09-30T14:13:46.000Z",
+          "author": "\"Cansu Akiş Kabil\" <cansu@gamechangers.com.tr>",
+          "subject": "Rabam // basın bülteni görseli",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0f2aa7cb6ec885"
+        }
+      ],
+      "canonical_basecamp_task_urls": [],
+      "evidence_message_ids": [
+        "1a0f2aa7cb6ec885"
+      ]
+    },
+    {
+      "topic_id": "RABAM-R2-18",
+      "title": "Ajans seçimi haberinin basına iletilmesi ve editoryal takip",
+      "canonical_topic_key": "ajans seçimi haberinin basına iletilmesi ve editoryal takip",
+      "brand": "Rabam",
+      "thread_ids": [
+        "1a0c8410ff1ed91d"
+      ],
+      "source_urls": [
+        "https://mail.google.com/mail/u/0/#all/1a0c8410ff1ed91d"
+      ],
+      "dates_utc": {
+        "first": "2026-09-22T08:46:45.000Z",
+        "last": "2026-09-24T14:45:55.000Z"
+      },
+      "authors": [
+        "\"Ahmet Şükrü Altındağ\" <ahmet@gamechangers.com.tr>"
+      ],
+      "customer_request_or_business_need": "Rabam’ın kreatif ajans seçimi haberini yayın değerlendirmesine sunmak.",
+      "agency_and_staff_response": "Ahmet Marketing Türkiye’ye bülteni ve görsel içeren Word belgesini gönderiyor; ileride kurucu/yönetim röportajı istediğini belirtiyor. Sonraki iletide gelişme soruyor, gerekiyorsa başlığı düzenlemeyi teklif ediyor.",
+      "revision_and_feedback": "Editör cevabı veya değişiklik isteği bu zincirde yok.",
+      "decision_and_approval_scope": "Ajans gönderimi yayın onayı veya haberin yayımlandığı anlamına gelmez. E-postadaki yatırım/değerleme sayıları bu turda dış kaynaktan doğrulanmadı.",
+      "historical_outcome_reported": "Gönderim ve takip var; yayın sonucu bu kaynakta yok.",
+      "current_status": "Bu inceleme güncel iş durumunu doğrulamaz; geçmiş kayıt öğrenimidir.",
+      "bounded_learning": "Basına gönderildi, editör değerlendirdi ve yayımlandı olayları ayrı tutulmalı; yatırım iddiası dış kullanım öncesi dayanakla kontrol edilmeli.",
+      "unknowns_and_limits": [
+        "Word eki okunmadı.",
+        "Basın yayın sonucu ve yatırım sayılarının güncelliği doğrulanmadı."
+      ],
+      "classification": "brand_private",
+      "knowledge_status": "historical_source_scoped",
+      "authority_not_extended": true,
+      "evidence": [
+        {
+          "thread_id": "1a0c8410ff1ed91d",
+          "message_id": "1a0c84bcba1a831d",
+          "date_utc": "2026-09-22T08:46:45.000Z",
+          "author": "\"Ahmet Şükrü Altındağ\" <ahmet@gamechangers.com.tr>",
+          "subject": "Rabam // \"Kreatif İletişim Ajansını Seçti Haberi\" Basın Bülteni",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0c8410ff1ed91d"
+        },
+        {
+          "thread_id": "1a0c8410ff1ed91d",
+          "message_id": "1a0d3e158c21d370",
+          "date_utc": "2026-09-24T14:45:55.000Z",
+          "author": "\"Ahmet Şükrü Altındağ\" <ahmet@gamechangers.com.tr>",
+          "subject": "Re: Rabam // \"Kreatif İletişim Ajansını Seçti Haberi\" Basın Bülteni",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0c8410ff1ed91d"
+        }
+      ],
+      "canonical_basecamp_task_urls": [],
+      "evidence_message_ids": [
+        "1a0c84bcba1a831d",
+        "1a0d3e158c21d370"
+      ]
+    },
+    {
+      "topic_id": "RABAM-R2-19",
+      "title": "Sosyal medya rapor şablonu ve veri kaynağı ayrımı",
+      "canonical_topic_key": "sosyal medya rapor şablonu ve veri kaynağı ayrımı",
+      "brand": "Rabam",
+      "thread_ids": [
+        "1a0fbcf20ced3b98"
+      ],
+      "source_urls": [
+        "https://mail.google.com/mail/u/0/#all/1a0fbcf20ced3b98"
+      ],
+      "dates_utc": {
+        "first": "2026-10-02T08:50:50.000Z",
+        "last": "2026-10-02T08:50:50.000Z"
+      },
+      "authors": [
+        "\"Özge Yağmur (Basecamp)\" <notifications@app.basecamp.com>"
+      ],
+      "customer_request_or_business_need": "Sürdürülebilir aylık sosyal medya raporu oluşturmak ve müşteriye sunulmadan iç değerlendirmeye açmak.",
+      "agency_and_staff_response": "Özge Facebook çapraz iletişimini daha sade raporladığını, Instagram için Meta ile mobil uygulamadan iki ayrı istatistik seti kullandığını, aylık takipçi karşılaştırma tablosu eklediğini anlatıyor. Yönetici özetine rakip iletişimini inceleyerek gelecek ay önerileri eklediğini belirtiyor.",
+      "revision_and_feedback": "Ahmet ve Cansu’ya rapor uygun bulunursa müşteriyle paylaşmayı öneriyor; yanıt bu kaynakta yok.",
+      "decision_and_approval_scope": "Hazır raporun iç onay talebidir; müşteri teslimi veya veri doğrulama onayı değildir.",
+      "historical_outcome_reported": "2 Ekim Basecamp bildiriminde PPTX raporun hazır olduğu bildirilmiş.",
+      "current_status": "Bu inceleme güncel iş durumunu doğrulamaz; geçmiş kayıt öğrenimidir.",
+      "bounded_learning": "Farklı platform arayüzlerinden gelen ölçümler aynı veri gibi birleştirilmemeli; tanım ve dönem korunmalı. Rapor geçmiş performansla ileriye dönük öneriyi ayırmalı.",
+      "unknowns_and_limits": [
+        "PPTX dosyası ve rakamlar açılmadı.",
+        "Basecamp’in canlı görev kaydı okunmadı; kaynak Gmail bildirimi."
+      ],
+      "classification": "brand_private",
+      "knowledge_status": "historical_source_scoped",
+      "authority_not_extended": true,
+      "evidence": [
+        {
+          "thread_id": "1a0fbcf20ced3b98",
+          "message_id": "1a0fbcf20ced3b98",
+          "date_utc": "2026-10-02T08:50:50.000Z",
+          "author": "\"Özge Yağmur (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "(Rabam) Özge Y. @mentioned you in Re: Rabam // Rapor Şablonu Oluşturma // Eylül '26 SM Raporu",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0fbcf20ced3b98"
+        }
+      ],
+      "canonical_basecamp_task_urls": [
+        "https://app.basecamp.com/5898865/buckets/48639990/todos/10360887047"
+      ],
+      "evidence_message_ids": [
+        "1a0fbcf20ced3b98"
+      ]
+    },
+    {
+      "topic_id": "RABAM-R2-20",
+      "title": "Instagram’a özel bakım indirimi ve kampanya sınırlamasının netleştirilmesi",
+      "canonical_topic_key": "instagram’a özel bakım indirimi ve kampanya sınırlamasının netleştirilmesi",
+      "brand": "Rabam",
+      "thread_ids": [
+        "1a0d29a265fdb2d3"
+      ],
+      "source_urls": [
+        "https://mail.google.com/mail/u/0/#all/1a0d29a265fdb2d3"
+      ],
+      "dates_utc": {
+        "first": "2026-09-24T08:48:20.000Z",
+        "last": "2026-09-25T13:48:06.000Z"
+      },
+      "authors": [
+        "\"Mert Batı\" <mert@rabam.com>",
+        "Ozge Yagmur <ozge@gamechangers.com.tr>"
+      ],
+      "customer_request_or_business_need": "Instagram story formatında bakım indirimi duyurusu ve yönlendirme bağlantısı hazırlanması.",
+      "agency_and_staff_response": "Özge işi plana alıyor, story boyutlandırmasını teyit ediyor, kampanya bağlantısı ve Bakım indirimini yakala CTA’sı ile disclaimer ihtiyacını soruyor.",
+      "revision_and_feedback": "Mert indirim bakım kategorisindeki tüm hizmetlerde geçerli olduğu için bu kampanyada disclaimer kullanılmayabileceğini söylüyor ve CTA’yı uygun buluyor. Özge görseli plana ekleyip yine saat 17:00’de yayınlanıp yayınlanmayacağını soruyor.",
+      "decision_and_approval_scope": "CTA ve disclaimer tercihi yalnız bu bakım kampanyasına ait; başka kampanyalara veya kanuni gerekliliklere genellenemez. Saat 17:00 sorusu teyit edilmiş yayın saati değildir.",
+      "historical_outcome_reported": "Görselin hazırlandığı ve plana eklendiği bildirilmiş; final yayın cevabı bu zincirde yok.",
+      "current_status": "Bu inceleme güncel iş durumunu doğrulamaz; geçmiş kayıt öğrenimidir.",
+      "bounded_learning": "Kampanya kapsamı ve zorunlu açıklama ihtiyacı her işte kaynağıyla teyit edilmeli. Hazır görsel, onay ve yayın farklı aşamalar.",
+      "unknowns_and_limits": [
+        "Kampanya bağlantısı ve görsel açılmadı.",
+        "Geçerlilik tarihleri ve güncel kampanya koşulları bilinmiyor."
+      ],
+      "classification": "brand_private",
+      "knowledge_status": "historical_source_scoped",
+      "authority_not_extended": true,
+      "evidence": [
+        {
+          "thread_id": "1a0d29a265fdb2d3",
+          "message_id": "1a0d29a265fdb2d3",
+          "date_utc": "2026-09-24T08:48:20.000Z",
+          "author": "Ozge Yagmur <ozge@gamechangers.com.tr>",
+          "subject": "Re: Instagram'a Özel Bakım İndirimi",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0d29a265fdb2d3"
+        },
+        {
+          "thread_id": "1a0d29a265fdb2d3",
+          "message_id": "1a0d29b691f2615c",
+          "date_utc": "2026-09-24T08:49:43.000Z",
+          "author": "Ozge Yagmur <ozge@gamechangers.com.tr>",
+          "subject": "Re: Instagram'a Özel Bakım İndirimi",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0d29a265fdb2d3"
+        },
+        {
+          "thread_id": "1a0d29a265fdb2d3",
+          "message_id": "1a0d30283780eb33",
+          "date_utc": "2026-09-24T10:42:25.000Z",
+          "author": "\"Mert Batı\" <mert@rabam.com>",
+          "subject": "Ynt: Instagram'a Özel Bakım İndirimi",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0d29a265fdb2d3"
+        },
+        {
+          "thread_id": "1a0d29a265fdb2d3",
+          "message_id": "1a0d8d2f956e564d",
+          "date_utc": "2026-09-25T13:48:06.000Z",
+          "author": "Ozge Yagmur <ozge@gamechangers.com.tr>",
+          "subject": "Re: Instagram'a Özel Bakım İndirimi",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0d29a265fdb2d3"
+        }
+      ],
+      "canonical_basecamp_task_urls": [],
+      "evidence_message_ids": [
+        "1a0d29a265fdb2d3",
+        "1a0d29b691f2615c",
+        "1a0d30283780eb33",
+        "1a0d8d2f956e564d"
+      ]
+    },
+    {
+      "topic_id": "RABAM-R2-21",
+      "title": "İlk hizmet teklifi ve kurumsal kimlik kaynaklarının teslimi",
+      "canonical_topic_key": "i̇lk hizmet teklifi ve kurumsal kimlik kaynaklarının teslimi",
+      "brand": "Rabam",
+      "thread_ids": [
+        "19ed6d8225375c36"
+      ],
+      "source_urls": [
+        "https://mail.google.com/mail/u/0/#all/19ed6d8225375c36"
+      ],
+      "dates_utc": {
+        "first": "2026-06-17T18:38:19.000Z",
+        "last": "2026-07-16T14:58:53.000Z"
+      },
+      "authors": [
+        "\"Ahmet Şükrü Altındağ\" <ahmet@gamechangers.com.tr>",
+        "\"Cansu Akiş Kabil\" <cansu@gamechangers.com.tr>",
+        "\"Cenk Yönezer\" <cenk.yonezer@aydoganlargrup.com>",
+        "\"Murat Günay\" <murat@rabam.com>",
+        "Berkin Girgin <berkin@rabam.com>"
+      ],
+      "customer_request_or_business_need": "Tanışma sonrası strateji, aylık iletişim ve büyüme yaklaşımını kapsam/bütçe olarak sunmak; kreatif çalışma için resmî marka varlıklarını toplamak.",
+      "agency_and_staff_response": "Ahmet gecikmeyi önceden bildirip cuma öğlene teslim hedefi veriyor; Murat kabul ediyor. 19 Haziran teklifinde bilinirlik, mesaj mimarisi, kanal rolleri ve iş sonuçlarına bağlanan büyüme yaklaşımı açıklanıyor. Cansu temmuzda kimlik kılavuzu/logo istiyor.",
+      "revision_and_feedback": "Cenk teklif sürecinin devam ettiğini bildiriyor; daha sonra Berkin’i kurumsal kimlik ve logo gönderimi için görevlendiriyor. Berkin dosyaların ekte olduğunu yazıyor.",
+      "decision_and_approval_scope": "Cuma tarihi ileti teslimi için kabul edilmiş; ajans sözleşmesi onayı değildir. Strateji bedelinin yıllık iş birliğinde hizmete dahil edilmesi tarihli teklif koşuludur. Varlık gönderildi bildirimi dosyanın güncelliğini/eksiksizliğini kanıtlamaz.",
+      "historical_outcome_reported": "İlk ticari teklif gönderimi, takip ve 16 Temmuz kurumsal kimlik/logo teslim bildirimi bulundu.",
+      "current_status": "Bu inceleme güncel iş durumunu doğrulamaz; geçmiş kayıt öğrenimidir.",
+      "bounded_learning": "Gecikme iletişimi yeni gerçekçi tarihle yapılmış. Resmî varlık kaynağı kişisi izlenebiliyor; logo/kimlik için e-posta eki kaynak olarak saklanmalı.",
+      "unknowns_and_limits": [
+        "Teklif eki ve kimlik/logo dosyaları incelenmedi.",
+        "Haziran teklifinin sonraki kabul edilmiş kapsamla aynı olduğu varsayılmadı."
+      ],
+      "classification": "restricted_commercial",
+      "knowledge_status": "historical_source_scoped",
+      "authority_not_extended": true,
+      "evidence": [
+        {
+          "thread_id": "19ed6d8225375c36",
+          "message_id": "19ed6e0884dd9481",
+          "date_utc": "2026-06-17T18:38:19.000Z",
+          "author": "\"Ahmet Şükrü Altındağ\" <ahmet@gamechangers.com.tr>",
+          "subject": "Rabam x Gamechangers Tanışması hk",
+          "source_url": "https://mail.google.com/mail/u/0/#all/19ed6d8225375c36"
+        },
+        {
+          "thread_id": "19ed6d8225375c36",
+          "message_id": "19ed74b220f19860",
+          "date_utc": "2026-06-17T20:34:40.000Z",
+          "author": "\"Murat Günay\" <murat@rabam.com>",
+          "subject": "RE: Rabam x Gamechangers Tanışması hk",
+          "source_url": "https://mail.google.com/mail/u/0/#all/19ed6d8225375c36"
+        },
+        {
+          "thread_id": "19ed6d8225375c36",
+          "message_id": "19ede7d6277dc32f",
+          "date_utc": "2026-06-19T06:07:00.000Z",
+          "author": "\"Ahmet Şükrü Altındağ\" <ahmet@gamechangers.com.tr>",
+          "subject": "Re: Rabam x Gamechangers Tanışması hk",
+          "source_url": "https://mail.google.com/mail/u/0/#all/19ed6d8225375c36"
+        },
+        {
+          "thread_id": "19ed6d8225375c36",
+          "message_id": "19f6b1d253d3e0b9",
+          "date_utc": "2026-07-16T13:27:49.000Z",
+          "author": "\"Cansu Akiş Kabil\" <cansu@gamechangers.com.tr>",
+          "subject": "Re: Rabam x Gamechangers Tanışması hk",
+          "source_url": "https://mail.google.com/mail/u/0/#all/19ed6d8225375c36"
+        },
+        {
+          "thread_id": "19ed6d8225375c36",
+          "message_id": "19f6b1f75653dd63",
+          "date_utc": "2026-07-16T13:30:45.000Z",
+          "author": "\"Cenk Yönezer\" <cenk.yonezer@aydoganlargrup.com>",
+          "subject": "RE: Rabam x Gamechangers Tanışması hk",
+          "source_url": "https://mail.google.com/mail/u/0/#all/19ed6d8225375c36"
+        },
+        {
+          "thread_id": "19ed6d8225375c36",
+          "message_id": "19f6b705f18dbfc7",
+          "date_utc": "2026-07-16T14:58:53.000Z",
+          "author": "Berkin Girgin <berkin@rabam.com>",
+          "subject": "Ynt: Rabam x Gamechangers Tanışması hk",
+          "source_url": "https://mail.google.com/mail/u/0/#all/19ed6d8225375c36"
+        }
+      ],
+      "canonical_basecamp_task_urls": [],
+      "evidence_message_ids": [
+        "19ed6e0884dd9481",
+        "19ed74b220f19860",
+        "19ede7d6277dc32f",
+        "19f6b1d253d3e0b9",
+        "19f6b1f75653dd63",
+        "19f6b705f18dbfc7"
+      ]
+    },
+    {
+      "topic_id": "RABAM-R2-22",
+      "title": "Konkur sunumunda içerik dikeyleri ve üç yaratıcı yolun paketlenmesi",
+      "canonical_topic_key": "konkur sunumunda içerik dikeyleri ve üç yaratıcı yolun paketlenmesi",
+      "brand": "Rabam",
+      "thread_ids": [
+        "19f70b637d02935b"
+      ],
+      "source_urls": [
+        "https://mail.google.com/mail/u/0/#all/19f70b637d02935b"
+      ],
+      "dates_utc": {
+        "first": "2026-07-17T15:33:36.000Z",
+        "last": "2026-08-12T16:31:42.000Z"
+      },
+      "authors": [
+        "\"Barış Sülün (Basecamp)\" <notifications@app.basecamp.com>",
+        "\"Özge Yağmur (Basecamp)\" <notifications@app.basecamp.com>"
+      ],
+      "customer_request_or_business_need": "Rabam konkur sunumunun içerik dikeylerini stratejik gerekçeler ve uygulanabilir proje önerileriyle doldurmak.",
+      "agency_and_staff_response": "Özge Ufuk’tan her içerik dikeyi için ayrı slayt, rasyonel ve görsel brief; Aleyna’dan çatı söylemlerle konuşan az sayıda basit uygulanabilir proje istiyor. Barış sunum şablonunu ve sonra üç yaratıcı yolun KV/logotype/grid/thumbnail dosyalarını paylaşıyor.",
+      "revision_and_feedback": "11 Ağustos gönderiminde bazı KV/feed dosyaları için yarın gelecek deniyor; sonradan yeni görsel dosyaları ekleniyor. Müşteri seçimi bu zincirde görünmüyor.",
+      "decision_and_approval_scope": "Üç yaratıcı yolun dosya teslimi onları onaylı marka dili yapmaz. Yarın gelecek notları teslim edilen paketle ayrı izlenmeli.",
+      "historical_outcome_reported": "17 Temmuz–12 Ağustos arasında iç ekip brief’i ve sunum malzemesi gönderimleri görülüyor.",
+      "current_status": "Bu inceleme güncel iş durumunu doğrulamaz; geçmiş kayıt öğrenimidir.",
+      "bounded_learning": "İçerik teması, rasyonel ve görsel yön birlikte devredilmeli. Dosya envanteri tamamlandı ile kreatif yol onaylandı ayrılmalı.",
+      "unknowns_and_limits": [
+        "Sunum, PDF ve görseller açılmadı.",
+        "Bazı dosya adlarından içerik veya müşteri kabulü çıkarılmadı."
+      ],
+      "classification": "brand_private",
+      "knowledge_status": "historical_source_scoped",
+      "authority_not_extended": true,
+      "evidence": [
+        {
+          "thread_id": "19f70b637d02935b",
+          "message_id": "19f70b637d02935b",
+          "date_utc": "2026-07-17T15:33:36.000Z",
+          "author": "\"Özge Yağmur (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (New Biz) Rabam Konkur Sunumu",
+          "source_url": "https://mail.google.com/mail/u/0/#all/19f70b637d02935b"
+        },
+        {
+          "thread_id": "19f70b637d02935b",
+          "message_id": "19f7fed9f0ac0dcf",
+          "date_utc": "2026-07-20T14:28:26.000Z",
+          "author": "\"Barış Sülün (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (New Biz) Rabam Konkur Sunumu",
+          "source_url": "https://mail.google.com/mail/u/0/#all/19f70b637d02935b"
+        },
+        {
+          "thread_id": "19f70b637d02935b",
+          "message_id": "19ff1cae497d05f8",
+          "date_utc": "2026-08-11T17:07:12.000Z",
+          "author": "\"Barış Sülün (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (New Biz) Rabam Konkur Sunumu",
+          "source_url": "https://mail.google.com/mail/u/0/#all/19f70b637d02935b"
+        },
+        {
+          "thread_id": "19f70b637d02935b",
+          "message_id": "19ff1e784130d460",
+          "date_utc": "2026-08-11T17:38:28.000Z",
+          "author": "\"Barış Sülün (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (New Biz) Rabam Konkur Sunumu",
+          "source_url": "https://mail.google.com/mail/u/0/#all/19f70b637d02935b"
+        },
+        {
+          "thread_id": "19f70b637d02935b",
+          "message_id": "19ff20cb72d1bf2b",
+          "date_utc": "2026-08-11T18:19:06.000Z",
+          "author": "\"Barış Sülün (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (New Biz) Rabam Konkur Sunumu",
+          "source_url": "https://mail.google.com/mail/u/0/#all/19f70b637d02935b"
+        },
+        {
+          "thread_id": "19f70b637d02935b",
+          "message_id": "19ff6d0be9a875b2",
+          "date_utc": "2026-08-12T16:31:42.000Z",
+          "author": "\"Barış Sülün (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (New Biz) Rabam Konkur Sunumu",
+          "source_url": "https://mail.google.com/mail/u/0/#all/19f70b637d02935b"
+        }
+      ],
+      "canonical_basecamp_task_urls": [
+        "https://app.basecamp.com/5898865/buckets/40704547/todos/10101538070"
+      ],
+      "evidence_message_ids": [
+        "19f70b637d02935b",
+        "19f7fed9f0ac0dcf",
+        "19ff1cae497d05f8",
+        "19ff1e784130d460",
+        "19ff20cb72d1bf2b",
+        "19ff6d0be9a875b2"
+      ]
+    },
+    {
+      "topic_id": "RABAM-R2-23",
+      "title": "Rabam’la Tekte yaratıcı yolunun geniş format brief’i",
+      "canonical_topic_key": "rabam’la tekte yaratıcı yolunun geniş format brief’i",
+      "brand": "Rabam",
+      "thread_ids": [
+        "19fc7fa238993769",
+        "19fcba3c4c295510"
+      ],
+      "source_urls": [
+        "https://mail.google.com/mail/u/0/#all/19fc7fa238993769",
+        "https://mail.google.com/mail/u/0/#all/19fcba3c4c295510"
+      ],
+      "dates_utc": {
+        "first": "2026-08-03T14:14:46.000Z",
+        "last": "2026-08-10T15:33:22.000Z"
+      },
+      "authors": [
+        "\"Barış Sülün (Basecamp)\" <notifications@app.basecamp.com>",
+        "\"Özge Yağmur (Basecamp)\" <notifications@app.basecamp.com>"
+      ],
+      "customer_request_or_business_need": "Araç sahipliğinin parçalı ihtiyaçlarını tek platformda çözme fikrini bir yaratıcı söylem ve farklı formatlara dönüştürmek.",
+      "agency_and_staff_response": "Özge Rabam’la Tekte imzası, packshot, yol yardım/bakım/ekspertiz KV’leri, yaklaşık 30 saniyelik ritmik reklam filmi sahneleri, jingle ve cover fikrini anlatıyor. Barış düzenlenebilir packshot PSD adı dahil carousel, rehber, filo, pasaport, değerleme ve KV/logotype varlıklarını iletiyor.",
+      "revision_and_feedback": "Dosya adlarında v2 ve pasaport tekrarları var; hangi görsel revizyonun neden istendiği gövdelerde açıklanmıyor. Aynı Basecamp görev URL’sindeki 13 ileti tek konu sayıldı.",
+      "decision_and_approval_scope": "Kreatif öneri ve iç dosya devridir; Rabam’la Tekte’nin müşterice seçildiği görünmüyor. Önerilen tanınmış şarkı uyarlaması için kullanım hakkı varsayılamaz.",
+      "historical_outcome_reported": "3–10 Ağustos tarihli geniş brief ve üretim dosyası paylaşımları var; final kabul/yayın yok.",
+      "current_status": "Bu inceleme güncel iş durumunu doğrulamaz; geçmiş kayıt öğrenimidir.",
+      "bounded_learning": "Eski pitch dünyası güncel sloganla karıştırılmamalı. İddia, ürün akışı ve müzik hakları yaratıcı öneriden ayrıca doğrulanmalı.",
+      "unknowns_and_limits": [
+        "PSD/görseller açılmadı, gerçek düzenlenebilirlik doğrulanmadı.",
+        "Metindeki randevu ifadeleri daha sonra müşteri tarafından getirilen hizmet düzeltmesiyle çelişebilir."
+      ],
+      "classification": "brand_private",
+      "knowledge_status": "historical_source_scoped",
+      "authority_not_extended": true,
+      "evidence": [
+        {
+          "thread_id": "19fc7fa238993769",
+          "message_id": "19fc7fa238993769",
+          "date_utc": "2026-08-03T14:14:46.000Z",
+          "author": "\"Özge Yağmur (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "(New Biz) Özge Y. @mentioned you in Rabam // Ek Briefler",
+          "source_url": "https://mail.google.com/mail/u/0/#all/19fc7fa238993769"
+        },
+        {
+          "thread_id": "19fcba3c4c295510",
+          "message_id": "19fcc5292210fe77",
+          "date_utc": "2026-08-04T10:29:50.000Z",
+          "author": "\"Barış Sülün (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (New Biz) Rabam // Ek Briefler",
+          "source_url": "https://mail.google.com/mail/u/0/#all/19fcba3c4c295510"
+        },
+        {
+          "thread_id": "19fcba3c4c295510",
+          "message_id": "19fcd206706dc339",
+          "date_utc": "2026-08-04T14:14:39.000Z",
+          "author": "\"Barış Sülün (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (New Biz) Rabam // Ek Briefler",
+          "source_url": "https://mail.google.com/mail/u/0/#all/19fcba3c4c295510"
+        },
+        {
+          "thread_id": "19fcba3c4c295510",
+          "message_id": "19fcd217d88567d6",
+          "date_utc": "2026-08-04T14:15:51.000Z",
+          "author": "\"Barış Sülün (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (New Biz) Rabam // Ek Briefler",
+          "source_url": "https://mail.google.com/mail/u/0/#all/19fcba3c4c295510"
+        },
+        {
+          "thread_id": "19fcba3c4c295510",
+          "message_id": "19fec4e9ffb27649",
+          "date_utc": "2026-08-10T15:33:22.000Z",
+          "author": "\"Barış Sülün (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "Re: (New Biz) Rabam // Ek Briefler",
+          "source_url": "https://mail.google.com/mail/u/0/#all/19fcba3c4c295510"
+        }
+      ],
+      "canonical_basecamp_task_urls": [
+        "https://app.basecamp.com/5898865/buckets/40704547/todos/10159892159"
+      ],
+      "evidence_message_ids": [
+        "19fc7fa238993769",
+        "19fcc5292210fe77",
+        "19fcd206706dc339",
+        "19fcd217d88567d6",
+        "19fec4e9ffb27649"
+      ]
+    },
+    {
+      "topic_id": "RABAM-R2-24",
+      "title": "Yüzde 50 yıkama kampanyasının tasarım brief’i ve revizyon aralığı",
+      "canonical_topic_key": "yüzde 50 yıkama kampanyasının tasarım brief’i ve revizyon aralığı",
+      "brand": "Rabam",
+      "thread_ids": [
+        "1a0c3ee05e8b49d1"
+      ],
+      "source_urls": [
+        "https://mail.google.com/mail/u/0/#all/1a0c3ee05e8b49d1"
+      ],
+      "dates_utc": {
+        "first": "2026-09-21T12:25:50.000Z",
+        "last": "2026-09-23T15:11:14.000Z"
+      },
+      "authors": [
+        "\"Özge Yağmur (Basecamp)\" <notifications@app.basecamp.com>"
+      ],
+      "customer_request_or_business_need": "Markanın AI referansını Rabam tasarım diline uyarlayarak saat 17:00’de planlanan Instagram kampanyasını hazırlamak.",
+      "agency_and_staff_response": "Özge sakin tasarım, standart iç-dış yıkama, yüzde 50 indirim, RABAM50 kodu ve Hemen yıkama paketini al CTA’sını tanımlıyor. Olası revizyon için işin 15:30’a kadar bitmesini hedefliyor.",
+      "revision_and_feedback": "Tekli paket alımı sınırlamasının alt açıklama olarak konmasını istiyor. Görev tamamlandı bildirimi var; görsel revizyonunun içeriği veya müşteri cevabı yok.",
+      "decision_and_approval_scope": "21 Eylül kampanyasına ait koşul ve planlanan zaman. Aynı zincirdeki how-to, packshot ve Ekim planı bildirimleri yeni konu olarak tekrar sayılmadı. Tamamlandı bildirimi gerçek yayın kontrolü değildir.",
+      "historical_outcome_reported": "Ayrıntılı kampanya brief’i ve görev kapanış bildirimi okunmuş; görsel ya da yayın sayfası doğrulanmamış.",
+      "current_status": "Bu inceleme güncel iş durumunu doğrulamaz; geçmiş kayıt öğrenimidir.",
+      "bounded_learning": "Son yayın saati ile iç teslim saati arasına revizyon süresi bırakılmış. Tekli paket şartı bu işe özgü ve görünür tutulmalı.",
+      "unknowns_and_limits": [
+        "Referans görsel açılmadı.",
+        "Kampanya artık geçerli sayılmaz; koşullar tarihli brief’tir."
+      ],
+      "classification": "brand_private",
+      "knowledge_status": "historical_source_scoped",
+      "authority_not_extended": true,
+      "evidence": [
+        {
+          "thread_id": "1a0c3ee05e8b49d1",
+          "message_id": "1a0c3ee05e8b49d1",
+          "date_utc": "2026-09-21T12:25:50.000Z",
+          "author": "\"Özge Yağmur (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "(Rabam) Özge Y. completed a to-do",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0c3ee05e8b49d1"
+        }
+      ],
+      "canonical_basecamp_task_urls": [
+        "https://app.basecamp.com/5898865/buckets/48639990/todos/10323134705"
+      ],
+      "evidence_message_ids": [
+        "1a0c3ee05e8b49d1"
+      ]
+    },
+    {
+      "topic_id": "RABAM-R2-25",
+      "title": "Yeni kullanıcı hoş geldin mailing’inin dört metin yaklaşımı",
+      "canonical_topic_key": "yeni kullanıcı hoş geldin mailing’inin dört metin yaklaşımı",
+      "brand": "Rabam",
+      "thread_ids": [
+        "1a0d403f8d9a6f72",
+        "1a0d3b3f83220e0c"
+      ],
+      "source_urls": [
+        "https://mail.google.com/mail/u/0/#all/1a0d403f8d9a6f72",
+        "https://mail.google.com/mail/u/0/#all/1a0d3b3f83220e0c"
+      ],
+      "dates_utc": {
+        "first": "2026-09-24T13:56:22.000Z",
+        "last": "2026-09-24T15:23:39.000Z"
+      },
+      "authors": [
+        "\"Özge Yağmur (Basecamp)\" <notifications@app.basecamp.com>",
+        "Ozge Yagmur <ozge@gamechangers.com.tr>"
+      ],
+      "customer_request_or_business_need": "Yeni uygulama kullanıcılarına tasarımdan önce metin üzerinde anlaşılacak bir hoş geldin e-postası hazırlamak.",
+      "agency_and_staff_response": "İç görevde Aleyna’dan üç alternatif istenmiş; 24 Eylül müşteri mailinde dört alternatif paylaşılmış. Bağlı doküman metni okundu: doğrudan değer, samimi problem/çözüm, sabit kupon ve yüzdesel indirim odaklı yaklaşımlar; her birinde konu, preheader, gövde ve CTA var.",
+      "revision_and_feedback": "Son iki alternatif koşullu promosyon önerisi. Belgede örnek 250 TL kupon, yüzde 20 indirim ve 30 günlük süre yer alıyor; metnin bazı bölümleri bunları tanımlanmış gibi yazsa da giriş notu uygulamanın müşteri kararına bağlı olduğunu söylüyor. Ayrıca randevu ifadesi müşterinin önceki düzeltmesiyle uyuşmuyor.",
+      "decision_and_approval_scope": "Müşteri tercih/onayı bu kaynaklarda yok. Örnek kampanya tutar/kodu/süresi gerçek teklif olarak hafızaya alınmadı. Basecamp kapanışı yalnız metin hazırlama görevinin bildirimi.",
+      "historical_outcome_reported": "Dört alternatifin iletildiği ve bağlı belgenin varlığı doğrulandı; tasarıma geçiş, gönderim veya promosyonun etkinliği kanıtlanmadı.",
+      "current_status": "Bu inceleme güncel iş durumunu doğrulamaz; geçmiş kayıt öğrenimidir.",
+      "bounded_learning": "Yaratıcı örnek kampanya alanları operasyonel gerçek sayılmamalı. Müşteriden daha önce gelen hizmet düzeltmeleri sonraki CRM taslaklarına da uygulanmalı.",
+      "unknowns_and_limits": [
+        "Belgenin mevcut metni okundu; e-postayla gönderilen tarihsel sürümle birebir eşitliği revizyon geçmişiyle sınanmadı.",
+        "Gerçek hoş geldin teklifi, kupon koşulları ve metin seçimi bilinmiyor."
+      ],
+      "classification": "brand_private",
+      "knowledge_status": "historical_source_scoped",
+      "authority_not_extended": true,
+      "evidence": [
+        {
+          "thread_id": "1a0d3b3f83220e0c",
+          "message_id": "1a0d403e4251fea5",
+          "date_utc": "2026-09-24T15:23:39.000Z",
+          "author": "\"Özge Yağmur (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "(Rabam) Özge Y. completed a to-do",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0d3b3f83220e0c"
+        },
+        {
+          "thread_id": "1a0d403f8d9a6f72",
+          "message_id": "1a0d403f8d9a6f72",
+          "date_utc": "2026-09-24T15:23:32.000Z",
+          "author": "Ozge Yagmur <ozge@gamechangers.com.tr>",
+          "subject": "Yeni Kullanıcılara Hoş Geldin Mailing'i",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0d403f8d9a6f72"
+        }
+      ],
+      "linked_document_evidence": [
+        {
+          "document_id": "1V5rQmOi4__3KcxdvuVR6OncmJFc259LRQqwZofajRlw",
+          "source_url": "https://docs.google.com/document/d/1V5rQmOi4__3KcxdvuVR6OncmJFc259LRQqwZofajRlw/edit",
+          "modified_time": "2026-09-24T15:21:49.344Z",
+          "inspection": "returned_document_text_read",
+          "historical_version_exactness": "not_verified"
+        }
+      ],
+      "canonical_basecamp_task_urls": [
+        "https://app.basecamp.com/5898865/buckets/48639990/todos/10318135300"
+      ],
+      "evidence_message_ids": [
+        "1a0d403e4251fea5",
+        "1a0d403f8d9a6f72"
+      ]
+    },
+    {
+      "topic_id": "RABAM-R2-26",
+      "title": "Ecem Erkek için trend ve persona odaklı içerik önerileri",
+      "canonical_topic_key": "ecem erkek için trend ve persona odaklı içerik önerileri",
+      "brand": "Rabam",
+      "thread_ids": [
+        "1a0818645c9201fb",
+        "1a0b4a0c8c73a095"
+      ],
+      "source_urls": [
+        "https://mail.google.com/mail/u/0/#all/1a0818645c9201fb",
+        "https://mail.google.com/mail/u/0/#all/1a0b4a0c8c73a095"
+      ],
+      "dates_utc": {
+        "first": "2026-09-08T14:57:34.000Z",
+        "last": "2026-09-18T13:07:10.000Z"
+      },
+      "authors": [
+        "\"Özge Yağmur (Basecamp)\" <notifications@app.basecamp.com>"
+      ],
+      "customer_request_or_business_need": "Ana söyleme bağımlı olmayan, sunuma entegre edilebilecek trendsetter Ecem Erkek içerik fikirleri üretmek.",
+      "agency_and_staff_response": "Özge derleme hazırlıyor ve Aleyna’dan yeni dikkat çekici format eklemesini istiyor. Bağlı DOCX metni okundu: O mu Bu mu, OK/NOK, uğraştırma puanı, ikili problem karşılaştırması, beş persona, ana filme at referanslı Q&A ve üç bayi/usta formatı var.",
+      "revision_and_feedback": "Persona tablosu Titiz/Şüpheci/Unutkan/Telaşlı/Hesapçı karakterleri hizmet gruplarına eşliyor. Randevu, fiyat karşılaştırma, belgeler, hatırlatma gibi ifadeler öneri metninde bulunuyor; müşterinin aynı dönem randevulu hizmet düzeltmesiyle çatışma görünür tutuldu.",
+      "decision_and_approval_scope": "İç fikir havuzu ve görev tamamlandı bildirimi; Ecem Erkek’le anlaşma, müşteri kreatif seçimi veya her ürün fonksiyonunun doğrulaması değil. Aynı görev URL’sindeki mention ve kapanış tek konu sayıldı.",
+      "historical_outcome_reported": "8 Eylül tarihli fikir belgesi okunabildi; üretim veya yayın kaydı yok.",
+      "current_status": "Bu inceleme güncel iş durumunu doğrulamaz; geçmiş kayıt öğrenimidir.",
+      "bounded_learning": "Kreatif persona eşlemeleri ürün doğruluk kontrolünden geçmeli. Eski sunum fikirleri ve randevu gibi reddedilen kelimeler otomatik yeniden kullanılmamalı.",
+      "unknowns_and_limits": [
+        "DOCX’in dönen okunabilir metni incelendi, sayfa tasarımı/görselleri incelenmedi.",
+        "Oyuncu katılımı, onaylanan fikirler ve bugünkü ürün fonksiyonları bilinmiyor."
+      ],
+      "classification": "brand_private",
+      "knowledge_status": "historical_source_scoped",
+      "authority_not_extended": true,
+      "evidence": [
+        {
+          "thread_id": "1a0818645c9201fb",
+          "message_id": "1a0818645c9201fb",
+          "date_utc": "2026-09-08T14:57:34.000Z",
+          "author": "\"Özge Yağmur (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "(RABAM) Özge Y. @mentioned you in Rabam // Yeni Sunum Ecem Erkek SM Fikirleri",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0818645c9201fb"
+        },
+        {
+          "thread_id": "1a0b4a0c8c73a095",
+          "message_id": "1a0b4a0c8c73a095",
+          "date_utc": "2026-09-18T13:07:10.000Z",
+          "author": "\"Özge Yağmur (Basecamp)\" <notifications@app.basecamp.com>",
+          "subject": "(RABAM) Özge Y. completed a to-do",
+          "source_url": "https://mail.google.com/mail/u/0/#all/1a0b4a0c8c73a095"
+        }
+      ],
+      "linked_document_evidence": [
+        {
+          "document_id": "1o_3lLOdm303C1h5ghXN4JZ9CP_U3opoc",
+          "source_url": "https://docs.google.com/document/d/1o_3lLOdm303C1h5ghXN4JZ9CP_U3opoc/edit",
+          "modified_time": "2026-09-08T15:26:19.071Z",
+          "inspection": "returned_docx_text_read",
+          "historical_version_exactness": "not_verified"
+        }
+      ],
+      "canonical_basecamp_task_urls": [
+        "https://app.basecamp.com/5898865/buckets/48639990/todos/10282126951"
+      ],
+      "evidence_message_ids": [
+        "1a0818645c9201fb",
+        "1a0b4a0c8c73a095"
+      ]
+    }
+  ],
+  "cross_topic_learning": [
+    "Randevu wording’i müşteri tarafından reddedilmiş; hizmet akışı doğrudan öğrenilmeli.",
+    "Packshot statik seçimi hareketli final onayı değildir.",
+    "How-to ile barter kapsamı ayrılmış; ek üretim yetkisi otomatik çıkarılmaz.",
+    "Gelecek easy-checkout özelliği plan dışında tutulmuş.",
+    "Erişim daveti kabul edilene kadar erişim tamamlandı sayılmamış.",
+    "Sözleşme hukukta beklerken imzalı kabul edilmemiş.",
+    "Bütçe yüksekliği prodüksiyon modelini değiştirmiş; tedarikçiye olumlu his aktarımı sipariş değildir.",
+    "Slogan, kampanya söylemi ve jingle nakaratı farklı tarihlerde farklı biçimde geçmiş; tek kalıcı doğru diye birleştirilmemeli.",
+    "Hoş geldin taslağındaki 250 TL, yüzde 20 ve 30 gün gerçek kampanya koşulu değil koşullu yaratıcı örneklerdir.",
+    "Ecem fikirleri ve hoş geldin taslağındaki randevu ifadeleri, müşteri tarafından belirtilen hizmet sınırıyla çelişiyor; üretime yeniden alınmadan ürün doğruluk kontrolü gerekir."
+  ],
+  "next_checkpoint": {
+    "query": "Rabam -from:notifications@app.basecamp.com -from:noreply@rabam.com.tr after:2026/01/01 before:2026/10/08 -in:spam -in:trash",
+    "next_page_token": null,
+    "state": "2026_query_pagination_exhausted; remaining_candidate_bodies_and_older_history_open",
+    "resume": "2026 sorgusunun üç sayfası alındı. Başlığı taranıp gövdesi okunmayan adayları ve daha eski dönemleri tekilleştirerek sürdür."
+  },
+  "full_audit_report": "report.json"
+}

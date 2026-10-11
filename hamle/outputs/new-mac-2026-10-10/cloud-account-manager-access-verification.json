@@ -1,0 +1,12 @@
+{
+  "recorded_at": "2026-10-10T02:07:11.257835+03:00",
+  "four_accounts_verified": true,
+  "user_managed_keys": 0,
+  "database_condition_verified": true,
+  "control_secret_access": false,
+  "probe_accounts_expanded": false,
+  "new_google_cost_report": "browser_failed_to_load",
+  "prior_probe_hold_retained_usd": "3",
+  "additional_setup_hold_usd": "5",
+  "billing_reconciled": false
+}

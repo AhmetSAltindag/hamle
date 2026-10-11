@@ -1,0 +1,1472 @@
+{
+  "artifact_kind": "current_setup_snapshot_not_deployed_runtime",
+  "schema_version": "1.2.0",
+  "configuration_status": "8 Ekim Basecamp iç UI döngüsü Ahmet kimliğiyle tamamlandı; yerel yapay veri kontrolleri 35/35 geçti. Ahmet→Hamle zinciri 1 SENT ileti, teslim/yanıt doğrulanmadı. Yeni Hamle Gmail sekmesi şifre ekranında; yeniden giriş bekleniyor. Google Cloud kullanıcı isteğiyle beklemede.",
+  "deployment_status": "not_deployed",
+  "source_precedence": {
+    "latest_user_decisions": [
+      "Tüm markalar pilot kapsamındadır; belirli marka seçimi gerekmez.",
+      "Şimdi ahmet@gamechangers.com.tr hesabının işle ilgili tüm geçmişi, ekip yanıtları dahil okunarak öğrenilecek.",
+      "Gerçek marka Basecamp proje, görünürlük ve sorumluları daha sonra verilecek; ayrı özel iç deneme alanı 8 Ekim’de oluşturuldu.",
+      "Marka varlıkları daha sonra verilecek.",
+      "Öncelikli öğrenme: WAT Mobilite, Rabam, ya da Multicosmetics; önceki örneklerin üzerine 60 ek ayrıntılı konu talebi.",
+      "Güncel dış marka listesi: WAT Mobilite, Rabam, ya da Multicosmetics, Altınmarka, Bikaldi, HAN Spaces. Gamechangers iç markadır.",
+      "Hedef mailin ötesinde Basecamp görev/yorum/revizyon ve dört uzman arasında bağımsız planlama-kontrol-devir akışıdır.",
+      "Teklif/fiyat talepleri Ahmet; sorun/şikâyet/strateji Cansu+Ahmet; sosyal gündem/plan/trend/dönemsel Özge+Hamle; kalan yetkili rutin işler Hamle.",
+      "Üç günlük hızlı kurulum; hafta sonu deneme/ilk rutin kullanım, Pazartesi operasyon hedefi. Hamle, metin yazarı ve grafik öncelikli; kapsamlı animasyon daha sonra.",
+      "8 Ekim: hamle@gamechangers.com.tr hesabı kullanıcı tarafından açıldı ve kullanılabilir olarak bildirildi; bağlantı, gönderici kimliği ve test sonucu henüz doğrulanmadı.",
+      "8 Ekim: bağlantı ve gerçek iletişim testi istendi; kurulumun tamamlandığı veya bütün müşteri gönderimlerinin açık olduğu anlamına gelmez.",
+      "10 Ekim Cumartesi: geçmiş gerçek taleplerle yeniden oynatma/gölge değerlendirme ve Ahmet’ten Hamle’ye gelen iç demo mailleri hedeflendi.",
+      "Hamle ilgili son gelen mesajın gerçek To/CC alıcılarında yoksa o mesajdan hiçbir yanıt, iş, revizyon, üretim, plan değişikliği veya Basecamp aksiyonu başlatamaz.",
+      "Eski zincir katılımı, Ahmet hesabında görmek, yönlendirme gövdesi, BCC veya örtük kopya yetki değildir; açık yeni To/CC dahil edilmesi yeni kapsam için yeniden değerlendirilir.",
+      "Hamle çıkarıldığında ilgili eski yetkiyle devam eden dış aksiyonlar durur; iç devir/bekleme uygulanır. Görülmeyen mesaj biliniyor gibi davranılmaz.",
+      "Ahmet hesabının tarihsel öğrenme yetkisi korunur; canlı posta kaynağı Hamle hesabıdır. Otomatik global yönlendirme veya Hamle’yi kendiliğinden tekrar CC’ye ekleme kurulmaz.",
+      "Önceden yetkili bağımsız doğum günü/sabah özeti görevleri ayrı kalır; hariç mesajı girdi yapamaz.",
+      "Basecamp özel iç deneme alanı 49184053 ve Ahmet’e atanmış test görevi doğrulandı. Müşteri operasyonu proje/alıcı/iş kapsamı ile marka bütçeleri ve 8 Ekim sonrasının canlı işletim bütçesi ayrı ve henüz yapılandırılmamış alanlardır.",
+      "8 Ekim: Google Cloud, OpenAI API ve görsel üretim denemeleri için sağlayıcılar ve roller arasında ortak TOPLAM 50 USD onaylandı; sağlayıcı başına 50 USD değildir.",
+      "Bu bütçe yalnız 8 Ekim 2026 denemesi içindir; otomatik yenileme, gelecek ay aboneliği veya sonraki günlere aktarım yetkisi değildir.",
+      "İç test hedefleri Ahmet ve Hamle’dir; müşteri gönderimleri hâlâ kapalıdır. Bu oturumdaki kayıtlı yeni test harcaması 0 USD; sağlayıcı faturası ve genel hesap bakiyesi doğrulanmadı.",
+      "8 Ekim son karar: Google Cloud şimdilik atlanacak; Console JavaScript yükleme hatasında ve kullanıcı kararıyla bekletildi. Bulut dağıtımı yapılmadı; bu adım kendiliğinden yeniden başlatılmaz."
+    ],
+    "effect": "Mesaj bazlı gerçek To/CC şartı ve ortak tek günlük 50 USD test sınırı korunur. Ahmet kimliğiyle Basecamp özel iç test işlemleri ve Ahmet→Hamle SENT kaydı doğrulandı; bu Hamle adına API/otomatik müşteri operasyonu değildir. Google Cloud kullanıcı kararıyla şimdilik bekler; 10 Ekim gölge/iç demo hedefi ayrı ilerler."
+  },
+  "current_phase": "controlled_internal_tests_partial_verification_cloud_deferred",
+  "external_write_enabled": false,
+  "agency": {
+    "name": "Gamechangers",
+    "owner_name": "Ahmet Şükrü Altındağ",
+    "owner_person_id": null
+  },
+  "pilot_mode": "all_agency_brands",
+  "specific_brand_selection_required": false,
+  "brand_registry": [
+    {
+      "brand_id": "wat_mobilite",
+      "brand_name": "WAT Mobilite",
+      "authorized_client_people": null,
+      "agency_owner_id": null,
+      "production_team_ids": null,
+      "mailbox_scope": null,
+      "send_account_id": null,
+      "allowed_recipients": null,
+      "basecamp_account_id": null,
+      "basecamp_project_id": null,
+      "basecamp_task_list_ids": null,
+      "customer_visibility": null,
+      "source_locations": null,
+      "service_scope_record_id": null,
+      "revision_rules_record_id": null,
+      "delivery_rules_record_id": null,
+      "authority_limits_record_id": null,
+      "budget_limits": null,
+      "crisis_authority_record_id": null,
+      "followup_rules": null,
+      "live_start_at": null,
+      "authority_status": "pending_configuration",
+      "readiness": "not_verified",
+      "live_enabled": false,
+      "learning_priority": "priority",
+      "relationship": "current_brand_user_confirmed",
+      "user_supplied_domains": [],
+      "domain_identity_does_not_grant_recipient_authority": true,
+      "learning_sources": [
+        "learning/brands/wat_mobilite/observations.json",
+        "learning-round2/wat_mobilite/knowledge.json"
+      ],
+      "cloud_knowledge_page": "https://chatgpt.com/space/page_1420499594d481918a1d0c75e0df2668"
+    },
+    {
+      "brand_id": "rabam",
+      "brand_name": "Rabam",
+      "authorized_client_people": null,
+      "agency_owner_id": null,
+      "production_team_ids": null,
+      "mailbox_scope": null,
+      "send_account_id": null,
+      "allowed_recipients": null,
+      "basecamp_account_id": null,
+      "basecamp_project_id": null,
+      "basecamp_task_list_ids": null,
+      "customer_visibility": null,
+      "source_locations": null,
+      "service_scope_record_id": null,
+      "revision_rules_record_id": null,
+      "delivery_rules_record_id": null,
+      "authority_limits_record_id": null,
+      "budget_limits": null,
+      "crisis_authority_record_id": null,
+      "followup_rules": null,
+      "live_start_at": null,
+      "authority_status": "pending_configuration",
+      "readiness": "not_verified",
+      "live_enabled": false,
+      "learning_priority": "priority",
+      "relationship": "current_brand_user_confirmed",
+      "user_supplied_domains": [],
+      "domain_identity_does_not_grant_recipient_authority": true,
+      "learning_sources": [
+        "learning/brands/rabam/observations.json",
+        "learning-round2/rabam/knowledge.json"
+      ],
+      "cloud_knowledge_page": "https://chatgpt.com/space/page_632d57b3a07c819195710cbc945b6676"
+    },
+    {
+      "brand_id": "yada_multicosmetics",
+      "brand_name": "ya da Multicosmetics / Remedium",
+      "authorized_client_people": null,
+      "agency_owner_id": null,
+      "production_team_ids": null,
+      "mailbox_scope": null,
+      "send_account_id": null,
+      "allowed_recipients": null,
+      "basecamp_account_id": null,
+      "basecamp_project_id": null,
+      "basecamp_task_list_ids": null,
+      "customer_visibility": null,
+      "source_locations": null,
+      "service_scope_record_id": null,
+      "revision_rules_record_id": null,
+      "delivery_rules_record_id": null,
+      "authority_limits_record_id": null,
+      "budget_limits": null,
+      "crisis_authority_record_id": null,
+      "followup_rules": null,
+      "live_start_at": null,
+      "authority_status": "pending_configuration",
+      "readiness": "not_verified",
+      "live_enabled": false,
+      "learning_priority": "priority",
+      "relationship": "current_brand_user_confirmed",
+      "user_supplied_domains": [],
+      "domain_identity_does_not_grant_recipient_authority": true,
+      "learning_sources": [
+        "learning/brands/yada_multicosmetics/observations.json",
+        "learning-round2/yada_multicosmetics/report.json"
+      ],
+      "cloud_knowledge_page": "https://chatgpt.com/space/page_3d5be7698cd08191b5e8f97dbd5171ed"
+    },
+    {
+      "brand_id": "altinmarka",
+      "brand_name": "Altınmarka",
+      "authorized_client_people": null,
+      "agency_owner_id": null,
+      "production_team_ids": null,
+      "mailbox_scope": null,
+      "send_account_id": null,
+      "allowed_recipients": null,
+      "basecamp_account_id": null,
+      "basecamp_project_id": null,
+      "basecamp_task_list_ids": null,
+      "customer_visibility": null,
+      "source_locations": null,
+      "service_scope_record_id": null,
+      "revision_rules_record_id": null,
+      "delivery_rules_record_id": null,
+      "authority_limits_record_id": null,
+      "budget_limits": null,
+      "crisis_authority_record_id": null,
+      "followup_rules": null,
+      "live_start_at": null,
+      "authority_status": "pending_configuration",
+      "readiness": "not_verified",
+      "live_enabled": false,
+      "learning_priority": "standard",
+      "relationship": "current_brand_user_confirmed",
+      "user_supplied_domains": [
+        "altinmarkacc.com"
+      ],
+      "domain_identity_does_not_grant_recipient_authority": true,
+      "learning_sources": [
+        "learning/brands/altinmarka/observations.json"
+      ]
+    },
+    {
+      "brand_id": "bikaldi",
+      "brand_name": "Bikaldi",
+      "authorized_client_people": null,
+      "agency_owner_id": null,
+      "production_team_ids": null,
+      "mailbox_scope": null,
+      "send_account_id": null,
+      "allowed_recipients": null,
+      "basecamp_account_id": null,
+      "basecamp_project_id": null,
+      "basecamp_task_list_ids": null,
+      "customer_visibility": null,
+      "source_locations": null,
+      "service_scope_record_id": null,
+      "revision_rules_record_id": null,
+      "delivery_rules_record_id": null,
+      "authority_limits_record_id": null,
+      "budget_limits": null,
+      "crisis_authority_record_id": null,
+      "followup_rules": null,
+      "live_start_at": null,
+      "authority_status": "pending_configuration",
+      "readiness": "not_verified",
+      "live_enabled": false,
+      "learning_priority": "standard",
+      "relationship": "current_brand_user_confirmed",
+      "user_supplied_domains": [
+        "altinmarkacg.com"
+      ],
+      "domain_identity_does_not_grant_recipient_authority": true,
+      "learning_sources": [
+        "learning/brands/bikaldi/observations.json"
+      ]
+    },
+    {
+      "brand_id": "han_spaces",
+      "brand_name": "HAN Spaces",
+      "authorized_client_people": null,
+      "agency_owner_id": null,
+      "production_team_ids": null,
+      "mailbox_scope": null,
+      "send_account_id": null,
+      "allowed_recipients": null,
+      "basecamp_account_id": null,
+      "basecamp_project_id": null,
+      "basecamp_task_list_ids": null,
+      "customer_visibility": null,
+      "source_locations": null,
+      "service_scope_record_id": null,
+      "revision_rules_record_id": null,
+      "delivery_rules_record_id": null,
+      "authority_limits_record_id": null,
+      "budget_limits": null,
+      "crisis_authority_record_id": null,
+      "followup_rules": null,
+      "live_start_at": null,
+      "authority_status": "pending_configuration",
+      "readiness": "not_verified",
+      "live_enabled": false,
+      "learning_priority": "standard",
+      "relationship": "current_brand_user_confirmed",
+      "user_supplied_domains": [],
+      "domain_identity_does_not_grant_recipient_authority": true,
+      "learning_sources": [
+        "learning/brands/han_spaces/observations.json"
+      ]
+    },
+    {
+      "brand_id": "gamechangers_internal",
+      "brand_name": "Gamechangers",
+      "authorized_client_people": null,
+      "agency_owner_id": null,
+      "production_team_ids": null,
+      "mailbox_scope": null,
+      "send_account_id": null,
+      "allowed_recipients": null,
+      "basecamp_account_id": null,
+      "basecamp_project_id": null,
+      "basecamp_task_list_ids": null,
+      "customer_visibility": null,
+      "source_locations": null,
+      "service_scope_record_id": null,
+      "revision_rules_record_id": null,
+      "delivery_rules_record_id": null,
+      "authority_limits_record_id": null,
+      "budget_limits": null,
+      "crisis_authority_record_id": null,
+      "followup_rules": null,
+      "live_start_at": null,
+      "authority_status": "pending_configuration",
+      "readiness": "not_verified",
+      "live_enabled": false,
+      "learning_priority": "internal",
+      "relationship": "internal",
+      "user_supplied_domains": [
+        "gamechangers.com.tr"
+      ],
+      "domain_identity_does_not_grant_recipient_authority": true,
+      "learning_sources": [
+        "learning/brands/gamechangers_internal/observations.json"
+      ]
+    }
+  ],
+  "brand_registry_entry_template": {
+    "brand_id": null,
+    "brand_name": null,
+    "authorized_client_people": null,
+    "agency_owner_id": null,
+    "production_team_ids": null,
+    "mailbox_scope": null,
+    "send_account_id": null,
+    "allowed_recipients": null,
+    "basecamp_account_id": null,
+    "basecamp_project_id": null,
+    "basecamp_task_list_ids": null,
+    "customer_visibility": null,
+    "source_locations": null,
+    "service_scope_record_id": null,
+    "revision_rules_record_id": null,
+    "delivery_rules_record_id": null,
+    "authority_limits_record_id": null,
+    "budget_limits": null,
+    "crisis_authority_record_id": null,
+    "followup_rules": null,
+    "live_start_at": null,
+    "authority_status": "pending_configuration",
+    "readiness": "not_verified",
+    "live_enabled": false
+  },
+  "brand_rollout_policy": [
+    "Tüm markalar kapsamda kalır; liste ve marka bazlı bağlantılar yetkili kaynaklardan oluşturulur.",
+    "Hazır ve testten geçmiş marka kendi yetkileri içinde çalışabilir; eksik başka marka tüm portföyü durdurmaz.",
+    "Marka eşleşmesi bilinmeyen olay hiçbir marka hafızasına tahminle yazılmaz.",
+    "Her markanın özel verisi, muhatapları, görünürlüğü ve harcama yetkisi ayrı uygulanır."
+  ],
+  "requested_runtime": {
+    "model": "gpt-6-astra",
+    "reasoning_effort": "ultra",
+    "actual_cloud_runtime": null,
+    "actual_model": null,
+    "actual_reasoning_effort": null,
+    "cloud_execution_verified": false,
+    "app_subagent_ultra_available": true,
+    "api_portability_status": "test_required",
+    "api_note": "API model belgeleri low–max seçeneklerini gösteriyor; ultra cloud/API hedefinde doğrulanmalıdır. Sessiz model veya ayar değişimi yapılmaz.",
+    "silent_fallback_allowed": false
+  },
+  "schedule": {
+    "timezone": "Europe/Istanbul",
+    "weekdays": [
+      "MO",
+      "TU",
+      "WE",
+      "TH",
+      "FR"
+    ],
+    "start": "08:30",
+    "end_inclusive": "18:30",
+    "interval_minutes": 30,
+    "runs_per_workday": 21,
+    "holiday_calendar_id": null,
+    "without_holiday_calendar": "Pazartesi–Cuma kuralı uygulanır; bu durum görünür belirtilir.",
+    "outside_hours": "Bir sonraki çalışma başlangıcında işle.",
+    "final_run": "18:30 turunu kontrollü tamamla, yeni turu sonraki çalışma gününe bırak.",
+    "scheduler_id": null,
+    "schedule_created": false,
+    "acceptance_metric": "21 unique planned workday slots; retries do not increase count",
+    "independent_monitor": {
+      "configured": false,
+      "detects": "missing planned slots and stalled jobs",
+      "operational_owner": "Ahmet Şükrü Altındağ",
+      "alert_channel": null
+    }
+  },
+  "discovered_connections": {
+    "gmail": {
+      "provider": "Google Workspace / Gmail",
+      "observed_profile_email": "ahmet@gamechangers.com.tr",
+      "connection_status": "bağlantısı doğrulandı",
+      "evidence_source": "Ana kurulum incelemesinde profil okuması",
+      "profile_connection_does_not_authorize_all_read_or_send": true,
+      "history_read_test": "passed_bounded_sample",
+      "full_thread_test": "retrieval_passed_total_exhaustiveness_unverified",
+      "attachment_test": "one_DOCX_full_extracted_text_read; image_reference_only; visual_review_pending",
+      "send_test": "passed_Ahmet_to_Hamle_SENT_record_only",
+      "purpose": "historical_learning_and_explicit_controlled_internal_test_not_Hamle_live_identity",
+      "latest_internal_send_test": {
+        "test_id": "GC-HAMLE-20261008-01",
+        "date_local": "2026-10-08",
+        "channel": "Gmail connector",
+        "sender_identity": "ahmet@gamechangers.com.tr",
+        "recipient": "hamle@gamechangers.com.tr",
+        "subject": "HAMLE iç bağlantı testi — GC-HAMLE-20261008-01",
+        "message_id": "1a11a20a5785feba",
+        "thread_id": "1a11a20a5785feba",
+        "provider_state": "SENT",
+        "sent_record_verified": true,
+        "recipient_delivery_verified": false,
+        "recipient_read_verified": false,
+        "hamle_reply_verified": false,
+        "hamle_send_identity_verified": false,
+        "state": "sent_from_Ahmet_Hamle_delivery_and_reply_pending",
+        "customer_send": false,
+        "basis": "Ana yürütücünün 8 Ekim gerçek Gmail connector gönderim ve son thread yeniden okuma sonucu; teslim veya Hamle yanıtı kanıtlanmadı.",
+        "thread_readback_verified": true,
+        "thread_readback_account": "ahmet@gamechangers.com.tr",
+        "observed_thread_message_count": 1,
+        "observed_thread_reply_count": 0,
+        "latest_observation": "Ahmet connector tekrar okumasında yalnız 1 SENT ileti var; bu zincirde yanıt görülmedi. Hamle teslimi doğrulanmadı."
+      }
+    },
+    "basecamp": {
+      "connection_status": "Ahmet_UI_internal_test_partially_verified_Hamle_API_not_connected",
+      "observed_account_id": "5898865",
+      "observed_account_id_authority": "verified_private_internal_UI_test_only_not_brand_production_authority",
+      "test_evidence": {
+        "date_local": "2026-10-08",
+        "test_channel": "Basecamp UI under Ahmet identity",
+        "actor_identity": "Ahmet Şükrü Altındağ",
+        "account_id": "5898865",
+        "project_id": "49184053",
+        "project_name": "Hamle — İç Deneme",
+        "project_visibility": "private_internal_test",
+        "project_created_verified": true,
+        "task_id": "10384132942",
+        "task_url": "https://app.basecamp.com/5898865/buckets/49184053/todos/10384132942",
+        "task_created_verified": true,
+        "assignee": "Ahmet Şükrü Altındağ",
+        "assignee_verified": true,
+        "title_revision_marker": "R1",
+        "title_revision_verified": true,
+        "comment_id": "10384148599",
+        "comment_created_verified": true,
+        "file": {
+          "name": "Hamle_Baglanti_Test_v1.txt",
+          "size_bytes": 479,
+          "upload_completed_in_UI": true,
+          "UI_link_observed": true,
+          "download_readback_verified": false,
+          "content_open_verified": true,
+          "readback_status": "full_UI_text_reopened_and_matched_local_source",
+          "downloaded_content_matches_source": null,
+          "readback_verified": true,
+          "readback_method": "fresh accessibility-tree read of opened Basecamp file",
+          "opened_UI_content_matches_source": true,
+          "limitation": "A local downloaded-file path was not verified; full text reopened in UI and matched the local test source."
+        },
+        "oauth_or_Hamle_API_connection_verified": false,
+        "direct_API_read_or_write_tested": false,
+        "autonomous_agent_workflow_verified": false,
+        "scope": "user-authorized private internal connection test; not customer project operation",
+        "basis": "Ana yürütücünün 8 Ekim gerçek Basecamp UI işlemleri. Yeni erişilebilirlik okumasında yüklenen dosyanın tam metni yeniden açıldı ve yerel test kaynağıyla uyumu doğrulandı; yerel indirme yolu doğrulanmadı.",
+        "UI_task_assignment_revision_comment_upload_content_cycle_verified": true,
+        "task_completed_verified": true,
+        "task_completion_UI_text": "Completed by Ahmet Ş. on Oct 8",
+        "completion_event_id": "17236161598",
+        "completion_event_UI_time": "Today 09:19",
+        "completion_event_time_precision": "UI label as observed; exact UTC timestamp not supplied",
+        "evidence_screenshot": "../Hamle_Basecamp_Test_Kaniti.jpg",
+        "UI_internal_test_status": "complete",
+        "API_and_autonomy_status": "pending_not_verified"
+      }
+    },
+    "hamle_gmail": {
+      "account_email": "hamle@gamechangers.com.tr",
+      "account_created_user_reported": true,
+      "user_report_date": "2026-10-08",
+      "user_report": "Hesap açıldı, kullanılabilir.",
+      "connection_status": "fresh_Gmail_UI_requires_Hamle_password_reauthentication_connector_unverified",
+      "profile_verified": false,
+      "provider_account_or_alias_type": null,
+      "read_test": "pending_user_reauthentication_no_Hamle_message_read",
+      "send_test": "not_verified_from_Hamle",
+      "reply_readback_test": "pending",
+      "recipient_header_test": "not_run",
+      "source": "8 Ekim önce Hamle UI kimliği görüldü; #2005 ve oturum/sistem hatalarından sonra temiz yeni sekme şifre ekranında. Son durumda kullanıcıdan yeniden giriş istendi; Hamle connector doğrulanmadı.",
+      "profile_verified_scope": "connector_profile_only",
+      "UI_login_verified": true,
+      "UI_account_email": "hamle@gamechangers.com.tr",
+      "UI_mail_loading_error": "#2005",
+      "UI_mail_content_read_verified": false,
+      "incoming_internal_test": {
+        "test_id": "GC-HAMLE-20261008-01",
+        "date_local": "2026-10-08",
+        "channel": "Gmail connector",
+        "sender_identity": "ahmet@gamechangers.com.tr",
+        "recipient": "hamle@gamechangers.com.tr",
+        "subject": "HAMLE iç bağlantı testi — GC-HAMLE-20261008-01",
+        "message_id": "1a11a20a5785feba",
+        "thread_id": "1a11a20a5785feba",
+        "provider_state": "SENT",
+        "sent_record_verified": true,
+        "recipient_delivery_verified": false,
+        "recipient_read_verified": false,
+        "hamle_reply_verified": false,
+        "hamle_send_identity_verified": false,
+        "state": "sent_from_Ahmet_Hamle_delivery_and_reply_pending",
+        "customer_send": false,
+        "basis": "Ana yürütücünün 8 Ekim gerçek Gmail connector gönderim ve son thread yeniden okuma sonucu; teslim veya Hamle yanıtı kanıtlanmadı.",
+        "thread_readback_verified": true,
+        "thread_readback_account": "ahmet@gamechangers.com.tr",
+        "observed_thread_message_count": 1,
+        "observed_thread_reply_count": 0,
+        "latest_observation": "Ahmet connector tekrar okumasında yalnız 1 SENT ileti var; bu zincirde yanıt görülmedi. Hamle teslimi doğrulanmadı."
+      },
+      "UI_current_authenticated": false,
+      "UI_current_status": "Yeni temiz Gmail sekmesi Hamle şifre giriş ekranında; kullanıcıdan yeniden giriş istendi.",
+      "UI_observation_sequence": [
+        "Hamle identity login verified",
+        "message load error #2005",
+        "session signed out and system problem",
+        "fresh clean Gmail tab shows Hamle password entry; user reauthentication requested"
+      ]
+    },
+    "google_cloud": {
+      "date_local": "2026-10-08",
+      "provider": "Google Cloud",
+      "login_verified": true,
+      "console_ready": false,
+      "observed_error": "www.gstatic.com JavaScript loading error",
+      "user_decision": "Google Cloud’u şimdilik atla.",
+      "status": "deferred_by_explicit_user_request",
+      "deployment_created": false,
+      "runtime_verified": false,
+      "paid_resources_created_by_agent": false,
+      "automatic_retry_or_resume_authorized": false,
+      "scope_note": "Mevcut hesap girişi doğrulandı; Console kullanımı ve bulut dağıtımı doğrulanmadı. Kullanıcının bekletme kararı Cloud adımına uygulanır, bağımsız iç mail/Basecamp kontrollerini durdurmaz."
+    }
+  },
+  "authorized_accounts": {
+    "gmail_read_mailboxes": [
+      "ahmet@gamechangers.com.tr"
+    ],
+    "gmail_read_authority_source": "Bu oturumdaki doğrudan kullanıcı talimatı",
+    "gmail_read_scope": {
+      "all_business_history": true,
+      "include_received": true,
+      "include_sent": true,
+      "include_archived": true,
+      "include_full_threads": true,
+      "include_relevant_attachments": true,
+      "include_staff_responses": true,
+      "include_personal_unrelated_sensitive_content_in_brand_memory": false,
+      "does_not_grant_live_message_action_authority": true
+    },
+    "gmail_send_accounts": null,
+    "gmail_allowed_aliases": null,
+    "basecamp_account_ids": null,
+    "basecamp_project_ids": null,
+    "scope_authority_record_id": null,
+    "gmail_read_mailboxes_note": "Ahmet connector profili ve Ahmet→Hamle testinin 1 SENT iletilik thread yeniden okuması doğrulandı. Hamle UI kimliği önce görüldü; yükleme/oturum hataları sonrası temiz yeni sekme şifre ekranında ve kullanıcıdan yeniden giriş istendi. Hamle connector ve canlı okuma/gönderim doğrulanmadı.",
+    "historical_learning_mailboxes": [
+      "ahmet@gamechangers.com.tr"
+    ],
+    "live_operation_mailbox": "hamle@gamechangers.com.tr",
+    "live_operation_mailbox_connection_verified": false,
+    "controlled_test_requested_accounts": [
+      "hamle@gamechangers.com.tr",
+      "ahmet@gamechangers.com.tr"
+    ],
+    "controlled_internal_test_sender": "ahmet@gamechangers.com.tr",
+    "controlled_internal_test_basecamp": {
+      "account_id": "5898865",
+      "project_id": "49184053",
+      "identity": "Ahmet Şükrü Altındağ",
+      "channel": "UI",
+      "scope": "private internal setup test only",
+      "Hamle_API_authority_verified": false
+    }
+  },
+  "future_send_migration": {
+    "planned_account_email": "hamle@gamechangers.com.tr",
+    "connection_verified": false,
+    "live_sending_authorized": false,
+    "migration_completed": false,
+    "required_checks": [
+      "Google Workspace hesabı veya takma ad niteliğini doğrula.",
+      "Yetkili gönderim bağlantısını ve izinlerini doğrula.",
+      "Gönderen kimliği, yanıt zinciri, test alıcısı ve teslim sonucunu sınayarak kaydet.",
+      "Marka/alıcı/kapsam yetkileri tanımlanınca ilgili hazır markalarda etkinleştir.",
+      "Gerçek To/CC başlıkları, son mesajda dışarı çıkarma, BCC/gövde kopyası, yeniden dahil etme ve eski kuyruk durdurma kontrollerini sınayıp kaydet.",
+      "Hamle’den Ahmet’e gerçek test iletisini, Ahmet’ten Hamle’ye gelen yanıtı ve ikisinin sağlayıcı kayıtlarını oku; sonuç görülmeden başarılı sayma."
+    ],
+    "account_created_user_reported": true,
+    "user_report_date": "2026-10-08",
+    "controlled_connection_and_communication_test_requested": true,
+    "status": "Hamle_UI_reauthentication_requested_connector_delivery_reply_pending",
+    "UI_login_verified": true
+  },
+  "historical_learning": {
+    "phase": "two_rounds_reviewed_archive_incomplete",
+    "priority": "WAT Mobilite, Rabam, ya da Multicosmetics; other user-confirmed current brands retained",
+    "complete_archive_required": true,
+    "date_ranges": [
+      {
+        "from": "2026-05-12",
+        "to_exclusive": "2026-10-08",
+        "state": "targeted_samples_and_partial_query_pages_reviewed_not_complete_archive"
+      },
+      {
+        "from": null,
+        "to_exclusive": "2026-05-12",
+        "state": "not_yet_comprehensively_reviewed"
+      }
+    ],
+    "pagination_checkpoint": "coverage.json",
+    "processed_thread_count": 105,
+    "read_attachment_count": 1,
+    "unreadable_attachments": [],
+    "known_total_thread_count": null,
+    "completion_percentage": null,
+    "old_messages_create_new_tasks": false,
+    "reply_to_old_messages": false,
+    "reopen_closed_work": false,
+    "source_backlinks_required": true,
+    "persistent_coverage_report_location": "coverage.json",
+    "staff_response_handling": "Zincirdeki ekip yanıtlarını talep, verilen yanıt, karar ve tamamlanan işlem açısından öğren; geçmiş insan yanıtını bugün tekrar gönderme.",
+    "read_failure_is_no_new_mail": false,
+    "processed_message_count": 763,
+    "source_scoped_observation_count": 20,
+    "read_linked_document_count": 2,
+    "round2_detailed_topics": 60,
+    "round2_index": "learning-round2/index.json"
+  },
+  "test_environment": {
+    "email_recipient_allowlist": [
+      "ahmet@gamechangers.com.tr",
+      "hamle@gamechangers.com.tr"
+    ],
+    "basecamp_project_id": "49184053",
+    "basecamp_task_list_id": null,
+    "test_brand_records_location": null,
+    "test_results_location": "connection-evidence.json#internal_test_results_2026_10_08",
+    "external_sends_enabled": false,
+    "historical_replay_cutoff": null,
+    "requested_on": "2026-10-08",
+    "connection_and_real_communication_test_requested": true,
+    "connection_and_real_communication_test_status": "Basecamp_UI_cycle_verified_Ahmet_SENT_readback_verified_Hamle_delivery_reply_unverified",
+    "internal_demo_mailboxes": [
+      "ahmet@gamechangers.com.tr",
+      "hamle@gamechangers.com.tr"
+    ],
+    "allowlist_scope": "explicit Ahmet-Hamle controlled internal communication tests only; verified sending identity required; no customer recipients",
+    "test_execution_ready": false,
+    "hamle_sender_identity_verified": false,
+    "historical_replay_mode": "shadow_only_with_original_headers_preserved",
+    "replay_does_not_reopen_real_work": true,
+    "replay_does_not_authorize_customer_send_or_Basecamp_write": true,
+    "saturday_demo_date": "2026-10-10",
+    "saturday_demo_source": "new explicit To/CC internal request from Ahmet to Hamle; real historical sample included only as test material",
+    "test_budget_authorization_ref": "current-setup.json#test_spending_authorization",
+    "budget_authorized": true,
+    "budget_authorized_on": "2026-10-08",
+    "budget_provider_controls_verified": false,
+    "customer_sends_enabled": false,
+    "basecamp_project_name": "Hamle — İç Deneme",
+    "basecamp_project_visibility": "private_internal_test",
+    "basecamp_test_task_id": "10384132942",
+    "basecamp_test_comment_id": "10384148599",
+    "basecamp_test_identity": "Ahmet Şükrü Altındağ via UI",
+    "basecamp_file_readback_verified": true,
+    "basecamp_Hamle_API_connection_verified": false,
+    "internal_test_actions_performed": true,
+    "internal_test_send_evidence": {
+      "test_id": "GC-HAMLE-20261008-01",
+      "date_local": "2026-10-08",
+      "channel": "Gmail connector",
+      "sender_identity": "ahmet@gamechangers.com.tr",
+      "recipient": "hamle@gamechangers.com.tr",
+      "subject": "HAMLE iç bağlantı testi — GC-HAMLE-20261008-01",
+      "message_id": "1a11a20a5785feba",
+      "thread_id": "1a11a20a5785feba",
+      "provider_state": "SENT",
+      "sent_record_verified": true,
+      "recipient_delivery_verified": false,
+      "recipient_read_verified": false,
+      "hamle_reply_verified": false,
+      "hamle_send_identity_verified": false,
+      "state": "sent_from_Ahmet_Hamle_delivery_and_reply_pending",
+      "customer_send": false,
+      "basis": "Ana yürütücünün 8 Ekim gerçek Gmail connector gönderim ve son thread yeniden okuma sonucu; teslim veya Hamle yanıtı kanıtlanmadı.",
+      "thread_readback_verified": true,
+      "thread_readback_account": "ahmet@gamechangers.com.tr",
+      "observed_thread_message_count": 1,
+      "observed_thread_reply_count": 0,
+      "latest_observation": "Ahmet connector tekrar okumasında yalnız 1 SENT ileti var; bu zincirde yanıt görülmedi. Hamle teslimi doğrulanmadı."
+    },
+    "basecamp_internal_test_evidence": {
+      "date_local": "2026-10-08",
+      "test_channel": "Basecamp UI under Ahmet identity",
+      "actor_identity": "Ahmet Şükrü Altındağ",
+      "account_id": "5898865",
+      "project_id": "49184053",
+      "project_name": "Hamle — İç Deneme",
+      "project_visibility": "private_internal_test",
+      "project_created_verified": true,
+      "task_id": "10384132942",
+      "task_url": "https://app.basecamp.com/5898865/buckets/49184053/todos/10384132942",
+      "task_created_verified": true,
+      "assignee": "Ahmet Şükrü Altındağ",
+      "assignee_verified": true,
+      "title_revision_marker": "R1",
+      "title_revision_verified": true,
+      "comment_id": "10384148599",
+      "comment_created_verified": true,
+      "file": {
+        "name": "Hamle_Baglanti_Test_v1.txt",
+        "size_bytes": 479,
+        "upload_completed_in_UI": true,
+        "UI_link_observed": true,
+        "download_readback_verified": false,
+        "content_open_verified": true,
+        "readback_status": "full_UI_text_reopened_and_matched_local_source",
+        "downloaded_content_matches_source": null,
+        "readback_verified": true,
+        "readback_method": "fresh accessibility-tree read of opened Basecamp file",
+        "opened_UI_content_matches_source": true,
+        "limitation": "A local downloaded-file path was not verified; full text reopened in UI and matched the local test source."
+      },
+      "oauth_or_Hamle_API_connection_verified": false,
+      "direct_API_read_or_write_tested": false,
+      "autonomous_agent_workflow_verified": false,
+      "scope": "user-authorized private internal connection test; not customer project operation",
+      "basis": "Ana yürütücünün 8 Ekim gerçek Basecamp UI işlemleri. Yeni erişilebilirlik okumasında yüklenen dosyanın tam metni yeniden açıldı ve yerel test kaynağıyla uyumu doğrulandı; yerel indirme yolu doğrulanmadı.",
+      "UI_task_assignment_revision_comment_upload_content_cycle_verified": true,
+      "task_completed_verified": true,
+      "task_completion_UI_text": "Completed by Ahmet Ş. on Oct 8",
+      "completion_event_id": "17236161598",
+      "completion_event_UI_time": "Today 09:19",
+      "completion_event_time_precision": "UI label as observed; exact UTC timestamp not supplied",
+      "evidence_screenshot": "../Hamle_Basecamp_Test_Kaniti.jpg",
+      "UI_internal_test_status": "complete",
+      "API_and_autonomy_status": "pending_not_verified"
+    },
+    "automatic_Hamle_operations_enabled": false,
+    "basecamp_file_readback_method": "full text reopened in UI; matched local test source; local download path not verified",
+    "basecamp_UI_test_status": "complete_task_assignment_R1_comment_file_content_and_completion_verified",
+    "basecamp_test_task_completed": true,
+    "basecamp_completion_event_id": "17236161598",
+    "basecamp_UI_test_does_not_validate_Hamle_API": true
+  },
+  "production_environment": {
+    "email_recipient_allowlist": null,
+    "basecamp_project_ids": null,
+    "brand_registry_location": null,
+    "live_start_at": null,
+    "open_work_reconciliation_record_id": null,
+    "enabled": false,
+    "test_budget_does_not_fund_or_enable_production": true
+  },
+  "storage": {
+    "provider": "Pages for human-readable cloud knowledge; SQLite for offline synthetic demo only",
+    "agency_zone": "https://chatgpt.com/space/page_e0017f071c1c8191aa5ac2ff4228dd29",
+    "brand_zone": "https://chatgpt.com/space/page_abf5bf1a5dec8191b6ebe2259ddd4a83",
+    "work_zone": "https://chatgpt.com/space/page_e18be257b4888191bb7c80b4861308a5",
+    "external_reputation_zone": "https://chatgpt.com/space/page_f137b9b48fc48191863a24e1ca740ac2",
+    "checkpoint_store": "coverage.json (local; cloud summary exists)",
+    "action_ledger": "offline/demo-synthetic.sqlite (synthetic only)",
+    "source_event_store": "work/learning/sources (local restricted setup data)",
+    "audit_store": null,
+    "secret_manager_reference": null,
+    "credentials_in_config_allowed": false,
+    "persistent_write_read_test_passed": true,
+    "cloud_transactional_store_configured": false,
+    "role_brand_acl_enforced": false
+  },
+  "authority": {
+    "routine_per_message_approval_required": false,
+    "routine_actions": [
+      "read_authorized_correspondence",
+      "clarification",
+      "verified_status",
+      "brief_create_update",
+      "basecamp_task_create_assign_track",
+      "configured_followup",
+      "checked_delivery",
+      "plan_within_verified_capacity_and_scope"
+    ],
+    "routine_actions_state": "Güncel gerçek To/CC kapısı ve ayrı marka/iş yetkisi üretim için zorunludur. Ahmet kimliğiyle kullanıcıca açıkça istenen iç bağlantı testleri kısmen yapıldı; bu bağımsız kurulum yetkisi Hamle adına canlı yazmayı açmaz. Rutin işlem başına tekrar onay kuralı getirilmez.",
+    "commercial_limit_amount": null,
+    "commercial_limit_currency": null,
+    "discount_limit": null,
+    "tool_spending_limit": 50,
+    "spending_period": "2026-10-08 Europe/Istanbul only",
+    "escalation_person_ids": null,
+    "crisis_statement_limits": null,
+    "unconfigured_budget_means_unlimited": false,
+    "authority_change_requires_authorized_source": true,
+    "named_decision_owners": {
+      "commercial": [
+        "Ahmet Şükrü Altındağ"
+      ],
+      "problem_complaint_strategy": [
+        "Cansu Akiş Kabil",
+        "Ahmet Şükrü Altındağ"
+      ],
+      "social_editorial": [
+        "Özge Yağmur",
+        "Hamle"
+      ],
+      "other_routine": [
+        "Hamle"
+      ]
+    },
+    "message_gate_precedes_routing_and_routine_actions": true,
+    "tool_spending_currency": "USD",
+    "tool_spending_limit_scope": "shared aggregate across Google Cloud, OpenAI API and image-generation tests; not per provider or role",
+    "test_spending_authorization_ref": "current-setup.json#test_spending_authorization",
+    "live_and_brand_budgets_separate": true
+  },
+  "activation_gates": [
+    "İlgili son gelen mesajın gerçek To/CC katılım kapısı iş/brief/revizyon/plan/üretim/uzman devri/Basecamp ve gönderimden önce çalışır; yokluk/belirsizlik, çıkarılma ve yeniden dahil edilme gerçek testleri geçer.",
+    "Hedef cloud ortamı gerçek cihazdan bağımsız çalışma ve istenen model/ayar yönünden doğrulandı.",
+    "Kalıcı kayıt, kilit, tekilleştirme, kesinti sonrası devam ve durdurma testleri geçti.",
+    "İlgili marka için hesap, proje, muhatap, sorumlu, kapsam ve yetki sınırları tanımlandı.",
+    "Tanımlı test alıcıları ve deneme Basecamp alanıyla gerekli akış testleri geçti.",
+    "Canlı başlangıç anı ve mevcut açık işlerin uzlaştırılması kaydedildi.",
+    "Hazır marka bu kapsamda otonom işler; rutin işlem başına yeni onay istenmez.",
+    "Son kullanıcı yönlendirme rotaları, Hamle’nin mail kapsamı, sabah özeti ve hafta sonu test istisnası gerçek ortamda doğrulanır; yazılı prova gerçek ajan testi değildir."
+  ],
+  "capability_gap_policy": "Bir üretim aracının eksikliği hazır müşteri temsilcisi veya metin akışını durdurmaz. Yapılabilir işleri ilerlet, gerekli üretimi kabul ve kapasitesi doğrulanan insan ekibe devret.",
+  "whatsapp": {
+    "phase": "later",
+    "one_to_one_api_verified": false,
+    "group_api_verified": false,
+    "existing_group_access_tested": false,
+    "account_id": null,
+    "phone_number_id": null,
+    "authorized_participants": null,
+    "enabled": false
+  },
+  "notification_policy": {
+    "daily_summary_recipient_ids": null,
+    "daily_summary_channel": "email",
+    "notify_meaningful_changes_only": "applies to additional alerts; daily morning digest is an explicit scheduled exception",
+    "repeat_same_question_every_30_minutes": false,
+    "empty_cycle_messages": false,
+    "daily_summary_from": "hamle@gamechangers.com.tr",
+    "daily_summary_to": [
+      "ahmet@gamechangers.com.tr"
+    ],
+    "daily_summary_cc": [],
+    "daily_summary_time": "08:30 Europe/Istanbul first successful workday check",
+    "daily_summary_time_basis": "initial operating choice derived from existing08:30 schedule; adjustable",
+    "daily_summary_enabled": false,
+    "daily_summary_status": "requested_not_scheduled_not_sent",
+    "daily_summary_even_when_no_change": true,
+    "daily_summary_contents": [
+      "today_due_and_owner",
+      "waiting_client_or_team",
+      "Ahmet_commercial_decisions",
+      "Cansu_Ahmet_problems_strategy",
+      "Ozge_social_decisions",
+      "next_30_days_dates_and_preparation",
+      "access_or_processing_failures"
+    ],
+    "digest_idempotency_key": "workday+recipient_scope+digest_type",
+    "summaries_do_not_cross_client_boundaries": true,
+    "eligible_input_policy": "Yalnız bağımsız yetkili görevler ve katılım kapısı geçmiş operasyon kayıtları. Hariç mail içeriği özet/karar/plan girdisi olamaz; katılım kaybı yalnız en az verili iç kontrol durumu olarak gösterilebilir.",
+    "standalone_authority_does_not_restore_excluded_thread": true
+  },
+  "stop_control": {
+    "configured_endpoint_or_command": null,
+    "queue_stop_verified": false,
+    "active_external_write_stop_verified": false
+  },
+  "configuration_notes": [
+    "Bu dosya başlangıç yapılandırma şablonudur; gerçek ajan, bulut hizmeti, zamanlayıcı veya kalıcı veritabanı kurulumu değildir.",
+    "Okuma yetkisi kullanıcıdan alınmıştır; profil bağlantısı gönderim yetkisi olarak yorumlanmaz.",
+    "Parola veya API anahtarı buraya yazılmaz; güvenli bağlantı/secret manager referansı kullanılır.",
+    "Null alanlar bilinmeyendir; kaynaklardan veya kullanıcıdan gelen bilgi dışında yetki tahmini yoktur.",
+    "Dört rol dosyası dört kalıcı ajan kurulduğunun kanıtı değildir.",
+    "Hesap açıldı kullanıcı beyanı, bağlantı doğrulaması ve iletişim testi ayrı durumlardır; 8 Ekim politika güncellemesi yeni bağlantı testi yapıldığı anlamına gelmez.",
+    "50 USD ortak test bütçesi 8 Ekim için onaylandı. Marka ticari bütçelerindeki null değerler test bütçesi eksik demek değildir; ayrı ve henüz tanımlanmamış yetki alanlarıdır. Sağlayıcı toplam fatura/bakiye değerleri bilinmiyor.",
+    "8 Ekim Basecamp Ahmet UI döngüsü dosyanın tam metin doğrulaması ve görev tamamlama dahil geçti; yerel indirme yolu doğrulanmadı. Ahmet→Hamle threadi 1 SENT ileti, yanıt yok. Hamle teslimi/API bağlantısı belirsiz; temiz Gmail sekmesi şifre ekranında ve yeniden giriş istendi. Google Cloud bekletildi. 35/35 yerel yapay veri testi ayrı sonuçtur."
+  ],
+  "evidence_manifest": "connection-evidence.json",
+  "historical_brand_labels_outside_current_roster": [
+    "bwi",
+    "cacaonly"
+  ],
+  "deployment_recommendation": {
+    "decision_status": "Google_Cloud_deferred_by_user_not_deployed",
+    "platform": "Google Cloud managed services",
+    "compute": "Cloud Run",
+    "model_provider": "OpenAI API",
+    "model_runtime_candidate": "Agents API sessions; access and exact settings require account test",
+    "scheduler": "Cloud Scheduler with Europe/Istanbul business-hours gate",
+    "transactional_store_candidate": "Firestore server-side transactions; brand/role authorization enforced by application gateway",
+    "artifact_store_candidate": "Cloud Storage",
+    "secrets_candidate": "Secret Manager",
+    "human_readable_knowledge": "existing Pages records",
+    "supersedes": "Work Cloud as first candidate in v01",
+    "reason": "Basecamp, recipient/brand authorization, durable action ledger, recovery, exact scheduling and independent role checks require tested application control.",
+    "cloud_project_id": null,
+    "openai_project_id": null,
+    "billing_authorized": true,
+    "spending_limit": 50,
+    "estimated_first_routine_live": "8 October connection/test request; 10 October historical shadow and internal mail demos; 12 October only qualified live scopes, conditional target",
+    "estimated_broader_production": "Hamle+copywriter+tested graphic formats prioritized in the same sprint; wider motion timing not committed",
+    "persistent_agent_design": {
+      "agent_definition_per_role": true,
+      "agent_ids": {
+        "account_manager": null,
+        "copywriter": null,
+        "graphic_designer": null,
+        "motion_designer": null
+      },
+      "session_partition": [
+        "brand_id",
+        "work_id",
+        "role_id"
+      ],
+      "durable_queue_required": true,
+      "resume_checkpoint_required": true,
+      "role_tool_authorization_required": true
+    },
+    "account_setup": "Ahmet connector internal send/readback and private Basecamp UI cycle are verified; local synthetic rule tests passed35/35. Hamle UI login was seen, then loading/session errors; clean Gmail tab now requires password reauthentication requested from the user. Hamle delivery/reply and connector/API remain unverified. Google Cloud is deferred by user; no deployment or new paid resource was created.",
+    "previous_estimates_superseded": {
+      "first_routine_live": "2–3 weeks after access, scope, budget and tests are ready; planning estimate only",
+      "broader_production": "3–6 weeks conditional on graphics/motion tools and file handoff tests; planning estimate only"
+    },
+    "billing_authorization_scope": "8 October 2026 tests only; shared aggregate USD50 across Google Cloud + OpenAI API + image generation; no recurring or future subscription authorization",
+    "billing_configuration_verified": false,
+    "spending_currency": "USD",
+    "spending_limit_is_shared_with_other_providers": true,
+    "test_spending_authorization_ref": "current-setup.json#test_spending_authorization",
+    "current_execution_status": "Google Cloud skipped for now; continue independent internal tests",
+    "cloud_work_deferred_by_user": true,
+    "cloud_defer_source": "8 Ekim doğrudan kullanıcı kararı",
+    "cloud_console_status": "login verified; www.gstatic.com JavaScript loading error",
+    "cloud_deployment_created": false,
+    "automatic_cloud_resume_authorized": false
+  },
+  "routing_policy": {
+    "version": "2026-10-08-user-recipient-gate-v2",
+    "status": "user_authorized_design_not_connected_runtime",
+    "source": "Ahmet’in 7 Ekim yönlendirme kararları; 8 Ekim mesaj bazlı gerçek To/CC şartı ve yalnız 8 Ekim denemelerine ortak toplam 50 USD harcama onayı",
+    "interpretation": "“tekli isterse” bağlam içinde teklif talebi olarak yorumlandı; tüm ajans teklif/fiyat talepleri Ahmet’e gider.",
+    "routes": [
+      {
+        "category": "agency_quote_price_discount_new_cost",
+        "decision_owners": [
+          "Ahmet Şükrü Altındağ"
+        ],
+        "hamle_actions": [
+          "acknowledge",
+          "collect_scope_and_missing_inputs",
+          "prepare_options",
+          "route_to_owner",
+          "track_response"
+        ],
+        "prohibited": [
+          "invent_price",
+          "reuse_old_quote_as_current",
+          "commit_budget_or_delivery_for_others"
+        ],
+        "precondition": "message_participation_gate passed for latest relevant incoming message; separate pre-authorized independent tasks use their own authority and no excluded-message input"
+      },
+      {
+        "category": "problem_complaint_strategic_decision",
+        "decision_owners": [
+          "Cansu Akiş Kabil",
+          "Ahmet Şükrü Altındağ"
+        ],
+        "hamle_actions": [
+          "acknowledge",
+          "collect_evidence",
+          "identify_affected_versions",
+          "prepare_resolution_options",
+          "route_and_track"
+        ],
+        "prohibited": [
+          "admit_unverified_fault",
+          "decide_brand_strategy_alone",
+          "promise_compensation"
+        ],
+        "precondition": "message_participation_gate passed for latest relevant incoming message; separate pre-authorized independent tasks use their own authority and no excluded-message input"
+      },
+      {
+        "category": "social_agenda_content_plan_trends_seasonal",
+        "decision_owners": [
+          "Özge Yağmur",
+          "Hamle"
+        ],
+        "hamle_actions": [
+          "prepare_ideas_and_calendar",
+          "collaborate_with_ozge",
+          "check_current_sources",
+          "reply_and_track"
+        ],
+        "requires": "Özge contribution or an applicable pre-agreed plan; do not claim consultation before it happens",
+        "precondition": "message_participation_gate passed for latest relevant incoming message; separate pre-authorized independent tasks use their own authority and no excluded-message input"
+      },
+      {
+        "category": "other_authorized_routine_work",
+        "decision_owners": [
+          "Hamle"
+        ],
+        "hamle_actions": [
+          "reply_directly",
+          "clarify",
+          "brief",
+          "dispatch",
+          "basecamp_comment_revision",
+          "track",
+          "checked_delivery"
+        ],
+        "requires": "Existing brand scope, verified capacity, tool access and authority. Unknown information is not invented.",
+        "precondition": "message_participation_gate passed for latest relevant incoming message; separate pre-authorized independent tasks use their own authority and no excluded-message input"
+      }
+    ],
+    "mixed_intent": "Yalnız katılım kapısı geçen mesaj için tek hesap verebilir iş oluştur; karma niyetleri ilgili sahiplerine ayır. Kapı geçmeyen mesajdan karma iş veya yönlendirme başlatma.",
+    "strategic_boundary": "Positioning, core brand claim, overall creative platform, channel/investment change: Cansu+Ahmet. Executing an approved content calendar/trend/seasonal idea: Özge+Hamle.",
+    "routine_revision_boundary": "Ordinary scoped revision stays with Hamle; dissatisfaction, repeated failure or delivery breakdown is a problem/complaint for Cansu+Ahmet.",
+    "single_customer_flow": "Hamle yalnız güncel katılım ve kapsam yetkisi içinde akışın sahibidir. İnsan devraldıysa tekrarlama; güncel ve yetkili son insan işlemini oku. Hamle son gelen mesajdan çıkarılmışsa eski katılımla devam etme; iç devir/bekleme uygula.",
+    "repeated_approval": "Kapsam içi rutin mesaj başına Ahmet’ten tekrar onay istenmez. Her mesajdaki gerçek To/CC kapısı teknik yetki kontrolüdür; eski katılım bu kontrolün yerine geçmez.",
+    "contact_routes": {
+      "Ahmet Şükrü Altındağ": "ahmet@gamechangers.com.tr",
+      "Cansu Akiş Kabil": "cansu@gamechangers.com.tr",
+      "Özge Yağmur": "ozge@gamechangers.com.tr"
+    },
+    "contact_route_basis": "Addresses observed in authorized business correspondence; platform identities and Basecamp permissions still require setup.",
+    "message_participation_gate": {
+      "version": "2026-10-08-user-recipient-gate-v2",
+      "source": "Ahmet’in 8 Ekim 2026 tarihli doğrudan kullanıcı kararı",
+      "status": "configured_policy_not_runtime_verified",
+      "address": "hamle@gamechangers.com.tr",
+      "rule": "İlgili son gelen mesajın sağlayıcıdan alınan gerçek To veya CC alıcılarında Hamle yoksa o mesajdan yanıt, iş, brief, revizyon, üretim, plan değişikliği, uzman görevi veya Basecamp aksiyonu başlatılamaz. Bu kapı yönlendirme ve içerikten eylem çıkarma işleminden önce uygulanır.",
+      "evaluate_message": "latest_relevant_incoming_message_not_latest_message_matching_hamle",
+      "accepted_recipient_fields": [
+        "To",
+        "Cc"
+      ],
+      "recipient_evidence": "Sağlayıcının ilgili mesaja ait gerçek başlık/alıcı alanları; Message-ID, thread/work kimliği ve başlık okuma zamanı ile kaydedilir. Görünen kişi adı yerine ayrıştırılmış tam e-posta adresi eşleştirilir.",
+      "address_matching": "Tam adres eşleşmesi; harf büyüklüğü ve çevre boşluğu normalleştirilebilir. Takma ad, grup adresi, plus adresi veya alan adı üzerinden örtük eşleştirme yapılmaz; bu kural için açık Hamle adresi gerekir.",
+      "allow_requires": [
+        "latest_relevant_message_identity_resolved",
+        "actual_To_or_Cc_contains_hamle",
+        "message_is_not_own_sent_echo",
+        "current_authority_revision_matches",
+        "separate_brand_sender_work_scope_and_tool_checks_pass"
+      ],
+      "presence_is_necessary_not_sufficient": true,
+      "not_authority": [
+        "previous_thread_participation",
+        "older_To_or_Cc_presence",
+        "message_visible_in_ahmet_mailbox",
+        "quoted_forwarded_body_mentions_hamle",
+        "Bcc_or_envelope_delivery_only",
+        "implicit_copy_or_automatic_forward",
+        "matching_customer_domain",
+        "own_sent_message",
+        "old_work_or_old_approval"
+      ],
+      "absent_or_unknown_result": "hold_no_message_derived_action",
+      "missing_headers_or_uncertain_latest_message": "Doğrulanamayan alanı yetki var gibi yorumlama; ilgili iş bekler. Son görünür mesajın bütün gerçek yazışmanın son mesajı olduğu garanti edilmez.",
+      "excluded_content_handling": "Hariç mesajı müşteri yanıtı, görev, revizyon, plan, Basecamp aksiyonu veya sabah özeti/takvim girdisi yapma. Yalnız kapı sonucunun, kaynak kimliğinin ve bekleme gerekçesinin en az veriyle iç denetim kaydı tutulabilir; bu kayıt iş başlatma yetkisi değildir.",
+      "removal_handling": {
+        "when": "İlgili daha yeni mesajda Hamle’nin gerçek To/CC dışında kaldığı doğrulanınca veya katılım/yetki bilgisi belirsizleşince",
+        "invalidate": "Önceki mesajın yetki sürümünü, sıradaki mail/teslim/iş/üretim/revizyon ve Basecamp aksiyonları için geçersiz kıl.",
+        "queue_and_workers": "İlgili akışın bekleyen ve devam eden otomatik işlemlerini güvenli duraklat; eldeki çıktıyı koru fakat teslim etme veya yeni sürüm/aksiyon üretme. Uzmanlara yalnız durdurma/yetki geri çekme sinyali ilet.",
+        "external_actions": "Önceki zincir yetkisiyle devam eden ilgili dış aksiyonları durdur; gönderim sonucu belirsizse tekrar gönderme. Zaten gerçekleşmiş işlem geri alınmış sayılmaz ve kendiliğinden silinmez.",
+        "handoff": "Yetkili iç sahibine mevcut, daha önce yetkili durum ve katılım kaybı/belirsizliği üzerinden kısa kontrol devri veya bekleme kaydı ver; hariç mesajın içeriğinden yeni brief çıkarma.",
+        "resume": "Yeni gelen bir mesajın gerçek To/CC alanında Hamle açıkça yeniden dahil edilirse o yeni mesajın açık iş kapsamını, güncel brief’i ve insanın son işlemini uzlaştırıp yeni yetki sürümü oluştur. Eski kuyruğu veya hariç mesajları topluca otomatik işletme."
+      },
+      "forward_semantics": "Yeni yönlendirme mesajı kendi gerçek To/CC alanında Hamle’yi açıkça içeriyor ve iş isteğini açıkça iletiyorsa yalnız o yeni mesajın kapsamı değerlendirilebilir. Alıntı içindeki adres veya eski ekli başlık tek başına yetki vermez.",
+      "historical_learning": "Ahmet hesabının yetkili iş geçmişi öğrenilebilir; bu erişim, Hamle’nin bulunmadığı bir mesajı canlı iş tetikleyicisine dönüştürmez. Canlı operasyonun posta kaynağı Hamle hesabıdır.",
+      "visibility_limit": "Hamle’ye ulaşmayan ve yetkili bir katılım bildirimiyle de görünür olmayan mesajın varlığını, içeriğini veya alıcılarını bildiğini iddia etme. Ahmet hesabını canlı akışı telafi eden ikinci posta kaynağı olarak kullanma; doğrulanamayan ilgili son durum için bekle ve erişim sınırını iç kayda yaz.",
+      "independent_authorization": "Kaynaklı doğum günü, sabah özeti veya ayrı açık görev gibi önceden yetkilendirilmiş bağımsız işler kendi kayıtlı yetkileriyle sürebilir. Hariç mesajı girdi yapamaz ve aynı engellenmiş işi başka görev adıyla sürdüremez.",
+      "no_automatic_global_forwarding": true,
+      "no_automatic_self_readd_to_To_or_Cc": true,
+      "checkpoints": [
+        "before_content_to_action",
+        "before_work_create_or_update",
+        "before_plan_or_revision",
+        "before_specialist_dispatch",
+        "before_production_step",
+        "before_any_Basecamp_mutation",
+        "immediately_before_external_send_or_delivery",
+        "before_retry_or_resume"
+      ],
+      "enforcement": "Çalışma altyapısı, iş kilidi altında en son katılım/yetki sürümünü her aksiyondan önce yeniden kontrol eder. Dosya talimatı tek başına çalışma zamanı koruması değildir.",
+      "routine_per_message_human_approval_required": false
+    },
+    "precedence": "Önce son gelen mesajın gerçek To/CC kapısı; sonra marka/kişi/iş yetkisi; sonra aşağıdaki karar rotası. Kapı geçmezse rota bir iş veya yanıt başlatmaz.",
+    "required_recipient_gate_tests": [
+      {
+        "case": "latest_incoming_explicit_To_hamle",
+        "expected": "eligible_only_if_other_scope_checks_pass",
+        "status": "required_not_verified"
+      },
+      {
+        "case": "latest_incoming_explicit_Cc_hamle",
+        "expected": "eligible_only_if_other_scope_checks_pass",
+        "status": "required_not_verified"
+      },
+      {
+        "case": "older_Cc_hamle_latest_absent",
+        "expected": "no_reply_no_work_no_revision_no_plan_no_Basecamp_pause_related_queue",
+        "status": "required_not_verified"
+      },
+      {
+        "case": "hamle_only_in_forwarded_body",
+        "expected": "hold_no_action",
+        "status": "required_not_verified"
+      },
+      {
+        "case": "hamle_only_Bcc_or_delivery_envelope",
+        "expected": "hold_no_action",
+        "status": "required_not_verified"
+      },
+      {
+        "case": "excluded_message_seen_via_ahmet_history",
+        "expected": "learning_only_no_live_trigger",
+        "status": "required_not_verified"
+      },
+      {
+        "case": "missing_actual_headers_or_uncertain_latest",
+        "expected": "hold_no_action",
+        "status": "required_not_verified"
+      },
+      {
+        "case": "new_explicit_To_Cc_reinclusion",
+        "expected": "reconcile_only_new_scope_no_backlog_auto_execution",
+        "status": "required_not_verified"
+      },
+      {
+        "case": "removal_after_dispatch_before_send",
+        "expected": "revoke_related_authority_and_block_pending_action",
+        "status": "required_not_verified"
+      },
+      {
+        "case": "specialist_revision_from_excluded_message",
+        "expected": "block_no_delegation_bypass",
+        "status": "required_not_verified"
+      },
+      {
+        "case": "preauthorized_birthday_or_morning_digest",
+        "expected": "continue_only_independent_authority_and_eligible_sources",
+        "status": "required_not_verified"
+      },
+      {
+        "case": "Ahmet_internal_demo_explicit_To_hamle",
+        "expected": "test_only_not_customer_authorization",
+        "status": "required_not_verified"
+      },
+      {
+        "case": "historical_replay_original_headers_exclude_hamle",
+        "expected": "shadow_evaluation_only_no_live_or_Basecamp_effect",
+        "status": "required_not_verified"
+      },
+      {
+        "case": "unseen_message",
+        "expected": "do_not_claim_seen_or_complete_coverage",
+        "status": "required_not_verified"
+      },
+      {
+        "case": "own_sent_echo",
+        "expected": "no_new_work_no_loop",
+        "status": "required_not_verified"
+      }
+    ],
+    "test_spending_authorization": {
+      "authorization_id": "2026-10-08-shared-test-budget-50-usd",
+      "source": "8 Ekim 2026 doğrudan kullanıcı onayı",
+      "status": "authorized_one_day_tests_not_spent_or_billing_verified",
+      "currency": "USD",
+      "aggregate_limit": 50,
+      "limit_type": "one_shared_pool_across_all_listed_providers_and_roles",
+      "provider_scopes": [
+        "Google Cloud test resources",
+        "OpenAI API tests",
+        "image generation tests"
+      ],
+      "purpose": "8 Ekim 2026 bağlantı, model/altyapı ve görsel üretim denemeleri",
+      "timezone": "Europe/Istanbul",
+      "valid_local_date": "2026-10-08",
+      "valid_until_exclusive": "2026-10-09T00:00:00+03:00",
+      "per_provider_limit": null,
+      "per_role_limit": null,
+      "unused_amount_rollover_authorized": false,
+      "automatic_renewal_authorized": false,
+      "next_month_subscription_authorized": false,
+      "future_days_or_live_operation_budget_authorized": false,
+      "not_authorized": [
+        "50_USD_for_each_provider",
+        "50_USD_for_each_role",
+        "recurring_subscription",
+        "automatic_topup",
+        "automatic_renewal",
+        "spend_after_8_October",
+        "client_campaign_budget",
+        "customer_sending_activation"
+      ],
+      "control": "Bütün sağlayıcı ve roller aynı toplam 50 USD havuzunu kullanır. Ücretli adım öncesi gerçekleşmiş, bekleyen ve ayrılmış test maliyetleri birlikte kontrol edilip kalan ortak tutar içinde en yüksek maliyet için kayıt ayrılır. Sağlayıcı başına ayrı 50 USD açılamaz; paralel adımlar aynı rezervasyon kaydını kullanmalıdır.",
+      "uncertain_cost": "Sağlayıcı ücreti veya bekleyen kullanım bilinmiyorsa toplam sınırın altında kalacak üst maliyet doğrulanmadan yeni ücretli adım başlatma. Bildirim eşiği gerçek harcama sınırı olarak sunulmaz.",
+      "expiry_and_resources": "8 Ekim denemesi için yeni kurulan ücretli kaynakların gün sonrasında yetkisiz maliyet üretmemesi için durdurma/temizlik planı gerekir. Önceden var olan şirket kaynakları bu bütçe kararıyla kapatılmaz veya silinmez.",
+      "recorded_agent_initiated_test_spend_usd": 0,
+      "recorded_spend_basis": "Bu oturumda henüz satın alma veya model API denemesi başlatılmadığına dair mevcut oturum kaydı; sağlayıcı fatura mutabakatı değildir.",
+      "provider_billing_checked": false,
+      "provider_billed_test_total_usd": null,
+      "provider_account_balance_usd": null,
+      "remaining_after_provider_reconciliation_usd": null,
+      "unverified_balance_note": "Bu oturumdaki kayıtlı yeni test harcamasının 0 olması, genel hesap bakiyesi veya sağlayıcının toplam faturasının 0 olduğu anlamına gelmez.",
+      "routine_reapproval_within_scope_required": false,
+      "does_not_override_message_participation_gate": true,
+      "does_not_enable_customer_sends": true
+    },
+    "test_budget_routing": "Önceden açıkça onaylanmış 8 Ekim test havuzu içinde her sağlayıcı/işlem için tekrar Ahmet onayı gerekmez; ortak toplam 50 USD kontrol edilir. Müşteri teklif/fiyat/indirim/yeni maliyet kararları yine Ahmet’e gider; test bütçesi müşteri harcama veya gönderim yetkisi değildir."
+  },
+  "mail_participation": {
+    "requested_address": "hamle@gamechangers.com.tr",
+    "scope": "Only the latest relevant incoming message with Hamle explicitly present in actual To/Cc; independent pre-authorized tasks retain separate authority.",
+    "gate_ref": "current-setup.json#message_participation_gate",
+    "new_human_business_mail": "Yetkili insan Hamle’yi ilgili yeni mailin gerçek To/CC alanına açıkça ekler; otomatik ekleme yapılmaz.",
+    "hamle_sent_mail": "Doğrulanmış Hamle From kimliği; kendi gönderisi yeni yetki veya iş tetiklemez.",
+    "live_inbound_source": "hamle@gamechangers.com.tr",
+    "historical_learning_source": "ahmet@gamechangers.com.tr",
+    "ahmet_mailbox_live_trigger_allowed": false,
+    "inbound_coverage": "Mailin görünmesi veya dağıtım kopyası katılım yetkisi değildir. Yalnız doğrulanabilen gerçek To/CC değerlendirilir; görülmeyen mesaj kapsamı bilinmiyor olarak kalır.",
+    "preserve_thread_and_recipient_intent": true,
+    "copy_private_unrelated_mail": false,
+    "expose_bcc_to_other_recipients": false,
+    "self_reply_loop_prevention": true,
+    "deduplicate_cross_mailbox_and_basecamp_copies": true,
+    "required_live_tests": [
+      "latest_incoming_explicit_To_hamle",
+      "latest_incoming_explicit_Cc_hamle",
+      "older_Cc_hamle_latest_absent",
+      "hamle_only_in_forwarded_body",
+      "hamle_only_Bcc_or_delivery_envelope",
+      "excluded_message_seen_via_ahmet_history",
+      "missing_actual_headers_or_uncertain_latest",
+      "new_explicit_To_Cc_reinclusion",
+      "removal_after_dispatch_before_send",
+      "specialist_revision_from_excluded_message",
+      "preauthorized_birthday_or_morning_digest",
+      "Ahmet_internal_demo_explicit_To_hamle",
+      "historical_replay_original_headers_exclude_hamle",
+      "unseen_message",
+      "own_sent_echo"
+    ],
+    "workspace_routing_configured": false,
+    "automatic_global_forwarding_allowed": false,
+    "automatic_self_readd_allowed": false,
+    "send_as_verified": false,
+    "all_mail_coverage_verified": false,
+    "internal_external_separation": "İç notlar müşteriye açılmaz; bir mesajın iç yönlendirmesi o mesajın katılım şartını aşamaz."
+  },
+  "proactive_dates": {
+    "status": "designed_not_populated_not_scheduled",
+    "records_template": "hamle-prova/important-dates.template.json",
+    "sources": "authorized client/person records and official brand/calendar sources; no guessed birthdays",
+    "birthday_year_required": false,
+    "lookahead_days": 30,
+    "brand_content_default_lead_days": [
+      21,
+      14,
+      7
+    ],
+    "final_check_lead_business_days": 2,
+    "birthday_internal_reminder_days": [
+      7,
+      1
+    ],
+    "planning_owner": "Hamle",
+    "social_content_partner": "Özge Yağmur",
+    "auto_gifts_or_spending": false,
+    "auto_publication": false,
+    "greeting_send_requires_defined_recipient_and_scope": true,
+    "recurrence_idempotency": "brand/person+event_id+occurrence_year+reminder_stage",
+    "proposed_dates_not_confirmed_events": true,
+    "independent_authority_and_sources": "Önceden açıkça yetkili, kaynaklı tarih kayıtları üzerinden çalışır; Hamle’nin dışında kaldığı mailden tarih, revizyon veya yeni plan üretmez."
+  },
+  "launch_sprint": {
+    "source": "8 Ekim bağlantı/gerçek iletişim testi ve 10 Ekim geçmiş gerçek taleplerle gölge/iç demo isteği; önceki 9–11 Ekim sprinti bu hazırlıkla sürer.",
+    "status": "partial_internal_tests_completed_Google_Cloud_deferred",
+    "preparation_dates": [
+      "2026-10-07",
+      "2026-10-08"
+    ],
+    "sprint_dates": [
+      "2026-10-09",
+      "2026-10-10",
+      "2026-10-11"
+    ],
+    "target_monday": "2026-10-12T08:30:00+03:00",
+    "timing_basis": "10 Ekim gölge/iç demo hedefi korunur. Google Cloud şimdilik bekletildiği için cihazdan bağımsız kalıcı çalışmanın hazır olduğu veya Pazartesi tam canlıya geçileceği varsayılamaz; yalnız gerçek kontrolleri geçen kapsam değerlendirilir.",
+    "early_routine_live_target": "10 Ekim gölge/iç demo önceliklidir; yalnız ayrıca gerçek kontrolleri ve marka yetkileri geçen kapsam canlı olabilir, replay sonucu bunu kendiliğinden açmaz.",
+    "priority_roles": [
+      "account_manager",
+      "copywriter",
+      "graphic_designer"
+    ],
+    "motion": "later wider autonomy; production handoff remains possible",
+    "all_brands_in_scope": true,
+    "weekend_override": {
+      "dates": [
+        "2026-10-10",
+        "2026-10-11"
+      ],
+      "hours": "08:30–18:30",
+      "unique_check_slots_per_day": 21,
+      "scope": "one-off setup/test windows; 10 October historical replay shadow evaluation and explicit Ahmet-to-Hamle internal demos; no implied customer production activation",
+      "scheduler_created": false,
+      "normal_weekend_operation_authorized": false
+    },
+    "go_live_checks": [
+      "actual_cloud_run_while_computer_off",
+      "real_mail_send_and_reply_readback",
+      "real_basecamp_task_comment_revision_file_cycle",
+      "routing_four_paths_and_mixed_intent",
+      "wrong_brand_or_recipient_block",
+      "no_duplicate_or_unknown_result_retry",
+      "human_takeover_and_stop",
+      "current_brief_copy_graphic_version",
+      "each_live_graphic_format_rendered_and_inspected",
+      "budget_and_scope_present",
+      "live_cutover_open_work_reconciled",
+      "latest_actual_To_Cc_gate_before_any_work_or_action",
+      "removed_Hamle_revokes_related_queued_and_inflight_work",
+      "no_Bcc_body_history_or_forwarding_bypass",
+      "fresh_explicit_reinclusion_reconciles_only_new_scope",
+      "excluded_mail_not_input_to_independent_digest_dates",
+      "no_claim_of_unseen_message_visibility"
+    ],
+    "monday_readiness": "Conditional only; Google Cloud deferred and persistent runtime not deployed. Local/internal demos do not prove unattended live readiness.",
+    "normal_workday_followthrough_dates": [
+      "2026-10-12",
+      "2026-10-13"
+    ],
+    "one_hundred_percent_definition": "All in-scope messages in an observable window recorded and routed; all declared acceptance cases passed. Not a guarantee for all future output.",
+    "connection_test_date": "2026-10-08",
+    "connection_test_status": "Basecamp_UI_cycle_and_Ahmet_SENT_verified_Hamle_reauthentication_pending_delivery_reply_unverified",
+    "saturday_evaluation": {
+      "date": "2026-10-10",
+      "historical_real_requests": "replay_shadow_only",
+      "new_internal_demo_requests": "Ahmet sends fresh message explicitly To/Cc Hamle",
+      "actual_customer_mail_required_for_demo": false,
+      "customer_sends_from_replay": false,
+      "production_Basecamp_writes_from_replay": false,
+      "label_results_separately": [
+        "historical_replay",
+        "internal_live_mail_demo",
+        "new_customer_live_event"
+      ],
+      "preserve_original_recipient_headers": true,
+      "new_demo_envelope_is_test_authority_only": true
+    },
+    "budget_timing": "8 October one-day tests have one shared USD50 pool; 9–12 October paid execution is not funded by rollover or implied renewal. Free/local work can proceed within scope; later paid scope needs its own authorization.",
+    "cloud_stage_status": "deferred_by_user_do_not_auto_resume"
+  },
+  "policy_updated_on": "2026-10-08",
+  "message_participation_gate": {
+    "version": "2026-10-08-user-recipient-gate-v2",
+    "source": "Ahmet’in 8 Ekim 2026 tarihli doğrudan kullanıcı kararı",
+    "status": "configured_policy_not_runtime_verified",
+    "address": "hamle@gamechangers.com.tr",
+    "rule": "İlgili son gelen mesajın sağlayıcıdan alınan gerçek To veya CC alıcılarında Hamle yoksa o mesajdan yanıt, iş, brief, revizyon, üretim, plan değişikliği, uzman görevi veya Basecamp aksiyonu başlatılamaz. Bu kapı yönlendirme ve içerikten eylem çıkarma işleminden önce uygulanır.",
+    "evaluate_message": "latest_relevant_incoming_message_not_latest_message_matching_hamle",
+    "accepted_recipient_fields": [
+      "To",
+      "Cc"
+    ],
+    "recipient_evidence": "Sağlayıcının ilgili mesaja ait gerçek başlık/alıcı alanları; Message-ID, thread/work kimliği ve başlık okuma zamanı ile kaydedilir. Görünen kişi adı yerine ayrıştırılmış tam e-posta adresi eşleştirilir.",
+    "address_matching": "Tam adres eşleşmesi; harf büyüklüğü ve çevre boşluğu normalleştirilebilir. Takma ad, grup adresi, plus adresi veya alan adı üzerinden örtük eşleştirme yapılmaz; bu kural için açık Hamle adresi gerekir.",
+    "allow_requires": [
+      "latest_relevant_message_identity_resolved",
+      "actual_To_or_Cc_contains_hamle",
+      "message_is_not_own_sent_echo",
+      "current_authority_revision_matches",
+      "separate_brand_sender_work_scope_and_tool_checks_pass"
+    ],
+    "presence_is_necessary_not_sufficient": true,
+    "not_authority": [
+      "previous_thread_participation",
+      "older_To_or_Cc_presence",
+      "message_visible_in_ahmet_mailbox",
+      "quoted_forwarded_body_mentions_hamle",
+      "Bcc_or_envelope_delivery_only",
+      "implicit_copy_or_automatic_forward",
+      "matching_customer_domain",
+      "own_sent_message",
+      "old_work_or_old_approval"
+    ],
+    "absent_or_unknown_result": "hold_no_message_derived_action",
+    "missing_headers_or_uncertain_latest_message": "Doğrulanamayan alanı yetki var gibi yorumlama; ilgili iş bekler. Son görünür mesajın bütün gerçek yazışmanın son mesajı olduğu garanti edilmez.",
+    "excluded_content_handling": "Hariç mesajı müşteri yanıtı, görev, revizyon, plan, Basecamp aksiyonu veya sabah özeti/takvim girdisi yapma. Yalnız kapı sonucunun, kaynak kimliğinin ve bekleme gerekçesinin en az veriyle iç denetim kaydı tutulabilir; bu kayıt iş başlatma yetkisi değildir.",
+    "removal_handling": {
+      "when": "İlgili daha yeni mesajda Hamle’nin gerçek To/CC dışında kaldığı doğrulanınca veya katılım/yetki bilgisi belirsizleşince",
+      "invalidate": "Önceki mesajın yetki sürümünü, sıradaki mail/teslim/iş/üretim/revizyon ve Basecamp aksiyonları için geçersiz kıl.",
+      "queue_and_workers": "İlgili akışın bekleyen ve devam eden otomatik işlemlerini güvenli duraklat; eldeki çıktıyı koru fakat teslim etme veya yeni sürüm/aksiyon üretme. Uzmanlara yalnız durdurma/yetki geri çekme sinyali ilet.",
+      "external_actions": "Önceki zincir yetkisiyle devam eden ilgili dış aksiyonları durdur; gönderim sonucu belirsizse tekrar gönderme. Zaten gerçekleşmiş işlem geri alınmış sayılmaz ve kendiliğinden silinmez.",
+      "handoff": "Yetkili iç sahibine mevcut, daha önce yetkili durum ve katılım kaybı/belirsizliği üzerinden kısa kontrol devri veya bekleme kaydı ver; hariç mesajın içeriğinden yeni brief çıkarma.",
+      "resume": "Yeni gelen bir mesajın gerçek To/CC alanında Hamle açıkça yeniden dahil edilirse o yeni mesajın açık iş kapsamını, güncel brief’i ve insanın son işlemini uzlaştırıp yeni yetki sürümü oluştur. Eski kuyruğu veya hariç mesajları topluca otomatik işletme."
+    },
+    "forward_semantics": "Yeni yönlendirme mesajı kendi gerçek To/CC alanında Hamle’yi açıkça içeriyor ve iş isteğini açıkça iletiyorsa yalnız o yeni mesajın kapsamı değerlendirilebilir. Alıntı içindeki adres veya eski ekli başlık tek başına yetki vermez.",
+    "historical_learning": "Ahmet hesabının yetkili iş geçmişi öğrenilebilir; bu erişim, Hamle’nin bulunmadığı bir mesajı canlı iş tetikleyicisine dönüştürmez. Canlı operasyonun posta kaynağı Hamle hesabıdır.",
+    "visibility_limit": "Hamle’ye ulaşmayan ve yetkili bir katılım bildirimiyle de görünür olmayan mesajın varlığını, içeriğini veya alıcılarını bildiğini iddia etme. Ahmet hesabını canlı akışı telafi eden ikinci posta kaynağı olarak kullanma; doğrulanamayan ilgili son durum için bekle ve erişim sınırını iç kayda yaz.",
+    "independent_authorization": "Kaynaklı doğum günü, sabah özeti veya ayrı açık görev gibi önceden yetkilendirilmiş bağımsız işler kendi kayıtlı yetkileriyle sürebilir. Hariç mesajı girdi yapamaz ve aynı engellenmiş işi başka görev adıyla sürdüremez.",
+    "no_automatic_global_forwarding": true,
+    "no_automatic_self_readd_to_To_or_Cc": true,
+    "checkpoints": [
+      "before_content_to_action",
+      "before_work_create_or_update",
+      "before_plan_or_revision",
+      "before_specialist_dispatch",
+      "before_production_step",
+      "before_any_Basecamp_mutation",
+      "immediately_before_external_send_or_delivery",
+      "before_retry_or_resume"
+    ],
+    "enforcement": "Çalışma altyapısı, iş kilidi altında en son katılım/yetki sürümünü her aksiyondan önce yeniden kontrol eder. Dosya talimatı tek başına çalışma zamanı koruması değildir.",
+    "routine_per_message_human_approval_required": false
+  },
+  "test_spending_authorization": {
+    "authorization_id": "2026-10-08-shared-test-budget-50-usd",
+    "source": "8 Ekim 2026 doğrudan kullanıcı onayı",
+    "status": "authorized_one_day_tests_not_spent_or_billing_verified",
+    "currency": "USD",
+    "aggregate_limit": 50,
+    "limit_type": "one_shared_pool_across_all_listed_providers_and_roles",
+    "provider_scopes": [
+      "Google Cloud test resources",
+      "OpenAI API tests",
+      "image generation tests"
+    ],
+    "purpose": "8 Ekim 2026 bağlantı, model/altyapı ve görsel üretim denemeleri",
+    "timezone": "Europe/Istanbul",
+    "valid_local_date": "2026-10-08",
+    "valid_until_exclusive": "2026-10-09T00:00:00+03:00",
+    "per_provider_limit": null,
+    "per_role_limit": null,
+    "unused_amount_rollover_authorized": false,
+    "automatic_renewal_authorized": false,
+    "next_month_subscription_authorized": false,
+    "future_days_or_live_operation_budget_authorized": false,
+    "not_authorized": [
+      "50_USD_for_each_provider",
+      "50_USD_for_each_role",
+      "recurring_subscription",
+      "automatic_topup",
+      "automatic_renewal",
+      "spend_after_8_October",
+      "client_campaign_budget",
+      "customer_sending_activation"
+    ],
+    "control": "Bütün sağlayıcı ve roller aynı toplam 50 USD havuzunu kullanır. Ücretli adım öncesi gerçekleşmiş, bekleyen ve ayrılmış test maliyetleri birlikte kontrol edilip kalan ortak tutar içinde en yüksek maliyet için kayıt ayrılır. Sağlayıcı başına ayrı 50 USD açılamaz; paralel adımlar aynı rezervasyon kaydını kullanmalıdır.",
+    "uncertain_cost": "Sağlayıcı ücreti veya bekleyen kullanım bilinmiyorsa toplam sınırın altında kalacak üst maliyet doğrulanmadan yeni ücretli adım başlatma. Bildirim eşiği gerçek harcama sınırı olarak sunulmaz.",
+    "expiry_and_resources": "8 Ekim denemesi için yeni kurulan ücretli kaynakların gün sonrasında yetkisiz maliyet üretmemesi için durdurma/temizlik planı gerekir. Önceden var olan şirket kaynakları bu bütçe kararıyla kapatılmaz veya silinmez.",
+    "recorded_agent_initiated_test_spend_usd": 0,
+    "recorded_spend_basis": "Bu oturumda henüz satın alma veya model API denemesi başlatılmadığına dair mevcut oturum kaydı; sağlayıcı fatura mutabakatı değildir.",
+    "provider_billing_checked": false,
+    "provider_billed_test_total_usd": null,
+    "provider_account_balance_usd": null,
+    "remaining_after_provider_reconciliation_usd": null,
+    "unverified_balance_note": "Bu oturumdaki kayıtlı yeni test harcamasının 0 olması, genel hesap bakiyesi veya sağlayıcının toplam faturasının 0 olduğu anlamına gelmez.",
+    "routine_reapproval_within_scope_required": false,
+    "does_not_override_message_participation_gate": true,
+    "does_not_enable_customer_sends": true
+  },
+  "external_write_enabled_scope": "autonomous_customer_or_production_writes; explicitly authorized internal setup tests are separately recorded and do not enable production",
+  "test_execution_overrides": {
+    "google_cloud": {
+      "state": "deferred_by_user",
+      "date": "2026-10-08",
+      "no_new_test_calls_or_spending_until_resumed": true,
+      "original_shared_budget_authorization_retained": true
+    },
+    "shared_limit_unchanged_usd": 50,
+    "new_agent_initiated_spend_usd": 0,
+    "provider_billing_or_balance_claim": null,
+    "customer_sends_enabled": false
+  },
+  "local_synthetic_validation": {
+    "mode": "offline_synthetic_only",
+    "executed_at_utc": "2026-10-08T05:52:45.661048+00:00",
+    "total_tests": 35,
+    "passed": 35,
+    "failed": 0,
+    "errors": 0,
+    "real_provider_sends": 0,
+    "llm_calls": 0,
+    "production_acceptance": "NOT_EVALUATED",
+    "source": "offline/test-results.json",
+    "distinction": "35/35 is local synthetic rule validation. Separately completed Basecamp UI test used Ahmet identity; neither proves Hamle API or autonomous operation."
+  }
+}

@@ -1,0 +1,655 @@
+{
+  "recorded_at": "2026-10-10T17:45:48.316028+03:00",
+  "project_id": "gamechangers-hamle",
+  "mode": "read_only",
+  "cloud_mutations": 0,
+  "basecamp_content_writes": 0,
+  "paid_model_calls": 0,
+  "secret_payloads_read": false,
+  "checks": {
+    "auth_accounts": {
+      "ok": true
+    },
+    "project": {
+      "ok": true
+    },
+    "billing_link": {
+      "ok": true
+    },
+    "job": {
+      "ok": true
+    },
+    "control_service": {
+      "ok": true
+    },
+    "project_iam": {
+      "ok": true
+    },
+    "job_iam": {
+      "ok": true
+    },
+    "control_iam": {
+      "ok": true
+    },
+    "iap_iam": {
+      "ok": true
+    },
+    "database": {
+      "ok": true
+    },
+    "schedulers": {
+      "ok": true
+    },
+    "repository": {
+      "ok": true
+    },
+    "source_bucket": {
+      "ok": true
+    },
+    "secret_versions_hamle-gmail-oauth": {
+      "ok": true
+    },
+    "secret_iam_hamle-gmail-oauth": {
+      "ok": true
+    },
+    "secret_versions_hamle-basecamp-credential": {
+      "ok": true
+    },
+    "secret_iam_hamle-basecamp-credential": {
+      "ok": true
+    },
+    "secret_versions_hamle-openai-api-key": {
+      "ok": true
+    },
+    "secret_iam_hamle-openai-api-key": {
+      "ok": true
+    },
+    "operations": {
+      "ok": true
+    }
+  },
+  "auth_accounts": [
+    {
+      "account": "ahmet@gamechangers.com.tr",
+      "status": "ACTIVE"
+    }
+  ],
+  "project": {
+    "createTime": "2026-10-09T08:58:49.035Z",
+    "lifecycleState": "ACTIVE",
+    "name": "Gamechangers Hamle",
+    "parent": {
+      "id": "642693774443",
+      "type": "organization"
+    },
+    "projectId": "gamechangers-hamle",
+    "projectNumber": "286533609595"
+  },
+  "billing_link": {
+    "billingAccountName": "billingAccounts/019614-9B536E-1EFA0F",
+    "billingEnabled": true,
+    "name": "projects/gamechangers-hamle/billingInfo",
+    "projectId": "gamechangers-hamle"
+  },
+  "job": {
+    "name": "hamle-account-manager",
+    "generation": 7,
+    "service_account": "hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com",
+    "max_retries": 0,
+    "timeout_seconds": "600",
+    "containers": [
+      {
+        "image": "europe-west1-docker.pkg.dev/gamechangers-hamle/hamle-runtime/hamle-account-manager@sha256:82d119ba26ed4a7c00b7c6f7ea78296d0b98943d2c2aff836b76907467f272df",
+        "command": [
+          "python"
+        ],
+        "args": [
+          "worker.py",
+          "--mode",
+          "scheduled_review"
+        ],
+        "resources": {
+          "limits": {
+            "cpu": "1",
+            "memory": "512Mi"
+          }
+        },
+        "environment_names": [
+          "HAMLE_ALLOW_FIRESTORE_OPERATIONS",
+          "HAMLE_PROJECT_ID",
+          "HAMLE_FIRESTORE_DATABASE"
+        ],
+        "operational_environment": {},
+        "secret_references": []
+      }
+    ],
+    "conditions": [
+      {
+        "status": "True",
+        "type": "Ready"
+      }
+    ],
+    "latest_execution": {
+      "completionStatus": "EXECUTION_SUCCEEDED",
+      "completionTimestamp": "2026-10-10T11:31:17.343924Z",
+      "creationTimestamp": "2026-10-10T11:30:26.363098Z",
+      "name": "hamle-account-manager-tr4wt"
+    }
+  },
+  "control_service": {
+    "name": "hamle-control",
+    "generation": 6,
+    "service_account": "hamle-control@gamechangers-hamle.iam.gserviceaccount.com",
+    "containers": [
+      {
+        "image": "europe-west1-docker.pkg.dev/gamechangers-hamle/hamle-runtime/hamle-account-manager@sha256:82d119ba26ed4a7c00b7c6f7ea78296d0b98943d2c2aff836b76907467f272df",
+        "command": [
+          "gunicorn"
+        ],
+        "args": [
+          "--bind",
+          ":8080",
+          "cloud_control:create_app()"
+        ],
+        "resources": {
+          "limits": {
+            "cpu": "1",
+            "memory": "512Mi"
+          }
+        },
+        "environment_names": [
+          "HAMLE_ALLOW_FIRESTORE_OPERATIONS",
+          "IAP_AUDIENCE",
+          "PUBLIC_ORIGIN"
+        ],
+        "operational_environment": {
+          "IAP_AUDIENCE": "/projects/286533609595/locations/europe-west1/services/hamle-control",
+          "PUBLIC_ORIGIN": "https://hamle-control-286533609595.europe-west1.run.app"
+        },
+        "secret_references": []
+      }
+    ],
+    "iap_enabled": "true",
+    "latest_ready_revision": "hamle-control-00006-2nh",
+    "conditions": [
+      {
+        "lastTransitionTime": "2026-10-10T08:15:11.007739Z",
+        "status": "True",
+        "type": "Ready"
+      },
+      {
+        "lastTransitionTime": "2026-10-10T08:15:03.619201Z",
+        "status": "True",
+        "type": "ConfigurationsReady"
+      },
+      {
+        "lastTransitionTime": "2026-10-10T08:15:10.978517Z",
+        "status": "True",
+        "type": "RoutesReady"
+      }
+    ]
+  },
+  "project_iam": {
+    "bindings": [
+      {
+        "members": [
+          "serviceAccount:service-286533609595@gcp-sa-artifactregistry.iam.gserviceaccount.com"
+        ],
+        "role": "roles/artifactregistry.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:286533609595@cloudbuild.gserviceaccount.com"
+        ],
+        "role": "roles/cloudbuild.builds.builder"
+      },
+      {
+        "members": [
+          "serviceAccount:service-286533609595@gcp-sa-cloudbuild.iam.gserviceaccount.com"
+        ],
+        "role": "roles/cloudbuild.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-286533609595@gcp-sa-cloudscheduler.iam.gserviceaccount.com"
+        ],
+        "role": "roles/cloudscheduler.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-286533609595@containerregistry.iam.gserviceaccount.com"
+        ],
+        "role": "roles/containerregistry.ServiceAgent"
+      },
+      {
+        "condition": {
+          "expression": "resource.name==\"projects/gamechangers-hamle/databases/hamle-synthetic\"",
+          "title": "hamle-synthetic-only"
+        },
+        "members": [
+          "serviceAccount:hamle-probe-runtime@gamechangers-hamle.iam.gserviceaccount.com"
+        ],
+        "role": "roles/datastore.user"
+      },
+      {
+        "condition": {
+          "expression": "resource.name==\"projects/gamechangers-hamle/databases/hamle-operations\"",
+          "title": "hamle_operations_only"
+        },
+        "members": [
+          "serviceAccount:hamle-control@gamechangers-hamle.iam.gserviceaccount.com",
+          "serviceAccount:hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com"
+        ],
+        "role": "roles/datastore.user"
+      },
+      {
+        "members": [
+          "serviceAccount:service-286533609595@firebase-rules.iam.gserviceaccount.com"
+        ],
+        "role": "roles/firebaserules.system"
+      },
+      {
+        "members": [
+          "serviceAccount:service-286533609595@gcp-sa-firestore.iam.gserviceaccount.com"
+        ],
+        "role": "roles/firestore.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:hamle-build@gamechangers-hamle.iam.gserviceaccount.com",
+          "serviceAccount:hamle-probe-build@gamechangers-hamle.iam.gserviceaccount.com"
+        ],
+        "role": "roles/logging.logWriter"
+      },
+      {
+        "members": [
+          "user:ahmet@gamechangers.com.tr"
+        ],
+        "role": "roles/owner"
+      },
+      {
+        "members": [
+          "serviceAccount:service-286533609595@gcp-sa-pubsub.iam.gserviceaccount.com"
+        ],
+        "role": "roles/pubsub.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-286533609595@serverless-robot-prod.iam.gserviceaccount.com"
+        ],
+        "role": "roles/run.serviceAgent"
+      }
+    ],
+    "etag": "BwZdcFpA23E=",
+    "version": 3
+  },
+  "job_iam": {
+    "bindings": [
+      {
+        "condition": {
+          "description": "Only 12 October 2026 internal review slots; no customer dispatch.",
+          "expression": "request.time >= timestamp(\"2026-10-12T05:30:00Z\") && request.time < timestamp(\"2026-10-12T15:35:00Z\")",
+          "title": "hamle_scheduler_20261012_only"
+        },
+        "members": [
+          "serviceAccount:hamle-scheduler@gamechangers-hamle.iam.gserviceaccount.com"
+        ],
+        "role": "roles/run.invoker"
+      }
+    ],
+    "etag": "BwZdeDBZ9vk=",
+    "version": 3
+  },
+  "control_iam": {
+    "bindings": [
+      {
+        "members": [
+          "serviceAccount:service-286533609595@gcp-sa-iap.iam.gserviceaccount.com"
+        ],
+        "role": "roles/run.invoker"
+      }
+    ],
+    "etag": "BwZdcKZSihA=",
+    "version": 1
+  },
+  "iap_iam": {
+    "bindings": [
+      {
+        "members": [
+          "user:ahmet@gamechangers.com.tr"
+        ],
+        "role": "roles/iap.httpsResourceAccessor"
+      }
+    ],
+    "etag": "BwZdcLN0Nvg=",
+    "version": 1
+  },
+  "database": {
+    "appEngineIntegrationMode": "DISABLED",
+    "concurrencyMode": "PESSIMISTIC",
+    "createTime": "2026-10-09T23:01:50.067318Z",
+    "databaseEdition": "STANDARD",
+    "deleteProtectionState": "DELETE_PROTECTION_DISABLED",
+    "earliestVersionTime": "2026-10-10T13:45:50.585482Z",
+    "etag": "IOKglqvYr5cDMM6P6IuGrpcD",
+    "freeTier": false,
+    "locationId": "europe-west1",
+    "name": "projects/gamechangers-hamle/databases/hamle-operations",
+    "pointInTimeRecoveryEnablement": "POINT_IN_TIME_RECOVERY_DISABLED",
+    "realtimeUpdatesMode": "REALTIME_UPDATES_MODE_ENABLED",
+    "type": "FIRESTORE_NATIVE",
+    "uid": "318fdbdf-5493-4195-ad63-5dc04d5e7b6d",
+    "updateTime": "2026-10-09T23:01:50.067318Z",
+    "versionRetentionPeriod": "3600s"
+  },
+  "schedulers": [
+    {
+      "name": "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-pilot-20261012-early",
+      "state": "ENABLED",
+      "schedule": "30,45 8 12 10 *",
+      "timeZone": "Europe/Istanbul",
+      "scheduleTime": "2026-10-12T05:30:00Z",
+      "lastAttemptTime": "2026-10-10T08:33:24.974384Z",
+      "target_uri": "https://run.googleapis.com/v2/projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager:run",
+      "target_service_account": "hamle-scheduler@gamechangers-hamle.iam.gserviceaccount.com"
+    },
+    {
+      "name": "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-pilot-20261012-late",
+      "state": "ENABLED",
+      "schedule": "0,15,30 18 12 10 *",
+      "timeZone": "Europe/Istanbul",
+      "scheduleTime": "2026-10-12T15:00:00Z",
+      "lastAttemptTime": null,
+      "target_uri": "https://run.googleapis.com/v2/projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager:run",
+      "target_service_account": "hamle-scheduler@gamechangers-hamle.iam.gserviceaccount.com"
+    },
+    {
+      "name": "projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-pilot-20261012-day",
+      "state": "ENABLED",
+      "schedule": "*/15 9-17 12 10 *",
+      "timeZone": "Europe/Istanbul",
+      "scheduleTime": "2026-10-12T06:00:00Z",
+      "lastAttemptTime": null,
+      "target_uri": "https://run.googleapis.com/v2/projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager:run",
+      "target_service_account": "hamle-scheduler@gamechangers-hamle.iam.gserviceaccount.com"
+    }
+  ],
+  "repository": {
+    "createTime": "2026-10-09T23:01:53.011337Z",
+    "description": "Hamle internal account-manager application",
+    "format": "DOCKER",
+    "mode": "STANDARD_REPOSITORY",
+    "name": "projects/gamechangers-hamle/locations/europe-west1/repositories/hamle-runtime",
+    "registryUri": "europe-west1-docker.pkg.dev/gamechangers-hamle/hamle-runtime",
+    "satisfiesPzi": true,
+    "updateTime": "2026-10-10T08:14:26.782801Z",
+    "vulnerabilityScanningConfig": {
+      "enablementState": "SCANNING_DISABLED",
+      "enablementStateReason": "API containerscanning.googleapis.com is not enabled.",
+      "lastEnableTime": "2026-10-09T23:01:51.833932261Z"
+    }
+  },
+  "source_bucket": {
+    "name": "gamechangers-hamle-runtime-source-286533609595",
+    "location": "EUROPE-WEST1",
+    "public_access_prevention": "enforced",
+    "uniform_bucket_level_access": true
+  },
+  "secret_versions_hamle-gmail-oauth": [
+    {
+      "name": "projects/286533609595/secrets/hamle-gmail-oauth/versions/4",
+      "state": "ENABLED",
+      "createTime": "2026-10-10T11:28:18.364075Z",
+      "destroyTime": null
+    },
+    {
+      "name": "projects/286533609595/secrets/hamle-gmail-oauth/versions/3",
+      "state": "ENABLED",
+      "createTime": "2026-10-10T07:43:16.924809Z",
+      "destroyTime": null
+    },
+    {
+      "name": "projects/286533609595/secrets/hamle-gmail-oauth/versions/2",
+      "state": "ENABLED",
+      "createTime": "2026-10-09T23:39:26.668202Z",
+      "destroyTime": null
+    },
+    {
+      "name": "projects/286533609595/secrets/hamle-gmail-oauth/versions/1",
+      "state": "ENABLED",
+      "createTime": "2026-10-09T23:03:53.754576Z",
+      "destroyTime": null
+    }
+  ],
+  "secret_iam_hamle-gmail-oauth": {
+    "bindings": [
+      {
+        "members": [
+          "serviceAccount:hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com"
+        ],
+        "role": "roles/secretmanager.secretAccessor"
+      },
+      {
+        "members": [
+          "serviceAccount:hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com"
+        ],
+        "role": "roles/secretmanager.secretVersionAdder"
+      }
+    ],
+    "etag": "BwZdcFoP1Gc=",
+    "version": 1
+  },
+  "secret_versions_hamle-basecamp-credential": [
+    {
+      "name": "projects/286533609595/secrets/hamle-basecamp-credential/versions/7",
+      "state": "ENABLED",
+      "createTime": "2026-10-10T11:28:16.024430Z",
+      "destroyTime": null
+    },
+    {
+      "name": "projects/286533609595/secrets/hamle-basecamp-credential/versions/6",
+      "state": "ENABLED",
+      "createTime": "2026-10-10T11:28:14.287740Z",
+      "destroyTime": null
+    },
+    {
+      "name": "projects/286533609595/secrets/hamle-basecamp-credential/versions/5",
+      "state": "ENABLED",
+      "createTime": "2026-10-10T11:28:13.176678Z",
+      "destroyTime": null
+    },
+    {
+      "name": "projects/286533609595/secrets/hamle-basecamp-credential/versions/4",
+      "state": "ENABLED",
+      "createTime": "2026-10-10T07:58:10.937371Z",
+      "destroyTime": null
+    },
+    {
+      "name": "projects/286533609595/secrets/hamle-basecamp-credential/versions/3",
+      "state": "ENABLED",
+      "createTime": "2026-10-10T07:58:09.213041Z",
+      "destroyTime": null
+    },
+    {
+      "name": "projects/286533609595/secrets/hamle-basecamp-credential/versions/2",
+      "state": "ENABLED",
+      "createTime": "2026-10-10T07:58:08.058334Z",
+      "destroyTime": null
+    },
+    {
+      "name": "projects/286533609595/secrets/hamle-basecamp-credential/versions/1",
+      "state": "ENABLED",
+      "createTime": "2026-10-09T23:17:05.727868Z",
+      "destroyTime": null
+    }
+  ],
+  "secret_iam_hamle-basecamp-credential": {
+    "bindings": [
+      {
+        "members": [
+          "serviceAccount:hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com"
+        ],
+        "role": "roles/secretmanager.secretAccessor"
+      },
+      {
+        "members": [
+          "serviceAccount:hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com"
+        ],
+        "role": "roles/secretmanager.secretVersionAdder"
+      }
+    ],
+    "etag": "BwZdcHK-rtI=",
+    "version": 1
+  },
+  "secret_versions_hamle-openai-api-key": [
+    {
+      "name": "projects/286533609595/secrets/hamle-openai-api-key/versions/1",
+      "state": "ENABLED",
+      "createTime": "2026-10-09T23:03:55.458226Z",
+      "destroyTime": null
+    }
+  ],
+  "secret_iam_hamle-openai-api-key": {
+    "bindings": [
+      {
+        "members": [
+          "serviceAccount:hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com"
+        ],
+        "role": "roles/secretmanager.secretAccessor"
+      }
+    ],
+    "etag": "BwZdcFn4XjY=",
+    "version": 1
+  },
+  "operations": {
+    "control": {
+      "generation": 1,
+      "work_ids": [
+        "w-675aa8f8f399be886498c8b43ee6c0fa59d572ebc2012ce5650fbc4f244ad129"
+      ],
+      "changed_at": 1791589170.647069,
+      "proposal_ids": [
+        "p-a0627d6de33573f9284e8799b2b537af6da59d22bdfcff812158e64f3490067d",
+        "p-22e2a5f455020a4445403ea203c4aa6083c4c14b185ec67d52b1c1211129fd67"
+      ],
+      "mode": "review_open",
+      "actor_subject": "accounts.google.com:101753770166685750662"
+    },
+    "budget": {
+      "limit_microdollars": 50000000,
+      "accounted_spend_microdollars": 0,
+      "held_microdollars": 15000000,
+      "prepaid_purchases_microdollars": 10000000,
+      "total_committed_microdollars": 19000000,
+      "remaining_microdollars": 31000000,
+      "overrun_hold": false,
+      "provider_hard_cap_installed": false
+    },
+    "works": [
+      {
+        "work_id": "w-675aa8f8f399be886498c8b43ee6c0fa59d572ebc2012ce5650fbc4f244ad129",
+        "status": null,
+        "project_id": 49184053,
+        "task_id": 10392247471,
+        "pending_event_id": null
+      }
+    ],
+    "proposals": [
+      {
+        "proposal_id": "p-a0627d6de33573f9284e8799b2b537af6da59d22bdfcff812158e64f3490067d",
+        "status": "approved",
+        "kind": null,
+        "generation": 1
+      },
+      {
+        "proposal_id": "p-22e2a5f455020a4445403ea203c4aa6083c4c14b185ec67d52b1c1211129fd67",
+        "status": "approved",
+        "kind": null,
+        "generation": 1
+      }
+    ],
+    "actions": [
+      {
+        "action_id": "115e36ae7f3515b70106a4f3bdaf2bd353e0df888b5b54f7925e54c50702183c",
+        "state": "verified",
+        "kind": "gmail_reply"
+      },
+      {
+        "action_id": "02b2f943435e396bd58114b42138a0a216eb0799509f3d78872e81a17e182b8a",
+        "state": "verified",
+        "kind": "basecamp_todo"
+      },
+      {
+        "action_id": "5a67853a3fe378d8991039bee1c3a7b45db22ffb7803f788a7ea4615a18b1a5d",
+        "state": "verified",
+        "kind": "gmail_reply"
+      },
+      {
+        "action_id": "440966a28cf46a4130eb15f1493120901db7b11e7f9246939feee2924bf7447b",
+        "state": "verified",
+        "kind": "basecamp_comment"
+      }
+    ],
+    "external_actions_enabled": false,
+    "unseen_cc_removal_resolved": false
+  },
+  "basecamp_internal": {
+    "account_id": 5898865,
+    "project_id": 49184053,
+    "writes": 0,
+    "identity_verified": true,
+    "project_read_ok": true,
+    "project": {
+      "id": 49184053,
+      "name": "Hamle — İç Deneme",
+      "status": "active",
+      "clients_enabled": false,
+      "dock": [
+        {
+          "app_url": "https://app.basecamp.com/5898865/buckets/49184053/todosets/10384126975",
+          "enabled": true,
+          "id": 10384126975,
+          "name": "todoset",
+          "position": 1,
+          "title": "İş Listesi",
+          "url": "https://3.basecampapi.com/5898865/buckets/49184053/todosets/10384126975.json"
+        },
+        {
+          "app_url": "https://app.basecamp.com/5898865/buckets/49184053/vaults/10384126977",
+          "enabled": true,
+          "id": 10384126977,
+          "name": "vault",
+          "position": 2,
+          "title": "Marka Dosyaları",
+          "url": "https://3.basecampapi.com/5898865/buckets/49184053/vaults/10384126977.json"
+        }
+      ]
+    },
+    "people_read_ok": true,
+    "people": [
+      {
+        "id": 47470759,
+        "name": "Ahmet Şükrü Altındağ",
+        "email_address": "a••••@••••••••••••.•••.••",
+        "client": false,
+        "employee": true
+      },
+      {
+        "id": 53358100,
+        "name": "Hamle AI",
+        "email_address": "hamle@gamechangers.com.tr",
+        "client": false,
+        "employee": true
+      }
+    ],
+    "todolists_read_ok": false
+  },
+  "spend_reconciliation": {
+    "provider_invoice_currently_verified": false,
+    "budget_values_are_reservations_and_prepayments_not_invoices": true,
+    "last_provider_ui_read": "hamle/outputs/new-mac-2026-10-10/hybrid-provider-billing-check.json",
+    "cloud_billing_link_is_not_cost_report": true,
+    "authorization_expires_at": "2026-10-12T23:59:59+03:00",
+    "new_spend_reserved_by_this_preflight": 0
+  }
+}

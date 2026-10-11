@@ -1,0 +1,44 @@
+[
+  {
+    "comment_id": "10328578907",
+    "selection": "final-package-kv",
+    "success": true,
+    "reason": null,
+    "files": [
+      {
+        "filename": "EKIM_KAMPANYA_KV_1.png",
+        "local_path": "/Users/ahmetsaltindag/Documents/ChatGPT/Gamechangers AI Ajanı/hamle/outputs/wat-pilot-20261010/example-10309337809/artifacts/final-package-kv/EKIM_KAMPANYA_KV_1.png",
+        "bytes": 2361738,
+        "sha256": "1946fe106830e97ed8b2640c692fa030904dfaa4739b15f7bef7816bf100888e"
+      }
+    ]
+  },
+  {
+    "comment_id": "10328578907",
+    "selection": "final-package-story",
+    "success": true,
+    "reason": null,
+    "files": [
+      {
+        "filename": "EKIM_KAMPANYA_STORY.png",
+        "local_path": "/Users/ahmetsaltindag/Documents/ChatGPT/Gamechangers AI Ajanı/hamle/outputs/wat-pilot-20261010/example-10309337809/artifacts/final-package-story/EKIM_KAMPANYA_STORY.png",
+        "bytes": 2795464,
+        "sha256": "38c8bc95e12874f06783ec66a17fc4dcd6e3bf8c3a328a08e66222479246a531"
+      }
+    ]
+  },
+  {
+    "comment_id": "10336611199",
+    "selection": "latest-reels-cover-candidate",
+    "success": true,
+    "reason": null,
+    "files": [
+      {
+        "filename": "EKIM_KAMPANYA_03.png",
+        "local_path": "/Users/ahmetsaltindag/Documents/ChatGPT/Gamechangers AI Ajanı/hamle/outputs/wat-pilot-20261010/example-10309337809/artifacts/latest-reels-cover-candidate/EKIM_KAMPANYA_03.png",
+        "bytes": 2102199,
+        "sha256": "c02e6c57a4db6ebf29ba05afecb9b46dd0814d025162841605dd021a96180373"
+      }
+    ]
+  }
+]

@@ -1,0 +1,42 @@
+{
+  "recorded_at": "2026-10-10T01:38:31.198091+03:00",
+  "user_confirmation": "Bastım",
+  "scope": "local_fixed_internal_test_only",
+  "durable_state_read_in_separate_process": {
+    "control": {
+      "mode": "takeover",
+      "generation": 1,
+      "changed_at": 1791585442.9024901
+    },
+    "items": [
+      {
+        "review_id": "107593e5aadcaa018b05c955ba0b34fe1cdc816fd55d6064bc2b2d5934987ad7",
+        "thread_id": "1a122c8fb08321fb",
+        "message_id": "1a122c8fb08321fb",
+        "capture_fingerprint": "5fc1ba46c69e1cf5ee2b1c06eb26d11512711e266d0f6d20d37a2e62d4e11781",
+        "observed_at": 1791585335.3956711,
+        "generation": 0,
+        "status": "cancelled",
+        "brand": "gamechangers_internal",
+        "test_subject": "HAMLE-IC-PROVA-20261010-YENIMAC-01",
+        "action_eligible": false
+      }
+    ],
+    "test_subject": "HAMLE-IC-PROVA-20261010-YENIMAC-01",
+    "demo_only": true,
+    "external_actions_enabled": false,
+    "action_eligible": false,
+    "unseen_cc_removal_resolved": false
+  },
+  "new_capture_blocked_before_provider_read": true,
+  "browser_reload_verified": true,
+  "browser_visible_status": "İnsan devralması kaydedildi; Durduruldu / iptal edildi",
+  "screenshot": "internal-review-takeover-confirmed.jpg",
+  "outgoing_mail_calls": 0,
+  "basecamp_write_calls": 0,
+  "model_inference_calls": 0,
+  "cloud_calls": 0,
+  "human_identity_authenticated_by_app": false,
+  "production_or_cloud_takeover_accepted": false,
+  "unseen_cc_removal_resolved": false
+}

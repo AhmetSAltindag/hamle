@@ -1,0 +1,2874 @@
+{
+  "schema_version": "1.1.0",
+  "phase": "two_rounds_reviewed_archive_incomplete",
+  "checked_at_utc": "2026-10-07T18:25:15.333627+00:00",
+  "account": "ahmet@gamechangers.com.tr",
+  "brand_scope": "all_agency_brands",
+  "live_started_at": null,
+  "external_writes_enabled": false,
+  "queries": [
+    {
+      "key": "all_mail_recent_discovery",
+      "query": "after:2026/10/01 before:2026/10/08 -in:spam -in:trash",
+      "results_returned": 30,
+      "next_page_token": "07622751209990161364",
+      "complete": false
+    },
+    {
+      "key": "basecamp_notice_discovery",
+      "query": "from:notifications@app.basecamp.com after:2026/09/01 before:2026/10/08",
+      "results_returned": 92,
+      "next_page_token": "08491612278895721416",
+      "complete": false
+    }
+  ],
+  "processed_threads": [
+    {
+      "thread_id": "1a116747b8f8823f",
+      "message_ids": [
+        "1a116747b8f8823f",
+        "1a116a0dd3b5c4f6",
+        "1a116a13de983669",
+        "1a116c539fd7bd87"
+      ],
+      "fetched_message_count": 4,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_not_independently_exhaustive",
+      "semantic_review": "initial_source_scoped_observations_complete"
+    },
+    {
+      "thread_id": "1a10fff86843c43d",
+      "message_ids": [
+        "1a10fff86843c43d",
+        "1a1102bfde940fed",
+        "1a110376f35ec3e6",
+        "1a1108867ae47231",
+        "1a110dc40532ba1e",
+        "1a111044512a24a3",
+        "1a111052cce54840",
+        "1a111130b14aea00",
+        "1a1112913791f01d",
+        "1a11129fbfa513d5",
+        "1a1112dd65281603",
+        "1a111835d0a15508",
+        "1a111913ef21a626",
+        "1a111e2580ea64bc",
+        "1a111fda244b0f00",
+        "1a112412748de361",
+        "1a1154ee8d7e56a6",
+        "1a1158dd19e751e5",
+        "1a1159e18a828a96",
+        "1a115a64652865f0",
+        "1a115b62fd16cc5d",
+        "1a115d35d79a9104",
+        "1a116a4825f149ac",
+        "1a116be9f5aacf55",
+        "1a116d94645fe88b",
+        "1a116e9915a84015",
+        "1a116ea8722fcbed",
+        "1a1170557d837cf2",
+        "1a117425032f322f"
+      ],
+      "fetched_message_count": 29,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_not_independently_exhaustive",
+      "semantic_review": "initial_source_scoped_observations_complete"
+    },
+    {
+      "thread_id": "1a0a6c065721af08",
+      "message_ids": [
+        "1a0a6c065721af08",
+        "1a0cd03e0e1f2599",
+        "1a0ce562c70cb63d",
+        "1a0d407c3383769d",
+        "1a0d41abee83e6ef",
+        "1a0d7638a8186c2c",
+        "1a0d808e0d3eb9ad",
+        "1a0d8e6ebec740f4",
+        "1a0d8f00e2992f03",
+        "1a0f2574d12d5747",
+        "1a0f7cfcfc679646",
+        "1a10c3c729a03df2",
+        "1a10c4e24a9d6e1c",
+        "1a1118e42795ff5d",
+        "1a1118f848dfe35e",
+        "1a111b6687372010",
+        "1a1123ebdd3836f5",
+        "1a1151dadfea186e",
+        "1a1156aee54693b2",
+        "1a1157816a9161e4",
+        "1a115889f68f9bbe"
+      ],
+      "fetched_message_count": 21,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_not_independently_exhaustive",
+      "semantic_review": "initial_source_scoped_observations_complete"
+    },
+    {
+      "thread_id": "1a0e78aea1837965",
+      "message_ids": [
+        "1a0e78aea1837965",
+        "1a110511203d1086",
+        "1a11067afa824af8"
+      ],
+      "fetched_message_count": 3,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_not_independently_exhaustive",
+      "semantic_review": "initial_source_scoped_observations_complete"
+    },
+    {
+      "thread_id": "1a10c9aa88d9c8a0",
+      "message_ids": [
+        "1a10c9aa88d9c8a0",
+        "1a10ca41d6187f93",
+        "1a10caab929185d7"
+      ],
+      "fetched_message_count": 3,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_not_independently_exhaustive",
+      "semantic_review": "initial_source_scoped_observations_complete"
+    },
+    {
+      "thread_id": "1a10fd1092562eb3",
+      "message_ids": [
+        "1a10fd1092562eb3"
+      ],
+      "fetched_message_count": 1,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_not_independently_exhaustive",
+      "semantic_review": "initial_source_scoped_observations_complete"
+    },
+    {
+      "thread_id": "1a10fe3a6e2d6f5d",
+      "message_ids": [
+        "1a10fe3a6e2d6f5d"
+      ],
+      "fetched_message_count": 1,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_not_independently_exhaustive",
+      "semantic_review": "initial_source_scoped_observations_complete"
+    },
+    {
+      "thread_id": "1a1100cb5509857b",
+      "message_ids": [
+        "1a1100cb5509857b"
+      ],
+      "fetched_message_count": 1,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_not_independently_exhaustive",
+      "semantic_review": "initial_source_scoped_observations_complete"
+    },
+    {
+      "thread_id": "1a1164fab391dd76",
+      "message_ids": [
+        "1a1164fab391dd76",
+        "1a116cf9f27d57fc"
+      ],
+      "fetched_message_count": 2,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_not_independently_exhaustive",
+      "semantic_review": "initial_source_scoped_observations_complete"
+    },
+    {
+      "thread_id": "1a115dbfd5ad8f30",
+      "message_ids": [
+        "1a115dbfd5ad8f30"
+      ],
+      "fetched_message_count": 1,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_not_independently_exhaustive",
+      "semantic_review": "initial_source_scoped_observations_complete"
+    },
+    {
+      "thread_id": "1a1172b73da899f5",
+      "message_ids": [
+        "1a1172b73da899f5"
+      ],
+      "fetched_message_count": 1,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_not_independently_exhaustive",
+      "semantic_review": "initial_source_scoped_observations_complete"
+    },
+    {
+      "thread_id": "1a11636397e5303a",
+      "message_ids": [
+        "1a11636397e5303a"
+      ],
+      "fetched_message_count": 1,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_not_independently_exhaustive",
+      "semantic_review": "initial_source_scoped_observations_complete"
+    },
+    {
+      "thread_id": "19e1bf569e992343",
+      "message_ids": [
+        "19e1bf569e992343",
+        "19e1bf9f0deb3691",
+        "19e1bfc1e15bfb49",
+        "19e1bfe34420d651",
+        "19e1c14383d8f892",
+        "19e2c03d6fb51757",
+        "19e4406a5693ed37",
+        "19e4645985cc91ad",
+        "19e49388f382cd3c",
+        "19e49a4adf001d6e",
+        "1a0d83e4519ad1f5",
+        "1a0d84751da5ee2f",
+        "1a0d856b55d33f64",
+        "1a0d857bbaf1fa5b",
+        "1a0d8586e18bfe26",
+        "1a0d85f8097c1516"
+      ],
+      "fetched_message_count": 16,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "wat_mobilite",
+      "round": 2
+    },
+    {
+      "thread_id": "19f6a9771b1d2aed",
+      "message_ids": [
+        "19f6a9771b1d2aed",
+        "19f6aa3c3a589afe",
+        "19f6aa4a02f41b94",
+        "19f6aa59baac30bc",
+        "19f702cbf5042443",
+        "19f7039ce7e86085",
+        "19f709e32611e11f",
+        "19f7e8a6b107679a",
+        "19f7e9dcccd78ddf",
+        "19f7eb1c5b4d6239",
+        "19f7fb9613a30eb2",
+        "19f7fdf767717763",
+        "19f7fe5685e8c936",
+        "19f8362f3a079334",
+        "19f844f83421a459",
+        "19f84e815f08b4ab",
+        "19f8529ccb704fe3",
+        "19f886aae9477d42",
+        "19f88b6fe3422def",
+        "19f8975cfc1b2735",
+        "19f897a781ae688b",
+        "19f897b60012177a",
+        "1a0d378d2c67836e",
+        "1a0d37c920a179eb",
+        "1a0d8f0d22e8c75e",
+        "1a0e750a67b838e5",
+        "1a0e7a08f9450afe",
+        "1a0ec1aaecd69b94",
+        "1a0ec3b3a33399f3",
+        "1a0f1b8e798e6a6f"
+      ],
+      "fetched_message_count": 30,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "wat_mobilite",
+      "round": 2
+    },
+    {
+      "thread_id": "1a01468414acffd4",
+      "message_ids": [
+        "1a01468414acffd4",
+        "1a014cab27c5e37d",
+        "1a014e242bfc4b88",
+        "1a0161b20213a073",
+        "1a01fcfd7b655e4c",
+        "1a0246e606caf29a",
+        "1a0246f63fac9544",
+        "1a024868561a1af2",
+        "1a0248f15cbc9b7b",
+        "1a032a53ec1ee4fa",
+        "1a032ade8a3c0c90",
+        "1a032d4eb65b50fe",
+        "1a0330c6bd54b6c4",
+        "1a033813bca6e4a0",
+        "1a0338a20767597d",
+        "1a0339ecf6c17d74",
+        "1a033c4a36a1c7dd",
+        "1a033e286b161a71",
+        "1a033e2fa7cccda7",
+        "1a0394ccd4aad29d",
+        "1a03989c20a5d25a",
+        "1a03994a14ae1930",
+        "1a03d51c1a02d3c1",
+        "1a03d54d4943cff2",
+        "1a057937637bf793",
+        "1a057a1445027943",
+        "1a062abee8ead01c",
+        "1a0634d3c7b1c4b7",
+        "1a066626bb09fc78",
+        "1a0668df0a0cac71",
+        "1a0669af98d54356",
+        "1a066bbfe514a7b0",
+        "1a06716e610e0a63",
+        "1a067639eac60d2d",
+        "1a0683dc8f624889",
+        "1a06b56d7daa818b",
+        "1a06b892c3bb86c0",
+        "1a06bde5b473dde3",
+        "1a06c39aec610535",
+        "1a06c9728ac8c08d",
+        "1a06caf98d10843d",
+        "1a07ab513aa360a7",
+        "1a07abe97c16b3c9",
+        "1a07b9a6678b6450",
+        "1a07bab65d58fcb7",
+        "1a0801b315f15b69",
+        "1a0803ddfe3e3666",
+        "1a0804ad131cbb38",
+        "1a08115d01baaae8",
+        "1a0811a85ef79756",
+        "1a0813028c16e910",
+        "1a0817da386ff3c2",
+        "1a0818120259b7aa",
+        "1a0a40835c51e5d9",
+        "1a0a441d8ceeb8e6",
+        "1a0a452a43ad303f",
+        "1a0a4c6b7245a4c6",
+        "1a0a4de215335228",
+        "1a0a51830d4cff07",
+        "1a0a55167ab45704",
+        "1a0c8c39c631ecec",
+        "1a0c8dfede909adb",
+        "1a0d270c723f9976",
+        "1a0d271cd1a49fb5",
+        "1a0d7403638c0c02",
+        "1a0d770f8369674f"
+      ],
+      "fetched_message_count": 66,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "wat_mobilite",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0673e398f681bc",
+      "message_ids": [
+        "1a0673e398f681bc",
+        "1a0677042a8dd102",
+        "1a07b0ceb5f25506",
+        "1a07fd583951cf73",
+        "1a07fe1d958edaab",
+        "1a080922f1ec13b0",
+        "1a0809f69d90703e",
+        "1a080ab617821e3d",
+        "1a0811e61a029d32",
+        "1a08122ca0eb0a87",
+        "1a081400012ca512",
+        "1a0d36dbcafe2476",
+        "1a0d375bc8da698c",
+        "1a0e754b1dfb791c"
+      ],
+      "fetched_message_count": 14,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "wat_mobilite",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0a4fe2dc284358",
+      "message_ids": [
+        "1a0a4fe2dc284358",
+        "1a0a9608d41a6b14",
+        "1a0a96dfdd73080c",
+        "1a0a97fb775c0675",
+        "1a0aa6218a3a81cd",
+        "1a0aa66c51bf8283",
+        "1a0aa6bd2d732668",
+        "1a0af2fb26ba8134",
+        "1a0ce47d5f068536",
+        "1a0f1370e9d6dd9f",
+        "1a0f7e0d8f55af89",
+        "1a1161a8171eb8ee",
+        "1a1161db7ee45625"
+      ],
+      "fetched_message_count": 13,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "wat_mobilite",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0a9df39987bae5",
+      "message_ids": [
+        "1a0a9df39987bae5",
+        "1a0a9ea23551ec93",
+        "1a0a9f7987035473",
+        "1a0aa02d09eb9b59",
+        "1a0aa06a1f9868f4",
+        "1a0b3ef2630e8a22",
+        "1a0b42622f3e5bf4",
+        "1a0b42f84ed29975",
+        "1a0b44499a5a03ac",
+        "1a0b47cb7dfda8c5",
+        "1a0c31dbde7e01d8",
+        "1a0c32411a8ec345",
+        "1a0c3278ba347c46",
+        "1a0c33e634a860a3",
+        "1a0c3438d8a2f65f",
+        "1a0c91e598484ae0",
+        "1a0c92ac77557f96",
+        "1a0c9369c9a9b5de",
+        "1a0c94a53e289ed7",
+        "1a0c964d0b025925",
+        "1a0c96bf8caa7c31",
+        "1a0c974212dc834d",
+        "1a0c9a8492db3215"
+      ],
+      "fetched_message_count": 23,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "wat_mobilite",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0a9ebc9dfd5678",
+      "message_ids": [
+        "1a0a9ebc9dfd5678",
+        "1a0aa05d20c0bbd1",
+        "1a0c86523bc7c551",
+        "1a0c91a7d00cab22",
+        "1a0c937f062513a6",
+        "1a0c938f0de42800",
+        "1a0c944b4822120b",
+        "1a0c948417b65aa2",
+        "1a0c9658caa9c48d",
+        "1a0c969dcd1f48ac",
+        "1a0c973a288005b7",
+        "1a0c979e7fe1ff39",
+        "1a0c97bef292a9e5",
+        "1a0ce1a604fbffbe",
+        "1a0ce1e3fe3af00e",
+        "1a0ce25cdb167320",
+        "1a0d29542284b765",
+        "1a0d3107e2220ab5",
+        "1a0d3227a66a3967",
+        "1a0d33ccc43af73d",
+        "1a0d37c32e493230",
+        "1a0d37f0f1edbe47"
+      ],
+      "fetched_message_count": 22,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "wat_mobilite",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0a9f527f16fec5",
+      "message_ids": [
+        "1a0a9f527f16fec5",
+        "1a0aa0b9b8957e9e",
+        "1a0af64bc2701d44",
+        "1a0b368b76b0d57a",
+        "1a0b36c07992c76e",
+        "1a0b4096085d94a4",
+        "1a0b4105bdeda8c6",
+        "1a0c819aee8a0a9b",
+        "1a0c8538c502f203",
+        "1a0c85fb387c6b43",
+        "1a0c8bb037873025",
+        "1a0c8c233002358b",
+        "1a0c8ed1d864973c",
+        "1a0c91ef3081f1db",
+        "1a0c973d102f5f24",
+        "1a0c9762c5f1a4da",
+        "1a0c979d7653087b",
+        "1a0c97d7d11667fa",
+        "1a0c9804cc15d1d0",
+        "1a0ceca56ac3d502",
+        "1a0d214f273e5f44",
+        "1a0d25d4615361d9",
+        "1a0d351cd56d5179",
+        "1a0d76d655965e84",
+        "1a0d779595b6fe37",
+        "1a0e6c6412036fc6",
+        "1a0e6d54fa197a5e",
+        "1a0e70651d5f46be",
+        "1a0e72b3b8805578",
+        "1a0e732e06f3359e",
+        "1a0e7362f2b2abd9",
+        "1a0e739dd91c3b04",
+        "1a0e73c315e92f8e",
+        "1a0e74540c355c4f",
+        "1a0e7a237ca29910",
+        "1a0e7aaedb5dbe75",
+        "1a0e7b01b9b12cb6",
+        "1a0e7b408a0f0a7d",
+        "1a0e7e1a38743ca3",
+        "1a0e853f9f2271a5",
+        "1a0e85989ee36c09",
+        "1a0e85af013809cc",
+        "1a0e87e66d56a144"
+      ],
+      "fetched_message_count": 43,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "wat_mobilite",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0aa369f07d00f8",
+      "message_ids": [
+        "1a0aa369f07d00f8",
+        "1a0aa3aa4793c624",
+        "1a0ae17ea2f19ea6",
+        "1a0ae6b8860dd04f",
+        "1a0ae864c6b7c35d",
+        "1a0aeefb08a79cc3",
+        "1a0af3764ff92198",
+        "1a0af4394fec553a",
+        "1a0af5faa56a1367",
+        "1a0af88a2e3bb273",
+        "1a0af9d765d307a4",
+        "1a0afc27402be28a",
+        "1a0afd10e51627e6",
+        "1a0b3d21f45578e0",
+        "1a0b3e3ff39b5dae",
+        "1a0b3ff07e9aead1",
+        "1a0b430ccac8f112",
+        "1a0b43f426b65172",
+        "1a0b4cca7c0c3f92",
+        "1a0c7dabc9125f35",
+        "1a0c7ee3c3c7e70c",
+        "1a0c82cb39a06d6c"
+      ],
+      "fetched_message_count": 22,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "wat_mobilite",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0ae0c7c1bcb3d1",
+      "message_ids": [
+        "1a0ae0c7c1bcb3d1",
+        "1a0ae113cc3a12c5",
+        "1a0c95f1296585c9",
+        "1a0c96eed56daede",
+        "1a0c970f6c8f664c",
+        "1a0c9c256e487193",
+        "1a0cee167a59f5cb",
+        "1a0d2089ce14a89f",
+        "1a0d258ce98e083d",
+        "1a0d2e30494fd505"
+      ],
+      "fetched_message_count": 10,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "wat_mobilite",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0b3c716c333b35",
+      "message_ids": [
+        "1a0b3c716c333b35",
+        "1a0b3fce928abab5",
+        "1a0b41cc09684822",
+        "1a0b4697b11c5b12",
+        "1a0b46a2ee239122",
+        "1a0c3180d1555437",
+        "1a0c318dbd9a8148",
+        "1a0c3193f8df2612",
+        "1a0c3263c689b6a0",
+        "1a0c327c108ed0b9",
+        "1a0c8113aa073094",
+        "1a0c81a1b673c339",
+        "1a0c82a648bb8472",
+        "1a0c84b8211342bb",
+        "1a0c859ab090548a",
+        "1a0e6e7ba72784eb",
+        "1a0e7b1bf449d36d",
+        "1a0f5dad10236697",
+        "1a0f76c0e8c17a9a",
+        "1a0fc8dd5e130e6a",
+        "1a0fc9458804dcd1",
+        "1a0fcb95914ccdf1",
+        "1a10c193e10a2a96",
+        "1a10c643a0c73cad",
+        "1a10c7598e6eb8af",
+        "1a1113f35d36f1d6",
+        "1a1157001054c2bb",
+        "1a115ca87b1af359",
+        "1a1161760ddd2007"
+      ],
+      "fetched_message_count": 29,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "wat_mobilite",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0c91a720e8d6a3",
+      "message_ids": [
+        "1a0c91a720e8d6a3",
+        "1a0c938f2e44dcae",
+        "1a0cd4e61c2aa393",
+        "1a0cd5201cc47d8f",
+        "1a0cd52f88ed03b1"
+      ],
+      "fetched_message_count": 5,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "wat_mobilite",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0c926e484e09d2",
+      "message_ids": [
+        "1a0c926e484e09d2",
+        "1a0c93e279d175a2",
+        "1a0cd5d564898a1f",
+        "1a0cdeb1749bf3fd",
+        "1a0d39e4dea2c904",
+        "1a0d3a2106338944",
+        "1a0d3af1cffd3a0d"
+      ],
+      "fetched_message_count": 7,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "wat_mobilite",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0c94f3f9d1a017",
+      "message_ids": [
+        "1a0c94f3f9d1a017",
+        "1a0c95e74dda286a",
+        "1a0d3e0586584224",
+        "1a0d74fcb77de393",
+        "1a0d7524dcc8efa7",
+        "1a0d895877279de1",
+        "1a0d8a58b3bc9368",
+        "1a0d8afcf6ce21f0"
+      ],
+      "fetched_message_count": 8,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "wat_mobilite",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0c960fa533065f",
+      "message_ids": [
+        "1a0c960fa533065f",
+        "1a0c963a26b8a6a9",
+        "1a0d3fb4bdc68227",
+        "1a0d74b3421e649a",
+        "1a0d74ec9868738a",
+        "1a0d791883afb1d6",
+        "1a0d7bbae86beff1",
+        "1a0d8057a6883244",
+        "1a0e7ea944460ac6",
+        "1a0e7eb9b15082b9",
+        "1a0e7fc33733cc00"
+      ],
+      "fetched_message_count": 11,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "wat_mobilite",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0cde7194230acd",
+      "message_ids": [
+        "1a0cde7194230acd",
+        "1a0ce042f03c49e8",
+        "1a0ce0fbb36e76ee",
+        "1a0ce50212cac060",
+        "1a0ce6395f792059",
+        "1a0d2b539849804c",
+        "1a0d3658094ec840",
+        "1a0d37c8d0ab618c",
+        "1a0d8b78db6d2e43",
+        "1a0d8b8a692f50d3",
+        "1a0d8b92c0892173",
+        "1a0d8e3bac7f6c2b",
+        "1a0e69ccbe3efcf6",
+        "1a0e69d7e297413f",
+        "1a0e70aa7ba8b521",
+        "1a0e70cac1f88a4b",
+        "1a0e70e5077b3c77",
+        "1a0e71c6c2bb995b"
+      ],
+      "fetched_message_count": 18,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "wat_mobilite",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0d343af572a042",
+      "message_ids": [
+        "1a0d343af572a042",
+        "1a0d3592a014db1a",
+        "1a0d3b7cd338ee30",
+        "1a0d3b98840d7723",
+        "1a0d3c41f2937495",
+        "1a0d769ff1fcf0b0",
+        "1a0d76a75f7b42dc",
+        "1a0d84489e5b3835",
+        "1a0d84b77297a50c",
+        "1a0d85214bf71bf0",
+        "1a0d8667578c87d6",
+        "1a0e71860286a228",
+        "1a0e71a578e43d0d",
+        "1a0e731be5596fa6"
+      ],
+      "fetched_message_count": 14,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "wat_mobilite",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0d433e55b7518d",
+      "message_ids": [
+        "1a0d433e55b7518d"
+      ],
+      "fetched_message_count": 1,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "wat_mobilite",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0d89bae70df09b",
+      "message_ids": [
+        "1a0d89bae70df09b",
+        "1a0d8b2471ae88fb",
+        "1a0e6f20783e27ce",
+        "1a0e6f5b2688f268",
+        "1a0e707517e25a72",
+        "1a0e75fb1eb0ff16",
+        "1a0e7a37f638dc1a",
+        "1a0e87ac418c8b1c",
+        "1a0ec05891518a85",
+        "1a0ec3543d945f4f",
+        "1a0ecc66152e8bcf"
+      ],
+      "fetched_message_count": 11,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "wat_mobilite",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0e7480086fe5ac",
+      "message_ids": [
+        "1a0e7480086fe5ac",
+        "1a0e74d5fdd0b5a0",
+        "1a0e79f4ec5e0974",
+        "1a0ebc5a13c3d876",
+        "1a0ec09951124581",
+        "1a0ed17de2dc4763",
+        "1a0ed61abd244494",
+        "1a0ed886e5f68160",
+        "1a0ed90d84841951",
+        "1a0edb691c0f63cd"
+      ],
+      "fetched_message_count": 10,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "wat_mobilite",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0ebf0cc2bcf7a5",
+      "message_ids": [
+        "1a0ebf0cc2bcf7a5",
+        "1a0ec27baab34372",
+        "1a0ec2ff98173a3d",
+        "1a0ec97edcf8fa10"
+      ],
+      "fetched_message_count": 4,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "wat_mobilite",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0f1fdbc557b5db",
+      "message_ids": [
+        "1a0f1fdbc557b5db",
+        "1a0f20de197330a0"
+      ],
+      "fetched_message_count": 2,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "wat_mobilite",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0f24927b4172b8",
+      "message_ids": [
+        "1a0f24927b4172b8",
+        "1a0f5d0889bf2164"
+      ],
+      "fetched_message_count": 2,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "wat_mobilite",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0f6aaf98ea5c55",
+      "message_ids": [
+        "1a0f6aaf98ea5c55",
+        "1a0f6af9401a2152",
+        "1a0f6bd9f4cecb8c",
+        "1a0f6cbcef19cdcd",
+        "1a0f71e0b9fbf616",
+        "1a0f72d0aba8ead8"
+      ],
+      "fetched_message_count": 6,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "wat_mobilite",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0f7a86a72518e9",
+      "message_ids": [
+        "1a0f7a86a72518e9",
+        "1a0f7acfe1a1bcef",
+        "1a0f7be3dd02a344",
+        "1a0f7e2d6f4a314d",
+        "1a0fc94145351458",
+        "1a0fc969081b371b",
+        "1a0fc97fcb0731d4",
+        "1a0fc9f06d05e401",
+        "1a0fd44f48e59cdf",
+        "1a10ae278c6fa5dc",
+        "1a10c264316663b1",
+        "1a10ff9cee08ffdf",
+        "1a10ffbc45dbe19d",
+        "1a1100698a56dcf1"
+      ],
+      "fetched_message_count": 14,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "wat_mobilite",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0f7b062249f962",
+      "message_ids": [
+        "1a0f7b062249f962",
+        "1a0f7cb048f3d017",
+        "1a0fc3cfc0eb6cb0",
+        "1a0fc901a7c3f38b",
+        "1a0fc94d1a7e94d5",
+        "1a10c8911e82d1ee",
+        "1a1104149003498c",
+        "1a110a255fd81769",
+        "1a111e1d3df0c8e7",
+        "1a1121917a7bf990",
+        "1a115ccb6da24314",
+        "1a1161634b7b3105"
+      ],
+      "fetched_message_count": 12,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "wat_mobilite",
+      "round": 2
+    },
+    {
+      "thread_id": "1a10ad2aaf5ef686",
+      "message_ids": [
+        "1a10ad2aaf5ef686",
+        "1a10b1df1ba4f300",
+        "1a10b38874a2e619"
+      ],
+      "fetched_message_count": 3,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "wat_mobilite",
+      "round": 2
+    },
+    {
+      "thread_id": "1a10af6dd1878f1d",
+      "message_ids": [
+        "1a10af6dd1878f1d",
+        "1a10fff25088a9e4"
+      ],
+      "fetched_message_count": 2,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "wat_mobilite",
+      "round": 2
+    },
+    {
+      "thread_id": "1a10b28c0b009f75",
+      "message_ids": [
+        "1a10b28c0b009f75"
+      ],
+      "fetched_message_count": 1,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "wat_mobilite",
+      "round": 2
+    },
+    {
+      "thread_id": "1a10bef29969c359",
+      "message_ids": [
+        "1a10bef29969c359",
+        "1a10c126e6bd9427",
+        "1a11619f7f4353ff",
+        "1a1161e2adb58f4e"
+      ],
+      "fetched_message_count": 4,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "wat_mobilite",
+      "round": 2
+    },
+    {
+      "thread_id": "1a10c8fd7a39d7f0",
+      "message_ids": [
+        "1a10c8fd7a39d7f0",
+        "1a10c98addeeaa41",
+        "1a11047d41677515",
+        "1a1104bf1a4f9d25",
+        "1a110a0849484512",
+        "1a11215d6191b78e",
+        "1a1152173b1873b6"
+      ],
+      "fetched_message_count": 7,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "wat_mobilite",
+      "round": 2
+    },
+    {
+      "thread_id": "1a1102c4448d227a",
+      "message_ids": [
+        "1a1102c4448d227a",
+        "1a1102efcf92be7f",
+        "1a1107515323866d",
+        "1a111910710c4c7b",
+        "1a111e70821f76eb",
+        "1a11577a5b449d75",
+        "1a11579f55983c3b",
+        "1a115cab0fd52214",
+        "1a11618aafbe5710"
+      ],
+      "fetched_message_count": 9,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "wat_mobilite",
+      "round": 2
+    },
+    {
+      "thread_id": "1a11092091d87658",
+      "message_ids": [
+        "1a11092091d87658",
+        "1a1118d8ecc65194"
+      ],
+      "fetched_message_count": 2,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "wat_mobilite",
+      "round": 2
+    },
+    {
+      "thread_id": "19ed6d8225375c36",
+      "message_ids": [
+        "19ed6e0884dd9481",
+        "19ed74b220f19860",
+        "19ede7d6277dc32f",
+        "19f1292242cd6d1d",
+        "19f12bef5af15483",
+        "19f5fb9417bd0638",
+        "19f69828e875c9d0",
+        "19f6991145d86a09",
+        "19f6b1d253d3e0b9",
+        "19f6b1f75653dd63",
+        "19f6b705f18dbfc7"
+      ],
+      "fetched_message_count": 11,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "rabam",
+      "round": 2
+    },
+    {
+      "thread_id": "19f70b637d02935b",
+      "message_ids": [
+        "19f70b637d02935b",
+        "19f7fed9f0ac0dcf",
+        "19ff1cae497d05f8",
+        "19ff1e784130d460",
+        "19ff20cb72d1bf2b",
+        "19ff6d0be9a875b2"
+      ],
+      "fetched_message_count": 6,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "rabam",
+      "round": 2
+    },
+    {
+      "thread_id": "19fc7fa238993769",
+      "message_ids": [
+        "19fc7fa238993769"
+      ],
+      "fetched_message_count": 1,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "rabam",
+      "round": 2
+    },
+    {
+      "thread_id": "19fcba3c4c295510",
+      "message_ids": [
+        "19fcba3c4c295510",
+        "19fcc5292210fe77",
+        "19fccc1e0229f834",
+        "19fcd206706dc339",
+        "19fcd20dff803bc9",
+        "19fcd217d88567d6",
+        "19fcd22cfb0e61e3",
+        "19fcd26f212972b1",
+        "19fcd499ad624057",
+        "19fcd55efb826d55",
+        "19fd0dcc1ccc8255",
+        "19fec4e9ffb27649"
+      ],
+      "fetched_message_count": 12,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "rabam",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0005c3b069f201",
+      "message_ids": [
+        "1a0007c56e0b6499"
+      ],
+      "fetched_message_count": 1,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "rabam",
+      "round": 2
+    },
+    {
+      "thread_id": "1a01462f6904f196",
+      "message_ids": [
+        "1a01477c81f9f193",
+        "1a01ece24547148c",
+        "1a01ed37452af321",
+        "1a0253b91be8a7d2",
+        "1a0387da71348ece",
+        "1a0392e645c7c847",
+        "1a03931424bd2123",
+        "1a03934a6477189c",
+        "1a0397acd328e186",
+        "1a03cbaa42d92d22",
+        "1a03cc02829598e0",
+        "1a03cf664bee1370",
+        "1a03d2936691968d",
+        "1a03d3f2a138f8c2",
+        "1a056f45e3eb04d8",
+        "1a05706357d5de61",
+        "1a057080748cedc5",
+        "1a05712360285317",
+        "1a07b2724d444f9e",
+        "1a07b2b5e09f2220",
+        "1a07b75ca4659a4a",
+        "1a07b8c8ad609b3c",
+        "1a07b95d193cf08f",
+        "1a07bce5c2620964",
+        "1a07bd128051c316",
+        "1a07bda996cbe8e2",
+        "1a07f90ee9f91199",
+        "1a0802422b36746a",
+        "1a0809e5128a07e1",
+        "1a08133d06a655c1",
+        "1a08135d5011119e",
+        "1a081525331017da",
+        "1a08fc91d022483f",
+        "1a08fcf740b932a4",
+        "1a090023c82b2172",
+        "1a0902d454fec179",
+        "1a09e7801621ee82",
+        "1a09ebd77b77b67d",
+        "1a0ccb79a6c58579"
+      ],
+      "fetched_message_count": 39,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "rabam",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0818645c9201fb",
+      "message_ids": [
+        "1a0818645c9201fb"
+      ],
+      "fetched_message_count": 1,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "rabam",
+      "round": 2
+    },
+    {
+      "thread_id": "1a090186cfb7cf7f",
+      "message_ids": [
+        "1a090186cfb7cf7f",
+        "1a090386e7f35d17",
+        "1a0911a690592325",
+        "1a09fd823df5656b",
+        "1a09fda11393bd13",
+        "1a09fe045ef25809",
+        "1a09fe2390013fa7",
+        "1a09fe572f4c83b6",
+        "1a0a0299429b36b1",
+        "1a0a02db7479c57d"
+      ],
+      "fetched_message_count": 10,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "rabam",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0901a8b0773887",
+      "message_ids": [
+        "1a0901a8b0773887",
+        "1a09fe6d32e245dd",
+        "1a0a02f5f1bdc080",
+        "1a0a02fe0896372f",
+        "1a0a0310b6e00bec",
+        "1a0a03363f233908",
+        "1a0f26167f9003f6",
+        "1a0f263389066134"
+      ],
+      "fetched_message_count": 8,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "rabam",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0a4066b28a702e",
+      "message_ids": [
+        "1a0a4066b28a702e",
+        "1a0af36c10fa9801",
+        "1a0b4b990b7e3aba",
+        "1a0b4cc8ef6c0ebc",
+        "1a0c3a19b5fad53f",
+        "1a0cdef08007ce5b",
+        "1a0ce03bc954cfd2",
+        "1a0ce05a8126ebf5",
+        "1a0cea0a3c004d03",
+        "1a0ceca67e19e685",
+        "1a0cecb2e56a8c3a"
+      ],
+      "fetched_message_count": 11,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "rabam",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0a591383ada8cc",
+      "message_ids": [
+        "1a0a59b276830adf",
+        "1a0a62090bad3272",
+        "1a0a8fa8c45cdbff",
+        "1a0a96a6d9622121",
+        "1a0a97cd265588ea",
+        "1a0ed35810a152ac",
+        "1a0ed938f13bcaa5"
+      ],
+      "fetched_message_count": 7,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "rabam",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0a9a367d338b52",
+      "message_ids": [
+        "1a0a9a367d338b52",
+        "1a0b0727487c1928"
+      ],
+      "fetched_message_count": 2,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "rabam",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0b4a0c8c73a095",
+      "message_ids": [
+        "1a0b4a0c8c73a095"
+      ],
+      "fetched_message_count": 1,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "rabam",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0b5daa918a9244",
+      "message_ids": [
+        "1a0b5daa918a9244",
+        "1a0b5e2ffa0ca6ad",
+        "1a0ce2e69b4434fc",
+        "1a0d20a61a66e292",
+        "1a1121c54cca7eb5"
+      ],
+      "fetched_message_count": 5,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "rabam",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0c2a9f18a5d035",
+      "message_ids": [
+        "1a0c2a9f18a5d035",
+        "1a0c2e5e0e9c2034",
+        "1a0c31c8eae8b2f7",
+        "1a0c4e35842a9144",
+        "1a0c4e50021bae65",
+        "1a0c93fe642ae11c",
+        "1a0c945210dd37c1",
+        "1a0eeaa03b1729bf",
+        "1a0f1203a2c57249"
+      ],
+      "fetched_message_count": 9,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "rabam",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0c3ac51f08e885",
+      "message_ids": [
+        "1a0c3ac51f08e885",
+        "1a0c40f49a234d23",
+        "1a0cde58d2531c7f"
+      ],
+      "fetched_message_count": 3,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "rabam",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0c3ee05e8b49d1",
+      "message_ids": [
+        "1a0c3ee05e8b49d1",
+        "1a0c3fdb3bcd8904",
+        "1a0c3fdf8b0d416e",
+        "1a0c46b5783e5e51",
+        "1a0ce52ad46e5e51",
+        "1a0ced22df0c8bf8"
+      ],
+      "fetched_message_count": 6,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "rabam",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0c3fd324270f70",
+      "message_ids": [
+        "1a0c3fd324270f70",
+        "1a0ca176a128f4ca",
+        "1a0cd09ea9e4cb25",
+        "1a0cebc162abbf2c",
+        "1a0cecabbc53e957",
+        "1a0cecba2b0aa65f"
+      ],
+      "fetched_message_count": 6,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "rabam",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0c3fff23e094f3",
+      "message_ids": [
+        "1a0c3fff23e094f3",
+        "1a0ca25c52b57704",
+        "1a0cd0d4b0ac2d3c",
+        "1a0cd0e631059fd4",
+        "1a0cd14d0fb10712"
+      ],
+      "fetched_message_count": 5,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "rabam",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0c46c9c746c7c0",
+      "message_ids": [
+        "1a0c46c9c746c7c0",
+        "1a0ca27a21945970",
+        "1a0ccfa5f7c62096",
+        "1a0cd03da9ded413",
+        "1a0ce563affe119b",
+        "1a0ce58dbc19b33b"
+      ],
+      "fetched_message_count": 6,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "rabam",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0c8410ff1ed91d",
+      "message_ids": [
+        "1a0c84bcba1a831d",
+        "1a0d3e158c21d370"
+      ],
+      "fetched_message_count": 2,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "rabam",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0cf70361712bac",
+      "message_ids": [
+        "1a0cf761ffed3205"
+      ],
+      "fetched_message_count": 1,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "rabam",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0cf7664fa3b783",
+      "message_ids": [
+        "1a0cf81cf42fe7bf"
+      ],
+      "fetched_message_count": 1,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "rabam",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0d29a265fdb2d3",
+      "message_ids": [
+        "1a0d29a265fdb2d3",
+        "1a0d29b691f2615c",
+        "1a0d30283780eb33",
+        "1a0d3072eae78101",
+        "1a0d8d2f956e564d"
+      ],
+      "fetched_message_count": 5,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "rabam",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0d39b28a64aa46",
+      "message_ids": [
+        "1a0d39b28a64aa46"
+      ],
+      "fetched_message_count": 1,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "rabam",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0d3b3f83220e0c",
+      "message_ids": [
+        "1a0d3b3f83220e0c",
+        "1a0d403e4251fea5"
+      ],
+      "fetched_message_count": 2,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "rabam",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0d403f8d9a6f72",
+      "message_ids": [
+        "1a0d403f8d9a6f72"
+      ],
+      "fetched_message_count": 1,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "rabam",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0d43ff94db7b49",
+      "message_ids": [
+        "1a0d43ff94db7b49",
+        "1a0d72c43443ede2"
+      ],
+      "fetched_message_count": 2,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "rabam",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0d7f2eb96838e3",
+      "message_ids": [
+        "1a0d7f2eb96838e3",
+        "1a0d809d09c5aef2"
+      ],
+      "fetched_message_count": 2,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "rabam",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0d8065c3052d01",
+      "message_ids": [
+        "1a0d8065c3052d01"
+      ],
+      "fetched_message_count": 1,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "rabam",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0e6fcc039bbedd",
+      "message_ids": [
+        "1a0e6fcc039bbedd",
+        "1a0ed363ee66720b"
+      ],
+      "fetched_message_count": 2,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "rabam",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0ed35c5b7da6fb",
+      "message_ids": [
+        "1a0ed35c5b7da6fb"
+      ],
+      "fetched_message_count": 1,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "rabam",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0f2aa7cb6ec885",
+      "message_ids": [
+        "1a0f2aa7cb6ec885"
+      ],
+      "fetched_message_count": 1,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "rabam",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0f7540b2a200bc",
+      "message_ids": [
+        "1a0f7540b2a200bc"
+      ],
+      "fetched_message_count": 1,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "rabam",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0fbcf20ced3b98",
+      "message_ids": [
+        "1a0fbcf20ced3b98"
+      ],
+      "fetched_message_count": 1,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "rabam",
+      "round": 2
+    },
+    {
+      "thread_id": "1a10b23f642bb388",
+      "message_ids": [
+        "1a10b38bc92bbd24"
+      ],
+      "fetched_message_count": 1,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "rabam",
+      "round": 2
+    },
+    {
+      "thread_id": "1a10c1d9c6f52c6f",
+      "message_ids": [
+        "1a10c1d9c6f52c6f"
+      ],
+      "fetched_message_count": 1,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "rabam",
+      "round": 2
+    },
+    {
+      "thread_id": "19f2701cd3359bbe",
+      "message_ids": [
+        "19f2701cd3359bbe",
+        "19f27032663e7b5d"
+      ],
+      "fetched_message_count": 2,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "yada_multicosmetics",
+      "round": 2
+    },
+    {
+      "thread_id": "19f3bd6eff7727ef",
+      "message_ids": [
+        "19f3bd6eff7727ef"
+      ],
+      "fetched_message_count": 1,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "yada_multicosmetics",
+      "round": 2
+    },
+    {
+      "thread_id": "19f3d45e468183aa",
+      "message_ids": [
+        "19f3d45e468183aa",
+        "19f4ccdb752485a6"
+      ],
+      "fetched_message_count": 2,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "yada_multicosmetics",
+      "round": 2
+    },
+    {
+      "thread_id": "19f7fa283f86b917",
+      "message_ids": [
+        "19f7fa283f86b917"
+      ],
+      "fetched_message_count": 1,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "yada_multicosmetics",
+      "round": 2
+    },
+    {
+      "thread_id": "19f820ac360a5494",
+      "message_ids": [
+        "19f821578ffdbd71",
+        "19f822066b589b0c",
+        "19f865eee7e832ee",
+        "19f8813cbc82f0f6",
+        "19f8975becdecd55",
+        "19f8b727e8c0ffcf",
+        "19f8b7afb5240703",
+        "19f8f85678d5108f",
+        "1a0155d763f64c5f"
+      ],
+      "fetched_message_count": 9,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "yada_multicosmetics",
+      "round": 2
+    },
+    {
+      "thread_id": "19fa8edb606e1735",
+      "message_ids": [
+        "19fa8edb606e1735",
+        "19faca9e7b6662f4",
+        "19fadb5ffecfbeb6",
+        "19fc73b1340eca9c",
+        "1a022e30bef05aab",
+        "1a03337f5039aa22",
+        "1a0aaacbbf3ca806",
+        "1a0aab269d5606fb",
+        "1a0aab5e1be05851",
+        "1a0abaeb5e5c957e",
+        "1a0adf6fd90757d8",
+        "1a0ae01837e75c0e",
+        "1a0ae57433bf3884",
+        "1a0ae8eba6834078",
+        "1a0aeba8872a3539"
+      ],
+      "fetched_message_count": 15,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "yada_multicosmetics",
+      "round": 2
+    },
+    {
+      "thread_id": "19fa9010af37b48e",
+      "message_ids": [
+        "19fa9010af37b48e"
+      ],
+      "fetched_message_count": 1,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "yada_multicosmetics",
+      "round": 2
+    },
+    {
+      "thread_id": "1a01ae2fb0737c47",
+      "message_ids": [
+        "1a01ae2fb0737c47",
+        "1a01db59430141f9"
+      ],
+      "fetched_message_count": 2,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "yada_multicosmetics",
+      "round": 2
+    },
+    {
+      "thread_id": "1a01c83788acc9f4",
+      "message_ids": [
+        "1a01c8db5a770f5a",
+        "1a01d74af7b5541c",
+        "1a01ded05beb5765"
+      ],
+      "fetched_message_count": 3,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "yada_multicosmetics",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0bf9a8a2a4ef28",
+      "message_ids": [
+        "1a0bf9a8a2a4ef28",
+        "1a0bfdef3e18f4da",
+        "1a0c21f43605736c",
+        "1a0c26f0d41bda9f",
+        "1a0ca268517d6b74",
+        "1a0cf4b38e8d1cc3",
+        "1a0d1c411b9b9dcc",
+        "1a0d275047fc126e",
+        "1a0d2ebd7139762d",
+        "1a0d80931a032997"
+      ],
+      "fetched_message_count": 10,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "yada_multicosmetics",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0c3e72a9488819",
+      "message_ids": [
+        "1a0c3ea5633f6b78",
+        "1a0e80d005223eae",
+        "1a0e86d8b70fc44d"
+      ],
+      "fetched_message_count": 3,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "yada_multicosmetics",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0cd88c05996459",
+      "message_ids": [
+        "1a0cd88c05996459"
+      ],
+      "fetched_message_count": 1,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "yada_multicosmetics",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0d208845d38bb7",
+      "message_ids": [
+        "1a0d208845d38bb7"
+      ],
+      "fetched_message_count": 1,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "yada_multicosmetics",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0d88b1d3957ffc",
+      "message_ids": [
+        "1a0d88b1d3957ffc"
+      ],
+      "fetched_message_count": 1,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "yada_multicosmetics",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0ebe5146d11f6c",
+      "message_ids": [
+        "1a0ebe5146d11f6c",
+        "1a0ed4ce45fe2d29",
+        "1a0ed570098cf50b",
+        "1a0ed67ffde7543c",
+        "1a0ed9a9c25e6943",
+        "1a0ed9b16e66524a"
+      ],
+      "fetched_message_count": 6,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "yada_multicosmetics",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0ec35174df3247",
+      "message_ids": [
+        "1a0ec35174df3247"
+      ],
+      "fetched_message_count": 1,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "yada_multicosmetics",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0ed4a0f6368973",
+      "message_ids": [
+        "1a0ed4a0f6368973"
+      ],
+      "fetched_message_count": 1,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "yada_multicosmetics",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0ed61ede00c195",
+      "message_ids": [
+        "1a0ed61ede00c195"
+      ],
+      "fetched_message_count": 1,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "yada_multicosmetics",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0ed63c0c5ba5d9",
+      "message_ids": [
+        "1a0ed63c0c5ba5d9",
+        "1a0f29bfcee0c0ac"
+      ],
+      "fetched_message_count": 2,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "yada_multicosmetics",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0ed692d329d041",
+      "message_ids": [
+        "1a0ed9a29e89e11c",
+        "1a0edc3b85bf4550",
+        "1a0f0f2969fbf6b5",
+        "1a0f1118aff8300e",
+        "1a0f819b3ba39c40",
+        "1a0f88d3b087e7c0"
+      ],
+      "fetched_message_count": 6,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "yada_multicosmetics",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0f18961ed50662",
+      "message_ids": [
+        "1a0f18961ed50662"
+      ],
+      "fetched_message_count": 1,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "yada_multicosmetics",
+      "round": 2
+    },
+    {
+      "thread_id": "1a0f1f7ee0beaea1",
+      "message_ids": [
+        "1a0f209be05c2ba3",
+        "1a0fcd3730a39a7a",
+        "1a0fd1de220e88b8",
+        "1a0fd2191912cda6",
+        "1a10725bf79b87e9"
+      ],
+      "fetched_message_count": 5,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "yada_multicosmetics",
+      "round": 2
+    },
+    {
+      "thread_id": "1a10bd0b4997f6d9",
+      "message_ids": [
+        "1a10bd0b4997f6d9",
+        "1a10bdffd586f4ba",
+        "1a10be33734f9a68"
+      ],
+      "fetched_message_count": 3,
+      "provider_total_messages": null,
+      "completeness": "bounded_read_below_cap_not_independently_exhaustive",
+      "semantic_review": "round2_body_review_complete; detailed/support/exclusion classification in brand report",
+      "brand_id": "yada_multicosmetics",
+      "round": 2
+    }
+  ],
+  "fetched_unique_threads": 105,
+  "fetched_unique_messages": 763,
+  "archive_total": null,
+  "completion_percent": null,
+  "attachments": {
+    "fetched_files": 1,
+    "visually_reviewed_files": 0,
+    "other_attachments_reviewed": 1,
+    "docx_full_extracted_text_reviewed": 1,
+    "linked_documents_text_reviewed": 2,
+    "visual_reviewed": 0,
+    "note": "A fetched file reference alone is not content review. One Gmail DOCX and two linked Rabam documents had returned text read. Other attachment content remains unreviewed."
+  },
+  "failure_or_caveats": [
+    "Original customer message 1a116747b8f8823f shows Turkish encoding anomaly; clean quoted counterpart exists in thread.",
+    "PNG attachment returned file reference without inline pixels; not visually reviewed.",
+    "Gmail calendar-date query time boundaries not assumed Europe/Istanbul; discovery intervals remain incomplete.",
+    "No direct Basecamp API read/write.",
+    "No hamle mailbox connection.",
+    "No automatic cloud learning scheduler activated."
+  ],
+  "resume_instructions": [
+    "Continue current saved query using exact provider page token if valid; deduplicate message IDs.",
+    "If token expires, replay exact search and skip recorded IDs; do not infer unread = unprocessed.",
+    "For exhaustive date windows, use explicit Unix timestamps computed in Europe/Istanbul with small overlap and ID deduplication.",
+    "Inspect business-relevant texts and attachments; separate finance/personal/newsletter records; record failed/unread items.",
+    "Only commit query exhaustion after all queued candidate threads are processed; preserve unreviewed attachments separately.",
+    "Advance older monthly windows after current recent window; full historical target stays open.",
+    "Never send or reopen old tasks in backfill."
+  ],
+  "next_backfill_periods": [
+    "Read detailed per-brand query checkpoints; some 2026 pages are exhausted but unselected bodies/attachments remain.",
+    "Continue older authorized business history without resetting processed IDs."
+  ],
+  "pending_threads": [
+    {
+      "id": "1a116d7ca38c6648",
+      "thread_id": "1a116d7ca38c6648",
+      "from": "\"Basecamp (Gamechangers)\" notifications@app.basecamp.com",
+      "to": [
+        "ahmet@gamechangers.com.tr"
+      ],
+      "subject": "(WAT Mobilite) Esma Z. assigned you: WM // %15 Bakiye Kampanyası Mailing Brief’i",
+      "date": "2026-10-07T14:50:02+00:00",
+      "source_url": "https://mail.google.com/mail/u/#all/1a116d7ca38c6648",
+      "screening": "business_candidate"
+    },
+    {
+      "id": "1a116cf2435bb4e7",
+      "thread_id": "1a116cf2435bb4e7",
+      "from": "\"Esma Zeki (Basecamp)\" notifications@app.basecamp.com",
+      "to": [
+        "ahmet@gamechangers.com.tr"
+      ],
+      "subject": "(WAT Mobilite) Esma Z. @mentioned you in Re: WM // %15 Bakiye Kampanyası Mailing Brief’i",
+      "date": "2026-10-07T14:40:35+00:00",
+      "source_url": "https://mail.google.com/mail/u/#all/1a116cf2435bb4e7",
+      "screening": "business_candidate"
+    },
+    {
+      "id": "1a11673ea9a3a94b",
+      "thread_id": "1a0f74fa12f46ddf",
+      "from": "Esma Zeki esma@gamechangers.com.tr",
+      "to": [
+        "Ozge Yagmur ozge@gamechangers.com.tr"
+      ],
+      "subject": "Re: WAT // Ekim 2026 Moderasyon Raporu",
+      "date": "2026-10-07T16:00:00+03:00",
+      "source_url": "https://mail.google.com/mail/u/#all/1a11673ea9a3a94b",
+      "screening": "business_candidate"
+    },
+    {
+      "id": "1a1166f75cf25313",
+      "thread_id": "1a115c86a65e4fed",
+      "from": "Esma Zeki esma@gamechangers.com.tr",
+      "to": [
+        "Ahmet Şükrü Altındağ ahmet@gamechangers.com.tr"
+      ],
+      "subject": "Re: Gamechangers İşleri hk",
+      "date": "2026-10-07T15:55:47+03:00",
+      "source_url": "https://mail.google.com/mail/u/#all/1a1166f75cf25313",
+      "screening": "business_candidate"
+    },
+    {
+      "id": "1a1162f3332c5933",
+      "thread_id": "1a1162f3332c5933",
+      "from": "\"Rabam | Aracınıza Dair Her Şey\" noreply@rabam.com.tr",
+      "to": [
+        "ahmet@gamechangers.com.tr"
+      ],
+      "subject": "5'li Yıkama Paketi fırsatları devam ediyor🫧",
+      "date": "2026-10-07T11:45:54+00:00",
+      "source_url": "https://mail.google.com/mail/u/#all/1a1162f3332c5933",
+      "screening": "business_candidate"
+    },
+    {
+      "id": "1a11540f0f9db39a",
+      "thread_id": "19e834ccb3b9ca71",
+      "from": "\"Barış Sülün (Basecamp)\" notifications@app.basecamp.com",
+      "subject": "Re: (Gamechangers) GC // Ekip Mail İmza",
+      "date": "2026-10-07T07:25:39+00:00",
+      "source_url": "https://mail.google.com/mail/u/#all/1a11540f0f9db39a",
+      "screening": "business_candidate"
+    },
+    {
+      "id": "1a110a29e20b2fed",
+      "thread_id": "1a110a29e20b2fed",
+      "from": "\"Barış Sülün (Basecamp)\" notifications@app.basecamp.com",
+      "subject": "(BWI) Barış S. @mentioned you in Re: BWI // Son 1 Ay Video STB",
+      "date": "2026-10-06T09:54:14+00:00",
+      "source_url": "https://mail.google.com/mail/u/#all/1a110a29e20b2fed",
+      "screening": "business_candidate"
+    },
+    {
+      "id": "1a1108ef0a294f23",
+      "thread_id": "1a1108ef0a294f23",
+      "from": "\"Esma Zeki (Basecamp)\" notifications@app.basecamp.com",
+      "subject": "(Bikaldi) Esma Z. completed a to-do",
+      "date": "2026-10-06T09:32:45+00:00",
+      "source_url": "https://mail.google.com/mail/u/#all/1a1108ef0a294f23",
+      "screening": "business_candidate"
+    },
+    {
+      "id": "1a11067486961b26",
+      "thread_id": "1a11067486961b26",
+      "from": "\"Cansu Akiş Kabil (Basecamp)\" notifications@app.basecamp.com",
+      "subject": "(Rabam) Cansu A. completed a to-do",
+      "date": "2026-10-06T08:49:26+00:00",
+      "source_url": "https://mail.google.com/mail/u/#all/1a11067486961b26",
+      "screening": "business_candidate"
+    },
+    {
+      "id": "1a110509734ed028",
+      "thread_id": "1a110509734ed028",
+      "from": "\"Barış Sülün (Basecamp)\" notifications@app.basecamp.com",
+      "subject": "(Gamechangers) Barış S. @mentioned you in Re: GC // BWI Davetiye Reels",
+      "date": "2026-10-06T08:24:38+00:00",
+      "source_url": "https://mail.google.com/mail/u/#all/1a110509734ed028",
+      "screening": "business_candidate"
+    },
+    {
+      "id": "1a10ccf19a107c19",
+      "thread_id": "1a10ccf19a107c19",
+      "from": "\"İpek Tunalı (Basecamp)\" notifications@app.basecamp.com",
+      "subject": "(BWI) İpek T. @mentioned you in Re: BWI // Program Takvimi",
+      "date": "2026-10-05T16:04:20+00:00",
+      "source_url": "https://mail.google.com/mail/u/#all/1a10ccf19a107c19",
+      "screening": "business_candidate"
+    },
+    {
+      "id": "1a10c468d7e52c08",
+      "thread_id": "1a10c3614374f486",
+      "from": "\"Berkay Kayaköylü (Basecamp)\" notifications@app.basecamp.com",
+      "subject": "(WAT Mobilite) Berkay K. @mentioned you in Re: WM // Cihaz Yönlendirme Sticker'ı PDF REV",
+      "date": "2026-10-05T13:35:11+00:00",
+      "source_url": "https://mail.google.com/mail/u/#all/1a10c468d7e52c08",
+      "screening": "business_candidate"
+    },
+    {
+      "id": "1a10c39c20a55b05",
+      "thread_id": "1a10c1569970fccc",
+      "from": "\"Barış Sülün (Basecamp)\" notifications@app.basecamp.com",
+      "subject": "(BWI) Barış S. @mentioned you in Re: BWI // Program Açıklandı STB",
+      "date": "2026-10-05T13:21:14+00:00",
+      "source_url": "https://mail.google.com/mail/u/#all/1a10c39c20a55b05",
+      "screening": "business_candidate"
+    },
+    {
+      "id": "1a10c2153af8abf4",
+      "thread_id": "1a10c2153af8abf4",
+      "from": "\"Barış Sülün (Basecamp)\" notifications@app.basecamp.com",
+      "subject": "(WAT Mobilite) Barış S. @mentioned you in Re: WM // Flex Flyer Tasarımı",
+      "date": "2026-10-05T12:54:32+00:00",
+      "source_url": "https://mail.google.com/mail/u/#all/1a10c2153af8abf4",
+      "screening": "business_candidate"
+    },
+    {
+      "id": "1a10bcc03977f9ba",
+      "thread_id": "1a10bb05b4d7e625",
+      "from": "\"İpek Tunalı (Basecamp)\" notifications@app.basecamp.com",
+      "subject": "(BWI) İpek T. @mentioned you in Re: BWI // Son 1 Ay Video STB",
+      "date": "2026-10-05T11:21:21+00:00",
+      "source_url": "https://mail.google.com/mail/u/#all/1a10bcc03977f9ba",
+      "screening": "business_candidate"
+    },
+    {
+      "id": "1a10bad150606221",
+      "thread_id": "1a10bad150606221",
+      "from": "\"Barış Sülün (Basecamp)\" notifications@app.basecamp.com",
+      "subject": "(BWI) Barış S. @mentioned you in Re: BWI // Son 1 Ay Video STB",
+      "date": "2026-10-05T10:47:34+00:00",
+      "source_url": "https://mail.google.com/mail/u/#all/1a10bad150606221",
+      "screening": "business_candidate"
+    },
+    {
+      "id": "1a10ba9920f7bfaa",
+      "thread_id": "1a10ba9920f7bfaa",
+      "from": "\"Esma Zeki (Basecamp)\" notifications@app.basecamp.com",
+      "subject": "(HAN Spaces) Esma Z. completed a to-do",
+      "date": "2026-10-05T10:43:44+00:00",
+      "source_url": "https://mail.google.com/mail/u/#all/1a10ba9920f7bfaa",
+      "screening": "business_candidate"
+    },
+    {
+      "id": "1a10b59ce0e1d8c8",
+      "thread_id": "1a10b59ce0e1d8c8",
+      "from": "\"Berkay Kayaköylü (Basecamp)\" notifications@app.basecamp.com",
+      "subject": "(BWI) Berkay K. @mentioned you in Re: BWI // Son 1 Ay Video STB",
+      "date": "2026-10-05T09:16:36+00:00",
+      "source_url": "https://mail.google.com/mail/u/#all/1a10b59ce0e1d8c8",
+      "screening": "business_candidate"
+    },
+    {
+      "id": "1a10b543d9138632",
+      "thread_id": "1a0fcf3a3c836bb9",
+      "from": "\"Barış Sülün (Basecamp)\" notifications@app.basecamp.com",
+      "subject": "Re: (BWI) BWI // Son 1 Ay Video STB",
+      "date": "2026-10-05T09:10:31+00:00",
+      "source_url": "https://mail.google.com/mail/u/#all/1a10b543d9138632",
+      "screening": "business_candidate"
+    },
+    {
+      "id": "1a10af4ece69335f",
+      "thread_id": "1a10af4ece69335f",
+      "from": "\"Cansu Akiş Kabil (Basecamp)\" notifications@app.basecamp.com",
+      "subject": "(ya da Multicosmetics) Cansu A. @mentioned you in Re: ya da // Ekim 26",
+      "date": "2026-10-05T07:26:25+00:00",
+      "source_url": "https://mail.google.com/mail/u/#all/1a10af4ece69335f",
+      "screening": "business_candidate"
+    },
+    {
+      "id": "1a10adb9df0330e1",
+      "thread_id": "1a10adb9df0330e1",
+      "from": "\"İpek Tunalı (Basecamp)\" notifications@app.basecamp.com",
+      "subject": "(BWI) İpek T. @mentioned you in Re: BWI // Yeni Gruplu Konuşmacı Seti - 2 Alternatif Tasarım",
+      "date": "2026-10-05T06:58:46+00:00",
+      "source_url": "https://mail.google.com/mail/u/#all/1a10adb9df0330e1",
+      "screening": "business_candidate"
+    },
+    {
+      "id": "1a101608f0cefb1f",
+      "thread_id": "1a1016088e135807",
+      "from": "\"Esma Zeki (Basecamp)\" notifications@app.basecamp.com",
+      "subject": "(Gamechangers) Esma Z. completed a to-do",
+      "date": "2026-10-03T10:47:47+00:00",
+      "source_url": "https://mail.google.com/mail/u/#all/1a101608f0cefb1f",
+      "screening": "business_candidate"
+    }
+  ],
+  "deferred_or_excluded_header_groups": [
+    {
+      "thread_id": "1a1170a5c3625e93",
+      "screening": "restricted_agency_finance_deferred"
+    },
+    {
+      "thread_id": "1a117092dc213b01",
+      "screening": "excluded_newsletter_or_receipt"
+    },
+    {
+      "thread_id": "1a115b06b1e84b18",
+      "screening": "excluded_newsletter_or_receipt"
+    },
+    {
+      "thread_id": "1a116e601a8cfc42",
+      "screening": "excluded_newsletter_or_receipt"
+    },
+    {
+      "thread_id": "1a116c985cc21bf2",
+      "screening": "excluded_newsletter_or_receipt"
+    },
+    {
+      "thread_id": "1a116c793966767e",
+      "screening": "excluded_newsletter_or_receipt"
+    },
+    {
+      "thread_id": "1a116ac45ea7a574",
+      "screening": "excluded_newsletter_or_receipt"
+    },
+    {
+      "thread_id": "1a1166f4b587aa86",
+      "screening": "excluded_newsletter_or_receipt"
+    },
+    {
+      "thread_id": "1a11621830306185",
+      "screening": "excluded_newsletter_or_receipt"
+    },
+    {
+      "thread_id": "1a11486460fed552",
+      "screening": "automated_digest_deferred"
+    },
+    {
+      "thread_id": "1a1113f9105473bf",
+      "screening": "automated_digest_deferred"
+    },
+    {
+      "thread_id": "1a10f5ff97d9529d",
+      "screening": "automated_digest_deferred"
+    },
+    {
+      "thread_id": "1a10b7303b7aee85",
+      "screening": "automated_digest_deferred"
+    },
+    {
+      "thread_id": "1a10a3ad43fc26a4",
+      "screening": "automated_digest_deferred"
+    },
+    {
+      "thread_id": "1a105123b6c04378",
+      "screening": "automated_digest_deferred"
+    },
+    {
+      "thread_id": "1a0ffed10fe879e0",
+      "screening": "automated_digest_deferred"
+    }
+  ],
+  "semantic_observations": 20,
+  "brand_label_count_observed": {
+    "external": 8,
+    "internal": 1,
+    "complete_inventory": false
+  },
+  "processed_message_dates_istanbul": {
+    "min": "2026-05-12T14:31:58+03:00",
+    "max": "2026-10-07T19:46:23+03:00"
+  },
+  "archive_work_remaining": "Full archive size unknown; unreviewed bodies, attachments, older history and lower-volume brands remain. No automatic background schedule is active.",
+  "initial_round": {
+    "threads": 12,
+    "messages": 68,
+    "source_scoped_observations": 20,
+    "note": "Initial 12 threads were not all detailed work topics."
+  },
+  "round2": {
+    "schema_version": "1.1.0",
+    "reviewed_at": "2026-10-07T18:25:15.333627+00:00",
+    "account": "ahmet@gamechangers.com.tr",
+    "phase": "learning_only",
+    "external_writes": 0,
+    "additional_detailed_topic_count": 60,
+    "by_brand": [
+      {
+        "brand_id": "wat_mobilite",
+        "brand": "WAT Mobilite",
+        "detailed_topics": 27,
+        "new_threads_read": 33,
+        "new_messages_read": 441,
+        "source_date_start": "2026-05-12T11:31:58+00:00",
+        "source_date_end": "2026-10-07T14:27:17+03:00",
+        "report": "learning-round2/wat_mobilite/report.json",
+        "summary": "learning-round2/wat_mobilite/summary.txt"
+      },
+      {
+        "brand_id": "rabam",
+        "brand": "Rabam",
+        "detailed_topics": 26,
+        "new_threads_read": 37,
+        "new_messages_read": 176,
+        "source_date_start": "2026-06-17T18:38:19+00:00",
+        "source_date_end": "2026-10-06T16:46:19+00:00",
+        "report": "learning-round2/rabam/report.json",
+        "summary": "learning-round2/rabam/summary.txt"
+      },
+      {
+        "brand_id": "yada_multicosmetics",
+        "brand": "ya da Multicosmetics / Remedium",
+        "detailed_topics": 7,
+        "new_threads_read": 23,
+        "new_messages_read": 78,
+        "source_date_start": "2026-07-03T08:04:16+00:00",
+        "source_date_end": "2026-10-05T14:46:32+03:00",
+        "report": "learning-round2/yada_multicosmetics/report.json",
+        "summary": "learning-round2/yada_multicosmetics/summary.txt"
+      }
+    ],
+    "additional_unique_threads_read": 93,
+    "additional_unique_messages_read": 695,
+    "cumulative_unique_threads_read": 105,
+    "cumulative_unique_messages_read": 763,
+    "topic_count_note": "A detailed topic can span multiple email threads; supplementary short records are read but not counted as detailed topics. Distinct Basecamp jobs can share one Gmail notification thread.",
+    "previous_overlap_threads": 0,
+    "previous_overlap_messages": 0,
+    "attachments_read_as_text": 1,
+    "linked_documents_read_as_text": 2,
+    "visually_reviewed_attachments": 0,
+    "archive_total": null,
+    "whole_archive_learned": false,
+    "topics": [
+      {
+        "topic_id": "WAT-R2-01",
+        "brand_id": "wat_mobilite",
+        "title": "Filo çözümü için genel WAT kreatifi",
+        "source_thread_ids": [
+          "1a10bef29969c359",
+          "1a11092091d87658"
+        ],
+        "report": "learning-round2/wat_mobilite/report.json"
+      },
+      {
+        "topic_id": "WAT-R2-02",
+        "brand_id": "wat_mobilite",
+        "title": "Ekim sosyal medya planı ve içerik bazında onay",
+        "source_thread_ids": [
+          "1a0a4fe2dc284358"
+        ],
+        "report": "learning-round2/wat_mobilite/report.json"
+      },
+      {
+        "topic_id": "WAT-R2-03",
+        "brand_id": "wat_mobilite",
+        "title": "Yönetim sunumu kapağı: acil brief ve geri çekilme",
+        "source_thread_ids": [
+          "1a1102c4448d227a"
+        ],
+        "report": "learning-round2/wat_mobilite/report.json"
+      },
+      {
+        "topic_id": "WAT-R2-04",
+        "brand_id": "wat_mobilite",
+        "title": "Opet market puanı kampanyası KV ve partner revizeleri",
+        "source_thread_ids": [
+          "1a0b3c716c333b35"
+        ],
+        "report": "learning-round2/wat_mobilite/report.json"
+      },
+      {
+        "topic_id": "WAT-R2-05",
+        "brand_id": "wat_mobilite",
+        "title": "Cihaz kullanım kılavuzu sticker'ının sadeleştirilmesi",
+        "source_thread_ids": [
+          "1a0f7b062249f962",
+          "1a10c8fd7a39d7f0"
+        ],
+        "report": "learning-round2/wat_mobilite/report.json"
+      },
+      {
+        "topic_id": "WAT-R2-06",
+        "brand_id": "wat_mobilite",
+        "title": "WAT Flex cihaz giydirmesi ve bıçak izi bağımlılığı",
+        "source_thread_ids": [
+          "1a0f7a86a72518e9",
+          "1a10af6dd1878f1d",
+          "1a10ad2aaf5ef686"
+        ],
+        "report": "learning-round2/wat_mobilite/report.json"
+      },
+      {
+        "topic_id": "WAT-R2-07",
+        "brand_id": "wat_mobilite",
+        "title": "WAT Flex ana görseli: ürün doğruluğu ve format sırası",
+        "source_thread_ids": [
+          "1a0f6aaf98ea5c55"
+        ],
+        "report": "learning-round2/wat_mobilite/report.json"
+      },
+      {
+        "topic_id": "WAT-R2-08",
+        "brand_id": "wat_mobilite",
+        "title": "WAT Flex flyer: içerik mimarisi ve eksik üretim bilgisi",
+        "source_thread_ids": [
+          "1a0f1fdbc557b5db",
+          "1a10b28c0b009f75"
+        ],
+        "report": "learning-round2/wat_mobilite/report.json"
+      },
+      {
+        "topic_id": "WAT-R2-09",
+        "brand_id": "wat_mobilite",
+        "title": "Always-on uygulama indirme kreatifi ve A/B yön değişimi",
+        "source_thread_ids": [
+          "19f6a9771b1d2aed"
+        ],
+        "report": "learning-round2/wat_mobilite/report.json"
+      },
+      {
+        "topic_id": "WAT-R2-10",
+        "brand_id": "wat_mobilite",
+        "title": "Proaktif sosyal etkileşim: seçici pilot ve yumuşak ton",
+        "source_thread_ids": [
+          "1a0e7480086fe5ac"
+        ],
+        "report": "learning-round2/wat_mobilite/report.json"
+      },
+      {
+        "topic_id": "WAT-R2-11",
+        "brand_id": "wat_mobilite",
+        "title": "Mobilcar ofis tabelası: uzaktan okunurluk ve fiziksel pay",
+        "source_thread_ids": [
+          "1a0d89bae70df09b"
+        ],
+        "report": "learning-round2/wat_mobilite/report.json"
+      },
+      {
+        "topic_id": "WAT-R2-12",
+        "brand_id": "wat_mobilite",
+        "title": "B2B filo ve sertifikalı yatırımcı iletişimi",
+        "source_thread_ids": [
+          "1a0ebf0cc2bcf7a5"
+        ],
+        "report": "learning-round2/wat_mobilite/report.json"
+      },
+      {
+        "topic_id": "WAT-R2-13",
+        "brand_id": "wat_mobilite",
+        "title": "Salı kampanyası: söylem, KV, motion ve ölçü revizyonları",
+        "source_thread_ids": [
+          "1a0a9f527f16fec5"
+        ],
+        "report": "learning-round2/wat_mobilite/report.json"
+      },
+      {
+        "topic_id": "WAT-R2-14",
+        "brand_id": "wat_mobilite",
+        "title": "Yandex Maps profil ve YAN reklam görselleri",
+        "source_thread_ids": [
+          "1a0c960fa533065f"
+        ],
+        "report": "learning-round2/wat_mobilite/report.json"
+      },
+      {
+        "topic_id": "WAT-R2-15",
+        "brand_id": "wat_mobilite",
+        "title": "Always-on Instagram takipçi kazanımı ve kontrollü mesaj testi",
+        "source_thread_ids": [
+          "1a0673e398f681bc"
+        ],
+        "report": "learning-round2/wat_mobilite/report.json"
+      },
+      {
+        "topic_id": "WAT-R2-16",
+        "brand_id": "wat_mobilite",
+        "title": "Ödeme altyapısı bakımı için bilgilendirme mailing'i",
+        "source_thread_ids": [
+          "1a0d343af572a042"
+        ],
+        "report": "learning-round2/wat_mobilite/report.json"
+      },
+      {
+        "topic_id": "WAT-R2-17",
+        "brand_id": "wat_mobilite",
+        "title": "Konya Sunpet lokasyon kreatifi ve gerçek alan uyumu",
+        "source_thread_ids": [
+          "1a0cde7194230acd"
+        ],
+        "report": "learning-round2/wat_mobilite/report.json"
+      },
+      {
+        "topic_id": "WAT-R2-18",
+        "brand_id": "wat_mobilite",
+        "title": "Hepsiburada mağaza/ürün görselleri ve Home Master uyarlaması",
+        "source_thread_ids": [
+          "19e1bf569e992343"
+        ],
+        "report": "learning-round2/wat_mobilite/report.json"
+      },
+      {
+        "topic_id": "WAT-R2-19",
+        "brand_id": "wat_mobilite",
+        "title": "Tek fiyat kampanyası: KV ve kullanıcı yorumlu video",
+        "source_thread_ids": [
+          "1a0a9df39987bae5",
+          "1a0a9ebc9dfd5678"
+        ],
+        "report": "learning-round2/wat_mobilite/report.json"
+      },
+      {
+        "topic_id": "WAT-R2-20",
+        "brand_id": "wat_mobilite",
+        "title": "AW cihaz üzerindeki Ford logosunu kapatan sticker",
+        "source_thread_ids": [
+          "1a0c926e484e09d2"
+        ],
+        "report": "learning-round2/wat_mobilite/report.json"
+      },
+      {
+        "topic_id": "WAT-R2-21",
+        "brand_id": "wat_mobilite",
+        "title": "ChatGPT Ads olarak adlandırılan pilot için iki kreatif",
+        "source_thread_ids": [
+          "1a0c94f3f9d1a017"
+        ],
+        "report": "learning-round2/wat_mobilite/report.json"
+      },
+      {
+        "topic_id": "WAT-R2-22",
+        "brand_id": "wat_mobilite",
+        "title": "Faturada yenilenebilir enerji iletişim alanı",
+        "source_thread_ids": [
+          "1a0ae0c7c1bcb3d1"
+        ],
+        "report": "learning-round2/wat_mobilite/report.json"
+      },
+      {
+        "topic_id": "WAT-R2-23",
+        "brand_id": "wat_mobilite",
+        "title": "DC flyer'ın İngilizce uyarlaması",
+        "source_thread_ids": [
+          "1a0c91a720e8d6a3"
+        ],
+        "report": "learning-round2/wat_mobilite/report.json"
+      },
+      {
+        "topic_id": "WAT-R2-24",
+        "brand_id": "wat_mobilite",
+        "title": "Eylül sosyal medya planının ajans içi üretim/revizyon zinciri",
+        "source_thread_ids": [
+          "1a01468414acffd4"
+        ],
+        "report": "learning-round2/wat_mobilite/report.json"
+      },
+      {
+        "topic_id": "WAT-R2-25",
+        "brand_id": "wat_mobilite",
+        "title": "Provizyon geçişi için kart yenileme pop-up ve mailing tasarımı",
+        "source_thread_ids": [
+          "1a0aa369f07d00f8"
+        ],
+        "report": "learning-round2/wat_mobilite/report.json"
+      },
+      {
+        "topic_id": "WAT-R2-26",
+        "brand_id": "wat_mobilite",
+        "title": "Eylül iş hacmi ve aylık kapsamın görünür kılınması",
+        "source_thread_ids": [
+          "1a0f24927b4172b8"
+        ],
+        "report": "learning-round2/wat_mobilite/report.json"
+      },
+      {
+        "topic_id": "WAT-R2-27",
+        "brand_id": "wat_mobilite",
+        "title": "Yıllık değerlendirme ve 2027 karar soruları",
+        "source_thread_ids": [
+          "1a0d433e55b7518d"
+        ],
+        "report": "learning-round2/wat_mobilite/report.json"
+      },
+      {
+        "topic_id": "RABAM-R2-01",
+        "brand_id": "rabam",
+        "title": "Ajans başlangıcı, yıllık çatı planı ve hizmet dilinin öğrenilmesi",
+        "source_thread_ids": [
+          "1a01462f6904f196"
+        ],
+        "report": "learning-round2/rabam/report.json"
+      },
+      {
+        "topic_id": "RABAM-R2-02",
+        "brand_id": "rabam",
+        "title": "Hizmet sözleşmesi inceleme ve hukuk takibi",
+        "source_thread_ids": [
+          "1a0a591383ada8cc"
+        ],
+        "report": "learning-round2/rabam/report.json"
+      },
+      {
+        "topic_id": "RABAM-R2-03",
+        "brand_id": "rabam",
+        "title": "Sosyal hesap yetkilendirme ve Meta davetinin çözülmesi",
+        "source_thread_ids": [
+          "1a090186cfb7cf7f"
+        ],
+        "report": "learning-round2/rabam/report.json"
+      },
+      {
+        "topic_id": "RABAM-R2-04",
+        "brand_id": "rabam",
+        "title": "Global benchmark ve aşamalı lansman stratejisi önerisi",
+        "source_thread_ids": [
+          "1a0a9a367d338b52"
+        ],
+        "report": "learning-round2/rabam/report.json"
+      },
+      {
+        "topic_id": "RABAM-R2-05",
+        "brand_id": "rabam",
+        "title": "Eylül sosyal medya planı ve kurucu videosu varyant seçimi",
+        "source_thread_ids": [
+          "1a0901a8b0773887"
+        ],
+        "report": "learning-round2/rabam/report.json"
+      },
+      {
+        "topic_id": "RABAM-R2-06",
+        "brand_id": "rabam",
+        "title": "Ekim sosyal medya planı ve özel gün logo revizyonu",
+        "source_thread_ids": [
+          "1a0c3fd324270f70"
+        ],
+        "report": "learning-round2/rabam/report.json"
+      },
+      {
+        "topic_id": "RABAM-R2-07",
+        "brand_id": "rabam",
+        "title": "Moderasyon yanıtlarının kısaltılması ve fiyat eleştirisi çerçevesi",
+        "source_thread_ids": [
+          "1a0a4066b28a702e"
+        ],
+        "report": "learning-round2/rabam/report.json"
+      },
+      {
+        "topic_id": "RABAM-R2-08",
+        "brand_id": "rabam",
+        "title": "Packshot alternatif tercihi ve hareketlendirme devri",
+        "source_thread_ids": [
+          "1a0c46c9c746c7c0"
+        ],
+        "report": "learning-round2/rabam/report.json"
+      },
+      {
+        "topic_id": "RABAM-R2-09",
+        "brand_id": "rabam",
+        "title": "How-to serisinin ekran kaydı ve gerçek kullanım ayrımı",
+        "source_thread_ids": [
+          "1a0c3fff23e094f3"
+        ],
+        "report": "learning-round2/rabam/report.json"
+      },
+      {
+        "topic_id": "RABAM-R2-10",
+        "brand_id": "rabam",
+        "title": "Barter içerik akışı ve ek kapsamın ayrılması",
+        "source_thread_ids": [
+          "1a0d39b28a64aa46",
+          "1a0d3b3f83220e0c"
+        ],
+        "report": "learning-round2/rabam/report.json"
+      },
+      {
+        "topic_id": "RABAM-R2-11",
+        "brand_id": "rabam",
+        "title": "Always-on çekim paketinin önerilmesi",
+        "source_thread_ids": [
+          "1a0c3ac51f08e885"
+        ],
+        "report": "learning-round2/rabam/report.json"
+      },
+      {
+        "topic_id": "RABAM-R2-12",
+        "brand_id": "rabam",
+        "title": "Kimya Gökçe Aytaç teklifindeki mecra ve kullanım hakkı kapsamı",
+        "source_thread_ids": [
+          "1a0d7f2eb96838e3",
+          "1a0d8065c3052d01"
+        ],
+        "report": "learning-round2/rabam/report.json"
+      },
+      {
+        "topic_id": "RABAM-R2-13",
+        "brand_id": "rabam",
+        "title": "Seda karakteri için oyunculuk odaklı alternatif cast brief’i",
+        "source_thread_ids": [
+          "1a0cf70361712bac"
+        ],
+        "report": "learning-round2/rabam/report.json"
+      },
+      {
+        "topic_id": "RABAM-R2-14",
+        "brand_id": "rabam",
+        "title": "Lansman prodüksiyon tekliflerinin karşılaştırılması ve kapsamın küçülmesi",
+        "source_thread_ids": [
+          "1a0d43ff94db7b49",
+          "1a0c2a9f18a5d035",
+          "1a0b5daa918a9244",
+          "1a10c1d9c6f52c6f"
+        ],
+        "report": "learning-round2/rabam/report.json"
+      },
+      {
+        "topic_id": "RABAM-R2-15",
+        "brand_id": "rabam",
+        "title": "Kampanya sloganının jingle öncesinde netleştirilmesi",
+        "source_thread_ids": [
+          "1a0cf7664fa3b783"
+        ],
+        "report": "learning-round2/rabam/report.json"
+      },
+      {
+        "topic_id": "RABAM-R2-16",
+        "brand_id": "rabam",
+        "title": "Jingle için 8 ve 15 saniyelik versiyon brief’i",
+        "source_thread_ids": [
+          "1a10b23f642bb388"
+        ],
+        "report": "learning-round2/rabam/report.json"
+      },
+      {
+        "topic_id": "RABAM-R2-17",
+        "brand_id": "rabam",
+        "title": "Basın bülteni görselinde uygulama ve marka bütünlüğü",
+        "source_thread_ids": [
+          "1a0f2aa7cb6ec885"
+        ],
+        "report": "learning-round2/rabam/report.json"
+      },
+      {
+        "topic_id": "RABAM-R2-18",
+        "brand_id": "rabam",
+        "title": "Ajans seçimi haberinin basına iletilmesi ve editoryal takip",
+        "source_thread_ids": [
+          "1a0c8410ff1ed91d"
+        ],
+        "report": "learning-round2/rabam/report.json"
+      },
+      {
+        "topic_id": "RABAM-R2-19",
+        "brand_id": "rabam",
+        "title": "Sosyal medya rapor şablonu ve veri kaynağı ayrımı",
+        "source_thread_ids": [
+          "1a0fbcf20ced3b98"
+        ],
+        "report": "learning-round2/rabam/report.json"
+      },
+      {
+        "topic_id": "RABAM-R2-20",
+        "brand_id": "rabam",
+        "title": "Instagram’a özel bakım indirimi ve kampanya sınırlamasının netleştirilmesi",
+        "source_thread_ids": [
+          "1a0d29a265fdb2d3"
+        ],
+        "report": "learning-round2/rabam/report.json"
+      },
+      {
+        "topic_id": "RABAM-R2-21",
+        "brand_id": "rabam",
+        "title": "İlk hizmet teklifi ve kurumsal kimlik kaynaklarının teslimi",
+        "source_thread_ids": [
+          "19ed6d8225375c36"
+        ],
+        "report": "learning-round2/rabam/report.json"
+      },
+      {
+        "topic_id": "RABAM-R2-22",
+        "brand_id": "rabam",
+        "title": "Konkur sunumunda içerik dikeyleri ve üç yaratıcı yolun paketlenmesi",
+        "source_thread_ids": [
+          "19f70b637d02935b"
+        ],
+        "report": "learning-round2/rabam/report.json"
+      },
+      {
+        "topic_id": "RABAM-R2-23",
+        "brand_id": "rabam",
+        "title": "Rabam’la Tekte yaratıcı yolunun geniş format brief’i",
+        "source_thread_ids": [
+          "19fc7fa238993769",
+          "19fcba3c4c295510"
+        ],
+        "report": "learning-round2/rabam/report.json"
+      },
+      {
+        "topic_id": "RABAM-R2-24",
+        "brand_id": "rabam",
+        "title": "Yüzde 50 yıkama kampanyasının tasarım brief’i ve revizyon aralığı",
+        "source_thread_ids": [
+          "1a0c3ee05e8b49d1"
+        ],
+        "report": "learning-round2/rabam/report.json"
+      },
+      {
+        "topic_id": "RABAM-R2-25",
+        "brand_id": "rabam",
+        "title": "Yeni kullanıcı hoş geldin mailing’inin dört metin yaklaşımı",
+        "source_thread_ids": [
+          "1a0d403f8d9a6f72",
+          "1a0d3b3f83220e0c"
+        ],
+        "report": "learning-round2/rabam/report.json"
+      },
+      {
+        "topic_id": "RABAM-R2-26",
+        "brand_id": "rabam",
+        "title": "Ecem Erkek için trend ve persona odaklı içerik önerileri",
+        "source_thread_ids": [
+          "1a0818645c9201fb",
+          "1a0b4a0c8c73a095"
+        ],
+        "report": "learning-round2/rabam/report.json"
+      },
+      {
+        "topic_id": "YADA-R2-01",
+        "brand_id": "yada_multicosmetics",
+        "title": "Dijital proje fikirleri için yaratıcı yazar brief’i ve teslimi",
+        "source_thread_ids": [
+          "19f820ac360a5494"
+        ],
+        "report": "learning-round2/yada_multicosmetics/report.json"
+      },
+      {
+        "topic_id": "YADA-R2-02",
+        "brand_id": "yada_multicosmetics",
+        "title": "Şehre dönüş sunumundan ajans işbirliğine: teklif ve başlangıç kapsamı",
+        "source_thread_ids": [
+          "19fa8edb606e1735"
+        ],
+        "report": "learning-round2/yada_multicosmetics/report.json"
+      },
+      {
+        "topic_id": "YADA-R2-03",
+        "brand_id": "yada_multicosmetics",
+        "title": "Marka stratejisi, doğru ad yazımı ve çalışma ritminin netleşmesi",
+        "source_thread_ids": [
+          "1a0bf9a8a2a4ef28"
+        ],
+        "report": "learning-round2/yada_multicosmetics/report.json"
+      },
+      {
+        "topic_id": "YADA-R2-04",
+        "brand_id": "yada_multicosmetics",
+        "title": "Hizmet sözleşmesi ve cari hesap için başlangıç bilgilerinin toplanması",
+        "source_thread_ids": [
+          "1a0c3e72a9488819"
+        ],
+        "report": "learning-round2/yada_multicosmetics/report.json"
+      },
+      {
+        "topic_id": "YADA-R2-05",
+        "brand_id": "yada_multicosmetics",
+        "title": "İlk içerik planına geçiş için beş başlıklı strateji soru seti",
+        "source_thread_ids": [
+          "1a0d88b1d3957ffc"
+        ],
+        "report": "learning-round2/yada_multicosmetics/report.json"
+      },
+      {
+        "topic_id": "YADA-R2-06",
+        "brand_id": "yada_multicosmetics",
+        "title": "Remedium DS lansman brief’i, tarih değişimi ve kreatif yön revizyonu",
+        "source_thread_ids": [
+          "1a0ebe5146d11f6c",
+          "1a0ed61ede00c195",
+          "1a0ed692d329d041"
+        ],
+        "report": "learning-round2/yada_multicosmetics/report.json"
+      },
+      {
+        "topic_id": "YADA-R2-07",
+        "brand_id": "yada_multicosmetics",
+        "title": "Yıllık iletişim takviminin satış, stok ve Medical kontrolüyle revizyonu",
+        "source_thread_ids": [
+          "1a0f1f7ee0beaea1"
+        ],
+        "report": "learning-round2/yada_multicosmetics/report.json"
+      }
+    ]
+  },
+  "semantic_observations_note": "Initial observation count retained. Round2 uses distinct detailed-topic units (60); do not sum unlike units.",
+  "round2_detailed_topics": 60,
+  "pending_threads_note": "Remainder of initial candidate queue only, not all unread archive. Topic-level duplicates can remain for reconciliation; consult round2 reports before reading.",
+  "round2_query_checkpoint_locations": [
+    "learning-round2/wat_mobilite/report.json",
+    "learning-round2/rabam/report.json",
+    "learning-round2/yada_multicosmetics/report.json"
+  ]
+}

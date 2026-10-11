@@ -1,0 +1,198 @@
+{
+  "recorded_at": "2026-10-10T14:23:34.558630+00:00",
+  "kind": "OFFLINE_SYNTHETIC_CATALOG_INTEGRATION",
+  "catalog_sha256": "b9404f08625006b983b20e49cd64d820174ae75720e4ffbeb0e820df21c8c7d8",
+  "cases": [
+    {
+      "case": "social_static",
+      "passed": true,
+      "list_id": 8231779952,
+      "initial_assignee_ids": [
+        47658175
+      ],
+      "production_stages": [
+        {
+          "id": "production",
+          "kinds": [
+            "graphic"
+          ],
+          "depends_on": [],
+          "assignee_ids": [
+            47658175
+          ]
+        }
+      ],
+      "same_thread_and_cc_preserved": true,
+      "routing_basis": "user_choices_and_read_only_roster",
+      "live_accepted": false
+    },
+    {
+      "case": "social_video",
+      "passed": true,
+      "list_id": 8231779952,
+      "initial_assignee_ids": [
+        50486696
+      ],
+      "production_stages": [
+        {
+          "id": "production",
+          "kinds": [
+            "video"
+          ],
+          "depends_on": [],
+          "assignee_ids": [
+            50486696
+          ]
+        }
+      ],
+      "same_thread_and_cc_preserved": true,
+      "routing_basis": "user_choices_and_read_only_roster",
+      "live_accepted": false
+    },
+    {
+      "case": "social_design_then_animation",
+      "passed": true,
+      "list_id": 8231779952,
+      "initial_assignee_ids": [
+        47658175
+      ],
+      "production_stages": [
+        {
+          "id": "design",
+          "kinds": [
+            "graphic"
+          ],
+          "depends_on": [],
+          "assignee_ids": [
+            47658175
+          ]
+        },
+        {
+          "id": "motion",
+          "kinds": [
+            "animation"
+          ],
+          "depends_on": [
+            "design"
+          ],
+          "assignee_ids": [
+            50486696
+          ]
+        }
+      ],
+      "same_thread_and_cc_preserved": true,
+      "routing_basis": "user_choices_and_read_only_roster",
+      "live_accepted": false
+    },
+    {
+      "case": "non_social_motion",
+      "passed": true,
+      "list_id": 9381497228,
+      "initial_assignee_ids": [
+        50486696
+      ],
+      "production_stages": [
+        {
+          "id": "production",
+          "kinds": [
+            "animation"
+          ],
+          "depends_on": [],
+          "assignee_ids": [
+            50486696
+          ]
+        }
+      ],
+      "same_thread_and_cc_preserved": true,
+      "routing_basis": "user_choices_and_read_only_roster",
+      "live_accepted": false
+    },
+    {
+      "case": "field_design",
+      "passed": true,
+      "list_id": 8234557425,
+      "initial_assignee_ids": [
+        47658175
+      ],
+      "production_stages": [
+        {
+          "id": "production",
+          "kinds": [
+            "graphic"
+          ],
+          "depends_on": [],
+          "assignee_ids": [
+            47658175
+          ]
+        }
+      ],
+      "same_thread_and_cc_preserved": true,
+      "routing_basis": "user_choices_and_read_only_roster",
+      "live_accepted": false
+    },
+    {
+      "case": "agency_whatsapp_relay",
+      "passed": true,
+      "list_id": 8231779952,
+      "initial_assignee_ids": [
+        47658175
+      ],
+      "production_stages": [
+        {
+          "id": "production",
+          "kinds": [
+            "graphic"
+          ],
+          "depends_on": [],
+          "assignee_ids": [
+            47658175
+          ]
+        }
+      ],
+      "same_thread_and_cc_preserved": true,
+      "routing_basis": "user_choices_and_read_only_roster",
+      "live_accepted": false
+    },
+    {
+      "case": "non_social_design_then_animation",
+      "passed": true,
+      "list_id": 9381497228,
+      "initial_assignee_ids": [
+        47658175
+      ],
+      "production_stages": [
+        {
+          "id": "design",
+          "kinds": [
+            "graphic"
+          ],
+          "depends_on": [],
+          "assignee_ids": [
+            47658175
+          ]
+        },
+        {
+          "id": "motion",
+          "kinds": [
+            "animation"
+          ],
+          "depends_on": [
+            "design"
+          ],
+          "assignee_ids": [
+            50486696
+          ]
+        }
+      ],
+      "same_thread_and_cc_preserved": true,
+      "routing_basis": "derived_planning_assumption",
+      "live_accepted": false
+    }
+  ],
+  "passed": 7,
+  "network_calls": 0,
+  "paid_model_calls": 0,
+  "mail_task_comment_writes": 0,
+  "real_wat_request_processed": false,
+  "live_customer_acceptance": false
+}

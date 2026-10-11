@@ -1,0 +1,412 @@
+{
+  "schema_version": "1.0",
+  "as_of": "2026-10-09",
+  "timezone": "Europe/Istanbul",
+  "kind": "local_help_verified_future_internal_test_plan_not_executed",
+  "task_id": "B09",
+  "acceptance_from_project_plan": "Hamle API üzerinden iç görevde atama, sürümlü revizyon ve dosya yükleme yapıldı; alıcı/görünürlük ve dosyanın tam içeriği yeniden doğrulandı.",
+  "task_status_at_read": {
+    "done": 0,
+    "status": "Başlanmadı"
+  },
+  "scope": {
+    "account_id": "5898865",
+    "project_id": "49184053",
+    "project_name": "Hamle — İç Deneme",
+    "person_id": "53358100",
+    "expected_email": "hamle@gamechangers.com.tr",
+    "profile": "hamle-gamechangers",
+    "create_new_synthetic_task_only": true,
+    "never_modify_existing_test_task_ids": [
+      "10384132942",
+      "10387898547"
+    ],
+    "customer_content": false,
+    "customer_notifications_allowed": false,
+    "customer_project_actions_allowed": false
+  },
+  "executed_during_preparation": {
+    "cli_help_and_command_metadata_only": true,
+    "cli_version": "0.13.0",
+    "local_official_source_inspected": true,
+    "auth_or_keychain_command": false,
+    "provider_API_call": false,
+    "remote_write": false,
+    "fixture_created": false,
+    "download_performed": false
+  },
+  "command_context": {
+    "working_directory": "[ESKI_MAC_YOLU_PAKETE_ALINMADI]",
+    "executable": "work/basecamp-tools/bin/basecamp",
+    "environment": {
+      "XDG_CONFIG_HOME": "work/private-connections/config",
+      "XDG_CACHE_HOME": "work/private-connections/cache",
+      "BASECAMP_PROFILE": "hamle-gamechangers",
+      "BASECAMP_CACHE_ENABLED": "false"
+    },
+    "common_arguments": [
+      "--account",
+      "5898865",
+      "--json"
+    ],
+    "execution_note": "Her komut ayrı çağrıdır. Ortamı aynı tut; hesabı flag ile sabitle. Aşağıdaki args common_arguments sonrasına eklenir. Yeni ID yerleri yalnız başarılı sağlayıcı yanıtı ve readback ile doldurulur; tahmin edilmez.",
+    "cache_note": "BASECAMP_CACHE_ENABLED=false, resmî v0.13.0 config.go içinde destekleniyor; taze readback için kullanılır. Config dosyası değiştirilmez.",
+    "sandbox_note": "Önceki doğrulanmış örnekte sandbox Keychain erişemediğinde CLI unauthenticated demişti. Bu tek başına iznin iptal edildiği anlamına gelmez. Yetkili Keychain erişim bağlamını kontrol et; auth login/logout/revoke başlatma veya token dosyaya çıkarma."
+  },
+  "required_checks_before_first_mutation": [
+    "people show me: id=53358100 ve email_address=hamle@gamechangers.com.tr olmalı; isim benzerliği yeterli değildir.",
+    "projects show: id=49184053, beklenen iç proje adı ve clients_enabled=false yeniden görülmeli; arşivli/çöp durumda olmamalı.",
+    "people list --project 49184053 --all: yalnız doğrulanmış Ahmet/Hamle iç üyeleri bulunmalı; müşteri veya bilinmeyen üye varsa dur. Üye silme/davet/değiştirme bu testin parçası değil.",
+    "Mevcut iç proje görevlerinde test kimliği varsa yeni görev oluşturma; önce önceki denemenin sonucunu uzlaştır.",
+    "Proje dock verisinden hedef todoset kimliğini doğrula. --loose ile yeni görev doğrudan bu sete açılır; yeni liste veya mevcut görev değiştirilmez.",
+    "Tam çıktı yerel özel kanıtta tutulabilir; ek URL içindeki token/signed URL/attachable_sgid genel rapora veya sohbete yazılmaz."
+  ],
+  "variables": {
+    "HAMLE_TODOSET_ID": "S02 projects show çıktısındaki bu projeye ait etkin To-dos dock kaydından; sayı dışında değer kabul edilmez.",
+    "HAMLE_NEW_TODO_ID": "S06 create cevabından, yeni test kimliği ve doğru bucket yeniden okunarak doğrulanır.",
+    "HAMLE_NEW_TODO_URL": "https://app.basecamp.com/5898865/buckets/49184053/todos/${HAMLE_NEW_TODO_ID}",
+    "HAMLE_NEW_COMMENT_ID": "S11 comment create cevabından; doğru yeni görev parent ve Hamle creator yeniden okunarak doğrulanır."
+  },
+  "fixture": {
+    "test_id": "GC-HAMLE-BC-B09-20261009-01",
+    "date_rule": "Bu ID 9 Ekim testine ayrılmış öneridir. Başka tarihte gerçek tarihle tek yeni ID belirle; aynı belirsiz denemeyi yeni ID ile yeniden yapma.",
+    "path": "work/hamle-workflow/basecamp-b09-evidence/fixture/Hamle_B09_R1_UTF8.txt",
+    "encoding": "UTF-8 with BOM (utf-8-sig)",
+    "content": "HAMLE BASECAMP API B09 İÇ DENEME\nTest ID: GC-HAMLE-BC-B09-20261009-01\nHesap: 5898865\nProje: 49184053\nSorumlu: Hamle AI / 53358100\nSürüm: R1\nTürkçe kontrol: Çç Ğğ İı Öö Şş Üü\nBu dosya sentetik iç testtir; müşteri işi veya onayı değildir.\n",
+    "expected_lines": 8,
+    "expected_bytes": 264,
+    "creation_note": "Yalnız gerçek test yürütülürken oluştur. Dosyayı yazdıktan sonra tüm metni oku ve SHA-256 kaydet. BOM Türkçe metin görüntüleme uyumluluğu için seçildi; yeniden indirilen gerçek dosya ayrıca çözümlenmelidir.",
+    "contains_private_customer_data": false
+  },
+  "minimal_write_sequence": [
+    {
+      "step": "S06",
+      "effect": "Bir yeni, başlangıçta atanmamış sentetik iç görev oluşturma"
+    },
+    {
+      "step": "S09",
+      "effect": "Yalnız yeni görevi Hamle kişisine atama + başlık/açıklama R1 revizyonu; tamamlanma bildirim listesi boş"
+    },
+    {
+      "step": "S11",
+      "effect": "Tek UTF-8 dosya yükleme ve aynı yeni göreve bir R1 yorumuyla bağlama; CLI içinde attachment upload + comment create iki sağlayıcı yazmasıdır"
+    }
+  ],
+  "minimality_note": "Üç CLI mutation çağrısı; dosya yükleme dahil en az dört sağlayıcı yazma etkisi. Görev tamamlama B09 için zorunlu değildir; otomatik silme, abonelik/üyelik değişimi veya ek mesaj yok.",
+  "steps": [
+    {
+      "id": "S01",
+      "kind": "provider_read_planned",
+      "args": [
+        "people",
+        "show",
+        "me"
+      ],
+      "purpose": "Gerçek çağıran kimliğini doğrula.",
+      "accept_before_next": "53358100 / hamle@gamechangers.com.tr; yanlışsa dur.",
+      "executed": false
+    },
+    {
+      "id": "S02",
+      "kind": "provider_read_planned",
+      "args": [
+        "projects",
+        "show",
+        "49184053"
+      ],
+      "purpose": "İç proje, görünürlük ve To-dos dock kimliğini al.",
+      "accept_before_next": "Doğru proje ve clients_enabled=false; HAMLE_TODOSET_ID bu cevaptan alınır.",
+      "executed": false
+    },
+    {
+      "id": "S03",
+      "kind": "provider_read_planned",
+      "args": [
+        "people",
+        "list",
+        "--project",
+        "49184053",
+        "--all"
+      ],
+      "purpose": "Tüm proje üyelerini kontrol et.",
+      "accept_before_next": "Yalnız bilinen Ahmet/Hamle; müşteri veya belirsiz üye yok.",
+      "executed": false
+    },
+    {
+      "id": "S04",
+      "kind": "provider_read_planned",
+      "args": [
+        "todos",
+        "list",
+        "--project",
+        "49184053",
+        "--all"
+      ],
+      "purpose": "Aynı test ID ile başlamış bir görev var mı kontrol et.",
+      "accept_before_next": "GC-HAMLE-BC-B09-20261009-01 mevcutsa yeni oluşturma; ilgili kaydı uzlaştır.",
+      "executed": false
+    },
+    {
+      "id": "S05",
+      "kind": "local_fixture_preparation_planned",
+      "purpose": "Fixture dosyasını tam belirtilen içerikle UTF-8 BOM olarak yaz; dosya izinlerini 0600 yap; hash ve tam metni kaydet.",
+      "file": "work/hamle-workflow/basecamp-b09-evidence/fixture/Hamle_B09_R1_UTF8.txt",
+      "content_source": "fixture.content",
+      "encoding": "utf-8-sig",
+      "permissions": "0600",
+      "executed": false
+    },
+    {
+      "id": "S06",
+      "kind": "provider_mutation_planned",
+      "args": [
+        "todos",
+        "create",
+        "HAMLE | API B09 | GC-HAMLE-BC-B09-20261009-01 | V0",
+        "--project",
+        "49184053",
+        "--todoset",
+        "${HAMLE_TODOSET_ID}",
+        "--loose",
+        "--description",
+        "Sentetik iç Basecamp API testi. Yalnız Hamle — İç Deneme projesi. Müşteri talebi veya onayı değildir. Başlangıç sürümü V0."
+      ],
+      "purpose": "Bir yeni test görevi oluştur; henüz atama, ek, mention veya bildirim listesi ekleme.",
+      "accept_before_next": "HAMLE_NEW_TODO_ID yanıttan alınır; sadece bu yeni ID sonraki adımlarda kullanılır.",
+      "executed": false
+    },
+    {
+      "id": "S07",
+      "kind": "provider_read_planned",
+      "args": [
+        "todos",
+        "show",
+        "${HAMLE_NEW_TODO_URL}",
+        "--no-comments"
+      ],
+      "purpose": "Yeni görevin ilk sürümünü yeniden oku.",
+      "accept_before_next": "Creator Hamle; bucket49184053; doğru V0 başlığı; visible_to_clients=false; başlangıç assignees boş.",
+      "executed": false
+    },
+    {
+      "id": "S08",
+      "kind": "provider_read_planned",
+      "args": [
+        "subscriptions",
+        "show",
+        "${HAMLE_NEW_TODO_URL}"
+      ],
+      "purpose": "Yeni task abonelerini kontrol et.",
+      "accept_before_next": "Hamle dışında varsa yalnız S03te doğrulanmış Ahmet iç hesabı olabilir; müşteri/bilinmeyen kişi varsa dur.",
+      "executed": false
+    },
+    {
+      "id": "S09",
+      "kind": "provider_mutation_planned",
+      "args": [
+        "todos",
+        "update",
+        "${HAMLE_NEW_TODO_URL}",
+        "--title",
+        "HAMLE | API B09 | GC-HAMLE-BC-B09-20261009-01 | R1",
+        "--assignee",
+        "53358100",
+        "--description",
+        "Sentetik iç Basecamp API testi. R1: sorumlu Hamle AI olarak atandı; Türkçe dosya geri okuma kontrolü bu göreve bağlanacak. Müşteri işi veya onayı değildir.",
+        "--no-notify-on-completion"
+      ],
+      "purpose": "Yeni görevi Hamleye ata ve R1 başlık/açıklama revizyonunu yap.",
+      "accept_before_next": "--notify yok; başka kişi, tarih veya müşteri alıcısı eklenmez.",
+      "executed": false
+    },
+    {
+      "id": "S10",
+      "kind": "provider_read_planned",
+      "args": [
+        "todos",
+        "show",
+        "${HAMLE_NEW_TODO_URL}",
+        "--no-comments"
+      ],
+      "purpose": "Atama ve revizyonu yeniden oku.",
+      "accept_before_next": "Başlık R1; assignees yalnız53358100; description R1; bucket49184053; visible_to_clients=false; completion notification listesi boş.",
+      "executed": false
+    },
+    {
+      "id": "S11",
+      "kind": "provider_mutation_planned",
+      "args": [
+        "comments",
+        "create",
+        "${HAMLE_NEW_TODO_URL}",
+        "GC-HAMLE-BC-B09-20261009-01 — R1 teknik dosya kontrolü. Ekteki sentetik metin yeniden indirilip tam içerik ve Türkçe karakterler açısından karşılaştırılacak. Müşteri işi veya onayı değildir.",
+        "--project",
+        "49184053",
+        "--attach",
+        "work/hamle-workflow/basecamp-b09-evidence/fixture/Hamle_B09_R1_UTF8.txt"
+      ],
+      "purpose": "Tek dosyayı bir yeni R1 yorumuna bağla.",
+      "accept_before_next": "Comment ID kaydedilir; upload+comment kısmi başarısızlığında tekrar yok; içerikte @mention yok.",
+      "executed": false
+    },
+    {
+      "id": "S12",
+      "kind": "provider_read_planned",
+      "args": [
+        "comments",
+        "show",
+        "${HAMLE_NEW_COMMENT_ID}",
+        "--project",
+        "49184053"
+      ],
+      "purpose": "Yorum ve dosya metadata ilişkisini taze oku.",
+      "accept_before_next": "Creator53358100, doğru parent yeni task ve bucket49184053; visible_to_clients=false; doğru dosya adı/byte sayısı.",
+      "executed": false
+    },
+    {
+      "id": "S13",
+      "kind": "provider_read_and_local_download_planned",
+      "args": [
+        "attachments",
+        "download",
+        "${HAMLE_NEW_COMMENT_ID}",
+        "--type",
+        "comment",
+        "--file",
+        "Hamle_B09_R1_UTF8.txt",
+        "--out",
+        "work/hamle-workflow/basecamp-b09-evidence/downloaded"
+      ],
+      "purpose": "Yalnız yeni yorumdaki bilinen sentetik eki yeniden indir.",
+      "accept_before_next": "Başarılı indirme ve tam tek dosya; gizli ek URLsi sohbete basılmaz. Yerel readback dosyası önceki fixture ile farklı dizinde kalır.",
+      "executed": false
+    },
+    {
+      "id": "S14",
+      "kind": "local_readback_verification_planned",
+      "purpose": "İndirilen dosyanın bütün byte içeriğini ve utf-8-sig ile çözümlenen 8 satırını aslıyla karşılaştır.",
+      "original": "work/hamle-workflow/basecamp-b09-evidence/fixture/Hamle_B09_R1_UTF8.txt",
+      "downloaded_directory": "work/hamle-workflow/basecamp-b09-evidence/downloaded",
+      "require": [
+        "SHA-256 equality",
+        "byte_count equality",
+        "full decoded string equality",
+        "8 lines",
+        "Turkish characters intact"
+      ],
+      "executed": false
+    },
+    {
+      "id": "S15",
+      "kind": "provider_read_planned",
+      "args": [
+        "subscriptions",
+        "show",
+        "${HAMLE_NEW_TODO_URL}"
+      ],
+      "purpose": "Son abonelik kaydını doğrula.",
+      "accept_before_next": "Yalnız izinli iç kişiler; ilk ve son kontrol kaydı korunur.",
+      "executed": false
+    },
+    {
+      "id": "S16",
+      "kind": "provider_read_planned",
+      "args": [
+        "todos",
+        "show",
+        "${HAMLE_NEW_TODO_URL}",
+        "--all-comments"
+      ],
+      "purpose": "Son task, R1 ve yorum ilişkisini tek taze kayıtta doğrula.",
+      "accept_before_next": "Yalnız bu yeni test görevi; doğru Hamle ataması ve yorum/dosya ilişkisi; B09 kabul tablosu tamamlanır.",
+      "executed": false,
+      "cli_correction": "v0.13.0 comments_embed.go:44 makes comments/no-comments/all-comments mutually exclusive. --all-comments alone fetches all comments."
+    }
+  ],
+  "failure_rules": [
+    "Her kimlik/proje/üye/görünürlük koşulu geçmeden sıradaki mutation yapılmaz.",
+    "Yeni görevde görünürlük false veya beklenen bucket doğrulanamıyorsa yalnız teşhis için taze okuma yapılır; sonraki atama/dosya/yorum durur.",
+    "Subscriberlarda müşteri/bilinmeyen kişi bulunursa yorum/ek üretme. Bu plan aboneleri otomatik kaldırmaz ve sıfır bildirim garantisi vermez; izinli iç üyeler sağlayıcı bildirim davranışına tabi olabilir.",
+    "Create veya upload+comment timeout/hata/eksik yanıt verirse kör yeniden deneme yok. Test ID ve yeni görevün yorumları yalnız bu projede okunarak uzlaştırılır; upload başarılı comment başarısız kalabilir.",
+    "Dosya adı veya byte sayısı tek başına kabul değildir; indirilen dosyanın SHA-256 ve tam utf-8-sig metni fixture ile eşleşmelidir.",
+    "Metin bozulursa veya hash uyuşmazsa B09 açık kalır. Yeni sürüm gerekiyorsa ayrı R2 olarak neden ve kaynak kaydıyla hazırlanır; aynı başarısız adımı belirsiz şekilde tekrar etme.",
+    "Eski tasklara, başka projeye, account-wide aramaya, mention, notify veya customer recipient eklemeye genişleme yok."
+  ],
+  "B09_pass_requires": [
+    "Yeni task creator=Hamle, bucket=49184053, benzersiz iç test kimliği ve visible_to_clients=false taze readback ile kanıtlı.",
+    "Başlangıç görevi ile R1 başlık/açıklama farkı kaydedilmiş; assignees yalnız 53358100 ve completion subscriber listesi boş.",
+    "Dosyalı yorumun creator=53358100, parent=yeni task, bucket=49184053 ve müşteriye kapalı görünürlüğü doğrulanmış.",
+    "Ek adı/byte sayısı ve indirilen tam dosyanın hash+Türkçe içerik karşılaştırması geçiyor.",
+    "Proje üyeleri ve yeni task subscriber kontrolünde müşteri/bilinmeyen alıcı yok; notify/mention/completion notification listesi eklenmemiş.",
+    "Sağlayıcı kaydı yeni test işiyle sınırlı; belirsiz sonuç veya çözülmemiş kısmi başarısızlık yok."
+  ],
+  "does_not_prove": [
+    "Gmail API yetkisi",
+    "Basecamp refresh/iptal testi",
+    "Müşteri marka/proje erişimleri",
+    "Bulut çalışma ortamı",
+    "Otonom model/ajan üretimi",
+    "E04 görünmeyen CC çıkarma tespiti",
+    "Dört rolün canlı kabulü"
+  ],
+  "evidence_schema": {
+    "save_only": [
+      "test_id",
+      "started_at",
+      "finished_at",
+      "account_id",
+      "project_id",
+      "person_id",
+      "new_task_id",
+      "task_title_v0",
+      "task_title_r1",
+      "assignee_ids",
+      "comment_id",
+      "creator_id",
+      "parent_id",
+      "visible_to_clients",
+      "subscriber_ids_or_internal_count",
+      "attachment_filename",
+      "attachment_byte_size",
+      "original_sha256",
+      "downloaded_sha256",
+      "full_text_match",
+      "commands_exit_codes",
+      "uncertain_outcomes",
+      "B09_pass"
+    ],
+    "redact": [
+      "token",
+      "refresh_token",
+      "client_secret",
+      "signed_attachment_url",
+      "attachable_sgid"
+    ],
+    "task_update_rule": "B09 done ancak tüm pass koşulları gerçekten geçince ana yürütücü tarafından güncellenir; planın hazır olması done değildir."
+  },
+  "sources": [
+    {
+      "type": "local_official_binary",
+      "path": "work/basecamp-tools/bin/basecamp",
+      "version": "0.13.0",
+      "verified": "--version; ilgili komutların --help çıktıları"
+    },
+    {
+      "type": "official_repository",
+      "url": "https://github.com/basecamp/basecamp-cli/tree/v0.13.0",
+      "local_retained_source": "work/basecamp-tools/keychain-review/basecamp-cli-0.13.0",
+      "files": [
+        "internal/commands/todos.go",
+        "internal/commands/comment.go",
+        "internal/commands/attachments.go",
+        "internal/config/config.go",
+        "internal/cli/root.go"
+      ]
+    },
+    {
+      "type": "project_acceptance",
+      "path": "work/project-tracker/project-plan.json",
+      "selector": "tasks[id=B09]"
+    }
+  ]
+}

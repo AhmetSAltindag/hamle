@@ -1,0 +1,14 @@
+{
+  "status": "passed",
+  "checked_at": "2026-10-10T15:57:08.377662+00:00",
+  "work_id": "work-7c3d3839c3f3ab85f28a610b08293a0aef774b4c5d0b9043b50b1fe043f68c37",
+  "grant_status": "revoked",
+  "work_generation": 1,
+  "global_generation": 1,
+  "lease_cleared": true,
+  "original_probe_unchanged": true,
+  "firestore_writes": 0,
+  "business_writes": 0,
+  "model_calls": 0,
+  "wat_live_enabled": false
+}

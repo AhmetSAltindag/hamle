@@ -1,0 +1,10 @@
+{
+  "checked_at": "2026-10-10T16:05:20.526989+00:00",
+  "tests_run": 71,
+  "passed": 70,
+  "skipped": 1,
+  "status": "passed",
+  "remaining_skip": "local_ffmpeg_ffprobe_unavailable",
+  "actual_linux_smoke_required": true,
+  "same_tests_overlap_main_suite": true
+}

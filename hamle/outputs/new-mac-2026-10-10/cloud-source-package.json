@@ -1,0 +1,16 @@
+{
+  "source_archive": "/private/tmp/hamle-synthetic-source-20261010-v1.tgz",
+  "sha256": "bb588226aab184b8bcb715d1bf63472b518ca962eb28c2afd965ceb25f01c98c",
+  "included_files": {
+    "Dockerfile": "92b33c28ddd19cd681e6ac8fcc5aa3c8228303e89b8d8b104507e568eea52465",
+    "requirements.txt": "45cc4e323efaf3d042dadc343d547ca8973588478bbaf6700ac372c95b7a38a8",
+    "core.py": "8f199ad89bb3361e0138661014828204279de88af9f2321b14b0802d5bc95cd2",
+    "firestore_store.py": "a065cf9cd9934e78f40acaff2b808fd5b527c382eade0056c51a5e6b7930723d",
+    "main.py": "0f6b8ecc0979e855bb9d424859cb9a355df6ec83ba18a1e782e869b706f1ed8d"
+  },
+  "customer_data_or_credentials_included": false,
+  "build_context_is_allowlist": true,
+  "container_built": true,
+  "build_id": "f80f8e4a-fe41-4600-8f63-4c4a6baf3d30",
+  "image_digest": "sha256:6d60eb0700736bf591a51be3d0b99ff14ba6cc0893f46039fc1671c964770122"
+}

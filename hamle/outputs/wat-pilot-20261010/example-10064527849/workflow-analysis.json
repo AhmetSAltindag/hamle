@@ -1,0 +1,265 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-10-10T14:30:37.628205+00:00",
+  "task_id": 10064527849,
+  "project_id": 40694338,
+  "task_url": "https://app.basecamp.com/5898865/buckets/40694338/todos/10064527849",
+  "title": "WM // Temmuz Ağustos Yaz Kampanyası İletişimi ",
+  "evidence_sha256": "8fdaade659f82a8142d21c68f43a9cc11254ff1a864e088f79d2db8063cbc7f8",
+  "source_type": "user_supplied_historical_reference_not_live_authority",
+  "coverage": {
+    "task_read": true,
+    "comments_read": 71,
+    "reported_comments": 71,
+    "all_comments_requested": true,
+    "count_matches": true,
+    "first_comment_at": "2026-07-06T12:19:25.084Z",
+    "last_comment_at": "2026-09-04T12:03:12.274Z",
+    "attachments_downloaded": 0,
+    "artifact_bytes_or_visuals_inspected": false,
+    "original_mail_or_whatsapp_read": false,
+    "basecamp_writes": 0,
+    "mail_sends": 0,
+    "paid_model_calls": 0
+  },
+  "people_comment_counts": {
+    "Berkay Kayaköylü": 25,
+    "Özge Yağmur": 12,
+    "Aleyna Efe": 22,
+    "Barış Sülün": 4,
+    "İpek Tunalı": 8
+  },
+  "initial_brief": {
+    "creator": "Özge Yağmur",
+    "category": "Sosyal Medya",
+    "task_created_at": "2026-07-06T08:17:10.574Z",
+    "current_assignees_observed": [
+      "Aleyna Efe",
+      "Berkay Kayaköylü"
+    ],
+    "phase_one": "Önce ana kampanya KV; yaz teması, fiyat vurgusu, ileride hareketlendirilebilen görsel öğeler. İlk brief kampanya tarihinin görsele konmamasını istiyor.",
+    "phase_two_after_kv_agreement": [
+      "web statik",
+      "reels",
+      "fiyat/lokasyon story setleri",
+      "rota içerikleri",
+      "mailing"
+    ]
+  },
+  "timeline": [
+    {
+      "comment_ids": [
+        10065163857,
+        10065594019,
+        10066292943,
+        10066343162,
+        10066653968
+      ],
+      "date_range": [
+        "2026-07-06T12:19:25.084Z",
+        "2026-07-06T17:14:34.711Z"
+      ],
+      "observed": "İlk KV ardından cihaz odağı, duplike logo, fiyat söylemi/disclaimer ve başlık revizyonu; ikinci taslakta istenen yaz hissi hâlâ yeterli görülmüyor. Özge özel konuşmadaki yorumları Basecamp’e kaydediyor.",
+      "hamle_implication": "Salt kontrol-listesi tikleri veya son dosya müşteri teslimi değildir; kreatif hedef de değerlendirilir. Dış görüşme yazılı kayda dönüştüğünde kaynak ve yetki ayrıca doğrulanır."
+    },
+    {
+      "comment_ids": [
+        10069011369,
+        10069142828,
+        10069449714,
+        10069463856,
+        10069685175,
+        10069689477
+      ],
+      "date_range": [
+        "2026-07-07T06:07:09.583Z",
+        "2026-07-07T10:48:33.615Z"
+      ],
+      "observed": "Seçilen KV üzerinden Reels storyboard ve LinkedIn isteniyor; Aleyna mailing metnini ekliyor. Storyboard son ekranı sosyal logo seti ve üçlü grid yeni alt çıktılar olarak netleşiyor.",
+      "hamle_implication": "KV aşaması ile türev üretimler bağımlılık ilişkisi taşır. Storyboard animasyon videosu değildir; ayrı çıktı kabulü gerekir."
+    },
+    {
+      "comment_ids": [
+        10069730588,
+        10069838158,
+        10069951935,
+        10070235546,
+        10070247757,
+        10070396250,
+        10074202858,
+        10074218937,
+        10074456360,
+        10074480672
+      ],
+      "date_range": [
+        "2026-07-07T11:03:24.465Z",
+        "2026-07-08T12:34:00.657Z"
+      ],
+      "observed": "Başlık/fiyat kullanımı tüm sete yayılıyor; motion için PSD paylaşımı yapılıyor. kWh’den düzeltmesi grid, LinkedIn ve mailing’e ayrı ayrı uygulanıyor. Bir mailing dosyasının yanlış göreve gittiği açıkça belirtilip doğru göreve yeniden konuyor.",
+      "hamle_implication": "Ortak metin değişikliği etkilenen tüm varyantları geçersiz kılmalı. PSD üretim kaynağıdır; teslim dosyası diye müşteriye otomatik gönderilmez. Dosya doğru task ve alt çıktıyla bağlanmalıdır."
+    },
+    {
+      "comment_ids": [
+        10078745234,
+        10082594571,
+        10088261825,
+        10088333391
+      ],
+      "date_range": [
+        "2026-07-09T11:43:39.685Z",
+        "2026-07-13T11:29:59.278Z"
+      ],
+      "observed": "Masaüstü slider 1920×570 ve kampanya kapak 1000×666 ekleniyor; slider logosunun kaldırılması ayrıca istenip v2 dosyası sunuluyor.",
+      "hamle_implication": "Ölçü ve logo koşulları alt çıktı bazındadır; tüm marka dosyalarına evrensel kural olarak taşınmaz."
+    },
+    {
+      "comment_ids": [
+        10208017792,
+        10208055153,
+        10213142133,
+        10213146709,
+        10213158793,
+        10213208774,
+        10213228457,
+        10213357234,
+        10213363242,
+        10213398527
+      ],
+      "date_range": [
+        "2026-08-17T07:37:43.805Z",
+        "2026-08-18T12:32:23.741Z"
+      ],
+      "observed": "Aynı görev Ağustos’ta 30 Eylül’e uzatma iletişimine dönüyor; masaüstü/mobil slider ve mailing kapsamı açılıyor. Kırmızı badge talebi ile tasarımcının marka renkleri tercihi çatışıyor; toplantı talebi tekrar iletilince kırmızı alternatifler hazırlanıyor.",
+      "hamle_implication": "Tarih yazılmasın şeklindeki eski brief yeni uzatma brief’inin önüne geçemez. Marka standardı ile yetkili müşteri istisnası çatışınca Hamle keyfi seçim yapmamalı, kararı kayıtlı biçimde netleştirmeli."
+    },
+    {
+      "comment_ids": [
+        10213452851,
+        10213453908,
+        10214124589,
+        10216990456,
+        10217662128,
+        10217673774,
+        10217709168,
+        10217782980,
+        10218516543,
+        10221493668
+      ],
+      "date_range": [
+        "2026-08-18T12:47:50.408Z",
+        "2026-08-20T07:01:53.692Z"
+      ],
+      "observed": "Fiyat odaklı sade tek story ayrı kreatif olarak ekleniyor; ana kampanya ve beyaz zeminli fiyat kreatifi ayrışıyor. Sonraki yorum story/mailing/mobil/masaüstü slider için Eylül Boyunca ifadesini ve Avantajlı Şarj Noktaları sloganını esas alıyor; 10,99 TL/kWh’den başlayan fiyatlarla metni kaldırılıyor.",
+      "hamle_implication": "Her alt çıktının en güncel brief sürümü ayrı tutulmalı; bir kampanyadaki her ek aynı amaç ve metne sahip değildir."
+    },
+    {
+      "comment_ids": [
+        10222045207,
+        10222326922,
+        10231919585,
+        10235208015
+      ],
+      "date_range": [
+        "2026-08-20T10:55:17.796Z",
+        "2026-08-25T06:55:41.478Z"
+      ],
+      "observed": "Slider logosu geri isteniyor; iller ve lokasyonları içeren carousel eklenip önce İstanbul örneğine onay planlanıyor. Beyaz kreatife özel 14,49 metin düzeltmesi var. İki tasarım yaklaşımından C_02 seçiliyor; alfabetik sıralama ve aynı tesis lokasyonlarını birlikte tutma koşulu geliyor.",
+      "hamle_implication": "Fiyat düzeltmesinin hangi kreatife ait olduğu korunmalı; bütün setin fiyatını genelleştirmek hatalı olur. Kaynak lokasyon listesi sürümlenmeli; seçilmeyen alternatifler final kabul edilmemeli."
+    },
+    {
+      "comment_ids": [
+        10236992280,
+        10239805399,
+        10239822993,
+        10239974680,
+        10254611661,
+        10254629741
+      ],
+      "date_range": [
+        "2026-08-25T15:40:07.225Z",
+        "2026-08-31T11:39:22.645Z"
+      ],
+      "observed": "Barış işi İpek’e devrediyor. Preview+ZIP teslimi, güncellenen alfabetik Excel ve yeni set var; sonra cover disclaimer’ı değiştiriliyor.",
+      "hamle_implication": "Güncel görev assignee listesi üretim devrinin tüm geçmişini anlatmıyor. Kaynak Excel, preview, ZIP paket ve müşteriye çıkacak dosya rolleri ayrı kaydedilmeli."
+    },
+    {
+      "comment_ids": [
+        10254687927,
+        10254869933,
+        10254886054,
+        10254921532,
+        10255366389
+      ],
+      "date_range": [
+        "2026-08-31T12:01:24.245Z",
+        "2026-08-31T14:34:54.051Z"
+      ],
+      "observed": "16 görselin yoğunluğu tartışılıp beş büyük şehir/Oksijen Tesisleri/website CTA yaklaşımında uzlaşılıyor. Barış işi Berkay’a geri devrediyor; İpek çalışma ZIP’ini paylaşıyor, Berkay küçültülmüş set sunuyor.",
+      "hamle_implication": "Kapsam sadeleşmesi sıradan boyut revizyonu değildir; eski 16’lı paketin gönderimini durdurmalı. Çalışma dosyası ZIP’i, onaylı müşteri teslim paketi yerine geçmez."
+    },
+    {
+      "comment_ids": [
+        10258740775,
+        10259434313,
+        10259507951,
+        10259513261,
+        10259543595,
+        10259647116,
+        10264193692,
+        10264266104,
+        10273027864,
+        10273085260,
+        10273236434
+      ],
+      "date_range": [
+        "2026-09-01T07:34:34.256Z",
+        "2026-09-04T12:03:12.274Z"
+      ],
+      "observed": "Mailing başlığı tekrar netleşiyor; Barış üretimi İpek’e veriyor. İpek banner ölçüsünü soruyor. 1920×570 dosyasının doğru gönderildiği teyit ediliyor; müşteri karışıklığı nedeniyle bunun yanlış ölçü olmadığı, ek 1000×666 gerektiği netleşiyor ve ek boyut sunuluyor.",
+      "hamle_implication": "Ölçü sorusu eksik brief’i tamamlar. Yeni 1000×666 ihtiyacı önceki 1920×570 dosyasının hatalı üretildiği diye puanlanmamalı; ek alt teslimdir."
+    }
+  ],
+  "three_main_lessons": [
+    {
+      "lesson": "Tek görev içinde aşamalı onay ve alt teslim takibi gerekir.",
+      "evidence_comment_ids": [
+        10069011369,
+        10069463856,
+        10235208015,
+        10273027864
+      ],
+      "consequence": "KV seçimi, storyboard, video, mailing, slider ve carousel ayrı kabul nesneleri olmalı; bir dosyanın hazır olması tüm işi bitirmez."
+    },
+    {
+      "lesson": "Kalite, ilk brief’e değil ilgili alt çıktının son yetkili brief sürümüne göre ölçülmeli.",
+      "evidence_comment_ids": [
+        10208017792,
+        10217782980,
+        10222326922,
+        10254869933
+      ],
+      "consequence": "Tarih, slogan, fiyat ve lokasyon listesi değişiklikleri doğru varyantlara uygulanmalı; eski onay/dosya otomatik kullanılmamalı."
+    },
+    {
+      "lesson": "Devreden kişi, üretici, inceleyen ve dosyanın kullanım amacı birbirinden ayrılmalı.",
+      "evidence_comment_ids": [
+        10070247757,
+        10074480672,
+        10236992280,
+        10254886054,
+        10254921532,
+        10259507951
+      ],
+      "consequence": "Güncel assignee veya son ZIP yeterli kanıt değildir; kaynak dosya, referans, ara taslak ve müşteri çıktısı ayrılmalı."
+    }
+  ],
+  "evidence_limits": [
+    "71 yorumun tamamı okundu; görsel/ZIP/Excel/PSD/video baytları incelenmedi.",
+    "Bazı müşteri talepleri ve onaylar ekip üyelerinin aktardığı sözlü/toplantı/özel konuşma özetleridir; özgün müşteri maili veya WhatsApp kaydı yok.",
+    "Görev completed=true; tamamlanma anı, dış müşteriye gerçekten gönderilmiş son paket ve mail teslimi bu okumadan kanıtlanamaz.",
+    "Bu başlıkta storyboard ve motion PSD devri var; son render videonun varlığı ve kalite kabulü kanıtlanmadı.",
+    "Kırmızı renk istisnası, geçmiş fiyatlar, eski assignee/devirler ve lokasyonlar güncel WAT yetki/kılavuzu olarak otomatik benimsenemez.",
+    "Ek bilgileri bu raporda yorum metnindeki dosya adlarından anlamlandırıldı; tam dosya manifesti veya içerik doğruluğu çıkarılmadı.",
+    "Aynı dosya adları farklı tarihlerde tekrar kullanılıyor; içerik eşitliği veya final sürüm dosya adından belirlenemez."
+  ]
+}

@@ -1,0 +1,2239 @@
+{
+  "schemaVersion": "1.0.0",
+  "title": "Hamle proje takip planı",
+  "asOf": "2026-10-09",
+  "timezone": "Europe/Istanbul",
+  "liveRoles": 0,
+  "targetRoles": 4,
+  "baselineExplicit": "Bu belge için önerilen 100 puanlı yönetim referansı; süre veya öğrenme yüzdesi değil",
+  "ownerAssignmentNote": "Sorumlular öneridir; atanmış kabulü A06/IN07 ile doğrulanır. Teknik Kurulum mevcut yürütücü ekibi ifade eder; kurulmamış otomatik rol tek sorumlu yapılmamıştır.",
+  "completionRule": "done yalnız 0 veya 1; kabul ölçütü kanıtla sağlandığında 1. Başlanmış/kısmi iş puan kazanmaz. Tamamlanan taslak, yazılı prova ve çevrimdışı test yalnız kendi dar teslimi için tamamdır.",
+  "evidenceUseNote": "Tamam işlerde kanıt kabulü destekler; açık işlerde kanıt mevcut eksiği veya yazılı gereksinimi gösterir. Yerel kayıtlar 9 Ekim itibarıyla incelendi, bu belge yeni sağlayıcı testi değildir.",
+  "sourcePrecedence": "9 Ekim son Gmail API ve yenileme kanıtları, önceki Cloud/bağlantı özetindeki bekleyen istemci ve Gmail yetkisi durumundan üstündür. OAuth, asgari okuma, iç teslim ve Gmail yenileme doğrulandı; iptal ve tam başlık/MIME canlı akışı ayrı açık işlerdir. En yeni bütçe ve Astra + max kullanıcı kararı esas alınır.",
+  "scheduleNote": "9–11 Ekim sprinti/12 Ekim hedefi koşulludur. Bu görevlerde taahhüt edilmemiş tüm hedef tarihler null. Hafta sonu yalnız tek seferlik kurulum/test istisnası; normal hafta içi 21 kontrol ayrı.",
+  "phases": [
+    {
+      "id": "A",
+      "name": "Yönetim ve yetkiler",
+      "weight": 8
+    },
+    {
+      "id": "B",
+      "name": "Bağlantılar",
+      "weight": 14
+    },
+    {
+      "id": "C",
+      "name": "Marka bilgisi",
+      "weight": 14
+    },
+    {
+      "id": "D",
+      "name": "Bulut işletimi",
+      "weight": 16
+    },
+    {
+      "id": "E",
+      "name": "Hamle iş akışı",
+      "weight": 16
+    },
+    {
+      "id": "F",
+      "name": "Metin",
+      "weight": 8
+    },
+    {
+      "id": "G",
+      "name": "Grafik",
+      "weight": 10
+    },
+    {
+      "id": "H",
+      "name": "Animasyon",
+      "weight": 6
+    },
+    {
+      "id": "I",
+      "name": "Kabul ve canlı",
+      "weight": 8
+    }
+  ],
+  "tasks": [
+    {
+      "id": "A01",
+      "phaseId": "A",
+      "title": "Pilot kapsamı, To/CC şartı ve yetki sınırlarını yazılı hale getirme",
+      "weight": 2,
+      "done": 1,
+      "status": "Tamamlandı",
+      "owner": "Ahmet",
+      "priority": "P0",
+      "dependencyIds": [],
+      "dependencies": [],
+      "acceptance": "Tüm markalar kapsamı, son mesajın gerçek To/CC şartı, hariç mesaj ve rutin yetki sınırı yazılı.",
+      "evidence": [
+        "outputs/gamechangers-pilot/current-setup.json#/message_participation_gate",
+        "outputs/gamechangers-pilot/current-setup.json#/brand_rollout_policy"
+      ],
+      "nextAction": "Canlı uygulama E04'te ayrıca doğrulanacak.",
+      "targetDate": null
+    },
+    {
+      "id": "A02",
+      "phaseId": "A",
+      "title": "Dört rolün iş tanımı ve sorumluluk sınırları",
+      "weight": 2,
+      "done": 1,
+      "status": "Tamamlandı",
+      "owner": "Ahmet",
+      "priority": "P0",
+      "dependencyIds": [
+        "A01"
+      ],
+      "dependencies": [
+        "A01"
+      ],
+      "acceptance": "Hamle, metin, grafik ve animasyon için ayrı görev, çıktı, araç ve kalite kontrol tanımları mevcut.",
+      "evidence": [
+        "outputs/gamechangers-pilot/roles/account_manager.json",
+        "outputs/gamechangers-pilot/roles/copywriter.json",
+        "outputs/gamechangers-pilot/roles/graphic_designer.json",
+        "outputs/gamechangers-pilot/roles/motion_designer.json"
+      ],
+      "nextAction": "Kalıcı çalışan rol ve araç bağlantıları F/G/H paketlerinde ayrıca kurulacak.",
+      "targetDate": null
+    },
+    {
+      "id": "A03",
+      "phaseId": "A",
+      "title": "Ahmet, Cansu ve Özge karar yönlendirmelerini tanımlama",
+      "weight": 1,
+      "done": 1,
+      "status": "Tamamlandı",
+      "owner": "Ahmet",
+      "priority": "P0",
+      "dependencyIds": [
+        "A01"
+      ],
+      "dependencies": [
+        "A01"
+      ],
+      "acceptance": "Teklif→Ahmet; sorun/şikâyet/strateji→Cansu+Ahmet; sosyal plan/gündem→Özge+Hamle; diğer yetkili rutin→Hamle ayrımı yazılı.",
+      "evidence": [
+        "outputs/gamechangers-pilot/current-setup.json#/routing_policy"
+      ],
+      "nextAction": "Gerçek karma niyet ve devir testleri E05/I01 kapsamında yapılacak.",
+      "targetDate": null
+    },
+    {
+      "id": "A04",
+      "phaseId": "A",
+      "title": "Marka, kişi, iş kapsamı ve onay matrisi",
+      "weight": 1,
+      "done": 0,
+      "status": "Bekliyor",
+      "owner": "Ahmet",
+      "priority": "P0",
+      "dependencyIds": [
+        "A01"
+      ],
+      "dependencies": [
+        "A01"
+      ],
+      "acceptance": "Yedi dış marka ve Gamechangers iç alanı için yetkili kişiler, karar/onay sınırları, alıcılar ve hizmet kapsamı kayıtlı; bilinmeyen yetki varsayılmıyor.",
+      "evidence": [
+        "outputs/gamechangers-pilot/current-setup.json#/brand_registry"
+      ],
+      "nextAction": "Marka bazlı kişi ve hizmet kapsamı listesini yetkili sahiplerden alıp matrise işle.",
+      "targetDate": null
+    },
+    {
+      "id": "A05",
+      "phaseId": "A",
+      "title": "Güncel harcama, hizmet ve model limitleri",
+      "weight": 1,
+      "done": 0,
+      "status": "Devam ediyor",
+      "owner": "Ahmet",
+      "priority": "P0",
+      "dependencyIds": [
+        "A01"
+      ],
+      "dependencies": [
+        "A01"
+      ],
+      "acceptance": "9 Ekim ve sonrası için ayrı bütçe dönemi/üst sınırı, izinli hizmetler, model tercihi ve sınır aşımı sahibi yazılı.",
+      "evidence": [
+        "outputs/Hamle_Butce_Onayi_2026-10-09.json",
+        "outputs/Hamle_Model_API_On_Kontrol_2026-10-09.json"
+      ],
+      "nextAction": "12 Ekim dahil ortak 50 USD ve Astra + max kararı kayıtlı. Hizmet dağılımı, sınır aşımı sahibi ve devam dönemi kurallarını tamamla.",
+      "targetDate": null
+    },
+    {
+      "id": "A06",
+      "phaseId": "A",
+      "title": "Operasyon kabul ölçütleri ve sorumlu sahiplik",
+      "weight": 1,
+      "done": 0,
+      "status": "Devam ediyor",
+      "owner": "Ahmet",
+      "priority": "P0",
+      "dependencyIds": [
+        "A01",
+        "A03"
+      ],
+      "dependencies": [
+        "A01",
+        "A03"
+      ],
+      "acceptance": "Her canlı kapısının kabul kanıtı, kontrol sorumlusu, olay sahibi ve devralma yolu atanmış; çalışma sorumlulukları ilgili insanlarca biliniyor.",
+      "evidence": [
+        "outputs/gamechangers-pilot/current-setup.json#/activation_gates",
+        "outputs/gamechangers-pilot/current-setup.json#/stop_control"
+      ],
+      "nextAction": "Yazılı kontrol listesini isimlendirilmiş sahip ve kabul kaydıyla tamamla.",
+      "targetDate": null
+    },
+    {
+      "id": "B01",
+      "phaseId": "B",
+      "title": "Google Cloud projesini oluşturma",
+      "weight": 1,
+      "done": 1,
+      "status": "Tamamlandı",
+      "owner": "Teknik Kurulum",
+      "priority": "P0",
+      "dependencyIds": [],
+      "dependencies": [],
+      "acceptance": "Gamechangers Hamle projesi gamechangers.com.tr altında oluşturuldu ve proje kimliği doğrulandı.",
+      "evidence": [
+        "outputs/Hamle_Google_Cloud_Kurulum_2026-10-09.json#/project_id"
+      ],
+      "nextAction": "Üretim hizmeti kuruldu saymadan D paketine geç.",
+      "targetDate": null
+    },
+    {
+      "id": "B02",
+      "phaseId": "B",
+      "title": "Gmail API'yi etkinleştirme",
+      "weight": 1,
+      "done": 1,
+      "status": "Tamamlandı",
+      "owner": "Teknik Kurulum",
+      "priority": "P0",
+      "dependencyIds": [
+        "B01"
+      ],
+      "dependencies": [
+        "B01"
+      ],
+      "acceptance": "gamechangers-hamle projesinde Gmail API Enabled durumu görüldü.",
+      "evidence": [
+        "outputs/Hamle_Google_Cloud_Kurulum_2026-10-09.json#/gmail_api_enabled"
+      ],
+      "nextAction": "OAuth istemcisi ve hesap yetkilendirmesi B04/B05'te tamamlanacak.",
+      "targetDate": null
+    },
+    {
+      "id": "B03",
+      "phaseId": "B",
+      "title": "OAuth uygulama kaydını oluşturma",
+      "weight": 1,
+      "done": 1,
+      "status": "Tamamlandı",
+      "owner": "Teknik Kurulum",
+      "priority": "P0",
+      "dependencyIds": [
+        "B02"
+      ],
+      "dependencies": [
+        "B02"
+      ],
+      "acceptance": "Google Auth Platform uygulaması oluşturuldu; Internal kitle ve uygulama bilgileri kayıtlı.",
+      "evidence": [
+        "outputs/Hamle_Google_Cloud_Kurulum_2026-10-09.json#/oauth_app_created"
+      ],
+      "nextAction": "Uygulama kaydı tamamlandı; Desktop istemci ve Hamle yetkisi de B04/B05 ile doğrulandı.",
+      "targetDate": null
+    },
+    {
+      "id": "B04",
+      "phaseId": "B",
+      "title": "Desktop OAuth istemcisi ve özel kimlik bilgisi saklama",
+      "weight": 1,
+      "done": 1,
+      "status": "Tamamlandı",
+      "owner": "Ahmet",
+      "priority": "P0",
+      "dependencyIds": [
+        "B03"
+      ],
+      "dependencies": [
+        "B03"
+      ],
+      "acceptance": "İstemci oluşturma/AI agent seçimi ve özel yerel saklama onayı tamam; Desktop istemci bilgisi yetkili özel konumda, günlüklerde veya belgelerde sır yok.",
+      "evidence": [
+        "outputs/Hamle_Google_Cloud_Kurulum_2026-10-09.json#/gmail_oauth_client_created",
+        "outputs/Hamle_Google_Cloud_Kurulum_2026-10-09.json#/oauth_client_ai_designation_authorized",
+        "outputs/Hamle_Google_Cloud_Kurulum_2026-10-09.json#/oauth_client_storage_authorized",
+        "outputs/Hamle_Google_Cloud_Kurulum_2026-10-09.json#/oauth_client_private_file_permissions",
+        "outputs/Hamle_Gmail_API_Kaniti_2026-10-09.json#/storage"
+      ],
+      "nextAction": "Tamamlandı. Desktop istemci ve özel saklama doğrulandı; bulut bağlantı geçişi D10 içinde ayrı izleniyor.",
+      "targetDate": null,
+      "completedAt": "2026-10-09T23:53:24.991384+03:00"
+    },
+    {
+      "id": "B05",
+      "phaseId": "B",
+      "title": "Hamle OAuth kimliği ve gerçek Gmail API okuma",
+      "weight": 2,
+      "done": 1,
+      "status": "Tamamlandı",
+      "owner": "Teknik Kurulum",
+      "priority": "P0",
+      "dependencyIds": [
+        "B04"
+      ],
+      "dependencies": [
+        "B04"
+      ],
+      "acceptance": "Yalnız Hamle e-posta kimliği ve tam gmail.readonly+gmail.send izinleri doğrulandı; gerçek API ile izinli iç test zinciri okundu; yenilenebilir yetki güvenli depoda.",
+      "evidence": [
+        "outputs/Hamle_Gmail_API_Kaniti_2026-10-09.json#/account",
+        "outputs/Hamle_Gmail_API_Kaniti_2026-10-09.json#/scopes",
+        "outputs/Hamle_Gmail_API_Kaniti_2026-10-09.json#/api_profile_verified",
+        "outputs/Hamle_Gmail_API_Kaniti_2026-10-09.json#/api_minimal_thread_read_verified",
+        "outputs/Hamle_Gmail_API_Kaniti_2026-10-09.json#/storage"
+      ],
+      "nextAction": "Tamamlandı. Hamle kimliği, iki kapsam ve izinli iç dizinin API okuması doğrulandı. Gelen posta ve eklerin tam işleyicisi E03/E04; kalan iptal/Basecamp yenileme kontrolleri B07’de açık.",
+      "targetDate": null,
+      "completedAt": "2026-10-09T23:53:24.991384+03:00"
+    },
+    {
+      "id": "B06",
+      "phaseId": "B",
+      "title": "Gmail API iç gönderimi ve alıcıda teslim kontrolü",
+      "weight": 1,
+      "done": 1,
+      "status": "Tamamlandı",
+      "owner": "Teknik Kurulum",
+      "priority": "P0",
+      "dependencyIds": [
+        "B05"
+      ],
+      "dependencies": [
+        "B05"
+      ],
+      "acceptance": "Tek açık test kimliğiyle sabit Hamle→Ahmet teknik maili bir kez API'den gönderildi; alıcı kutusunda aynı ileti kimliği/başlığı doğrulandı.",
+      "evidence": [
+        "outputs/Hamle_Gmail_API_Kaniti_2026-10-09.json#/send_calls",
+        "outputs/Hamle_Gmail_API_Kaniti_2026-10-09.json#/recipient_inbox_verified",
+        "outputs/Hamle_Gmail_API_Kaniti_2026-10-09.json#/recipient_header_X_Hamle_Test_ID",
+        "outputs/Hamle_Gmail_API_Kaniti_2026-10-09.json#/body_verified_against_fixed_technical_test",
+        "outputs/Hamle_Gmail_API_Kaniti_2026-10-09.json#/rfc_message_id_note"
+      ],
+      "nextAction": "Tamamlandı. Tek API gönderimi alıcıda test başlığı, From/To, konu ve gövdeyle uzlaştırıldı. Mailbox sağlayıcı kimlikleri veya RFC kimliği eşit varsayılmadı.",
+      "targetDate": null,
+      "completedAt": "2026-10-09T23:53:24.991384+03:00"
+    },
+    {
+      "id": "B07",
+      "phaseId": "B",
+      "title": "Gmail ve Basecamp erişim yenileme, iptal ve yeniden başlatma",
+      "weight": 1,
+      "done": 0,
+      "status": "Devam ediyor",
+      "owner": "Teknik Kurulum",
+      "priority": "P0",
+      "dependencyIds": [
+        "B05",
+        "B08"
+      ],
+      "dependencies": [
+        "B05",
+        "B08"
+      ],
+      "acceptance": "Her iki bağlantıda yenileme ve yeniden başlatma sonrası doğru kimlik sürüyor; iptal edildiğinde erişim duruyor, belirsiz yazma tekrar edilmiyor.",
+      "evidence": [
+        "outputs/Hamle_Gmail_Refresh_Kaniti_2026-10-09.json#/token_refreshed",
+        "outputs/Hamle_Gmail_Refresh_Kaniti_2026-10-09.json#/separate_process_reopen_and_read_passed",
+        "outputs/Hamle_Gmail_Refresh_Kaniti_2026-10-09.json#/revocation_not_tested",
+        "outputs/Hamle_Gmail_Refresh_Kaniti_2026-10-09.json#/basecamp_refresh_not_in_this_test"
+      ],
+      "nextAction": "Gmail yenileme ve ayrı süreçte yeniden okuma geçti. Gerçek izin iptali ile Basecamp yenileme/yeniden başlatma ve güvenli durma kontrollerini tamamla.",
+      "targetDate": null
+    },
+    {
+      "id": "B08",
+      "phaseId": "B",
+      "title": "Hamle Basecamp API okuma, yazma ve yeniden okuma",
+      "weight": 2,
+      "done": 1,
+      "status": "Tamamlandı",
+      "owner": "Teknik Kurulum",
+      "priority": "P0",
+      "dependencyIds": [],
+      "dependencies": [],
+      "acceptance": "hamle-gamechangers profili Hamle kimliğiyle doğrulandı; özel iç görev okundu, yorum yazıldı ve aynı yorum geri okundu.",
+      "evidence": [
+        "outputs/Hamle_Kalici_Baglanti_Hazirlik_2026-10-09.json#/basecamp_oauth",
+        "outputs/Hamle_Baglanti_Durumu_2026-10-09.json#/basecamp/API_write_and_readback_passed"
+      ],
+      "nextAction": "Geniş sağlayıcı yetkisini müşteri yetkisi sayma; uygulama sınırlarını B10/D06'da kur.",
+      "targetDate": null
+    },
+    {
+      "id": "B09",
+      "phaseId": "B",
+      "title": "Basecamp API dosya, atama ve revizyon döngüsü",
+      "weight": 1,
+      "done": 1,
+      "status": "Tamamlandı",
+      "owner": "Teknik Kurulum",
+      "priority": "P0",
+      "dependencyIds": [
+        "B08"
+      ],
+      "dependencies": [
+        "B08"
+      ],
+      "acceptance": "Hamle API üzerinden iç görevde atama, sürümlü revizyon ve dosya yükleme yapıldı; alıcı/görünürlük ve dosyanın tam içeriği yeniden doğrulandı.",
+      "evidence": [
+        "outputs/Hamle_Basecamp_B09_API_Kaniti_2026-10-09.json#/B09_pass",
+        "outputs/Hamle_Basecamp_B09_API_Kaniti_2026-10-09.json#/final_checks",
+        "outputs/Hamle_Basecamp_B09_API_Kaniti_2026-10-09.json#/file_readback",
+        "outputs/Hamle_Basecamp_B09_API_Kaniti_2026-10-09.json#/customer_notification_check"
+      ],
+      "nextAction": "Tamamlandı: yalnız iç test projesinde Hamle ataması, R1 revizyon, dosya yükleme ve tam içerik/görünürlük geri okuması geçti. Müşteri projeleri B10’da ayrı.",
+      "targetDate": null,
+      "completedAt": "2026-10-09T23:59:02.223245+03:00"
+    },
+    {
+      "id": "B10",
+      "phaseId": "B",
+      "title": "Tüm markaların Basecamp proje ve görünürlük eşlemesi",
+      "weight": 1,
+      "done": 0,
+      "status": "Bekliyor",
+      "owner": "Ahmet",
+      "priority": "P0",
+      "dependencyIds": [
+        "A04",
+        "B08"
+      ],
+      "dependencies": [
+        "A04",
+        "B08"
+      ],
+      "acceptance": "Her marka için doğru hesap/proje/liste, sorumlu kimlikleri ve müşteri görünürlük sınırı doğrulandı; başka markaya erişim engeli sınandı.",
+      "evidence": [
+        "outputs/gamechangers-pilot/current-setup.json#/brand_registry",
+        "outputs/Hamle_Kalici_Baglanti_Hazirlik_2026-10-09.json#/basecamp_oauth/actual_provider_scope"
+      ],
+      "nextAction": "Marka proje/liste ve kişi eşlemlerini çıkar; özel test projesini üretim eşlemi yerine kullanma.",
+      "targetDate": null
+    },
+    {
+      "id": "B11",
+      "phaseId": "B",
+      "title": "Gmail tarayıcı iç gidiş-dönüş testi",
+      "weight": 1,
+      "done": 1,
+      "status": "Tamamlandı",
+      "owner": "Teknik Kurulum",
+      "priority": "P0",
+      "dependencyIds": [],
+      "dependencies": [],
+      "acceptance": "Hamle gelen iç mailin gerçek To başlığını ve içeriğini okudu; Hamle yanıtı Ahmet gelen kutusunda aynı zincirde görüldü.",
+      "evidence": [
+        "outputs/Hamle_Baglanti_Durumu_2026-10-09.json#/incoming_to_header_verified",
+        "outputs/Hamle_Baglanti_Durumu_2026-10-09.json#/return_received_in_ahmet_inbox"
+      ],
+      "nextAction": "Bu kanıtı API bağlantısı ve otomatik işleyici testiyle karıştırma.",
+      "targetDate": null
+    },
+    {
+      "id": "B12",
+      "phaseId": "B",
+      "title": "Gmail yardımcısının 30 çevrimdışı testi",
+      "weight": 1,
+      "done": 1,
+      "status": "Tamamlandı",
+      "owner": "Teknik Kurulum",
+      "priority": "P0",
+      "dependencyIds": [],
+      "dependencies": [],
+      "acceptance": "30 test ağ kapalı sahte bağımlılıklarla geçti; yanlış kimlik/izin, sır sızıntısı ve aynı test kimliği tekrarı engellendi.",
+      "evidence": [
+        "work/hamle-gmail-connector/test-results.json"
+      ],
+      "nextAction": "Yerel yardımcı testleri tamamlandı; gerçek OAuth/API okuma ve teslim doğrulaması B05/B06 kapsamında ayrıca geçti.",
+      "targetDate": null
+    },
+    {
+      "id": "C01",
+      "phaseId": "C",
+      "title": "105 dizi / 763 mesajın tarihli ve sınırlı okuma kaydı",
+      "weight": 3,
+      "done": 1,
+      "status": "Tamamlandı",
+      "owner": "Teknik Kurulum",
+      "priority": "P1",
+      "dependencyIds": [],
+      "dependencies": [],
+      "acceptance": "İki turda 105 dizi/763 mesaj kayıtlı; ek 60 konu WAT 27, Rabam 26, eski ya da/Multicosmetics/Remedium grubunda 7. Yeni marka ayrımına kaynak bazında eşleme açık; tam arşiv iddiası yok.",
+      "evidence": [
+        "outputs/gamechangers-pilot/coverage.json",
+        "outputs/gamechangers-pilot/learning-round2/wat_mobilite/report.json",
+        "outputs/gamechangers-pilot/learning-round2/rabam/report.json",
+        "outputs/gamechangers-pilot/learning-round2/yada_multicosmetics/report.json"
+      ],
+      "nextAction": "Okunan kapsamı koru; kalan arşivi C08 ile ayrıca sürdür.",
+      "targetDate": null
+    },
+    {
+      "id": "C02",
+      "phaseId": "C",
+      "title": "Kaynaklı ilk marka öğrenme ve sentez çıktıları",
+      "weight": 2,
+      "done": 1,
+      "status": "Tamamlandı",
+      "owner": "Cansu",
+      "priority": "P1",
+      "dependencyIds": [
+        "C01"
+      ],
+      "dependencies": [
+        "C01"
+      ],
+      "acceptance": "İlk marka gözlemleri ve ek konu sentezleri kaynak, karar, müşteri düzeltmesi ve bilinmeyenleri ayırıyor; geçmiş talep güncel onay yapılmıyor.",
+      "evidence": [
+        "outputs/gamechangers-pilot/coverage.json#/initial_round",
+        "outputs/gamechangers-pilot/learning/brands/wat_mobilite/observations.json",
+        "outputs/gamechangers-pilot/learning/brands/rabam/observations.json",
+        "outputs/gamechangers-pilot/learning/brands/yada_multicosmetics/observations.json"
+      ],
+      "nextAction": "Güncel onaylı marka dosyalarını C05'te bu sınırlı sentezden ayrı tamamla.",
+      "targetDate": null
+    },
+    {
+      "id": "C03",
+      "phaseId": "C",
+      "title": "Dört hafıza alanı ve kayıt şablonları",
+      "weight": 1,
+      "done": 1,
+      "status": "Tamamlandı",
+      "owner": "Teknik Kurulum",
+      "priority": "P1",
+      "dependencyIds": [
+        "A02"
+      ],
+      "dependencies": [
+        "A02"
+      ],
+      "acceptance": "Ajans, marka, iş ve dış itibar alanları için dört bölge ve kaynak/sürüm/yetki içeren kayıt şablonları mevcut.",
+      "evidence": [
+        "outputs/gamechangers-pilot/templates/knowledge-zones.template.json",
+        "outputs/gamechangers-pilot/templates/knowledge-record.schema.json",
+        "outputs/gamechangers-pilot/current-setup.json#/storage"
+      ],
+      "nextAction": "Üretim kaydı ve marka/rol erişim uygulaması C07/D05'te ayrıca sınanacak.",
+      "targetDate": null
+    },
+    {
+      "id": "C04",
+      "phaseId": "C",
+      "title": "Ek, görsel, video ve lisans içerik incelemesi",
+      "weight": 2,
+      "done": 0,
+      "status": "Devam ediyor",
+      "owner": "Tasarım sorumlusu atanacak",
+      "priority": "P1",
+      "dependencyIds": [
+        "C01"
+      ],
+      "dependencies": [
+        "C01"
+      ],
+      "acceptance": "Canlı işte kullanılacak gerekli ekler gerçekten açılmış; metin, görsel, ses/video ve kullanım hakkı kontrolleri ayrı kayıtlı; okunmayan dosya açık işaretli.",
+      "evidence": [
+        "outputs/gamechangers-pilot/coverage.json#/attachments"
+      ],
+      "nextAction": "Bir DOCX ve iki bağlı metin okumasının ötesindeki öncelikli ekleri aç; görselleri ve gerekiyorsa videoyu incele.",
+      "targetDate": null
+    },
+    {
+      "id": "C05",
+      "phaseId": "C",
+      "title": "Tüm markalar için güncel onaylı kaynak dosyası",
+      "weight": 2,
+      "done": 0,
+      "status": "Bekliyor",
+      "owner": "Cansu",
+      "priority": "P0",
+      "dependencyIds": [
+        "C02",
+        "C04",
+        "A04"
+      ],
+      "dependencies": [
+        "C02",
+        "C04",
+        "A04"
+      ],
+      "acceptance": "Her canlı marka için güncel logo/ton, ürün-hizmet gerçekleri, reddedilmiş yönler, onaylı iddialar ve yetkili kaynak/sürüm sahibi belli.",
+      "evidence": [
+        "outputs/gamechangers-pilot/current-setup.json#/brand_registry",
+        "outputs/gamechangers-pilot/templates/brand-dossier.template.json"
+      ],
+      "nextAction": "Marka sorumlularından güncel onaylı kaynakları al; geçmiş örnek ve fiyatları güncel gerçek saymadan dosyala.",
+      "targetDate": null
+    },
+    {
+      "id": "C06",
+      "phaseId": "C",
+      "title": "Yetkili kişiler, özel günler ve doğum günü takvimi",
+      "weight": 1,
+      "done": 0,
+      "status": "Bekliyor",
+      "owner": "Özge",
+      "priority": "P1",
+      "dependencyIds": [
+        "A04"
+      ],
+      "dependencies": [
+        "A04"
+      ],
+      "acceptance": "Yetkili kişi kayıtlarında gerekli gün/ay ve kaynak var; marka günleri resmi kaynakla teyitli; ön hazırlık sahipleri ve hatırlatma süreleri belli.",
+      "evidence": [
+        "outputs/gamechangers-pilot/current-setup.json#/proactive_dates"
+      ],
+      "nextAction": "Yetkili kişi/tarih listesini ve marka dönemlerini al; doğum yılı istemeden 30 günlük planı doldur.",
+      "targetDate": null
+    },
+    {
+      "id": "C07",
+      "phaseId": "C",
+      "title": "Çalışan sistemde marka ve role uygun bilgi çağırma",
+      "weight": 1,
+      "done": 0,
+      "status": "Başlanmadı",
+      "owner": "Teknik Kurulum",
+      "priority": "P0",
+      "dependencyIds": [
+        "C03",
+        "D05",
+        "D06"
+      ],
+      "dependencies": [
+        "C03",
+        "D05",
+        "D06"
+      ],
+      "acceptance": "Gerçek işte yalnız ilgili marka ve rol için gerekli kaynaklar çağrılıyor; farklı marka/özel ticari veri sorgusu engelleniyor ve kaydı tutuluyor.",
+      "evidence": [
+        "outputs/gamechangers-pilot/current-setup.json#/storage",
+        "outputs/gamechangers-pilot/current-setup.json#/brand_rollout_policy"
+      ],
+      "nextAction": "Kaynak erişimini çalışma kimliği/marka/rol filtrelerine bağla ve olumsuz erişim testleri yap.",
+      "targetDate": null
+    },
+    {
+      "id": "C08",
+      "phaseId": "C",
+      "title": "Artımlı öğrenme, sayfalama ve kaldığı yerden devam",
+      "weight": 1,
+      "done": 0,
+      "status": "Devam ediyor",
+      "owner": "Teknik Kurulum",
+      "priority": "P1",
+      "dependencyIds": [
+        "C01",
+        "C03",
+        "D05"
+      ],
+      "dependencies": [
+        "C01",
+        "C03",
+        "D05"
+      ],
+      "acceptance": "Yetkili geçmiş ve yeni kaynak okuması kalıcı kontrol noktasından sürüyor; sayfa/mesaj tekilleştirme var; okuma hatası 'yeni mail yok' sayılmıyor; arşiv canlı iş açmıyor.",
+      "evidence": [
+        "outputs/gamechangers-pilot/coverage.json#/round2_query_checkpoint_locations",
+        "outputs/gamechangers-pilot/coverage.json#/archive_work_remaining",
+        "outputs/gamechangers-pilot/offline/test-results.json"
+      ],
+      "nextAction": "Mevcut sayfalama noktalarını kalıcı işleyiciye bağla; Ahmet tarihsel öğrenmesini Hamle canlı olayından ayır, kesinti/yeniden başlama ve eski kayıt tekrarı testini yap.",
+      "targetDate": null
+    },
+    {
+      "id": "C09",
+      "phaseId": "C",
+      "title": "Saklama, veri azaltma ve silme kurallarını uygulama",
+      "weight": 1,
+      "done": 0,
+      "status": "Başlanmadı",
+      "owner": "Teknik Kurulum",
+      "priority": "P1",
+      "dependencyIds": [
+        "A04",
+        "D05",
+        "D06"
+      ],
+      "dependencies": [
+        "A04",
+        "D05",
+        "D06"
+      ],
+      "acceptance": "Gerekli veri alanları, saklama süresi, erişim/silme sahibi ve yedek etkisi tanımlı; örnek silme talebi ilgili kayıt ve türetilmiş çıktılarda uygulanıp izleniyor.",
+      "evidence": [
+        "outputs/gamechangers-pilot/current-setup.json#/storage",
+        "outputs/gamechangers-pilot/templates/knowledge-record.schema.json"
+      ],
+      "nextAction": "İş gereksinimine göre saklama/silme kararlarını al; üretim deposunda örnek kayıtla uygula.",
+      "targetDate": null
+    },
+    {
+      "id": "D01",
+      "phaseId": "D",
+      "title": "Yazılım ve bulut mimarisi taslağı",
+      "weight": 1,
+      "done": 1,
+      "status": "Tamamlandı",
+      "owner": "Teknik Kurulum",
+      "priority": "P0",
+      "dependencyIds": [
+        "A01",
+        "A02"
+      ],
+      "dependencies": [
+        "A01",
+        "A02"
+      ],
+      "acceptance": "Mevcut taslakta çalışma hizmeti, zamanlayıcı, kalıcı kayıt, sır saklama, bilgi alanları ve rol ayrımı tanımlı; dağıtılmış olduğu iddia edilmiyor.",
+      "evidence": [
+        "outputs/gamechangers-pilot/current-setup.json#/deployment_recommendation",
+        "outputs/gamechangers-pilot/current-setup.json#/storage"
+      ],
+      "nextAction": "Bu mevcut taslağı D02–D10 adımlarıyla gerçek kurulum ve testlere çevir.",
+      "targetDate": null
+    },
+    {
+      "id": "D02",
+      "phaseId": "D",
+      "title": "Faturalama, güncel bütçe ve gerçek harcama kontrolü",
+      "weight": 2,
+      "done": 0,
+      "status": "Devam ediyor",
+      "owner": "Ahmet",
+      "priority": "P0",
+      "dependencyIds": [
+        "A05"
+      ],
+      "dependencies": [
+        "A05"
+      ],
+      "acceptance": "Güncel dönemin onaylı ortak sınırı, faturalama sahibi, maliyet rezervasyonu ve gerçek kullanım mutabakatı kurulmuş; uyarı tek başına harcama kesici sayılmıyor.",
+      "evidence": [
+        "outputs/Hamle_Butce_Onayi_2026-10-09.json"
+      ],
+      "nextAction": "12 Ekim dahil ortak 50 USD onaylandı. Faturalama, işlem öncesi maliyet rezervasyonu, sınırda durdurma ve gerçek kullanım mutabakatını kur.",
+      "targetDate": null
+    },
+    {
+      "id": "D03",
+      "phaseId": "D",
+      "title": "Model API erişimi ve gerçek model/yetenek doğrulaması",
+      "weight": 2,
+      "done": 0,
+      "status": "Devam ediyor",
+      "owner": "Teknik Kurulum",
+      "priority": "P0",
+      "dependencyIds": [
+        "A05",
+        "D02"
+      ],
+      "dependencies": [
+        "A05",
+        "D02"
+      ],
+      "acceptance": "Yetkili hesapta istenen model ve ayar gerçek çağrıyla doğrulandı; mevcut değilse kullanıcıya görünür alternatif kararı var; araç çağrısı ve çıktı kaydı alınmış.",
+      "evidence": [
+        "outputs/Hamle_Model_API_On_Kontrol_2026-10-09.json"
+      ],
+      "nextAction": "Resmî katalogda gpt-6-astra doğrulandı; kullanıcı max ayarını onayladı. Yetkili API hesabı/anahtarı ve gerçek araç çağrısı henüz doğrulanmadı.",
+      "targetDate": null
+    },
+    {
+      "id": "D04",
+      "phaseId": "D",
+      "title": "Cloud Run çalışma hizmeti",
+      "weight": 2,
+      "done": 0,
+      "status": "Başlanmadı",
+      "owner": "Teknik Kurulum",
+      "priority": "P0",
+      "dependencyIds": [
+        "D01",
+        "D02",
+        "D03"
+      ],
+      "dependencies": [
+        "D01",
+        "D02",
+        "D03"
+      ],
+      "acceptance": "Yetkili projede sürümlü hizmet çalışıyor; kimlik doğrulama ve sağlık kaydı mevcut; bilgisayar kapalıyken kontrollü iç işi tamamlıyor.",
+      "evidence": [
+        "outputs/Hamle_Google_Cloud_Kurulum_2026-10-09.json#/autonomous_runtime_deployed",
+        "outputs/gamechangers-pilot/current-setup.json#/deployment_recommendation"
+      ],
+      "nextAction": "Onaylı ortamda ilk iç çalışma hizmetini dağıt ve bilgisayardan bağımsız yürütmeyi doğrula.",
+      "targetDate": null
+    },
+    {
+      "id": "D05",
+      "phaseId": "D",
+      "title": "Kalıcı iş kaydı, kilit ve tekrar gönderim engeli",
+      "weight": 3,
+      "done": 0,
+      "status": "Başlanmadı",
+      "owner": "Teknik Kurulum",
+      "priority": "P0",
+      "dependencyIds": [
+        "D04"
+      ],
+      "dependencies": [
+        "D04"
+      ],
+      "acceptance": "İş/olay/aksiyon sürümü kalıcı; eşzamanlı iki çalışandan yalnız biri işlemi sahiplenebiliyor; kesinti sonrası sürüyor; sonucu belirsiz yazma kendiliğinden tekrarlanmıyor.",
+      "evidence": [
+        "outputs/gamechangers-pilot/current-setup.json#/storage",
+        "outputs/gamechangers-pilot/offline/test-results.json"
+      ],
+      "nextAction": "Sentetik kuralları üretim deposuna uygula; eşzamanlılık ve gönderim sınırında kesinti testini çalıştır.",
+      "targetDate": null
+    },
+    {
+      "id": "D06",
+      "phaseId": "D",
+      "title": "Sır kasası, asgari yetki ve rol erişimi",
+      "weight": 2,
+      "done": 0,
+      "status": "Başlanmadı",
+      "owner": "Teknik Kurulum",
+      "priority": "P0",
+      "dependencyIds": [
+        "D04"
+      ],
+      "dependencies": [
+        "D04"
+      ],
+      "acceptance": "Üretim sırları uygun güvenli depoda; sırlar log/çıktıda yok; rol/marka/araç erişimleri uygulamada sınırlandırılmış ve gereksiz erişim reddediliyor.",
+      "evidence": [
+        "outputs/gamechangers-pilot/current-setup.json#/storage",
+        "outputs/gamechangers-pilot/current-setup.json#/deployment_recommendation"
+      ],
+      "nextAction": "Yerel test kimlik bilgilerini üretim yetkisi saymadan hizmet kimliği ve gizli bilgi erişimlerini kur.",
+      "targetDate": null
+    },
+    {
+      "id": "D07",
+      "phaseId": "D",
+      "title": "Hafta içi 21 kontrol ve tatil takvimi",
+      "weight": 1,
+      "done": 0,
+      "status": "Başlanmadı",
+      "owner": "Teknik Kurulum",
+      "priority": "P0",
+      "dependencyIds": [
+        "D04",
+        "D05"
+      ],
+      "dependencies": [
+        "D04",
+        "D05"
+      ],
+      "acceptance": "Europe/Istanbul hafta içi 08:30 ve 18:30 dahil 30 dakikada bir tam 21 benzersiz zaman dilimi çalışıyor; tatil kuralı açık, hafta sonu sürekli çalışma yok.",
+      "evidence": [
+        "outputs/gamechangers-pilot/current-setup.json#/schedule",
+        "outputs/gamechangers-pilot/current-setup.json#/launch_sprint/weekend_override",
+        "outputs/gamechangers-pilot/offline/test-results.json"
+      ],
+      "nextAction": "Gerçek zamanlayıcıyı ve tatil tercihini yapılandır; tek seferlik hafta sonu testini normal takvimden ayır.",
+      "targetDate": null
+    },
+    {
+      "id": "D08",
+      "phaseId": "D",
+      "title": "İzleme, kesinti alarmı ve toparlanma",
+      "weight": 1,
+      "done": 0,
+      "status": "Başlanmadı",
+      "owner": "Teknik Kurulum",
+      "priority": "P0",
+      "dependencyIds": [
+        "D04",
+        "D05",
+        "D07"
+      ],
+      "dependencies": [
+        "D04",
+        "D05",
+        "D07"
+      ],
+      "acceptance": "Atlanan zaman dilimi, bekleyen iş ve bağlantı hatası bağımsız kontrolde görülüyor; doğru insana alarm gidiyor ve düzelme kaydı var.",
+      "evidence": [
+        "outputs/gamechangers-pilot/current-setup.json#/schedule/independent_monitor"
+      ],
+      "nextAction": "Alarm alıcısını/kanalını tanımla; planlı kesintiyle tespit ve toparlanmayı sına.",
+      "targetDate": null
+    },
+    {
+      "id": "D09",
+      "phaseId": "D",
+      "title": "Yedekten yükleme ve kurtarma",
+      "weight": 1,
+      "done": 0,
+      "status": "Başlanmadı",
+      "owner": "Teknik Kurulum",
+      "priority": "P0",
+      "dependencyIds": [
+        "D05",
+        "D06"
+      ],
+      "dependencies": [
+        "D05",
+        "D06"
+      ],
+      "acceptance": "Örnek yedek ayrı test alanına yükleniyor; iş/aksiyon kayıtları tutarlı, kayıp ve tekrar üretim olmadan kaldığı yer görülüyor; kurtarma süresi kayıtlı.",
+      "evidence": [
+        "outputs/gamechangers-pilot/current-setup.json#/activation_gates",
+        "outputs/gamechangers-pilot/current-setup.json#/storage"
+      ],
+      "nextAction": "Yedekleme ve geri yükleme prosedürünü oluşturup somut iç veriyle dene.",
+      "targetDate": null
+    },
+    {
+      "id": "D10",
+      "phaseId": "D",
+      "title": "Üretim OAuth dönüş adresi, sır taşıma ve yeniden yetki",
+      "weight": 1,
+      "done": 0,
+      "status": "Başlanmadı",
+      "owner": "Teknik Kurulum",
+      "priority": "P0",
+      "dependencyIds": [
+        "B04",
+        "B05",
+        "D04",
+        "D06"
+      ],
+      "dependencies": [
+        "B04",
+        "B05",
+        "D04",
+        "D06"
+      ],
+      "acceptance": "Bulut için uygun OAuth istemci/dönüş akışı doğrulandı; gerekli yeniden yetki alındı; Hamle kimliği ve izinleri korundu; yerel test tokeni gelişigüzel taşınmadı.",
+      "evidence": [
+        "outputs/Hamle_Google_Cloud_Kurulum_2026-10-09.json#/oauth_client_prepared_type",
+        "outputs/gamechangers-pilot/current-setup.json#/deployment_recommendation"
+      ],
+      "nextAction": "Desktop testinden ayrı üretim OAuth akışını seç, yetkilendir ve gerçek bulut hizmetinde sına.",
+      "targetDate": null
+    },
+    {
+      "id": "E01",
+      "phaseId": "E",
+      "title": "Katılım ve yetki sınırlarının 35 çevrimdışı testi",
+      "weight": 2,
+      "done": 1,
+      "status": "Tamamlandı",
+      "owner": "Teknik Kurulum",
+      "priority": "P0",
+      "dependencyIds": [
+        "A01"
+      ],
+      "dependencies": [
+        "A01"
+      ],
+      "acceptance": "35 sentetik kural testi geçti; To/CC, hariç mesaj, insan devri, sürüm, durdurma ve belirsiz işlem kontrolü yerel kapsamda kayıtlı.",
+      "evidence": [
+        "outputs/gamechangers-pilot/offline/test-results.json"
+      ],
+      "nextAction": "Gerçek başlık ve bağlı işleyici davranışını E04/I01'de ayrıca doğrula.",
+      "targetDate": null
+    },
+    {
+      "id": "E02",
+      "phaseId": "E",
+      "title": "10 WAT ve 10 Rabam yazılı mail provası",
+      "weight": 1,
+      "done": 1,
+      "status": "Tamamlandı",
+      "owner": "Cansu",
+      "priority": "P1",
+      "dependencyIds": [
+        "A03",
+        "C02"
+      ],
+      "dependencies": [
+        "A03",
+        "C02"
+      ],
+      "acceptance": "Toplam 20 yazılı talep/yanıt örneği kaynak ve rota kurallarıyla incelenmiş; kurgusal prova ve gerçek işlem ayrımı görünür.",
+      "evidence": [
+        "outputs/gamechangers-pilot/hamle-prova/wat-examples.json",
+        "outputs/gamechangers-pilot/hamle-prova/rabam-examples.json"
+      ],
+      "nextAction": "Yazılı örnekleri gerçek model başarı testi saymadan I02/I03 değerlendirmesinde kullan.",
+      "targetDate": null
+    },
+    {
+      "id": "E03",
+      "phaseId": "E",
+      "title": "Gerçek başlık, tam dizi, ek ve gönderilmiş yanıt okuması",
+      "weight": 2,
+      "done": 0,
+      "status": "Başlanmadı",
+      "owner": "Teknik Kurulum",
+      "priority": "P0",
+      "dependencyIds": [
+        "B05",
+        "D05"
+      ],
+      "dependencies": [
+        "B05",
+        "D05"
+      ],
+      "acceptance": "Yetkili Hamle olayında sağlayıcı başlıkları, görünür ilgili dizi, gerekli ek ve son insan/gönderilmiş yanıt okunuyor; eksik veri açık işaretleniyor.",
+      "evidence": [
+        "outputs/gamechangers-pilot/offline/test-results.json#/unverified",
+        "outputs/gamechangers-pilot/current-setup.json#/mail_participation",
+        "outputs/Hamle_Gmail_Baslik_Gercek_Test_2026-10-09.json"
+      ],
+      "nextAction": "Tam dizi okumasında kendi giden mesajının engellenmesi geçti. Gelen posta, To/CC, MIME ve gerçek ek senaryolarını uçtan uca tamamla; dış işlemler kapalı.",
+      "targetDate": null
+    },
+    {
+      "id": "E04",
+      "phaseId": "E",
+      "title": "Her aksiyondan önce gerçek To/CC ve yetki iptali",
+      "weight": 3,
+      "done": 0,
+      "status": "Başlanmadı",
+      "owner": "Teknik Kurulum",
+      "priority": "P0",
+      "dependencyIds": [
+        "E01",
+        "E03",
+        "D05",
+        "D06",
+        "D10"
+      ],
+      "dependencies": [
+        "E01",
+        "E03",
+        "D05",
+        "D06",
+        "D10"
+      ],
+      "acceptance": "İş/brief/revizyon/üretim/Basecamp/gönderim öncesi en güncel meşru katılım kontrolü var; gözlenen çıkarılma bekleyen işi durduruyor; görünmeyen çıkarılma biliniyor denmiyor; yeniden dahil olma yalnız yeni kapsamı açıyor.",
+      "evidence": [
+        "outputs/gamechangers-pilot/current-setup.json#/message_participation_gate",
+        "outputs/gamechangers-pilot/offline/test-results.json",
+        "outputs/Hamle_Gmail_Baslik_Gercek_Test_2026-10-09.json"
+      ],
+      "nextAction": "Kendi giden mesajını engelleme geçti. Görünmeyen CC çıkarma için yetkili stop olayı, insan devralma ve her dış işlem öncesi kontrolü uçtan uca kur.",
+      "targetDate": null
+    },
+    {
+      "id": "E05",
+      "phaseId": "E",
+      "title": "Canlı brief, karar yönlendirmesi, devir ve atama",
+      "weight": 2,
+      "done": 0,
+      "status": "Başlanmadı",
+      "owner": "Cansu",
+      "priority": "P0",
+      "dependencyIds": [
+        "A04",
+        "B10",
+        "C07",
+        "E04",
+        "D03"
+      ],
+      "dependencies": [
+        "A04",
+        "B10",
+        "C07",
+        "E04",
+        "D03"
+      ],
+      "acceptance": "Yetkili iş tek kayda dönüşüyor; dört karar rotası ve karma niyet doğru kişilere gidiyor; brief sürümü/sorumlu/termin/devir kabulü görünür; rutin revizyona gereksiz yeni Ahmet onayı istenmiyor.",
+      "evidence": [
+        "outputs/gamechangers-pilot/current-setup.json#/routing_policy",
+        "outputs/gamechangers-pilot/templates/brief-version.template.json",
+        "outputs/gamechangers-pilot/templates/handoff.template.json"
+      ],
+      "nextAction": "Kontrollü iç işlerde dört rota ve karma talebi gerçek çalışan üzerinden yürüt; insan sahiplerin kabulünü kaydet.",
+      "targetDate": null
+    },
+    {
+      "id": "E06",
+      "phaseId": "E",
+      "title": "Basecamp revizyon, sürüm, onay ve insan devralması",
+      "weight": 2,
+      "done": 0,
+      "status": "Başlanmadı",
+      "owner": "Teknik Kurulum",
+      "priority": "P0",
+      "dependencyIds": [
+        "B09",
+        "E05"
+      ],
+      "dependencies": [
+        "B09",
+        "E05"
+      ],
+      "acceptance": "Görev/yorum/dosya sürümü aynı işe bağlı; müşteri onayı doğru yetkili ve sürüme bağlı; insan devralınca otomatik işlem duruyor ve yaptığı yanıt tekrarlanmıyor.",
+      "evidence": [
+        "outputs/gamechangers-pilot/offline/test-results.json",
+        "outputs/gamechangers-pilot/current-setup.json#/routing_policy/single_customer_flow"
+      ],
+      "nextAction": "İç görevde iki revizyon, yanlış sürüm onayı ve insan devralması senaryolarını uçtan uca sına.",
+      "targetDate": null
+    },
+    {
+      "id": "E07",
+      "phaseId": "E",
+      "title": "Çıkış mailinde alıcı, dosya QA ve gönderim kaydı",
+      "weight": 1,
+      "done": 0,
+      "status": "Başlanmadı",
+      "owner": "Teknik Kurulum",
+      "priority": "P0",
+      "dependencyIds": [
+        "B06",
+        "E04",
+        "E06"
+      ],
+      "dependencies": [
+        "B06",
+        "E04",
+        "E06"
+      ],
+      "acceptance": "Gerçek çıkışta doğru marka/alıcı/zincir, yetkili güncel dosya ve iç not ayrımı doğrulanıyor; gönderim niyeti ve sonucu kalıcı; kabul/teslim farklı kaydediliyor.",
+      "evidence": [
+        "outputs/gamechangers-pilot/current-setup.json#/authority",
+        "outputs/gamechangers-pilot/offline/test-results.json",
+        "work/hamle-gmail-connector/test-results.json"
+      ],
+      "nextAction": "İç teslim mailini yanlış alıcı/eski dosya denemeleriyle sına; gönderim sınırında yetkiyi yeniden kontrol et.",
+      "targetDate": null
+    },
+    {
+      "id": "E08",
+      "phaseId": "E",
+      "title": "Takipler, sabah özeti ve özel dönem takvimi",
+      "weight": 2,
+      "done": 0,
+      "status": "Başlanmadı",
+      "owner": "Özge",
+      "priority": "P1",
+      "dependencyIds": [
+        "C06",
+        "D07",
+        "E05",
+        "E07"
+      ],
+      "dependencies": [
+        "C06",
+        "D07",
+        "E05",
+        "E07"
+      ],
+      "acceptance": "Mevcut başlangıç seçimiyle ilk başarılı08:30turundan sonra Hamle hesabından Ahmet’e sabah özeti; takipler ve özel gün hazırlıkları gerçek kayıtlarla tek kez üretiliyor; hariç mail içeriği girdi olmuyor.",
+      "evidence": [
+        "outputs/gamechangers-pilot/current-setup.json#/notification_policy",
+        "outputs/gamechangers-pilot/current-setup.json#/proactive_dates"
+      ],
+      "nextAction": "Yetkili örnek iş ve tarih kayıtlarıyla hatırlatma/özet testini yap; teslimini ve tekrar engelini doğrula.",
+      "targetDate": null
+    },
+    {
+      "id": "E09",
+      "phaseId": "E",
+      "title": "Otomatik yanıt döngüsü ve belirsiz teslim yönetimi",
+      "weight": 1,
+      "done": 0,
+      "status": "Başlanmadı",
+      "owner": "Teknik Kurulum",
+      "priority": "P0",
+      "dependencyIds": [
+        "E03",
+        "E04",
+        "E07"
+      ],
+      "dependencies": [
+        "E03",
+        "E04",
+        "E07"
+      ],
+      "acceptance": "Kendi gönderisi, otomatik cevap ve mükerrer sağlayıcı olayı yeni iş/yanıt açmıyor; belirsiz gönderim insan uzlaştırmasına gidiyor ve otomatik tekrar yok.",
+      "evidence": [
+        "outputs/gamechangers-pilot/offline/test-results.json",
+        "work/hamle-gmail-connector/test-results.json"
+      ],
+      "nextAction": "Gerçek iç işleyicide kendi mail yankısı, otoyanıt, tekrar olay ve yanıtı kesilen gönderim testlerini yap.",
+      "targetDate": null
+    },
+    {
+      "id": "F01",
+      "phaseId": "F",
+      "title": "Metin rolünün model ve üretim aracı bağlantısı",
+      "weight": 2,
+      "done": 0,
+      "status": "Başlanmadı",
+      "owner": "Teknik Kurulum",
+      "priority": "P1",
+      "dependencyIds": [
+        "D03",
+        "D04",
+        "D06"
+      ],
+      "dependencies": [
+        "D03",
+        "D04",
+        "D06"
+      ],
+      "acceptance": "Metin rolü hedef ortamda doğrulanmış model/araçla ayrı iş bağlamında çalışıyor; müşteri gönderimi yetkisi yok; çıktı ve hata kaydı tutuluyor.",
+      "evidence": [
+        "outputs/gamechangers-pilot/roles/copywriter.json"
+      ],
+      "nextAction": "Metin rolünü kur; kontrollü brief ile dosya üretimi ve Hamle'ye özel devir bağlantısını doğrula.",
+      "targetDate": null
+    },
+    {
+      "id": "F02",
+      "phaseId": "F",
+      "title": "Metin için onaylı marka kaynaklarını çağırma",
+      "weight": 1,
+      "done": 0,
+      "status": "Başlanmadı",
+      "owner": "Cansu",
+      "priority": "P1",
+      "dependencyIds": [
+        "C05",
+        "C07",
+        "F01"
+      ],
+      "dependencies": [
+        "C05",
+        "C07",
+        "F01"
+      ],
+      "acceptance": "Metin rolü güncel ilgili marka tonu/iddiaları ve reddedilmiş yönleri getiriyor; başka marka verisi veya eski fiyat güncel gerçek yapılmıyor.",
+      "evidence": [
+        "outputs/gamechangers-pilot/roles/copywriter.json"
+      ],
+      "nextAction": "En az bir hazır markada doğru/eski/yanlış marka kaynaklarıyla kontrol seti oluştur ve sına.",
+      "targetDate": null
+    },
+    {
+      "id": "F03",
+      "phaseId": "F",
+      "title": "Yapılandırılmış brief'ten metin çıktısı",
+      "weight": 1,
+      "done": 0,
+      "status": "Başlanmadı",
+      "owner": "Cansu",
+      "priority": "P1",
+      "dependencyIds": [
+        "F02",
+        "E05"
+      ],
+      "dependencies": [
+        "F02",
+        "E05"
+      ],
+      "acceptance": "Brief amacı, hedef kitle, mecra, zorunlu bilgi ve çağrıya uygun sürümlü metin üretiliyor; kritik eksik için doğru kişiye soru gidiyor.",
+      "evidence": [
+        "outputs/gamechangers-pilot/roles/copywriter.json",
+        "outputs/gamechangers-pilot/templates/brief-version.template.json"
+      ],
+      "nextAction": "Tanımlı mecra ve iş türleri için brief→taslak→devir akışını iç örneklerle çalıştır.",
+      "targetDate": null
+    },
+    {
+      "id": "F04",
+      "phaseId": "F",
+      "title": "İddia, dil ve marka tonu kalite kontrolü",
+      "weight": 2,
+      "done": 0,
+      "status": "Başlanmadı",
+      "owner": "Cansu",
+      "priority": "P0",
+      "dependencyIds": [
+        "F03"
+      ],
+      "dependencies": [
+        "F03"
+      ],
+      "acceptance": "Türkçe, mecra sınırı, marka tonu, kaynaklı iddia ve zorunlu bilgiler kontrol ediliyor; doğrulanmamış iddia yayına/teslime çıkmıyor.",
+      "evidence": [
+        "outputs/gamechangers-pilot/roles/copywriter.json"
+      ],
+      "nextAction": "Yanlış ürün iddiası, örnek fiyat, eski karar ve bilinen müşteri retleri içeren örneklerle QA kaydı oluştur.",
+      "targetDate": null
+    },
+    {
+      "id": "F05",
+      "phaseId": "F",
+      "title": "Gerçek iç metin revizyon ve kabul vakaları",
+      "weight": 2,
+      "done": 0,
+      "status": "Başlanmadı",
+      "owner": "Cansu",
+      "priority": "P1",
+      "dependencyIds": [
+        "F04",
+        "E06"
+      ],
+      "dependencies": [
+        "F04",
+        "E06"
+      ],
+      "acceptance": "Önceden tanımlı iç vakalarda talep→metin→insan geri bildirimi→yeni sürüm→kabul tam döngüsü geçiyor; ret gerekçesi ve kabul sürümü kayıtlı.",
+      "evidence": [
+        "outputs/gamechangers-pilot/roles/copywriter.json"
+      ],
+      "nextAction": "Kabul vakalarını Cansu ile belirle; gerçek revizyonları ilgili sürüm ve değerlendirme formuyla tamamla.",
+      "targetDate": null
+    },
+    {
+      "id": "G01",
+      "phaseId": "G",
+      "title": "Marka varlıkları, font ve kullanım lisansları",
+      "weight": 2,
+      "done": 0,
+      "status": "Bekliyor",
+      "owner": "Tasarım sorumlusu atanacak",
+      "priority": "P1",
+      "dependencyIds": [
+        "C05"
+      ],
+      "dependencies": [
+        "C05"
+      ],
+      "acceptance": "Kullanılacak logo, görsel, font ve üretim dosyalarının güncel sürümü/kullanım hakkı belli; eksik veya lisansı belirsiz varlık üretime girmiyor.",
+      "evidence": [
+        "outputs/gamechangers-pilot/roles/graphic_designer.json",
+        "outputs/gamechangers-pilot/coverage.json#/attachments"
+      ],
+      "nextAction": "Tasarım sorumlusunu ata; kaynak marka varlıkları ve font/lisans envanterini doğrula.",
+      "targetDate": null
+    },
+    {
+      "id": "G02",
+      "phaseId": "G",
+      "title": "Grafik üretim aracına entegrasyon",
+      "weight": 2,
+      "done": 0,
+      "status": "Başlanmadı",
+      "owner": "Teknik Kurulum",
+      "priority": "P1",
+      "dependencyIds": [
+        "D04",
+        "D06",
+        "G01"
+      ],
+      "dependencies": [
+        "D04",
+        "D06",
+        "G01"
+      ],
+      "acceptance": "Yetkili grafik aracı tanımlı iş alanında dosya açma/üretme/kaydetme yapıyor; maliyet ve erişim sınırı uygulanıyor.",
+      "evidence": [
+        "outputs/gamechangers-pilot/roles/graphic_designer.json"
+      ],
+      "nextAction": "Seçilen grafik aracını bağla; basit iç işte üretim ve dosya geri okuma denemesi yap.",
+      "targetDate": null
+    },
+    {
+      "id": "G03",
+      "phaseId": "G",
+      "title": "Ölçü varyantları, düzenlenebilir ve final çıktı",
+      "weight": 2,
+      "done": 0,
+      "status": "Başlanmadı",
+      "owner": "Tasarım sorumlusu atanacak",
+      "priority": "P1",
+      "dependencyIds": [
+        "G02",
+        "E05"
+      ],
+      "dependencies": [
+        "G02",
+        "E05"
+      ],
+      "acceptance": "Canlıya açılacak ölçü/format listesinde doğru ebat ve güvenli alanla düzenlenebilir kaynak ve final dosya oluşuyor; dosya sürümleri iş kaydıyla eşleşiyor.",
+      "evidence": [
+        "outputs/gamechangers-pilot/roles/graphic_designer.json"
+      ],
+      "nextAction": "İlk grafik formatlarını seç; aynı brief'ten kaynak dosya ve gerekli varyantları üret.",
+      "targetDate": null
+    },
+    {
+      "id": "G04",
+      "phaseId": "G",
+      "title": "Gerçek grafik çıktısının görsel kalite kontrolü",
+      "weight": 2,
+      "done": 0,
+      "status": "Başlanmadı",
+      "owner": "Tasarım sorumlusu atanacak",
+      "priority": "P0",
+      "dependencyIds": [
+        "G03"
+      ],
+      "dependencies": [
+        "G03"
+      ],
+      "acceptance": "Her açılacak format render edilip görülmüş; logo, metin, font, renk, taşma, okunurluk, ebat ve kaynak doğruluğu kontrol kaydı var.",
+      "evidence": [
+        "outputs/gamechangers-pilot/roles/graphic_designer.json"
+      ],
+      "nextAction": "Üretilen final dosyaları aç ve her varyantı kontrol et; düzeltilen sürümü yeniden incele.",
+      "targetDate": null
+    },
+    {
+      "id": "G05",
+      "phaseId": "G",
+      "title": "Gerçek iç grafik revizyon ve kabul vakaları",
+      "weight": 2,
+      "done": 0,
+      "status": "Başlanmadı",
+      "owner": "Tasarım sorumlusu atanacak",
+      "priority": "P1",
+      "dependencyIds": [
+        "G04",
+        "E06"
+      ],
+      "dependencies": [
+        "G04",
+        "E06"
+      ],
+      "acceptance": "Tanımlı iç grafik vakaları brief→çıktı→insan revizyonu→yeni sürüm→kabul döngüsünü tamamlıyor; kabul dosyası ve kaynak dosya eşleşiyor.",
+      "evidence": [
+        "outputs/gamechangers-pilot/roles/graphic_designer.json"
+      ],
+      "nextAction": "Tasarım sorumlusuyla ölçütleri belirle; gerçek iç revizyonları dosya sürümü ve görsel QA ile tamamla.",
+      "targetDate": null
+    },
+    {
+      "id": "H01",
+      "phaseId": "H",
+      "title": "Animasyon araçları, varlıklar ve müzik lisansları",
+      "weight": 2,
+      "done": 0,
+      "status": "Bekliyor",
+      "owner": "Tasarım sorumlusu atanacak",
+      "priority": "P2",
+      "dependencyIds": [
+        "C05",
+        "D02"
+      ],
+      "dependencies": [
+        "C05",
+        "D02"
+      ],
+      "acceptance": "Geniş animasyon kapsamı, araçları, ses/müzik/görüntü hakları ve üretim sorumlusu belirli; satın alma ve ses kimliği izinleri açık.",
+      "evidence": [
+        "outputs/gamechangers-pilot/roles/motion_designer.json",
+        "outputs/gamechangers-pilot/current-setup.json#/launch_sprint/motion"
+      ],
+      "nextAction": "Öncelikli üç rolü engellemeden animasyon kapsamını, insan sahibini ve lisanslı kaynakları belirle.",
+      "targetDate": null
+    },
+    {
+      "id": "H02",
+      "phaseId": "H",
+      "title": "Storyboard, kurgu, üretim ve render",
+      "weight": 2,
+      "done": 0,
+      "status": "Başlanmadı",
+      "owner": "Tasarım sorumlusu atanacak",
+      "priority": "P2",
+      "dependencyIds": [
+        "H01",
+        "D04",
+        "D06"
+      ],
+      "dependencies": [
+        "H01",
+        "D04",
+        "D06"
+      ],
+      "acceptance": "Tanımlı animasyon işinde onaylı metin/storyboard, süre, sahne ve ses planından düzenlenebilir proje ile final render üretiliyor.",
+      "evidence": [
+        "outputs/gamechangers-pilot/roles/motion_designer.json"
+      ],
+      "nextAction": "Seçilen dar iç animasyon vakasını üret; proje/varlık bağlantıları ve render sürümünü kaydet.",
+      "targetDate": null
+    },
+    {
+      "id": "H03",
+      "phaseId": "H",
+      "title": "Videoyu baştan sona izleme, ses ve çıktı QA",
+      "weight": 2,
+      "done": 0,
+      "status": "Başlanmadı",
+      "owner": "Tasarım sorumlusu atanacak",
+      "priority": "P2",
+      "dependencyIds": [
+        "H02"
+      ],
+      "dependencies": [
+        "H02"
+      ],
+      "acceptance": "Final video baştan sona izlenmiş ve sesi dinlenmiş; senkron, altyazı, kare hızı, oran, süre, haklar ve son kare kontrol edilmiş; revizyon sonrası yeniden görülmüş.",
+      "evidence": [
+        "outputs/gamechangers-pilot/roles/motion_designer.json"
+      ],
+      "nextAction": "Gerçek renderi görüntü ve ses birlikte kontrol et; kabul notunu final sürüme bağla.",
+      "targetDate": null
+    },
+    {
+      "id": "I01",
+      "phaseId": "I",
+      "title": "Kritik olumsuz entegrasyon kabul testleri",
+      "weight": 1.5,
+      "done": 0,
+      "status": "Başlanmadı",
+      "owner": "Teknik Kurulum",
+      "priority": "P0",
+      "dependencyIds": [
+        "B07",
+        "E04",
+        "E06",
+        "E07",
+        "E09",
+        "D08",
+        "D09",
+        "D10"
+      ],
+      "dependencies": [
+        "B07",
+        "E04",
+        "E06",
+        "E07",
+        "E09",
+        "D08",
+        "D09",
+        "D10"
+      ],
+      "acceptance": "Gerçek iç ortamda yanlış marka/alıcı, hariç To/CC, insan devri, eski sürüm, kesinti, tekrar ve belirsiz yazma güvenli duruyor; mail/ekteki kural değiştirme talimatı yetki kazanmıyor; kanıtları kayıtlı.",
+      "evidence": [
+        "outputs/gamechangers-pilot/offline/test-results.json",
+        "outputs/gamechangers-pilot/current-setup.json#/activation_gates"
+      ],
+      "nextAction": "Önceden tanımlı olumsuz vaka setini bağlı hizmetlerde çalıştır; her başarısız kapıyı kapatıp tekrar doğrula.",
+      "targetDate": null
+    },
+    {
+      "id": "I02",
+      "phaseId": "I",
+      "title": "Kör tarihî yeniden oynatma ve gölge değerlendirme",
+      "weight": 1.5,
+      "done": 0,
+      "status": "Başlanmadı",
+      "owner": "Cansu",
+      "priority": "P0",
+      "dependencyIds": [
+        "C02",
+        "E05",
+        "E06",
+        "F04",
+        "G04"
+      ],
+      "dependencies": [
+        "C02",
+        "E05",
+        "E06",
+        "F04",
+        "G04"
+      ],
+      "acceptance": "Seçilmiş tarihî vakalar beklenen kararlar önceden modele verilmeden gölgede değerlendiriliyor; özgün başlık/kararlar korunuyor; müşteri maili veya üretim Basecamp işlemi oluşmuyor.",
+      "evidence": [
+        "outputs/gamechangers-pilot/current-setup.json#/launch_sprint/saturday_evaluation"
+      ],
+      "nextAction": "Kaynakları ve değerlendirme anahtarını ayır; kör vaka setini çalıştırıp rota/brief/çıktı hatalarını sınıflandır.",
+      "targetDate": null
+    },
+    {
+      "id": "I03",
+      "phaseId": "I",
+      "title": "Gamechangers iç uçtan uca demo",
+      "weight": 1,
+      "done": 0,
+      "status": "Başlanmadı",
+      "owner": "Cansu",
+      "priority": "P0",
+      "dependencyIds": [
+        "I01",
+        "E08",
+        "F05",
+        "G05"
+      ],
+      "dependencies": [
+        "I01",
+        "E08",
+        "F05",
+        "G05"
+      ],
+      "acceptance": "Ahmet'in açık To/CC ile Hamle'ye gönderdiği yeni iç talep gerçek giriş→brief→metin/grafik→Basecamp revizyon→kontrollü teslim ve özet döngüsünü tamamlıyor.",
+      "evidence": [
+        "outputs/gamechangers-pilot/current-setup.json#/launch_sprint/saturday_evaluation",
+        "outputs/Hamle_Baglanti_Durumu_2026-10-09.json"
+      ],
+      "nextAction": "Yeni ve açıkça iç test olan talebi çalıştır; her adımı gerçek kayıt ve dosya sürümüyle doğrula.",
+      "targetDate": null
+    },
+    {
+      "id": "I04",
+      "phaseId": "I",
+      "title": "Açık iş geçiş mutabakatı ve geri dönüş planı",
+      "weight": 1.5,
+      "done": 0,
+      "status": "Bekliyor",
+      "owner": "Cansu",
+      "priority": "P0",
+      "dependencyIds": [
+        "A04",
+        "A05",
+        "B10",
+        "I03"
+      ],
+      "dependencies": [
+        "A04",
+        "A05",
+        "B10",
+        "I03"
+      ],
+      "acceptance": "Başlangıç anında açık işler, son insan yanıtları, sahipler ve geçerli sürümler uzlaştırılmış; canlı sınırı/stop/insana dönüş yolu ve rollback sorumlusu kayıtlı.",
+      "evidence": [
+        "outputs/gamechangers-pilot/current-setup.json#/production_environment",
+        "outputs/gamechangers-pilot/current-setup.json#/activation_gates"
+      ],
+      "nextAction": "İlk canlı kapsamı ve açık iş listesini insan sahiplerle karşılaştır; eski işleri yeniden açmadan başlangıç kaydını oluştur.",
+      "targetDate": null
+    },
+    {
+      "id": "I05",
+      "phaseId": "I",
+      "title": "Sınırlı rutin canlı kullanım ve izleme",
+      "weight": 1.5,
+      "done": 0,
+      "status": "Başlanmadı",
+      "owner": "Ahmet",
+      "priority": "P0",
+      "dependencyIds": [
+        "I04",
+        "I03",
+        "D08",
+        "I01",
+        "I02",
+        "A06",
+        "C09"
+      ],
+      "dependencies": [
+        "I04",
+        "I03",
+        "D08",
+        "I01",
+        "I02",
+        "A06",
+        "C09"
+      ],
+      "acceptance": "IN13 marka/hizmet kaydında sekiz canlı koşulu ve ilgili bağımlılıklar kanıtlı; yalnız bu kapsamda gerçek olaylar işleniyor. En az bir tam 21 turluk iş gününde olay/kayıt eşleşmesi, hata ve devirler izleniyor.",
+      "evidence": [
+        "outputs/gamechangers-pilot/current-setup.json#/launch_sprint/one_hundred_percent_definition",
+        "outputs/gamechangers-pilot/current-setup.json#/production_environment"
+      ],
+      "nextAction": "Kabulü geçen sınırı aç; 12–13 Ekim ancak koşullar sağlanırsa takip penceresi olarak kullan ve günlük durumu kaydet.",
+      "targetDate": null
+    },
+    {
+      "id": "I06",
+      "phaseId": "I",
+      "title": "Dört rol ve çok marka için genişletilmiş üretim kabulü",
+      "weight": 1,
+      "done": 0,
+      "status": "Başlanmadı",
+      "owner": "Ahmet",
+      "priority": "P2",
+      "dependencyIds": [
+        "I05",
+        "H03",
+        "F05",
+        "G05"
+      ],
+      "dependencies": [
+        "I05",
+        "H03",
+        "F05",
+        "G05"
+      ],
+      "acceptance": "Dört rolün açılacak yetenekleri ve tüm etkin markaların ayrı erişim/kalite/teslim kontrolleri geçti; genişletme sınırları ve sorumlular yazılı.",
+      "evidence": [
+        "outputs/gamechangers-pilot/current-setup.json#/brand_rollout_policy",
+        "outputs/gamechangers-pilot/current-setup.json#/launch_sprint"
+      ],
+      "nextAction": "Önce dar canlı bulgularını düzelt; animasyon ve ek marka/yetenekleri kendi kabul kanıtlarıyla kademeli aç.",
+      "targetDate": null
+    }
+  ],
+  "inputs": [
+    {
+      "id": "IN01",
+      "title": "Hazırlanan Desktop OAuth istemcisi ve özel saklama kararı",
+      "owner": "Ahmet",
+      "neededBy": "B04 başlamadan",
+      "status": "Tamamlandı",
+      "answer": "Kullanıcı istemci, yeni gizli bilgi, özel yerel saklama ve posta iznini onayladı. Hamle OAuth kimliği ve API testi doğrulandı; kimlik bilgisi bu tabloda tutulmaz.",
+      "taskIds": [
+        "B04",
+        "B05"
+      ],
+      "acceptance": "İstemci oluşturma, AI agent seçimi ve özel yerel saklama için somut karar kayıtlı; parola veya sır bu belgeye yazılmaz.",
+      "evidence": [
+        "outputs/Hamle_Google_Cloud_Kurulum_2026-10-09.json#/oauth_client_secret_addition_approval",
+        "outputs/Hamle_Google_Cloud_Kurulum_2026-10-09.json#/oauth_client_storage_authorized",
+        "outputs/Hamle_Gmail_API_Kaniti_2026-10-09.json#/consent_explicitly_approved"
+      ]
+    },
+    {
+      "id": "IN02",
+      "title": "9 Ekim sonrası ortak test ve işletim bütçesi",
+      "owner": "Ahmet",
+      "neededBy": "Yeni ücretli işlemden önce",
+      "status": "Karar alındı",
+      "answer": "9–12 Ekim 2026, Pazartesi dahil: Google Cloud, OpenAI ve görsel üretim için ortak toplam 50 USD. Otomatik yenilenmez. Fiilî bütçe/durdurma kurulumu D02’de açık.",
+      "taskIds": [
+        "A05",
+        "D02"
+      ],
+      "acceptance": "Dönem, sağlayıcılar/roller arasında ortak üst sınır, sınırda durdurma ve yenileme kararı yazılı; 8 Ekim 50 USD otomatik devretmiyor.",
+      "evidence": [
+        "outputs/Hamle_Butce_Onayi_2026-10-09.json"
+      ]
+    },
+    {
+      "id": "IN03",
+      "title": "İstenen model/ayar ve gerekirse görünür alternatif kararı",
+      "owner": "Ahmet",
+      "neededBy": "D03 kabulünden önce",
+      "status": "Karar alındı",
+      "answer": "Kullanıcı gpt-6-astra + max ile denemeyi onayladı. Resmî katalog desteği görüldü; hesap erişimi, API anahtarı ve gerçek çağrı henüz doğrulanmadı.",
+      "taskIds": [
+        "A05",
+        "D03"
+      ],
+      "acceptance": "İstenen modelin resmî API desteği ve kullanıcının seçtiği ayar kayıtlı. İlk ultra tercihinin yerine Astra + max kullanıcı kararıyla seçildi; gerçek hesap kabulü D03’te ayrı.",
+      "evidence": [
+        "outputs/Hamle_Model_API_On_Kontrol_2026-10-09.json"
+      ]
+    },
+    {
+      "id": "IN04",
+      "title": "Marka bazlı Basecamp hesap/proje/liste ve görünürlük listesi",
+      "owner": "Ahmet",
+      "neededBy": "B10 ve ilk müşteri kapsamından önce",
+      "status": "Bekliyor",
+      "answer": "",
+      "taskIds": [
+        "A04",
+        "B10"
+      ],
+      "acceptance": "Yedi dış marka ve Gamechangers iç alanının ilgili projeleri, listeleri, müşteri görünürlüğü ve yetkili kişiler doğrulanır.",
+      "evidence": [
+        "outputs/gamechangers-pilot/current-setup.json#/brand_registry"
+      ]
+    },
+    {
+      "id": "IN05",
+      "title": "Yetkili müşteri muhatapları ve alıcı/onay sınırları",
+      "owner": "Cansu",
+      "neededBy": "A04 ve E05 kabulünden önce",
+      "status": "Bekliyor",
+      "answer": "",
+      "taskIds": [
+        "A04",
+        "E05",
+        "E07"
+      ],
+      "acceptance": "Her marka için kişi/adres, karar/onay konusu ve sınırlı gönderim kapsamı yazılı; alan adı eşleşmesi tek başına yetki sayılmaz.",
+      "evidence": [
+        "outputs/gamechangers-pilot/current-setup.json#/brand_registry"
+      ]
+    },
+    {
+      "id": "IN06",
+      "title": "Hizmet kapsamı, revizyon, termin ve ticari yetki kuralları",
+      "owner": "Ahmet",
+      "neededBy": "A04/A05 ve canlı brief'ten önce",
+      "status": "Bekliyor",
+      "answer": "",
+      "taskIds": [
+        "A04",
+        "A05",
+        "E05"
+      ],
+      "acceptance": "Marka bazlı hizmet/teslim/revizyon sınırları, doğrulanmış kapasite ve fiyat/indirim/yeni maliyet karar sahipleri belli.",
+      "evidence": [
+        "outputs/gamechangers-pilot/current-setup.json#/authority",
+        "outputs/gamechangers-pilot/current-setup.json#/brand_registry"
+      ]
+    },
+    {
+      "id": "IN07",
+      "title": "İnsan iş sahipleri, kapasite ve devralma sorumluları",
+      "owner": "Cansu",
+      "neededBy": "A06/E05 başlamadan",
+      "status": "Bekliyor",
+      "answer": "",
+      "taskIds": [
+        "A06",
+        "E05",
+        "E06",
+        "F05",
+        "G05"
+      ],
+      "acceptance": "Metin, tasarım, animasyon ve müşteri akışı için insan sahipler atanmış; uygunluk/termin ve yedek devralma yolu kabul edilmiş.",
+      "evidence": [
+        "outputs/gamechangers-pilot/current-setup.json#/activation_gates",
+        "outputs/gamechangers-pilot/templates/handoff.template.json"
+      ]
+    },
+    {
+      "id": "IN08",
+      "title": "Güncel marka varlıkları ve font/görsel lisansları",
+      "owner": "Tasarım sorumlusu atanacak",
+      "neededBy": "C04/C05/G01 üretim kabulünden önce",
+      "status": "Bekliyor",
+      "answer": "",
+      "taskIds": [
+        "C04",
+        "C05",
+        "G01"
+      ],
+      "acceptance": "Logo, font, renk, şablon, görsel ve kaynak proje dosyaları güncel sürüm ve kullanım hakkıyla teslim edilmiş.",
+      "evidence": [
+        "outputs/gamechangers-pilot/coverage.json#/attachments",
+        "outputs/gamechangers-pilot/roles/graphic_designer.json"
+      ]
+    },
+    {
+      "id": "IN09",
+      "title": "Onaylı ürün/hizmet gerçekleri, dil ve reddedilmiş yönler",
+      "owner": "Cansu",
+      "neededBy": "C05/F02/F04 kabulünden önce",
+      "status": "Bekliyor",
+      "answer": "",
+      "taskIds": [
+        "C05",
+        "F02",
+        "F04"
+      ],
+      "acceptance": "Güncel iddia/ürün bilgisi, marka tonu ve müşteri retleri kaynak/sürüm sahibiyle belli; eski örnek fiyat veya sağlık iddiası gerçek/onay yerine kullanılmaz.",
+      "evidence": [
+        "outputs/gamechangers-pilot/templates/brand-dossier.template.json",
+        "outputs/gamechangers-pilot/roles/copywriter.json"
+      ]
+    },
+    {
+      "id": "IN10",
+      "title": "Yetkili doğum günleri ve marka özel tarihleri",
+      "owner": "Özge",
+      "neededBy": "C06/E08 zamanlanmadan önce",
+      "status": "Bekliyor",
+      "answer": "",
+      "taskIds": [
+        "C06",
+        "E08"
+      ],
+      "acceptance": "Gerekli doğum günü gün/ayları yetkili kaynaktan; marka tarihleri resmi kaynaktan doğrulanmış; plan ve hatırlatma sahipleri belli.",
+      "evidence": [
+        "outputs/gamechangers-pilot/current-setup.json#/proactive_dates"
+      ]
+    },
+    {
+      "id": "IN11",
+      "title": "Bulut/faturalama sahibi ve üretim erişim sorumluları",
+      "owner": "Ahmet",
+      "neededBy": "D02/D04/D06 kurulmadan önce",
+      "status": "Bekliyor",
+      "answer": "",
+      "taskIds": [
+        "D02",
+        "D04",
+        "D06",
+        "D10"
+      ],
+      "acceptance": "Kurumsal proje, faturalama, sır erişimi, OAuth yönetimi ve hizmet hesabı işlemleri için yetkili insan sahipleri net.",
+      "evidence": [
+        "outputs/Hamle_Google_Cloud_Kurulum_2026-10-09.json",
+        "outputs/gamechangers-pilot/current-setup.json#/deployment_recommendation"
+      ]
+    },
+    {
+      "id": "IN12",
+      "title": "Tatil kuralı, alarm alıcısı ve durdurma kanalı",
+      "owner": "Ahmet",
+      "neededBy": "A06/D07/D08/E04 kabulünden önce",
+      "status": "Bekliyor",
+      "answer": "",
+      "taskIds": [
+        "A06",
+        "D07",
+        "D08",
+        "E04"
+      ],
+      "acceptance": "Hafta içi takvim/tatil tercihi, alarm hedefi ve insanın açık stop/devralma bildirimi vereceği yol kayıtlı; görünmeyen mail tespiti vaat edilmiyor.",
+      "evidence": [
+        "outputs/gamechangers-pilot/current-setup.json#/schedule",
+        "outputs/gamechangers-pilot/current-setup.json#/stop_control",
+        "outputs/gamechangers-pilot/current-setup.json#/message_participation_gate"
+      ]
+    },
+    {
+      "id": "IN13",
+      "title": "Marka ve hizmet bazlı canlı kabul kaydı, açık işler ve saklama kararları",
+      "owner": "Cansu",
+      "neededBy": "C09/I04/I05 öncesinde",
+      "status": "Bekliyor",
+      "answer": "",
+      "taskIds": [
+        "C09",
+        "I04",
+        "I05",
+        "A06"
+      ],
+      "acceptance": "Her açılacak marka × hizmet için sekiz canlı koşulunun kanıtı, insan sahibi, açılma tarihi ve stop kaydı var; portföy geneli puanı ile alt kapsam kabulü ayrı tutuluyor.",
+      "evidence": [
+        "outputs/gamechangers-pilot/current-setup.json#/production_environment",
+        "outputs/gamechangers-pilot/current-setup.json#/storage"
+      ]
+    },
+    {
+      "id": "IN14",
+      "title": "İlk grafik formatları ve animasyon genişleme kapsamı",
+      "owner": "Tasarım sorumlusu atanacak",
+      "neededBy": "G03 ve H01 başlamadan",
+      "status": "Bekliyor",
+      "answer": "",
+      "taskIds": [
+        "G03",
+        "G04",
+        "G05",
+        "H01",
+        "H02",
+        "H03",
+        "I06"
+      ],
+      "acceptance": "İlk canlı grafik ebatları/formatları, kaynak-final dosya beklentisi ve animasyonun ayrı araç/lisans/QA kapsamı belirlenmiş.",
+      "evidence": [
+        "outputs/gamechangers-pilot/roles/graphic_designer.json",
+        "outputs/gamechangers-pilot/roles/motion_designer.json",
+        "outputs/gamechangers-pilot/current-setup.json#/launch_sprint/motion"
+      ]
+    }
+  ],
+  "scopeNotes": [
+    "Tüm markalar kapsamda; yetki/hazırlık ayrı uygulanır.",
+    "Hamle+metin+tanımlı grafik önce; geniş animasyon sonraki kabul kapsamı.",
+    "105 dizi/763 mesaj okundu; tam arşiv paydası bilinmediği için öğrenme yüzdesi yok.",
+    "Ağırlıklı yönetim puanı canlı çalışma veya kalite güvencesi yüzdesi değildir.",
+    "35/35 ve30/30 yerel testler;20 yazılı prova gerçek model/sağlayıcı başarı testi değildir.",
+    "Gmail API gerçek iç gönderim ve alıcı teslimi doğrulandı; E03/E04 canlı posta işleyicisi tamamlanmış sayılmadı.",
+    "9–12 Ekim 2026 dahil Google Cloud, OpenAI ve görsel üretim için ortak 50 USD onaylandı; bütçenin uygulanması ve fiilî hesap kullanımı henüz doğrulanmadı."
+  ],
+  "auditReference": "work/project-tracker/status-audit.json",
+  "baselineSummary": {
+    "totalTasks": 65,
+    "completedTasks": 15,
+    "totalWeight": 100,
+    "completedWeight": 22,
+    "remainingWeight": 78,
+    "weightedManagementProgressPercent": 22,
+    "unweightedCompletedTaskPercent": 23.076923076923077,
+    "phases": [
+      {
+        "id": "A",
+        "weight": 8,
+        "taskCount": 6,
+        "completedTasks": 3,
+        "completedWeight": 5
+      },
+      {
+        "id": "B",
+        "weight": 14,
+        "taskCount": 12,
+        "completedTasks": 6,
+        "completedWeight": 7
+      },
+      {
+        "id": "C",
+        "weight": 14,
+        "taskCount": 9,
+        "completedTasks": 3,
+        "completedWeight": 6
+      },
+      {
+        "id": "D",
+        "weight": 16,
+        "taskCount": 10,
+        "completedTasks": 1,
+        "completedWeight": 1
+      },
+      {
+        "id": "E",
+        "weight": 16,
+        "taskCount": 9,
+        "completedTasks": 2,
+        "completedWeight": 3
+      },
+      {
+        "id": "F",
+        "weight": 8,
+        "taskCount": 5,
+        "completedTasks": 0,
+        "completedWeight": 0
+      },
+      {
+        "id": "G",
+        "weight": 10,
+        "taskCount": 5,
+        "completedTasks": 0,
+        "completedWeight": 0
+      },
+      {
+        "id": "H",
+        "weight": 6,
+        "taskCount": 3,
+        "completedTasks": 0,
+        "completedWeight": 0
+      },
+      {
+        "id": "I",
+        "weight": 8,
+        "taskCount": 6,
+        "completedTasks": 0,
+        "completedWeight": 0
+      }
+    ]
+  },
+  "validation": {
+    "totalTasks": 65,
+    "phaseCount": 9,
+    "inputCount": 14,
+    "totalPoints": 100,
+    "completedTasks": 19,
+    "completedPoints": 27.0,
+    "allEvidencePathsAndPointersResolve": true,
+    "dependencyGraphAcyclic": true,
+    "allTargetDatesNull": true,
+    "sourceFilesModified": false
+  },
+  "dependencyScopeRule": "Bağımlılık kodları açılacak marka ve hizmet kapsamındaki kabulü şart koşar. A04/B10/C05 gibi portföy satırlarının 1 olması tüm markaların tamamlanmasını ölçer; ilk sınırlı canlı için ilgili markanın alt kabul kaydı IN13 içinde ayrıca tutulur. Eksik marka hazır markayı durdurmaz.",
+  "documentVersion": "V2 Yeni Mac Devir",
+  "snapshotVerifiedAt": "2026-10-09T23:59:31.286526+03:00",
+  "initialBaselineNote": "V1 başlangıç fotoğrafı korunmuştur: 65 iş, 15 tamam iş, 22/100 puan. Güncel durum currentSummary alanındadır.",
+  "revisionHistory": [
+    {
+      "version": "V1",
+      "asOf": "2026-10-09",
+      "completedTasks": 15,
+      "completedWeight": 22,
+      "note": "İlk yönetim başlangıç fotoğrafı; V1 teslim dosyaları değiştirilmedi."
+    },
+    {
+      "version": "V2",
+      "verifiedAt": "2026-10-09T23:59:31.286526+03:00",
+      "changedTasks": [
+        "B04",
+        "B05",
+        "B06",
+        "B09"
+      ],
+      "note": "Gmail OAuth, iç API gönderim/teslim, yenileme ve Basecamp atama/dosya/revizyon kanıtları işlendi; bütçe ve Astra + max kararları kaydedildi. E03/E04 canlı kabulü açık.",
+      "partialTasks": [
+        "B07",
+        "A05",
+        "D02",
+        "D03"
+      ],
+      "decidedInputs": [
+        "IN01",
+        "IN02",
+        "IN03"
+      ],
+      "completedTasks": 19,
+      "completedWeight": 27.0
+    }
+  ],
+  "currentSummary": {
+    "totalTasks": 65,
+    "completedTasks": 19,
+    "remainingTasks": 46,
+    "totalWeight": 100,
+    "completedWeight": 27.0,
+    "remainingWeight": 73.0,
+    "weightedManagementProgressPercent": 27.0,
+    "unweightedCompletedTaskPercent": 29.230769230769234,
+    "phases": [
+      {
+        "id": "A",
+        "weight": 8,
+        "taskCount": 6,
+        "completedTasks": 3,
+        "completedWeight": 5
+      },
+      {
+        "id": "B",
+        "weight": 14,
+        "taskCount": 12,
+        "completedTasks": 10,
+        "completedWeight": 12
+      },
+      {
+        "id": "C",
+        "weight": 14,
+        "taskCount": 9,
+        "completedTasks": 3,
+        "completedWeight": 6
+      },
+      {
+        "id": "D",
+        "weight": 16,
+        "taskCount": 10,
+        "completedTasks": 1,
+        "completedWeight": 1
+      },
+      {
+        "id": "E",
+        "weight": 16,
+        "taskCount": 9,
+        "completedTasks": 2,
+        "completedWeight": 3
+      },
+      {
+        "id": "F",
+        "weight": 8,
+        "taskCount": 5,
+        "completedTasks": 0,
+        "completedWeight": 0
+      },
+      {
+        "id": "G",
+        "weight": 10,
+        "taskCount": 5,
+        "completedTasks": 0,
+        "completedWeight": 0
+      },
+      {
+        "id": "H",
+        "weight": 6,
+        "taskCount": 3,
+        "completedTasks": 0,
+        "completedWeight": 0
+      },
+      {
+        "id": "I",
+        "weight": 8,
+        "taskCount": 6,
+        "completedTasks": 0,
+        "completedWeight": 0.0
+      }
+    ]
+  },
+  "documentDate": "2026-10-10",
+  "handoff": {
+    "documentDate": "2026-10-10",
+    "operationalEvidenceAsOf": "2026-10-09T23:59:31.286526+03:00",
+    "newMacConnectionsVerified": false,
+    "openAIApiKeyCreated": false,
+    "note": "Bu iki belge bilgi ve iş takibini devreder; yazılımı, erişim sırlarını veya hesap bağlantılarını taşımaz. Yeni ChatGPT konuşması önce bu belgeleri okuyup son kanıt anını esas almalıdır.",
+    "rows": [
+      [
+        "Google Cloud projesi",
+        "gamechangers-hamle; kurumsal yönetici Ahmet",
+        "Uzak hesapta mevcut",
+        "Yeni Mac’te Ahmet hesabıyla aynı projeyi doğrula; sırf cihaz değişti diye yeniden oluşturma."
+      ],
+      [
+        "OAuth uygulaması",
+        "Gamechangers Hamle; şirket içi; Desktop istemcisi",
+        "Uzak kayıt mevcut",
+        "Aynı uygulamayı doğrula. Yeni cihazın özel saklama/izin akışını ayrıca kur."
+      ],
+      [
+        "Gmail bağlantısı",
+        "hamle@gamechangers.com.tr; bu Mac’te macOS Keychain",
+        "Bu Mac’te iç API testi geçti",
+        "Anahtarın taşındığını varsayma. Yeni cihazda güvenli saklama, Hamle profili, okuma, iç gönderim/teslim ve yenilemeyi yeniden doğrula."
+      ],
+      [
+        "Basecamp bağlantısı",
+        "Hesap 5898865; profil hamle-gamechangers; yerel keyring",
+        "Bu Mac’te API döngüsü geçti",
+        "Yeni cihazda yerel bağlantıyı yeniden kur/doğrula; sırları Excel veya sohbete yazma."
+      ],
+      [
+        "Basecamp iç alanı",
+        "Hamle — İç Deneme; proje 49184053; Hamle 53358100",
+        "Yalnız iç test, müşteri görünürlüğü kapalı",
+        "Aynı uzak kayıtları kullan; müşteri projelerine yetki çıkarımı yapma. B09 görev 10391849167."
+      ],
+      [
+        "OpenAI erişimi",
+        "OpenAI Developers kuruldu; proje seçim akışı açıldı",
+        "Hedef seçilmedi; API anahtarı yok",
+        "Yeni Mac’te doğru kuruluş/proje seçimini ve güvenli anahtar kurulumunu tamamla. Hesap erişimi hâlâ doğrulanmalı."
+      ],
+      [
+        "Model ve bütçe",
+        "Astra + max; 9–12 Ekim dahil ortak 50 USD",
+        "Kullanıcı kararları alındı",
+        "Google Cloud, OpenAI ve görsel üretimin toplamını sınırla. Fatura/gerçek kullanım ve durdurma kurulumu açık."
+      ],
+      [
+        "Yerel proje paketi",
+        "work/project-tracker; work/hamle-workflow; work/hamle-gmail-connector; outputs/gamechangers-pilot",
+        "Kaynaklar ve yazılım eski Mac’te",
+        "Gerekli çalışma dosyalarını onaylı güvenli yoldan aktar. Ham özel mailleri ve erişim sırlarını sohbet ekine koyma."
+      ],
+      [
+        "Testler",
+        "35 operasyon + 30 Gmail yardımcı + 54 posta normalleştirme/okuma testi",
+        "Yerel sonuçlar geçti",
+        "Yeni ortamda ilgili testleri yeniden çalıştır. Kendi giden mesajı için canlı engelleme geçti; gelen posta ve ekler açık."
+      ],
+      [
+        "Canlı çalışma",
+        "27 / 100 puan; 19 / 65 iş; 0 / 4 canlı ajan",
+        "Cloud çalışanı ve zamanlayıcı yok",
+        "Bilgisayar kapalıyken çalışan hizmet kurulmadı. Yeni sohbet açmak sistemi çalıştırmaz."
+      ],
+      [
+        "Katılım kuralı",
+        "Yalnız gerçek güncel To/CC; Hamle yoksa işlem yok",
+        "Uygulama kabulü E03/E04 açık",
+        "Görünmeyen CC çıkarma otomatik saptanmış sayılmaz. Açık stop/geri çekme olayı ve insan devralma kurulmalı."
+      ]
+    ]
+  }
+}

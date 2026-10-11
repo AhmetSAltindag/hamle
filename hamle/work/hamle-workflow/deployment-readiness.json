@@ -1,0 +1,546 @@
+{
+  "schema_version": "1.0",
+  "as_of": "2026-10-09",
+  "timezone": "Europe/Istanbul",
+  "kind": "read_only_deployment_readiness_review_not_deployed",
+  "scope": "A–E kritik yol; Cloud Run, Cloud Scheduler, kalıcı veritabanı ve Secret Manager hazırlığı",
+  "live_roles_verified": 0,
+  "target_roles": 4,
+  "ready_to_provision": false,
+  "ready_for_customer_actions": false,
+  "inspection_limits": {
+    "local_sources_read": true,
+    "official_docs_read": true,
+    "provider_account_or_api_inspected": false,
+    "browser_used": false,
+    "secret_or_keychain_read": false,
+    "tools_installed": false,
+    "auth_started": false,
+    "paid_resources_created": false,
+    "only_written_file": "work/hamle-workflow/deployment-readiness.json",
+    "snapshot_note": "Diğer ekip üyeleri aynı çalışma alanında ilerleyebilir; bu envanter inceleme anını gösterir. Mevcut kodun bulunması dağıtım veya üretim kabulü değildir."
+  },
+  "current_evidence": {
+    "cloud_project": {
+      "id": "gamechangers-hamle",
+      "organization": "gamechangers.com.tr",
+      "admin_identity": "ahmet@gamechangers.com.tr",
+      "project_and_gmail_api": "confirmed_in_dated_local_evidence",
+      "oauth_branding": "created",
+      "desktop_oauth_client": "exists_in_Safari_list_per_root_current_observation",
+      "desktop_client_evidence_basis": "Ana yürütücü 9 Ekim Safari listesinde istemciyi gördüğünü bu görevde bildirdi; bu inceleme UI'ye bakmadı.",
+      "desktop_client_local_record": "outputs/Hamle_Google_Cloud_Kurulum_2026-10-09.json hâlâ istemci yok diyor; bu alan yeni doğrudan gözleme göre eski.",
+      "gmail_oauth_authorization": "pending_root_is_progressing",
+      "gmail_live_api_read_send_refresh": "not_verified_in_this_snapshot",
+      "b04_acceptance": "İstemci varlığı tek başına özel saklama, kullanıcı izni ve kimlik doğrulama koşullarının tümünü tamamlamaz. B04 otomatik done yapılmadı.",
+      "runtime_and_paid_resources": "not_provisioned_per_current_task_state"
+    },
+    "basecamp": {
+      "identity": "Hamle AI / hamle@gamechangers.com.tr",
+      "account_id": "5898865",
+      "private_project_id": "49184053",
+      "status": "local_internal_API_read_comment_write_readback_verified",
+      "refresh_test": "pending",
+      "task_assignment_file_revision_API_cycle": "pending",
+      "actual_provider_scope": "full",
+      "application_scope_required": "İlk test yalnız özel proje; marka proje/kişi/görünürlük izinleri ayrı. Sağlayıcıdaki full yetki uygulama yetkisi değildir."
+    },
+    "offline_core": "35/35 sentetik test; gerçek model veya sağlayıcı çağrısı yok",
+    "gmail_helper": "30/30 sahte servis testi; gerçek OAuth/API/Keychain başarı kanıtı yok",
+    "precedence": "Güncel ana yürütücü gözlemi > 9 Ekim özel kanıt > eski current-setup veya proje puan fotoğrafı. Hiçbir plan satırı bu incelemede güncellenmedi."
+  },
+  "local_assets": [
+    {
+      "path": "outputs/gamechangers-pilot/offline/engine.py",
+      "present": true,
+      "usable_for": "Yetki kapısı, iş/brief/aksiyon şeması, SQLite işlemleri, kilit, kontrol noktası, stop ve belirsiz sonuç davranışını referans almak.",
+      "not_ready_for": "Cloud HTTP servisi, gerçek sağlayıcı adaptörü, model anlamlandırması veya dağıtık veritabanı.",
+      "critical_gap": "Yerel SQLite ve BEGIN IMMEDIATE mantığı Firestore'a doğrudan kopyalanamaz; işlem/kilit/sürüm sözleşmesi ayrı adapte edilmelidir."
+    },
+    {
+      "path": "outputs/gamechangers-pilot/offline/run_tests.py",
+      "present": true,
+      "usable_for": "35 çevrimdışı davranışın regresyon kabul seti.",
+      "not_ready_for": "Gerçek bulut yarışları, kullanıcı başlıkları veya gönderim kanıtı; testler bu incelemede yeniden çalıştırılmadı."
+    },
+    {
+      "path": "work/hamle-gmail-connector/hamle_gmail.py",
+      "present": true,
+      "usable_for": "Desktop OAuth başlangıcı, tam iki kapsam ve Hamle profil kontrolü, macOS Keychain ve tek sabit iç gönderim denemesi.",
+      "not_ready_for": "Genel mail tarama, MIME/To/Cc bağlayıcısı, müşteri gönderimi veya cloud secret adaptörü.",
+      "critical_gap": "Mevcut read-test yalnız minimal kimlikler okur; gerçek To/Cc veya gövde yetki kapısını doğrulamaz. Yerel gönderim günlüğü bulutta kalıcı/ortak kayıt yerine geçmez."
+    },
+    {
+      "path": "work/hamle-gmail-connector/requirements.txt",
+      "present": true,
+      "companion_files": [
+        "work/hamle-gmail-connector/constraints.txt",
+        "work/hamle-gmail-connector/test_hamle_gmail.py",
+        "work/hamle-gmail-connector/test-results.json"
+      ],
+      "usable_for": "Google istemci kütüphanelerinin yerel bootstrap bağımlılıkları ve 30 testlik kanıt.",
+      "critical_gap": "HTTP sunucusu, cloud veritabanı ve Secret Manager bağımlılıkları/uyarlamaları bu paket içinde dağıtıma hazır değil; macOS keyring backend'i Linux cloud ortamı olarak kabul edilemez."
+    },
+    {
+      "path": "outputs/gamechangers-pilot/current-setup.json",
+      "present": true,
+      "companion_files": [
+        "outputs/gamechangers-pilot/hamle-prova/routing-policy.json",
+        "outputs/gamechangers-pilot/roles",
+        "outputs/gamechangers-pilot/templates"
+      ],
+      "usable_for": "Kullanıcı rota ve katılım kuralları, marka/rol kayıt şablonları.",
+      "critical_gap": "Bağlantı durum cümleleri eski olabilir; kuralları yeni tarihli doğrulamalarla ayır. Null marka izinleri otomatik doldurulamaz."
+    },
+    {
+      "path": "work/project-tracker/project-plan.json",
+      "present": true,
+      "companion_files": [
+        "work/project-tracker/roadmap-review.json",
+        "work/project-tracker/status-audit.json"
+      ],
+      "usable_for": "A–E iş kimlikleri, bağımlılıklar, marka/hizmet alt kabulü ve açık girdiler.",
+      "critical_gap": "22/100 puan eski yönetim fotoğrafıdır; yeni istemci gözlemiyle otomatik yükseltilmedi ve deploy-ready anlamına gelmez."
+    },
+    {
+      "path": "outputs/gamechangers-pilot/offline/demo-synthetic.sqlite",
+      "present": true,
+      "usable_for": "Sentetik kayıt şeması/örneği.",
+      "not_ready_for": "Canlı veri göçü veya gerçek müşteri iş veritabanı; bu dosya üretim verisi olarak yüklenmez."
+    }
+  ],
+  "cli_inventory": {
+    "method": "Yalnız command -v ve bilinen dosyaların varlık/çalıştırılabilirlik metadatası; hiçbir CLI auth/status komutu çalıştırılmadı.",
+    "path_found": {
+      "python3": "/usr/bin/python3"
+    },
+    "not_found_on_current_shell_PATH": [
+      "gcloud",
+      "terraform",
+      "docker",
+      "node",
+      "npm"
+    ],
+    "known_workspace_executables_present": [
+      "work/basecamp-tools/bin/basecamp",
+      "work/hamle-gmail-connector/.venv/bin/python"
+    ],
+    "not_found_caveat": "PATH'te bulunamama tüm bilgisayarda kurulu olmadığı anlamına gelmez. Başka dizinler, sistem kasaları veya hesap ayarları aranmadı.",
+    "installation_decision": "Şimdi araç kurulumu gerekçesiyle iş durdurulmaz: kod/manifest/şema hazırlığı yapılabilir; Console veya daha sonra onaylı CLI yolu seçilebilir. Terraform, Docker ve gcloud üçünün birden kurulması zorunlu değil.",
+    "deployable_artifacts_found": [],
+    "deployable_artifact_scope": "İlgili work/outputs envanterinde Cloud Run HTTP entrypoint, Dockerfile, servis manifesti, Scheduler manifesti veya cloud DB adaptörü bulunmadı; başka ekip tarafından sonradan oluşturulan dosyalar ayrı doğrulanmalıdır."
+  },
+  "proposed_minimal_architecture": {
+    "status": "proposal_no_resources_created",
+    "flow": "Cloud Scheduler → kimlik doğrulamalı Cloud Run HTTP giriş noktası → gerçek başlık/yetki kontrolü → kalıcı iş/aksiyon kaydı → yetkili sağlayıcı adaptörleri",
+    "durable_database_candidate": "Firestore Native; final seçim ve konum henüz onaylanmış/kurulmuş değil.",
+    "queue_choice": "İlk dar akışta kalıcı outbox ve kontrollü iş sahiplenme tasarlanır. Uzun/asenkron işler için ayrı kuyruk gerekirse seçilir; Cloud Tasks/Pub/Sub ikisi birden otomatik eklenmez.",
+    "filesystem_rule": "Cloud Run örnek diski geçicidir; SQLite demo, kontrol noktası, token ve gönderim günlüğü tek kalıcı kopya olarak burada tutulamaz.",
+    "request_lifecycle_rule": "İş HTTP süresine sığmıyorsa kalıcı devam/kuyruk tasarımı gerekir; yanıt dönmüş süreçte belirsiz arka plan işi sürüyormuş gibi varsayılmaz.",
+    "customer_effects_default": "disabled_until_brand_service_gates_pass",
+    "minimum_instance_default_proposal": 0,
+    "concurrency_note": "İlk iç testte sınırlı eşzamanlılık ve az örnek önerilir; max_instances veya concurrency tek başına maliyet/çift gönderim garantisi değildir. Kesin değerler iş süresi ve bütçeyle belirlenir."
+  },
+  "component_readiness": [
+    {
+      "component": "Cloud Run",
+      "plan_ids": [
+        "D04",
+        "D06",
+        "D08",
+        "E03",
+        "E04"
+      ],
+      "ready_inputs": [
+        "Doğrulanmış şirket proje kimliği",
+        "Python kural çekirdeği",
+        "Yerel Gmail bootstrap kodu",
+        "Yazılı izin ve rota kuralları"
+      ],
+      "missing_local_deliverables": [
+        "Kimlik doğrulamalı HTTP giriş noktası ve sağlık yanıtı",
+        "Açık dış etki kapatma modu",
+        "Gerçek Gmail/Basecamp adaptör sınırları",
+        "Buluta uygun bağımlılık ve build tanımı",
+        "Sürümlü servis yapılandırması ve çalışma kimliği",
+        "Sır temizlenmiş log/iz kaydı ve hata bildirim adaptörü"
+      ],
+      "missing_provisioning": [
+        "Yetkili region seçimi",
+        "Cloud Run API durumu doğrulaması/etkinleştirme",
+        "Kaynak veya imaj build yolu; gerekiyorsa Cloud Build/Artifact Registry",
+        "Ayrı runtime hizmet hesabı ve dar IAM",
+        "Kimlik doğrulama zorunlu servis ve gerçek dağıtım",
+        "Onaylı bütçe/faturalandırma kapsamı"
+      ],
+      "acceptance": "Hedef ortamda gerçek iç olayı işler; bilgisayar kapalıyken çalışır, restart sonrası kalıcı durum korunur; yanlış çağıran ve dış etki kapalı modda mutasyon reddedilir.",
+      "source_ids": [
+        "S1",
+        "S2",
+        "S3"
+      ]
+    },
+    {
+      "component": "Cloud Scheduler",
+      "plan_ids": [
+        "D07",
+        "D08",
+        "E08"
+      ],
+      "ready_inputs": [
+        "Europe/Istanbul hafta içi 08:30–18:30 dahil 21 tur kuralı",
+        "Yerel slots_for_day/next_slot örnekleri"
+      ],
+      "missing_local_deliverables": [
+        "Tarih+saat+iş kimliği ile kalıcı tur tekilleştirme",
+        "Mesai/tatil kapısı",
+        "Başarısız okumada kontrol noktasını koruma",
+        "Eksik turu ayrıca izleyen mekanizma"
+      ],
+      "missing_provisioning": [
+        "Scheduler API ve region",
+        "Yalnız hedef servisi çağırabilen ayrı scheduler hesabı",
+        "OIDC audience ile eşleşen servis URL'si",
+        "Plan ve tekrar ayarları",
+        "Alarm hedefinin doğrulanması"
+      ],
+      "proposed_exact_slots": {
+        "timezone": "Europe/Istanbul",
+        "weekdays": [
+          "MO",
+          "TU",
+          "WE",
+          "TH",
+          "FR"
+        ],
+        "half_past_hours": [
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18
+        ],
+        "on_the_hour_hours": [
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18
+        ],
+        "unique_daily_slots": 21,
+        "note": "İki planla tam 21 zaman elde edilebilir; kurulmadı. 08:00 yanlışlıkla dahil edilmez."
+      },
+      "morning_summary": "Mevcut başlangıç tercihi: ilk başarılı 08:30 turundan sonra Hamle'den Ahmet'e bir özet; ayarlanabilir, henüz zamanlanmış değil.",
+      "delivery_caveat": "Scheduler en az bir kez teslim tasarımındadır; tekrar çağrı normal kabul edilmeli ve tekrar dış etki doğurmamalıdır.",
+      "acceptance": "21 benzersiz tur, yinelenen tetikleme, atlanan tur alarmı ve hafta sonu dışlama doğrulanır; hafta sonu iç test tam hafta içi gözlemi sayılmaz.",
+      "source_ids": [
+        "S2",
+        "S4"
+      ]
+    },
+    {
+      "component": "Kalıcı veritabanı",
+      "plan_ids": [
+        "C07",
+        "C08",
+        "C09",
+        "D05",
+        "D09",
+        "E04",
+        "E09"
+      ],
+      "ready_inputs": [
+        "Sentetik SQLite şeması ve 35 kural testi",
+        "Marka/olay/brief/aksiyon/yetki sürümü mantığı"
+      ],
+      "missing_local_deliverables": [
+        "Veritabanından bağımsız kayıt arayüzü ve Firestore seçilirse adaptör",
+        "Kalıcı yetki sürümü, atomik iş sahiplenme, lease/fencing ve outbox sözleşmesi",
+        "Aynı anahtarda değişmiş payload reddi",
+        "Marka/rol filtreleri ve sınırlı üretim brief alanları",
+        "Yedek/geri yükleme ve saklama/silme prosedürü"
+      ],
+      "missing_provisioning": [
+        "Veritabanı ürünü, id ve location kararı",
+        "Gerekli API/DB oluşturma",
+        "Dar runtime veri yetkisi",
+        "Gereken indeks ve yaşam döngüsü ayarları",
+        "Yedek ve ayrı geri yükleme test alanı"
+      ],
+      "important_design_rules": [
+        "Firestore transaction callback'i tekrar çalışabilir; Gmail/Basecamp gönderimi veya model çağrısı transaction içinde yapılmaz.",
+        "Atomik işlem yalnız iş niyeti/yetki/maliyet rezervasyonunu kaydeder; dış etki ayrı başlatılır ve sonucu kalıcı biçimde uzlaştırılır.",
+        "Veritabanı ile harici e-posta gönderimi tek atomik işlem değildir; sonucu bilinmeyen işlem yeniden gönderilmez.",
+        "roles/datastore.user veri yazma/silme yetkileri de içerir; gerekiyorsa gereken izinlerle özel rol ve veritabanı koşulu kullanılır. IAM veri erişimi tek başına marka veya satır düzeyinde yetki kapısı değildir."
+      ],
+      "acceptance": "İki işçiden yalnız biri aynı işlemi alır; yetki geri çekme/insan devri restart sonrasında sürer; yinelenen olay ve belirsiz dış etki yeni gönderim oluşturmaz; yanlış marka erişimi reddedilir.",
+      "source_ids": [
+        "S1",
+        "S5",
+        "S6"
+      ]
+    },
+    {
+      "component": "Secret Manager",
+      "plan_ids": [
+        "B07",
+        "D06",
+        "D10"
+      ],
+      "ready_inputs": [
+        "Yerelde Basecamp için doğrulanmış Keychain saklama yaklaşımı",
+        "Gmail helper'da düz metne fallback olmama kuralı"
+      ],
+      "missing_local_deliverables": [
+        "Cloud secret okuyucu adaptörü",
+        "Token yenileme ve gerekiyorsa rotasyon için tek yazarlı/yarış güvenli akış",
+        "Günlüklerde sır temizleme",
+        "Bulut OAuth istemci/dönüş akışı ve yeniden yetkilendirme kararı"
+      ],
+      "missing_provisioning": [
+        "Secret Manager API durumu",
+        "Yalnız gereken sır kaynakları ve sürümleri",
+        "Runtime kimliğine sadece gereken secret erişimi",
+        "Yenileme sır yazmayı gerektirirse ayrıca dar yazma izinli yol",
+        "İptal/rotasyon ve arıza testleri"
+      ],
+      "acceptance": "Runtime yalnız kendi sırlarını alır; ilgisiz sır erişimi reddedilir; yanlış/kayıp sırda yazma durur; gerçek yenileme ve yeniden başlatma testi geçer; sır çıktıya veya belgeye düşmez.",
+      "source_ids": [
+        "S3",
+        "S7"
+      ]
+    }
+  ],
+  "least_privilege_design": {
+    "scheduler_identity": "Ayrı hizmet hesabı; yalnız ilgili Cloud Run servisine roles/run.invoker. Gmail, Basecamp, DB veya secret erişimi verilmez.",
+    "runtime_identity": "Ayrı user-managed hizmet hesabı; yalnız gerekli DB/secret/varlık izinleri. Owner veya Editor genel rolü önerilmez.",
+    "deployer_identity": "Ahmet/yetkili teknik kişi ile runtime ayrı tutulur. Seçilen source/image deploy yolunun gerekli rolleri son yapılandırmaya göre verilir; dağıtım yetkileri runtime'a taşınmaz.",
+    "secret_scope": "roles/secretmanager.secretAccessor yalnız gereken secret kaynaklarında; bütün proje sırlarını okuma veya yönetme yetkisi varsayılan değil.",
+    "db_scope": "Mümkün olan DB kapsamı/koşulları ve gereken veri izinleri; marka ve rol ayrımı ayrıca güvenilir uygulama katmanında test edilir.",
+    "gmail_scope": [
+      "https://www.googleapis.com/auth/gmail.readonly",
+      "https://www.googleapis.com/auth/gmail.send"
+    ],
+    "gmail_note": "readonly ayarları görüntüleme yetkisini de içerebilir; delete/modify/settings düzenleme kapsamları istenmez. Cloud hizmet hesabı Hamle posta kutusuna kendiliğinden erişim sağlamaz; kullanıcı OAuth bağlantısı ayrı kalır.",
+    "basecamp_scope": "Sağlayıcı full grantini uygulamada açık proje/kişi/görünürlük/iş türü listeleri daraltır; bilinmeyen marka kapalıdır.",
+    "agent_roles": "Metin/grafik/animasyon için ham OAuth tokenları veya genel mutasyon araçları verilmez; gerekli brief verisiyle sınırlı görev ve çıktı arayüzleri kullanılır.",
+    "stop_rule": "IAM kaldırmanın gecikmesiz olduğu varsayılmaz; uygulama stop/yetki sürümü her dış etki öncesi kontrol edilir."
+  },
+  "non_secret_inputs": [
+    {
+      "id": "N01",
+      "input": "Proje",
+      "value": "gamechangers-hamle",
+      "state": "known"
+    },
+    {
+      "id": "N02",
+      "input": "Cloud Run / Scheduler / veritabanı konumu ve veri konumu kararı",
+      "value": null,
+      "state": "decision_pending"
+    },
+    {
+      "id": "N03",
+      "input": "İşletim için geçerli dönem, ortak toplam bütçe, izinli hizmetler ve faturalama sahibi",
+      "value": null,
+      "state": "Ahmet_input_pending"
+    },
+    {
+      "id": "N04",
+      "input": "İstenen model ve ayarın hedef API'de destek sonucu; gerekirse görünür alternatif kararı",
+      "value": "gpt-6-astra / ultra isteniyor; gerçek hedef API testi bekliyor",
+      "state": "unverified_no_silent_fallback"
+    },
+    {
+      "id": "N05",
+      "input": "Runtime/scheduler hesap adları, servis adı, DB adı, secret kaynak adları",
+      "value": null,
+      "state": "can_prepare_locally_no_secret_values"
+    },
+    {
+      "id": "N06",
+      "input": "Alarm alıcısı, kanal, teknik sahip ve devralma yedeği",
+      "value": null,
+      "state": "owner_assignment_pending"
+    },
+    {
+      "id": "N07",
+      "input": "Marka/hizmet bazında kişiler, alıcılar, Basecamp proje/listeleri ve görünürlük",
+      "value": "Tüm portföy kapsamda; gerçek eşlemeler henüz tamam değil",
+      "state": "per_brand_acceptance_pending"
+    },
+    {
+      "id": "N08",
+      "input": "İç test hedefleri",
+      "value": "Hamle ve Ahmet; Basecamp 5898865 / 49184053",
+      "state": "known_internal_only"
+    },
+    {
+      "id": "N09",
+      "input": "Saklama/silme, yedek, ihtiyaç duyulan dosya deposu ve tatil takvimi",
+      "value": null,
+      "state": "decision_pending"
+    },
+    {
+      "id": "N10",
+      "input": "Görünmeyen CC çıkarma/insan devralma için açık durdurma bildirim yolu",
+      "value": null,
+      "state": "required_before_deferred_customer_actions"
+    }
+  ],
+  "billing_and_model_gates": {
+    "old_budget": "8 Ekim 2026 için ortak toplam 50 USD; yeni gün veya sürekli işletim yetkisi değil.",
+    "current_paid_scope": "Bu görevde yeni ücretli kaynak, faturalama veya model çağrısı onayı verilmiş kabul edilmedi.",
+    "can_continue_now": [
+      "Kod/konfigürasyon taslağı",
+      "Ağsız adaptör sözleşmesi ve sentetik hata testi",
+      "Mevcut non-secret girdilerin birleştirilmesi",
+      "Yetkili mevcut Gmail bağlantı adımının ana yürütücü tarafından ilerletilmesi"
+    ],
+    "must_wait_for_applicable_authority": [
+      "Ücretli Cloud kaynak oluşturma/etkin ücretli kullanım",
+      "Yeni ücretli model/görsel çağrısı",
+      "Müşteri canlı kapsamını açma"
+    ],
+    "spend_control": "Gerçekleşmiş + bekleyen + ayrılmış maliyet için ortak kontrol; gecikmeli fatura/alarm sert üst sınır sayılmaz. Desteklenen Cloud spend cap seçeneklerinin kapsamı ayrıca doğrulanmalıdır.",
+    "source_ids": [
+      "S8"
+    ]
+  },
+  "e04_unseen_cc_limit": {
+    "preserved": true,
+    "rule": "Son ilgili gelen mesajın gerçek To/Cc alanında Hamle yoksa o mesajdan iş/yanıt/revizyon/üretim/plan veya Basecamp işlemi çıkmaz.",
+    "technical_limit": "Hamle'nin çıkarıldığı yeni mesaj Hamle kutusuna hiç ulaşmayabilir. Tek kutuyu okumak tüm zincirin son durumunu veya çıkarılmanın olmadığını ispatlamaz.",
+    "required_path": "Yetkili açık stop/devralma olayı ve ilgili işin kalıcı yetki sürümünü iptal eden mekanizma; başka görünürlük kaynağı gerekirse ayrıca açık yetki ve doğrulama.",
+    "until_resolved": "Görünmeyen değişime bağlı ertelenmiş müşteri aksiyonları dış etki üretmez; yalnız iç/gölge hazırlık sürer.",
+    "forbidden_shortcuts": [
+      "Otomatik tekrar CC ekleme",
+      "Genel yönlendirme veya BCC'yi yetki sayma",
+      "Ahmet kutusunu gizli canlı kaynak kullanma",
+      "Yerel son görünen mesajı bütün zincirin kesin sonu sayma",
+      "Zaman aşımını görünmeyen olay tespit garantisi olarak sunma"
+    ]
+  },
+  "three_urgent_parallel_tracks": [
+    {
+      "priority": 1,
+      "title": "Gerçek Gmail bağlantısını sonuçlandır ve B kanıtlarını tamamla",
+      "owner": "Ana yürütücü; sağlayıcı izin adımlarında Ahmet",
+      "plan_ids": [
+        "B04",
+        "B05",
+        "B06",
+        "B07",
+        "B09"
+      ],
+      "action": "Var olduğu görülen istemciyi yeniden oluşturmadan Hamle OAuth'u, profil/iki kapsam, güvenli saklama, bilinen iç zincir ve tek iç gönderim teslimini doğrula; refresh ayrı test olsun. Basecamp görev/dosya API eksiklerini özel projede ilerlet.",
+      "deliverable": "Sır içermeyen gerçek bağlantı/teslim/yenileme kanıtları; UI ile API kanıtı ayrı.",
+      "limit": "Bu inceleme auth veya API işlemi başlatmadı; kök yürütücünün mevcut bağlantı işiyle çakışmaz."
+    },
+    {
+      "priority": 2,
+      "title": "Buluta taşınabilir iş akışı iskeletini ve E04 adaptör sınırını hazırla",
+      "owner": "Teknik uygulama rolü",
+      "plan_ids": [
+        "D04",
+        "D05",
+        "D06",
+        "E03",
+        "E04",
+        "E09"
+      ],
+      "action": "Ağsız sağlayıcı adaptörleri, HTTP giriş sözleşmesi, kalıcı kayıt arayüzü, yetki sürümü/tek işlem sahipliği ve unknown sonuç davranışını hazırla; deployment manifest taslağı oluştur. Mevcut 35/30 kanıtın kapsamını genişletmeden yeni testleri ayrı raporla.",
+      "deliverable": "Dağıtım öncesi gözden geçirilebilir kod ve sır içermeyen konfigürasyon; yanlış kimlik/marka, tekrar olay ve stop testleri.",
+      "limit": "Hesap/API mutasyonu, araç kurulumu ve cloud kaynağı yok; Firestore/secret adaptörü yazılmış olması gerçek hizmete bağlanma sayılmaz."
+    },
+    {
+      "priority": 3,
+      "title": "Bütçe, işletim sahipliği ve marka alt kabul girdilerini kapat",
+      "owner": "Ahmet ve yetkili ekip sahipleri; teknik yürütücü kayıtları derler",
+      "plan_ids": [
+        "A04",
+        "A05",
+        "A06",
+        "B10",
+        "C05",
+        "C09",
+        "D02",
+        "D03",
+        "D07",
+        "D08"
+      ],
+      "action": "Bilinen proje/kimlikleri yeniden sormadan tek listede yalnız eksik bütçe dönemi/sınırı, servis konumu, alarm/stop sahibi, model desteği ve marka proje/alıcı/varlıklarını tamamla; IN13'te marka × hizmet için sekiz kapının kanıtını tut.",
+      "deliverable": "Deploy için gerekli non-secret girdiler ve hangi marka/hizmetin hangi eksikle beklediği; ücretli kuruluma geçiş için uygulanabilir karar kaydı.",
+      "limit": "Tüm markalar kapsamda kalır; eksik marka hazır diğerini durdurmaz. Eski 50 USD, tarihsel müşteri onayı veya 22 puan yeni yetki sayılmaz."
+    }
+  ],
+  "next_critical_path": [
+    "Gerçek Gmail yetki/kimlik/okuma/gönderim/yenileme",
+    "Güncel bütçe + non-secret altyapı kararları",
+    "Kalıcı DB/secret ve çalışma kimliğiyle iç hizmet dağıtımı",
+    "Gerçek başlık/yetki/geri çekme ve sağlayıcı adaptörlerinin uçtan uca kabulü",
+    "Planlı 21 tur/stop/alarm ve restart kanıtı",
+    "Marka × hizmet sekiz kapısına göre sınırlı müşteri açılışı"
+  ],
+  "official_sources": [
+    {
+      "id": "S1",
+      "url": "https://docs.cloud.google.com/run/docs/overview/what-is-cloud-run",
+      "verified_on": "2026-10-09",
+      "supports": "Yönetilen runtime; kaynak/imaj dağıtımı; geçici örnek diski ve kalıcı depolama ihtiyacı."
+    },
+    {
+      "id": "S2",
+      "url": "https://docs.cloud.google.com/run/docs/triggering/using-scheduler",
+      "verified_on": "2026-10-09",
+      "supports": "Kimlik doğrulama zorunlu Cloud Run; Scheduler hizmet hesabı, servis bazlı run.invoker, OIDC audience ve timezone."
+    },
+    {
+      "id": "S3",
+      "url": "https://docs.cloud.google.com/run/docs/configuring/services/service-identity",
+      "verified_on": "2026-10-09",
+      "supports": "Ayrı hizmet kimliği ve gereken en az izinler; dağıtıcı ile runtime ayrımı."
+    },
+    {
+      "id": "S4",
+      "url": "https://docs.cloud.google.com/scheduler/docs/overview",
+      "verified_on": "2026-10-09",
+      "supports": "En az bir kez teslim; nadiren yinelenen çağrı ve tekrar politikasına uygun idempotent hedef."
+    },
+    {
+      "id": "S5",
+      "url": "https://docs.cloud.google.com/firestore/native/docs/security/iam",
+      "verified_on": "2026-10-09",
+      "supports": "Firestore server IAM, datastore.user veri izinleri, özel rol ve DB koşulları; IAM değişiklikleri hemen etkili olmayabilir."
+    },
+    {
+      "id": "S6",
+      "url": "https://docs.cloud.google.com/firestore/native/docs/manage-data/transactions",
+      "verified_on": "2026-10-09",
+      "supports": "Atomik transaction ve çatışmada callback'in yeniden çalışması; dış etkiyi callback'e koymama tasarımının dayanağı."
+    },
+    {
+      "id": "S7",
+      "url": "https://docs.cloud.google.com/run/docs/configuring/services/secrets",
+      "verified_on": "2026-10-09",
+      "supports": "Secret Manager, ilgili runtime kimliğine secretAccessor ve kontrollü secret sürümü erişimi."
+    },
+    {
+      "id": "S8",
+      "url": "https://docs.cloud.google.com/billing/docs/how-to/budgets",
+      "verified_on": "2026-10-09",
+      "supports": "Alerts-only bütçe sert harcama tavanı değildir; desteklenen servislerde spend-cap seçeneği ayrı incelenir."
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "verified_at": "2026-10-09T23:59:31.286526+03:00",
+  "status": "live_own_sent_message_block_test_passed",
+  "email": "hamle@gamechangers.com.tr",
+  "thread_id": "1a12270588d30c79",
+  "message_count": 1,
+  "body_disclosed": false,
+  "external_actions_enabled": false,
+  "own_outbound_rejected": true,
+  "provider_full_thread_read": true,
+  "E03_complete": false,
+  "E04_complete": false,
+  "limits": [
+    "Only own-sent negative case tested; inbound and real attachment cases remain open.",
+    "Unseen CC removal is not detectable by this mailbox."
+  ]
+}

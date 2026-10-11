@@ -1,0 +1,800 @@
+{
+  "recorded_at": "2026-10-10T02:02:56.169972+03:00",
+  "phase": "iam",
+  "user_authorized": true,
+  "secret_values_handled": false,
+  "results": [
+    {
+      "argv": [
+        "projects",
+        "get-iam-policy",
+        "gamechangers-hamle"
+      ],
+      "result": {
+        "bindings": [
+          {
+            "members": [
+              "serviceAccount:service-286533609595@gcp-sa-artifactregistry.iam.gserviceaccount.com"
+            ],
+            "role": "roles/artifactregistry.serviceAgent"
+          },
+          {
+            "members": [
+              "serviceAccount:286533609595@cloudbuild.gserviceaccount.com"
+            ],
+            "role": "roles/cloudbuild.builds.builder"
+          },
+          {
+            "members": [
+              "serviceAccount:service-286533609595@gcp-sa-cloudbuild.iam.gserviceaccount.com"
+            ],
+            "role": "roles/cloudbuild.serviceAgent"
+          },
+          {
+            "members": [
+              "serviceAccount:service-286533609595@gcp-sa-cloudscheduler.iam.gserviceaccount.com"
+            ],
+            "role": "roles/cloudscheduler.serviceAgent"
+          },
+          {
+            "members": [
+              "serviceAccount:service-286533609595@containerregistry.iam.gserviceaccount.com"
+            ],
+            "role": "roles/containerregistry.ServiceAgent"
+          },
+          {
+            "condition": {
+              "expression": "resource.name==\"projects/gamechangers-hamle/databases/hamle-synthetic\"",
+              "title": "hamle-synthetic-only"
+            },
+            "members": [
+              "serviceAccount:hamle-probe-runtime@gamechangers-hamle.iam.gserviceaccount.com"
+            ],
+            "role": "roles/datastore.user"
+          },
+          {
+            "members": [
+              "serviceAccount:service-286533609595@firebase-rules.iam.gserviceaccount.com"
+            ],
+            "role": "roles/firebaserules.system"
+          },
+          {
+            "members": [
+              "serviceAccount:service-286533609595@gcp-sa-firestore.iam.gserviceaccount.com"
+            ],
+            "role": "roles/firestore.serviceAgent"
+          },
+          {
+            "members": [
+              "serviceAccount:hamle-probe-build@gamechangers-hamle.iam.gserviceaccount.com"
+            ],
+            "role": "roles/logging.logWriter"
+          },
+          {
+            "members": [
+              "user:ahmet@gamechangers.com.tr"
+            ],
+            "role": "roles/owner"
+          },
+          {
+            "members": [
+              "serviceAccount:service-286533609595@gcp-sa-pubsub.iam.gserviceaccount.com"
+            ],
+            "role": "roles/pubsub.serviceAgent"
+          },
+          {
+            "members": [
+              "serviceAccount:service-286533609595@serverless-robot-prod.iam.gserviceaccount.com"
+            ],
+            "role": "roles/run.serviceAgent"
+          }
+        ],
+        "etag": "BwZdcFTkP3c=",
+        "version": 3
+      }
+    },
+    {
+      "argv": [
+        "projects",
+        "add-iam-policy-binding",
+        "gamechangers-hamle",
+        "--member=serviceAccount:hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com",
+        "--role=roles/datastore.user",
+        "--condition=expression=resource.name==\"projects/gamechangers-hamle/databases/hamle-operations\",title=hamle_operations_only"
+      ],
+      "result": {
+        "bindings": [
+          {
+            "members": [
+              "serviceAccount:service-286533609595@gcp-sa-artifactregistry.iam.gserviceaccount.com"
+            ],
+            "role": "roles/artifactregistry.serviceAgent"
+          },
+          {
+            "members": [
+              "serviceAccount:286533609595@cloudbuild.gserviceaccount.com"
+            ],
+            "role": "roles/cloudbuild.builds.builder"
+          },
+          {
+            "members": [
+              "serviceAccount:service-286533609595@gcp-sa-cloudbuild.iam.gserviceaccount.com"
+            ],
+            "role": "roles/cloudbuild.serviceAgent"
+          },
+          {
+            "members": [
+              "serviceAccount:service-286533609595@gcp-sa-cloudscheduler.iam.gserviceaccount.com"
+            ],
+            "role": "roles/cloudscheduler.serviceAgent"
+          },
+          {
+            "members": [
+              "serviceAccount:service-286533609595@containerregistry.iam.gserviceaccount.com"
+            ],
+            "role": "roles/containerregistry.ServiceAgent"
+          },
+          {
+            "condition": {
+              "expression": "resource.name==\"projects/gamechangers-hamle/databases/hamle-synthetic\"",
+              "title": "hamle-synthetic-only"
+            },
+            "members": [
+              "serviceAccount:hamle-probe-runtime@gamechangers-hamle.iam.gserviceaccount.com"
+            ],
+            "role": "roles/datastore.user"
+          },
+          {
+            "condition": {
+              "expression": "resource.name==\"projects/gamechangers-hamle/databases/hamle-operations\"",
+              "title": "hamle_operations_only"
+            },
+            "members": [
+              "serviceAccount:hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com"
+            ],
+            "role": "roles/datastore.user"
+          },
+          {
+            "members": [
+              "serviceAccount:service-286533609595@firebase-rules.iam.gserviceaccount.com"
+            ],
+            "role": "roles/firebaserules.system"
+          },
+          {
+            "members": [
+              "serviceAccount:service-286533609595@gcp-sa-firestore.iam.gserviceaccount.com"
+            ],
+            "role": "roles/firestore.serviceAgent"
+          },
+          {
+            "members": [
+              "serviceAccount:hamle-probe-build@gamechangers-hamle.iam.gserviceaccount.com"
+            ],
+            "role": "roles/logging.logWriter"
+          },
+          {
+            "members": [
+              "user:ahmet@gamechangers.com.tr"
+            ],
+            "role": "roles/owner"
+          },
+          {
+            "members": [
+              "serviceAccount:service-286533609595@gcp-sa-pubsub.iam.gserviceaccount.com"
+            ],
+            "role": "roles/pubsub.serviceAgent"
+          },
+          {
+            "members": [
+              "serviceAccount:service-286533609595@serverless-robot-prod.iam.gserviceaccount.com"
+            ],
+            "role": "roles/run.serviceAgent"
+          }
+        ],
+        "etag": "BwZdcFmMs2k=",
+        "version": 3
+      }
+    },
+    {
+      "argv": [
+        "projects",
+        "add-iam-policy-binding",
+        "gamechangers-hamle",
+        "--member=serviceAccount:hamle-control@gamechangers-hamle.iam.gserviceaccount.com",
+        "--role=roles/datastore.user",
+        "--condition=expression=resource.name==\"projects/gamechangers-hamle/databases/hamle-operations\",title=hamle_operations_only"
+      ],
+      "result": {
+        "bindings": [
+          {
+            "members": [
+              "serviceAccount:service-286533609595@gcp-sa-artifactregistry.iam.gserviceaccount.com"
+            ],
+            "role": "roles/artifactregistry.serviceAgent"
+          },
+          {
+            "members": [
+              "serviceAccount:286533609595@cloudbuild.gserviceaccount.com"
+            ],
+            "role": "roles/cloudbuild.builds.builder"
+          },
+          {
+            "members": [
+              "serviceAccount:service-286533609595@gcp-sa-cloudbuild.iam.gserviceaccount.com"
+            ],
+            "role": "roles/cloudbuild.serviceAgent"
+          },
+          {
+            "members": [
+              "serviceAccount:service-286533609595@gcp-sa-cloudscheduler.iam.gserviceaccount.com"
+            ],
+            "role": "roles/cloudscheduler.serviceAgent"
+          },
+          {
+            "members": [
+              "serviceAccount:service-286533609595@containerregistry.iam.gserviceaccount.com"
+            ],
+            "role": "roles/containerregistry.ServiceAgent"
+          },
+          {
+            "condition": {
+              "expression": "resource.name==\"projects/gamechangers-hamle/databases/hamle-synthetic\"",
+              "title": "hamle-synthetic-only"
+            },
+            "members": [
+              "serviceAccount:hamle-probe-runtime@gamechangers-hamle.iam.gserviceaccount.com"
+            ],
+            "role": "roles/datastore.user"
+          },
+          {
+            "condition": {
+              "expression": "resource.name==\"projects/gamechangers-hamle/databases/hamle-operations\"",
+              "title": "hamle_operations_only"
+            },
+            "members": [
+              "serviceAccount:hamle-control@gamechangers-hamle.iam.gserviceaccount.com",
+              "serviceAccount:hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com"
+            ],
+            "role": "roles/datastore.user"
+          },
+          {
+            "members": [
+              "serviceAccount:service-286533609595@firebase-rules.iam.gserviceaccount.com"
+            ],
+            "role": "roles/firebaserules.system"
+          },
+          {
+            "members": [
+              "serviceAccount:service-286533609595@gcp-sa-firestore.iam.gserviceaccount.com"
+            ],
+            "role": "roles/firestore.serviceAgent"
+          },
+          {
+            "members": [
+              "serviceAccount:hamle-probe-build@gamechangers-hamle.iam.gserviceaccount.com"
+            ],
+            "role": "roles/logging.logWriter"
+          },
+          {
+            "members": [
+              "user:ahmet@gamechangers.com.tr"
+            ],
+            "role": "roles/owner"
+          },
+          {
+            "members": [
+              "serviceAccount:service-286533609595@gcp-sa-pubsub.iam.gserviceaccount.com"
+            ],
+            "role": "roles/pubsub.serviceAgent"
+          },
+          {
+            "members": [
+              "serviceAccount:service-286533609595@serverless-robot-prod.iam.gserviceaccount.com"
+            ],
+            "role": "roles/run.serviceAgent"
+          }
+        ],
+        "etag": "BwZdcFmyw34=",
+        "version": 3
+      }
+    },
+    {
+      "argv": [
+        "secrets",
+        "add-iam-policy-binding",
+        "hamle-gmail-oauth",
+        "--member=serviceAccount:hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com",
+        "--role=roles/secretmanager.secretAccessor"
+      ],
+      "result": {
+        "bindings": [
+          {
+            "members": [
+              "serviceAccount:hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com"
+            ],
+            "role": "roles/secretmanager.secretAccessor"
+          }
+        ],
+        "etag": "BwZdcFnJlgg=",
+        "version": 1
+      }
+    },
+    {
+      "argv": [
+        "secrets",
+        "add-iam-policy-binding",
+        "hamle-basecamp-credential",
+        "--member=serviceAccount:hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com",
+        "--role=roles/secretmanager.secretAccessor"
+      ],
+      "result": {
+        "bindings": [
+          {
+            "members": [
+              "serviceAccount:hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com"
+            ],
+            "role": "roles/secretmanager.secretAccessor"
+          }
+        ],
+        "etag": "BwZdcFnhWFg=",
+        "version": 1
+      }
+    },
+    {
+      "argv": [
+        "secrets",
+        "add-iam-policy-binding",
+        "hamle-openai-api-key",
+        "--member=serviceAccount:hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com",
+        "--role=roles/secretmanager.secretAccessor"
+      ],
+      "result": {
+        "bindings": [
+          {
+            "members": [
+              "serviceAccount:hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com"
+            ],
+            "role": "roles/secretmanager.secretAccessor"
+          }
+        ],
+        "etag": "BwZdcFn4XjY=",
+        "version": 1
+      }
+    },
+    {
+      "argv": [
+        "secrets",
+        "add-iam-policy-binding",
+        "hamle-gmail-oauth",
+        "--member=serviceAccount:hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com",
+        "--role=roles/secretmanager.secretVersionAdder"
+      ],
+      "result": {
+        "bindings": [
+          {
+            "members": [
+              "serviceAccount:hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com"
+            ],
+            "role": "roles/secretmanager.secretAccessor"
+          },
+          {
+            "members": [
+              "serviceAccount:hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com"
+            ],
+            "role": "roles/secretmanager.secretVersionAdder"
+          }
+        ],
+        "etag": "BwZdcFoP1Gc=",
+        "version": 1
+      }
+    },
+    {
+      "argv": [
+        "projects",
+        "add-iam-policy-binding",
+        "gamechangers-hamle",
+        "--member=serviceAccount:hamle-build@gamechangers-hamle.iam.gserviceaccount.com",
+        "--role=roles/logging.logWriter",
+        "--condition=None"
+      ],
+      "result": {
+        "bindings": [
+          {
+            "members": [
+              "serviceAccount:service-286533609595@gcp-sa-artifactregistry.iam.gserviceaccount.com"
+            ],
+            "role": "roles/artifactregistry.serviceAgent"
+          },
+          {
+            "members": [
+              "serviceAccount:286533609595@cloudbuild.gserviceaccount.com"
+            ],
+            "role": "roles/cloudbuild.builds.builder"
+          },
+          {
+            "members": [
+              "serviceAccount:service-286533609595@gcp-sa-cloudbuild.iam.gserviceaccount.com"
+            ],
+            "role": "roles/cloudbuild.serviceAgent"
+          },
+          {
+            "members": [
+              "serviceAccount:service-286533609595@gcp-sa-cloudscheduler.iam.gserviceaccount.com"
+            ],
+            "role": "roles/cloudscheduler.serviceAgent"
+          },
+          {
+            "members": [
+              "serviceAccount:service-286533609595@containerregistry.iam.gserviceaccount.com"
+            ],
+            "role": "roles/containerregistry.ServiceAgent"
+          },
+          {
+            "condition": {
+              "expression": "resource.name==\"projects/gamechangers-hamle/databases/hamle-synthetic\"",
+              "title": "hamle-synthetic-only"
+            },
+            "members": [
+              "serviceAccount:hamle-probe-runtime@gamechangers-hamle.iam.gserviceaccount.com"
+            ],
+            "role": "roles/datastore.user"
+          },
+          {
+            "condition": {
+              "expression": "resource.name==\"projects/gamechangers-hamle/databases/hamle-operations\"",
+              "title": "hamle_operations_only"
+            },
+            "members": [
+              "serviceAccount:hamle-control@gamechangers-hamle.iam.gserviceaccount.com",
+              "serviceAccount:hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com"
+            ],
+            "role": "roles/datastore.user"
+          },
+          {
+            "members": [
+              "serviceAccount:service-286533609595@firebase-rules.iam.gserviceaccount.com"
+            ],
+            "role": "roles/firebaserules.system"
+          },
+          {
+            "members": [
+              "serviceAccount:service-286533609595@gcp-sa-firestore.iam.gserviceaccount.com"
+            ],
+            "role": "roles/firestore.serviceAgent"
+          },
+          {
+            "members": [
+              "serviceAccount:hamle-build@gamechangers-hamle.iam.gserviceaccount.com",
+              "serviceAccount:hamle-probe-build@gamechangers-hamle.iam.gserviceaccount.com"
+            ],
+            "role": "roles/logging.logWriter"
+          },
+          {
+            "members": [
+              "user:ahmet@gamechangers.com.tr"
+            ],
+            "role": "roles/owner"
+          },
+          {
+            "members": [
+              "serviceAccount:service-286533609595@gcp-sa-pubsub.iam.gserviceaccount.com"
+            ],
+            "role": "roles/pubsub.serviceAgent"
+          },
+          {
+            "members": [
+              "serviceAccount:service-286533609595@serverless-robot-prod.iam.gserviceaccount.com"
+            ],
+            "role": "roles/run.serviceAgent"
+          }
+        ],
+        "etag": "BwZdcFpA23E=",
+        "version": 3
+      }
+    },
+    {
+      "argv": [
+        "artifacts",
+        "repositories",
+        "add-iam-policy-binding",
+        "hamle-runtime",
+        "--location=europe-west1",
+        "--member=serviceAccount:hamle-build@gamechangers-hamle.iam.gserviceaccount.com",
+        "--role=roles/artifactregistry.writer"
+      ],
+      "result": {
+        "bindings": [
+          {
+            "members": [
+              "serviceAccount:hamle-build@gamechangers-hamle.iam.gserviceaccount.com"
+            ],
+            "role": "roles/artifactregistry.writer"
+          }
+        ],
+        "etag": "BwZdcFpTs30=",
+        "version": 1
+      }
+    },
+    {
+      "argv": [
+        "storage",
+        "buckets",
+        "add-iam-policy-binding",
+        "gs://gamechangers-hamle-runtime-source-286533609595",
+        "--member=serviceAccount:hamle-build@gamechangers-hamle.iam.gserviceaccount.com",
+        "--role=roles/storage.objectViewer"
+      ],
+      "result": {
+        "bindings": [
+          {
+            "members": [
+              "projectEditor:gamechangers-hamle",
+              "projectOwner:gamechangers-hamle"
+            ],
+            "role": "roles/storage.legacyBucketOwner"
+          },
+          {
+            "members": [
+              "projectViewer:gamechangers-hamle"
+            ],
+            "role": "roles/storage.legacyBucketReader"
+          },
+          {
+            "members": [
+              "projectEditor:gamechangers-hamle",
+              "projectOwner:gamechangers-hamle"
+            ],
+            "role": "roles/storage.legacyObjectOwner"
+          },
+          {
+            "members": [
+              "projectViewer:gamechangers-hamle"
+            ],
+            "role": "roles/storage.legacyObjectReader"
+          },
+          {
+            "members": [
+              "serviceAccount:hamle-build@gamechangers-hamle.iam.gserviceaccount.com"
+            ],
+            "role": "roles/storage.objectViewer"
+          }
+        ],
+        "etag": "CAI=",
+        "kind": "storage#policy",
+        "resourceId": "projects/_/buckets/gamechangers-hamle-runtime-source-286533609595",
+        "version": 1
+      }
+    },
+    {
+      "argv": [
+        "projects",
+        "get-iam-policy",
+        "gamechangers-hamle"
+      ],
+      "result": {
+        "bindings": [
+          {
+            "members": [
+              "serviceAccount:service-286533609595@gcp-sa-artifactregistry.iam.gserviceaccount.com"
+            ],
+            "role": "roles/artifactregistry.serviceAgent"
+          },
+          {
+            "members": [
+              "serviceAccount:286533609595@cloudbuild.gserviceaccount.com"
+            ],
+            "role": "roles/cloudbuild.builds.builder"
+          },
+          {
+            "members": [
+              "serviceAccount:service-286533609595@gcp-sa-cloudbuild.iam.gserviceaccount.com"
+            ],
+            "role": "roles/cloudbuild.serviceAgent"
+          },
+          {
+            "members": [
+              "serviceAccount:service-286533609595@gcp-sa-cloudscheduler.iam.gserviceaccount.com"
+            ],
+            "role": "roles/cloudscheduler.serviceAgent"
+          },
+          {
+            "members": [
+              "serviceAccount:service-286533609595@containerregistry.iam.gserviceaccount.com"
+            ],
+            "role": "roles/containerregistry.ServiceAgent"
+          },
+          {
+            "condition": {
+              "expression": "resource.name==\"projects/gamechangers-hamle/databases/hamle-synthetic\"",
+              "title": "hamle-synthetic-only"
+            },
+            "members": [
+              "serviceAccount:hamle-probe-runtime@gamechangers-hamle.iam.gserviceaccount.com"
+            ],
+            "role": "roles/datastore.user"
+          },
+          {
+            "condition": {
+              "expression": "resource.name==\"projects/gamechangers-hamle/databases/hamle-operations\"",
+              "title": "hamle_operations_only"
+            },
+            "members": [
+              "serviceAccount:hamle-control@gamechangers-hamle.iam.gserviceaccount.com",
+              "serviceAccount:hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com"
+            ],
+            "role": "roles/datastore.user"
+          },
+          {
+            "members": [
+              "serviceAccount:service-286533609595@firebase-rules.iam.gserviceaccount.com"
+            ],
+            "role": "roles/firebaserules.system"
+          },
+          {
+            "members": [
+              "serviceAccount:service-286533609595@gcp-sa-firestore.iam.gserviceaccount.com"
+            ],
+            "role": "roles/firestore.serviceAgent"
+          },
+          {
+            "members": [
+              "serviceAccount:hamle-build@gamechangers-hamle.iam.gserviceaccount.com",
+              "serviceAccount:hamle-probe-build@gamechangers-hamle.iam.gserviceaccount.com"
+            ],
+            "role": "roles/logging.logWriter"
+          },
+          {
+            "members": [
+              "user:ahmet@gamechangers.com.tr"
+            ],
+            "role": "roles/owner"
+          },
+          {
+            "members": [
+              "serviceAccount:service-286533609595@gcp-sa-pubsub.iam.gserviceaccount.com"
+            ],
+            "role": "roles/pubsub.serviceAgent"
+          },
+          {
+            "members": [
+              "serviceAccount:service-286533609595@serverless-robot-prod.iam.gserviceaccount.com"
+            ],
+            "role": "roles/run.serviceAgent"
+          }
+        ],
+        "etag": "BwZdcFpA23E=",
+        "version": 3
+      }
+    },
+    {
+      "argv": [
+        "secrets",
+        "get-iam-policy",
+        "hamle-gmail-oauth"
+      ],
+      "result": {
+        "bindings": [
+          {
+            "members": [
+              "serviceAccount:hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com"
+            ],
+            "role": "roles/secretmanager.secretAccessor"
+          },
+          {
+            "members": [
+              "serviceAccount:hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com"
+            ],
+            "role": "roles/secretmanager.secretVersionAdder"
+          }
+        ],
+        "etag": "BwZdcFoP1Gc=",
+        "version": 1
+      }
+    },
+    {
+      "argv": [
+        "secrets",
+        "get-iam-policy",
+        "hamle-basecamp-credential"
+      ],
+      "result": {
+        "bindings": [
+          {
+            "members": [
+              "serviceAccount:hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com"
+            ],
+            "role": "roles/secretmanager.secretAccessor"
+          }
+        ],
+        "etag": "BwZdcFnhWFg=",
+        "version": 1
+      }
+    },
+    {
+      "argv": [
+        "secrets",
+        "get-iam-policy",
+        "hamle-openai-api-key"
+      ],
+      "result": {
+        "bindings": [
+          {
+            "members": [
+              "serviceAccount:hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com"
+            ],
+            "role": "roles/secretmanager.secretAccessor"
+          }
+        ],
+        "etag": "BwZdcFn4XjY=",
+        "version": 1
+      }
+    },
+    {
+      "argv": [
+        "artifacts",
+        "repositories",
+        "get-iam-policy",
+        "hamle-runtime",
+        "--location=europe-west1"
+      ],
+      "result": {
+        "bindings": [
+          {
+            "members": [
+              "serviceAccount:hamle-build@gamechangers-hamle.iam.gserviceaccount.com"
+            ],
+            "role": "roles/artifactregistry.writer"
+          }
+        ],
+        "etag": "BwZdcFpTs30=",
+        "version": 1
+      }
+    },
+    {
+      "argv": [
+        "storage",
+        "buckets",
+        "get-iam-policy",
+        "gs://gamechangers-hamle-runtime-source-286533609595"
+      ],
+      "result": {
+        "bindings": [
+          {
+            "members": [
+              "projectEditor:gamechangers-hamle",
+              "projectOwner:gamechangers-hamle"
+            ],
+            "role": "roles/storage.legacyBucketOwner"
+          },
+          {
+            "members": [
+              "projectViewer:gamechangers-hamle"
+            ],
+            "role": "roles/storage.legacyBucketReader"
+          },
+          {
+            "members": [
+              "projectEditor:gamechangers-hamle",
+              "projectOwner:gamechangers-hamle"
+            ],
+            "role": "roles/storage.legacyObjectOwner"
+          },
+          {
+            "members": [
+              "projectViewer:gamechangers-hamle"
+            ],
+            "role": "roles/storage.legacyObjectReader"
+          },
+          {
+            "members": [
+              "serviceAccount:hamle-build@gamechangers-hamle.iam.gserviceaccount.com"
+            ],
+            "role": "roles/storage.objectViewer"
+          }
+        ],
+        "etag": "CAI="
+      }
+    }
+  ],
+  "status": "passed"
+}

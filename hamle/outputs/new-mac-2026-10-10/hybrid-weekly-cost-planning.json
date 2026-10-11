@@ -1,0 +1,122 @@
+{
+  "prepared_on": "2026-10-10",
+  "estimate_not_invoice": true,
+  "spending_authorization": false,
+  "live_model_changed": false,
+  "sol_access_or_quality_verified": false,
+  "quality_assurance": "Must compare against accepted agency examples before customer autonomy. No equal-quality claim.",
+  "prices": {
+    "gpt-6.1-sol": {
+      "input_per_million_usd": 2,
+      "output_per_million_usd": 10,
+      "source": "https://developers.openai.com/api/docs/models/gpt-6.1-sol"
+    },
+    "gpt-6-astra": {
+      "input_per_million_usd": 10,
+      "output_per_million_usd": 50,
+      "source": "https://developers.openai.com/api/docs/models/gpt-6-astra"
+    }
+  },
+  "formula": "calls * (input_tokens * input_price + total_output_tokens * output_price) / 1000000; add 25% uncertainty allowance and Cloud allowance",
+  "cache_discount_assumed": false,
+  "cache_write_surcharge": "Not separately measured; uncertainty allowance included.",
+  "scheduled_checks_weekdays": 205,
+  "model_calls_when_no_new_message": 0,
+  "counts": "250 combined assumes roughly 125 incoming and 125 outgoing, not an observed distribution. Follow-up incoming counted within incoming volume.",
+  "scenarios": [
+    {
+      "incoming_actionable_messages": 125,
+      "outgoing_responses_are_included_in_workload": true,
+      "examples": [
+        {
+          "name": "normal",
+          "expected_sol_calls": 250,
+          "expected_astra_calls": 12.5,
+          "sol_input_tokens_per_call": 4000,
+          "sol_output_tokens_per_call_including_reasoning": 2000,
+          "astra_input_tokens_per_call": 6000,
+          "astra_output_tokens_per_call_including_reasoning": 8000,
+          "sol_usd": 7.0,
+          "astra_usd": 5.75,
+          "uncertainty_allowance_usd": 3.1875,
+          "cloud_allowance_usd": 3,
+          "total_usd": 18.94
+        },
+        {
+          "name": "more_review",
+          "expected_sol_calls": 312.5,
+          "expected_astra_calls": 18.75,
+          "sol_input_tokens_per_call": 5000,
+          "sol_output_tokens_per_call_including_reasoning": 3000,
+          "astra_input_tokens_per_call": 6000,
+          "astra_output_tokens_per_call_including_reasoning": 9000,
+          "sol_usd": 12.5,
+          "astra_usd": 9.5625,
+          "uncertainty_allowance_usd": 5.5156,
+          "cloud_allowance_usd": 5,
+          "total_usd": 32.58
+        }
+      ]
+    },
+    {
+      "incoming_actionable_messages": 250,
+      "outgoing_responses_are_included_in_workload": true,
+      "examples": [
+        {
+          "name": "normal",
+          "expected_sol_calls": 500,
+          "expected_astra_calls": 25.0,
+          "sol_input_tokens_per_call": 4000,
+          "sol_output_tokens_per_call_including_reasoning": 2000,
+          "astra_input_tokens_per_call": 6000,
+          "astra_output_tokens_per_call_including_reasoning": 8000,
+          "sol_usd": 14.0,
+          "astra_usd": 11.5,
+          "uncertainty_allowance_usd": 6.375,
+          "cloud_allowance_usd": 3,
+          "total_usd": 34.88
+        },
+        {
+          "name": "more_review",
+          "expected_sol_calls": 625.0,
+          "expected_astra_calls": 37.5,
+          "sol_input_tokens_per_call": 5000,
+          "sol_output_tokens_per_call_including_reasoning": 3000,
+          "astra_input_tokens_per_call": 6000,
+          "astra_output_tokens_per_call_including_reasoning": 9000,
+          "sol_usd": 25.0,
+          "astra_usd": 19.125,
+          "uncertainty_allowance_usd": 11.0312,
+          "cloud_allowance_usd": 5,
+          "total_usd": 60.16
+        }
+      ]
+    }
+  ],
+  "included": [
+    "request reading and reply drafting",
+    "Basecamp task/comment coordination",
+    "selected follow-up/summary/standard delivery review passes",
+    "bounded Cloud runtime/database/secret/scheduler planning allowance"
+  ],
+  "excluded": [
+    "existing Workspace and Basecamp subscriptions",
+    "taxes and FX charges",
+    "copywriter campaign production",
+    "graphic or animation creation",
+    "large document or video analysis",
+    "one-time development and broad quality evaluation"
+  ],
+  "limitations": [
+    "No representative 250-mail workload sample",
+    "Only two successful prior Astra/max samples; no Sol live run",
+    "Astra escalation fraction and token volumes are assumptions",
+    "This range is not a hard cap; frequent difficult requests or large attachments can exceed it",
+    "Infrastructure allowance is not a measured provider bill"
+  ],
+  "sources": [
+    "https://cloud.google.com/run/pricing",
+    "https://cloud.google.com/firestore/pricing",
+    "https://cloud.google.com/scheduler/pricing"
+  ]
+}

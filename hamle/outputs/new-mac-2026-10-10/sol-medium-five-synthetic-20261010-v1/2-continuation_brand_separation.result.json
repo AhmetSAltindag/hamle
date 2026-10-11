@@ -1,0 +1,70 @@
+{
+  "case_id": "continuation_brand_separation",
+  "completed_at": "2026-10-10T11:56:53.385239+00:00",
+  "result": {
+    "status": "review_required",
+    "action_eligible": false,
+    "model": "gpt-6.1-sol",
+    "reasoning_effort": "medium",
+    "provider": "openai",
+    "profile_id": "sol-medium-evaluation-v1",
+    "response_id": "resp_0a204814f1842727016aca27faf13c87d1b02f0098fbec47bd",
+    "analysis": {
+      "request_summary": "Multicosmetics ürün eğitimi duyurusu için mevcut M-004 işine eklenecek kısa takip notu ve yanıt taslağı.",
+      "intent": "routine_request",
+      "known_facts": [
+        "Talep mevcut M-004 işinin devamıdır; yeni görev başlatılması istenmiyor.",
+        "İş yalnız Multicosmetics içindir; önceki alıntıdaki ya da ifadesi yanlıştır.",
+        "Hedef kitle Multicosmetics satış ekibidir.",
+        "Kanal şirket içi e-postadır.",
+        "Kapsam yalnız metindir; görsel istenmiyor.",
+        "Talep edilen tarih henüz yoktur.",
+        "Vaka sentetiktir; alıntılar tamamlanmış işlem kanıtı değildir."
+      ],
+      "missing_questions": [
+        "Duyuruda yer alacak eğitim konusu, tarih-saat ve katılım bilgileri nedir?",
+        "Duyuru metnine ne zaman ihtiyaç var?"
+      ],
+      "brief": {
+        "deliverables": [
+          "Multicosmetics satış ekibine yönelik, şirket içi e-postada kullanılacak ürün eğitimi duyuru metni; görsel kapsam dışı.",
+          "Mevcut M-004 işine eklenecek kısa takip notu taslağı."
+        ],
+        "audience": "Multicosmetics satış ekibi",
+        "requested_deadline": null,
+        "confirmed_deadline": null
+      },
+      "reply_draft": {
+        "subject": "Re: SENTETİK: Mevcut duyuru işine devam",
+        "body": "Mevcut M-004 işi için kapsam netleşti: Duyuru yalnız Multicosmetics satış ekibine yönelik, şirket içi e-posta metni olarak hazırlanacak; görsel olmayacak. Önceki alıntıdaki ya da ifadesini bu işin kapsamına dahil etmiyoruz.\n\nMetni ilerletmek için eğitim konusu, tarih-saat ve katılım bilgilerini paylaşabilir misiniz? Duyuru metnine ne zaman ihtiyaç olduğunu da belirtirseniz ekip planını kontrol edip teslim tarihini netleştireceğim."
+      },
+      "task_draft": {
+        "title": "M-004 — Mevcut işe takip notu taslağı",
+        "description": "Netleşenler: İş yalnız Multicosmetics için; hedef kitle satış ekibi, kanal şirket içi e-posta, kapsam yalnız metin. Görsel istenmiyor; önceki ya da ifadesi kapsam dışı. Eksikler: Eğitim konusu, tarih-saat, katılım bilgileri ve metin için talep edilen tarih. Sonraki adım: Bu bilgileri tamamlayarak duyuru metni taslağını mevcut iş kapsamında hazırlamak; teslim tarihini ekip planına göre netleştirmek.",
+        "assignee": null,
+        "due_at": null
+      },
+      "escalation": {
+        "owner": "none",
+        "reason": null
+      }
+    },
+    "usage": {
+      "input_tokens": 1546,
+      "output_tokens": 665,
+      "total_tokens": 2211,
+      "input_tokens_details": {
+        "cached_tokens": 1304
+      },
+      "output_tokens_details": {
+        "reasoning_tokens": 0
+      }
+    },
+    "automatic_retry_allowed": false
+  },
+  "routing_check_passed": true,
+  "token_cost_estimate_usd": 0.0072644,
+  "is_invoice": false,
+  "human_semantic_review_required": true,
+  "business_writes": 0
+}

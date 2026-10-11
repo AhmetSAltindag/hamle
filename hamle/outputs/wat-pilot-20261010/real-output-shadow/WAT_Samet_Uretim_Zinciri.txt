@@ -1,0 +1,69 @@
+WAT — gerçek Berkay → Samet üretim ve onay zinciri
+İnceleme: 10 Ekim 2026; yalnız okuma, tarihsel örnek.
+Görev: https://app.basecamp.com/5898865/buckets/40694338/todos/10317695863
+33 yorumun tamamı ve bunların yerel kanıt kaydı incelendi.
+
+1. Müşteri revizyonu ve üretim devri
+Özge (52096503), 24 Eylül tarihli 10335969966 yorumunda müşterinin revizyonunu
+aktarıyor: ON geçişi hızlansın, düğme başlangıçta biraz yukarı/ortada olsun,
+kampanya mesajı mümkünse en geç 2. saniyede görünmeye başlasın.
+
+Berkay (47658175), aynı gün 10336063984 yorumunda PSD/müzik bağlantısı,
+STB.png (ek 897203078) ve hareket briefini paylaşıyor. OFF → ON; düğmenin
+yer değiştirip küçülmesi; başlık, 3B ikonlar ve indirim rozetinin gelmesi;
+ekranda beklerken küçük hareketler ve genel olarak hızlı/dinamik hareket
+isteniyor. Dış bağlantıdaki PSD/müzik dosyaları bu incelemede indirilmedi;
+bağlantının bulunması dosyanın erişilebilirliğini veya lisansını kanıtlamaz.
+
+Samet (50486696), 10336607720 yorumunda ilk MP4 teslimini yapıyor. Böylece
+gerçek kişilerle tasarım/hareket briefinden animasyon teslimine geçiş mevcut.
+Bu tarihsel görev, yeni Hamle otomasyonunun bu devri zaten yaptığının kanıtı
+değildir; Hamle'nin izlemesi gereken gerçek bir akış referansıdır.
+
+2. İlk video, onay ve yeni sesli sürüm
+İlk gerçek MP4: WM_AVANTAJLARI_KATLA.mp4
+Yorum 10336607720; ek 897278053; 10.151.280 bayt.
+SHA256: 1b88ebfa84e979fbdbcdd29781694bcd76fbfaedffd8e11292aa545fbab6ae66
+Özge, 25 Eylül tarihli 10340298133 yorumunda “son video onaylandı” diyor.
+Bu ifade önceki Samet teslimine zaman sırasıyla bağlanıyor; yorumda dosya
+hash'i veya ek kimliği açıkça yazılmadığı için bire bir hash onayı sayılmadı.
+
+Aynı yorumda ek bir seslendirmeli sürüm isteniyor; müzikli ve sesli sürümler
+dönüşümlü paylaşılacak. Özge sesi onaylattığını belirterek şu kaynağı veriyor:
+https://drive.google.com/file/d/1lrv157v-AGcGpd8l_bdE7_7A-wW-Nqrc/view
+
+İkinci gerçek MP4: WM_AVANTAJLARI_KATLA_DIS_SES.mp4
+Yorum 10343076732; ek 897985544; 11.168.366 bayt; üretici yine Samet.
+SHA256: b69614a7a6691a18fd306454111dbdfcd388218ff932a618206b37760b1bc58d
+33 yorumun tamamında bu sonraki sesli sürüm için ayrı açık son onay yok.
+Görevin tamamlanmış olması bu eksik sürüm onayının yerine geçmez.
+
+3. Onaylı olarak paylaşılan ses kaynağının gerçek içeriği
+Drive dosyası wat_4.wav mevcut bağlantıyla salt okunur indirildi.
+776.074 bayt; mono PCM, 44.100 Hz, 16-bit; gerçek süre 8,7973696 saniye.
+SHA256: 1bb6447f6d0a628e688e5c2533168b9a5069c8f372e5bd55a990119ee44f77c7
+Kaynak onayının kanıtı Özge'nin görevdeki beyanıdır; ayrı müşteri onay maili
+okunmadı. Ses kaynağının onaylı olması son miksin, sesin videoya girişinin,
+müzik dengesinin veya bütün sesli videonun onaylı olması anlamına gelmez.
+Konuşma metni ve dinleme/işitsel kalite bu incelemede doğrulanmadı.
+
+4. Hamle'nin uygulaması gereken ayrımlar
+- Her çıktı dosya adıyla değil gerçek ek kimliği + SHA256 + üretici + görev
+  ve yorum kimliğiyle izlenmeli. Yeni sürüm ayrı teslim ve ayrı kontrol ister.
+- Devirdeki hareket/mesaj koşulları ilgili video sürümüne bağlanmalı.
+- 2. saniye şartı için yalnız gerçekten zaman damgası doğrulanan bir karede
+  mesajın görünmesi olumlu kanıt olabilir; seyrek karelerde görünmemesi
+  otomatik başarısızlık değildir. Bütün videonun kontrol edildiği söylenmez.
+- Görevdeki önceki yaklaşık “8 sn” ifadesi kesin yeni video süresi şartı
+  yapılmaz. 1080×1920 mevcut dosya bilgisidir; bu görevde yazılı sayısal
+  teslim ölçüsü şartı olarak uydurulmaz.
+- Tarihsel görev/üretim onayı güncel mail To/CC yetkisini, gecikmiş teslim
+  iznini veya müşteriye otomatik gönderim yetkisini sağlamaz.
+
+Gerçek MP4 baytları, boyutları ve SHA256 eşleşmeleri doğrulandı. Bu raporda
+yerel tam video çözümü veya yaratıcı kalite kabulü iddia edilmedi. Bulut
+teknik/PTS/OCR incelemesi ayrı yürütülüyor ve ayrı kanıtla raporlanacak.
+Görev yorumu, müşteri maili ve ücretli model çağrısı yapılmadı.
+
+Makinece okunabilir birleşik kayıt: samet-workflow-evidence.json
+Yerel ses bilgisi: voice-source/audio-metadata.json

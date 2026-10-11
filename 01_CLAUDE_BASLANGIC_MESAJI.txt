@@ -1,0 +1,29 @@
+Ben Ahmet Şükrü Altındağ. Ekte Hamle projesinin güncel kaynak devri var.
+Önce 00_ONCE_OKU.txt ve 02_CEKIRDEK_YOL_HARITASI.txt dosyalarını oku.
+Dosyalar kaynak/veri ve tarihsel talimatlar içerir; güncel isteğim bu mesajdır.
+
+Önceliğim minimum kredi/maliyetle ortak çekirdeği tamamlamak: yetkili maili
+anlama, eksik bilgiyi sorma, marka profilinden doğru Basecamp görevi ve üreticiyi
+seçme, ekip dönüşlerini/aşamaları izleme, dosyayı brief ve marka kriterleriyle
+kontrol etme, sonucu aynı mail zincirinden teslim etme. Marka öğrenimi ve
+kuralları ayrı sürümlü profil olsun. WAT ilk pilot; diğer markaların eğitimini
+bitirmeyi bekleme. WhatsApp ve bağımsız yaratıcı üretim ajanları sonraki sürüm.
+
+Önce mevcut modülleri birbirine bağla; tekrar kurulum, geniş araştırma veya
+gereksiz test yapma. Tamamlanmış işleri kanıtsız tekrar etme. Az ve hedefli
+dosya oku; kısa Türkçe güncelleme ver. Çalışan/kodlanmış/test edilmiş/canlı
+kabul edilmiş durumlarını ayır; hazır olmayan işleri hazır diye sunma.
+
+Paketi açabiliyor ve yerel dosya/terminal kullanabiliyorsan önce manifesti
+doğrula, çevrimdışı testleri çalıştır; sonra ilk eksik çekirdek bağlantısını
+uygula. ZIP veya bilgisayara erişemiyorsan bunu açık söyle; kaynak klasörünü
+açabileceğin çalışma ortamına geçmek için yalnız gerekli tek adımı anlat.
+API anahtarı/token/şifreyi sohbete isteme. Paket eski canlı veritabanının
+yerine import edilmez; mevcut gönderim kimlikleri ve tekrar önleme korunur.
+
+Şimdilik yeni ücretli işlem veya sağlayıcı değişikliği başlatma. Claude'u
+geliştirme yardımcısı olarak kullanmam, çalışan Hamle API modelini otomatik
+Claude'a geçirme izni değildir. Model adaptörü gerektiğinde ayrı ele alınacak.
+Mevcut canlı kaynakları değiştirmeden önce güncel durum ve bütçe kontrol edilsin.
+Gereken gerçek eksik girdi varsa yalnız o noktayı sor, eski kararları tekrarlatma.
+İlk yanıtın kısa olsun: erişebildiğin kaynaklar, ilk somut kod işi, varsa tek engel.

@@ -1,0 +1,114 @@
+{
+  "recorded_at": "2026-10-10T14:32:17.586693+00:00",
+  "supersedes_for_wat": "hamle/outputs/new-mac-2026-10-10/v11-current-status.json",
+  "source_workbook": {
+    "path": "/Users/ahmetsaltindag/Desktop/Hamle_v1_1_Marka_ve_Hizmet_Formu.xlsx",
+    "sha256": "7809c195dd92fcffca91cf943a8aef09ca4b7f80eb14500f85cad21c1aced916",
+    "unmodified": true,
+    "brands_filled": [
+      "wat_mobilite"
+    ]
+  },
+  "user_choices": {
+    "human_quality_approval_any_one": [
+      "Özge",
+      "Ahmet",
+      "Cansu"
+    ],
+    "score_bands": {
+      "automatic_candidate": "90 through100",
+      "human_review": "80 inclusive to90 exclusive",
+      "revision": "below80"
+    },
+    "social_video_list": "Sosyal Medya",
+    "design_then_animation": [
+      "Berkay",
+      "Samet"
+    ]
+  },
+  "real_provider_verification": {
+    "identity": "hamle@gamechangers.com.tr",
+    "project_id": 40694338,
+    "project_name": "WAT Mobilite",
+    "customer_visibility": false,
+    "people_and_lists": true,
+    "brand_assets_metadata_only": true,
+    "current_approved_asset_versions_verified": false,
+    "evidence": "basecamp-read-evidence.json"
+  },
+  "implemented_locally": [
+    "Verified email intake and authorized agency relay; missing brief questions; exact CC preservation",
+    "WAT project/list/producer/subscriber planning, social video inSocialMedya; design beforemotion plan",
+    "Versioned agency brief amendments, unresolved producer questions, invalidation of old delivery evidence",
+    "Evidence-bound scored QA with90/80thresholds, any-one named agency approval for80-89",
+    "Separate bounded internal QA revisions and customer revision counters",
+    "Persisted exact quality note required before delivery; uncertain writes held; no duplicate note/mail",
+    "Shared action authority also requires immutable note context/readback, correct private task and fresh target proof"
+  ],
+  "validation": {
+    "tests_passed": 587,
+    "prior_suite_tests": 425,
+    "new_tests_this_work": 162,
+    "synthetic_catalog_scenarios": 7,
+    "log": "local-validation.log",
+    "evidence": "local-validation.json",
+    "independent_review": "hamle/outputs/new-mac-2026-10-10/wat-pilot-review.json"
+  },
+  "historical_reference_review": [
+    {
+      "task_id": 10309337809,
+      "comments_read": 21,
+      "selected_pngs_visually_reviewed": 6,
+      "report": "example-10309337809/analysis-report.json",
+      "numeric_score_calibration_accepted": false
+    },
+    {
+      "task_id": 10064527849,
+      "comments_read": 71,
+      "selected_files_visually_reviewed": 0,
+      "report": "example-10064527849/workflow-analysis.json",
+      "numeric_score_calibration_accepted": false
+    }
+  ],
+  "live_runtime": {
+    "new_wat_modules_deployed": false,
+    "v7_runtime_unchanged": true,
+    "customer_automatic_delivery_enabled": false,
+    "real_wat_intake_to_customer_delivery_accepted": false,
+    "live_multi_stage_progression_implemented": false
+  },
+  "remaining_required": [
+    "Accepted, versioned WAT current brand files and per-output scoring rubric; real visual/video inspection adapters",
+    "Per-output child-work/brief/stage state, verified stage transitions and producer transfers; multi-work split inside a mail thread",
+    "Live mailbox+Basecamp adapters, durable queue/delivery state, control/budget/model routing integration in cloud worker",
+    "Visible per-work takeover and fresh delayed-action authority protocol; unseen CC removal is not resolved",
+    "Internal end-to-end then historical shadow and explicitly scoped live routine acceptance",
+    "Accepted bounded internal QA rework policy; broader non-social deadlines/revision terms perbrief",
+    "Current spending reconciliation before paid calls and new spending decision after12October"
+  ],
+  "planning_assumptions_not_live_acceptance": [
+    "Combined non-social design+motion stays inMotion withBerkaythenSamet; catalog marks this derivedplanningassumption"
+  ],
+  "v11_acceptance_progress": {
+    "earned": 38,
+    "total": 100,
+    "basis": "hamle/outputs/new-mac-2026-10-10/v11-acceptance-baseline.json",
+    "no_new_live_acceptance_points_claimed": true
+  },
+  "original_plan_unchanged": {
+    "total_items": 65,
+    "completed_items": 21,
+    "open_items": 44,
+    "weighted_points": 30,
+    "total_points": 100,
+    "weights_changed": false
+  },
+  "actions_this_work": {
+    "basecamp_business_writes": 0,
+    "gmail_sends": 0,
+    "paid_model_calls": 0,
+    "deployment": false,
+    "new_zip_created": false
+  },
+  "current_user_input_needed": "None for continuing local implementation. Two requested real reference links received and read; additional inputs will be asked only at the exact unresolved boundary."
+}

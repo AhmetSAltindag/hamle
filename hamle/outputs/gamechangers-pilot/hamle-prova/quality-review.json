@@ -1,0 +1,37 @@
+{
+  "date": "2026-10-07",
+  "status": "authored_examples_reviewed_not_live_agent_test",
+  "examples": 20,
+  "route_counts": {
+    "Ahmet": 3,
+    "Cansu + Ahmet": 5,
+    "Özge + Hamle": 5,
+    "Hamle": 7
+  },
+  "external_messages_sent": 0,
+  "live_tests_passed": null,
+  "reviewed_dimensions": [
+    "request fidelity",
+    "routing",
+    "useful concrete reply",
+    "no unearned completion claim",
+    "no invented price/feature/date",
+    "existing client authority respected",
+    "internal notes kept separate"
+  ],
+  "corrections_applied": [
+    "WAT02 next month",
+    "WAT03 named final brief owner",
+    "WAT06 concrete creative suggestion",
+    "WAT09 actual draft",
+    "WAT10 future input tense",
+    "Rabam01 no assumed separate fee",
+    "Rabam02 rejected wording corrected",
+    "Rabam04 strategic comparison",
+    "Rabam06 continued client preference",
+    "Rabam07 prior correction honored",
+    "Rabam08 delegated motion execution preserved",
+    "Rabam09 new coupon decision honored with activation check",
+    "Rabam10 conditional fee route"
+  ]
+}

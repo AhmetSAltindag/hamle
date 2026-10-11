@@ -1,0 +1,228 @@
+{
+  "recorded_at": "2026-10-10T13:55:52.718835+00:00",
+  "identity_expected": "hamle@gamechangers.com.tr",
+  "account_id": 5898865,
+  "project_id": 40694338,
+  "basecamp_content_writes": 0,
+  "paid_model_calls": 0,
+  "customer_live_enabled": false,
+  "checks": {
+    "identity": {
+      "verified": true,
+      "reason": null
+    },
+    "project": {
+      "verified": true,
+      "reason": null
+    },
+    "people": {
+      "verified": true,
+      "reason": null
+    },
+    "lists": {
+      "verified": true,
+      "reason": null
+    }
+  },
+  "project": {
+    "id": 40694338,
+    "name": "WAT Mobilite",
+    "status": "active",
+    "clients_enabled": false
+  },
+  "dock": [
+    {
+      "id": 8231360560,
+      "name": "message_board",
+      "title": "Genel Bilgiler",
+      "enabled": true,
+      "url": "https://3.basecampapi.com/5898865/buckets/40694338/message_boards/8231360560.json"
+    },
+    {
+      "id": 8231360562,
+      "name": "todoset",
+      "title": "İş Listesi",
+      "enabled": true,
+      "url": "https://3.basecampapi.com/5898865/buckets/40694338/todosets/8231360562.json"
+    },
+    {
+      "id": 8231360563,
+      "name": "vault",
+      "title": "Marka Dosyaları",
+      "enabled": true,
+      "url": "https://3.basecampapi.com/5898865/buckets/40694338/vaults/8231360563.json"
+    },
+    {
+      "id": 8231360566,
+      "name": "chat",
+      "title": "Sohbet",
+      "enabled": true,
+      "url": "https://3.basecampapi.com/5898865/buckets/40694338/chats/8231360566.json"
+    },
+    {
+      "id": 8231360568,
+      "name": "schedule",
+      "title": "Takvimler",
+      "enabled": true,
+      "url": "https://3.basecampapi.com/5898865/buckets/40694338/schedules/8231360568.json"
+    }
+  ],
+  "people": [
+    {
+      "id": 47470759,
+      "name": "Ahmet Şükrü Altındağ",
+      "email_address": "a••••@••••••••••••.•••.••",
+      "client": false,
+      "employee": true
+    },
+    {
+      "id": 49858132,
+      "name": "Aleyna Efe",
+      "email_address": "a•••••@••••••••••••.•••.••",
+      "client": false,
+      "employee": true
+    },
+    {
+      "id": 52168172,
+      "name": "Barış Sülün",
+      "email_address": "b••••@••••••••••••.•••.••",
+      "client": false,
+      "employee": true
+    },
+    {
+      "id": 47658175,
+      "name": "Berkay Kayaköylü",
+      "email_address": "b•••••@••••••••••••.•••.••",
+      "client": false,
+      "employee": true
+    },
+    {
+      "id": 48793256,
+      "name": "Cansu Akiş Kabil",
+      "email_address": "c••••@••••••••••••.•••.••",
+      "client": false,
+      "employee": true
+    },
+    {
+      "id": 53167312,
+      "name": "Esma Zeki",
+      "email_address": "e•••@••••••••••••.•••.••",
+      "client": false,
+      "employee": true
+    },
+    {
+      "id": 53358100,
+      "name": "Hamle AI",
+      "email_address": "hamle@gamechangers.com.tr",
+      "client": false,
+      "employee": true
+    },
+    {
+      "id": 51207148,
+      "name": "İpek Tunalı",
+      "email_address": "i•••@••••••••••••.•••.••",
+      "client": false,
+      "employee": true
+    },
+    {
+      "id": 50486696,
+      "name": "Samet Göksu",
+      "email_address": "s••••••••••••••@•••••.•••",
+      "client": false,
+      "employee": true
+    },
+    {
+      "id": 52096503,
+      "name": "Özge Yağmur",
+      "email_address": "o•••@••••••••••••.•••.••",
+      "client": false,
+      "employee": true
+    }
+  ],
+  "lists": [
+    {
+      "id": 8231779952,
+      "name": "Sosyal Medya ",
+      "title": "Sosyal Medya ",
+      "status": "active",
+      "type": "Todolist",
+      "app_url": "https://app.basecamp.com/5898865/buckets/40694338/todolists/8231779952",
+      "completed_ratio": "221/226",
+      "bucket": {
+        "id": 40694338,
+        "name": "WAT Mobilite",
+        "type": "Project"
+      },
+      "parent": {
+        "app_url": "https://app.basecamp.com/5898865/buckets/40694338/todosets/8231360562",
+        "id": 8231360562,
+        "title": "İş Listesi",
+        "type": "Todoset",
+        "url": "https://3.basecampapi.com/5898865/buckets/40694338/todosets/8231360562.json"
+      }
+    },
+    {
+      "id": 8234557425,
+      "name": "Projeler",
+      "title": "Projeler",
+      "status": "active",
+      "type": "Todolist",
+      "app_url": "https://app.basecamp.com/5898865/buckets/40694338/todolists/8234557425",
+      "completed_ratio": "346/351",
+      "bucket": {
+        "id": 40694338,
+        "name": "WAT Mobilite",
+        "type": "Project"
+      },
+      "parent": {
+        "app_url": "https://app.basecamp.com/5898865/buckets/40694338/todosets/8231360562",
+        "id": 8231360562,
+        "title": "İş Listesi",
+        "type": "Todoset",
+        "url": "https://3.basecampapi.com/5898865/buckets/40694338/todosets/8231360562.json"
+      }
+    },
+    {
+      "id": 9381497228,
+      "name": "Motion ",
+      "title": "Motion ",
+      "status": "active",
+      "type": "Todolist",
+      "app_url": "https://app.basecamp.com/5898865/buckets/40694338/todolists/9381497228",
+      "completed_ratio": "34/34",
+      "bucket": {
+        "id": 40694338,
+        "name": "WAT Mobilite",
+        "type": "Project"
+      },
+      "parent": {
+        "app_url": "https://app.basecamp.com/5898865/buckets/40694338/todosets/8231360562",
+        "id": 8231360562,
+        "title": "İş Listesi",
+        "type": "Todoset",
+        "url": "https://3.basecampapi.com/5898865/buckets/40694338/todosets/8231360562.json"
+      }
+    },
+    {
+      "id": 9315207883,
+      "name": "Konkur ",
+      "title": "Konkur ",
+      "status": "active",
+      "type": "Todolist",
+      "app_url": "https://app.basecamp.com/5898865/buckets/40694338/todolists/9315207883",
+      "completed_ratio": "1/1",
+      "bucket": {
+        "id": 40694338,
+        "name": "WAT Mobilite",
+        "type": "Project"
+      },
+      "parent": {
+        "app_url": "https://app.basecamp.com/5898865/buckets/40694338/todosets/8231360562",
+        "id": 8231360562,
+        "title": "İş Listesi",
+        "type": "Todoset",
+        "url": "https://3.basecampapi.com/5898865/buckets/40694338/todosets/8231360562.json"
+      }
+    }
+  ]
+}

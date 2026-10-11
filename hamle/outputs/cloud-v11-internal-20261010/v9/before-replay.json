@@ -1,0 +1,1588 @@
+{
+  "schema_version": 1,
+  "revision": 12,
+  "pilot_id": "HAMLE-IC-URETIM-20261010-01",
+  "state_sha256": "504d90b755b5b02229d099a4381e9cf7098d55b91715a0a510adf633cfcf0b26",
+  "expires_at": 1791655274.805335,
+  "created_at": 1791644474.824171,
+  "initial_state_sha256": "466c2cc85ea2e8378d4d5bc3a20d60f88de5a36cd934b03692599d39fafab0c3",
+  "source_evidence_sha256": "461a1d323cf16dd45517e35e285c035a85f578200aac08029b5c8a3330211d02",
+  "updated_at": 1791645529.857653,
+  "generation": 1,
+  "state": {
+    "schema_version": 1,
+    "questions": {},
+    "brief": {
+      "assets_ref": "internal-generated-fixture-no-external-assets",
+      "deadline": "2026-10-10T18:01:14.805335+00:00",
+      "source_fingerprint": "e6d184f3cf67ba5ffaa00ea44c801af36eb1e03691416551a95d31a5be9a1492",
+      "evidence_ref": "gmail:1a12646136af37f0",
+      "title": "HAMLE-IC-URETIM-20261010-01",
+      "brand_id": "gamechangers",
+      "version": 1,
+      "reply_envelope": {
+        "thread_id": "1a12646136af37f0",
+        "cc": [],
+        "to": [
+          "ahmet@gamechangers.com.tr"
+        ],
+        "in_reply_to_message_id": "1a12646136af37f0"
+      },
+      "audience": "Yalnız Ahmet ve Hamle",
+      "internal_technical_policy": {
+        "customer_live_enabled": false,
+        "control_generation": 1,
+        "artistic_or_brand_quality_claim": false,
+        "id": "hamle-internal-technical-png-20261010-v1",
+        "accepted_at": "2026-10-10T15:01:14.805335+00:00",
+        "expires_at": "2026-10-10T18:01:14.805335+00:00"
+      },
+      "binding": {
+        "subscriber_ids": [
+          53358100
+        ],
+        "production_stages": [
+          {
+            "kinds": [
+              "graphic"
+            ],
+            "output_ids": [
+              "main"
+            ],
+            "assignee_ids": [
+              53358100
+            ],
+            "id": "main",
+            "depends_on": []
+          },
+          {
+            "kinds": [
+              "graphic"
+            ],
+            "output_ids": [
+              "story"
+            ],
+            "assignee_ids": [
+              53358100
+            ],
+            "id": "story",
+            "depends_on": [
+              "main"
+            ]
+          }
+        ],
+        "account_id": 5898865,
+        "category_name": "Hamle — İç Deneme",
+        "project_id": 49184053,
+        "list_id": 10384126975
+      },
+      "objective": "İç teknik üretim ve dosya kontrolü provası",
+      "verified": true,
+      "source_message_id": "1a12646136af37f0",
+      "service_id": "internal-technical-png-proof",
+      "deliverables": [
+        {
+          "kind": "graphic",
+          "id": "main",
+          "purpose": "final",
+          "spec": {
+            "required_text": [
+              {
+                "critical": true,
+                "text": "HAMLE İÇ DENEME",
+                "id": "title"
+              },
+              {
+                "critical": true,
+                "text": "12 EKİM 2026",
+                "id": "date"
+              },
+              {
+                "critical": true,
+                "text": "Bu bir teknik denemedir.",
+                "id": "disclosure"
+              }
+            ],
+            "text_inspection": "tesseract",
+            "max_bytes": 2097152,
+            "mime": "image/png",
+            "height": 1080,
+            "min_bytes": 9,
+            "width": 1080,
+            "id": "main"
+          }
+        },
+        {
+          "kind": "graphic",
+          "id": "story",
+          "purpose": "final",
+          "spec": {
+            "required_text": [
+              {
+                "critical": true,
+                "text": "HAMLE İÇ DENEME",
+                "id": "title"
+              },
+              {
+                "critical": true,
+                "text": "12 EKİM 2026",
+                "id": "date"
+              },
+              {
+                "critical": true,
+                "text": "Bu bir teknik denemedir.",
+                "id": "disclosure"
+              }
+            ],
+            "text_inspection": "tesseract",
+            "max_bytes": 2097152,
+            "mime": "image/png",
+            "height": 1920,
+            "min_bytes": 9,
+            "width": 1080,
+            "id": "story"
+          }
+        }
+      ]
+    },
+    "internal_run": {
+      "wat_live_enabled": false,
+      "kind": "technical_fixture_only",
+      "delivery": {
+        "completed_at": "2026-10-10T15:18:49.851127+00:00",
+        "receipt": {
+          "provider_id": "1a126653276ea37b"
+        },
+        "proof": {
+          "thread_id": "1a12646136af37f0",
+          "evidence_ref": "provider-readback:final-delivery",
+          "receipt_sha256": "e2dfc7636356e6aa3c7706c4775167ba6a203456487c4d652f7e1151f4d091a5",
+          "provider_id": "1a126653276ea37b",
+          "matches_approved_payload": true,
+          "action_key": "final-delivery",
+          "identity_verified": true,
+          "verified": true,
+          "attachment_sha256": [
+            "61fd4477a1be147ad29a4d98b0dffff72a6182af8e77eb8f7ff689220dadf46f",
+            "5ac2d21705136c1a424b2d8de8e018d4ed4efe9423b697e7885ea8c3e2342862"
+          ],
+          "payload_sha256": "19b388da645102b46879dc7ff9b2a36b2061769b760843f702f21353c2921ac7"
+        }
+      },
+      "model_calls": 0,
+      "source": {
+        "is_continuation": false,
+        "token_refreshed": false,
+        "thread_id": "1a12646136af37f0",
+        "root_message_id": "1a12646136af37f0",
+        "root_rfc_message_id": "<CAOOr=FgeQLR6dwc+7ZpLYmsSnh-1JOAcv6uQvjQYtb9NHemuFw@mail.gmail.com>",
+        "unseen_cc_removal_resolved": false,
+        "attachments_fetched": false,
+        "message_id": "1a12646136af37f0",
+        "references": "<CAOOr=FgeQLR6dwc+7ZpLYmsSnh-1JOAcv6uQvjQYtb9NHemuFw@mail.gmail.com>",
+        "source_subject": "HAMLE-IC-URETIM-20261010-01",
+        "in_reply_to": "<CAOOr=FgeQLR6dwc+7ZpLYmsSnh-1JOAcv6uQvjQYtb9NHemuFw@mail.gmail.com>",
+        "sender": "ahmet@gamechangers.com.tr",
+        "hamle_direct_recipient": true,
+        "action_eligible": false,
+        "latest_to": [
+          "hamle@gamechangers.com.tr"
+        ],
+        "mailbox_writes": 0,
+        "subject": "HAMLE-IC-URETIM-20261010-01",
+        "snapshot_fingerprint": "e6d184f3cf67ba5ffaa00ea44c801af36eb1e03691416551a95d31a5be9a1492",
+        "source_sha256": "654bc946013f3d2bf8f73d65c9110780288c024d4c3ce01e24185fdfb5063fec",
+        "latest_cc": [],
+        "captured_at": "2026-10-10T15:01:13.963585+00:00",
+        "body_in_memory_only": true
+      },
+      "artifacts": {
+        "story-v1": {
+          "attachment": {
+            "identifier_kind": "native_id",
+            "content_type": "image/png",
+            "sha256": "5ac2d21705136c1a424b2d8de8e018d4ed4efe9423b697e7885ea8c3e2342862",
+            "provider_id": "903246577",
+            "filename": "hamle-story-v1.png",
+            "byte_size": 28060,
+            "attachable_sgid": "BAh7BkkiC19yYWlscwY6BkVUewdJIglkYXRhBjsAVEkiLmdpZDovL2JjMy9BdHRhY2htZW50LzkwMzI0NjU3Nz9leHBpcmVzX2luBjsAVEkiCHB1cgY7AFRJIg9hdHRhY2hhYmxlBjsAVA==--64c8d2e3d64646b3c0200d5a165a894a0922b62d"
+          },
+          "submission_comment_id": "10392833179",
+          "inspection": {
+            "artifact": {
+              "size_bytes": 28060,
+              "facts": {
+                "height": 1920,
+                "bit_depth": 8,
+                "width": 1080
+              },
+              "facts_bound_sha256": "5ac2d21705136c1a424b2d8de8e018d4ed4efe9423b697e7885ea8c3e2342862",
+              "evidence_ref": "sha256:bd7c28e122ddefcd6c381fa8c054a0a728235875ec2999fd54a64644ab0faf0b",
+              "id": "story",
+              "sha256": "5ac2d21705136c1a424b2d8de8e018d4ed4efe9423b697e7885ea8c3e2342862",
+              "mime_type": "image/png"
+            },
+            "text_sha256": "6c1931276d210183a6eab02cadea5b89126a6a6d64eef4fed26077cf2da841bf",
+            "schema_version": 1,
+            "network_writes": 0,
+            "model_calls": 0,
+            "delivery_authorized": false,
+            "source": {
+              "account_id": 5898865,
+              "attachment_id": 903246577,
+              "evidence_ref": "provider-readback:story-v1-submission-comment",
+              "project_id": 49184053,
+              "task_id": 10392833077,
+              "verified": true
+            },
+            "inspector_id": "hamle-byte-inspector-v1",
+            "output_spec_sha256": "409ba5d149eb6d962a4af841372e1f2a29c9e8e7f47ecf38fc38338ab6b26781",
+            "inspection_status": "passed",
+            "checked_at": "2026-10-10T15:13:28.557506+00:00",
+            "brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92",
+            "parser": "stdlib-png-crc-zlib-v1",
+            "checks": {
+              "text_inspection": {
+                "method": "deterministic",
+                "critical": true,
+                "evidence_ref": "sha256:bd7c28e122ddefcd6c381fa8c054a0a728235875ec2999fd54a64644ab0faf0b",
+                "evaluator_id": "hamle-byte-inspector-v1",
+                "brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92",
+                "finding": "Bounded eng+tur OCR completed.",
+                "location": "actual image pixel OCR process",
+                "artifact_sha256": "5ac2d21705136c1a424b2d8de8e018d4ed4efe9423b697e7885ea8c3e2342862",
+                "result": "pass"
+              },
+              "required_text:disclosure": {
+                "method": "deterministic",
+                "critical": true,
+                "evidence_ref": "sha256:bd7c28e122ddefcd6c381fa8c054a0a728235875ec2999fd54a64644ab0faf0b",
+                "evaluator_id": "hamle-byte-inspector-v1",
+                "brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92",
+                "finding": "Required literal detected in actual pixel OCR.",
+                "location": "actual image pixels via OCR",
+                "artifact_sha256": "5ac2d21705136c1a424b2d8de8e018d4ed4efe9423b697e7885ea8c3e2342862",
+                "result": "pass"
+              },
+              "fact:width": {
+                "method": "deterministic",
+                "critical": true,
+                "evidence_ref": "sha256:bd7c28e122ddefcd6c381fa8c054a0a728235875ec2999fd54a64644ab0faf0b",
+                "evaluator_id": "hamle-byte-inspector-v1",
+                "brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92",
+                "finding": "Expected width=1080; measured=1080",
+                "location": "decoded file structure",
+                "artifact_sha256": "5ac2d21705136c1a424b2d8de8e018d4ed4efe9423b697e7885ea8c3e2342862",
+                "result": "pass"
+              },
+              "fact:height": {
+                "method": "deterministic",
+                "critical": true,
+                "evidence_ref": "sha256:bd7c28e122ddefcd6c381fa8c054a0a728235875ec2999fd54a64644ab0faf0b",
+                "evaluator_id": "hamle-byte-inspector-v1",
+                "brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92",
+                "finding": "Expected height=1920; measured=1920",
+                "location": "decoded file structure",
+                "artifact_sha256": "5ac2d21705136c1a424b2d8de8e018d4ed4efe9423b697e7885ea8c3e2342862",
+                "result": "pass"
+              },
+              "size_bytes": {
+                "method": "deterministic",
+                "critical": true,
+                "evidence_ref": "sha256:bd7c28e122ddefcd6c381fa8c054a0a728235875ec2999fd54a64644ab0faf0b",
+                "evaluator_id": "hamle-byte-inspector-v1",
+                "brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92",
+                "finding": "Measured bytes: 28060",
+                "location": "complete file bytes",
+                "artifact_sha256": "5ac2d21705136c1a424b2d8de8e018d4ed4efe9423b697e7885ea8c3e2342862",
+                "result": "pass"
+              },
+              "required_text:title": {
+                "method": "deterministic",
+                "critical": true,
+                "evidence_ref": "sha256:bd7c28e122ddefcd6c381fa8c054a0a728235875ec2999fd54a64644ab0faf0b",
+                "evaluator_id": "hamle-byte-inspector-v1",
+                "brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92",
+                "finding": "Required literal detected in actual pixel OCR.",
+                "location": "actual image pixels via OCR",
+                "artifact_sha256": "5ac2d21705136c1a424b2d8de8e018d4ed4efe9423b697e7885ea8c3e2342862",
+                "result": "pass"
+              },
+              "required_text:date": {
+                "method": "deterministic",
+                "critical": true,
+                "evidence_ref": "sha256:bd7c28e122ddefcd6c381fa8c054a0a728235875ec2999fd54a64644ab0faf0b",
+                "evaluator_id": "hamle-byte-inspector-v1",
+                "brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92",
+                "finding": "Required literal detected in actual pixel OCR.",
+                "location": "actual image pixels via OCR",
+                "artifact_sha256": "5ac2d21705136c1a424b2d8de8e018d4ed4efe9423b697e7885ea8c3e2342862",
+                "result": "pass"
+              },
+              "mime_type": {
+                "method": "deterministic",
+                "critical": true,
+                "evidence_ref": "sha256:bd7c28e122ddefcd6c381fa8c054a0a728235875ec2999fd54a64644ab0faf0b",
+                "evaluator_id": "hamle-byte-inspector-v1",
+                "brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92",
+                "finding": "Measured MIME: image/png",
+                "location": "file signature and decoded format",
+                "artifact_sha256": "5ac2d21705136c1a424b2d8de8e018d4ed4efe9423b697e7885ea8c3e2342862",
+                "result": "pass"
+              }
+            },
+            "limitations": [
+              "Deterministic checks do not establish brand meaning, visual quality, rights or current send authority.",
+              "No visual-semantic review or approved-logo comparison was performed.",
+              "OCR is fallible and cannot prove that undetected text is visually absent."
+            ],
+            "source_sha256": "291b2efec86bb24b91ad9690fde5fe211c1dce592f640bace4ef1ac2415153d1",
+            "extracted_text": "HAMLE İÇ DENEME\n12 EKİM 2026\nBu bir teknik denemedir.\n",
+            "resource_limits": "bounded-byte-pixel-zlib",
+            "evidence_sha256": "c9249ef44428c053f0245c2273d4c11502065399b5074b6c5dd5dbec223d6063",
+            "semantic_review_required": true,
+            "ocr": {
+              "normalization": "nfkd-casefold-marks-whitespace-v1",
+              "languages": [
+                "eng",
+                "tur"
+              ],
+              "parser": "tesseract 5.5.0",
+              "status": "completed"
+            }
+          },
+          "task_id": 10392833077,
+          "quality": {
+            "criteria": [
+              {
+                "findings": [
+                  "Measured MIME: image/png",
+                  "Measured bytes: 28060"
+                ],
+                "description": "İç teknik kontrol: format",
+                "criterion_id": "format",
+                "evidence_ref": "inspection:c9249ef44428c053f0245c2273d4c11502065399b5074b6c5dd5dbec223d6063",
+                "weight": "10",
+                "score": "100",
+                "contribution": "10"
+              },
+              {
+                "findings": [
+                  "Expected width=1080; measured=1080",
+                  "Expected height=1920; measured=1920"
+                ],
+                "description": "İç teknik kontrol: dimensions",
+                "criterion_id": "dimensions",
+                "evidence_ref": "inspection:c9249ef44428c053f0245c2273d4c11502065399b5074b6c5dd5dbec223d6063",
+                "weight": "25",
+                "score": "100",
+                "contribution": "25"
+              },
+              {
+                "findings": [
+                  "Required literal detected in actual pixel OCR."
+                ],
+                "description": "İç teknik kontrol: title",
+                "criterion_id": "title",
+                "evidence_ref": "inspection:c9249ef44428c053f0245c2273d4c11502065399b5074b6c5dd5dbec223d6063",
+                "weight": "15",
+                "score": "100",
+                "contribution": "15"
+              },
+              {
+                "findings": [
+                  "Required literal detected in actual pixel OCR."
+                ],
+                "description": "İç teknik kontrol: date",
+                "criterion_id": "date",
+                "evidence_ref": "inspection:c9249ef44428c053f0245c2273d4c11502065399b5074b6c5dd5dbec223d6063",
+                "weight": "25",
+                "score": "100",
+                "contribution": "25"
+              },
+              {
+                "findings": [
+                  "Required literal detected in actual pixel OCR."
+                ],
+                "description": "İç teknik kontrol: disclosure",
+                "criterion_id": "disclosure",
+                "evidence_ref": "inspection:c9249ef44428c053f0245c2273d4c11502065399b5074b6c5dd5dbec223d6063",
+                "weight": "15",
+                "score": "100",
+                "contribution": "15"
+              },
+              {
+                "findings": [
+                  "OCR text compared literally with the three internal-fixture lines; no artistic assessment."
+                ],
+                "description": "İç teknik kontrol: exact_fixture_text",
+                "criterion_id": "exact_fixture_text",
+                "evidence_ref": "inspection:c9249ef44428c053f0245c2273d4c11502065399b5074b6c5dd5dbec223d6063",
+                "weight": "10",
+                "score": "100",
+                "contribution": "10"
+              }
+            ],
+            "critical_failures": [],
+            "schema_version": 1,
+            "release_policy_enforced_by_dispatcher": true,
+            "model_calls": 0,
+            "assessment_sha256": "e54bfbdd05a1cd884a3a7b94ad3bf282850dc5c723d219c52acb3e048ed433ae",
+            "route": "delivery_candidate",
+            "requires_producer_submission": true,
+            "send_allowed": false,
+            "failure_details": {},
+            "unassessed_checks": [],
+            "network_writes": 0,
+            "live_enabled": false,
+            "policy_digest": "63b5c025974e552b9fd1d362aa465c4e7b24bd19270c35e5ecbe6f11c982a27c",
+            "score_meaning": "weighted_rubric_conformance_not_probability",
+            "requires_action_authority": true,
+            "score": "100",
+            "reason": "score_meets_candidate_threshold",
+            "binding_sha256": "14c97f65e05eaa34b67907c414aefcd9d06bf854de68ce092ccba951d366991b"
+          },
+          "expected_failure": false
+        },
+        "main-v1": {
+          "attachment": {
+            "identifier_kind": "native_id",
+            "content_type": "image/png",
+            "sha256": "53dc068bbd9aaa167399d1ba6a8410f7870dc4948509639decc5ed241e781e44",
+            "provider_id": "903245587",
+            "filename": "hamle-main-v1.png",
+            "byte_size": 17414,
+            "attachable_sgid": "BAh7BkkiC19yYWlscwY6BkVUewdJIglkYXRhBjsAVEkiLmdpZDovL2JjMy9BdHRhY2htZW50LzkwMzI0NTU4Nz9leHBpcmVzX2luBjsAVEkiCHB1cgY7AFRJIg9hdHRhY2hhYmxlBjsAVA==--365b3fb9afea2abcca8bd3ac54c7b8aef466acfb"
+          },
+          "quality_history": [
+            {
+              "inspection_sha256": "231130374363db7eb756001df9de18bf31f97e928c3b23ed3dc7c94cf39dbc20",
+              "quality": {
+                "criteria": [],
+                "schema_version": 1,
+                "critical_failures": [],
+                "release_policy_enforced_by_dispatcher": true,
+                "model_calls": 0,
+                "send_allowed": false,
+                "route": "held",
+                "network_writes": 0,
+                "requires_producer_submission": true,
+                "unassessed_checks": [],
+                "live_enabled": false,
+                "score_meaning": "weighted_rubric_conformance_not_probability",
+                "requires_action_authority": true,
+                "score": null,
+                "reason": "current_safety_evidence_stale"
+              }
+            }
+          ],
+          "submission_comment_id": "10392824791",
+          "inspection": {
+            "artifact": {
+              "size_bytes": 17414,
+              "facts": {
+                "height": 1080,
+                "bit_depth": 8,
+                "width": 1080
+              },
+              "facts_bound_sha256": "53dc068bbd9aaa167399d1ba6a8410f7870dc4948509639decc5ed241e781e44",
+              "evidence_ref": "sha256:58ca6d8282525e46420d9d1c20e69bcc9494b9afe876ba706ff1eb3c9c0a6e59",
+              "id": "main",
+              "sha256": "53dc068bbd9aaa167399d1ba6a8410f7870dc4948509639decc5ed241e781e44",
+              "mime_type": "image/png"
+            },
+            "text_sha256": "b68567bf5cea3f4cad3cc9586683351e842617e2a243d642adaeb290c0dc5a7c",
+            "schema_version": 1,
+            "network_writes": 0,
+            "model_calls": 0,
+            "delivery_authorized": false,
+            "source": {
+              "account_id": 5898865,
+              "attachment_id": 903245587,
+              "evidence_ref": "reinspection:main-v1",
+              "project_id": 49184053,
+              "task_id": 10392824665,
+              "verified": true
+            },
+            "inspector_id": "hamle-byte-inspector-v1",
+            "output_spec_sha256": "61d7db0d68c14ec8c9375ac8b003272d9cdeb0f5ab5332dbe895f8a86545a996",
+            "inspection_status": "failed",
+            "checked_at": "2026-10-10T15:10:38.915234+00:00",
+            "brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92",
+            "parser": "stdlib-png-crc-zlib-v1",
+            "checks": {
+              "text_inspection": {
+                "method": "deterministic",
+                "critical": true,
+                "evidence_ref": "sha256:58ca6d8282525e46420d9d1c20e69bcc9494b9afe876ba706ff1eb3c9c0a6e59",
+                "evaluator_id": "hamle-byte-inspector-v1",
+                "brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92",
+                "finding": "Bounded eng+tur OCR completed.",
+                "location": "actual image pixel OCR process",
+                "artifact_sha256": "53dc068bbd9aaa167399d1ba6a8410f7870dc4948509639decc5ed241e781e44",
+                "result": "pass"
+              },
+              "required_text:disclosure": {
+                "method": "deterministic",
+                "critical": true,
+                "evidence_ref": "sha256:58ca6d8282525e46420d9d1c20e69bcc9494b9afe876ba706ff1eb3c9c0a6e59",
+                "evaluator_id": "hamle-byte-inspector-v1",
+                "brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92",
+                "finding": "Required literal detected in actual pixel OCR.",
+                "location": "actual image pixels via OCR",
+                "artifact_sha256": "53dc068bbd9aaa167399d1ba6a8410f7870dc4948509639decc5ed241e781e44",
+                "result": "pass"
+              },
+              "fact:width": {
+                "method": "deterministic",
+                "critical": true,
+                "evidence_ref": "sha256:58ca6d8282525e46420d9d1c20e69bcc9494b9afe876ba706ff1eb3c9c0a6e59",
+                "evaluator_id": "hamle-byte-inspector-v1",
+                "brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92",
+                "finding": "Expected width=1080; measured=1080",
+                "location": "decoded file structure",
+                "artifact_sha256": "53dc068bbd9aaa167399d1ba6a8410f7870dc4948509639decc5ed241e781e44",
+                "result": "pass"
+              },
+              "fact:height": {
+                "method": "deterministic",
+                "critical": true,
+                "evidence_ref": "sha256:58ca6d8282525e46420d9d1c20e69bcc9494b9afe876ba706ff1eb3c9c0a6e59",
+                "evaluator_id": "hamle-byte-inspector-v1",
+                "brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92",
+                "finding": "Expected height=1080; measured=1080",
+                "location": "decoded file structure",
+                "artifact_sha256": "53dc068bbd9aaa167399d1ba6a8410f7870dc4948509639decc5ed241e781e44",
+                "result": "pass"
+              },
+              "size_bytes": {
+                "method": "deterministic",
+                "critical": true,
+                "evidence_ref": "sha256:58ca6d8282525e46420d9d1c20e69bcc9494b9afe876ba706ff1eb3c9c0a6e59",
+                "evaluator_id": "hamle-byte-inspector-v1",
+                "brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92",
+                "finding": "Measured bytes: 17414",
+                "location": "complete file bytes",
+                "artifact_sha256": "53dc068bbd9aaa167399d1ba6a8410f7870dc4948509639decc5ed241e781e44",
+                "result": "pass"
+              },
+              "required_text:title": {
+                "method": "deterministic",
+                "critical": true,
+                "evidence_ref": "sha256:58ca6d8282525e46420d9d1c20e69bcc9494b9afe876ba706ff1eb3c9c0a6e59",
+                "evaluator_id": "hamle-byte-inspector-v1",
+                "brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92",
+                "finding": "Required literal detected in actual pixel OCR.",
+                "location": "actual image pixels via OCR",
+                "artifact_sha256": "53dc068bbd9aaa167399d1ba6a8410f7870dc4948509639decc5ed241e781e44",
+                "result": "pass"
+              },
+              "required_text:date": {
+                "method": "deterministic",
+                "critical": true,
+                "evidence_ref": "sha256:58ca6d8282525e46420d9d1c20e69bcc9494b9afe876ba706ff1eb3c9c0a6e59",
+                "evaluator_id": "hamle-byte-inspector-v1",
+                "brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92",
+                "finding": "Literal not detected by pixel OCR; this is not proof of visual absence.",
+                "location": "actual image pixels via OCR",
+                "artifact_sha256": "53dc068bbd9aaa167399d1ba6a8410f7870dc4948509639decc5ed241e781e44",
+                "result": "fail"
+              },
+              "mime_type": {
+                "method": "deterministic",
+                "critical": true,
+                "evidence_ref": "sha256:58ca6d8282525e46420d9d1c20e69bcc9494b9afe876ba706ff1eb3c9c0a6e59",
+                "evaluator_id": "hamle-byte-inspector-v1",
+                "brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92",
+                "finding": "Measured MIME: image/png",
+                "location": "file signature and decoded format",
+                "artifact_sha256": "53dc068bbd9aaa167399d1ba6a8410f7870dc4948509639decc5ed241e781e44",
+                "result": "pass"
+              }
+            },
+            "limitations": [
+              "Deterministic checks do not establish brand meaning, visual quality, rights or current send authority.",
+              "No visual-semantic review or approved-logo comparison was performed.",
+              "OCR is fallible and cannot prove that undetected text is visually absent."
+            ],
+            "source_sha256": "42e66b9c65314993a125f41fe1403722ea3ad3aa9228b3861c10d904a6a5034d",
+            "extracted_text": "HAMLE İÇ DENEME\nBu bir teknik denemedir.\n",
+            "resource_limits": "bounded-byte-pixel-zlib",
+            "evidence_sha256": "d37303643fcbb50b952798c7b144571e15d9b66d3f7c990f61c29fdd9c8b2495",
+            "semantic_review_required": true,
+            "ocr": {
+              "normalization": "nfkd-casefold-marks-whitespace-v1",
+              "languages": [
+                "eng",
+                "tur"
+              ],
+              "parser": "tesseract 5.5.0",
+              "status": "completed"
+            }
+          },
+          "task_id": 10392824665,
+          "quality": {
+            "criteria": [
+              {
+                "weight": "10",
+                "description": "İç teknik kontrol: format",
+                "criterion_id": "format",
+                "evidence_ref": "inspection:d37303643fcbb50b952798c7b144571e15d9b66d3f7c990f61c29fdd9c8b2495",
+                "findings": [
+                  "Measured MIME: image/png",
+                  "Measured bytes: 17414"
+                ],
+                "score": "100",
+                "contribution": "10"
+              },
+              {
+                "weight": "25",
+                "description": "İç teknik kontrol: dimensions",
+                "criterion_id": "dimensions",
+                "evidence_ref": "inspection:d37303643fcbb50b952798c7b144571e15d9b66d3f7c990f61c29fdd9c8b2495",
+                "findings": [
+                  "Expected width=1080; measured=1080",
+                  "Expected height=1080; measured=1080"
+                ],
+                "score": "100",
+                "contribution": "25"
+              },
+              {
+                "weight": "15",
+                "description": "İç teknik kontrol: title",
+                "criterion_id": "title",
+                "evidence_ref": "inspection:d37303643fcbb50b952798c7b144571e15d9b66d3f7c990f61c29fdd9c8b2495",
+                "findings": [
+                  "Required literal detected in actual pixel OCR."
+                ],
+                "score": "100",
+                "contribution": "15"
+              },
+              {
+                "weight": "25",
+                "description": "İç teknik kontrol: date",
+                "criterion_id": "date",
+                "evidence_ref": "inspection:d37303643fcbb50b952798c7b144571e15d9b66d3f7c990f61c29fdd9c8b2495",
+                "findings": [
+                  "Literal not detected by pixel OCR; this is not proof of visual absence."
+                ],
+                "score": "0",
+                "contribution": "0"
+              },
+              {
+                "weight": "15",
+                "description": "İç teknik kontrol: disclosure",
+                "criterion_id": "disclosure",
+                "evidence_ref": "inspection:d37303643fcbb50b952798c7b144571e15d9b66d3f7c990f61c29fdd9c8b2495",
+                "findings": [
+                  "Required literal detected in actual pixel OCR."
+                ],
+                "score": "100",
+                "contribution": "15"
+              },
+              {
+                "weight": "10",
+                "description": "İç teknik kontrol: exact_fixture_text",
+                "criterion_id": "exact_fixture_text",
+                "evidence_ref": "inspection:d37303643fcbb50b952798c7b144571e15d9b66d3f7c990f61c29fdd9c8b2495",
+                "findings": [
+                  "OCR text compared literally with the three internal-fixture lines; no artistic assessment."
+                ],
+                "score": "0",
+                "contribution": "0"
+              }
+            ],
+            "critical_failures": [
+              "date"
+            ],
+            "schema_version": 1,
+            "release_policy_enforced_by_dispatcher": true,
+            "model_calls": 0,
+            "assessment_sha256": "b70ecb190c533c4a8e3cdddd423a9600e4329b9356bdb726b72321e89ddb33c8",
+            "route": "revision",
+            "requires_producer_submission": true,
+            "send_allowed": false,
+            "failure_details": {
+              "date": [
+                "Literal not detected by pixel OCR; this is not proof of visual absence."
+              ]
+            },
+            "unassessed_checks": [],
+            "network_writes": 0,
+            "live_enabled": false,
+            "policy_digest": "63b5c025974e552b9fd1d362aa465c4e7b24bd19270c35e5ecbe6f11c982a27c",
+            "score_meaning": "weighted_rubric_conformance_not_probability",
+            "requires_action_authority": true,
+            "score": "65",
+            "reason": "critical_quality_failure",
+            "binding_sha256": "307dc959aa78b456ce9b5ca37829f6df240b438dd88142f441ba81b9f350be24"
+          },
+          "expected_failure": true
+        },
+        "main-v2": {
+          "attachment": {
+            "identifier_kind": "native_id",
+            "content_type": "image/png",
+            "sha256": "61fd4477a1be147ad29a4d98b0dffff72a6182af8e77eb8f7ff689220dadf46f",
+            "provider_id": "903246376",
+            "filename": "hamle-main-v2.png",
+            "byte_size": 23387,
+            "attachable_sgid": "BAh7BkkiC19yYWlscwY6BkVUewdJIglkYXRhBjsAVEkiLmdpZDovL2JjMy9BdHRhY2htZW50LzkwMzI0NjM3Nj9leHBpcmVzX2luBjsAVEkiCHB1cgY7AFRJIg9hdHRhY2hhYmxlBjsAVA==--a7c259265a99b81bce99c9cf177f846fb4ac6f95"
+          },
+          "submission_comment_id": "10392830861",
+          "inspection": {
+            "artifact": {
+              "size_bytes": 23387,
+              "facts": {
+                "height": 1080,
+                "bit_depth": 8,
+                "width": 1080
+              },
+              "facts_bound_sha256": "61fd4477a1be147ad29a4d98b0dffff72a6182af8e77eb8f7ff689220dadf46f",
+              "evidence_ref": "sha256:b8d379133f5f34231bca9cfc417e838b7a74d26dc980972e05025eb29f6512eb",
+              "id": "main",
+              "sha256": "61fd4477a1be147ad29a4d98b0dffff72a6182af8e77eb8f7ff689220dadf46f",
+              "mime_type": "image/png"
+            },
+            "text_sha256": "6c1931276d210183a6eab02cadea5b89126a6a6d64eef4fed26077cf2da841bf",
+            "schema_version": 1,
+            "network_writes": 0,
+            "model_calls": 0,
+            "delivery_authorized": false,
+            "source": {
+              "account_id": 5898865,
+              "attachment_id": 903246376,
+              "evidence_ref": "provider-readback:main-v2-submission-comment",
+              "project_id": 49184053,
+              "task_id": 10392824665,
+              "verified": true
+            },
+            "inspector_id": "hamle-byte-inspector-v1",
+            "output_spec_sha256": "61d7db0d68c14ec8c9375ac8b003272d9cdeb0f5ab5332dbe895f8a86545a996",
+            "inspection_status": "passed",
+            "checked_at": "2026-10-10T15:10:58.429501+00:00",
+            "brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92",
+            "parser": "stdlib-png-crc-zlib-v1",
+            "checks": {
+              "text_inspection": {
+                "method": "deterministic",
+                "critical": true,
+                "evidence_ref": "sha256:b8d379133f5f34231bca9cfc417e838b7a74d26dc980972e05025eb29f6512eb",
+                "evaluator_id": "hamle-byte-inspector-v1",
+                "brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92",
+                "finding": "Bounded eng+tur OCR completed.",
+                "location": "actual image pixel OCR process",
+                "artifact_sha256": "61fd4477a1be147ad29a4d98b0dffff72a6182af8e77eb8f7ff689220dadf46f",
+                "result": "pass"
+              },
+              "required_text:disclosure": {
+                "method": "deterministic",
+                "critical": true,
+                "evidence_ref": "sha256:b8d379133f5f34231bca9cfc417e838b7a74d26dc980972e05025eb29f6512eb",
+                "evaluator_id": "hamle-byte-inspector-v1",
+                "brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92",
+                "finding": "Required literal detected in actual pixel OCR.",
+                "location": "actual image pixels via OCR",
+                "artifact_sha256": "61fd4477a1be147ad29a4d98b0dffff72a6182af8e77eb8f7ff689220dadf46f",
+                "result": "pass"
+              },
+              "fact:width": {
+                "method": "deterministic",
+                "critical": true,
+                "evidence_ref": "sha256:b8d379133f5f34231bca9cfc417e838b7a74d26dc980972e05025eb29f6512eb",
+                "evaluator_id": "hamle-byte-inspector-v1",
+                "brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92",
+                "finding": "Expected width=1080; measured=1080",
+                "location": "decoded file structure",
+                "artifact_sha256": "61fd4477a1be147ad29a4d98b0dffff72a6182af8e77eb8f7ff689220dadf46f",
+                "result": "pass"
+              },
+              "fact:height": {
+                "method": "deterministic",
+                "critical": true,
+                "evidence_ref": "sha256:b8d379133f5f34231bca9cfc417e838b7a74d26dc980972e05025eb29f6512eb",
+                "evaluator_id": "hamle-byte-inspector-v1",
+                "brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92",
+                "finding": "Expected height=1080; measured=1080",
+                "location": "decoded file structure",
+                "artifact_sha256": "61fd4477a1be147ad29a4d98b0dffff72a6182af8e77eb8f7ff689220dadf46f",
+                "result": "pass"
+              },
+              "size_bytes": {
+                "method": "deterministic",
+                "critical": true,
+                "evidence_ref": "sha256:b8d379133f5f34231bca9cfc417e838b7a74d26dc980972e05025eb29f6512eb",
+                "evaluator_id": "hamle-byte-inspector-v1",
+                "brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92",
+                "finding": "Measured bytes: 23387",
+                "location": "complete file bytes",
+                "artifact_sha256": "61fd4477a1be147ad29a4d98b0dffff72a6182af8e77eb8f7ff689220dadf46f",
+                "result": "pass"
+              },
+              "required_text:title": {
+                "method": "deterministic",
+                "critical": true,
+                "evidence_ref": "sha256:b8d379133f5f34231bca9cfc417e838b7a74d26dc980972e05025eb29f6512eb",
+                "evaluator_id": "hamle-byte-inspector-v1",
+                "brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92",
+                "finding": "Required literal detected in actual pixel OCR.",
+                "location": "actual image pixels via OCR",
+                "artifact_sha256": "61fd4477a1be147ad29a4d98b0dffff72a6182af8e77eb8f7ff689220dadf46f",
+                "result": "pass"
+              },
+              "required_text:date": {
+                "method": "deterministic",
+                "critical": true,
+                "evidence_ref": "sha256:b8d379133f5f34231bca9cfc417e838b7a74d26dc980972e05025eb29f6512eb",
+                "evaluator_id": "hamle-byte-inspector-v1",
+                "brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92",
+                "finding": "Required literal detected in actual pixel OCR.",
+                "location": "actual image pixels via OCR",
+                "artifact_sha256": "61fd4477a1be147ad29a4d98b0dffff72a6182af8e77eb8f7ff689220dadf46f",
+                "result": "pass"
+              },
+              "mime_type": {
+                "method": "deterministic",
+                "critical": true,
+                "evidence_ref": "sha256:b8d379133f5f34231bca9cfc417e838b7a74d26dc980972e05025eb29f6512eb",
+                "evaluator_id": "hamle-byte-inspector-v1",
+                "brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92",
+                "finding": "Measured MIME: image/png",
+                "location": "file signature and decoded format",
+                "artifact_sha256": "61fd4477a1be147ad29a4d98b0dffff72a6182af8e77eb8f7ff689220dadf46f",
+                "result": "pass"
+              }
+            },
+            "limitations": [
+              "Deterministic checks do not establish brand meaning, visual quality, rights or current send authority.",
+              "No visual-semantic review or approved-logo comparison was performed.",
+              "OCR is fallible and cannot prove that undetected text is visually absent."
+            ],
+            "source_sha256": "4127fda07e64ba32a30ae305e4c8e259d551c37e923a5a6367b8f65773de20b0",
+            "extracted_text": "HAMLE İÇ DENEME\n12 EKİM 2026\nBu bir teknik denemedir.\n",
+            "resource_limits": "bounded-byte-pixel-zlib",
+            "evidence_sha256": "ef96a169d16875e81974446ab69c6ce8af1565d1edf791fea597c1cfde5c87ed",
+            "semantic_review_required": true,
+            "ocr": {
+              "normalization": "nfkd-casefold-marks-whitespace-v1",
+              "languages": [
+                "eng",
+                "tur"
+              ],
+              "parser": "tesseract 5.5.0",
+              "status": "completed"
+            }
+          },
+          "task_id": 10392824665,
+          "quality": {
+            "criteria": [
+              {
+                "findings": [
+                  "Measured MIME: image/png",
+                  "Measured bytes: 23387"
+                ],
+                "description": "İç teknik kontrol: format",
+                "criterion_id": "format",
+                "evidence_ref": "inspection:ef96a169d16875e81974446ab69c6ce8af1565d1edf791fea597c1cfde5c87ed",
+                "weight": "10",
+                "score": "100",
+                "contribution": "10"
+              },
+              {
+                "findings": [
+                  "Expected width=1080; measured=1080",
+                  "Expected height=1080; measured=1080"
+                ],
+                "description": "İç teknik kontrol: dimensions",
+                "criterion_id": "dimensions",
+                "evidence_ref": "inspection:ef96a169d16875e81974446ab69c6ce8af1565d1edf791fea597c1cfde5c87ed",
+                "weight": "25",
+                "score": "100",
+                "contribution": "25"
+              },
+              {
+                "findings": [
+                  "Required literal detected in actual pixel OCR."
+                ],
+                "description": "İç teknik kontrol: title",
+                "criterion_id": "title",
+                "evidence_ref": "inspection:ef96a169d16875e81974446ab69c6ce8af1565d1edf791fea597c1cfde5c87ed",
+                "weight": "15",
+                "score": "100",
+                "contribution": "15"
+              },
+              {
+                "findings": [
+                  "Required literal detected in actual pixel OCR."
+                ],
+                "description": "İç teknik kontrol: date",
+                "criterion_id": "date",
+                "evidence_ref": "inspection:ef96a169d16875e81974446ab69c6ce8af1565d1edf791fea597c1cfde5c87ed",
+                "weight": "25",
+                "score": "100",
+                "contribution": "25"
+              },
+              {
+                "findings": [
+                  "Required literal detected in actual pixel OCR."
+                ],
+                "description": "İç teknik kontrol: disclosure",
+                "criterion_id": "disclosure",
+                "evidence_ref": "inspection:ef96a169d16875e81974446ab69c6ce8af1565d1edf791fea597c1cfde5c87ed",
+                "weight": "15",
+                "score": "100",
+                "contribution": "15"
+              },
+              {
+                "findings": [
+                  "OCR text compared literally with the three internal-fixture lines; no artistic assessment."
+                ],
+                "description": "İç teknik kontrol: exact_fixture_text",
+                "criterion_id": "exact_fixture_text",
+                "evidence_ref": "inspection:ef96a169d16875e81974446ab69c6ce8af1565d1edf791fea597c1cfde5c87ed",
+                "weight": "10",
+                "score": "100",
+                "contribution": "10"
+              }
+            ],
+            "critical_failures": [],
+            "schema_version": 1,
+            "release_policy_enforced_by_dispatcher": true,
+            "model_calls": 0,
+            "assessment_sha256": "0abef66381f9568f2ae8a0ffb2920cae681bbfb848b54dca0f942970395b0896",
+            "route": "delivery_candidate",
+            "requires_producer_submission": true,
+            "send_allowed": false,
+            "failure_details": {},
+            "unassessed_checks": [],
+            "network_writes": 0,
+            "live_enabled": false,
+            "policy_digest": "63b5c025974e552b9fd1d362aa465c4e7b24bd19270c35e5ecbe6f11c982a27c",
+            "score_meaning": "weighted_rubric_conformance_not_probability",
+            "requires_action_authority": true,
+            "score": "100",
+            "reason": "score_meets_candidate_threshold",
+            "binding_sha256": "66150cbd6b017934512905a48e32ad411e574af7ecc9a27b40664e5c6552cb42"
+          },
+          "expected_failure": false
+        }
+      }
+    },
+    "work_id": "internal-production-20261010-01",
+    "control": "active",
+    "customer_send_allowed": false,
+    "status": "production_complete",
+    "stages": {
+      "main": {
+        "dependency_acceptances": {},
+        "started_brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92",
+        "acceptance": {
+          "acceptance_sha256": "3793abb627d8375bbf31d2b5b9a36d3896f5163907a3c378aa6aa52cdd184cab",
+          "brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92",
+          "dependency_acceptances": {},
+          "submission_sha256": "5880b0856b7e2c8f30091472a4ca8cc099e36ab675fd569792efb1f61498ac0a",
+          "quality_result_sha256": "407d666c34d8928f057ee3039c12e5538ef1ba2f47956710f51232f493664d6a",
+          "manifest_sha256": "4c326ee58c00b5495e7436e88423aeabbe511d389439733299c56ff7302e2008",
+          "accepted_at": "2026-10-10T15:11:01.693786+00:00",
+          "event_id": "internal-quality-9abef716d2158c9a1f5e12602878198502255fc7b7a2f5e088bf15771afa118f"
+        },
+        "quality": {
+          "criteria": [
+            {
+              "findings": [
+                "Measured MIME: image/png",
+                "Measured bytes: 23387"
+              ],
+              "description": "İç teknik kontrol: format",
+              "criterion_id": "format",
+              "evidence_ref": "inspection:ef96a169d16875e81974446ab69c6ce8af1565d1edf791fea597c1cfde5c87ed",
+              "weight": "10",
+              "score": "100",
+              "contribution": "10"
+            },
+            {
+              "findings": [
+                "Expected width=1080; measured=1080",
+                "Expected height=1080; measured=1080"
+              ],
+              "description": "İç teknik kontrol: dimensions",
+              "criterion_id": "dimensions",
+              "evidence_ref": "inspection:ef96a169d16875e81974446ab69c6ce8af1565d1edf791fea597c1cfde5c87ed",
+              "weight": "25",
+              "score": "100",
+              "contribution": "25"
+            },
+            {
+              "findings": [
+                "Required literal detected in actual pixel OCR."
+              ],
+              "description": "İç teknik kontrol: title",
+              "criterion_id": "title",
+              "evidence_ref": "inspection:ef96a169d16875e81974446ab69c6ce8af1565d1edf791fea597c1cfde5c87ed",
+              "weight": "15",
+              "score": "100",
+              "contribution": "15"
+            },
+            {
+              "findings": [
+                "Required literal detected in actual pixel OCR."
+              ],
+              "description": "İç teknik kontrol: date",
+              "criterion_id": "date",
+              "evidence_ref": "inspection:ef96a169d16875e81974446ab69c6ce8af1565d1edf791fea597c1cfde5c87ed",
+              "weight": "25",
+              "score": "100",
+              "contribution": "25"
+            },
+            {
+              "findings": [
+                "Required literal detected in actual pixel OCR."
+              ],
+              "description": "İç teknik kontrol: disclosure",
+              "criterion_id": "disclosure",
+              "evidence_ref": "inspection:ef96a169d16875e81974446ab69c6ce8af1565d1edf791fea597c1cfde5c87ed",
+              "weight": "15",
+              "score": "100",
+              "contribution": "15"
+            },
+            {
+              "findings": [
+                "OCR text compared literally with the three internal-fixture lines; no artistic assessment."
+              ],
+              "description": "İç teknik kontrol: exact_fixture_text",
+              "criterion_id": "exact_fixture_text",
+              "evidence_ref": "inspection:ef96a169d16875e81974446ab69c6ce8af1565d1edf791fea597c1cfde5c87ed",
+              "weight": "10",
+              "score": "100",
+              "contribution": "10"
+            }
+          ],
+          "schema_version": 1,
+          "critical_failures": [],
+          "network_writes": 0,
+          "model_calls": 0,
+          "assessment_sha256": "0abef66381f9568f2ae8a0ffb2920cae681bbfb848b54dca0f942970395b0896",
+          "route": "delivery_candidate",
+          "send_allowed": false,
+          "release_policy_enforced_by_dispatcher": true,
+          "failure_details": {},
+          "unassessed_checks": [],
+          "requires_producer_submission": true,
+          "live_enabled": false,
+          "policy_digest": "63b5c025974e552b9fd1d362aa465c4e7b24bd19270c35e5ecbe6f11c982a27c",
+          "score_meaning": "weighted_rubric_conformance_not_probability",
+          "requires_action_authority": true,
+          "score": "100",
+          "reason": "score_meets_candidate_threshold",
+          "binding_sha256": "66150cbd6b017934512905a48e32ad411e574af7ecc9a27b40664e5c6552cb42"
+        },
+        "status": "accepted",
+        "task": {
+          "brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92",
+          "customer_visible": false,
+          "evidence_ref": "provider-readback:main-task",
+          "task_id": 10392824665,
+          "account_id": 5898865,
+          "assignee_ids": [
+            53358100
+          ],
+          "project_id": 49184053,
+          "verified": true,
+          "provider": "basecamp",
+          "list_id": 10384126975
+        },
+        "spec": {
+          "kinds": [
+            "graphic"
+          ],
+          "output_ids": [
+            "main"
+          ],
+          "assignee_ids": [
+            53358100
+          ],
+          "id": "main",
+          "depends_on": []
+        },
+        "submission": {
+          "submitted_at": "2026-10-10T15:10:58.429478+00:00",
+          "brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92",
+          "artifact": {
+            "sha256": "61fd4477a1be147ad29a4d98b0dffff72a6182af8e77eb8f7ff689220dadf46f",
+            "version": "v2"
+          },
+          "evidence_ref": "provider-readback:main-v2-submission-comment",
+          "producer_id": 53358100,
+          "task_id": 10392824665,
+          "dependency_acceptances": {},
+          "manifest_sha256": "4c326ee58c00b5495e7436e88423aeabbe511d389439733299c56ff7302e2008",
+          "verified": true,
+          "outputs": [
+            {
+              "id": "main",
+              "kind": "graphic",
+              "evidence_ref": "sha256:b8d379133f5f34231bca9cfc417e838b7a74d26dc980972e05025eb29f6512eb",
+              "inspection": {
+                "size_bytes": 23387,
+                "readable": true,
+                "bytes_read": true,
+                "evidence_ref": "sha256:b8d379133f5f34231bca9cfc417e838b7a74d26dc980972e05025eb29f6512eb",
+                "sha256": "61fd4477a1be147ad29a4d98b0dffff72a6182af8e77eb8f7ff689220dadf46f",
+                "verified": true,
+                "inspected_at": "2026-10-10T15:10:58.429501+00:00"
+              },
+              "size_bytes": 23387,
+              "facts": {
+                "height": 1080,
+                "bit_depth": 8,
+                "width": 1080
+              },
+              "facts_bound_sha256": "61fd4477a1be147ad29a4d98b0dffff72a6182af8e77eb8f7ff689220dadf46f",
+              "sha256": "61fd4477a1be147ad29a4d98b0dffff72a6182af8e77eb8f7ff689220dadf46f",
+              "purpose": "final",
+              "provider_attachment_id": "903246376",
+              "mime_type": "image/png"
+            }
+          ],
+          "origin": "internal_fixture"
+        },
+        "history": [
+          {
+            "event_id": "internal-production-20261010-01:5:submit_outputs",
+            "submission": {
+              "submitted_at": "2026-10-10T15:01:34.230278+00:00",
+              "brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92",
+              "artifact": {
+                "sha256": "53dc068bbd9aaa167399d1ba6a8410f7870dc4948509639decc5ed241e781e44",
+                "version": "v1"
+              },
+              "evidence_ref": "provider-readback:main-v1-submission-comment",
+              "producer_id": 53358100,
+              "task_id": 10392824665,
+              "dependency_acceptances": {},
+              "manifest_sha256": "66d8249dec3112f0f33cd6e63ac588a7833a090289cec81818120d4df26cf275",
+              "verified": true,
+              "outputs": [
+                {
+                  "id": "main",
+                  "kind": "graphic",
+                  "evidence_ref": "sha256:f4077545a8af0ed1e75b15a423b9870af60ae3193f555669537bb1e0a2881188",
+                  "inspection": {
+                    "size_bytes": 17414,
+                    "readable": true,
+                    "bytes_read": true,
+                    "evidence_ref": "sha256:f4077545a8af0ed1e75b15a423b9870af60ae3193f555669537bb1e0a2881188",
+                    "sha256": "53dc068bbd9aaa167399d1ba6a8410f7870dc4948509639decc5ed241e781e44",
+                    "verified": true,
+                    "inspected_at": "2026-10-10T15:01:34.230318+00:00"
+                  },
+                  "size_bytes": 17414,
+                  "facts": {
+                    "height": 1080,
+                    "bit_depth": 8,
+                    "width": 1080
+                  },
+                  "facts_bound_sha256": "53dc068bbd9aaa167399d1ba6a8410f7870dc4948509639decc5ed241e781e44",
+                  "sha256": "53dc068bbd9aaa167399d1ba6a8410f7870dc4948509639decc5ed241e781e44",
+                  "purpose": "final",
+                  "provider_attachment_id": "903245587",
+                  "mime_type": "image/png"
+                }
+              ],
+              "origin": "internal_fixture"
+            },
+            "quality": {
+              "criteria": [
+                {
+                  "weight": "10",
+                  "description": "İç teknik kontrol: format",
+                  "criterion_id": "format",
+                  "evidence_ref": "inspection:d37303643fcbb50b952798c7b144571e15d9b66d3f7c990f61c29fdd9c8b2495",
+                  "findings": [
+                    "Measured MIME: image/png",
+                    "Measured bytes: 17414"
+                  ],
+                  "score": "100",
+                  "contribution": "10"
+                },
+                {
+                  "weight": "25",
+                  "description": "İç teknik kontrol: dimensions",
+                  "criterion_id": "dimensions",
+                  "evidence_ref": "inspection:d37303643fcbb50b952798c7b144571e15d9b66d3f7c990f61c29fdd9c8b2495",
+                  "findings": [
+                    "Expected width=1080; measured=1080",
+                    "Expected height=1080; measured=1080"
+                  ],
+                  "score": "100",
+                  "contribution": "25"
+                },
+                {
+                  "weight": "15",
+                  "description": "İç teknik kontrol: title",
+                  "criterion_id": "title",
+                  "evidence_ref": "inspection:d37303643fcbb50b952798c7b144571e15d9b66d3f7c990f61c29fdd9c8b2495",
+                  "findings": [
+                    "Required literal detected in actual pixel OCR."
+                  ],
+                  "score": "100",
+                  "contribution": "15"
+                },
+                {
+                  "weight": "25",
+                  "description": "İç teknik kontrol: date",
+                  "criterion_id": "date",
+                  "evidence_ref": "inspection:d37303643fcbb50b952798c7b144571e15d9b66d3f7c990f61c29fdd9c8b2495",
+                  "findings": [
+                    "Literal not detected by pixel OCR; this is not proof of visual absence."
+                  ],
+                  "score": "0",
+                  "contribution": "0"
+                },
+                {
+                  "weight": "15",
+                  "description": "İç teknik kontrol: disclosure",
+                  "criterion_id": "disclosure",
+                  "evidence_ref": "inspection:d37303643fcbb50b952798c7b144571e15d9b66d3f7c990f61c29fdd9c8b2495",
+                  "findings": [
+                    "Required literal detected in actual pixel OCR."
+                  ],
+                  "score": "100",
+                  "contribution": "15"
+                },
+                {
+                  "weight": "10",
+                  "description": "İç teknik kontrol: exact_fixture_text",
+                  "criterion_id": "exact_fixture_text",
+                  "evidence_ref": "inspection:d37303643fcbb50b952798c7b144571e15d9b66d3f7c990f61c29fdd9c8b2495",
+                  "findings": [
+                    "OCR text compared literally with the three internal-fixture lines; no artistic assessment."
+                  ],
+                  "score": "0",
+                  "contribution": "0"
+                }
+              ],
+              "critical_failures": [
+                "date"
+              ],
+              "schema_version": 1,
+              "network_writes": 0,
+              "model_calls": 0,
+              "assessment_sha256": "b70ecb190c533c4a8e3cdddd423a9600e4329b9356bdb726b72321e89ddb33c8",
+              "route": "revision",
+              "send_allowed": false,
+              "release_policy_enforced_by_dispatcher": true,
+              "failure_details": {
+                "date": [
+                  "Literal not detected by pixel OCR; this is not proof of visual absence."
+                ]
+              },
+              "unassessed_checks": [],
+              "requires_producer_submission": true,
+              "live_enabled": false,
+              "policy_digest": "63b5c025974e552b9fd1d362aa465c4e7b24bd19270c35e5ecbe6f11c982a27c",
+              "score_meaning": "weighted_rubric_conformance_not_probability",
+              "requires_action_authority": true,
+              "score": "65",
+              "reason": "critical_quality_failure",
+              "binding_sha256": "307dc959aa78b456ce9b5ca37829f6df240b438dd88142f441ba81b9f350be24"
+            },
+            "reason": "resubmitted"
+          }
+        ]
+      },
+      "story": {
+        "dependency_acceptances": {
+          "main": "3793abb627d8375bbf31d2b5b9a36d3896f5163907a3c378aa6aa52cdd184cab"
+        },
+        "started_brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92",
+        "acceptance": {
+          "acceptance_sha256": "9097f45611474822d4151716506aab2ce6d4ac11a102fc689bf9bf3e67c5b801",
+          "brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92",
+          "dependency_acceptances": {
+            "main": "3793abb627d8375bbf31d2b5b9a36d3896f5163907a3c378aa6aa52cdd184cab"
+          },
+          "submission_sha256": "a3abe0081c69176d02cc0d5e6e2c1ec854069ba85321a2177557b0b8b8472fa4",
+          "quality_result_sha256": "9e7dfe8a2c5540c7999d1dd1259c38270a4eaf4dc346e4f392563f7cb8488bc1",
+          "manifest_sha256": "9d89814723f11ea9922e890207f877877870062b902e672a2f26b673f34e52b4",
+          "accepted_at": "2026-10-10T15:13:32.233443+00:00",
+          "event_id": "internal-quality-71c5b74d9dc15a716107ebbb3ec97936277cd8f43beae1dac24c30eb87a36f1f"
+        },
+        "quality": {
+          "criteria": [
+            {
+              "findings": [
+                "Measured MIME: image/png",
+                "Measured bytes: 28060"
+              ],
+              "description": "İç teknik kontrol: format",
+              "criterion_id": "format",
+              "evidence_ref": "inspection:c9249ef44428c053f0245c2273d4c11502065399b5074b6c5dd5dbec223d6063",
+              "weight": "10",
+              "score": "100",
+              "contribution": "10"
+            },
+            {
+              "findings": [
+                "Expected width=1080; measured=1080",
+                "Expected height=1920; measured=1920"
+              ],
+              "description": "İç teknik kontrol: dimensions",
+              "criterion_id": "dimensions",
+              "evidence_ref": "inspection:c9249ef44428c053f0245c2273d4c11502065399b5074b6c5dd5dbec223d6063",
+              "weight": "25",
+              "score": "100",
+              "contribution": "25"
+            },
+            {
+              "findings": [
+                "Required literal detected in actual pixel OCR."
+              ],
+              "description": "İç teknik kontrol: title",
+              "criterion_id": "title",
+              "evidence_ref": "inspection:c9249ef44428c053f0245c2273d4c11502065399b5074b6c5dd5dbec223d6063",
+              "weight": "15",
+              "score": "100",
+              "contribution": "15"
+            },
+            {
+              "findings": [
+                "Required literal detected in actual pixel OCR."
+              ],
+              "description": "İç teknik kontrol: date",
+              "criterion_id": "date",
+              "evidence_ref": "inspection:c9249ef44428c053f0245c2273d4c11502065399b5074b6c5dd5dbec223d6063",
+              "weight": "25",
+              "score": "100",
+              "contribution": "25"
+            },
+            {
+              "findings": [
+                "Required literal detected in actual pixel OCR."
+              ],
+              "description": "İç teknik kontrol: disclosure",
+              "criterion_id": "disclosure",
+              "evidence_ref": "inspection:c9249ef44428c053f0245c2273d4c11502065399b5074b6c5dd5dbec223d6063",
+              "weight": "15",
+              "score": "100",
+              "contribution": "15"
+            },
+            {
+              "findings": [
+                "OCR text compared literally with the three internal-fixture lines; no artistic assessment."
+              ],
+              "description": "İç teknik kontrol: exact_fixture_text",
+              "criterion_id": "exact_fixture_text",
+              "evidence_ref": "inspection:c9249ef44428c053f0245c2273d4c11502065399b5074b6c5dd5dbec223d6063",
+              "weight": "10",
+              "score": "100",
+              "contribution": "10"
+            }
+          ],
+          "schema_version": 1,
+          "critical_failures": [],
+          "network_writes": 0,
+          "model_calls": 0,
+          "assessment_sha256": "e54bfbdd05a1cd884a3a7b94ad3bf282850dc5c723d219c52acb3e048ed433ae",
+          "route": "delivery_candidate",
+          "send_allowed": false,
+          "release_policy_enforced_by_dispatcher": true,
+          "failure_details": {},
+          "unassessed_checks": [],
+          "requires_producer_submission": true,
+          "live_enabled": false,
+          "policy_digest": "63b5c025974e552b9fd1d362aa465c4e7b24bd19270c35e5ecbe6f11c982a27c",
+          "score_meaning": "weighted_rubric_conformance_not_probability",
+          "requires_action_authority": true,
+          "score": "100",
+          "reason": "score_meets_candidate_threshold",
+          "binding_sha256": "14c97f65e05eaa34b67907c414aefcd9d06bf854de68ce092ccba951d366991b"
+        },
+        "status": "accepted",
+        "task": {
+          "brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92",
+          "customer_visible": false,
+          "evidence_ref": "provider-readback:story-task",
+          "task_id": 10392833077,
+          "account_id": 5898865,
+          "assignee_ids": [
+            53358100
+          ],
+          "project_id": 49184053,
+          "verified": true,
+          "provider": "basecamp",
+          "list_id": 10384126975
+        },
+        "spec": {
+          "kinds": [
+            "graphic"
+          ],
+          "output_ids": [
+            "story"
+          ],
+          "assignee_ids": [
+            53358100
+          ],
+          "id": "story",
+          "depends_on": [
+            "main"
+          ]
+        },
+        "submission": {
+          "submitted_at": "2026-10-10T15:13:28.557482+00:00",
+          "brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92",
+          "artifact": {
+            "sha256": "5ac2d21705136c1a424b2d8de8e018d4ed4efe9423b697e7885ea8c3e2342862",
+            "version": "v1"
+          },
+          "evidence_ref": "provider-readback:story-v1-submission-comment",
+          "producer_id": 53358100,
+          "task_id": 10392833077,
+          "dependency_acceptances": {
+            "main": "3793abb627d8375bbf31d2b5b9a36d3896f5163907a3c378aa6aa52cdd184cab"
+          },
+          "manifest_sha256": "9d89814723f11ea9922e890207f877877870062b902e672a2f26b673f34e52b4",
+          "verified": true,
+          "outputs": [
+            {
+              "id": "story",
+              "kind": "graphic",
+              "evidence_ref": "sha256:bd7c28e122ddefcd6c381fa8c054a0a728235875ec2999fd54a64644ab0faf0b",
+              "inspection": {
+                "size_bytes": 28060,
+                "readable": true,
+                "bytes_read": true,
+                "evidence_ref": "sha256:bd7c28e122ddefcd6c381fa8c054a0a728235875ec2999fd54a64644ab0faf0b",
+                "sha256": "5ac2d21705136c1a424b2d8de8e018d4ed4efe9423b697e7885ea8c3e2342862",
+                "verified": true,
+                "inspected_at": "2026-10-10T15:13:28.557506+00:00"
+              },
+              "size_bytes": 28060,
+              "facts": {
+                "height": 1920,
+                "bit_depth": 8,
+                "width": 1080
+              },
+              "facts_bound_sha256": "5ac2d21705136c1a424b2d8de8e018d4ed4efe9423b697e7885ea8c3e2342862",
+              "sha256": "5ac2d21705136c1a424b2d8de8e018d4ed4efe9423b697e7885ea8c3e2342862",
+              "purpose": "final",
+              "provider_attachment_id": "903246577",
+              "mime_type": "image/png"
+            }
+          ],
+          "origin": "internal_fixture"
+        },
+        "history": []
+      }
+    },
+    "revision": 11,
+    "brief_sha256": "f3574172cf13522e733c9f7a0eac989662334c67923f6cb991377ec596edba92",
+    "mode": "internal_pilot",
+    "events": {
+      "internal-quality-9abef716d2158c9a1f5e12602878198502255fc7b7a2f5e088bf15771afa118f": "4e7ca8fd9f2920b099761641c143c0ad58362d7b476e99e6a83cc8486c2f647a",
+      "internal-quality-3d4c017d8436b5a5c44e57bd9fbc76220d1d16f0b3d5d888b45189a95ef25d13": "c3063b6963c1f6856ce5faf92657caf57387fd98e1735434b2fee2ff4a9a701c",
+      "internal-production-20261010-01:7:bind_stage_task": "15b63651f7bd6dbe1588c0723f85c65b595cf004ec84cb2f89886fb581aa3af9",
+      "internal-quality-71c5b74d9dc15a716107ebbb3ec97936277cd8f43beae1dac24c30eb87a36f1f": "913d50e0d7428759cc4bca7f340358bb6f651aff20a8f91b1ce7f1a459d571f6",
+      "internal-quality-d2790f5d5449ea678903a393edb0893c5262fc710fb788b06123be2fa8f50714": "67193890f072458160131371c9c122b0a51a4aea6bc4ff959f8aefb1e9af1275",
+      "internal-production-20261010-01:0:bind_stage_task": "b25d7b7c4690057c1b350ed7ce4e03c8b551aebbfd345f4f26d1b81ecf53761f",
+      "internal-production-20261010-01:5:submit_outputs": "3d1ca9290159100788ae4a1822bb9949cb00210b47a4805ba455d9dfaf0b3815",
+      "internal-production-20261010-01:9:submit_outputs": "8773bbba7919d8fb5f7b716648b339e6ef4a3fbc8b24521b0d8b4a2f20ceb61c",
+      "internal-production-20261010-01:8:begin_stage": "24dd277fe5b292ee9a601a36698a4b1c1f49e555dcc671958b04d560787caa23",
+      "internal-production-20261010-01:1:begin_stage": "71a16bf07d2cefe52862f0742c0b22915417516af379d0ab17f1779e47c06398",
+      "internal-production-20261010-01:2:submit_outputs": "417c30efffab76a78393d3654fa860ca2bca03366614c289ac0b2f0acee2a91a"
+    },
+    "history": [
+      {
+        "evidence_ref": "internal-cloud:bind_stage_task",
+        "event_type": "bind_stage_task",
+        "occurred_at": "2026-10-10T15:01:20.334181+00:00",
+        "event_id": "internal-production-20261010-01:0:bind_stage_task"
+      },
+      {
+        "evidence_ref": "internal-cloud:begin_stage",
+        "event_type": "begin_stage",
+        "occurred_at": "2026-10-10T15:01:20.468745+00:00",
+        "event_id": "internal-production-20261010-01:1:begin_stage"
+      },
+      {
+        "evidence_ref": "internal-cloud:submit_outputs",
+        "event_type": "submit_outputs",
+        "occurred_at": "2026-10-10T15:01:35.241028+00:00",
+        "event_id": "internal-production-20261010-01:2:submit_outputs"
+      },
+      {
+        "evidence_ref": "inspection:231130374363db7eb756001df9de18bf31f97e928c3b23ed3dc7c94cf39dbc20",
+        "event_type": "assess_stage",
+        "occurred_at": "2026-10-10T15:01:37.784073+00:00",
+        "event_id": "internal-quality-d2790f5d5449ea678903a393edb0893c5262fc710fb788b06123be2fa8f50714"
+      },
+      {
+        "evidence_ref": "inspection:d37303643fcbb50b952798c7b144571e15d9b66d3f7c990f61c29fdd9c8b2495",
+        "event_type": "assess_stage",
+        "occurred_at": "2026-10-10T15:10:42.591421+00:00",
+        "event_id": "internal-quality-3d4c017d8436b5a5c44e57bd9fbc76220d1d16f0b3d5d888b45189a95ef25d13"
+      },
+      {
+        "evidence_ref": "internal-cloud:submit_outputs",
+        "event_type": "submit_outputs",
+        "occurred_at": "2026-10-10T15:10:59.048303+00:00",
+        "event_id": "internal-production-20261010-01:5:submit_outputs"
+      },
+      {
+        "evidence_ref": "inspection:ef96a169d16875e81974446ab69c6ce8af1565d1edf791fea597c1cfde5c87ed",
+        "event_type": "assess_stage",
+        "occurred_at": "2026-10-10T15:11:01.693786+00:00",
+        "event_id": "internal-quality-9abef716d2158c9a1f5e12602878198502255fc7b7a2f5e088bf15771afa118f"
+      },
+      {
+        "evidence_ref": "internal-cloud:bind_stage_task",
+        "event_type": "bind_stage_task",
+        "occurred_at": "2026-10-10T15:13:16.871086+00:00",
+        "event_id": "internal-production-20261010-01:7:bind_stage_task"
+      },
+      {
+        "evidence_ref": "internal-cloud:begin_stage",
+        "event_type": "begin_stage",
+        "occurred_at": "2026-10-10T15:13:17.020601+00:00",
+        "event_id": "internal-production-20261010-01:8:begin_stage"
+      },
+      {
+        "evidence_ref": "internal-cloud:submit_outputs",
+        "event_type": "submit_outputs",
+        "occurred_at": "2026-10-10T15:13:29.550232+00:00",
+        "event_id": "internal-production-20261010-01:9:submit_outputs"
+      },
+      {
+        "evidence_ref": "inspection:c9249ef44428c053f0245c2273d4c11502065399b5074b6c5dd5dbec223d6063",
+        "event_type": "assess_stage",
+        "occurred_at": "2026-10-10T15:13:32.233443+00:00",
+        "event_id": "internal-quality-71c5b74d9dc15a716107ebbb3ec97936277cd8f43beae1dac24c30eb87a36f1f"
+      }
+    ]
+  },
+  "action_keys": [
+    "main-task",
+    "main-v1-upload",
+    "main-v1-submission-comment",
+    "main-v1-quality-note",
+    "main-v2-upload",
+    "main-v2-submission-comment",
+    "main-v2-quality-note",
+    "story-task",
+    "story-v1-upload",
+    "story-v1-submission-comment",
+    "story-v1-quality-note",
+    "final-delivery"
+  ],
+  "source_evidence": {
+    "control_generation": 1,
+    "thread_id": "1a12646136af37f0",
+    "evidence_ref": "gmail-read:1a12646136af37f0",
+    "source_fingerprint": "e6d184f3cf67ba5ffaa00ea44c801af36eb1e03691416551a95d31a5be9a1492",
+    "expires_at": "2026-10-10T18:01:14.805335+00:00",
+    "message_id": "1a12646136af37f0",
+    "subject": "HAMLE-IC-URETIM-20261010-01",
+    "verified": true,
+    "captured_at": "2026-10-10T15:01:13.963585+00:00"
+  }
+}

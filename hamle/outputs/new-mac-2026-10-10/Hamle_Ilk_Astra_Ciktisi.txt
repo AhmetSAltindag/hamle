@@ -1,0 +1,29 @@
+HAMLE — İLK GERÇEK ASTRA ÇIKTISI
+10 Ekim 2026
+
+Bu, müşteri verisi içermeyen iç talep denemesinin gerçek API yanıtıdır. Mail gönderilmedi; görev açılmadı.
+Model: GPT-6 Astra / max. Tahmini kullanım: 0,21571 USD (kesin fatura değil).
+
+TALEBİ NASIL ANLADI?
+Gamechangers'a yeni katılan ekip arkadaşları için talebin alınması, brief oluşturulması ve revizyon takibini anlatan tek sayfalık, sade Türkçe başlangıç rehberi talebi.
+
+EKSİK BULDUĞU BİLGİLER
+- Esas alınacak mevcut iç süreç dokümanı veya şablon var mı?
+- Rehberin çıktı formatı ne olmalı?
+
+YANIT TASLAĞI — İLK ÇAĞRININ AYNEN ÇIKTISI
+Merhaba,
+
+Yeni katılan Gamechangers ekip arkadaşları için talebin alınması, brief oluşturulması ve revizyon takibini kapsayan tek sayfalık, sade Türkçe rehber talebinizi anladım.
+
+Varsa esas alınacak iç süreç dokümanı veya şablonu ve tercih ettiğiniz çıktı formatını paylaşabilir misiniz?
+
+İstanbul saatiyle 12 Ekim 2026 saat 15.00, talep edilen tarihtir; kapasite ve teslim onayı bulunmadığından kesin teslim tarihi değildir. Sonraki adım, bu bilgilerle içerik kapsamının ve kapasite/termin uygunluğunun insan incelemesinde değerlendirilmesidir.
+
+Hamle
+
+GÖREV TASLAĞI
+Gamechangers | Tek sayfalık başlangıç rehberi
+İnsan incelemesi için görev taslağı: Gamechangers'a yeni katılan ekip arkadaşlarına yönelik tek sayfalık, sade Türkçe başlangıç rehberi hazırlanması. Bölümler: talebin alınması, brief oluşturulması ve revizyon takibi. İç süreç referansı veya şablon ile çıktı formatı netleştirilmeli; kaynakta bulunmayan süreç ayrıntıları varsayılmamalı. Talep edilen tarih: 12 Ekim 2026 saat 15.00 İstanbul. Üretim kapasitesi, görev ataması ve teslim tarihi onaylanmış değil; bu tarih teslim taahhüdü değildir.
+
+Not: Yanıtın dilini daha doğal hale getiren talimat güncellemesi sonradan yapıldı; bunun için ikinci ücretli çağrı yapılmadı.

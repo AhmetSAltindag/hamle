@@ -1,0 +1,113 @@
+{
+  "status": "confirmed",
+  "recorded_at": "2026-10-10T15:18:03.991851+00:00",
+  "phase": "advance",
+  "control_generation": 1,
+  "budget_before": {
+    "limit_microdollars": 50000000,
+    "accounted_spend_microdollars": 0,
+    "held_microdollars": 17000000,
+    "prepaid_purchases_microdollars": 10000000,
+    "total_committed_microdollars": 21000000,
+    "remaining_microdollars": 29000000,
+    "overrun_hold": false,
+    "provider_hard_cap_installed": false
+  },
+  "argv": [
+    "run",
+    "jobs",
+    "execute",
+    "hamle-account-manager",
+    "--region=europe-west1",
+    "--args=v11_internal_worker.py,--phase,advance",
+    "--async"
+  ],
+  "customer_scope_enabled": false,
+  "new_iam_or_secrets": false,
+  "result": {
+    "apiVersion": "run.googleapis.com/v1",
+    "kind": "Execution",
+    "metadata": {
+      "annotations": {
+        "run.googleapis.com/client-name": "gcloud",
+        "run.googleapis.com/client-version": "588.0.0",
+        "run.googleapis.com/creator": "ahmet@gamechangers.com.tr",
+        "run.googleapis.com/execution-environment": "gen2",
+        "run.googleapis.com/lastModifier": "ahmet@gamechangers.com.tr",
+        "run.googleapis.com/operation-id": "0963059f-356c-43e7-8fd1-14b60ec63be6"
+      },
+      "creationTimestamp": "2026-10-10T15:18:08.786633Z",
+      "generation": 1,
+      "labels": {
+        "client.knative.dev/nonce": "luc_zib_civ",
+        "cloud.googleapis.com/location": "europe-west1",
+        "run.googleapis.com/job": "hamle-account-manager",
+        "run.googleapis.com/jobGeneration": "9",
+        "run.googleapis.com/jobResourceVersion": "1791645225330330",
+        "run.googleapis.com/jobUid": "37e16aea-2407-42c1-80f0-1f22aa872bab"
+      },
+      "name": "hamle-account-manager-4sfv9",
+      "namespace": "286533609595",
+      "ownerReferences": [
+        {
+          "apiVersion": "serving.knative.dev/v1",
+          "blockOwnerDeletion": true,
+          "controller": true,
+          "kind": "Job",
+          "name": "hamle-account-manager",
+          "uid": "37e16aea-2407-42c1-80f0-1f22aa872bab"
+        }
+      ],
+      "resourceVersion": "AAZdffjsLMk",
+      "selfLink": "/apis/run.googleapis.com/v1/namespaces/286533609595/executions/hamle-account-manager-4sfv9",
+      "uid": "719d1baa-60f5-4eec-a304-46b47ab940b2"
+    },
+    "spec": {
+      "parallelism": 1,
+      "taskCount": 1,
+      "template": {
+        "spec": {
+          "containers": [
+            {
+              "args": [
+                "v11_internal_worker.py",
+                "--phase",
+                "advance"
+              ],
+              "command": [
+                "python"
+              ],
+              "env": [
+                {
+                  "name": "HAMLE_ALLOW_FIRESTORE_OPERATIONS",
+                  "value": "yes"
+                },
+                {
+                  "name": "HAMLE_PROJECT_ID",
+                  "value": "gamechangers-hamle"
+                },
+                {
+                  "name": "HAMLE_FIRESTORE_DATABASE",
+                  "value": "hamle-operations"
+                }
+              ],
+              "image": "europe-west1-docker.pkg.dev/gamechangers-hamle/hamle-runtime/hamle-account-manager@sha256:835abc23a95eda5375307a21c2d1d1c52ad2eca6c0d45a7dc1fe666e75529f34",
+              "resources": {
+                "limits": {
+                  "cpu": "1",
+                  "memory": "512Mi"
+                }
+              }
+            }
+          ],
+          "maxRetries": 0,
+          "serviceAccountName": "hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com",
+          "timeoutSeconds": "600"
+        }
+      }
+    },
+    "status": {
+      "logUri": "https://console.cloud.google.com/logs/viewer?project=gamechangers-hamle&advancedFilter=resource.type%3D%22cloud_run_job%22%0Aresource.labels.job_name%3D%22hamle-account-manager%22%0Aresource.labels.location%3D%22europe-west1%22%0Alabels.%22run.googleapis.com/execution_name%22%3D%22hamle-account-manager-4sfv9%22"
+    }
+  }
+}

@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-10-10T11:46:25.752575+00:00",
+  "scope": "Read-only source audit. No live API, credential access, deployed change or model-selection authorization.",
+  "current_live_profile": {
+    "provider": "openai",
+    "model": "gpt-6-astra",
+    "reasoning_effort": "max"
+  },
+  "portability_state": "Core business flow reusable; another provider is not currently plug-compatible.",
+  "reusable": [
+    "Gmail and Basecamp adapters",
+    "persistent work/thread/action identity and deduplication",
+    "human stop/generation and action leases",
+    "exact source/recipient checks",
+    "provider-neutral request/analysis JSON domain structure"
+  ],
+  "coupling": [
+    {
+      "files": [
+        "model.py:16",
+        "model.py:145",
+        "model.py:187",
+        "model.py:219",
+        "model.py:281"
+      ],
+      "finding": "Astra/max profile, OpenAI Responses endpoint/wire format, response ID/status/output/usage parser, and result metadata are fixed."
+    },
+    {
+      "files": [
+        "worker.py:18",
+        "worker.py:132",
+        "worker.py:280",
+        "worker.py:288",
+        "worker.py:293",
+        "worker.py:302",
+        "worker.py:500"
+      ],
+      "finding": "Worker calls model build_request before reservation, accepts only Astra/max, loads only OpenAI key, reserves fixed 2 USD for openai, and reports hardcoded model metadata."
+    },
+    {
+      "files": [
+        "cloud_store.py:21",
+        "cloud_store.py:417",
+        "cloud_store.py:778",
+        "cloud_store.py:813"
+      ],
+      "finding": "Ledger supports only google_cloud/openai/visual_generation; success/failure receipts and recovery enforce openai, Astra/max, OpenAI response IDs and usage shape."
+    },
+    {
+      "files": [
+        "cloud_providers.py:26",
+        "cloud_providers.py:287",
+        "provision_metadata.py:82"
+      ],
+      "finding": "Secrets and IAM provisioning authorize one OpenAI secret, with no alternative provider credential."
+    },
+    {
+      "files": [
+        "requirements-cloud.txt",
+        "Dockerfile:9",
+        "package_cloud_source.py:19"
+      ],
+      "finding": "Requests transport has no OpenAI SDK requirement. Container/source package is portable as code, but new modules must be explicitly included in package allowlist. Firestore/Cloud Run hosting remains Google-specific."
+    }
+  ],
+  "minimal_changes": [
+    {
+      "order": 1,
+      "change": "Separate domain input/output schema validation from provider transport/parser. Define validated ModelResult and ModelFailure contracts; keep authority and dispatch outside model."
+    },
+    {
+      "order": 2,
+      "change": "Add immutable allowlisted model profiles and deterministic routing policy with enabled=false for new hybrid route. Persist provider/model/effort/policy version/limits/route reason before budget reservation; bind result to that selection. Default remains accepted Astra/max."
+    },
+    {
+      "order": 3,
+      "change": "Pass selected profile through request builder, worker envelope, normalized receipt, and ledger. Preserve old Astra receipt schema/records. Reconcile actual model usage separately from conservative profile-specific reservation; price snapshot is not invoice."
+    },
+    {
+      "order": 4,
+      "change": "Permit one explicit planned escalation after a completed low-confidence routine analysis only within a preauthorized two-stage budget and immutable attempt lineage; no automatic provider/model fallback for unknown, incomplete, failed or refused calls. Multi-model analysis still yields one business proposal and one action identity."
+    },
+    {
+      "order": 5,
+      "change": "Add offline contract/routing/migration tests, adversarial scope/escalation examples, and paired quality acceptance cases. Update strict deployment file allowlist. No activation before chosen model, account access, bounded live eval and valid spend/operational authority."
+    }
+  ],
+  "activation_blockers": [
+    "User selection of economical routine model/profile and permitted escalation route",
+    "Routine-model live access and task-specific quality acceptance not yet demonstrated",
+    "Ongoing budget beyond 2026-10-12 is not authorized",
+    "Autonomous customer scope, verified brand/service/contacts/project mapping and unseen CC-removal/delayed-action control remain separate unmet requirements"
+  ],
+  "other_provider_future": {
+    "supported_now": false,
+    "required": [
+      "Provider-specific request/response/usage adapter",
+      "Explicit provider/account and customer-data destination authorization",
+      "Separate secret/IAM allowlist and provider ledger migration",
+      "Equivalent acceptance checks; reuse Gmail/Basecamp/core rather than rebuilding"
+    ]
+  },
+  "evidence_cautions": [
+    "Existing source package is credential-free but is not a proven Claude connector.",
+    "Changing MODEL alone fails current worker/store guards.",
+    "README-model.txt still says 8192 output tokens while live source model.py uses 16384; source is current.",
+    "No public pricing or supported effort-level claim was independently verified by this local audit."
+  ],
+  "network_calls": 0,
+  "paid_calls": 0,
+  "audit_step_application_files_modified": false,
+  "local_preparation": {
+    "completed_at": "2026-10-10T11:49:05.399220+00:00",
+    "application_files_modified": true,
+    "files": [
+      "model.py",
+      "model_profiles.py",
+      "test_model_profiles.py",
+      "README-model.txt"
+    ],
+    "legacy_default": "astra-max-v1",
+    "candidate_profile": "sol-medium-candidate-v1",
+    "candidate_live_enabled": false,
+    "tests": {
+      "command": "../hamle-gmail-connector/.venv/bin/python -B -m unittest test_model test_model_profiles test_worker test_cloud_store",
+      "passed": 129,
+      "new_profile_test_cases": 10
+    },
+    "provider_neutral_boundary": "validate_analysis(analysis, request_input=None)",
+    "deployed": false,
+    "live_api_calls": 0,
+    "credentials_accessed": false,
+    "worker_store_changed": false,
+    "future_provider_adapter_present": false
+  }
+}

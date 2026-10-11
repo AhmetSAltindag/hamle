@@ -1,0 +1,209 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-10-10T14:26:27.978362+00:00",
+  "reviewer": "independent_wat_review_subagent",
+  "scope": "Filled WAT workbook, new intake/quality modules, optional scored autonomy and delivery integration; no production acceptance.",
+  "source_workbook": {
+    "path": "/Users/ahmetsaltindag/Desktop/Hamle_v1_1_Marka_ve_Hizmet_Formu.xlsx",
+    "sha256": "7809c195dd92fcffca91cf943a8aef09ca4b7f80eb14500f85cad21c1aced916",
+    "read_only": true,
+    "relevant_cells": [
+      "Markalar!A11:F11",
+      "Kişiler!A11:G13",
+      "Hizmetler!A11:J11"
+    ],
+    "email_normalization": "Trailing spaces removed only; no inferred addresses.",
+    "sample_rows_excluded": true
+  },
+  "verified_provider_evidence": [
+    {
+      "path": "../wat-pilot-20261010/basecamp-read-evidence.json",
+      "result": "Hamle identity, active WAT project 40694338, clients_enabled=false, known agency people and four actual lists verified by root through read-only calls.",
+      "content_writes": 0
+    },
+    {
+      "path": "../wat-pilot-20261010/assets-metadata-evidence.json",
+      "result": "Six root vault entries seen; no asset file bytes inspected and no current approved-version acceptance.",
+      "file_bytes_examined": 0
+    }
+  ],
+  "current_user_rule_reconciliation": {
+    "mail_first": true,
+    "whatsapp_direct_integration": "v1.2; an authorized agency email can attest an earlier WhatsApp request in v1.1.",
+    "reply_all": "Only actual authorized latest headers; never add a customer from quoted relay text.",
+    "basecamp_customer_membership": "Workbook says customers are not in Basecamp; relevant people means verified agency team, no customer invitations.",
+    "social_category": "Parent relayed current explicit user confirmation: social video stays in Sosyal Medya, not Motion.",
+    "production_sequence": "Parent relayed current explicit user confirmation: when both are required, Berkay design then Samet animation.",
+    "quality_bands": {
+      "candidate_min": 90,
+      "human_min_inclusive": 80,
+      "revision_below": 80
+    },
+    "quality_humans": [
+      "ozge@gamechangers.com.tr",
+      "ahmet@gamechangers.com.tr",
+      "cansu@gamechangers.com.tr"
+    ],
+    "release_rule": "Latest direct user flow authorizes 90+ quality candidate and 80–<90 any listed human; optional scored policy supports it without fabricating Özge release. Legacy release mode unchanged. Actual WAT customer sending remains disabled.",
+    "revision_scope": "Monthly social row specifies 2 customer revisions and 2 workdays; not silently extended to all ATL/BTL/field jobs. Internal QA attempts use a separate bounded counter."
+  },
+  "closed_review_findings": [
+    {
+      "id": "WAT-R01",
+      "issue": "Basecamp agency amendments were initially unsupported.",
+      "resolution": "Exact task/actor verified Basecamp amendment branch preserves mail recipients and versions brief."
+    },
+    {
+      "id": "WAT-R02",
+      "issue": "Brief amendment lacked fresh risk classification and exact proposal binding.",
+      "resolution": "Requires verified classification bound to proposal hash; commercial/strategy/social planning retain escalation."
+    },
+    {
+      "id": "WAT-R03",
+      "issue": "Producer question left old QA/release/pending delivery records active.",
+      "resolution": "Archives invalidated evidence, holds delivery, requires atomic queue invalidation."
+    },
+    {
+      "id": "WAT-R04",
+      "issue": "Unchecked string fields could masquerade as service/role lists.",
+      "resolution": "Strict exact string arrays and boolean permission types, including Basecamp-only people."
+    },
+    {
+      "id": "WAT-R05",
+      "issue": "Change/question dedup used ID alone and could lose altered events.",
+      "resolution": "Same ID plus changed immutable payload fails closed; exact repeats are no-ops."
+    },
+    {
+      "id": "WAT-R06",
+      "issue": "Brief agreement lacked exact extracted requirements binding.",
+      "resolution": "Verified agreement includes requirements SHA-256."
+    },
+    {
+      "id": "WAT-R07",
+      "issue": "Quality observation requirement refs could point to unrelated criteria.",
+      "resolution": "Accepted policy binds exact requirement refs and explicitly allowed methods per critical check."
+    },
+    {
+      "id": "WAT-R08",
+      "issue": "Known format failure with no assessment initially skipped quality safety before revision.",
+      "resolution": "Current safety and accepted policy are checked first, even for known format failures without assessment."
+    },
+    {
+      "id": "WAT-R09",
+      "issue": "Internal revision cap initially held an already-confirmed repeated comment.",
+      "resolution": "Exact confirmed receipt dedup precedes new revision allowance check."
+    },
+    {
+      "id": "WAT-R10",
+      "issue": "Internal quality note exposed opaque implementation codes.",
+      "resolution": "Turkish outcomes, accepted criterion descriptions and recorded findings form the producer note."
+    },
+    {
+      "id": "WAT-R11",
+      "issue": "The shared autonomy gate could authorize scored delivery without a persisted Basecamp score note, bypassing coordinator order.",
+      "resolution": "quality_note_proof is mandatory at the shared deliver_file gate; exact context, receipt and current task/work binding are checked."
+    },
+    {
+      "id": "WAT-R12",
+      "issue": "A previous verified note receipt could be wrapped in a new context for a different valid approval without changing the receipt.",
+      "resolution": "Immutable trusted receipt carries quality_context_sha256; record_outcome, coordinator unlock, mail outcome and common authority gate reject missing or different context. Independent concrete reproducer now fails closed."
+    },
+    {
+      "id": "WAT-R13",
+      "issue": "Scored-mail note target needed the same verified project/list/work/task binding as internal writes.",
+      "resolution": "Root additionally validates private scope, work/service/thread/project/list/task identity, prepared task fingerprint and target verification age before accepting note proof."
+    }
+  ],
+  "independent_validation": {
+    "command": "../hamle-gmail-connector/.venv/bin/python -m unittest test_autonomy_policy test_scored_autonomy test_v11_intake_plan test_v11_quality_gate test_v11_delivery test_v11_queue_delivery test_v11_scored_delivery -q",
+    "passed": true,
+    "test_count": 250,
+    "duration_seconds": 0.128,
+    "meaning": "Synthetic/local policy and integration regressions; no real WAT artifact inspection or autonomous customer acceptance.",
+    "open_code_review_blockers": [],
+    "additional_manual_reproduction": "A real old verified note receipt wrapped in a new valid human-approval context was allowed before repair; now denied with scored_quality_note_readback_missing, keeping the receipt unchanged."
+  },
+  "remaining_live_gates": [
+    "Root runtime ingestion/dispatcher and persistent queue migration/integration remain necessary; these modules and profiles do not enable customers.",
+    "Current actual brand files, rights, formats and per-work brief requirements need inspection and approved source/version evidence.",
+    "A real WAT request, actual staff output and scored visual/video evaluation must be accepted through the full workflow.",
+    "Internal quality revision retry limit and rubric acceptance must be explicit; score is rubric conformance, never confidence or probability.",
+    "Fresh participation for delayed writes remains necessary: Hamle cannot see a later mail that removed it from CC. No hidden Ahmet inbox monitoring or forwarding.",
+    "Customer/service scope, dynamic requested versus confirmed deadlines, and non-social revision/SLA coverage must not be inferred from the one social row.",
+    "12 October end budget expiry remains; no new post-expiry spending authorization exists."
+  ],
+  "progress_accounting": {
+    "baseline_v11_points": 38,
+    "baseline_total": 100,
+    "weights_modified": false,
+    "new_live_acceptance_points_awarded_by_reviewer": 0,
+    "original_plan": {
+      "items": 65,
+      "points": 30,
+      "done_items": 21,
+      "unchanged": true
+    }
+  },
+  "side_effects_by_reviewer": {
+    "live_api_calls": 0,
+    "model_calls": 0,
+    "provider_writes": 0,
+    "cloud_mutations": 0,
+    "application_source_edits": 0,
+    "review_output_written": true
+  },
+  "reviewed_file_sha256": {
+    "v11_intake_plan.py": "5c1467b51c6b08bf6203c679a9c65e3ea78024ab49d4347fd34d8d5443d55be7",
+    "test_v11_intake_plan.py": "b6370088606f3a83a5f5a4f1f813b3e29d2cb73bd19a07ebb8a407d0c04a60b9",
+    "v11_quality_gate.py": "29682b3c9811986c5cd9f1e2820d0fb9f568ca1cdbae35803aaacf615e35afd8",
+    "test_v11_quality_gate.py": "da3a556a1cacbc69024fa9e5a72b78af6c1651f8e78bc6063e0a2f436228af96",
+    "autonomy_policy.py": "7fccacd57ce890199ac89ddc25cbf9913e8cb21774da0176f45d1f55147d0bda",
+    "test_scored_autonomy.py": "901534da8ed8e8684721887f59a219678a82d78abf7bce6256864d8ea4eb655b",
+    "v11_delivery.py": "bd1d8a885faef63088d86a7641339cf025c9866dd898064a59207c4a5d8d96b1",
+    "test_v11_scored_delivery.py": "d813d9965fc12a5b9137ba49e5f0b1db1788bdcdc0c903449da2707ad57e5a17"
+  },
+  "previous_independent_validation": {
+    "command": "../hamle-gmail-connector/.venv/bin/python -m unittest test_autonomy_policy test_scored_autonomy test_v11_intake_plan test_v11_quality_gate test_v11_delivery test_v11_queue_delivery test_v11_scored_delivery -q",
+    "passed": true,
+    "test_count": 222,
+    "duration_seconds": 0.075,
+    "meaning": "Synthetic/local policy and integration regressions; no real WAT artifact inspection or autonomous customer acceptance.",
+    "open_code_review_blockers": []
+  },
+  "review_round": 2,
+  "catalog_review": {
+    "version": "wat-intake-20261010-v2",
+    "sha256": "b9404f08625006b983b20e49cd64d820174ae75720e4ffbeb0e820df21c8c7d8",
+    "source": "../wat-pilot-20261010/wat-planning-catalog.json",
+    "confirmed": "Existing project/list/person IDs match read-only provider evidence. Social video stays in Sosyal Medya; mixed design/animation uses ordered production stages; static graphic alone cannot enter Motion.",
+    "planning_assumption": "Combined non-social graphic+motion work in one Motion list is explicitly derived_planning_assumption with separately_live_accepted=false. It is not an independently confirmed live routing rule.",
+    "all_intents_live_disabled": true,
+    "synthetic_planning_validation": "Seven root-run synthetic catalog scenarios; not real customer mail or model quality acceptance.",
+    "no_material_catalog_security_blocker_found": true
+  },
+  "durable_score_note_flow": {
+    "before_customer_delivery": "90+ and human-accepted midband produce an internal score note intent first; only its exact confirmed provider readback allows a later delivery intent.",
+    "context_bound_fields": [
+      "quality binding",
+      "full assessment",
+      "rubric policy",
+      "human approval when applicable",
+      "Basecamp work/task target"
+    ],
+    "separate_write_authority": true,
+    "unknown_note_result_stops_delivery": true,
+    "old_receipt_rewrapping_rejected": true,
+    "confirmed_delivery_not_resent": true,
+    "live_provider_writes_during_review": 0
+  },
+  "historical_wat_example_boundary": {
+    "root_reported_reference_task_id": 10309337809,
+    "evidence_directory": "../wat-pilot-20261010/example-10309337809",
+    "meaning": "Root and intake agent inspect an explicitly supplied historical reference and selected files; this independent code review does not award live autonomous-delivery or model-calibration acceptance for it.",
+    "asset_vault_boundary_unchanged": "Initial vault metadata record itself still contains zero inspected file bytes; later explicitly scoped historical example files are a separate evidence set."
+  },
+  "reviewed_support_file_sha256": {
+    "wat-planning-catalog.json": "b9404f08625006b983b20e49cd64d820174ae75720e4ffbeb0e820df21c8c7d8",
+    "validate_wat_planning.py": "fc6d8eeb3844517f9105861aa80564df37a3b08ff501021190937efb8207ef2a"
+  }
+}

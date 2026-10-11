@@ -1,0 +1,71 @@
+{
+  "case_id": "commercial_extra_scope",
+  "completed_at": "2026-10-10T11:57:09.733748+00:00",
+  "result": {
+    "status": "review_required",
+    "action_eligible": false,
+    "model": "gpt-6.1-sol",
+    "reasoning_effort": "medium",
+    "provider": "openai",
+    "profile_id": "sol-medium-evaluation-v1",
+    "response_id": "resp_09b912338d09ac1e016aca2806697087d19534ecca5fca1ca2",
+    "analysis": {
+      "request_summary": "Rabam’ın mevcut örnek çalışması için kapsam dışı beş ek revizyonun ücretsiz kabulü veya yüzde 20 indirim talebi hakkında bugün teyit isteniyor. Vaka tamamen sentetik.",
+      "intent": "commercial",
+      "known_facts": [
+        "Talep Rabam markasına ait mevcut bir örnek çalışmanın devamıdır.",
+        "Beş ek revizyon talep ediliyor ve kaynakta bunların kapsam dışı olduğu belirtiliyor.",
+        "Ücretsiz kabul veya gerekirse yüzde 20 indirim isteniyor.",
+        "Ticari yanıt için bugün teyit talep ediliyor.",
+        "Mevcut hizmet ve revizyon sözleşmesi paylaşılmamış; sözleşme sınırları doğrulanmamış.",
+        "Ticari karar yetkisi Ahmet’tedir.",
+        "Vaka sentetiktir ve gerçek müşteri verisi içermez."
+      ],
+      "missing_questions": [
+        "Mevcut hizmet ve revizyon sözleşmesini paylaşabilir misiniz?",
+        "Beş ek revizyonun detaylarını paylaşabilir misiniz?"
+      ],
+      "brief": {
+        "deliverables": [
+          "Beş ek revizyonun sözleşme kapsamı açısından değerlendirilmesi",
+          "Ücretsiz revizyon veya yüzde 20 indirim talebinin Ahmet tarafından değerlendirilmesi",
+          "Ticari değerlendirme sonrasında kapsam ve çalışma planının netleştirilmesi"
+        ],
+        "audience": null,
+        "requested_deadline": null,
+        "confirmed_deadline": null
+      },
+      "reply_draft": {
+        "subject": "Re: SENTETİK: Ek revizyon ve ücret",
+        "body": "Mevcut örnek çalışma için beş ek revizyonun ücretsiz kabul edilmesini veya gerekirse yüzde 20 indirim uygulanmasını istediğinizi ve bugün teyit beklediğinizi anladım.\n\nSözleşme kapsamı ve ticari değerlendirme netleşmeden ücretsiz revizyon ya da indirim teyidi veremiyorum. Talebinizi Ahmet’in değerlendirmesine sunacağım.\n\nMevcut hizmet ve revizyon sözleşmesini ve beş revizyonun detaylarını paylaşabilir misiniz? Bu bilgilerle kapsamı ve sonraki adımı netleştirebiliriz."
+      },
+      "task_draft": {
+        "title": "Rabam | Mevcut çalışma: ek revizyon ve ticari değerlendirme",
+        "description": "Mevcut işe eklenecek takip notu: Beş kapsam dışı ek revizyon için ücretsiz kabul veya yüzde 20 indirim talep ediliyor; bugün ticari teyit bekleniyor. Sözleşme sınırları doğrulanmadı, revizyon detayları eksik. Sonraki adım: sözleşme ve revizyon listesini istemek, ticari talebi Ahmet’in değerlendirmesine sunmak. Ücret, indirim ve teslim onayı bulunmuyor. Vaka tamamen sentetiktir.",
+        "assignee": null,
+        "due_at": null
+      },
+      "escalation": {
+        "owner": "ahmet",
+        "reason": "Ücretsiz ek revizyon ve yüzde 20 indirim talepleri ticari karar gerektiriyor. Sözleşme sınırları doğrulanmadığından kapsam ve ücret kesinleştirilemez."
+      }
+    },
+    "usage": {
+      "input_tokens": 1466,
+      "output_tokens": 921,
+      "total_tokens": 2387,
+      "input_tokens_details": {
+        "cached_tokens": 1304
+      },
+      "output_tokens_details": {
+        "reasoning_tokens": 186
+      }
+    },
+    "automatic_retry_allowed": false
+  },
+  "routing_check_passed": true,
+  "token_cost_estimate_usd": 0.0096644,
+  "is_invoice": false,
+  "human_semantic_review_required": true,
+  "business_writes": 0
+}

@@ -1,0 +1,57 @@
+HAMLE’NİN MAC KAPALIYKEN ÇALIŞMASI — 10 EKİM 2026
+
+Güncelleme: 2026-10-10T03:04:19.468139+03:00 (İstanbul).
+İlk gerçek iç koordinasyon akışı geçti: gerçek mail → bulutta Astra/max değerlendirmesi → Ahmet’in kesin içerik onayı → özel iç projede 1 görev + Ahmet’e 1 yanıt → iki sağlayıcı kaydının geri okunması. Ahmet yanıtın gelen kutusuna ulaştığını ayrıca “Evet, geldi” diyerek doğruladı. Ahmet’in posta kutusuna API erişimi kullanılmadı.
+
+1. GERÇEK SONUÇ VE KAPSAMI
+İç talep: HAMLE-IC-IS-20261010-01. Hamle gerçek maili okuyup özet, brief, eksik sorular, yanıt ve görev taslağı hazırladı. Aynı öneri ve tam çıktı izi korundu; Ahmet yalnız iç koordinasyonu onayladı.
+Basecamp: Hamle — İç Deneme projesinde, Hamle’ye atanmış 1 görev; kimlik 10392247471.
+Görev: https://app.basecamp.com/5898865/buckets/49184053/todos/10392247471
+Gmail: Hamle hesabından Ahmet’e 1 yanıt; Hamle tarafındaki ileti kimliği 1a12316fc6221a84. Ahmet kutusundaki kimlik aynı varsayılmıyor.
+İki işlemin durumu son kalıcı kayıtta “verified”. Son geri okuma hamle-account-manager-22ml9 çalıştırmasında başarıyla tamamlandı; sonuç internal_actions_readback_verified, bu son çalıştırmada yeni yazma 0 ve otomatik tekrar kapalı. Geri okuma düzeltmeleri aynı sağlayıcı kayıtlarında uygulandı; görev veya mail yeniden üretilmedi.
+Bu kabul yalnız ilk kesin onaylı iç koordinasyon akışını kapsar. Sürekli takip, müşteri otomasyonu ve dört rolün bütün işleri için canlı kabul değildir.
+
+2. STRATEJİ VE İNSAN KARARI
+Talep Gamechangers’ın son çeyrek sosyal medya yaklaşımı ve stratejisidir. Cansu + Ahmet’in strateji değerlendirmesi açık; sosyal içerik/trend tarafı Özge + Hamle’nin birlikte çalışacağı alandır. Cansu’ya veya Özge’ye danışıldığı doğrulanmadı.
+Verilen onay yalnız mevcut Ahmet yanıtı ve özel Hamle görevini kapsar. Strateji, üretim, bütçe veya teslim kararı verilmedi. Kesin teslim tarihi yok.
+Şu anda kullanıcıdan yeni adım gerekmiyor.
+
+3. BULUT, KİMLİK VE KONTROL
+V5 derlendi, dağıtıldı ve gerçek kaynak bilgileri geri okunarak doğrulandı. Bulut işçisi ve Google kimliğiyle açılan kontrol servisi hazır; kontrol “İç inceleme açık”, nesil 1. Her yeni çıktı için ayrı kesin onay gerekir.
+Kontrol: https://hamle-control-286533609595.europe-west1.run.app
+Gmail bulut kimliği Hamle; izinler yalnız gmail.readonly + gmail.send, oturum yenileme geçti. Basecamp hesabı 5898865, kişi 53358100, özel proje 49184053, bilinen iki üye ve kapalı müşteri görünürlüğü doğrulandı. Görevlerin üst kaydı Todoset 10384126975.
+Üç gizli bağlantının ilk bulut aktarımları ve geri okumaları doğrulandı. Sırlar kaynak kodda bulunmuyor; Gmail çalışma sırasında güvenli oturum yenilemesi yaptı.
+Durdur/devral, kesin çıktı onayı, aynı işlemi tekrar etmeme ve sonucu belirsiz gönderimi otomatik tekrarlamama kontrolleri mevcut. Daha önce sağlayıcıya ulaşmış işlem durdurmayla geri alınamaz.
+
+4. GERÇEK SONRAKİ İŞLER
+Aynı mail zincirindeki devam mesajlarını aynı işe ve mevcut Basecamp görevine bağlamak; yeni talep gibi ikinci görev açmadan takip ve revizyonları mevcut kayda işlemek gerekiyor. Bu sürekli takip akışı henüz uygulanmadı.
+Ardından süre, maliyet, güncel yetki ve insan devralma korumalarıyla Europe/Istanbul hafta içi 08.30–18.30 dahil yarım saatte bir 21 kontrolün canlı kabulü yapılmalı. Zamanlayıcı henüz kurulmadı veya açılmadı. İlk başarılı 08.30 turundan sonraki sabah özeti de canlı kabul bekliyor.
+Cansu/Özge’nin doğrulanmış adresleri, hizmet/revizyon sınırları, yetkili kişiler ve güncel marka dosyaları tamamlanmalı. Tarih/doğum günü kaynakları ayrıca doğrulanmalı.
+
+5. BÜTÇE VE MODEL
+Ortak sınır 50 USD; son kalıcı bulut kaydında ön ödeme ve rezervler dahil bağlı tutar 18 USD, serbest tutar 32 USD. Sağlayıcı faturaları ve kalan kredi henüz mutabakatlı değil; bu tutarlar kesin fatura toplamı değildir.
+Tamamlanan gerçek Astra/max çağrısı toplam 2: yerel sentetik deneme 1, gerçek iç mail için bulut çağrısı 1. Token maliyeti tahminleri sırasıyla 0,21571 USD ve 0,24662 USD; toplam 0,46233 USD. Bunlar kesin fatura değildir ve mevcut 10 USD OpenAI ön ödemesine tekrar eklenmez. Otomatik kredi yükleme kapalıdır.
+Google için 3 USD önceki deneme ve 5 USD kurulum payı tutuluyor; gerçek maliyet mutabakatı olmadan serbest bırakılmadı. Model tedbir payları da mevcut kredi içinde korunuyor.
+Harcama izni 12 Ekim 2026 saat 23.59 İstanbul’da sona erer. Bütçe alarmı tek başına harcamayı kesmez; sağlayıcı düzeyinde kesin kesici doğrulanmış değildir.
+
+6. MÜŞTERİLER VE DİĞER ROLLER
+Müşteri otomasyonu kapalı. Önce geçmiş gerçek taleplerde gönderimsiz gölge çalışma, sonra kabulü geçen marka/hizmet kapsamları açılmalı. WAT Mobilite, Rabam, ya da, Multicosmetics, Altınmarka, Bikaldi, HAN Spaces ve Gamechangers ayrı kapsamlardır.
+Hamle’ye hiç ulaşmayan yeni mailde CC’den çıkarılma yalnız Hamle kutusundan görülemez; bu açık sınır çözülmeden ilgili gecikmeli otomatik müşteri gönderimi açılmayacak.
+Öncelik müşteri temsilcisi iş akışı; ardından metin ve dar grafik kapsamı. Animasyonun geniş bağımsız üretimi ayrı kabul gerektirir. WhatsApp bağlı değildir.
+
+7. KABUL TABANI VE GEÇMİŞ KANITLAR
+Aynı 65 iş ve ağırlıkları korunuyor: 19 kabul edilmiş iş, 27/100 puan. Bütün işler için bağımsız canlı kabul tamamlanan ajan sayısı 0/4. İlk dar iç koordinasyonun geçmesi bu tabanı kendiliğinden değiştirmez.
+V3 birleşik yerel test kaydı 197’dir; bu belge güncellemesinde yeni test çalıştırılmadı. Yerel testler canlı kabul yerine sayılmaz.
+İlk V1 başlangıç hatası, V3 geri okuma sorunları ve dağıtılmayan V4 ara derlemesi, onay öncesi ve işlem bekleyen aşamalar silinmedi. Son V5 kanıtı güncel sonuçtur; önceki kayıtlar tarihli geçmiş olarak korunur.
+12 Ekim için kapsam doğrulanmış sonuçlara göre değerlendirilir; tüm markalarda dört rolün yüzde 100 bağımsız çalışması vaat edilmez.
+
+SON KANITLAR
+cloud-first-internal-completion.json: iki işlem verified, kullanıcı teslim teyidi, açık strateji kararı, 18/32 USD bütçe ve kapalı zamanlayıcı/müşteri akışı.
+cloud-app-v5-build-verified.json ve cloud-app-v5-deployment-verified.json: başarılı son derleme ve gerçek dağıtım bilgileri.
+cloud-execution-v5-final-readbacks.json: son sağlayıcı geri okuma çalıştırması; kalıcı doğrulama kaydı yukarıdaki completion dosyasıdır.
+cloud-first-real-inference.json ve cloud-execution-v2-internal-review.json: gerçek bulut Astra/max değerlendirmesi.
+cloud-first-real-approval-state.json: aynı öneri için dar iç koordinasyon onayı.
+openai-first-inference.json: önceki yerel sentetik model çağrısı.
+verification.json: tarihli önceki durumları da koruyan güncel toplu kayıt.
+
+cloud-first-internal-verified.png: canlı kontrol ekranında iki işlem de “Geri okuma ile doğrulandı”.

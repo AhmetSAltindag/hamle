@@ -1,0 +1,89 @@
+{
+  "recorded_at": "2026-10-10T17:39:26.331544+03:00",
+  "status": "cloud_admin_reauthentication_required",
+  "cloud_current_state_verified": false,
+  "reauth_diagnostic": {
+    "credentials_refresh_failed": true,
+    "reauthentication_required": true,
+    "noninteractive_prompt_unavailable": true,
+    "secret_or_error_body_printed": false
+  },
+  "account_configured": "ahmet@gamechangers.com.tr",
+  "target_project": "gamechangers-hamle",
+  "actual_basecamp_readback": {
+    "identity_verified": true,
+    "account_id": 5898865,
+    "project_id": 49184053,
+    "clients_enabled": false,
+    "member_ids": [
+      47470759,
+      53358100
+    ],
+    "parent": {
+      "id": 10384126975,
+      "name": "İş Listesi",
+      "title": "İş Listesi",
+      "type": "Todoset",
+      "status": "active",
+      "visible_to_clients": false,
+      "bucket": {
+        "id": 49184053,
+        "name": "Hamle — İç Deneme",
+        "type": "Project"
+      },
+      "todos_url": "https://3.basecampapi.com/5898865/buckets/49184053/todosets/10384126975/todos.json",
+      "todolists_url": "https://3.basecampapi.com/5898865/buckets/49184053/todosets/10384126975/todolists.json"
+    },
+    "old_acceptance_task_id_do_not_replay": 10392247471
+  },
+  "last_known_only": {
+    "budget_observed_at": "2026-10-10T11:49:48.769097+00:00",
+    "budget": {
+      "limit_microdollars": 50000000,
+      "accounted_spend_microdollars": 0,
+      "held_microdollars": 14000000,
+      "prepaid_purchases_microdollars": 10000000,
+      "total_committed_microdollars": 19000000,
+      "remaining_microdollars": 31000000,
+      "overrun_hold": false,
+      "provider_hard_cap_installed": false
+    },
+    "provider_invoice_reconciled": false,
+    "control_mode": "review_open",
+    "image": "europe-west1-docker.pkg.dev/gamechangers-hamle/hamle-runtime/hamle-account-manager@sha256:82d119ba26ed4a7c00b7c6f7ea78296d0b98943d2c2aff836b76907467f272df",
+    "deployment_verified_at": "2026-10-10T11:15:25.076845+03:00",
+    "iam_database_bindings": [
+      {
+        "condition": {
+          "expression": "resource.name==\"projects/gamechangers-hamle/databases/hamle-operations\"",
+          "title": "hamle_operations_only"
+        },
+        "members": [
+          "serviceAccount:hamle-control@gamechangers-hamle.iam.gserviceaccount.com",
+          "serviceAccount:hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com"
+        ],
+        "role": "roles/datastore.user"
+      }
+    ],
+    "iam_verified_at": "2026-10-10T02:02:56.169972+03:00",
+    "prepaid_paid_invoice": "PT7UPH7U-0001",
+    "prepaid_paid_amount_usd": 10,
+    "billing_record": "openai-billing-funded.json",
+    "scheduler_record": "followup-and-scheduler-current-status.json"
+  },
+  "deployment_plan_prerequisites": [
+    "Renew already-approved Cloud SDK login in browser; do not paste credentials or verification code in chat.",
+    "Re-run read-only preflight after login and verify live budget/control/IAM/secret-version status before build.",
+    "Reconcile actual provider usage if billing UI becomes available; ledger commitment is not invoice.",
+    "Existing runtime database grant, if unchanged, covers any document in hamle-operations; no new account or IAM expansion is needed for an additional internal state document.",
+    "Use fresh proof identity and fresh internal task with existing Todoset parent; no prior acceptance replay.",
+    "Keep automatic customer dispatch disabled and preserve existing narrow internal-only provider allowlist."
+  ],
+  "actions_performed": {
+    "cloud_resource_writes": 0,
+    "business_writes": 0,
+    "new_budget_reservations": 0,
+    "paid_model_calls": 0,
+    "secret_payload_reads": 0
+  }
+}
