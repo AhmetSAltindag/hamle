@@ -43,3 +43,50 @@ teslim, ek dahil); interpreter/classifier/answerer istemleri; iç kalite rubriğ
 Basecamp @mention sgid'leri; bind_stage_task olayının aktörü (açık karar).
 
 Test (sentetik, ağ yok): python3 -B -m unittest test_v11_chain -v
+
+Marka yönlendirmesi (brand routing, 2026-10-11, v11_brand_routing.py)
+---------------------------------------------------------------------
+Katalog: `brand_routing.enabled` (bayrak; false => her iş iç "Hamle İşleri" listesinde),
+`brand_routes` (marka anahtarı -> project_id, todoset_id, lists{social,project,motion},
+list_id (= social), verified, clients_enabled, lists_visible_to_clients, hamle_member,
+sm_person_id, rep_person_id, aliases, match_scope), `brand_routes_excluded` (Cacaonly).
+`basecamp` bloğu (hesap 5898865, Hamle 53358100, iç proje 49184053) ve iç rota değişmedi.
+
+Akış:
+- Marka tespiti deterministik: konu + son mail gövdesi (alıntı satırları, e-posta adresleri,
+  URL'ler atılır), Türkçe küçük harf, tam kelime alias eşleşmesi. Tam bir marka => o markanın
+  rotası; sıfır / birden fazla / dışlanmış (Cacaonly) / kullanılamaz rota => iç rota.
+  "Gamechangers" yalnız KONUDA aranır (imzalarda geçtiği için). "ya da" alias değildir.
+  Yorumlayıcı (model) marka alanı döndürmüyor; model istemleri değişmedi.
+- İş, ilk mailde bağlanır (aynı zincirin sonraki mailleri bağlamı değiştirmez).
+  Markalı iş önce markanın Sosyal Medya listesine bağlanır; yorumdan sonra, görev açılmadan
+  ÖNCE aynı projenin listesine taşınır (queue.retarget_list): sosyal medya içeriği
+  (post/story/reels/carousel...) -> social; diğer animasyon/video -> motion (yoksa project);
+  geri kalan ve karışık -> project.
+- Görev: atanan = markanın SM'i; tamamlanma takipçileri = SM + rep + Ahmet; notify=false;
+  mention'lar yalnız metin. Mevcut BrandTaskWriter korumaları aynen geçerli (hesap, Hamle
+  kimliği, liste visible_to_clients=false POST öncesi yeniden okunur, görev geri okunur).
+- Kullanılamaz rota (Fenerium, New Biz, doğrulanmamış marka): iç rota, başlıkta "[Marka] ",
+  iç bağlam notunda neden + marka sahibinin etiketi.
+- İzin listesi = iç rota + kullanılabilir marka rotalarının listeleri. BasecampCommentWriter ve
+  ChainAuthorizer (create_task + add_comment) bu listenin dışını reddeder.
+- Markalı işlerde kalite/teslim köprüsü (v11_chain_quality) hâlâ iç projeye bağlı: teslim
+  yorumları kalite kontrolünde DURUR ve yöneticiler etiketlenir (fail-closed). Görev açma ve
+  soru-cevap çalışır.
+
+Bir markayı açmadan önce Mac'te okunacaklar (brand_routes_readback.py, salt okunur):
+  BASECAMP_ACCESS_TOKEN=... python3 brand_routes_readback.py [--brand <anahtar>]
+  Her marka projesi için:
+  1. GET /projects/{project_id}.json -> clients_enabled (bool), dock'taki todoset id.
+  2. GET /projects/{project_id}/people.json -> Hamle 53358100, SM, rep ve Ahmet 47470759 üye mi.
+  3. GET /buckets/{project_id}/todosets/{todoset_id}/todolists.json -> social/project(/motion)
+     listelerinin id'si, status=active ve visible_to_clients=false.
+  Hepsi tamamsa katalogda: lists, list_id (= social), todoset_id, clients_enabled,
+  lists_visible_to_clients=false, hamle_member=true, verification_ref, verified=true.
+  Biri eksikse verified=false kalır (iç rotaya düşer). clients_enabled=true projelerde
+  (HAN Spaces, ya da) liste client'a görünürse rota kullanılmaz.
+  İsteğe bağlı yazım (tek marka, iki bayrak birden):
+  python3 brand_routes_readback.py --brand <anahtar> --create-hamle-list --confirm-create
+  -> o projenin todoset'inde "Hamle İşleri" listesi açar (yoksa), geri okur; visible_to_clients
+  false değilse kullanılmaz. Testler bu betiği ağ ile çalıştırmaz.
+Kapatma: katalogda brand_routing.enabled=false (veya markanın verified=false).

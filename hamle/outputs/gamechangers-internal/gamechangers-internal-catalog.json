@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "brand_id": "gamechangers",
-  "version": "gc-internal-20261011-accepted1",
+  "version": "gc-internal-20261011-brandroutes1",
   "status": "accepted",
   "verified": true,
   "verification_note": "Accepted by Ahmet for internal live (2026-10-11). Ids read back on Ahmet's Mac. Internal brand only; WAT/customers stay off.",
@@ -72,6 +72,78 @@
         "social_manager"
       ],
       "project_member_note": "member of 49184053 per mac readback 2026-10-11 (~17:00Z, Hamle Basecamp identity 53358100)"
+    },
+    {
+      "name": "Barış",
+      "email": "baris@gamechangers.com.tr",
+      "side": "agency",
+      "verified": true,
+      "verification_ref": "Ahmet 2026-10-11: all agency addresses are firstname@gamechangers.com.tr; ids from mac readback 2026-10-11 ~20:10Z",
+      "service_ids": [
+        "gc_internal"
+      ],
+      "can_receive": true,
+      "can_request": true,
+      "can_relay": false,
+      "can_amend": false,
+      "basecamp_verified": true,
+      "basecamp_id": 52168172,
+      "project_member": false,
+      "agency_roles": []
+    },
+    {
+      "name": "Berkay Kayaköylü",
+      "email": "berkay@gamechangers.com.tr",
+      "side": "agency",
+      "verified": true,
+      "verification_ref": "Ahmet 2026-10-11: all agency addresses are firstname@gamechangers.com.tr; ids from mac readback 2026-10-11 ~20:10Z",
+      "service_ids": [
+        "gc_internal"
+      ],
+      "can_receive": true,
+      "can_request": true,
+      "can_relay": false,
+      "can_amend": false,
+      "basecamp_verified": true,
+      "basecamp_id": 47658175,
+      "project_member": false,
+      "agency_roles": []
+    },
+    {
+      "name": "İpek",
+      "email": "ipek@gamechangers.com.tr",
+      "side": "agency",
+      "verified": true,
+      "verification_ref": "Ahmet 2026-10-11: all agency addresses are firstname@gamechangers.com.tr; ids from mac readback 2026-10-11 ~20:10Z",
+      "service_ids": [
+        "gc_internal"
+      ],
+      "can_receive": true,
+      "can_request": true,
+      "can_relay": false,
+      "can_amend": false,
+      "basecamp_verified": true,
+      "basecamp_id": 51207148,
+      "project_member": false,
+      "agency_roles": []
+    },
+    {
+      "name": "Esma",
+      "email": "esma@gamechangers.com.tr",
+      "side": "agency",
+      "verified": true,
+      "verification_ref": "Ahmet 2026-10-11: all agency addresses are firstname@gamechangers.com.tr; ids from mac readback 2026-10-11 ~20:10Z",
+      "service_ids": [
+        "gc_internal"
+      ],
+      "can_receive": true,
+      "can_request": true,
+      "can_relay": false,
+      "can_amend": false,
+      "basecamp_verified": true,
+      "basecamp_id": 53167312,
+      "project_member": false,
+      "agency_roles": []
     }
   ],
   "basecamp_people": {
@@ -165,6 +237,21 @@
       "can_amend": false,
       "verification_ref": "outputs/wat-pilot-20261010/wat-planning-catalog.json basecamp_people (WAT project 40694338 roster)",
       "project_member_note": "Identity verified in WAT project roster, but NOT observed as a member of internal project 49184053 (only Ahmet+Hamle observed 2026-10-10). Add to project and re-read members, then set project_member=true."
+    },
+    "53167312": {
+      "name": "Esma",
+      "basecamp_id": 53167312,
+      "side": "agency",
+      "basecamp_verified": true,
+      "project_member": false,
+      "agency_roles": [],
+      "production_kinds": [],
+      "service_ids": [
+        "gc_internal"
+      ],
+      "can_amend": false,
+      "verification_ref": "mac readback 2026-10-11 ~20:10Z (person ids)",
+      "project_member_note": "Not a member of internal project 49184053; brand SM/rep via brand_routes."
     }
   },
   "basecamp": {
@@ -337,5 +424,266 @@
     "accepted_by": "ahmet@gamechangers.com.tr",
     "accepted_at": "2026-10-11T15:07:55+00:00",
     "evidence_ref": "claude project thread Hamle proje değerlendirmesi, Ahmet messages 2026-10-11T15:07:55Z and 17:05:21Z"
+  },
+  "brand_routing": {
+    "enabled": true,
+    "principal_person_id": 47470759,
+    "accepted_by": "ahmet@gamechangers.com.tr",
+    "note": "Owner ask 2026-10-11 (Monday live): a clear agency request opens the task under the relevant brand's Basecamp project. Exactly one alias match on subject+latest body -> that brand's usable route; zero/ambiguous/excluded/unusable -> internal 'Hamle İşleri' route (brand name in the title when one brand was named). Set enabled=false to pin every work back to the internal project.",
+    "list_rule": "social-media content (post/story/reels/carousel/...) -> lists.social; other animation/video -> lists.motion (else lists.project); everything else and mixed -> lists.project",
+    "assignment_rule": "assignee = brand SM (sm_person_id); completion subscribers = SM + rep + Ahmet; notify=false; mentions are text-only",
+    "readback_ref": "mac readback 2026-10-11 (~20:10Z, read-only, Hamle Basecamp identity 53358100): Hamle member, 0 client members, all todolists visible_to_clients=false"
+  },
+  "brand_routes": {
+    "wat_mobilite": {
+      "brand_name": "WAT Mobilite",
+      "aliases": [
+        "wat mobilite",
+        "wat"
+      ],
+      "match_scope": "subject_and_body",
+      "project_id": 40694338,
+      "todoset_id": 8231360562,
+      "list_id": 8231779952,
+      "lists": {
+        "social": 8231779952,
+        "project": 8234557425,
+        "motion": 9381497228
+      },
+      "verified": true,
+      "verification_ref": "mac readback 2026-10-11 (~20:10Z, read-only, Hamle Basecamp identity 53358100): Hamle member, 0 client members, all todolists visible_to_clients=false",
+      "clients_enabled": false,
+      "lists_visible_to_clients": false,
+      "hamle_member": true,
+      "sm_person_id": 52096503,
+      "rep_person_id": 48793256,
+      "note": "Konkur list 9315207883 is not a route."
+    },
+    "rabam": {
+      "brand_name": "Rabam",
+      "aliases": [
+        "rabam"
+      ],
+      "match_scope": "subject_and_body",
+      "project_id": 48639990,
+      "todoset_id": 10238207225,
+      "list_id": 10239606739,
+      "lists": {
+        "social": 10239606739,
+        "project": 10239607231,
+        "motion": null
+      },
+      "verified": true,
+      "verification_ref": "mac readback 2026-10-11 (~20:10Z, read-only, Hamle Basecamp identity 53358100): Hamle member, 0 client members, all todolists visible_to_clients=false",
+      "clients_enabled": false,
+      "lists_visible_to_clients": false,
+      "hamle_member": true,
+      "sm_person_id": 52096503,
+      "rep_person_id": 47470759,
+      "note": "No motion list: motion goes to Projeler."
+    },
+    "bwi": {
+      "brand_name": "BWI",
+      "aliases": [
+        "bwi"
+      ],
+      "match_scope": "subject_and_body",
+      "project_id": 43886681,
+      "todoset_id": 9050026939,
+      "list_id": 9070443957,
+      "lists": {
+        "social": 9070443957,
+        "project": 9050027433,
+        "motion": 10222609186
+      },
+      "verified": true,
+      "verification_ref": "mac readback 2026-10-11 (~20:10Z, read-only, Hamle Basecamp identity 53358100): Hamle member, 0 client members, all todolists visible_to_clients=false",
+      "clients_enabled": false,
+      "lists_visible_to_clients": false,
+      "hamle_member": true,
+      "sm_person_id": 52096503,
+      "rep_person_id": 47470759
+    },
+    "han_spaces": {
+      "brand_name": "HAN Spaces",
+      "aliases": [
+        "han spaces",
+        "hanspaces",
+        "han space"
+      ],
+      "match_scope": "subject_and_body",
+      "project_id": 48562916,
+      "todoset_id": 10217688418,
+      "list_id": 10385835270,
+      "lists": {
+        "social": 10385835270,
+        "project": 10220163175,
+        "motion": null
+      },
+      "verified": true,
+      "verification_ref": "mac readback 2026-10-11 (~20:10Z, read-only, Hamle Basecamp identity 53358100): Hamle member, 0 client members, all todolists visible_to_clients=false",
+      "clients_enabled": true,
+      "lists_visible_to_clients": false,
+      "hamle_member": true,
+      "sm_person_id": 53167312,
+      "rep_person_id": 47470759,
+      "note": "Clients enabled: todos only in client-hidden lists; BrandTaskWriter re-reads list visible_to_clients=false before POST and the todo after."
+    },
+    "ya_da": {
+      "brand_name": "ya da Multicosmetics",
+      "aliases": [
+        "multicosmetics",
+        "multi cosmetics",
+        "yada multicosmetics",
+        "ya da multicosmetics"
+      ],
+      "match_scope": "subject_and_body",
+      "project_id": 48917059,
+      "todoset_id": 10310024789,
+      "list_id": 10310036095,
+      "lists": {
+        "social": 10310036095,
+        "project": 10310037114,
+        "motion": null
+      },
+      "verified": true,
+      "verification_ref": "mac readback 2026-10-11 (~20:10Z, read-only, Hamle Basecamp identity 53358100): Hamle member, 0 client members, all todolists visible_to_clients=false",
+      "clients_enabled": true,
+      "lists_visible_to_clients": false,
+      "hamle_member": true,
+      "sm_person_id": 53167312,
+      "rep_person_id": 48793256,
+      "note": "Clients enabled (same client-hidden rule). Bare 'ya da' is a common Turkish phrase and is deliberately NOT an alias."
+    },
+    "altinmarka": {
+      "brand_name": "Altınmarka",
+      "aliases": [
+        "altınmarka",
+        "altinmarka",
+        "altın marka"
+      ],
+      "match_scope": "subject_and_body",
+      "project_id": 40704523,
+      "todoset_id": 8234508319,
+      "list_id": 10388829175,
+      "lists": {
+        "social": 10388829175,
+        "project": 9445996875,
+        "motion": 9353328703
+      },
+      "verified": true,
+      "verification_ref": "mac readback 2026-10-11 (~20:10Z, read-only, Hamle Basecamp identity 53358100): Hamle member, 0 client members, all todolists visible_to_clients=false",
+      "clients_enabled": false,
+      "lists_visible_to_clients": false,
+      "hamle_member": true,
+      "sm_person_id": 53167312,
+      "rep_person_id": 48793256,
+      "note": "Two Sosyal Medya lists (10388829175 and 8238555593); the newest 10388829175 is used. Ambiguity recorded; Ahmet may switch."
+    },
+    "bikaldi": {
+      "brand_name": "Bikaldi",
+      "aliases": [
+        "bikaldi",
+        "bikaldı"
+      ],
+      "match_scope": "subject_and_body",
+      "project_id": 40704530,
+      "todoset_id": 8234509632,
+      "list_id": 8247106376,
+      "lists": {
+        "social": 8247106376,
+        "project": 8990899108,
+        "motion": 9415193822
+      },
+      "verified": true,
+      "verification_ref": "mac readback 2026-10-11 (~20:10Z, read-only, Hamle Basecamp identity 53358100): Hamle member, 0 client members, all todolists visible_to_clients=false",
+      "clients_enabled": false,
+      "lists_visible_to_clients": false,
+      "hamle_member": true,
+      "sm_person_id": 53167312,
+      "rep_person_id": 48793256
+    },
+    "gamechangers": {
+      "brand_name": "Gamechangers",
+      "aliases": [
+        "gamechangers",
+        "game changers"
+      ],
+      "match_scope": "subject",
+      "project_id": 40704459,
+      "todoset_id": 8234496259,
+      "list_id": 8237174125,
+      "lists": {
+        "social": 8237174125,
+        "project": 8237178725,
+        "motion": 9745491289
+      },
+      "verified": true,
+      "verification_ref": "mac readback 2026-10-11 (~20:10Z, read-only, Hamle Basecamp identity 53358100): Hamle member, 0 client members, all todolists visible_to_clients=false",
+      "clients_enabled": false,
+      "lists_visible_to_clients": false,
+      "hamle_member": true,
+      "sm_person_id": 47470759,
+      "rep_person_id": 53167312,
+      "note": "Matched on SUBJECT only: every agency signature/address contains 'gamechangers'."
+    },
+    "fenerium": {
+      "brand_name": "Fenerium",
+      "aliases": [
+        "fenerium"
+      ],
+      "match_scope": "subject_and_body",
+      "project_id": 44320349,
+      "todoset_id": null,
+      "list_id": null,
+      "lists": {
+        "social": null,
+        "project": null,
+        "motion": null
+      },
+      "verified": false,
+      "verification_ref": null,
+      "clients_enabled": null,
+      "lists_visible_to_clients": null,
+      "hamle_member": true,
+      "sm_person_id": 47470759,
+      "rep_person_id": 47470759,
+      "note": "No generic list (per-project lists): stays unverified, internal fallback with the brand in the title, owner Ahmet mentioned."
+    },
+    "new_biz": {
+      "brand_name": "New Biz",
+      "aliases": [
+        "new biz",
+        "newbiz",
+        "new business"
+      ],
+      "match_scope": "subject_and_body",
+      "project_id": 40704547,
+      "todoset_id": null,
+      "list_id": null,
+      "lists": {
+        "social": null,
+        "project": null,
+        "motion": null
+      },
+      "verified": false,
+      "verification_ref": null,
+      "clients_enabled": null,
+      "lists_visible_to_clients": null,
+      "hamle_member": true,
+      "sm_person_id": 48793256,
+      "rep_person_id": 48793256,
+      "note": "Per-prospect lists only: stays unverified, internal fallback with the brand in the title, owner Cansu mentioned."
+    }
+  },
+  "brand_routes_excluded": {
+    "cacaonly": {
+      "brand_name": "Cacaonly",
+      "aliases": [
+        "cacaonly"
+      ],
+      "project_id": 47875291,
+      "note": "Excluded by Ahmet: never a task target; a Cacaonly request falls back to the internal route."
+    }
   }
 }

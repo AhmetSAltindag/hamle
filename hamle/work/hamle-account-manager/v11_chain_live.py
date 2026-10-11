@@ -26,6 +26,7 @@ import sys
 
 import cloud_providers as provider
 from autonomy_policy import scope_digest
+import v11_brand_routing as routing
 from cloud_store import DEADLINE, START
 from runtime_authority import CHAIN_TICK_WINDOW
 from v11_chain import BasecampCommentWriter, ChainDeps, run_chain_tick
@@ -145,8 +146,15 @@ class ChainAuthorizer:
             if kind == "add_comment":
                 bc = self.catalog["basecamp"]
                 t = payload.get("target", {})
-                _need(t.get("account_id") == bc["account_id"] and t.get("project_id") == bc["project_id"]
+                allowed = routing.allowlist(self.catalog)
+                _need(t.get("account_id") == bc["account_id"] and t.get("project_id") in allowed
+                      and (t.get("list_id") is None or t.get("list_id") in allowed[t["project_id"]])
                       and payload.get("internal_only", True) is True, "comment_target_out_of_scope")
+            if kind == "create_task":
+                task = (payload.get("payload") or {}).get("task") or {}
+                _need(task.get("account_id") == self.catalog["basecamp"]["account_id"]
+                      and routing.allowed_target(self.catalog, task.get("project_id"), task.get("todolist_id"))
+                      and task.get("notify") is False, "task_target_out_of_scope")
             if kind in MAIL_KINDS:
                 self.mail_writer.preflight(kind, copy.deepcopy(payload))
             self.decisions.append((kind, "allowed"))

@@ -255,6 +255,29 @@ class QueueStore:
             return w
         return self._run(op)
 
+    def thread_work(self, thread_id):
+        """The work already bound to this mail thread, or None (read-only)."""
+        text_id(thread_id)
+        def op(tx, _):
+            index = tx.get("thread-" + digest(thread_id))
+            return None if index is None else tx.get(index["work_id"])
+        return self._run(op)
+
+    def retarget_list(self, claim, *, list_id, allowed_list_ids):
+        """Before any task or write exists, move the claimed work to another read-back list
+        of the SAME project (brand per-kind lists). Never changes account/project."""
+        positive(list_id)
+        require(isinstance(allowed_list_ids, (list, tuple, set, frozenset)) and list_id in allowed_list_ids,
+                "list_not_allowed")
+        def op(tx, now):
+            w, _ = self._claimed(tx, claim, now)
+            require(w["task_id"] is None and w["inflight_action_id"] is None, "work_list_frozen")
+            if w["list_id"] != list_id:
+                w.update(list_id=list_id, updated_at=now)
+                tx.put(w["id"], w)
+            return w
+        return self._run(op)
+
     def enqueue_message(self, work_id, *, message_id, fingerprint, source_order, expected_generation):
         return self.enqueue_event(work_id, event_id=message_id, fingerprint=fingerprint,
                                   source_order=source_order, source_kind="gmail",
