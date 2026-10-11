@@ -398,7 +398,12 @@
       "accepted_at": "2026-10-11T15:07:55+00:00",
       "evidence_ref": "claude project thread Hamle proje değerlendirmesi, Ahmet messages 2026-10-11T15:07:55Z and 17:05:21Z"
     },
-    "context_note_placement": "separate internal Basecamp comment on the new task (v11_brand_task description is profile-derived and must not be changed)"
+    "context_note_placement": "separate internal Basecamp comment on the new task (v11_brand_task description is profile-derived and must not be changed)",
+    "task_ack": {
+      "enabled": true,
+      "kind": "acknowledge",
+      "note": "Owner ask 2026-10-11 ('talep netse kısa bir özetlesin ve teyit etsin, ardından task açsın'): after the task is created and read back, ONE same-thread reply-all confirmation (agency recipients only, To/CC from the source mail), once per work, no retry on an ambiguous send. enabled=false turns it off; clarification mail is unchanged."
+    }
   },
   "work_authority": {
     "status": "internal_only",

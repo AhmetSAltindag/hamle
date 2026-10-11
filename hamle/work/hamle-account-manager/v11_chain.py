@@ -444,7 +444,46 @@ class Chain:
             note = (self._tag([mention], routing_note) if mention else routing_note) + "\n\n" + note
         if self._comment(claim, work, rec, "context-note", note, [mention] if mention else []) is None:
             return None
+        if self._ack_enabled():
+            payload = self._ack_payload(source, rec, brief, task)
+            if self._write(claim, work, rec, "task-ack", "acknowledge", "gmail", payload, self.d.mail_writer) == "unknown":
+                return None  # ambiguous send: work blocked, never resent
         return "processed", "basecamp-readback:" + str(task["task_id"])
+
+    LIST_LABELS = {"social": "Sosyal Medya", "project": "Projeler", "motion": "Motion"}
+
+    def _ack_enabled(self):
+        return (self.catalog.get("chain", {}).get("task_ack") or {}).get("enabled") is True
+
+    def _ack_payload(self, source, rec, brief, task):
+        """Same-thread confirmation (reply-all within the brief's verified agency envelope)."""
+        def line(value, limit=240):
+            return re.sub(r"\s+", " ", str(value)).strip()[:limit]
+        kinds = {"graphic": "statik tasarım", "animation": "animasyon", "video": "video", "text": "metin"}
+        outputs = ", ".join(f"{d.get('quantity')} × {kinds.get(d.get('kind'), d.get('kind'))} ({line(d.get('id'), 40)})"
+                            for d in brief.get("deliverables") or [])[:300]
+        routed = self.cat.get("routed_brand")
+        if routed:
+            place = f"{routed['brand_name']} · {self.LIST_LABELS.get(self.cat['routes'][0].get('list_name'), 'liste')} listesi"
+        else:
+            bc = self.cat["basecamp"]
+            place = f"{bc.get('project_name') or 'Hamle'} · {self.cat['routes'][0].get('list_name') or 'Hamle İşleri'} listesi"
+        assignees = ", ".join(self.names.get(i, str(i)) for i in task["assignee_ids"]) or "-"
+        link = f"https://3.basecamp.com/{task['account_id']}/buckets/{task['project_id']}/todos/{task['task_id']}"
+        lines = ["Merhaba,", "", "Talebinizi aldım ve Basecamp'te görevi açtım. Anladığım kadarıyla:",
+                 "- İş: " + line(brief["title"]), "- Amaç: " + line(brief["objective"])]
+        if brief.get("audience"):
+            lines.append("- Hedef kitle: " + line(brief["audience"]))
+        if outputs:
+            lines.append("- Çıktılar: " + outputs)
+        lines += ["", "Açıldığı yer: " + place, "Atanan: " + assignees]
+        if brief.get("deadline"):
+            lines.append("Teslim: " + line(brief["deadline"], 120))
+        lines += ["Görev: " + link, "", "Yanlış anladığım bir şey varsa bu maile yanıt verin.", "", "Hamle"]
+        return {"from": HAMLE, "to": list(rec["reply"]["to"]), "cc": list(rec["reply"]["cc"]),
+                "thread_id": rec["reply"]["thread_id"], "in_reply_to_message_id": rec["reply"]["in_reply_to_message_id"],
+                "subject": "Re: " + str(source.get("subject") or "")[:180], "body": "\n".join(lines),
+                "ack_task_id": int(task["task_id"])}
 
     def _route_requirements(self, claim, work, source, requirements):
         """Brand routing for one intake mail (deterministic, never guessed).

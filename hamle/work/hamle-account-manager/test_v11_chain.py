@@ -47,6 +47,7 @@ def live_catalog():
     for contact in data["contacts"]:
         contact["project_member"] = True
     data["chain"]["agency_direct_request_counts_as_agreement"]["verified"] = True
+    data["chain"]["task_ack"]["enabled"] = False  # write/mail counts below predate the ack; see test_v11_task_ack
     return data
 
 

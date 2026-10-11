@@ -32,7 +32,7 @@ from runtime_authority import CHAIN_TICK_WINDOW
 from v11_chain import BasecampCommentWriter, ChainDeps, run_chain_tick
 from v11_work_queue import COLLECTION, FirestoreQueueBackend, QueueError, QueueStore, digest
 
-MAIL_KINDS = ("clarify_brief", "deliver_file")
+MAIL_KINDS = ("clarify_brief", "acknowledge", "deliver_file")
 WRITE_KINDS = ("create_task", "add_comment") + MAIL_KINDS
 QUEUE_OPT_IN = "v11-queue-explicit"
 

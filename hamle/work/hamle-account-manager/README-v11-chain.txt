@@ -90,3 +90,13 @@ Bir markayı açmadan önce Mac'te okunacaklar (brand_routes_readback.py, salt o
   -> o projenin todoset'inde "Hamle İşleri" listesi açar (yoksa), geri okur; visible_to_clients
   false değilse kullanılmaz. Testler bu betiği ağ ile çalıştırmaz.
 Kapatma: katalogda brand_routing.enabled=false (veya markanın verified=false).
+
+Görev teyidi (task_ack, katalog chain.task_ack.enabled=true)
+- Görev açılıp geri okunduktan ve iç bağlam notundan sonra, aynı Gmail zincirine TEK
+  "acknowledge" yanıtı: kaynak mailin To/CC'si korunur (reply-all), yalnız doğrulanmış ajans
+  adresleri (check_recipients), Hamle müşteri eklemez. İçerik: 2-4 satır brief özeti
+  (iş, amaç, hedef kitle, çıktılar), açıldığı marka/liste, atanan, teslim tarihi, görev linki.
+- İş başına kalıcı niyet anahtarı "task-ack": bir kez; belirsiz gönderim hold_unknown, tekrar yok;
+  reddedilen teyit görevi engellemez. Gönderim öncesi preflight (çapa hâlâ son gelen mail, To/CC/
+  konu birebir) ve gönderim sonrası ham mail geri okuması clarify ile aynı yoldan.
+- Eksik bilgi (clarify_brief) yolu değişmedi: teyit yalnız görev açıldığında gider.
