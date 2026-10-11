@@ -460,6 +460,16 @@ class Preview(Base):
 class PreviewDay(Base):
     START = datetime.fromisoformat("2026-10-11T20:00:00+03:00")  # Sunday evening
 
+    def test_preview_attempt_uses_its_own_key(self):
+        r1 = self.run_digest(preview_to="ahmet@gamechangers.com.tr", preview_day="2026-10-12")
+        r2 = self.run_digest(preview_to="ahmet@gamechangers.com.tr", preview_day="2026-10-12")
+        r3 = self.run_digest(preview_to="ahmet@gamechangers.com.tr", preview_day="2026-10-12", preview_attempt=2)
+        self.assertEqual((r1["status"], r2["status"], r3["status"]), ("digest_sent", "already_recorded", "digest_sent"))
+        self.assertEqual(r3["key"], "daily-digest-preview-20261012-2")
+        bad = dd.run_daily_digest(self.ops, config=config(), reader_factory=self.reader, writer=self.writer,
+                                  clock=lambda: self.now, preview_attempt=2)
+        self.assertEqual((bad["status"], bad["reason"]), ("held", "digest_preview_attempt_invalid"))
+
     def test_sunday_preview_rendered_as_of_monday(self):
         r = self.run_digest(preview_to="ahmet@gamechangers.com.tr", preview_day="2026-10-12")
         self.assertEqual((r["status"], r["key"]), ("digest_sent", "daily-digest-preview-20261012"), r)

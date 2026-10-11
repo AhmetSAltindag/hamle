@@ -576,7 +576,7 @@ def preview_target(value, today):
 
 def run_daily_digest(ops, *, config, reader_factory, writer, clock, window=DAILY_DIGEST_WINDOW,
                      preview_to=None, preview_day=None, classifier=None, trend_source=None, cards=None, calendar=None,
-                     special_source=None, new_business_source=None):
+                     special_source=None, new_business_source=None, preview_attempt=None):
     """One team digest per Istanbul weekday, or one preview per target day to ONE agency address.
 
     preview_day (only with preview_to): today or the next Istanbul weekday at most 3 days
@@ -591,10 +591,13 @@ def run_daily_digest(ops, *, config, reader_factory, writer, clock, window=DAILY
         local = now.astimezone(ISTANBUL)
         target = local.date()
         _need(preview_day is None or preview_to is not None, "digest_preview_day_requires_preview_to")
+        _need(preview_attempt is None or (preview_to is not None and type(preview_attempt) is int
+                                          and 2 <= preview_attempt <= 3), "digest_preview_attempt_invalid")
         if preview_to is not None:
             _need(internal_address(preview_to), "digest_preview_not_internal_agency")
             target = preview_target(preview_day, local.date())
-            recipients, key, subject_prefix = [preview_to], "daily-digest-preview-" + target.strftime("%Y%m%d"), "[ÖNİZLEME] "
+            recipients, key, subject_prefix = [preview_to], ("daily-digest-preview-" + target.strftime("%Y%m%d")
+                                              + (f"-{preview_attempt}" if preview_attempt else "")), "[ÖNİZLEME] "
         else:
             if not cfg["enabled"] or not cfg["recipients"]:
                 return {"status": "no_new_work", "reason": "digest_disabled_or_no_recipients", "business_writes": 0}
@@ -705,7 +708,7 @@ def model_classifier(ops, load_key, catalog, *, transport=None, routing=None, cl
     return classify
 
 
-def run_worker_daily_digest(ops, secrets, *, clock=None, preview_to=None, preview_day=None):
+def run_worker_daily_digest(ops, secrets, *, clock=None, preview_to=None, preview_day=None, preview_attempt=None):
     """Entry for worker.py --mode daily_digest (existing credential loaders only).
 
     Trend provider: v11_trend_search (role trend_radar: Claude Opus 5.5 + web search by default,
@@ -772,8 +775,8 @@ def run_worker_daily_digest(ops, secrets, *, clock=None, preview_to=None, previe
         special_source = new_business_source = None  # calendar-only / section omitted
     try:
         return run_daily_digest(ops, config=config, reader_factory=reader_factory, writer=writer, clock=clock,
-                                preview_to=preview_to, preview_day=preview_day, classifier=classifier,
-                                trend_source=trend_source, cards=cards, calendar=load_calendar(),
+                                preview_to=preview_to, preview_day=preview_day, preview_attempt=preview_attempt,
+                                classifier=classifier, trend_source=trend_source, cards=cards, calendar=load_calendar(),
                                 special_source=special_source, new_business_source=new_business_source)
     finally:
         for s in sessions:

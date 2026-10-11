@@ -296,6 +296,41 @@ class Ledger(NoNetwork):
                            {"brand_id": "gamechangers", "subject": "Afiş"})
         self.assertEqual((len(client.calls), self.keys), (1, 1))  # cached, one paid chance
 
+    def test_bad_stored_key_settles_zero_and_names_the_cause(self):
+        def bad():
+            raise cloud_providers.ProviderError("anthropic_credential_unavailable")
+        gate = cm.ModelGate(ledger=self.ops, cache=self.ops, generation=self.gen)
+        models = cm.ChainModels(load_key={"anthropic": bad}, gate=gate, client=FakeClient(), routing=self.routing)
+        with self.assertRaises(cm.ChainModelError) as got:
+            models.interpreter("Ofis afişi lazım.", {"brand_id": "gamechangers", "subject": "Afiş"})
+        self.assertEqual(str(got.exception), "model_failed_no_retry:anthropic_credential_unavailable")
+        [r] = self.reservations()
+        self.assertEqual((r["state"], r["actual_microdollars"]), ("settled", 0))
+
+    def test_reconcile_not_sent_settles_zero_and_allows_one_fresh_attempt(self):
+        gate = cm.ModelGate(ledger=self.ops, cache=self.ops, generation=self.gen)
+        def boom():
+            raise RuntimeError("legacy unknown")  # pre-fix behaviour: generic exception -> unknown
+        with self.assertRaises(cm.ChainModelError):
+            gate.once("chain_interpreter", "a" * 64, boom, provider="anthropic")
+        [r] = self.reservations()
+        self.assertEqual(r["state"], "unknown")
+        key = "chain-model-" + "a" * 64
+        with self.assertRaises(cm.ChainModelError):
+            cm.reconcile_not_sent(self.ops, [key], "bad evidence!")
+        out = cm.reconcile_not_sent(self.ops, [key], "no_request_sent_invalid_stored_key")
+        self.assertEqual((out["status"], out["count"]), ("reconciled_not_sent", 1))
+        [r] = self.reservations()
+        self.assertEqual((r["state"], r["actual_microdollars"]), ("settled", 0))
+        with self.assertRaises(cm.ChainModelError):  # already reconciled: not 'started' any more
+            cm.reconcile_not_sent(self.ops, [key], "no_request_sent_invalid_stored_key")
+        result = {"output": {"ok": True}, "receipt": {"response_id": "msg_x", "cost_microdollars": 5}}
+        gate2 = cm.ModelGate(ledger=self.ops, cache=self.ops, generation=self.gen)
+        gate2.ledger.record_model_receipt = lambda *a, **k: None
+        self.assertEqual(gate2.once("chain_interpreter", "a" * 64, lambda: result, provider="anthropic"), {"ok": True})
+        keys = [r["reservation_key"] for r in self.reservations()]
+        self.assertEqual(keys, ["chain-model-" + "a" * 48, "chain-model-" + "a" * 48 + "-a2"])
+
     def test_classifier_on_haiku(self):
         client = FakeClient(message({"class": "question", "evidence": "Soru soruyor."}, model_id="claude-haiku-5-5"))
         self.assertEqual(self.models(client).classifier("Bu ne zaman biter?", {"status": "x"}), "question")

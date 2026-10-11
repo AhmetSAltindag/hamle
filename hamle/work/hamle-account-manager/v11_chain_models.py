@@ -46,7 +46,11 @@ ANSWER_REFS = tuple("brief." + k for k in BRIEF_REFS) + tuple("profile." + k for
 ROUTING_ROLES = {"interpreter": "chain_interpreter", "classifier": "chain_classifier",
                  "answerer": "chain_answerer", "digest": "digest_classifier"}
 # Fixed codes after which nothing can have been billed: the hold is settled at 0.
-NO_CHARGE_CODES = ("anthropic_credit_insufficient",)
+# Failures proven to happen before any request reaches the provider (or refused for credit): settle 0.
+NO_CHARGE_CODES = ("anthropic_credit_insufficient", "anthropic_credential_unavailable",
+                   "model_credential_unavailable", "model_credential_loader_missing")
+RECONCILED_NOT_SENT = "reconciled_not_sent"
+MAX_ATTEMPTS = 3
 
 
 class ChainModelError(ValueError):
@@ -256,11 +260,24 @@ def call_once(api_key, role, request_input, *, transport=None, profile=None):
 
 
 def key_for(load_key, provider):
-    """load_key: one loader (tests / single provider) or {provider: loader}."""
+    """load_key: one loader (tests / single provider) or {provider: loader}.
+
+    A key that cannot be loaded means no request was sent: raised as a ModelError whose
+    code is in NO_CHARGE_CODES, so the hold settles at 0 and the real cause is visible.
+    """
     if isinstance(load_key, dict):
-        _need(provider in load_key, "model_credential_loader_missing")
-        return load_key[provider]()
-    return load_key()
+        if provider not in load_key:
+            raise ModelError("model_credential_loader_missing")
+        loader = load_key[provider]
+    else:
+        loader = load_key
+    try:
+        return loader()
+    except ModelError:
+        raise
+    except Exception as exc:
+        code = getattr(exc, "code", None)
+        raise ModelError(code if code in NO_CHARGE_CODES else "model_credential_unavailable") from None
 
 
 def call_routed(route, role, request_input, *, load_key, transport=None, client=None, profile=None):
@@ -337,18 +354,24 @@ class ModelGate:
         _need(provider in ("openai", "anthropic"), "model_provider_unsupported")
         key = "chain-model-" + digest
         row = self._get(key)
+        attempt = 1
         if row is not None:
             _need(row.get("kind") == "chain_model_result" and row.get("role") == role, "model_cache_conflict")
-            _need(row.get("state") == "completed", "model_outcome_unknown_no_retry")
-            return copy.deepcopy(row["output"])
-        reservation = "chain-model-" + digest[:48]
+            if row.get("state") == RECONCILED_NOT_SENT:  # operator-proven unsent: one fresh chance
+                attempt = int(row.get("attempt") or 1) + 1
+                _need(attempt <= MAX_ATTEMPTS, "model_attempt_limit_reached")
+            else:
+                _need(row.get("state") == "completed", "model_outcome_unknown_no_retry")
+                return copy.deepcopy(row["output"])
+        reservation = "chain-model-" + digest[:48] + ("" if attempt == 1 else f"-a{attempt}")
         if self.cap is not None:  # internal-live cap: checked before any ledger write or key load
             _need(chain_committed_microdollars(self.ledger) + hold <= self.cap,
                   "internal_live_budget_cap_reached")
         self.ledger.budget_reserve(reservation, provider, hold)
         self.ledger.budget_begin(reservation, self.generation)  # non-replayable: second begin fails
         self._put(key, {"id": key, "kind": "chain_model_result", "role": role, "state": "started",
-                        "provider": provider, "reservation_key": reservation, "output": None})
+                        "provider": provider, "reservation_key": reservation, "output": None,
+                        "attempt": attempt})
         self.calls += 1
         try:
             result = call()
@@ -376,7 +399,7 @@ class ModelGate:
             self.ledger.budget_unknown(reservation)  # OpenAI usage is not a bill: keep the hold
         self._put(key, {"id": key, "kind": "chain_model_result", "role": role, "state": "completed",
                         "provider": provider, "reservation_key": reservation,
-                        "output": copy.deepcopy(result["output"]),
+                        "output": copy.deepcopy(result["output"]), "attempt": attempt,
                         "response_id": result["receipt"]["response_id"]})
         return copy.deepcopy(result["output"])
 
@@ -496,3 +519,41 @@ class ChainModels:
             if values[area].get(key) in (None, "", [], {}):
                 return None  # cites an empty field: not grounded
         return {"answer": output["answer"].strip(), "grounded_in": list(dict.fromkeys(output["grounded_in"]))}
+
+
+def reconcile_not_sent(ops, cache_keys, evidence, *, cache=None):
+    """Explicit operator one-shot: settle Anthropic holds at 0 where no request was ever sent.
+
+    Each cache key must be an Anthropic chain model row in state 'started' whose
+    reservation is 'unknown' (or 'started') with NO response receipt and NO failure
+    receipt recorded. The hold settles at 0 with the operator's evidence label and the
+    row becomes 'reconciled_not_sent', which gives that role exactly one fresh attempt.
+    Anything else is refused untouched.
+    """
+    cache = ops if cache is None else cache
+    _need(isinstance(evidence, str) and re.fullmatch(r"[A-Za-z0-9_.:-]{8,120}", evidence), "reconcile_evidence_invalid")
+    _need(isinstance(cache_keys, (list, tuple)) and 0 < len(cache_keys) <= 10
+          and len(set(cache_keys)) == len(cache_keys), "reconcile_keys_invalid")
+    gate = ModelGate(ledger=ops, cache=cache, generation=None)
+    budget = ops._run(lambda tx, _: ops._budget(tx), allow_expired=True)
+    rows = []
+    for key in cache_keys:
+        _need(isinstance(key, str) and re.fullmatch(r"chain-model-[0-9a-f]{64}", key), "reconcile_keys_invalid")
+        row = gate._get(key)
+        _need(isinstance(row, dict) and row.get("kind") == "chain_model_result" and row.get("state") == "started"
+              and row.get("provider") == "anthropic", "reconcile_row_not_started_anthropic")
+        rk = row.get("reservation_key")
+        res = next((r for r in budget["reservations"] if r.get("reservation_key") == rk), None)
+        _need(res is not None and res.get("provider") == "anthropic" and res.get("state") in ("unknown", "started"),
+              "reconcile_reservation_not_unknown")
+        _need(ops.model_receipt(rk) is None, "reconcile_response_receipt_exists")
+        failure_doc = "model-failure-" + hashlib.sha256(rk.encode()).hexdigest()
+        _need(ops._run(lambda tx, _: tx.get(failure_doc), allow_expired=True) is None,
+              "reconcile_failure_receipt_exists")
+        rows.append((key, row, rk))
+    out = []
+    for key, row, rk in rows:
+        ops.budget_settle(rk, 0, evidence)
+        gate._put(key, dict(row, state=RECONCILED_NOT_SENT, reconciled_evidence=evidence))
+        out.append({"cache_key": key, "reservation_key": rk, "settled_microdollars": 0})
+    return {"status": "reconciled_not_sent", "count": len(out), "rows": out, "provider_calls": 0}

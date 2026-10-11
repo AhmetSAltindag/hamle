@@ -46,6 +46,8 @@ continuation_reply_chain_invalid sent_receipt_identifiers_invalid sent_receipt_v
 task_status_scope_mismatch task_status_assignee_mismatch task_status_date_invalid task_status_unconfirmed
 basecamp_target_changed bound_work_invalid text_invalid
 unverified_record_required credential_review_failed
+reconcile_evidence_invalid reconcile_keys_invalid reconcile_row_not_started_anthropic
+reconcile_reservation_not_unknown reconcile_response_receipt_exists reconcile_failure_receipt_exists
 anthropic_credential_unavailable anthropic_credit_insufficient anthropic_sdk_unavailable
 anthropic_model_unavailable provider_overloaded_no_retry response_max_tokens response_pause_turn
 web_search_tool_error model_route_invalid model_price_unknown prompt_unavailable input_byte_limit
@@ -512,7 +514,8 @@ def run_track(store, *, read_task_status, verify_latest_sent_receipt=None, clock
 def main(argv=None):
     parser = argparse.ArgumentParser(description="Hamle internal worker; dispatch requires an exact approved proposal")
     parser.add_argument("--mode", choices=("review", "scheduled_review", "verify", "dispatch", "track", "recover_followup",
-                                           "chain_tick", "daily_digest", "basecamp_credential_review"), required=True)
+                                           "chain_tick", "daily_digest", "basecamp_credential_review",
+                                           "reconcile_model_holds"), required=True)
     parser.add_argument("--proposal-id")
     parser.add_argument("--work-id")
     parser.add_argument("--failure-evidence-sha256")
@@ -523,6 +526,10 @@ def main(argv=None):
     # Explicit one-off digest preview to ONE agency address (separate record key).
     parser.add_argument("--preview-to")
     parser.add_argument("--preview-day")
+    parser.add_argument("--preview-attempt", type=int)
+    # Explicit operator one-shot: settle proven-unsent Anthropic holds at 0.
+    parser.add_argument("--cache-key", action="append")
+    parser.add_argument("--evidence")
     args = parser.parse_args(argv)
     backend = secrets = None
     try:
@@ -544,6 +551,10 @@ def main(argv=None):
                  and args.preview_to != "hamle@gamechangers.com.tr"), "preview_to_requires_daily_digest_and_agency_address")
         _require(args.preview_day is None or (args.preview_to is not None and
                  re.fullmatch(r"\d{4}-\d{2}-\d{2}", args.preview_day) is not None), "preview_day_requires_preview_to")
+        _require(args.preview_attempt is None or (args.preview_to is not None and 2 <= args.preview_attempt <= 3),
+                 "preview_attempt_requires_preview_to")
+        _require((args.mode == "reconcile_model_holds") == (args.cache_key is not None and args.evidence is not None),
+                 "reconcile_arguments_required")
         _require(os.environ.get("HAMLE_ALLOW_FIRESTORE_OPERATIONS") == "yes", "cloud_opt_in_required")
         _require(os.environ.get("HAMLE_PROJECT_ID") == "gamechangers-hamle" and
                  os.environ.get("HAMLE_FIRESTORE_DATABASE") == "hamle-operations", "cloud_scope_invalid")
@@ -559,7 +570,10 @@ def main(argv=None):
             from basecamp_cloud_auth import access_token
             token = access_token(secrets, claim_refresh=store.claim_credential_refresh)
             return providers.verify_basecamp_internal(token)
-        if args.mode == "basecamp_credential_review":
+        if args.mode == "reconcile_model_holds":
+            from v11_chain_models import reconcile_not_sent
+            result = reconcile_not_sent(store, args.cache_key, args.evidence)
+        elif args.mode == "basecamp_credential_review":
             # Explicit operator one-shot (Ahmet approved 2026-10-11): promote a held
             # 'unverified' Basecamp record after re-verification. Never a scheduler path.
             from basecamp_cloud_auth import review_unverified
@@ -582,7 +596,7 @@ def main(argv=None):
             # Non-default: one internal team digest per Istanbul weekday (v11_daily_digest).
             from v11_daily_digest import run_worker_daily_digest
             result = run_worker_daily_digest(store, secrets, preview_to=args.preview_to,
-                                             preview_day=args.preview_day)
+                                             preview_day=args.preview_day, preview_attempt=args.preview_attempt)
         elif args.mode in ("review", "scheduled_review", "track", "recover_followup"):
             from business_writers import BusinessWriters
             writers = BusinessWriters(secrets, claim_refresh=store.claim_credential_refresh)
@@ -629,7 +643,7 @@ def main(argv=None):
                 read_reply=writers.read_reply, create_comment=writers.create_comment,
                 read_comment=writers.read_comment, read_task_status=writers.read_task_status)
         print(json.dumps(result, ensure_ascii=False, sort_keys=True))
-        return 0 if result["status"] in ("stopped", "review_required", "already_recorded", "read_verified", "internal_actions_readback_verified", "slot_already_claimed", "no_new_work", "work_status_read_verified", "chain_tick_completed", "digest_sent", "credential_review_ready") else 2
+        return 0 if result["status"] in ("stopped", "review_required", "already_recorded", "read_verified", "internal_actions_readback_verified", "slot_already_claimed", "no_new_work", "work_status_read_verified", "chain_tick_completed", "digest_sent", "credential_review_ready", "reconciled_not_sent") else 2
     except Exception as exc:
         try:
             reason = _safe_error(exc)
