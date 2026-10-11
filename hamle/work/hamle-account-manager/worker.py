@@ -120,7 +120,7 @@ def _capture(value, now, continuation=None):
 def _target(value):
     _require(isinstance(value, dict) and value.get("status") == "read_verified" and
              value.get("account_id") == 5898865 and value.get("project_id") == 49184053 and
-             value.get("person_id") == 53358100 and value.get("member_ids") == [47470759, 53358100] and
+             value.get("person_id") == 53358100 and value.get("member_ids") == [47470759, 48793256, 52096503, 53358100] and
              value.get("clients_enabled") is False and value.get("basecamp_content_writes") == 0 and
              value.get("action_eligible") is False, "basecamp_scope_invalid")
     _require(type(value.get("todo_parent_id")) is int and value["todo_parent_id"] > 0 and

@@ -242,5 +242,14 @@ class BasecampAuthTests(unittest.TestCase):
                 session=Session(Response(payload, status=status)), clock=lambda: 4590))
             self.assertEqual(secrets.value["refresh_state"], "started")
 
+    def test_refresh_verification_surfaces_specific_provider_code(self):
+        secrets = Secrets()
+        responses = verification()
+        responses[3] = Response([{"id": 47470759, "client": False}, {"id": 53358100, "client": False}])
+        self.error("basecamp_membership_mismatch", lambda: app.access_token(secrets,
+            claim_refresh=lambda _: True, session=Session(Response(token_response(ROTATED)), *responses),
+            clock=lambda: 4590))
+        self.assertEqual(secrets.value["refresh_state"], "unverified")
+
 
 if __name__ == "__main__": unittest.main()

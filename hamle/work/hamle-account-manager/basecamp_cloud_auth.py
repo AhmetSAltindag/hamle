@@ -412,6 +412,9 @@ def access_token(secrets, *, claim_refresh=None, session=None, clock=time.time):
             return updated["access_token"]
     except AuthError:
         raise
+    except provider.ProviderError as exc:
+        # Surface the fixed verification code (e.g. basecamp_membership_mismatch).
+        raise AuthError(exc.code) from None
     except Exception:
         raise AuthError("cloud_basecamp_access_failed") from None
     finally:

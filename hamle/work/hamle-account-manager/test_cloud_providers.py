@@ -437,12 +437,20 @@ class ProviderTests(unittest.TestCase):
     def basecamp_session(self, *, wrong_person=False, clients=False, extra=False):
         return Session(Response({"id": 1 if wrong_person else 53358100, "email_address": app.HAMLE}),
             Response({"id": 49184053, "name": "Hamle — İç Deneme", "clients_enabled": clients, "status": "active"}),
-            Response([{"id": x, "client": False} for x in ([47470759, 53358100, 1] if extra else [47470759, 53358100])]),
+            Response([{"id": x, "client": False} for x in ([47470759, 48793256, 52096503, 53358100, 1] if extra else [47470759, 48793256, 52096503, 53358100])]),
             Response({"id": 10391849167, "bucket": {"id": 49184053}, "visible_to_clients": False,
                       "status": "active", "parent": {"id": 123, "type": "Todolist",
                          "url": "https://3.basecampapi.com/5898865/buckets/49184053/todolists/123.json"}}),
             Response({"id": 123, "type": "Todolist", "status": "active", "visible_to_clients": False, "bucket": {"id": 49184053},
                       "todos_url": "https://3.basecampapi.com/5898865/buckets/49184053/todolists/123/todos.json"}))
+
+    def test_basecamp_members_match_internal_catalog(self):
+        from pathlib import Path
+        path = Path(__file__).resolve().parents[2] / "outputs/gamechangers-internal/gamechangers-internal-catalog.json"
+        if not path.exists(): self.skipTest("catalog not packaged here")
+        people = json.loads(path.read_text(encoding="utf-8"))["basecamp_people"]
+        expected = {p["basecamp_id"] for p in people.values() if p.get("project_member") is True} | {53358100}
+        self.assertEqual(set(app.BASECAMP_MEMBERS), expected)
 
     def test_basecamp_wrong_identity_clients_or_members_fail_closed(self):
         for kwargs, code in (({"wrong_person": True}, "basecamp_identity_mismatch"),

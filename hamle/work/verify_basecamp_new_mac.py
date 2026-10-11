@@ -56,7 +56,7 @@ assert project.get("clients_enabled") is False
 people = read("people", "list", "--in", "49184053", "--all")
 assert isinstance(people, list)
 member_ids = sorted(str(p["id"]) for p in people)
-assert member_ids == ["47470759", "53358100"]
+assert member_ids == ["47470759", "48793256", "52096503", "53358100"]
 
 todo = read("todos", "show", "10391849167", "--no-comments")
 assert str(todo.get("id")) == "10391849167"

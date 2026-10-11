@@ -32,7 +32,7 @@ class WorkerTests(unittest.TestCase):
             "mailbox_writes": 0, "unseen_cc_removal_resolved": False,
             "in_reply_to": "<internal@example.test>", "references": "<earlier@example.test> <internal@example.test>"}
         self.target = {"status": "read_verified", "account_id": 5898865, "project_id": 49184053,
-            "person_id": 53358100, "member_ids": [47470759, 53358100], "clients_enabled": False,
+            "person_id": 53358100, "member_ids": [47470759, 48793256, 52096503, 53358100], "clients_enabled": False,
             "basecamp_content_writes": 0, "action_eligible": False, "todo_parent_id": 10384126975,
             "todo_parent_type": "Todoset",
             "assignee_id": 53358100}

@@ -35,7 +35,10 @@ AHMET = "ahmet@gamechangers.com.tr"
 FORBIDDEN_THREADS = frozenset(("1a12270588d30c79", "1a122c8fb08321fb"))
 BASECAMP_ACCOUNT = 5898865
 BASECAMP_PROJECT = 49184053
-BASECAMP_MEMBERS = frozenset((47470759, 53358100))
+# Exact verified non-client members of 49184053 (Mac readback 2026-10-11 ~17:00Z):
+# Ahmet, Cansu, Özge, Hamle. Must equal the internal catalog's project_member ids + Hamle
+# (test enforces it); adding a member to the project needs both updated together.
+BASECAMP_MEMBERS = frozenset((47470759, 48793256, 52096503, 53358100))
 BASECAMP_PATHS = ("/my/profile.json", "/projects/49184053.json", "/projects/49184053/people.json",
                   "/buckets/49184053/todos/10391849167.json")
 GMAIL_QUERY = f'from:{AHMET} {{to:{HAMLE} cc:{HAMLE}}} subject:"{INTERNAL_SUBJECT}"'
@@ -593,7 +596,7 @@ def verify_basecamp_internal(token, *, session=None):
                     or project.get("name") != "Hamle — İç Deneme" or project.get("clients_enabled") is not False
                     or project.get("status") != "active"):
                 raise ProviderError("basecamp_project_not_private")
-            if (not isinstance(people, list) or len(people) != 2
+            if (not isinstance(people, list) or len(people) != len(BASECAMP_MEMBERS)
                     or any(not isinstance(p, dict) or type(p.get("id")) is not int for p in people)
                     or {p["id"] for p in people} != BASECAMP_MEMBERS
                     or any(p.get("client") is not False for p in people)):
