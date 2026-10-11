@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "enabled": false,
+  "recipients": [],
+  "day_note": null,
+  "basecamp_account_id": 5898865,
+  "send_window_istanbul": "Mon-Fri, first run at/after 09:15 (runtime_authority.DAILY_DIGEST_WINDOW 09:15-18:30)",
+  "rules": "recipients: only @gamechangers.com.tr agency addresses (any other domain refuses the whole digest); never customer addresses. day_note: optional plain text 'günün notu' (<= 2000 chars) or null.",
+  "to_enable": "Ahmet fills recipients (e.g. [\"ahmet@gamechangers.com.tr\", \"cansu@gamechangers.com.tr\", \"ozge@gamechangers.com.tr\"]), optionally day_note, then sets enabled=true. The image reads work/hamle-account-manager/chain-profile/daily-digest-config.json, so a rebuild (package_chain_source.py) is needed after editing."
+}

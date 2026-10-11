@@ -468,6 +468,7 @@ class EndToEnd(Base):
 class Slot(Base):
     def test_slot_runs_one_tick_and_second_claim_in_same_slot_is_refused(self):
         h = Live()
+        h.clock.now = datetime.fromisoformat("2026-10-12T09:15:30+03:00")  # chain window starts 09:15
         h.models.outputs["interpreter"].append(interpretation())
         opened = []
         result = live.run_chain_slot(h.ops, open_queue=lambda: opened.append(1) or h.queue,
@@ -482,6 +483,7 @@ class Slot(Base):
 
     def test_global_stop_queue_stop_deadline_and_failed_stop_sweep(self):
         h = Live()
+        h.clock.now = datetime.fromisoformat("2026-10-12T09:15:30+03:00")
         never = lambda *a: (_ for _ in ()).throw(AssertionError("must not build"))
         h.queue.set_control("stopped", actor="offline-test", expected_generation=h.queue_gen)
         r = live.run_chain_slot(h.ops, open_queue=lambda: h.queue, build_deps=never, clock=h.clock)
@@ -735,6 +737,20 @@ class ManualInternalRun(Base):
         return live.run_chain_slot(h.ops, open_queue=lambda: h.queue, build_deps=lambda q, og, qg: h.deps,
                                    clock=h.clock, manual_operator=operator,
                                    manual_catalog=catalog if catalog is not None else h.catalog, **kw)
+
+    def test_chain_window_starts_0915_and_scheduled_review_window_unchanged(self):
+        h = Live()
+        h.clock.now = datetime.fromisoformat("2026-10-12T09:00:30+03:00")
+        r = live.run_chain_slot(h.ops, open_queue=lambda: h.queue, build_deps=lambda q, og, qg: h.deps,
+                                clock=h.clock)
+        self.assertEqual((r["status"], r["reason"]), ("held", "outside_scheduled_window"))
+        # legacy scheduled_review keeps 08:30-18:30
+        gen = h.ops.control()["generation"]
+        self.assertIsNotNone(h.ops.claim_scheduled_slot(gen))
+        h.clock.now = datetime.fromisoformat("2026-10-12T18:30:30+03:00")
+        r = live.run_chain_slot(h.ops, open_queue=lambda: h.queue, build_deps=lambda q, og, qg: h.deps,
+                                clock=h.clock)
+        self.assertNotEqual(r.get("reason"), "outside_scheduled_window")
 
     def test_scheduled_path_unchanged_outside_hours(self):
         h = self.harness()

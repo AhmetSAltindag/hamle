@@ -468,7 +468,7 @@ def run_track(store, *, read_task_status, verify_latest_sent_receipt=None, clock
 def main(argv=None):
     parser = argparse.ArgumentParser(description="Hamle internal worker; dispatch requires an exact approved proposal")
     parser.add_argument("--mode", choices=("review", "scheduled_review", "verify", "dispatch", "track", "recover_followup",
-                                           "chain_tick"), required=True)
+                                           "chain_tick", "daily_digest"), required=True)
     parser.add_argument("--proposal-id")
     parser.add_argument("--work-id")
     parser.add_argument("--failure-evidence-sha256")
@@ -521,6 +521,10 @@ def main(argv=None):
             result = run_worker_chain_tick(store, secrets, check_work_stops=lambda: run_stop_intake(store, stop_reader),
                                            chain_stop_reader=stop_reader,
                                            manual_operator=args.operator if args.manual_internal else None)
+        elif args.mode == "daily_digest":
+            # Non-default: one internal team digest per Istanbul weekday (v11_daily_digest).
+            from v11_daily_digest import run_worker_daily_digest
+            result = run_worker_daily_digest(store, secrets)
         elif args.mode in ("review", "scheduled_review", "track", "recover_followup"):
             from business_writers import BusinessWriters
             writers = BusinessWriters(secrets, claim_refresh=store.claim_credential_refresh)
@@ -567,7 +571,7 @@ def main(argv=None):
                 read_reply=writers.read_reply, create_comment=writers.create_comment,
                 read_comment=writers.read_comment, read_task_status=writers.read_task_status)
         print(json.dumps(result, ensure_ascii=False, sort_keys=True))
-        return 0 if result["status"] in ("stopped", "review_required", "already_recorded", "read_verified", "internal_actions_readback_verified", "slot_already_claimed", "no_new_work", "work_status_read_verified", "chain_tick_completed") else 2
+        return 0 if result["status"] in ("stopped", "review_required", "already_recorded", "read_verified", "internal_actions_readback_verified", "slot_already_claimed", "no_new_work", "work_status_read_verified", "chain_tick_completed", "digest_sent") else 2
     except Exception as exc:
         try:
             reason = _safe_error(exc)

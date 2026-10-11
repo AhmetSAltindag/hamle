@@ -16,8 +16,11 @@ from zoneinfo import ZoneInfo
 PROJECT = "gamechangers-hamle"
 DATABASE = "hamle-operations"
 POLICY = "hamle-shared-20261009-20261012"
-START = datetime.fromisoformat("2026-10-09T00:00:00+03:00").timestamp()
-DEADLINE = datetime.fromisoformat("2026-10-12T23:59:59+03:00").timestamp()
+from runtime_authority import (AUTHORIZATION_DEADLINE, SCHEDULED_REVIEW_WINDOW, deadline_timestamp,
+                               start_timestamp, window_minutes)
+
+START = start_timestamp()
+DEADLINE = deadline_timestamp()  # single source: runtime_authority.AUTHORIZATION_DEADLINE
 PROVIDERS = ("google_cloud", "openai", "visual_generation")
 KINDS = ("gmail_reply", "basecamp_todo", "basecamp_comment")
 LIMIT = 50_000_000
@@ -178,20 +181,25 @@ class OperationsStore:
     def resume_review_only(self, actor_subject):
         return self.set_mode("review_open", actor_subject)
 
-    def claim_scheduled_slot(self, expected_generation, *, interval_minutes=15):
+    def claim_scheduled_slot(self, expected_generation, *, interval_minutes=15, window=SCHEDULED_REVIEW_WINDOW):
         """One review attempt per current Istanbul slot, with five-minute grace.
 
         Uses trusted server time, never caller-supplied dates. A lost result or
         crash retains the claim; no catch-up, requeue or new-generation replay.
         """
         _require(type(interval_minutes) is int and interval_minutes in (15, 30), "scheduled_interval_invalid")
+        try:
+            first, last = window_minutes(window)
+        except Exception:
+            raise StoreError("scheduled_window_invalid") from None
+        _require(first % interval_minutes == 0 and last % interval_minutes == 0, "scheduled_window_invalid")
         def op(tx, now):
             c = self._control(tx); b = self._budget(tx)
             self._open(c, expected_generation, now)
             local = datetime.fromtimestamp(now, ISTANBUL)
             slot = local.replace(minute=(local.minute // interval_minutes) * interval_minutes, second=0, microsecond=0)
             minute = slot.hour * 60 + slot.minute
-            _require(slot.weekday() < 5 and 510 <= minute <= 1110
+            _require(slot.weekday() < 5 and first <= minute <= last
                      and 0 <= now - slot.timestamp() < 300, "outside_scheduled_window")
             _require(not b["overrun_hold"] and b["providers"]["google_cloud"]["billing_ready"]
                      and self._totals(b)["total_committed_microdollars"] <= LIMIT, "budget_not_ready")
@@ -691,7 +699,7 @@ class OperationsStore:
 
     def initialize_budget(self, snapshot):
         b = copy.deepcopy(snapshot)
-        _require(isinstance(b, dict) and b.get("policy_id") == POLICY and b.get("limit_microdollars") == LIMIT and b.get("expires_at") == "2026-10-12T23:59:59+03:00", "budget_policy_mismatch")
+        _require(isinstance(b, dict) and b.get("policy_id") == POLICY and b.get("limit_microdollars") == LIMIT and b.get("expires_at") == AUTHORIZATION_DEADLINE, "budget_policy_mismatch")
         _require(type(b.get("overrun_hold")) is bool and isinstance(b.get("providers"), dict) and set(b["providers"]) == set(PROVIDERS), "budget_snapshot_invalid")
         _label(b.get("evidence_ref"))
         for p in b["providers"].values():

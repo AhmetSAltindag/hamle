@@ -21,6 +21,7 @@ ALLOWLIST = {
     APP + "cloud_control.py": APP + "cloud_control.py",
     APP + "cloud_ui.html": APP + "cloud_ui.html",
     APP + "cloud_store.py": APP + "cloud_store.py",
+    APP + "runtime_authority.py": APP + "runtime_authority.py",
     APP + "cloud_providers.py": APP + "cloud_providers.py",
     APP + "basecamp_cloud_auth.py": APP + "basecamp_cloud_auth.py",
     APP + "worker.py": APP + "worker.py",

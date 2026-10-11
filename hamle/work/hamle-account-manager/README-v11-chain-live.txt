@@ -69,3 +69,13 @@ Manual internal run (outside the weekday 08:30-18:30 slots; never scheduler/defa
   Needs run.jobs.runWithOverrides (e.g. roles/run.developer or roles/run.admin; run.invoker is not
   enough). Costs Cloud Run time + any model calls (30 USD chain cap). Internal profile/works only;
   unique manual-chain-* claim, one at a time (900 s lease); every other gate unchanged.
+
+Weekday schedule + daily digest (2026-10-11, local plan only)
+  chain_tick window Mon-Fri 09:15-18:30 (runtime_authority.CHAIN_TICK_WINDOW); legacy
+  scheduled_review keeps 08:30-18:30. Daily digest: worker.py --mode daily_digest (separate
+  Cloud Run job hamle-daily-digest), first run at/after 09:15 sends once per Istanbul date.
+  Config: outputs/gamechangers-internal/daily-digest-config.json (enabled=false, recipients=[]).
+  Plan: scheduler-plan-weekday-chain-digest.json (status local_plan_only_not_applied).
+  Deadline: runtime_authority.AUTHORIZATION_DEADLINE is the single code value; extending it
+  also needs the Firestore budget.expires_at, rubric/policy/catalog acceptance expiries and
+  the scheduler IAM condition updated (runtime_authority.DATED_DATA).

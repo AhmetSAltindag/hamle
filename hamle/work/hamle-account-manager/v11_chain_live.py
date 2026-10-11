@@ -27,6 +27,7 @@ import sys
 import cloud_providers as provider
 from autonomy_policy import scope_digest
 from cloud_store import DEADLINE, START
+from runtime_authority import CHAIN_TICK_WINDOW
 from v11_chain import BasecampCommentWriter, ChainDeps, run_chain_tick
 from v11_work_queue import COLLECTION, FirestoreQueueBackend, QueueError, QueueStore, digest
 
@@ -339,7 +340,8 @@ def run_chain_slot(ops, *, open_queue, build_deps, clock=None, interval_minutes=
         if c["mode"] != "review_open":
             return {"status": "stopped", "reason": "human_control_stopped", "model_calls": 0, "business_writes": 0}
         claim = (claim_manual_run(ops, c["generation"], manual_operator) if manual
-                 else ops.claim_scheduled_slot(c["generation"], interval_minutes=interval_minutes))
+                 else ops.claim_scheduled_slot(c["generation"], interval_minutes=interval_minutes,
+                                               window=CHAIN_TICK_WINDOW))
         if claim is None:
             return {"status": "slot_already_claimed", "model_calls": 0, "business_writes": 0}
         def fence():

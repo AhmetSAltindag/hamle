@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "plan_id": "hamle-scheduler-weekday-chain-digest-v1",
+  "based_on_plan_id": "hamle-scheduler-chain-20261012-v1",
+  "status": "local_plan_only_not_applied",
+  "prepared_at": "2026-10-11",
+  "project_id": "gamechangers-hamle",
+  "region": "europe-west1",
+  "timezone": "Europe/Istanbul",
+  "replaces_scheduler_jobs": [
+    "hamle-pilot-20261012-early",
+    "hamle-pilot-20261012-day",
+    "hamle-pilot-20261012-late"
+  ],
+  "authorization_deadline": "runtime_authority.AUTHORIZATION_DEADLINE (currently 2026-10-12T23:59:59+03:00); jobs after it run and hold with authorization_expired",
+  "windows": {
+    "chain_tick": "Mon-Fri 09:15-18:30 (runtime_authority.CHAIN_TICK_WINDOW, slot-claim semantics: one claim per 15-min slot, first 5 minutes only)",
+    "daily_digest": "Mon-Fri first run at/after 09:15 (durable daily-digest-YYYYMMDD record; later runs that day are no-ops)"
+  },
+  "cloud_run_jobs": {
+    "hamle-account-manager": {
+      "args": [
+        "worker.py",
+        "--mode",
+        "chain_tick"
+      ],
+      "image": "<image built from publish HEAD via package_chain_source.py>",
+      "gcloud": "gcloud run jobs update hamle-account-manager --project=gamechangers-hamle --region=europe-west1 --image=<IMAGE> --command=python --args=worker.py,--mode,chain_tick --tasks=1 --parallelism=1 --max-retries=0 --task-timeout=600s"
+    },
+    "hamle-daily-digest": {
+      "args": [
+        "worker.py",
+        "--mode",
+        "daily_digest"
+      ],
+      "image": "<image built from publish HEAD via package_chain_source.py>",
+      "new_job": true,
+      "same_runtime_service_account_env_and_limits_as": "hamle-account-manager",
+      "gcloud": "gcloud run jobs create hamle-daily-digest --project=gamechangers-hamle --region=europe-west1 --image=<IMAGE> --service-account=hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com --set-env-vars=<same HAMLE_* env as hamle-account-manager> --command=python --args=worker.py,--mode,daily_digest --tasks=1 --parallelism=1 --max-retries=0 --task-timeout=600s",
+      "why_separate_job": "scheduler calls :run without overrides (no run.jobs.runWithOverrides for the scheduler SA); one job per mode keeps default args explicit"
+    }
+  },
+  "scheduler_jobs": [
+    {
+      "id": "hamle-daily-digest-weekday",
+      "schedule": "15,30,45 9 * * 1-5",
+      "time_zone": "Europe/Istanbul",
+      "cloud_run_job": "hamle-daily-digest",
+      "http_target": {
+        "uri": "https://run.googleapis.com/v2/projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-daily-digest:run",
+        "httpMethod": "POST",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": "e30=",
+        "oauthToken": {
+          "serviceAccountEmail": "hamle-scheduler@gamechangers-hamle.iam.gserviceaccount.com",
+          "scope": "https://www.googleapis.com/auth/cloud-platform"
+        }
+      },
+      "note": "09:15 sends; 09:30/09:45 are no-op backups unless the 09:15 run never claimed (never a second mail)"
+    },
+    {
+      "id": "hamle-chain-weekday-0915",
+      "schedule": "15,30,45 9 * * 1-5",
+      "time_zone": "Europe/Istanbul",
+      "cloud_run_job": "hamle-account-manager",
+      "http_target": {
+        "uri": "https://run.googleapis.com/v2/projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager:run",
+        "httpMethod": "POST",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": "e30=",
+        "oauthToken": {
+          "serviceAccountEmail": "hamle-scheduler@gamechangers-hamle.iam.gserviceaccount.com",
+          "scope": "https://www.googleapis.com/auth/cloud-platform"
+        }
+      },
+      "note": "chain_tick 09:15-09:45"
+    },
+    {
+      "id": "hamle-chain-weekday-day",
+      "schedule": "*/15 10-17 * * 1-5",
+      "time_zone": "Europe/Istanbul",
+      "cloud_run_job": "hamle-account-manager",
+      "http_target": {
+        "uri": "https://run.googleapis.com/v2/projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager:run",
+        "httpMethod": "POST",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": "e30=",
+        "oauthToken": {
+          "serviceAccountEmail": "hamle-scheduler@gamechangers-hamle.iam.gserviceaccount.com",
+          "scope": "https://www.googleapis.com/auth/cloud-platform"
+        }
+      },
+      "note": "chain_tick 10:00-17:45"
+    },
+    {
+      "id": "hamle-chain-weekday-late",
+      "schedule": "0,15,30 18 * * 1-5",
+      "time_zone": "Europe/Istanbul",
+      "cloud_run_job": "hamle-account-manager",
+      "http_target": {
+        "uri": "https://run.googleapis.com/v2/projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-account-manager:run",
+        "httpMethod": "POST",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": "e30=",
+        "oauthToken": {
+          "serviceAccountEmail": "hamle-scheduler@gamechangers-hamle.iam.gserviceaccount.com",
+          "scope": "https://www.googleapis.com/auth/cloud-platform"
+        }
+      },
+      "note": "chain_tick 18:00-18:30"
+    }
+  ],
+  "retry_config": {
+    "retryCount": 0,
+    "maxRetryDuration": "0s"
+  },
+  "attempt_deadline": "30s",
+  "iam": {
+    "scheduler_invoker_on_both_jobs": "roles/run.invoker for hamle-scheduler@ on hamle-account-manager AND hamle-daily-digest",
+    "condition": "existing 2026-10-12-only IAM condition must be replaced by a window ending at runtime_authority.AUTHORIZATION_DEADLINE when that is extended; otherwise later weekday runs are denied (fail-closed)"
+  },
+  "apply_sequence": [
+    "pause + delete the three hamle-pilot-20261012-* jobs (or leave paused)",
+    "update hamle-account-manager job (chain_tick args) and create hamle-daily-digest job; describe and compare",
+    "grant/adjust invoker IAM for hamle-daily-digest",
+    "create the four scheduler jobs with inert schedule '0 0 1 1 *', pause, patch final schedule, describe PAUSED",
+    "resume after digest config + recipients filled and Ahmet confirms"
+  ],
+  "gcloud_scheduler_reference": [
+    "gcloud scheduler jobs create http <id> --project=gamechangers-hamle --location=europe-west1 --schedule='0 0 1 1 *' --time-zone=Europe/Istanbul --uri=<http_target.uri> --http-method=POST --message-body='{}' --headers=Content-Type=application/json --oauth-service-account-email=hamle-scheduler@gamechangers-hamle.iam.gserviceaccount.com --oauth-token-scope=https://www.googleapis.com/auth/cloud-platform --max-retry-attempts=0 --attempt-deadline=30s",
+    "gcloud scheduler jobs pause <id> --project=gamechangers-hamle --location=europe-west1",
+    "gcloud scheduler jobs update http <id> --project=gamechangers-hamle --location=europe-west1 --schedule='<final schedule>'",
+    "gcloud scheduler jobs describe <id> --project=gamechangers-hamle --location=europe-west1  (require state PAUSED + exact config)",
+    "gcloud scheduler jobs resume <id> --project=gamechangers-hamle --location=europe-west1  (activation; costs money per run)"
+  ],
+  "cost": "each scheduled start is a billed Cloud Run execution; empty chain_tick slots make 0 model calls; digest makes 0 model calls",
+  "stop": [
+    "python3 v11_chain_live.py queue stop ...",
+    "gcloud scheduler jobs pause <each id> --location=europe-west1",
+    "global control stop"
+  ]
+}
