@@ -87,3 +87,7 @@ Weekday schedule + daily digest (2026-10-11, local plan only)
   ÖZEL GÜNLER on Mondays (tr-special-days-2026.json + brand-cards.json, both "taslak").
   Preview: --mode daily_digest --preview-to <one @gamechangers.com.tr address>; record key
   daily-digest-preview-YYYYMMDD, never consumes the team send.
+  Preview day: --preview-to <addr> --preview-day YYYY-MM-DD renders BUGÜN, days late and the
+  Monday section as of that date (today or the next Istanbul weekday, at most 3 days ahead);
+  key daily-digest-preview-<YYYYMMDD of target>. Digest model cache key = sha256 of the exact
+  input bytes, so the team send reuses a preview result only on a byte-identical input.

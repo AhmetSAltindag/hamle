@@ -138,7 +138,7 @@ class Base(unittest.TestCase):
         for name in ("socket", "create_connection"):
             p = patch.object(socket, name, side_effect=AssertionError("Network forbidden"))
             p.start(); self.addCleanup(p.stop)
-        self.now = MON_0916
+        self.now = getattr(self, "START", MON_0916)
         self.ops = OperationsStore(MemoryBackend(), clock=lambda: self.now)
         self.ops.initialize_control(); self.ops.initialize_budget(budget_snapshot())
         self.ops.resume_review_only("offline-test")
@@ -428,6 +428,108 @@ class Preview(Base):
         self.assertEqual((self.gmail.calls, self.bc.calls), ([], []))
 
 
+class PreviewDay(Base):
+    START = datetime.fromisoformat("2026-10-11T20:00:00+03:00")  # Sunday evening
+
+    def test_sunday_preview_rendered_as_of_monday(self):
+        r = self.run_digest(preview_to="ahmet@gamechangers.com.tr", preview_day="2026-10-12")
+        self.assertEqual((r["status"], r["key"]), ("digest_sent", "daily-digest-preview-20261012"), r)
+        msg = self.gmail.message()
+        self.assertEqual(str(msg["Subject"]), "[ÖNİZLEME] Hamle günlük özet — 12.10.2026")
+        text = msg.get_content()
+        for needle in ("12.10.2026 Pazartesi", f"- Afiş · Hamle İç Deneme · @Ahmet · {APP}/buckets/1/todos/1001",
+                       "Story · Hamle İç Deneme · @Ahmet @Cansu · 2 gün gecikme", "ÖZEL GÜNLER (14 gün)"):
+            self.assertIn(needle, text)
+        row = self.ops.backend.data["daily-digest-preview-20261012"]
+        self.assertEqual((row["date"], row["run_date"]), ("2026-10-12", "2026-10-11"))
+        again = self.run_digest(preview_to="ahmet@gamechangers.com.tr", preview_day="2026-10-12")
+        self.assertEqual(again["status"], "already_recorded")
+        today = self.run_digest(preview_to="ahmet@gamechangers.com.tr", preview_day="2026-10-11")
+        self.assertEqual((today["status"], today["key"]), ("digest_sent", "daily-digest-preview-20261011"))
+        self.assertNotIn("ÖZEL GÜNLER", self.gmail.text())
+        self.assertIn("Story · Hamle İç Deneme · @Ahmet @Cansu · 1 gün gecikme", self.gmail.text())
+        self.assertNotIn("daily-digest-20261012", self.ops.backend.data)
+
+    def test_target_day_range_and_flag_pairing(self):
+        for bad, code in (("2026-10-13", "digest_preview_day_out_of_range"),
+                          ("2026-10-10", "digest_preview_day_out_of_range"),
+                          ("12.10.2026", "digest_preview_day_invalid"), ("20261012", "digest_preview_day_invalid")):
+            r = self.run_digest(preview_to="ahmet@gamechangers.com.tr", preview_day=bad)
+            self.assertEqual((r["status"], r["reason"]), ("held", code))
+        r = self.run_digest(preview_day="2026-10-12")
+        self.assertEqual(r["reason"], "digest_preview_day_requires_preview_to")
+        self.assertEqual((self.gmail.calls, self.bc.calls), ([], []))
+        self.assertEqual(dd.preview_target("2026-10-12", date(2026, 10, 9)), date(2026, 10, 12))  # Fri -> Mon
+        self.assertEqual(dd.preview_target("2026-10-09", date(2026, 10, 8)), date(2026, 10, 9))
+        for today in (date(2026, 10, 8), date(2026, 10, 10)):
+            if today == date(2026, 10, 10):
+                self.assertEqual(dd.preview_target("2026-10-12", today), date(2026, 10, 12))  # Sat -> Mon
+            else:
+                with self.assertRaises(dd.DigestError):
+                    dd.preview_target("2026-10-12", today)  # Thu: next weekday is Fri
+
+    def test_team_send_reuses_classifier_only_on_byte_identical_input(self):
+        out = classification(("o1", "action_on_us", "Bizde.", "Bugün bitir."))
+        transport = Transport(envelope(out), envelope(out))
+        r = self.run_digest(preview_to="ahmet@gamechangers.com.tr", preview_day="2026-10-12",
+                            classifier=self.classifier(transport))
+        self.assertEqual((r["status"], len(transport.calls)), ("digest_sent", 1))
+        self.now = MON_0916
+        team = self.run_digest(classifier=self.classifier(transport))
+        self.assertEqual((team["status"], len(transport.calls), len(self.chain_reservations())), ("digest_sent", 1, 1))
+        self.assertIn("🔴", self.gmail.text())
+        # one changed comment -> different input bytes -> a new (single) call, never the old result
+        self.bc.pages[f"{BASE}/buckets/2/recordings/3001/comments.json"][0][0]["content"] = "Yeni yorum"
+        dd.build_digest(self.reader(), day=date(2026, 10, 12), day_note=None, classifier=self.classifier(transport))
+        self.assertEqual((len(transport.calls), len(self.chain_reservations())), (2, 2))
+
+
+class RealVolume(Base):
+    """Mac readback shape: 7 due today, 15 overdue across 6 projects, 57 comments in last-5 windows."""
+    def setUp(self):
+        super().setUp()
+        projects, n, left = [], 0, 57
+        for p in range(1, 7):
+            projects.append({"id": p, "name": f"Marka {p}", "status": "active",
+                             "dock": [{"name": "todoset", "id": p * 10, "enabled": True}]})
+            self.bc.pages[f"{BASE}/buckets/{p}/todosets/{p * 10}/todolists.json"] = ([{"id": p * 100}], {})
+            rows = []
+            for k in range(4):
+                n += 1
+                due = "2026-10-12" if n <= 7 else "2026-10-%02d" % (1 + n % 10) if n <= 22 else None
+                rows.append(todo(p * 1000 + k, f"İş {n} " + "uzun başlık " * 6, due, [(n % 4 + 1, f"Kişi{n % 4}")]))
+                if due and due < "2026-10-12":
+                    take = min(5, left - max(0, (22 - n)) * 3) if n < 22 else left
+                    take = max(1, min(5, take))
+                    left -= take
+                    self.bc.pages[f"{BASE}/buckets/{p}/recordings/{p * 1000 + k}/comments.json"] = (
+                        [{"created_at": f"2026-10-0{c + 1}T10:00:00Z", "creator": {"name": "Müşteri Ekibi"},
+                          "content": "Uzun yorum " * 40} for c in range(take + 2)], {})
+            self.bc.pages[f"{BASE}/buckets/{p}/todolists/{p * 100}/todos.json"] = (rows, {})
+        self.bc.pages[f"{BASE}/projects.json"] = (projects, {})
+
+    def test_mail_stays_near_25_lines_with_overflow_links(self):
+        seen = []
+        def fake(model_input):
+            seen.append(model_input)
+            return classification(*[(it["ref"], "waiting_client", "Müşteri onayı bekleniyor.", "Tarihi kaydır.")
+                                    for it in model_input["items"]])
+        body, stats = dd.build_digest(self.reader(), day=date(2026, 10, 12), day_note="Toplantı 14:00",
+                                      classifier=fake, trend_source=lambda: [
+                                          {"title": f"Trend {i}", "url": f"https://example.org/{i}",
+                                           "published_at": "2026-10-10"} for i in range(5)],
+                                      cards=self.cards, calendar=self.calendar)
+        self.assertEqual((stats["overdue"], stats["classified"], len(seen)), (15, 15, 1))
+        self.assertLessEqual(len(json.dumps(seen[0], ensure_ascii=False).encode()), dd.MODEL_INPUT_BUDGET)
+        lines = [l for l in body.splitlines() if l.strip()]
+        self.assertLessEqual(len(lines), 26, body)
+        self.assertIn("Bugün teslim: 7 · Gecikmiş: 15 (6 proje)", body)
+        more_today = next(l for l in lines if l.startswith("- … +4 iş daha: "))
+        self.assertEqual(more_today.count(APP), 4)
+        self.assertIn(f"- … +9 geciken iş daha · tüm liste: {APP}/reports/todos/overdue", body)
+        self.assertIn("GECİKENLER (🟡 15)", body)
+
+
 class Runtime(unittest.TestCase):
     def test_single_deadline_value_drives_store_and_windows(self):
         import cloud_store
@@ -456,6 +558,9 @@ class Runtime(unittest.TestCase):
         self.assertIn("cloud_opt_in_required", str(out.call_args))
 
     def test_packaged_with_prompt_and_draft_json(self):
+        with patch.dict(os.environ, {}, clear=True), patch("builtins.print") as out:
+            self.assertNotEqual(worker.main(["--mode", "daily_digest", "--preview-day", "2026-10-12"]), 0)
+        self.assertIn("preview_day_requires_preview_to", str(out.call_args))
         import package_chain_source as pkg
         self.assertIn("chain_digest_prompt.txt", pkg.CHAIN_FILES)
         values = set(pkg.ALLOWLIST.values())

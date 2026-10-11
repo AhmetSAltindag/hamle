@@ -54,6 +54,7 @@ NO_TRENDS = "Bugün doğrulanmış trend kaynağı alınamadı."
 WEEKDAYS = ("Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi", "Pazar")
 SHORT_DAYS = ("Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz")
 MARKS = {"action_on_us": "🔴", "waiting_client": "🟡", "looks_done": "⚪"}
+MORE_LINKS = 4
 LIMITS = {"today": 3, "overdue": 6, "trends": 4, "special": 3}  # worst case ~26 non-blank lines
 
 
@@ -316,7 +317,7 @@ def sourced_trends(raw, today, limit=5):
                     and today - timedelta(days=30) <= day <= today and _plain(t.get("title"), 120)):
                 continue
             out.append({"title": _plain(t["title"], 120), "url": url, "published_at": day.isoformat(),
-                        "summary": _plain(t.get("summary"), 160)})
+                        "summary": _plain(t.get("summary"), 160), "idea": _plain(t.get("idea"), 200)})
         except Exception:
             continue
     return out[:limit]
@@ -358,12 +359,20 @@ def render(listing, *, day, day_note, overdue, trends, specials, classified):
         return " ".join("@" + n for n in t["assignees"]) or "atanmamış"
 
     lines += ["", "BUGÜN"]
+    due = sorted(due, key=lambda t: (t["project"], t["title"]))
     lines += [f"- {t['title']} · {t['project']} · {who(t)} · {t['app_url']}" for t in due[:LIMITS['today']]] or ["- Bugün teslim iş yok."]
-    if len(due) > LIMITS["today"]:
-        lines.append(f"- … +{len(due) - LIMITS['today']} iş daha")
+    rest = due[LIMITS["today"]:]
+    if rest:
+        links = " ".join(t["app_url"] for t in rest[:MORE_LINKS]) + (" …" if len(rest) > MORE_LINKS else "")
+        lines.append(f"- … +{len(rest)} iş daha: {links}")
 
-    lines += ["", "GECİKENLER" + ("" if classified else " (sınıflandırılmadı: model bütçesi/yanıtı yok)")]
-    shown = sorted(overdue, key=lambda t: (-t["days_overdue"], t["title"]))[:LIMITS["overdue"]]
+    counts = " · ".join(f"{MARKS[k]} {n}" for k in MARKS
+                        for n in [sum(1 for t in overdue if t.get("status") == k)] if n)
+    lines += ["", "GECİKENLER" + (f" ({counts})" if classified and counts else "")
+              + ("" if classified or not overdue else " (sınıflandırılmadı: model bütçesi/yanıtı yok)")]
+    rank = {"action_on_us": 0, "waiting_client": 1, "looks_done": 2}
+    shown = sorted(overdue, key=lambda t: (rank.get(t.get("status"), 3), t.get("hamle_assigned", False),
+                                           -t["days_overdue"], t["title"]))[:LIMITS["overdue"]]
     for t in shown:
         mark = MARKS.get(t.get("status"), "•")
         reason = t.get("reason") or ("Hamle'ye atanmış; yalnız listelendi." if t.get("hamle_assigned") else "sınıflandırılmadı")
@@ -373,14 +382,15 @@ def render(listing, *, day, day_note, overdue, trends, specials, classified):
     if not overdue:
         lines.append("- Geciken iş yok.")
     elif len(overdue) > len(shown):
-        lines.append(f"- … +{len(overdue) - len(shown)} geciken iş daha")
+        lines.append(f"- … +{len(overdue) - len(shown)} geciken iş daha · tüm liste: "
+                     f"{APP}/{listing.get('account')}/reports/todos/overdue")
 
     lines += ["", "TREND RADARI"]
     if trends:
         cards = [b for b in _brands(listing.get("cards")) if b.get("main_platform")]
         for i, t in enumerate(trends[:LIMITS["trends"]]):
-            idea = ""
-            if cards:
+            idea = f" Uyarlama: {t['idea']}" if t.get("idea") else ""
+            if not idea and cards:
                 b = cards[i % len(cards)]
                 idea = f" Uyarlama: {b['brand']} ({b['main_platform']}, taslak kart) için kendi ürün diliyle denenebilir."
             lines.append(f"- {t['title']} ({t['published_at']}) · {t['url']}{idea}")
@@ -461,6 +471,7 @@ def build_digest(reader, *, day, day_note, classifier=None, trend_source=None, c
     """Read-only listing + optional batched classification -> (body, stats)."""
     listing = reader.collect()
     listing["cards"] = cards
+    listing["account"] = getattr(reader, "account", None)
     today_iso = day.isoformat()
     report = reader.overdue_report(listing["project_names"])
     todos = report if report is not None else [t for t in listing["items"] if t["kind"] == "todo"]
@@ -506,9 +517,35 @@ def build_digest(reader, *, day, day_note, classifier=None, trend_source=None, c
 
 
 # ------------------------------------------------------------------ run
+def next_weekday(day):
+    day += timedelta(days=1)
+    while day.weekday() >= 5:
+        day += timedelta(days=1)
+    return day
+
+
+def preview_target(value, today):
+    """None -> today; else exactly today or the next Istanbul weekday (at most 3 days ahead)."""
+    if value is None:
+        return today
+    try:
+        _need(isinstance(value, (str, date)), "digest_preview_day_invalid")
+        target = value if isinstance(value, date) else date.fromisoformat(value)
+        _need(isinstance(value, date) or re.fullmatch(r"\d{4}-\d{2}-\d{2}", value), "digest_preview_day_invalid")
+    except ValueError:
+        raise DigestError("digest_preview_day_invalid") from None
+    nxt = next_weekday(today)
+    _need(target == today or (target == nxt and (nxt - today).days <= 3), "digest_preview_day_out_of_range")
+    return target
+
+
 def run_daily_digest(ops, *, config, reader_factory, writer, clock, window=DAILY_DIGEST_WINDOW,
-                     preview_to=None, classifier=None, trend_source=None, cards=None, calendar=None):
-    """One team digest per Istanbul weekday, or one preview per day to ONE agency address."""
+                     preview_to=None, preview_day=None, classifier=None, trend_source=None, cards=None, calendar=None):
+    """One team digest per Istanbul weekday, or one preview per target day to ONE agency address.
+
+    preview_day (only with preview_to): today or the next Istanbul weekday at most 3 days
+    ahead; BUGÜN, days-late and the Monday section are rendered as of that date.
+    """
     claim = None
     try:
         now = clock()
@@ -516,9 +553,12 @@ def run_daily_digest(ops, *, config, reader_factory, writer, clock, window=DAILY
         _need(start_timestamp() <= now.timestamp() <= deadline_timestamp(), "authorization_expired")
         cfg = validate_config(config)
         local = now.astimezone(ISTANBUL)
+        target = local.date()
+        _need(preview_day is None or preview_to is not None, "digest_preview_day_requires_preview_to")
         if preview_to is not None:
             _need(internal_address(preview_to), "digest_preview_not_internal_agency")
-            recipients, key, subject_prefix = [preview_to], "daily-digest-preview-" + local.strftime("%Y%m%d"), "[ÖNİZLEME] "
+            target = preview_target(preview_day, local.date())
+            recipients, key, subject_prefix = [preview_to], "daily-digest-preview-" + target.strftime("%Y%m%d"), "[ÖNİZLEME] "
         else:
             if not cfg["enabled"] or not cfg["recipients"]:
                 return {"status": "no_new_work", "reason": "digest_disabled_or_no_recipients", "business_writes": 0}
@@ -537,7 +577,7 @@ def run_daily_digest(ops, *, config, reader_factory, writer, clock, window=DAILY
                 return None  # claimed/sending/sent/unknown: never a second mail under this key
             new = {"key": key, "kind": "daily_digest_preview" if preview_to else "daily_digest", "state": "claimed",
                    "token": token, "generation": c["generation"], "claimed_at": ts,
-                   "lease_until": ts + LEASE_SECONDS, "date": local.date().isoformat()}
+                   "lease_until": ts + LEASE_SECONDS, "date": target.isoformat(), "run_date": local.date().isoformat()}
             tx.put(key, new)
             return new
         claim = ops._run(claim_op)
@@ -545,10 +585,10 @@ def run_daily_digest(ops, *, config, reader_factory, writer, clock, window=DAILY
             return {"status": "already_recorded", "reason": "digest_already_claimed_or_sent", "key": key,
                     "business_writes": 0}
 
-        body, stats = build_digest(reader_factory(), day=local.date(), day_note=cfg["day_note"], classifier=classifier,
+        body, stats = build_digest(reader_factory(), day=target, day_note=cfg["day_note"], classifier=classifier,
                                    trend_source=trend_source, cards=cards, calendar=calendar)
         payload = {"from": HAMLE, "to": list(recipients), "cc": [],
-                   "subject": f"{subject_prefix}Hamle günlük özet — {local.strftime('%d.%m.%Y')}", "body": body}
+                   "subject": f"{subject_prefix}Hamle günlük özet — {target.strftime('%d.%m.%Y')}", "body": body}
         sha = scope_digest(payload)
 
         def begin_op(tx, ts):
@@ -602,20 +642,22 @@ def run_daily_digest(ops, *, config, reader_factory, writer, clock, window=DAILY
 def model_classifier(ops, load_key, catalog, *, transport=None):
     """ONE batched call via the existing OpenAI path (v11_chain_models), under the 30 USD chain cap."""
     from v11_chain_live import budget_gate
-    from v11_chain_models import (MODEL_RESERVATION, ModelGate, call_once, internal_cap_microdollars,
-                                  source_digest)
+    import hashlib
+    import model as base
+    from v11_chain_models import MODEL_RESERVATION, ModelGate, call_once, internal_cap_microdollars
     cap = internal_cap_microdollars(catalog)
     gate = ModelGate(ledger=ops, cache=ops, generation=ops.control()["generation"], cap_microdollars=cap)
     budget_ok = budget_gate(ops, MODEL_RESERVATION, cap)
 
     def classify(model_input):
         _need(budget_ok(), "model_budget_unavailable")
-        return gate.once("digest", source_digest("digest", model_input),
+        # Cache key = digest of the exact input bytes sent: reuse only on a byte-identical input.
+        return gate.once("digest", hashlib.sha256(b"digest\0" + base._encoded(model_input)).hexdigest(),
                          lambda: call_once(load_key(), "digest", model_input, transport=transport))
     return classify
 
 
-def run_worker_daily_digest(ops, secrets, *, clock=None, preview_to=None):
+def run_worker_daily_digest(ops, secrets, *, clock=None, preview_to=None, preview_day=None):
     """Entry for worker.py --mode daily_digest (existing credential loaders only).
 
     Trend provider: NONE shipped. model.py's request path pins tools=[] / tool_choice=none
@@ -665,7 +707,7 @@ def run_worker_daily_digest(ops, secrets, *, clock=None, preview_to=None):
         classifier = None  # no cap/catalog -> overdue listed unclassified
     try:
         return run_daily_digest(ops, config=config, reader_factory=reader_factory, writer=writer, clock=clock,
-                                preview_to=preview_to, classifier=classifier, trend_source=None,
+                                preview_to=preview_to, preview_day=preview_day, classifier=classifier, trend_source=None,
                                 cards=load_brand_cards(), calendar=load_calendar())
     finally:
         for s in sessions:
