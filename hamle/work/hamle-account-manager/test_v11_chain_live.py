@@ -714,3 +714,89 @@ class Quality(Base):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ManualInternalRun(Base):
+    # Outside every scheduled slot (after 18:30). The harness control was opened at T0, so an
+    # evening after T0 stands in for "Sunday evening" (same rule: no weekday-window claim).
+    SUNDAY = datetime.fromisoformat("2026-10-12T21:07:00+03:00")
+
+    def harness(self):
+        h = Live()
+        h.clock.now = self.SUNDAY
+        h.models.outputs["interpreter"].append(interpretation())
+        return h
+
+    def manual(self, h, operator=AHMET_MAIL, catalog=None, **kw):
+        return live.run_chain_slot(h.ops, open_queue=lambda: h.queue, build_deps=lambda q, og, qg: h.deps,
+                                   clock=h.clock, manual_operator=operator,
+                                   manual_catalog=catalog if catalog is not None else h.catalog, **kw)
+
+    def test_scheduled_path_unchanged_outside_hours(self):
+        h = self.harness()
+        r = live.run_chain_slot(h.ops, open_queue=lambda: h.queue, build_deps=lambda q, og, qg: h.deps,
+                                clock=h.clock)
+        self.assertEqual((r["status"], r["reason"]), ("held", "outside_scheduled_window"))
+        self.assertEqual(h.models.calls, [])
+
+    def test_manual_run_outside_hours_processes_internal_work_with_all_gates(self):
+        h = self.harness()
+        r = self.manual(h)
+        self.assertEqual(r["status"], "chain_tick_completed", r)
+        self.assertTrue(r["slot_key"].startswith("manual-chain-20261012T180700-"))
+        self.assertEqual(r["business_writes"], 2)  # task + internal note, through the normal chain gates
+        row = h.ops.backend.data[r["slot_key"]] if hasattr(h.ops.backend, "data") else None
+        if row is not None:
+            self.assertEqual((row["state"], row["operator"]), ("finished", AHMET_MAIL))
+        # lease released -> a later manual run gets a NEW unique key
+        h.clock.step(60)
+        r2 = self.manual(h)
+        self.assertEqual(r2["status"], "chain_tick_completed", r2)
+        self.assertNotEqual(r2["slot_key"], r["slot_key"])
+
+    def test_manual_run_refuses_other_brand_profile_or_work(self):
+        h = self.harness()
+        wat = copy.deepcopy(h.catalog); wat["brand_id"] = "wat_mobilite"
+        r = self.manual(h, catalog=wat)
+        self.assertEqual(r["status"], "held")
+        self.assertEqual(r["reason"], "manual_run_internal_profile_only")
+        h.queue.backend.records["work-wat"] = {"id": "work-wat", "kind": "work", "work_id": "work-wat",
+                                               "brand_id": "wat_mobilite", "service_id": "wat_social"}
+        r = self.manual(h)
+        self.assertEqual((r["status"], r["reason"]), ("held", "manual_run_non_internal_work_present"))
+        self.assertEqual(h.models.calls, [])
+
+    def test_manual_run_requires_allowed_operator(self):
+        h = self.harness()
+        for op in ("", "someone@example.com"):
+            r = self.manual(h, operator=op)
+            self.assertEqual((r["status"], r["reason"]), ("held", "manual_operator_not_allowed"))
+        with patch.dict(os.environ, {}, clear=True), patch("builtins.print") as out:
+            self.assertNotEqual(worker.main(["--mode", "chain_tick", "--manual-internal"]), 0)
+        self.assertIn("manual_internal_requires_chain_tick_and_operator", str(out.call_args))
+        with patch.dict(os.environ, {}, clear=True), patch("builtins.print") as out:
+            self.assertNotEqual(worker.main(["--mode", "scheduled_review", "--manual-internal",
+                                             "--operator", AHMET_MAIL]), 0)
+        self.assertIn("manual_internal_requires_chain_tick_and_operator", str(out.call_args))
+
+    def test_concurrent_manual_runs_are_blocked_by_lease(self):
+        h = self.harness()
+        gen = h.ops.control()["generation"]
+        first = live.claim_manual_run(h.ops, gen, AHMET_MAIL)
+        r = self.manual(h, operator="cansu@gamechangers.com.tr")
+        self.assertEqual((r["status"], r["reason"]), ("held", "manual_run_in_progress"))
+        live.finish_manual_run(h.ops, first, status="held", reason="test")
+        self.assertEqual(self.manual(h)["status"], "chain_tick_completed")
+
+    def test_manual_run_keeps_global_stop_deadline_and_cap(self):
+        h = self.harness()
+        h.ops.set_mode("stopped", "offline-test")
+        self.assertEqual(self.manual(h)["status"], "stopped")
+        h2 = self.harness()
+        h2.clock.now = datetime.fromisoformat("2026-10-13T00:00:01+03:00")
+        r = self.manual(h2)
+        self.assertEqual((r["status"], r["reason"]), ("held", "authorization_expired"))
+        h3 = self.harness()
+        h3.deps.budget_ok = live.budget_gate(h3.ops, 2_000_000, 1_000_000)  # cap below one hold
+        r = self.manual(h3)
+        self.assertEqual(h3.models.calls, [])

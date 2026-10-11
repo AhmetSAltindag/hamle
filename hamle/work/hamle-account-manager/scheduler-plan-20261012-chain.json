@@ -321,6 +321,11 @@
       "gcloud scheduler jobs update http <id> --project=gamechangers-hamle --location=europe-west1 --schedule='<final schedule>'",
       "gcloud scheduler jobs describe <id> --project=gamechangers-hamle --location=europe-west1  (require state PAUSED + exact config)",
       "gcloud scheduler jobs resume <id> --project=gamechangers-hamle --location=europe-west1  (activation; costs money per run)"
-    ]
+    ],
+    "manual_internal_run": {
+      "never_in_scheduler_or_job_default_args": true,
+      "gcloud": "gcloud run jobs execute hamle-account-manager --project=gamechangers-hamle --region=europe-west1 --args=worker.py,--mode,chain_tick,--manual-internal,--operator,ahmet@gamechangers.com.tr --wait",
+      "permission": "run.jobs.runWithOverrides (roles/run.developer or roles/run.admin)"
+    }
   }
 }

@@ -62,3 +62,10 @@ Mac operator commands (from work/hamle-account-manager)
   python3 v11_chain_live.py queue stop --expected-generation N --actor ahmet@gamechangers.com.tr   # Firestore write
   python3 package_chain_source.py --create        # local files only
   (build/deploy/scheduler: see scheduler-plan-20261012-chain.json -> cloud_run / tooling)
+
+Manual internal run (outside the weekday 08:30-18:30 slots; never scheduler/default args)
+  gcloud run jobs execute hamle-account-manager --project=gamechangers-hamle --region=europe-west1 \
+    --args=worker.py,--mode,chain_tick,--manual-internal,--operator,ahmet@gamechangers.com.tr --wait
+  Needs run.jobs.runWithOverrides (e.g. roles/run.developer or roles/run.admin; run.invoker is not
+  enough). Costs Cloud Run time + any model calls (30 USD chain cap). Internal profile/works only;
+  unique manual-chain-* claim, one at a time (900 s lease); every other gate unchanged.

@@ -473,6 +473,9 @@ def main(argv=None):
     parser.add_argument("--work-id")
     parser.add_argument("--failure-evidence-sha256")
     parser.add_argument("--failed-task-fingerprint")
+    # Explicit operator-only manual internal chain run; never part of scheduler/default args.
+    parser.add_argument("--manual-internal", action="store_true")
+    parser.add_argument("--operator")
     args = parser.parse_args(argv)
     backend = secrets = None
     try:
@@ -486,6 +489,9 @@ def main(argv=None):
                              for v in recovery_fields[1:]), "explicit_recovery_evidence_required")
         else:
             _require(all(v is None for v in recovery_fields), "recovery_arguments_forbidden")
+        _require((args.manual_internal and args.mode == "chain_tick" and args.operator in
+                  ("ahmet@gamechangers.com.tr", "cansu@gamechangers.com.tr", "ozge@gamechangers.com.tr")) or
+                 (not args.manual_internal and args.operator is None), "manual_internal_requires_chain_tick_and_operator")
         _require(os.environ.get("HAMLE_ALLOW_FIRESTORE_OPERATIONS") == "yes", "cloud_opt_in_required")
         _require(os.environ.get("HAMLE_PROJECT_ID") == "gamechangers-hamle" and
                  os.environ.get("HAMLE_FIRESTORE_DATABASE") == "hamle-operations", "cloud_scope_invalid")
@@ -513,7 +519,8 @@ def main(argv=None):
             from v11_stop_intake import HamleStopReader, run_stop_intake
             stop_reader = HamleStopReader(gmail)
             result = run_worker_chain_tick(store, secrets, check_work_stops=lambda: run_stop_intake(store, stop_reader),
-                                           chain_stop_reader=stop_reader)
+                                           chain_stop_reader=stop_reader,
+                                           manual_operator=args.operator if args.manual_internal else None)
         elif args.mode in ("review", "scheduled_review", "track", "recover_followup"):
             from business_writers import BusinessWriters
             writers = BusinessWriters(secrets, claim_refresh=store.claim_credential_refresh)

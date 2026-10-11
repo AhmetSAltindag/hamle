@@ -236,6 +236,79 @@ def build_live_deps(*, ops, ops_generation, queue, queue_generation, secrets, ca
             view, quality.scope(), {**context, "work_brief_sha256": quality.delivery_brief_sha256(view)})), session
 
 
+# ------------------------------------------------------------------ explicit manual internal run
+MANUAL_OPERATORS = ("ahmet@gamechangers.com.tr", "cansu@gamechangers.com.tr", "ozge@gamechangers.com.tr")
+MANUAL_BRAND, MANUAL_SERVICE = "gamechangers", "gc_internal"
+MANUAL_LEASE_KEY = "manual-chain-lease"
+MANUAL_LEASE_SECONDS = 900  # > Cloud Run task timeout (600 s); a crashed run blocks the next for 15 min
+
+
+def claim_manual_run(ops, expected_generation, operator):
+    """Durable unique manual run (never a slot-* key), one at a time via a lease.
+
+    Same control/generation and budget-readiness checks as claim_scheduled_slot,
+    without the weekday 08:30-18:30 window. A crash keeps the claim (no replay).
+    """
+    import uuid
+    from cloud_store import LIMIT
+    _need(operator in MANUAL_OPERATORS, "manual_operator_not_allowed")
+    def op(tx, now):
+        c = ops._control(tx); b = ops._budget(tx)
+        ops._open(c, expected_generation, now)
+        _need(not b["overrun_hold"] and b["providers"]["google_cloud"]["billing_ready"]
+              and ops._totals(b)["total_committed_microdollars"] <= LIMIT, "budget_not_ready")
+        lease = tx.get(MANUAL_LEASE_KEY)
+        _need(lease is None or lease.get("state") != "running" or now >= lease["expires_at"],
+              "manual_run_in_progress")
+        token = uuid.uuid4().hex
+        key = "manual-chain-" + datetime.fromtimestamp(now, timezone.utc).strftime("%Y%m%dT%H%M%S") + "-" + token[:12]
+        _need(tx.get(key) is None, "manual_run_key_conflict")
+        row = {"slot_key": key, "scheduled_at": datetime.fromtimestamp(now, timezone.utc).isoformat(),
+               "claimed_at": now, "generation": c["generation"], "token": token, "state": "claimed",
+               "kind": "manual_chain_run", "operator": operator, "brand_id": MANUAL_BRAND}
+        tx.put(key, row)
+        tx.put(MANUAL_LEASE_KEY, {"state": "running", "run_key": key, "token": token,
+                                  "expires_at": now + MANUAL_LEASE_SECONDS, "operator": operator})
+        return row
+    return ops._run(op)
+
+
+def finish_manual_run(ops, claim, *, status, reason=None):
+    _need(isinstance(claim, dict) and str(claim.get("slot_key", "")).startswith("manual-chain-"), "manual_claim_invalid")
+    _need(status in ("stopped", "already_recorded", "no_new_work", "held"), "manual_outcome_invalid")
+    outcome = {"status": status, "reason": reason}
+    def op(tx, now):
+        old = tx.get(claim["slot_key"])
+        lease = tx.get(MANUAL_LEASE_KEY)  # all reads before writes (Firestore transaction rule)
+        _need(old is not None and old.get("token") == claim.get("token")
+              and old.get("generation") == claim.get("generation"), "manual_claim_invalid")
+        if old["state"] == "claimed":
+            old.update(state="finished", finished_at=now, outcome=outcome)
+            tx.put(claim["slot_key"], old)
+        if lease is not None and lease.get("run_key") == claim["slot_key"] and lease.get("state") == "running":
+            lease.update(state="released", released_at=now)
+            tx.put(MANUAL_LEASE_KEY, lease)
+        return old
+    return ops._run(op, allow_expired=True)
+
+
+def internal_only_guard(catalog, queue):
+    """Manual runs touch ONLY the Gamechangers internal profile and its works."""
+    _need(catalog.get("brand_id") == MANUAL_BRAND
+          and catalog.get("chain", {}).get("default_service_id") == MANUAL_SERVICE
+          and all(r.get("service_id") == MANUAL_SERVICE for r in catalog.get("routes", [])),
+          "manual_run_internal_profile_only")
+    cursor = None
+    for _ in range(8):
+        page = queue.page(kind="work", limit=25, cursor=cursor)
+        _need(all(w.get("brand_id") == MANUAL_BRAND and w.get("service_id") == MANUAL_SERVICE
+                  for w in page["items"]), "manual_run_non_internal_work_present")
+        cursor = page["next_cursor"]
+        if cursor is None:
+            return True
+    raise ChainLiveError("manual_run_work_scan_incomplete")
+
+
 # ------------------------------------------------------------------ one scheduled slot
 def _summary(report):
     works = {k: {"events": v.get("events"), "status": v.get("status")} for k, v in report.get("works", {}).items()}
@@ -245,17 +318,28 @@ def _summary(report):
 
 
 def run_chain_slot(ops, *, open_queue, build_deps, clock=None, interval_minutes=15, check_work_stops=None,
-                   check_chain_stops=None):
-    """Same slot/stop/generation/deadline/budget order as worker.run_scheduled_review."""
+                   check_chain_stops=None, manual_operator=None, manual_catalog=None):
+    """Same slot/stop/generation/deadline/budget order as worker.run_scheduled_review.
+
+    manual_operator (explicit CLI only, never scheduler args): a unique durable
+    manual run claim replaces the weekday slot window; internal profile only.
+    """
     clock = clock or (lambda: datetime.now(timezone.utc))
+    manual = manual_operator is not None
+    finish = (lambda claim, **kw: finish_manual_run(ops, claim, **kw)) if manual else ops.finish_scheduled_slot
     claim = None
     attempted = False
     try:
+        if manual:
+            _need(manual_operator in MANUAL_OPERATORS, "manual_operator_not_allowed")
+            _need(isinstance(manual_catalog, dict) and manual_catalog.get("brand_id") == MANUAL_BRAND,
+                  "manual_run_internal_profile_only")
         _stamp(clock)
         c = ops.control()
         if c["mode"] != "review_open":
             return {"status": "stopped", "reason": "human_control_stopped", "model_calls": 0, "business_writes": 0}
-        claim = ops.claim_scheduled_slot(c["generation"], interval_minutes=interval_minutes)
+        claim = (claim_manual_run(ops, c["generation"], manual_operator) if manual
+                 else ops.claim_scheduled_slot(c["generation"], interval_minutes=interval_minutes))
         if claim is None:
             return {"status": "slot_already_claimed", "model_calls": 0, "business_writes": 0}
         def fence():
@@ -271,6 +355,8 @@ def run_chain_slot(ops, *, open_queue, build_deps, clock=None, interval_minutes=
             fence()
         _need(ops.budget_status()["overrun_hold"] is False, "budget_overrun_hold")
         queue = open_queue()
+        if manual:
+            internal_only_guard(manual_catalog, queue)
         if check_chain_stops is not None:
             # Visible stop/takeover mail on chain threads: per-work generation fence first.
             result = check_chain_stops(queue)
@@ -280,15 +366,15 @@ def run_chain_slot(ops, *, open_queue, build_deps, clock=None, interval_minutes=
             fence()
         q = queue.control()
         if q["mode"] != "queue_open":
-            ops.finish_scheduled_slot(claim, status="stopped", reason="chain_queue_" + q["mode"])
+            finish(claim, status="stopped", reason="chain_queue_" + q["mode"])
             return {"status": "stopped", "reason": "chain_queue_" + q["mode"], "model_calls": 0,
                     "business_writes": 0, "slot_key": claim["slot_key"]}
         deps = build_deps(queue, claim["generation"], q["generation"])
         attempted = True
         report = run_chain_tick(deps)
         summary = _summary(report)
-        ops.finish_scheduled_slot(claim, status="already_recorded" if report["status"] == "ok" else "held",
-                                  reason=("chain_tick_" + str(report["status"]))[:60])
+        finish(claim, status="already_recorded" if report["status"] == "ok" else "held",
+               reason=("chain_tick_" + str(report["status"]))[:60])
         return {"status": "chain_tick_completed" if report["status"] == "ok" else "held",
                 "reason": report.get("reason"), "chain": summary, "slot_key": claim["slot_key"],
                 "scheduled_at": claim["scheduled_at"], "model_calls": report["model_calls"],
@@ -297,14 +383,15 @@ def run_chain_slot(ops, *, open_queue, build_deps, clock=None, interval_minutes=
         reason = re.sub(r"[^A-Za-z0-9_.:@-]", "_", _code(exc))[:120]
         if claim is not None:
             try:
-                ops.finish_scheduled_slot(claim, status="held", reason=reason)
+                finish(claim, status="held", reason=reason)
             except Exception:
                 pass
         return {"status": "held", "reason": reason, "business_writes": None if attempted else 0,
                 "automatic_retry_allowed": False}
 
 
-def run_worker_chain_tick(ops, secrets, *, clock=None, check_work_stops=None, chain_stop_reader=None):
+def run_worker_chain_tick(ops, secrets, *, clock=None, check_work_stops=None, chain_stop_reader=None,
+                          manual_operator=None):
     """Entry used by worker.py --mode chain_tick (store/secrets built by worker.main)."""
     clock = clock or (lambda: datetime.now(timezone.utc))
     from v11_chain_authority import chain_stop_sweep, load_policy_file
@@ -327,7 +414,8 @@ def run_worker_chain_tick(ops, secrets, *, clock=None, check_work_stops=None, ch
             chain_stops = lambda queue: chain_stop_sweep(
                 queue, _StopRevoker(queue, clock), chain_stop_reader, clock=clock)
         return run_chain_slot(ops, open_queue=open_queue, build_deps=build, clock=clock,
-                              check_work_stops=check_work_stops, check_chain_stops=chain_stops)
+                              check_work_stops=check_work_stops, check_chain_stops=chain_stops,
+                              manual_operator=manual_operator, manual_catalog=catalog if manual_operator else None)
     finally:
         for session in sessions:
             session.close()
