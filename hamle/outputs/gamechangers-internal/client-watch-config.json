@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "enabled": false,
+  "mode": "silent_draft",
+  "summary_to": [
+    "ahmet@gamechangers.com.tr"
+  ],
+  "summary_after": "18:25",
+  "max_threads": 10,
+  "max_drafts_per_run": 2,
+  "newer_than_days": 2,
+  "run_seconds": 240,
+  "decision_ref": "Ahmet 2026-10-11 decision 6: Monday no client replies; Tuesday the team CCs hamle@ and Hamle only drafts (client-hidden Basecamp notes in the internal 'Hamle İşleri' list) with an evening 'böyle yanıtlardım' summary to Ahmet; Wednesday first brand auto-reply only after the drafts are reviewed. Price/contract/complaint -> fixed sentence + Ahmet & Cansu.",
+  "rules": "enabled=true only with Ahmet's word in the thread. Client addresses come from the Firestore 'client-contacts' doc (v11_client_watch.py contacts import on the Mac), never from this file or git. mode 'silent_draft' is the only mode: nothing is ever sent to a client."
+}

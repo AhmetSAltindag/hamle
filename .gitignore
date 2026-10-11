@@ -5,3 +5,5 @@ private-connections/
 __pycache__/
 *.pyc
 .venv/
+# client contact tables (KVKK): imported to Firestore from the Mac, never committed
+client-contacts*.json

@@ -513,6 +513,8 @@ def run_track(store, *, read_task_status, verify_latest_sent_receipt=None, clock
 
 
 def main(argv=None):
+    import time
+    job_started = time.monotonic()
     parser = argparse.ArgumentParser(description="Hamle internal worker; dispatch requires an exact approved proposal")
     parser.add_argument("--mode", choices=("review", "scheduled_review", "verify", "dispatch", "track", "recover_followup",
                                            "chain_tick", "daily_digest", "basecamp_credential_review",
@@ -640,6 +642,11 @@ def main(argv=None):
             result = run_worker_chain_tick(store, secrets, check_work_stops=lambda: run_stop_intake(store, stop_reader),
                                            chain_stop_reader=stop_reader,
                                            manual_operator=args.operator if args.manual_internal else None)
+            if not args.manual_internal:
+                # Customer mail silent trial (client-watch-config.json, OFF by default): drafts only as
+                # internal Basecamp notes + one evening summary to Ahmet; never a client send.
+                from v11_client_watch import run_worker_client_watch
+                result["client_watch"] = run_worker_client_watch(store, secrets, started_at=job_started)
         elif args.mode == "daily_digest":
             # Non-default: one internal team digest per Istanbul weekday (v11_daily_digest).
             from v11_daily_digest import run_worker_daily_digest
