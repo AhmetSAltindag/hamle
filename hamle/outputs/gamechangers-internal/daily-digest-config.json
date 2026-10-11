@@ -1,12 +1,24 @@
 {
   "schema_version": 1,
-  "enabled": false,
-  "recipients": [],
+  "enabled": true,
+  "recipients": [
+    "ahmet@gamechangers.com.tr",
+    "cansu@gamechangers.com.tr",
+    "ozge@gamechangers.com.tr",
+    "baris@gamechangers.com.tr",
+    "berkay@gamechangers.com.tr",
+    "ipek@gamechangers.com.tr",
+    "esma@gamechangers.com.tr"
+  ],
   "day_note": null,
   "basecamp_account_id": 5898865,
   "trend_search_enabled": false,
   "send_window_istanbul": "Mon-Fri, first run at/after 09:15 (runtime_authority.DAILY_DIGEST_WINDOW 09:15-18:30)",
   "rules": "recipients: only @gamechangers.com.tr agency addresses (any other domain refuses the whole digest); never customer addresses. day_note: optional plain text 'günün notu' (<= 2000 chars) or null.",
   "to_enable": "Ahmet fills recipients (e.g. [\"ahmet@gamechangers.com.tr\", \"cansu@gamechangers.com.tr\", \"ozge@gamechangers.com.tr\"]), optionally day_note, then sets enabled=true. The image reads work/hamle-account-manager/chain-profile/daily-digest-config.json, so a rebuild (package_chain_source.py) is needed after editing.",
-  "trend_search_rules": "trend_search_enabled=false by default. When true, ONE OpenAI Responses web_search call per Istanbul day (v11_trend_search, 30 USD chain cap); only trends whose https URL appears in the web_search citations/sources and whose date is within 30 days are shown."
+  "trend_search_rules": "trend_search_enabled=false by default. When true, ONE OpenAI Responses web_search call per Istanbul day (v11_trend_search, 30 USD chain cap); only trends whose https URL appears in the web_search citations/sources and whose date is within 30 days are shown.",
+  "excluded_project_ids": [
+    47875291
+  ],
+  "decision_ref": "Ahmet in thread 2026-10-11 ~20:05Z: weekday 09:15 digest to these 7 agency addresses (Samet no mail); Cacaonly (47875291) out of scope."
 }

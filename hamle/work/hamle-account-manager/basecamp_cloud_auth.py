@@ -441,3 +441,50 @@ def main(argv=None):
 
 
 if __name__ == "__main__": raise SystemExit(main())
+
+def review_unverified(secrets, *, claim_refresh=None, session=None, clock=time.time):
+    """Explicit one-shot operator review of an 'unverified' rotated record.
+
+    Live access token: identity/project GETs only, then one 'ready' version.
+    Expired: exactly one refresh of that record's grant under a new durable
+    claim (started -> unverified -> verify -> ready). Never retries, never
+    returns or logs a token; any ambiguous outcome stays held for review.
+    """
+    own = session is None
+    session = session or provider._session()
+    try:
+        with provider._modules()[1]._quiet_call():
+            record = validate_record(provider._json(secrets.access(provider.BASECAMP_SECRET)))
+            if record["refresh_state"] != "unverified": raise AuthError("unverified_record_required")
+            now = _stamp(clock())
+            if now < record["expires_at"] - 120:
+                _verify_identity(record, session)
+                ready = {**record, "refresh_state": "ready", "verified_at": _iso(_stamp(clock()))}
+                validate_record(ready)
+                secrets.add_basecamp_version(ready)
+                return {"status": "credential_review_ready", "path": "verified_existing",
+                        "oauth_token_posts": 0, "expires_at": _iso(ready["expires_at"]), "business_writes": 0}
+            identifier = hashlib.sha256((ISSUER + "\0" + record["refresh_token"]).encode()).hexdigest()
+            if not callable(claim_refresh) or claim_refresh(identifier) is not True:
+                raise AuthError("durable_refresh_claim_required")
+            secrets.add_basecamp_version({**record, "refresh_state": "started"})
+            form = {"grant_type": "refresh_token", "refresh_token": record["refresh_token"], "client_id": CLIENT_ID}
+            if record["resource"] is not None: form["resource"] = record["resource"]
+            response = _oauth_request(session, "POST", TOKEN_ENDPOINT, form=form)
+            if "oauth_error" in response: raise AuthError("refresh_refused_no_retry")
+            updated = _token_record(response, now, previous=record)
+            if updated["refresh_token"] == record["refresh_token"]:
+                raise AuthError("rotated_refresh_token_missing")
+            secrets.add_basecamp_version({**updated, "refresh_state": "unverified"})
+            _verify_identity(updated, session)
+            secrets.add_basecamp_version(updated)
+            return {"status": "credential_review_ready", "path": "refreshed_once",
+                    "oauth_token_posts": 1, "expires_at": _iso(updated["expires_at"]), "business_writes": 0}
+    except AuthError:
+        raise
+    except provider.ProviderError as exc:
+        raise AuthError(exc.code) from None
+    except Exception:
+        raise AuthError("credential_review_failed") from None
+    finally:
+        if own: session.close()

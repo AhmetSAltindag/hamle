@@ -45,6 +45,7 @@ continuation_binding_invalid continuation_thread_mismatch continuation_root_mism
 continuation_reply_chain_invalid sent_receipt_identifiers_invalid sent_receipt_verification_failed
 task_status_scope_mismatch task_status_assignee_mismatch task_status_date_invalid task_status_unconfirmed
 basecamp_target_changed bound_work_invalid text_invalid
+unverified_record_required credential_review_failed
 """.split())
 
 
@@ -468,7 +469,7 @@ def run_track(store, *, read_task_status, verify_latest_sent_receipt=None, clock
 def main(argv=None):
     parser = argparse.ArgumentParser(description="Hamle internal worker; dispatch requires an exact approved proposal")
     parser.add_argument("--mode", choices=("review", "scheduled_review", "verify", "dispatch", "track", "recover_followup",
-                                           "chain_tick", "daily_digest"), required=True)
+                                           "chain_tick", "daily_digest", "basecamp_credential_review"), required=True)
     parser.add_argument("--proposal-id")
     parser.add_argument("--work-id")
     parser.add_argument("--failure-evidence-sha256")
@@ -515,7 +516,12 @@ def main(argv=None):
             from basecamp_cloud_auth import access_token
             token = access_token(secrets, claim_refresh=store.claim_credential_refresh)
             return providers.verify_basecamp_internal(token)
-        if args.mode == "verify":
+        if args.mode == "basecamp_credential_review":
+            # Explicit operator one-shot (Ahmet approved 2026-10-11): promote a held
+            # 'unverified' Basecamp record after re-verification. Never a scheduler path.
+            from basecamp_cloud_auth import review_unverified
+            result = review_unverified(secrets, claim_refresh=store.claim_credential_refresh)
+        elif args.mode == "verify":
             _stamp(lambda: datetime.now(timezone.utc))
             # Explicit identity-only bootstrap probe; does not arm review/dispatch.
             result = {"status": "read_verified", "gmail": providers.verify_gmail_identity(gmail),
@@ -580,7 +586,7 @@ def main(argv=None):
                 read_reply=writers.read_reply, create_comment=writers.create_comment,
                 read_comment=writers.read_comment, read_task_status=writers.read_task_status)
         print(json.dumps(result, ensure_ascii=False, sort_keys=True))
-        return 0 if result["status"] in ("stopped", "review_required", "already_recorded", "read_verified", "internal_actions_readback_verified", "slot_already_claimed", "no_new_work", "work_status_read_verified", "chain_tick_completed", "digest_sent") else 2
+        return 0 if result["status"] in ("stopped", "review_required", "already_recorded", "read_verified", "internal_actions_readback_verified", "slot_already_claimed", "no_new_work", "work_status_read_verified", "chain_tick_completed", "digest_sent", "credential_review_ready") else 2
     except Exception as exc:
         try:
             reason = _safe_error(exc)

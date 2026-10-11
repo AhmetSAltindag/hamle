@@ -109,7 +109,10 @@ def validate_config(cfg):
                            and not any(ord(c) < 32 and c not in "\n\t" for c in note)), "digest_day_note_invalid")
     _need(type(cfg.get("basecamp_account_id")) is int and cfg["basecamp_account_id"] > 0, "digest_account_invalid")
     _need(type(cfg.get("trend_search_enabled", False)) is bool, "digest_trend_flag_invalid")
-    return {"enabled": cfg["enabled"], "recipients": list(recipients),
+    excluded = cfg.get("excluded_project_ids", [])
+    _need(isinstance(excluded, list) and len(excluded) <= 50
+          and all(type(x) is int and x > 0 for x in excluded), "digest_excluded_projects_invalid")
+    return {"enabled": cfg["enabled"], "recipients": list(recipients), "excluded": frozenset(excluded),
             "day_note": " ".join(note.split()) if isinstance(note, str) and note.strip() else None,
             "account_id": cfg["basecamp_account_id"], "trend_search": cfg.get("trend_search_enabled", False)}
 
@@ -134,8 +137,8 @@ class BasecampDigestReader:
              r"buckets/[1-9][0-9]*/recordings/[1-9][0-9]*/comments")
 
     def __init__(self, account_id, *, get, max_projects=30, max_lists=120, max_pages=10, max_items=3000,
-                 max_reads=600):
-        self.account, self.get = account_id, get
+                 max_reads=600, excluded=frozenset()):
+        self.account, self.get, self.excluded = account_id, get, frozenset(excluded)
         self.max_projects, self.max_lists, self.max_pages = max_projects, max_lists, max_pages
         self.max_items, self.max_reads = max_items, max_reads
         self.reads = 0
@@ -209,7 +212,7 @@ class BasecampDigestReader:
     def collect(self):
         a = self.account
         projects = [p for p in self._all(f"{API}/{a}/projects.json")
-                    if isinstance(p, dict) and p.get("status") == "active"]
+                    if isinstance(p, dict) and p.get("status") == "active" and p.get("id") not in self.excluded]
         _need(len(projects) <= self.max_projects, "digest_too_many_projects")
         items, lists = [], 0
         for project in projects:
@@ -260,7 +263,7 @@ class BasecampDigestReader:
                 if not isinstance(t, dict) or t.get("completed") is not False:
                     continue
                 pid = (t.get("bucket") or {}).get("id")
-                if type(pid) is not int:
+                if type(pid) is not int or pid in self.excluded:
                     continue
                 out.append(self._item(t, pid, project_names.get(pid) or (t.get("bucket") or {}).get("name") or pid,
                                       "todo"))
@@ -700,7 +703,8 @@ def run_worker_daily_digest(ops, secrets, *, clock=None, preview_to=None, previe
             finally:
                 if r is not None:
                     r.close()
-        return BasecampDigestReader(validate_config(config)["account_id"], get=get)
+        valid = validate_config(config)
+        return BasecampDigestReader(valid["account_id"], get=get, excluded=valid["excluded"])
 
     writer = DigestMailWriter(token_context=gmail_token_context(secrets), session_factory=provider._session)
     try:

@@ -177,12 +177,21 @@ class Config(Base):
         self.assertEqual((r["status"], r["reason"]), ("held", "digest_recipient_not_internal_agency"))
         self.assertEqual((self.gmail.calls, self.bc.calls), ([], []))
 
-    def test_disk_config_is_disabled_placeholder(self):
-        cfg = dd.load_config()
-        self.assertEqual((cfg["enabled"], cfg["recipients"], cfg["day_note"]), (False, [], None))
-        r = self.run_digest(cfg)
-        self.assertEqual(r["status"], "no_new_work")
-        self.assertEqual((self.gmail.calls, self.bc.calls), ([], []))
+    def test_disk_config_is_ahmets_team_list(self):
+        cfg = dd.validate_config(dd.load_config())
+        self.assertTrue(cfg["enabled"])
+        self.assertEqual(cfg["recipients"], [n + "@gamechangers.com.tr" for n in
+                         ("ahmet", "cansu", "ozge", "baris", "berkay", "ipek", "esma")])
+        self.assertEqual(cfg["excluded"], frozenset({47875291}))
+        self.assertIs(cfg["trend_search"], False)
+
+    def test_excluded_projects_validated_and_skipped(self):
+        for bad in ("47875291", [0], [True], ["1"]):
+            with self.assertRaises(dd.DigestError):
+                dd.validate_config(config(excluded_project_ids=bad))
+        reader = dd.BasecampDigestReader(ACC, get=self.bc.get, excluded={40704459})
+        listing = reader.collect()
+        self.assertNotIn(40704459, listing["project_names"])
 
     def test_disk_brand_cards_and_calendar_are_versioned_drafts(self):
         for doc in (self.cards, self.calendar):

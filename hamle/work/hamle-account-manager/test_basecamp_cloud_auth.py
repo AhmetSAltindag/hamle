@@ -251,5 +251,41 @@ class BasecampAuthTests(unittest.TestCase):
             clock=lambda: 4590))
         self.assertEqual(secrets.value["refresh_state"], "unverified")
 
+    def test_review_promotes_live_unverified_record_with_gets_only(self):
+        secrets = Secrets({**record(), "refresh_state": "unverified"})
+        session = Session(*verification())
+        result = app.review_unverified(secrets, session=session, clock=lambda: 1000)
+        self.assertEqual(result["status"], "credential_review_ready")
+        self.assertEqual(result["oauth_token_posts"], 0)
+        self.assertNotIn(FAKE_TOKEN, json.dumps(result))
+        self.assertEqual([r["refresh_state"] for r in secrets.writes], ["ready"])
+        self.assertTrue(all(m == "GET" for m, _, _ in session.calls))
+        self.assertEqual(app.access_token(secrets, session=Session(), clock=lambda: 1001), FAKE_TOKEN)
+
+    def test_review_refuses_ready_or_started_records(self):
+        for state in ("ready", "started"):
+            session = Session()
+            self.error("unverified_record_required", lambda: app.review_unverified(
+                Secrets({**record(), "refresh_state": state}), claim_refresh=lambda _: True, session=session, clock=lambda: 1000))
+            self.assertEqual(session.calls, [])
+
+    def test_review_expired_refreshes_once_under_claim(self):
+        secrets = Secrets({**record(), "refresh_state": "unverified"})
+        self.error("durable_refresh_claim_required", lambda: app.review_unverified(secrets, session=Session(), clock=lambda: 4590))
+        self.assertEqual(secrets.writes, [])
+        session = Session(Response(token_response(ROTATED)), *verification())
+        result = app.review_unverified(secrets, claim_refresh=lambda _: True, session=session, clock=lambda: 4590)
+        self.assertEqual(result["oauth_token_posts"], 1)
+        self.assertEqual([r["refresh_state"] for r in secrets.writes], ["started", "unverified", "ready"])
+        self.assertEqual(secrets.value["refresh_token"], ROTATED)
+
+    def test_review_verification_failure_stays_unverified(self):
+        secrets = Secrets({**record(), "refresh_state": "unverified"})
+        responses = verification()
+        responses[3] = Response([{"id": 47470759, "client": False}, {"id": 53358100, "client": False}])
+        self.error("basecamp_membership_mismatch", lambda: app.review_unverified(secrets, session=Session(*responses), clock=lambda: 1000))
+        self.assertEqual(secrets.writes, [])
+        self.assertEqual(secrets.value["refresh_state"], "unverified")
+
 
 if __name__ == "__main__": unittest.main()
