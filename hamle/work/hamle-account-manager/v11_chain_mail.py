@@ -39,6 +39,7 @@ MAX_READ = 8 * 1024 * 1024
 META_HEADERS = ("From", "To", "Cc", "Subject", "Message-ID", "References")
 INTERNAL_DOMAIN = "@gamechangers.com.tr"
 CLARIFY_FIELDS = {"from", "to", "cc", "thread_id", "in_reply_to_message_id", "subject", "body"}
+ACK_FIELDS = CLARIFY_FIELDS | {"ack_task_id"}  # task_ack: one confirmation after the task exists
 DELIVER_FIELDS = {"from", "to", "cc", "thread_id", "subject", "body", "artifact"}
 ARTIFACT_FIELDS = {"brand_id", "work_id", "version", "sha256", "mime_type"}
 FILENAME = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,100}\Z")
@@ -150,13 +151,16 @@ class GmailThreadReplyWriter:
     def _shape(self, payload):
         _need(isinstance(payload, dict) and payload.get("from") == HAMLE, "mail_payload_invalid")
         keys = set(payload)
-        _need(keys in (CLARIFY_FIELDS, DELIVER_FIELDS), "mail_payload_invalid")
-        kind = "clarify_brief" if keys == CLARIFY_FIELDS else "deliver_file"
+        _need(keys in (CLARIFY_FIELDS, ACK_FIELDS, DELIVER_FIELDS), "mail_payload_invalid")
+        kind = {frozenset(CLARIFY_FIELDS): "clarify_brief", frozenset(ACK_FIELDS): "acknowledge"}.get(
+            frozenset(keys), "deliver_file")
         _need(isinstance(payload["thread_id"], str) and HEX.fullmatch(payload["thread_id"])
               and payload["thread_id"] not in provider.FORBIDDEN_THREADS, "mail_thread_invalid")
         bw._text(payload["subject"], 300, header=True)
         bw._text(payload["body"], 16000)
-        if kind == "clarify_brief":
+        if kind == "acknowledge":
+            _need(type(payload["ack_task_id"]) is int and payload["ack_task_id"] > 0, "mail_ack_task_invalid")
+        if kind in ("clarify_brief", "acknowledge"):
             _need(isinstance(payload["in_reply_to_message_id"], str)
                   and HEX.fullmatch(payload["in_reply_to_message_id"]), "mail_anchor_invalid")
         else:
@@ -168,7 +172,7 @@ class GmailThreadReplyWriter:
         return kind
 
     def _anchor(self, kind, payload):
-        if kind == "clarify_brief":
+        if kind in ("clarify_brief", "acknowledge"):
             return payload["in_reply_to_message_id"]
         anchor = self.anchor_lookup(payload["thread_id"])
         _need(isinstance(anchor, str) and HEX.fullmatch(anchor), "mail_anchor_missing")
@@ -365,7 +369,7 @@ class GmailThreadReplyWriter:
                    or (re.fullmatch(bw.MESSAGE_ID, returned) and returned.endswith("@mail.gmail.com>")))
               and not message.defects, "mail_readback_header_mismatch")
         expected_body = payload["body"] + ("" if payload["body"].endswith("\n") else "\n")
-        if kind == "clarify_brief":
+        if kind in ("clarify_brief", "acknowledge"):
             _need(not message.is_multipart() and message.get_content_type() == "text/plain"
                   and message.get_content().replace("\r\n", "\n") == expected_body, "mail_readback_body_mismatch")
         else:

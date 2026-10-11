@@ -37,6 +37,7 @@ from v11_poll_journal import PollJournal, checkpoint_digest
 from v11_production_stages import initialize_production, ready_stages
 from v11_quality_gate import evaluate_quality
 from v11_work_queue import QueueError, WRITE_BINDING_FIELDS, digest
+import v11_brand_routing as routing
 
 MANAGER_ROLES = ("social_manager", "principal", "strategy_owner")
 CLASSES = ("question", "submission", "approval", "other")
@@ -107,6 +108,36 @@ class Chain:
                                if set(v.get("agency_roles", [])) & set(MANAGER_ROLES))
         chain = self.catalog.get("chain", {})
         self.approvers = list(chain.get("quality_approver_basecamp_ids", self.managers))
+        self.base_managers, self.base_approvers = list(self.managers), list(self.approvers)
+        self.route_key = None
+        self.cat = routing.internal_catalog(self.catalog)
+
+    def _use(self, work):
+        """Per-work derived catalog (internal or one usable brand route) + its managers."""
+        key, cat = routing.work_catalog(self.catalog, work)
+        self.cat, self.route_key = cat, key
+        self.managers = routing.managers(cat) if key else list(self.base_managers)
+        self.approvers = (list(cat["chain"]["quality_approver_basecamp_ids"]) if key
+                          else list(self.base_approvers))
+        return cat
+
+    def _detect(self, source):
+        if not routing.enabled(self.catalog):
+            return {"status": "disabled", "brand_key": None, "brand_name": None, "excluded": False, "matches": []}
+        return routing.detect_brand(self.catalog, source.get("subject"), source.get("text"))
+
+    def _binding_for(self, source):
+        """(project_id, list_id): an already bound thread keeps its binding; otherwise exactly one
+        usable brand -> that brand project's social list, anything else -> internal route."""
+        bound = self.q.thread_work(source["thread_id"])
+        if bound is not None:
+            return bound["project_id"], bound["list_id"]
+        det = self._detect(source)
+        key = det["brand_key"] if det["status"] == "single" and not det["excluded"] else None
+        if key and routing.usable(self.catalog, key):
+            route = self.catalog["brand_routes"][key]
+            return route["project_id"], route["list_id"]
+        return self.catalog["basecamp"]["project_id"], self._default_route()["list_id"]
 
     # ---------- durable chain records (same backend, own record kinds) ----------
     @staticmethod
@@ -189,9 +220,11 @@ class Chain:
             _need(received is None or (type(received) is int and received >= self._opened_ms),
                   "mail_before_queue_open")  # never pick up mail older than the current queue opening
             route = self._default_route()
+            project_id, list_id = self._binding_for(source)
+            _need(routing.allowed_target(self.catalog, project_id, list_id), "route_target_not_allowed")
             work = self.q.bind_work(brand_id=self.catalog["brand_id"], thread_id=source["thread_id"],
                                     account_id=self.catalog["basecamp"]["account_id"],
-                                    project_id=self.catalog["basecamp"]["project_id"], list_id=route["list_id"],
+                                    project_id=project_id, list_id=list_id,
                                     service_id=route["service_id"], expected_generation=self.gen)
             self.q.enqueue_message(work["work_id"], message_id=source["message_id"],
                                    fingerprint=source["fingerprint"], source_order=source["source_order"],
@@ -292,6 +325,7 @@ class Chain:
         rec = self._load("chain-", work["work_id"]) or self._new_record(work)
         event = claim["event"]
         try:
+            self._use(work)
             if event["source_kind"] == "gmail":
                 return self._on_mail(claim, work, rec, sources[event["source_id"]])
             return self._on_basecamp(claim, work, rec, comments)
@@ -335,12 +369,13 @@ class Chain:
         requirements.setdefault("service_id", chain.get("default_service_id"))
         requirements.setdefault("category_key", chain.get("default_category_key"))
         requirements.pop("agreement", None)  # never accept an agreement claimed by model output
+        work, routing_note, mention = self._route_requirements(claim, work, source, requirements)
         rule = chain.get("agency_direct_request_counts_as_agreement", {})
         if rule.get("value") is True and rule.get("verified") is True:
             requirements["agreement"] = {"verified": True, "source_message_id": source["message_id"],
                                          "evidence_ref": source["evidence_ref"],
                                          "requirements_sha256": intake_requirements_digest(requirements)}
-        plan = plan_intake(source, requirements, self.catalog, now=self._now)
+        plan = plan_intake(source, requirements, self.cat, now=self._now)
         rec["title"] = requirements.get("title") if isinstance(requirements.get("title"), str) else rec["title"]
         if plan["status"] == "needs_clarification":
             intent = plan["intents"][0]["payload"]
@@ -371,13 +406,14 @@ class Chain:
         prod = {"id": self._key("chain-prod-", work["work_id"]), "kind": "chain_production",
                 "work_id": work["work_id"], "state": state, "intake_work": intake_work}
         self._save("chain-prod-", prod)
-        prepared = prepare_stage_task(state, self.catalog, stage_id, work, claim)
+        _need(routing.allowed_target(self.catalog, work["project_id"], work["list_id"]), "route_target_not_allowed")
+        prepared = prepare_stage_task(state, self.cat, stage_id, work, claim)
         key = prepared["action_key"]
         rec["intents"][key] = {"kind": "create_task", "provider": "basecamp", "status": "prepared",
                                "payload_sha256": prepared["payload_sha256"], "event_id": claim["event_id"]}
         self._save("chain-", rec)
-        writer = self.d.task_writer_factory(copy.deepcopy(self.catalog), copy.deepcopy(state))
-        created = create_stage_task(self.q, claim, state, self.catalog, stage_id, writer,
+        writer = self.d.task_writer_factory(copy.deepcopy(self.cat), copy.deepcopy(state))
+        created = create_stage_task(self.q, claim, state, self.cat, stage_id, writer,
                                     authorize=lambda p: self.d.authorize("create_task", p) is True)
         self._report["provider_writes"] += created["network_writes"]
         if created["status"] != "task_created_readback_verified":
@@ -404,9 +440,90 @@ class Chain:
             self._save("chain-", rec)
         work = self.q.get_work(work["work_id"])
         note = self._context_note(rec, past, result.get("follow_ups"), result.get("context_notes"))
-        if self._comment(claim, work, rec, "context-note", note, []) is None:
+        if routing_note:
+            note = (self._tag([mention], routing_note) if mention else routing_note) + "\n\n" + note
+        if self._comment(claim, work, rec, "context-note", note, [mention] if mention else []) is None:
             return None
+        if self._ack_enabled():
+            payload = self._ack_payload(source, rec, brief, task)
+            if self._write(claim, work, rec, "task-ack", "acknowledge", "gmail", payload, self.d.mail_writer) == "unknown":
+                return None  # ambiguous send: work blocked, never resent
         return "processed", "basecamp-readback:" + str(task["task_id"])
+
+    LIST_LABELS = {"social": "Sosyal Medya", "project": "Projeler", "motion": "Motion"}
+
+    def _ack_enabled(self):
+        return (self.catalog.get("chain", {}).get("task_ack") or {}).get("enabled") is True
+
+    def _ack_payload(self, source, rec, brief, task):
+        """Same-thread confirmation (reply-all within the brief's verified agency envelope)."""
+        def line(value, limit=240):
+            return re.sub(r"\s+", " ", str(value)).strip()[:limit]
+        kinds = {"graphic": "statik tasarım", "animation": "animasyon", "video": "video", "text": "metin"}
+        outputs = ", ".join(f"{d.get('quantity')} × {kinds.get(d.get('kind'), d.get('kind'))} ({line(d.get('id'), 40)})"
+                            for d in brief.get("deliverables") or [])[:300]
+        routed = self.cat.get("routed_brand")
+        if routed:
+            place = f"{routed['brand_name']} · {self.LIST_LABELS.get(self.cat['routes'][0].get('list_name'), 'liste')} listesi"
+        else:
+            bc = self.cat["basecamp"]
+            place = f"{bc.get('project_name') or 'Hamle'} · {self.cat['routes'][0].get('list_name') or 'Hamle İşleri'} listesi"
+        assignees = ", ".join(self.names.get(i, str(i)) for i in task["assignee_ids"]) or "-"
+        link = f"https://3.basecamp.com/{task['account_id']}/buckets/{task['project_id']}/todos/{task['task_id']}"
+        lines = ["Merhaba,", "", "Talebinizi aldım ve Basecamp'te görevi açtım. Anladığım kadarıyla:",
+                 "- İş: " + line(brief["title"]), "- Amaç: " + line(brief["objective"])]
+        if brief.get("audience"):
+            lines.append("- Hedef kitle: " + line(brief["audience"]))
+        if outputs:
+            lines.append("- Çıktılar: " + outputs)
+        lines += ["", "Açıldığı yer: " + place, "Atanan: " + assignees]
+        if brief.get("deadline"):
+            lines.append("Teslim: " + line(brief["deadline"], 120))
+        lines += ["Görev: " + link, "", "Yanlış anladığım bir şey varsa bu maile yanıt verin.", "", "Hamle"]
+        return {"from": HAMLE, "to": list(rec["reply"]["to"]), "cc": list(rec["reply"]["cc"]),
+                "thread_id": rec["reply"]["thread_id"], "in_reply_to_message_id": rec["reply"]["in_reply_to_message_id"],
+                "subject": "Re: " + str(source.get("subject") or "")[:180], "body": "\n".join(lines),
+                "ack_task_id": int(task["task_id"])}
+
+    def _route_requirements(self, claim, work, source, requirements):
+        """Brand routing for one intake mail (deterministic, never guessed).
+
+        Brand-bound work: move to the brand's per-kind read-back list before planning.
+        Internal work: when exactly one brand was named, its name goes into the title and
+        the context note says why the internal route was used (and tags the brand owner).
+        """
+        det = self._detect(source)
+        if self.route_key:
+            route = self.catalog["brand_routes"][self.route_key]
+            deliverables = requirements.get("deliverables")
+            if isinstance(deliverables, list) and deliverables:
+                target = routing.select_list(route, deliverables)
+                if target != work["list_id"]:
+                    work = self.q.retarget_list(claim, list_id=target,
+                                                allowed_list_ids=sorted(routing.allowlist(self.catalog)[work["project_id"]]))
+                    self._use(work)
+            return work, None, None
+        if det["status"] == "disabled":
+            return work, None, None
+        if det["status"] == "ambiguous":
+            return work, ("Hamle marka yönlendirmesi: talepte birden fazla marka geçti (" + ", ".join(det["matches"])
+                          + "); tahmin edilmedi, iş iç 'Hamle İşleri' listesinde açıldı."), None
+        if det["status"] != "single":
+            return work, None, None
+        name = det["brand_name"]
+        title = requirements.get("title")
+        if isinstance(title, str) and title.strip() and not title.startswith(f"[{name}]"):
+            requirements["title"] = f"[{name}] {title.strip()}"[:200]
+        if det["excluded"]:
+            reason = "marka Hamle yönlendirmesinin dışında"
+        else:
+            reason = "markanın Basecamp rotası henüz doğrulanmadı (" + str(
+                routing.route_problem(self.catalog, det["brand_key"])) + ")"
+        mention = None if det["excluded"] else routing.owner_person(self.catalog, det["brand_key"])
+        if mention is not None and mention not in self.names:
+            mention = None
+        return work, (f"Hamle marka yönlendirmesi: talep {name} markası için; {reason}. "
+                      "İş iç 'Hamle İşleri' listesinde açıldı."), mention
 
     def _context_note(self, rec, past, follow_ups, context_notes=None):
         lines = ["Hamle iç bağlam notu — yalnız ekip içi, müşteriye/requester'a gönderilmez."]
@@ -456,13 +573,13 @@ class Chain:
             "channel": "basecamp", "verified": True, "evidence_ref": "basecamp-comment:" + str(comment["id"]),
             "actor_id": comment["creator"]["id"], "account_id": b["account_id"], "project_id": b["project_id"],
             "list_id": b["list_id"], "task_id": work["task_id"]}}
-        recorded = record_producer_question(prod["intake_work"], question, self.catalog)
+        recorded = record_producer_question(prod["intake_work"], question, self.cat)
         prod["intake_work"] = recorded["work"]
         self._save("chain-prod-", prod)
         brief = prod["intake_work"]["brief"]
         answer = self._model(self.d.answerer, text, {"brief": {k: brief.get(k) for k in (
             "title", "objective", "audience", "deadline", "assets_ref", "deliverables")},
-            "profile": {k: self.catalog.get(k) for k in ("brand_id", "terms", "verification_scope")}})
+            "profile": {k: self.cat.get(k) for k in ("brand_id", "terms", "verification_scope")}})
         allowed = {"brief." + k for k in ("title", "objective", "audience", "deadline", "assets_ref", "deliverables")}
         allowed |= {"profile." + k for k in ("terms", "brand_id", "verification_scope")}
         refs = answer.get("grounded_in") if isinstance(answer, dict) else None
@@ -512,7 +629,7 @@ class Chain:
                 return None
             return "processed", "quality:needs_human_approval"
         if route == "revision":
-            limit = self.catalog.get("terms", {}).get("internal_quality_revision_limit_per_work")
+            limit = self.cat.get("terms", {}).get("internal_quality_revision_limit_per_work")
             _need(type(limit) is int and 1 <= limit <= 10, "internal_revision_limit_missing")
             if rec["revision_count"] < limit:
                 rec.update(status="changes_requested", reason=result["reason"])
@@ -702,7 +819,8 @@ def run_chain_tick(deps):
 
 
 class BasecampCommentWriter:
-    """Narrow comment writer for ONE verified private project; one POST, exact readback.
+    """Narrow comment writer for the verified internal project plus, when brand routing is
+    enabled, each usable brand route's project (allow-list = catalog); one POST, exact readback.
 
     write(payload) -> {'remote_id'}; readback(remote_id, payload) -> {'readback_sha256'}.
     Mentions are listed in payload['mention_ids'] and named in text; rendering real
@@ -714,15 +832,17 @@ class BasecampCommentWriter:
         bc = catalog["basecamp"]
         _need(bc.get("verified") is True and bc.get("customer_visible") is False, "comment_project_unverified")
         self.account, self.project = bc["account_id"], bc["project_id"]
+        self.allowed = {p: frozenset(ls) for p, ls in routing.allowlist(catalog).items()}
         self.token_provider, self.session_factory = token_provider, session_factory
 
     def _check(self, payload):
         t = payload.get("target", {}) if isinstance(payload, dict) else {}
         _need(set(payload) == {"target", "body", "mention_ids", "internal_only"} and payload["internal_only"] is True
-              and t.get("account_id") == self.account and t.get("project_id") == self.project
+              and t.get("account_id") == self.account and t.get("project_id") in self.allowed
+              and (t.get("list_id") is None or t.get("list_id") in self.allowed[t["project_id"]])
               and type(t.get("task_id")) is int and t["task_id"] > 0
               and isinstance(payload["body"], str) and 0 < len(payload["body"]) <= 12000, "comment_payload_invalid")
-        return f"{self.ORIGIN}/{self.account}/buckets/{self.project}"
+        return f"{self.ORIGIN}/{self.account}/buckets/{t['project_id']}"
 
     def _request(self, method, url, body=None, expected=200):
         session, response = self.session_factory(), None
@@ -754,7 +874,7 @@ class BasecampCommentWriter:
         base = self._check(payload)
         _need(isinstance(remote_id, str) and re.fullmatch(r"[0-9]{1,30}", remote_id), "comment_receipt_invalid")
         row = self._request("GET", f"{base}/comments/{remote_id}.json")
-        _need(row.get("id") == int(remote_id) and row.get("bucket", {}).get("id") == self.project
+        _need(row.get("id") == int(remote_id) and row.get("bucket", {}).get("id") == payload["target"]["project_id"]
               and row.get("parent", {}).get("id") == payload["target"]["task_id"]
               and row.get("creator", {}).get("id") == HAMLE_PERSON and row.get("visible_to_clients") is False
               and bw._description_matches(row.get("content"), payload["body"]), "comment_readback_mismatch")
