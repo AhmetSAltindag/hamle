@@ -644,21 +644,31 @@ def run_daily_digest(ops, *, config, reader_factory, writer, clock, window=DAILY
         return {"status": "held", "reason": reason, "business_writes": 0, "automatic_retry_allowed": False}
 
 
-def model_classifier(ops, load_key, catalog, *, transport=None):
-    """ONE batched call via the existing OpenAI path (v11_chain_models), under the 30 USD chain cap."""
+def model_classifier(ops, load_key, catalog, *, transport=None, routing=None, client=None):
+    """ONE batched call for role digest_classifier (model-routing.json: Claude Haiku 5.5 by default;
+    OpenAI only if routed there), via v11_chain_models under the 30 USD chain cap.
+
+    load_key: {provider: loader} or one loader (tests). Any failure leaves the overdue list
+    unclassified (build_digest catches it); the digest itself still goes out.
+    """
     from v11_chain_live import budget_gate
     import hashlib
     import model as base
-    from v11_chain_models import MODEL_RESERVATION, ModelGate, call_once, internal_cap_microdollars
+    import model_routing
+    from v11_chain_models import ModelGate, call_routed, internal_cap_microdollars, reservation_for
     cap = internal_cap_microdollars(catalog)
+    route = (routing if routing is not None else model_routing.load()).route("digest_classifier")
+    hold = reservation_for(route)
     gate = ModelGate(ledger=ops, cache=ops, generation=ops.control()["generation"], cap_microdollars=cap)
-    budget_ok = budget_gate(ops, MODEL_RESERVATION, cap)
+    budget_ok = budget_gate(ops, hold, cap)
 
     def classify(model_input):
         _need(budget_ok(), "model_budget_unavailable")
         # Cache key = digest of the exact input bytes sent: reuse only on a byte-identical input.
         return gate.once("digest", hashlib.sha256(b"digest\0" + base._encoded(model_input)).hexdigest(),
-                         lambda: call_once(load_key(), "digest", model_input, transport=transport))
+                         lambda: call_routed(route, "digest", model_input, load_key=load_key, transport=transport,
+                                             client=client),
+                         provider=route.provider, hold=hold)
     return classify
 
 
@@ -707,16 +717,17 @@ def run_worker_daily_digest(ops, secrets, *, clock=None, preview_to=None, previe
         return BasecampDigestReader(valid["account_id"], get=get, excluded=valid["excluded"])
 
     writer = DigestMailWriter(token_context=gmail_token_context(secrets), session_factory=provider._session)
+    keys = {"anthropic": lambda: provider.anthropic_key(secrets), "openai": lambda: provider.openai_key(secrets)}
     try:
-        classifier = model_classifier(ops, lambda: provider.openai_key(secrets), load_catalog())
+        classifier = model_classifier(ops, keys, load_catalog())
     except Exception:
-        classifier = None  # no cap/catalog -> overdue listed unclassified
+        classifier = None  # no cap/catalog/routing -> overdue listed unclassified
     cards = load_brand_cards()
     trend_source = None
     if validate_config(config)["trend_search"] is True:
         try:
             from v11_trend_search import trend_search_source
-            trend_source = trend_search_source(ops, lambda: provider.openai_key(secrets), load_catalog(), cards)
+            trend_source = trend_search_source(ops, keys["openai"], load_catalog(), cards)
         except Exception:
             trend_source = None  # no cap/catalog -> NO_TRENDS
     try:

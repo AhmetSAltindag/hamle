@@ -26,6 +26,10 @@ GMAIL_SECRET = "hamle-gmail-oauth"
 OPENAI_SECRET = "hamle-openai-api-key"
 BASECAMP_SECRET = "hamle-basecamp-credential"
 SECRET_NAMES = frozenset((GMAIL_SECRET, OPENAI_SECRET, BASECAMP_SECRET))
+# Claude API key (Secret Manager, added by Ahmet 2026-10-11). Kept on its own lines so the
+# names above stay untouched; the secret allowlist is the union.
+ANTHROPIC_SECRET = "hamle-anthropic-api-key"
+SECRET_NAMES = SECRET_NAMES | frozenset((ANTHROPIC_SECRET,))
 INTERNAL_SUBJECT = "HAMLE-IC-IS-20261010-01"
 PRODUCTION_INTERNAL_SUBJECT = "HAMLE-IC-URETIM-20261010-01"
 INTERNAL_SUBJECTS = frozenset((INTERNAL_SUBJECT, PRODUCTION_INTERNAL_SUBJECT))
@@ -294,6 +298,20 @@ def openai_key(secrets):
         return _token(secrets.access(OPENAI_SECRET).decode("ascii"))
     except Exception:
         raise ProviderError("openai_credential_unavailable") from None
+
+
+def anthropic_key(secrets):
+    """Claude API key from hamle-anthropic-api-key: stripped, sk-ant- prefix required.
+
+    Errors are one fixed code; the value (or any part of it) is never logged or returned in one.
+    """
+    try:
+        value = secrets.access(ANTHROPIC_SECRET).decode("ascii").strip()
+        if not value.startswith("sk-ant-"):
+            raise ValueError()
+        return _token(value)
+    except Exception:
+        raise ProviderError("anthropic_credential_unavailable") from None
 
 
 class _ReadOnlyGmailHttp:

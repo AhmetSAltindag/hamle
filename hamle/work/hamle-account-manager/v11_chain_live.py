@@ -217,7 +217,8 @@ def build_live_deps(*, ops, ops_generation, queue, queue_generation, secrets, ca
                                  source_reader=mail.source_evidence, authority_source=authority.authority_source,
                                  work_authority_policy=work_policy)
     holder["quality"] = quality
-    models = ChainModels(load_key=lambda: provider.openai_key(secrets),
+    models = ChainModels(load_key={"anthropic": lambda: provider.anthropic_key(secrets),
+                                   "openai": lambda: provider.openai_key(secrets)},
                          gate=ModelGate(ledger=ops, cache=queue, generation=ops_generation,
                                         cap_microdollars=internal_cap_microdollars(catalog)))
     session = provider._session()

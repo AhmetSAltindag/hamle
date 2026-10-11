@@ -21,12 +21,41 @@ from runtime_authority import (AUTHORIZATION_DEADLINE, SCHEDULED_REVIEW_WINDOW, 
 
 START = start_timestamp()
 DEADLINE = deadline_timestamp()  # single source: runtime_authority.AUTHORIZATION_DEADLINE
-PROVIDERS = ("google_cloud", "openai", "visual_generation")
+PROVIDERS = ("google_cloud", "openai", "visual_generation", "anthropic")
+LEGACY_PROVIDERS = ("google_cloud", "openai", "visual_generation")  # budgets imported before Claude
+# Claude API prepaid credit loaded by Ahmet on 2026-10-11 (20 USD). Added to an already
+# imported budget on the first anthropic reservation; prepaid counts as committed money.
+ANTHROPIC_PROVIDER_SEED = {"baseline_microdollars": 0, "paid_microdollars": 20_000_000, "billing_ready": True}
+ANTHROPIC_SEED_EVIDENCE = "owner-thread-2026-10-11-anthropic-prepaid-20usd"
+ANTHROPIC_MODELS = ("claude-opus-5-5", "claude-haiku-5-5")
+ANTHROPIC_EFFORTS = ("low", "medium", "high", "xhigh", "max")
+ANTHROPIC_USAGE_FIELDS = ("input_tokens", "output_tokens", "cache_read_input_tokens",
+                          "cache_creation_input_tokens", "web_search_requests")
 KINDS = ("gmail_reply", "basecamp_todo", "basecamp_comment")
 LIMIT = 50_000_000
 ISTANBUL = ZoneInfo("Europe/Istanbul")
 WORK_REF_FIELDS = ("work_id", "thread_id", "task_id", "account_id", "project_id", "version",
                    "escalation_status", "escalation_owner")
+
+
+def _anthropic_receipt(r, *, failure):
+    """Claude receipt: usage from response.usage and the cost computed from it (not an invoice)."""
+    keys = {"provider", "response_id", "model", "effort", "usage", "cost_microdollars"} | ({"stop_reason"} if failure else set())
+    _require(isinstance(r, dict) and set(r) == keys, "model_receipt_invalid")
+    rid_ok = isinstance(r["response_id"], str) and re.fullmatch(r"msg_[A-Za-z0-9_-]{1,200}", r["response_id"])
+    _require(rid_ok or (failure and r["response_id"] is None), "model_receipt_invalid")
+    _require(r["model"] in ANTHROPIC_MODELS or (failure and r["model"] is None), "model_receipt_invalid")
+    _require(r["effort"] in ANTHROPIC_EFFORTS, "model_receipt_invalid")
+    _require(not failure or r["stop_reason"] in (None, "end_turn", "max_tokens", "stop_sequence", "tool_use", "pause_turn",
+                                                 "refusal", "model_context_window_exceeded"), "model_receipt_invalid")
+    u = r["usage"]
+    if u is None:
+        _require(failure and r["cost_microdollars"] is None, "model_usage_invalid")
+    else:
+        _require(isinstance(u, dict) and set(u) == set(ANTHROPIC_USAGE_FIELDS)
+                 and all(type(u[k]) is int and 0 <= u[k] <= 2_000_000 for k in ANTHROPIC_USAGE_FIELDS), "model_usage_invalid")
+        _money(r["cost_microdollars"])
+    return r
 
 
 class StoreError(ValueError):
@@ -687,7 +716,9 @@ class OperationsStore:
     def _totals(b):
         spent = held = paid = committed = 0
         for name in PROVIDERS:
-            p = b["providers"][name]
+            p = b["providers"].get(name)
+            if p is None:  # legacy budget without a Claude entry yet
+                continue
             usage = p["baseline_microdollars"] + sum(r["actual_microdollars"] for r in b["reservations"] if r["provider"] == name and r["state"] == "settled")
             reserved = sum(r["reserved_microdollars"] for r in b["reservations"] if r["provider"] == name and r["state"] != "settled")
             spent += usage; held += reserved; paid += p["paid_microdollars"]
@@ -700,7 +731,7 @@ class OperationsStore:
     def initialize_budget(self, snapshot):
         b = copy.deepcopy(snapshot)
         _require(isinstance(b, dict) and b.get("policy_id") == POLICY and b.get("limit_microdollars") == LIMIT and b.get("expires_at") == AUTHORIZATION_DEADLINE, "budget_policy_mismatch")
-        _require(type(b.get("overrun_hold")) is bool and isinstance(b.get("providers"), dict) and set(b["providers"]) == set(PROVIDERS), "budget_snapshot_invalid")
+        _require(type(b.get("overrun_hold")) is bool and isinstance(b.get("providers"), dict) and set(b["providers"]) in (set(PROVIDERS), set(LEGACY_PROVIDERS)), "budget_snapshot_invalid")
         _label(b.get("evidence_ref"))
         for p in b["providers"].values():
             _require(isinstance(p, dict) and set(p) == {"baseline_microdollars", "paid_microdollars", "billing_ready"} and type(p["billing_ready"]) is bool, "budget_provider_invalid")
@@ -710,7 +741,7 @@ class OperationsStore:
         for r in b["reservations"]:
             _require(isinstance(r, dict), "budget_reservation_invalid")
             key = _label(r.get("reservation_key"))
-            _require(key not in keys and r.get("provider") in PROVIDERS and r.get("state") in ("reserved", "started", "unknown", "settled"), "budget_reservation_invalid")
+            _require(key not in keys and r.get("provider") in b["providers"] and r.get("state") in ("reserved", "started", "unknown", "settled"), "budget_reservation_invalid")
             keys.add(key)
             _require(_money(r.get("reserved_microdollars")) > 0, "budget_reservation_invalid")
             if r["state"] == "settled":
@@ -752,6 +783,11 @@ class OperationsStore:
         _label(key); _require(provider in PROVIDERS and _money(microdollars) > 0, "invalid_reservation")
         def op(tx, now):
             b = self._budget(tx)
+            if provider == "anthropic" and "anthropic" not in b["providers"]:
+                b["providers"]["anthropic"] = dict(ANTHROPIC_PROVIDER_SEED)
+                b.setdefault("provider_additions", []).append(
+                    {"provider": "anthropic", "evidence_ref": ANTHROPIC_SEED_EVIDENCE, "added_at": now})
+            _require(provider in b["providers"], "budget_not_ready")
             _require(not b["overrun_hold"] and b["providers"][provider]["billing_ready"], "budget_not_ready")
             old = next((r for r in b["reservations"] if r["reservation_key"] == key), None)
             if old:
@@ -787,6 +823,9 @@ class OperationsStore:
         """Immutable usage evidence, never a bill or release of reserved funds."""
         _label(reservation_key)
         r = copy.deepcopy(receipt)
+        if isinstance(r, dict) and r.get("provider") == "anthropic":
+            return self._record_anthropic(reservation_key, "model-receipt-", _anthropic_receipt(r, failure=False),
+                                          {"receipt": r})
         _require(isinstance(r, dict) and set(r) == {"response_id", "model", "reasoning_effort", "usage"}, "model_receipt_invalid")
         _require(isinstance(r["response_id"], str) and re.fullmatch(r"resp_[A-Za-z0-9_-]{1,200}", r["response_id"])
                  and r["model"] == "gpt-6-astra" and r["reasoning_effort"] == "max", "model_receipt_invalid")
@@ -822,6 +861,9 @@ class OperationsStore:
         """Immutable failed-attempt metadata; never a draft, invoice or retry grant."""
         _label(reservation_key); _label(reason)
         r = copy.deepcopy(receipt)
+        if isinstance(r, dict) and r.get("provider") == "anthropic":
+            return self._record_anthropic(reservation_key, "model-failure-", _anthropic_receipt(r, failure=True),
+                                          {"reason": reason, "receipt": r, "legacy_observability_gap": False})
         if r is not None:
             _require(isinstance(r, dict) and set(r) == {"response_id", "model", "reasoning_effort", "status", "incomplete_reason", "usage"}, "model_failure_receipt_invalid")
             _require(r["response_id"] is None or (isinstance(r["response_id"], str) and re.fullmatch(r"resp_[A-Za-z0-9_-]{1,200}", r["response_id"])), "model_failure_receipt_invalid")
@@ -844,7 +886,7 @@ class OperationsStore:
         def op(tx, now):
             b = self._budget(tx); old = tx.get(doc)
             reservation = next((x for x in b["reservations"] if x["reservation_key"] == reservation_key), None)
-            _require(reservation is not None and reservation["provider"] == "openai"
+            _require(reservation is not None and (reservation["provider"] == "openai" or (r is None and reservation["provider"] == "anthropic"))
                      and reservation["state"] in ("started", "unknown", "settled"), "model_reservation_not_started")
             if old is not None:
                 _require(old["reason"] == reason and old.get("receipt") == r
@@ -852,6 +894,23 @@ class OperationsStore:
                 return old
             row = {"reservation_key": reservation_key, "reason": reason, "receipt": r,
                    "recorded_at": now, "legacy_observability_gap": False, "usage_is_invoice": False}
+            tx.put(doc, row)
+            return row
+        return self._run(op, allow_expired=True)
+
+    def _record_anthropic(self, reservation_key, prefix, r, fields):
+        doc = prefix + hashlib.sha256(reservation_key.encode()).hexdigest()
+        def op(tx, now):
+            b = self._budget(tx)
+            reservation = next((x for x in b["reservations"] if x["reservation_key"] == reservation_key), None)
+            _require(reservation is not None and reservation["provider"] == "anthropic"
+                     and reservation["state"] in ("started", "unknown", "settled"), "model_reservation_not_started")
+            old = tx.get(doc)
+            if old is not None:
+                _require(all(old.get(k) == v for k, v in fields.items()) and old["reservation_key"] == reservation_key,
+                         "model_receipt_conflict" if prefix == "model-receipt-" else "model_failure_conflict")
+                return old
+            row = {"reservation_key": reservation_key, **fields, "recorded_at": now, "usage_is_invoice": False}
             tx.put(doc, row)
             return row
         return self._run(op, allow_expired=True)

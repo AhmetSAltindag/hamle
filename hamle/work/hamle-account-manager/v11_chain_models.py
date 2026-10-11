@@ -1,4 +1,5 @@
-"""Chain model callables on the existing OpenAI Responses path (model.py, gpt-6-astra).
+"""Chain model callables, routed per role by model_routing (default: Claude via model.py's
+Anthropic transport; the existing OpenAI Responses path stays selectable, never a fallback).
 
 Three bounded, strict-JSON roles for v11_chain.ChainDeps:
   interpreter(text, context) -> {'requirements','missing_questions','context_notes','follow_ups'}
@@ -10,8 +11,10 @@ The gate durably reserves and begins the shared budget (cloud_store ledger) and
 records a cache row before the POST. A completed result is cached and reused;
 a started-but-unfinished chance is never retried (model_outcome_unknown_no_retry).
 The provider, model, effort, timeouts, no-retry transport and response parser
-rules are those of model.py; no other provider exists here. Model output never
-grants authority: plan_intake, the quality gate and dispatch gates still decide.
+rules are those of model.py (OpenAI: call_once below; Anthropic: model.anthropic_json).
+Anthropic results settle the hold at the cost computed from response.usage; OpenAI
+results keep the full hold until reconciliation. Model output never grants authority:
+plan_intake, the quality gate and dispatch gates still decide.
 """
 from __future__ import annotations
 
@@ -40,6 +43,10 @@ MIMES = ("image/png", "image/jpeg", "application/pdf", "text/plain", "video/mp4"
 BRIEF_REFS = ("title", "objective", "audience", "deadline", "assets_ref", "deliverables")
 PROFILE_REFS = ("terms", "brand_id", "verification_scope")
 ANSWER_REFS = tuple("brief." + k for k in BRIEF_REFS) + tuple("profile." + k for k in PROFILE_REFS)
+ROUTING_ROLES = {"interpreter": "chain_interpreter", "classifier": "chain_classifier",
+                 "answerer": "chain_answerer", "digest": "digest_classifier"}
+# Fixed codes after which nothing can have been billed: the hold is settled at 0.
+NO_CHARGE_CODES = ("anthropic_credit_insufficient",)
 
 
 class ChainModelError(ValueError):
@@ -248,6 +255,42 @@ def call_once(api_key, role, request_input, *, transport=None, profile=None):
                     pass
 
 
+def key_for(load_key, provider):
+    """load_key: one loader (tests / single provider) or {provider: loader}."""
+    if isinstance(load_key, dict):
+        _need(provider in load_key, "model_credential_loader_missing")
+        return load_key[provider]()
+    return load_key()
+
+
+def call_routed(route, role, request_input, *, load_key, transport=None, client=None, profile=None):
+    """One call for a chain role on the routed provider. No cross-provider fallback."""
+    _need(role in SCHEMAS, "model_role_unknown")
+    if route.provider == "openai":
+        key = key_for(load_key, "openai")
+        try:
+            return call_once(key, role, request_input, transport=transport, profile=profile or route.profile_id)
+        finally:
+            del key
+    try:
+        system = PROMPTS[role].read_text(encoding="utf-8")
+    except (OSError, UnicodeError):
+        raise ChainModelError("prompt_unavailable") from None
+    def check(value):
+        validate(value, SCHEMAS[role])
+        return value
+    key = key_for(load_key, "anthropic")
+    try:
+        return base.anthropic_json(route, system, request_input, SCHEMAS[role], api_key=key, client=client,
+                                   validator=check)
+    finally:
+        del key
+
+
+def reservation_for(route, base_hold=MODEL_RESERVATION):
+    return base_hold + route.reservation_extra()
+
+
 # ---------------------------------------------------------------- one chance per digest
 def source_digest(role, *parts):
     raw = json.dumps([role, *parts], ensure_ascii=False, sort_keys=True, separators=(",", ":"))
@@ -289,7 +332,9 @@ class ModelGate:
             return row
         return self.cache._run(op)
 
-    def once(self, role, digest, call):
+    def once(self, role, digest, call, *, provider="openai", hold=None):
+        hold = self.reservation if hold is None else hold
+        _need(provider in ("openai", "anthropic"), "model_provider_unsupported")
         key = "chain-model-" + digest
         row = self._get(key)
         if row is not None:
@@ -298,12 +343,12 @@ class ModelGate:
             return copy.deepcopy(row["output"])
         reservation = "chain-model-" + digest[:48]
         if self.cap is not None:  # internal-live cap: checked before any ledger write or key load
-            _need(chain_committed_microdollars(self.ledger) + self.reservation <= self.cap,
+            _need(chain_committed_microdollars(self.ledger) + hold <= self.cap,
                   "internal_live_budget_cap_reached")
-        self.ledger.budget_reserve(reservation, "openai", self.reservation)
+        self.ledger.budget_reserve(reservation, provider, hold)
         self.ledger.budget_begin(reservation, self.generation)  # non-replayable: second begin fails
         self._put(key, {"id": key, "kind": "chain_model_result", "role": role, "state": "started",
-                        "reservation_key": reservation, "output": None})
+                        "provider": provider, "reservation_key": reservation, "output": None})
         self.calls += 1
         try:
             result = call()
@@ -313,7 +358,7 @@ class ModelGate:
             except Exception:
                 pass
             try:
-                self.ledger.budget_unknown(reservation)
+                self._finish_failed(provider, reservation, exc)
             except Exception:
                 pass
             raise ChainModelError("model_failed_no_retry:" + exc.code) from None
@@ -324,11 +369,26 @@ class ModelGate:
                 pass
             raise ChainModelError("model_outcome_unknown_no_retry") from None
         self.ledger.record_model_receipt(reservation, result["receipt"])
-        self.ledger.budget_unknown(reservation)  # usage is not a bill: keep the hold
+        if provider == "anthropic":  # actual cost from response.usage (+ web search fees)
+            self.ledger.budget_settle(reservation, result["receipt"]["cost_microdollars"],
+                                      result["receipt"]["response_id"])
+        else:
+            self.ledger.budget_unknown(reservation)  # OpenAI usage is not a bill: keep the hold
         self._put(key, {"id": key, "kind": "chain_model_result", "role": role, "state": "completed",
-                        "reservation_key": reservation, "output": copy.deepcopy(result["output"]),
+                        "provider": provider, "reservation_key": reservation,
+                        "output": copy.deepcopy(result["output"]),
                         "response_id": result["receipt"]["response_id"]})
         return copy.deepcopy(result["output"])
+
+    def _finish_failed(self, provider, reservation, exc):
+        receipt = exc.failure_receipt if provider == "anthropic" else None
+        if receipt is not None and receipt.get("cost_microdollars") is not None:
+            self.ledger.budget_settle(reservation, receipt["cost_microdollars"],
+                                      receipt["response_id"] or "anthropic-usage-" + exc.code)
+        elif provider == "anthropic" and exc.code in NO_CHARGE_CODES:
+            self.ledger.budget_settle(reservation, 0, exc.code)
+        else:
+            self.ledger.budget_unknown(reservation)
 
 
 # ---------------------------------------------------------------- roles
@@ -381,20 +441,29 @@ def requirements_from_output(output, text):
 
 
 class ChainModels:
-    """Bound role callables for ChainDeps. load_key() reads the existing OpenAI secret lazily."""
-    def __init__(self, *, load_key, gate, transport=None, profile=None):
-        self.load_key, self.gate, self.transport, self.profile = load_key, gate, transport, profile
+    """Bound role callables for ChainDeps.
+
+    routing: model_routing.Routing (None -> the shipped model-routing.json; default Claude).
+    load_key: {provider: loader} (live) or a single loader (tests); keys are read lazily.
+    transport (OpenAI) / client (Anthropic) are test-only fakes.
+    """
+    def __init__(self, *, load_key, gate, transport=None, profile=None, routing=None, client=None):
+        import model_routing
+        self.routing = routing if routing is not None else model_routing.load()
+        self.load_key, self.gate, self.transport, self.profile, self.client = load_key, gate, transport, profile, client
 
     def _call(self, role, request_input, digest):
-        base._selected_profile(self.profile)  # profile errors before any ledger write
-        build_request(role, request_input, profile=self.profile)  # size/shape before the single chance
+        route = self.routing.route(ROUTING_ROLES[role])
+        if route.provider == "openai":
+            base._selected_profile(self.profile or route.profile_id)  # profile errors before any ledger write
+            build_request(role, request_input, profile=self.profile or route.profile_id)
+        else:
+            base.anthropic_request(route, "", base._encoded(request_input).decode("utf-8"), schema=SCHEMAS[role])
+            _need(len(base._encoded(request_input)) <= base.MAX_INPUT_BYTES, "input_byte_limit")
         def call():
-            key = self.load_key()
-            try:
-                return call_once(key, role, request_input, transport=self.transport, profile=self.profile)
-            finally:
-                del key
-        return self.gate.once(role, digest, call)
+            return call_routed(route, role, request_input, load_key=self.load_key, transport=self.transport,
+                               client=self.client, profile=self.profile)
+        return self.gate.once(role, digest, call, provider=route.provider, hold=reservation_for(route))
 
     def interpreter(self, text, context):
         _need(isinstance(text, str) and text.strip(), "mail_text_missing")

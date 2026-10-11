@@ -1,4 +1,5 @@
 """Daily digest: fakes only (Basecamp listing, Gmail REST, OpenAI transport, Operations store)."""
+from model_routing import openai_only
 import base64
 from contextlib import contextmanager
 from datetime import date, datetime
@@ -154,7 +155,7 @@ class Base(unittest.TestCase):
         return dd.BasecampDigestReader(ACC, get=self.bc.get)
 
     def classifier(self, transport):
-        return dd.model_classifier(self.ops, lambda: KEY, load_catalog(), transport=transport)
+        return dd.model_classifier(self.ops, lambda: KEY, load_catalog(), transport=transport, routing=openai_only())
 
     def run_digest(self, cfg=None, reader_factory=None, **kw):
         kw.setdefault("cards", self.cards)
@@ -342,7 +343,8 @@ class Overdue(Base):
         catalog["budget"]["internal_live_cap_microdollars"] = 1
         keys = []
         transport2 = Transport(envelope(classification()))
-        clf = dd.model_classifier(self.ops, lambda: keys.append(1) or KEY, catalog, transport=transport2)
+        clf = dd.model_classifier(self.ops, lambda: keys.append(1) or KEY, catalog, transport=transport2,
+                                  routing=openai_only())
         body, stats = self.build(classifier=clf)
         self.assertEqual((transport2.calls, keys), ([], []))
         self.assertEqual(stats["model"], "unclassified:model_budget_unavailable")

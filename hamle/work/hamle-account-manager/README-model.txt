@@ -94,3 +94,22 @@ https://developers.openai.com/api/docs/guides/structured-outputs
 https://developers.openai.com/api/reference/resources/responses/methods/create
 (The general reference open failed; text.format contract was verified using
 the fetched Structured Outputs guide.)
+
+Claude provider (added 2026-10-11, Ahmet's switch order)
+model_routing.py + outputs/gamechangers-internal/model-routing.json (shipped as
+chain-profile/model-routing.json) map each paid role to {provider, model, effort}.
+Default provider is anthropic: Claude Opus 5.5 (claude-opus-5-5) for chain_interpreter,
+chain_answerer, customer_text and the web-search research roles; Claude Haiku 5.5
+(claude-haiku-5-5) for chain_classifier and digest_classifier. OpenAI (astra-max-v1)
+stays selectable per role but is never chosen automatically; no cross-provider fallback.
+model.py's Anthropic section uses the official SDK (anthropic==1.8.0) with
+max_retries=0, explicit output_config.effort, structured output via
+output_config.format, no thinking parameter, no prefill, no tool_choice and no
+server-side fallbacks. stop_reason refusal/max_tokens/pause_turn are fixed-code holds
+(model_refusal, response_max_tokens, response_pause_turn). Credit/billing errors are
+anthropic_credit_insufficient (settled at 0, never retried). The key comes from
+Secret Manager hamle-anthropic-api-key (cloud_providers.anthropic_key, sk-ant- prefix).
+The 2 USD hold per call is unchanged; Claude holds are settled at the cost computed
+from response.usage (Opus 4/20/0.20 USD per 1M in/out/cache-read; Haiku 0.10/0.50,
+0.50/2.50 above 100K prompt tokens; web search 0.01 USD each). The ledger gains an
+"anthropic" provider (20 USD prepaid) on the first Claude reservation.

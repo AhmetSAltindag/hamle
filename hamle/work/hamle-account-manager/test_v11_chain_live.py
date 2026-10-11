@@ -3,6 +3,7 @@
 Fakes only: Gmail SDK + REST mailbox, Basecamp account (todos, comments, blob bytes),
 OpenAI Responses transport, Firestore client, OCR text. No sockets, keys or credentials.
 """
+from model_routing import openai_only
 import base64
 import copy
 from contextlib import contextmanager
@@ -262,7 +263,7 @@ class Live:
             self.model_keys += 1
             return KEY
         models = ChainModels(load_key=key, gate=ModelGate(ledger=self.ops, cache=self.queue, generation=self.ops_gen),
-                             transport=self.models)
+                             transport=self.models, routing=openai_only())  # OpenAI standby fakes
         def assess(view, comment):
             out = self.quality.assess(view, comment)
             self.evidence.append(out)

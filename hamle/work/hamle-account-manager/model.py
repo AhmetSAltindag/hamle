@@ -9,6 +9,7 @@ import copy
 import json
 import re
 from datetime import datetime
+from fractions import Fraction
 from pathlib import Path
 
 import requests
@@ -360,3 +361,287 @@ def call_once(api_key, request_input, *, transport=None, profile=None):
                 session.close()
             except Exception:
                 pass
+
+
+# ============================================================ Anthropic (Claude) transport
+# Added beside the OpenAI adapter above (which stays unchanged as the standby path).
+# One messages.create call through the official `anthropic` SDK: client max_retries=0,
+# explicit output_config.effort, structured output via output_config.format, no
+# `thinking` parameter (never disabled, never budget_tokens), no assistant prefill,
+# no tool_choice, no server-side fallbacks. The routing decision (model/effort/limits)
+# comes from model_routing.Route; nothing here chooses a provider.
+ANTHROPIC_KEY_PREFIX = "sk-ant-"
+ANTHROPIC_MAX_RESPONSE_BYTES = 1_048_576  # web search results make messages larger
+ANTHROPIC_MAX_INPUT_TOKENS = 400_000
+HAIKU_LONG_PROMPT_TOKENS = 100_000
+# USD per 1M tokens == microdollars per token: (input, output, cache read, cache write 5m).
+# Cache writes are priced at 1.25x input; this adapter sends no cache_control, so they stay 0.
+_P = Fraction
+ANTHROPIC_PRICES = {
+    "claude-opus-5-5": {"standard": (_P(4), _P(20), _P(1, 5), _P(5))},
+    "claude-haiku-5-5": {"standard": (_P(1, 10), _P(1, 2), _P(1, 100), _P(1, 8)),
+                         "long": (_P(1, 2), _P(5, 2), _P(1, 20), _P(5, 8))},
+}
+WEB_SEARCH_FEE_MICRODOLLARS = 10_000  # 0.01 USD per search
+DOMAIN_CODES = ("escalation_mismatch", "escalation_reason_missing", "requested_deadline_changed")
+ANTHROPIC_STOP_FAILURES = {"refusal": "model_refusal", "max_tokens": "response_max_tokens",
+                           "pause_turn": "response_pause_turn",
+                           "model_context_window_exceeded": "response_incomplete"}
+
+
+def anthropic_cost_microdollars(model_id, usage):
+    """Actual cost from response.usage (tokens x list price + web search fees), rounded up."""
+    tiers = ANTHROPIC_PRICES.get(model_id)
+    if tiers is None:
+        raise ModelError("model_price_unknown")
+    prompt = usage["input_tokens"] + usage["cache_read_input_tokens"] + usage["cache_creation_input_tokens"]
+    tier = tiers["long"] if "long" in tiers and prompt > HAIKU_LONG_PROMPT_TOKENS else tiers["standard"]
+    p_in, p_out, p_read, p_write = tier
+    total = (usage["input_tokens"] * p_in + usage["output_tokens"] * p_out
+             + usage["cache_read_input_tokens"] * p_read + usage["cache_creation_input_tokens"] * p_write
+             + usage["web_search_requests"] * WEB_SEARCH_FEE_MICRODOLLARS)
+    total = Fraction(total)
+    return -(-total.numerator // total.denominator)
+
+
+def anthropic_schema(schema):
+    """Local strict schema -> structured-output subset (no length/number/count constraints,
+    nullable types as anyOf). The full local schema is still enforced after parsing."""
+    out, notes = {}, []
+    kind = schema.get("type")
+    if isinstance(kind, list):
+        rest = {k: v for k, v in schema.items() if k != "type"}
+        variants = []
+        for single in kind:
+            variants.append({"type": "null"} if single == "null" else anthropic_schema({**rest, "type": single}))
+        return {"anyOf": variants}
+    out["type"] = kind
+    if "enum" in schema:
+        out["enum"] = [v for v in schema["enum"] if v is not None]
+    for key in ("minLength", "maxLength", "minimum", "maximum", "maxItems"):
+        if key in schema:
+            notes.append(f"{key}: {schema[key]}")
+    if kind == "object":
+        out["properties"] = {k: anthropic_schema(v) for k, v in schema["properties"].items()}
+        out["required"] = list(schema["required"])
+        out["additionalProperties"] = False
+    elif kind == "array":
+        out["items"] = anthropic_schema(schema["items"])
+    if notes:
+        out["description"] = "{" + ", ".join(notes) + "}"
+    return out
+
+
+def anthropic_request(route, system, user_text, *, schema=None):
+    """messages.create keyword arguments. Pure; no SDK import."""
+    if getattr(route, "provider", None) != "anthropic" or route.model not in ANTHROPIC_PRICES:
+        raise ModelError("model_route_invalid")
+    output_config = {"effort": route.effort}
+    if schema is not None:
+        output_config["format"] = {"type": "json_schema", "schema": anthropic_schema(schema)}
+    kwargs = {"model": route.model, "max_tokens": route.max_tokens, "system": system,
+              "messages": [{"role": "user", "content": user_text}], "output_config": output_config}
+    if route.web_search:
+        kwargs["tools"] = [{"type": route.web_search["type"], "name": "web_search",
+                            "max_uses": route.web_search["max_uses"]}]
+    if len(_encoded(kwargs)) > MAX_REQUEST_BYTES * 2:
+        raise ModelError("request_byte_limit")
+    return kwargs
+
+
+def _anthropic_usage(data):
+    raw = data.get("usage") if isinstance(data, dict) else None
+    if not isinstance(raw, dict):
+        return None
+    out = {}
+    for key, optional in (("input_tokens", False), ("output_tokens", False),
+                          ("cache_read_input_tokens", True), ("cache_creation_input_tokens", True)):
+        value = raw.get(key)
+        if value is None and optional:
+            value = 0
+        if type(value) is not int or not 0 <= value <= 2_000_000:
+            return None
+        out[key] = value
+    server = raw.get("server_tool_use")
+    if server is not None and not isinstance(server, dict):
+        return None
+    searches = (server or {}).get("web_search_requests")
+    searches = 0 if searches is None else searches
+    if type(searches) is not int or not 0 <= searches <= 100:
+        return None
+    out["web_search_requests"] = searches
+    return out
+
+
+def _anthropic_receipt(data, route, *, failure_code=None):
+    data = data if isinstance(data, dict) else {}
+    rid = data.get("id")
+    rid = rid if isinstance(rid, str) and re.fullmatch(r"msg_[A-Za-z0-9_\-]{1,200}", rid) else None
+    usage = _anthropic_usage(data)
+    receipt = {"provider": "anthropic", "response_id": rid,
+               "model": route.model if _anthropic_model_matches(data.get("model"), route.model) else None,
+               "effort": route.effort, "usage": usage,
+               "cost_microdollars": anthropic_cost_microdollars(route.model, usage) if usage is not None else None}
+    if failure_code is not None:
+        stop = data.get("stop_reason")
+        receipt["stop_reason"] = stop if stop in ("end_turn", "max_tokens", "stop_sequence", "tool_use",
+                                                  "pause_turn", "refusal", "model_context_window_exceeded") else None
+    return receipt
+
+
+def _anthropic_model_matches(value, expected):
+    return isinstance(value, str) and (value == expected or re.fullmatch(re.escape(expected) + r"-\d{8}", value))
+
+
+def _anthropic_error(code, data, route):
+    exc = ModelError(code)
+    receipt = _anthropic_receipt(data, route, failure_code=code) if isinstance(data, dict) else None
+    exc.failure_receipt = receipt
+    exc.usage = receipt["usage"] if receipt else None
+    exc.response_id = receipt["response_id"] if receipt else None
+    exc.status = receipt["stop_reason"] if receipt else None
+    exc.incomplete_reason = None
+    return exc
+
+
+def anthropic_extract(route, data, *, structured=True):
+    """Accept only end_turn with text output. Returns {'text','evidence','receipt'}.
+
+    evidence: https URLs from web_search_tool_result blocks and web_search_result_location
+    citations (empty for roles without web search). Thinking blocks are skipped, never returned.
+    """
+    def fail(code):
+        raise _anthropic_error(code, data, route)
+    if not isinstance(data, dict) or data.get("type") != "message" or data.get("role") != "assistant":
+        fail("invalid_response")
+    if not _anthropic_model_matches(data.get("model"), route.model):
+        fail("model_mismatch")
+    rid = data.get("id")
+    if not isinstance(rid, str) or not re.fullmatch(r"msg_[A-Za-z0-9_\-]{1,200}", rid):
+        fail("invalid_response_id")
+    stop = data.get("stop_reason")
+    if stop in ANTHROPIC_STOP_FAILURES:  # refusal / max_tokens / pause_turn: held, never retried
+        fail(ANTHROPIC_STOP_FAILURES[stop])
+    if stop != "end_turn":
+        fail("response_not_completed")
+    usage = _anthropic_usage(data)
+    if usage is None:
+        fail("usage_missing_or_invalid")
+    if (usage["output_tokens"] > route.max_tokens or usage["input_tokens"] > ANTHROPIC_MAX_INPUT_TOKENS
+            or usage["web_search_requests"] > (route.web_search["max_uses"] if route.web_search else 0)):
+        fail("usage_limit_exceeded")
+    content = data.get("content")
+    if not isinstance(content, list) or not content or len(content) > 200:
+        fail("invalid_output")
+    texts, evidence = [], set()
+    for block in content:
+        if not isinstance(block, dict):
+            fail("invalid_output_content")
+        kind = block.get("type")
+        if kind in ("thinking", "redacted_thinking"):
+            continue
+        if kind == "text":
+            if not isinstance(block.get("text"), str):
+                fail("invalid_output_content")
+            texts.append(block["text"])
+            for cite in block.get("citations") or []:
+                if isinstance(cite, dict) and cite.get("type") == "web_search_result_location":
+                    evidence.add(cite.get("url"))
+            continue
+        if route.web_search and kind == "server_tool_use" and block.get("name") == "web_search":
+            continue
+        if route.web_search and kind == "web_search_tool_result":
+            result = block.get("content")
+            if not isinstance(result, list):  # an error object, e.g. {"error_code": "unavailable"}
+                fail("web_search_tool_error")
+            for item in result:
+                if isinstance(item, dict) and item.get("type") == "web_search_result":
+                    evidence.add(item.get("url"))
+            continue
+        fail("unexpected_tool_or_output")
+    if not texts or (structured and len(texts) != 1):
+        fail("ambiguous_or_oversize_output")
+    text = "".join(texts)
+    if len(text.encode("utf-8")) > MAX_RESPONSE_BYTES:
+        fail("ambiguous_or_oversize_output")
+    evidence.discard(None)
+    return {"text": text, "evidence": sorted(u for u in evidence if isinstance(u, str)),
+            "receipt": _anthropic_receipt(data, route)}
+
+
+def _anthropic_status_code(exc):
+    """Fixed code from the SDK's documented APIStatusError fields; message text never kept."""
+    status = getattr(exc, "status_code", None)
+    if type(status) is not int:
+        return "transport_outcome_unknown"  # connection error / timeout: a charge is possible
+    error_type = getattr(exc, "type", None)
+    if status == 402 or error_type == "billing_error":
+        return "anthropic_credit_insufficient"
+    if status == 400 and "credit balance" in str(getattr(exc, "message", "") or "").lower():
+        return "anthropic_credit_insufficient"
+    return {400: "request_rejected", 401: "authentication_rejected", 403: "access_rejected",
+            404: "anthropic_model_unavailable", 413: "request_byte_limit",
+            429: "quota_or_rate_limit", 529: "provider_overloaded_no_retry"}.get(status, "http_error_no_retry")
+
+
+def anthropic_send(api_key, route, kwargs, *, client=None):
+    """One messages.create, SDK retries disabled. Returns the message as a plain dict.
+
+    client is a test-only fake exposing messages.create(**kwargs). Errors carry only
+    fixed codes; the key, exception text and request are never included.
+    """
+    if (not isinstance(api_key, str) or not api_key.startswith(ANTHROPIC_KEY_PREFIX)
+            or not 20 <= len(api_key) <= 512 or not api_key.isascii() or any(c.isspace() for c in api_key)):
+        raise ModelError("credential_missing_or_invalid")
+    if client is None:
+        try:
+            import anthropic
+        except ImportError:
+            raise ModelError("anthropic_sdk_unavailable") from None
+        client = anthropic.Anthropic(api_key=api_key, max_retries=0, timeout=float(route.timeout_seconds))
+    try:
+        message = client.messages.create(**kwargs)
+    except Exception as exc:
+        raise ModelError(_anthropic_status_code(exc)) from None
+    try:
+        data = message if isinstance(message, dict) else message.to_dict()
+        size = len(_encoded(data))
+    except Exception:
+        raise ModelError("invalid_response") from None
+    if size > ANTHROPIC_MAX_RESPONSE_BYTES:
+        raise ModelError("response_byte_limit")
+    return data
+
+
+def anthropic_json(route, system, request_input, schema, *, api_key, client=None, validator=None):
+    """One structured-output call: send -> extract -> strict local parse/validation."""
+    source = _encoded(request_input)
+    if len(source) > MAX_INPUT_BYTES:
+        raise ModelError("input_byte_limit")
+    kwargs = anthropic_request(route, system, source.decode("utf-8"), schema=schema)
+    data = anthropic_send(api_key, route, kwargs, client=client)
+    result = anthropic_extract(route, data, structured=True)
+    try:
+        value = _loads(result["text"])
+        if validator is not None:
+            value = validator(value)
+    except Exception as exc:
+        code = getattr(exc, "code", None)
+        raise _anthropic_error(code if code in DOMAIN_CODES else "invalid_analysis_schema", data, route) from None
+    return {"output": value, "receipt": result["receipt"]}
+
+
+def call_anthropic_once(api_key, request_input, route, *, client=None):
+    """Account-manager review draft (role customer_text) on Claude; same result contract as call_once."""
+    build_request(request_input)  # same input validation and size bounds as the OpenAI path
+    try:
+        instructions = PROMPT_PATH.read_text(encoding="utf-8")
+    except (OSError, UnicodeError):
+        raise ModelError("prompt_unavailable") from None
+    result = anthropic_json(route, instructions, request_input, OUTPUT_SCHEMA, api_key=api_key, client=client,
+                            validator=lambda value: validate_analysis(value, request_input))
+    receipt = result["receipt"]
+    return {"status": "review_required", "action_eligible": False, "model": route.model,
+            "reasoning_effort": route.effort, "provider": "anthropic", "profile_id": None,
+            "response_id": receipt["response_id"], "analysis": result["output"], "usage": receipt["usage"],
+            "receipt": receipt, "automatic_retry_allowed": False}

@@ -46,6 +46,10 @@ continuation_reply_chain_invalid sent_receipt_identifiers_invalid sent_receipt_v
 task_status_scope_mismatch task_status_assignee_mismatch task_status_date_invalid task_status_unconfirmed
 basecamp_target_changed bound_work_invalid text_invalid
 unverified_record_required credential_review_failed
+anthropic_credential_unavailable anthropic_credit_insufficient anthropic_sdk_unavailable
+anthropic_model_unavailable provider_overloaded_no_retry response_max_tokens response_pause_turn
+web_search_tool_error model_route_invalid model_price_unknown prompt_unavailable input_byte_limit
+model_routing_missing model_routing_unreadable model_routing_invalid model_role_unknown
 """.split())
 
 
@@ -56,6 +60,9 @@ def _safe_error(exc):
     from basecamp_cloud_auth import AuthError
     from business_writers import WriterError
     if isinstance(exc, (ModelError, ProviderError, AuthError, WriterError)) and exc.code in SAFE_ADAPTER_CODES:
+        return exc.code
+    from model_routing import RoutingError
+    if isinstance(exc, RoutingError) and exc.code in SAFE_ADAPTER_CODES:
         return exc.code
     return "provider_or_model_failed_no_retry"
 
@@ -132,8 +139,9 @@ def _target(value):
 
 def _envelope(result, evidence, todo_parent):
     _require(isinstance(result, dict) and result.get("status") == "review_required" and
-             result.get("action_eligible") is False and result.get("model") == "gpt-6-astra" and
-             result.get("reasoning_effort") == "max" and result.get("automatic_retry_allowed") is False,
+             result.get("action_eligible") is False and (result.get("model"), result.get("reasoning_effort")) in (
+                 ("gpt-6-astra", "max"), ("claude-opus-5-5", "high"), ("claude-opus-5-5", "xhigh"),
+                 ("claude-opus-5-5", "max")) and result.get("automatic_retry_allowed") is False,
              "model_result_invalid")
     analysis = result.get("analysis")
     _validate(analysis, OUTPUT_SCHEMA, "invalid_analysis_schema")
@@ -223,8 +231,13 @@ def _no_new_work(store, verify_latest_sent_receipt, generation, clock, work=None
 def run_review(store, *, capture, check_basecamp, load_key, model_call=call_once, clock=None,
                expected_generation=None, capture_continuation=None, read_task_status=None,
                verify_latest_sent_receipt=None, _recovery=None):
-    """Callables are trusted adapters; one model chance per stable source digest."""
+    """Callables are trusted adapters; one model chance per stable source digest.
+
+    model_call.model_provider ("anthropic" for model.call_anthropic_once routes, else
+    "openai") selects the ledger provider for the 2 USD hold.
+    """
     clock = clock or (lambda: datetime.now(timezone.utc))
+    provider = getattr(model_call, "model_provider", "openai")
     started_key = None
     model_receipt = None
     followup_claim = None
@@ -286,21 +299,30 @@ def run_review(store, *, capture, check_basecamp, load_key, model_call=call_once
         key = load_key()
         _fence(store, generation, clock)
         reservation_key = followup_claim["reservation_key"] if _recovery is not None else "model-" + request_key
-        store.budget_reserve(reservation_key, "openai", MODEL_RESERVATION)
+        store.budget_reserve(reservation_key, provider, MODEL_RESERVATION)
         store.budget_begin(reservation_key, generation)
         started_key = reservation_key
         result = model_call(key, request)
         del key
-        receipt = {k: result.get(k) for k in ("response_id", "model", "reasoning_effort", "usage")} if isinstance(result, dict) else {}
+        if provider == "anthropic":
+            receipt = result.get("receipt") if isinstance(result, dict) else {}
+        else:
+            receipt = {k: result.get(k) for k in ("response_id", "model", "reasoning_effort", "usage")} if isinstance(result, dict) else {}
         model_receipt = store.record_model_receipt(reservation_key, receipt)["receipt"]
-        # Usage is not a bill. Retain all 2 USD until explicit reconciliation.
-        store.budget_unknown(reservation_key)
+        if provider == "anthropic":
+            # Claude: actual cost from response.usage settles the 2 USD hold.
+            store.budget_settle(reservation_key, model_receipt["cost_microdollars"], model_receipt["response_id"])
+        else:
+            # Usage is not a bill. Retain all 2 USD until explicit reconciliation.
+            store.budget_unknown(reservation_key)
         _fence(store, generation, clock)
         payload = _followup_envelope(result, evidence, work) if work is not None else _envelope(result, evidence, target_id)
         p = store.put_followup_proposal(followup_claim, payload) if work is not None else store.put_proposal(proposal_id, fingerprint, payload, generation)
         return {"status": "review_required", "proposal_id": p["proposal_id"],
                 "proposal_hash": p["proposal_hash"], "control_generation": generation,
-                "model_calls": 1, "model": "gpt-6-astra", "reasoning_effort": "max",
+                "model_calls": 1, "model": model_receipt["model"],
+                "reasoning_effort": model_receipt.get("reasoning_effort") or model_receipt.get("effort"),
+                "model_provider": provider,
                 "budget_reservation_key": reservation_key, "budget_hold_microdollars": MODEL_RESERVATION,
                 "response_id": model_receipt["response_id"], "usage": model_receipt["usage"],
                 **({"maintenance_recovery_attempt": 2, "content_approval": False} if _recovery is not None else {}),
@@ -320,6 +342,12 @@ def run_review(store, *, capture, check_basecamp, load_key, model_call=call_once
                 failure_recorded = True
             except Exception:
                 pass  # Started cost and event remain held; missing evidence never permits retry.
+            if provider == "anthropic" and isinstance(failure_receipt, dict) and failure_receipt.get("cost_microdollars") is not None:
+                try:  # refusal / max_tokens still bill their usage: settle at that cost
+                    store.budget_settle(started_key, failure_receipt["cost_microdollars"],
+                                        failure_receipt["response_id"] or "anthropic-usage-" + code)
+                except Exception:
+                    pass
         if followup_claim is not None:
             try:
                 store.hold_followup(followup_claim, code)
@@ -332,6 +360,21 @@ def run_review(store, *, capture, check_basecamp, load_key, model_call=call_once
                 **({"response_id": model_receipt["response_id"], "usage": model_receipt["usage"],
                     "budget_reservation_key": started_key} if model_receipt else {}),
                 "business_writes": 0, "automatic_retry_allowed": False}
+
+
+def _review_model(providers, secrets, routing=None):
+    """Role customer_text from model-routing.json: Claude Opus 5.5 by default, OpenAI only if routed."""
+    import model_routing
+    import model as model_module
+    route = (routing or model_routing.load()).route("customer_text")
+    if route.provider == "openai":
+        def openai_call(key, request):
+            return call_once(key, request, profile=route.profile_id)
+        return {"load_key": lambda: providers.openai_key(secrets), "model_call": openai_call}
+    def anthropic_call(key, request):
+        return model_module.call_anthropic_once(key, request, route)
+    anthropic_call.model_provider = "anthropic"
+    return {"load_key": lambda: providers.anthropic_key(secrets), "model_call": anthropic_call}
 
 
 def run_recover_followup(store, *, work_id, failure_evidence_sha256, failed_task_fingerprint, **adapters):
@@ -570,7 +613,7 @@ def main(argv=None):
                         allow_body_for_internal_request=True,
                         continuation={k: work[k] for k in ("thread_id", "root_message_id", "root_rfc_message_id")}),
                     read_task_status=writers.read_task_status,
-                    check_basecamp=basecamp, load_key=lambda: providers.openai_key(secrets), **extras)
+                    check_basecamp=basecamp, **_review_model(providers, secrets), **extras)
         else:
             from dispatch import dispatch_approved
             from business_writers import BusinessWriters

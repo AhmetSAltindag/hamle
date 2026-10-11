@@ -1,4 +1,5 @@
 """Offline tests for v11_chain_models: fake transports only, no sockets or credentials."""
+from model_routing import openai_only
 import copy
 import json
 import socket
@@ -81,7 +82,7 @@ class Base(unittest.TestCase):
 
     def models(self, transport):
         gate = cm.ModelGate(ledger=self.ops, cache=self.cache, generation=self.gen)
-        return cm.ChainModels(load_key=self.key, gate=gate, transport=transport), gate
+        return cm.ChainModels(load_key=self.key, gate=gate, transport=transport, routing=openai_only()), gate
 
     def reservations(self):
         return [r for r in self.ops.backend.data["budget"]["reservations"] if r["reservation_key"].startswith("chain-model-")]
