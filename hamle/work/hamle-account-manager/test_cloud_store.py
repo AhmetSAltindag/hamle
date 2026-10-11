@@ -238,6 +238,73 @@ class StoreTests(unittest.TestCase):
         self.fails("settlement_conflict", lambda: self.store.settle_unknown_actual("chain-model-x", 1, "console-usage"))
         self.fails("reservation_missing", lambda: self.store.settle_unknown_actual("nope", 1, "console-usage"))
 
+    def test_budget_renews_each_istanbul_month_and_keeps_unknown_rows_settleable(self):
+        self.store.budget_reserve("chain-model-oct", "anthropic", 2_000_000)
+        self.store.budget_settle("chain-model-oct", 400_000, "msg_oct")
+        self.store.budget_reserve("chain-model-lost", "anthropic", 2_000_000)
+        self.store._budget_finish("chain-model-lost", None, None)
+        oct_totals = self.store.budget_status()
+        self.assertEqual(self.store.roll_budget_period()["status"], "budget_period_current")  # reserve stamped 2026-10
+        self.assertEqual(self.backend.data["budget"]["period"], "2026-10")
+        self.assertEqual({k: v for k, v in self.store.budget_status().items() if k != "period"},
+                         {k: v for k, v in oct_totals.items() if k != "period"})
+        self.now = datetime.fromisoformat("2026-11-02T09:00:00+03:00")
+        r = self.store.roll_budget_period()
+        self.assertEqual((r["status"], r["period"]), ("budget_period_rolled", "2026-11"))
+        nov = self.store.budget_status()
+        self.assertEqual((nov["period"], nov["total_committed_microdollars"], nov["remaining_microdollars"]),
+                         ("2026-11", 0, LIMIT))
+        b = self.backend.data["budget"]
+        self.assertEqual(b["period_history"][0]["period"], "2026-10")
+        self.assertEqual(b["period_history"][0]["totals"]["total_committed_microdollars"],
+                         oct_totals["total_committed_microdollars"])
+        self.assertEqual({r["reservation_key"] for r in b["reservations"]}, {"probe", "infrastructure", "chain-model-lost"})
+        archived = self.backend.data["budget-archive-00001"]["rows"]
+        self.assertEqual({r["reservation_key"] for r in archived}, {"first-astra", "chain-model-oct"})
+        self.store.settle_unknown_actual("chain-model-lost", 350_000, "console-oct")  # October bill, November totals unchanged
+        self.assertEqual(self.store.budget_status()["total_committed_microdollars"], 0)
+        from v11_chain_models import chain_committed_microdollars
+        self.assertEqual(chain_committed_microdollars(self.store), 0)
+        self.store.budget_reserve("chain-model-nov", "anthropic", 2_000_000)
+        self.assertEqual(chain_committed_microdollars(self.store), 2_000_000)
+        self.assertEqual(self.backend.data["budget"]["reservations"][-1]["period"], "2026-11")
+
+    def test_compaction_archives_old_settled_rows_without_changing_totals(self):
+        from v11_chain_models import chain_committed_microdollars
+        for i in range(105):
+            key = "chain-model-%03d" % i
+            self.store.budget_reserve(key, "anthropic", 100_000)
+            self.store.budget_settle(key, 10_000, "msg_%03d" % i)
+        before, chain = self.store.budget_status(), chain_committed_microdollars(self.store)
+        self.now += timedelta(hours=2)
+        self.store.budget_reserve("chain-model-next", "anthropic", 100_000)
+        b = self.backend.data["budget"]
+        self.assertLess(len(b["reservations"]), 10)
+        self.assertEqual(b["archive_seq"], 3)  # first-astra (no finished_at) at 100 rows, then 105 rows in 80 + 25
+        # anthropic usage + holds stay under its 20 USD prepaid floor, so committed money is unchanged
+        self.assertEqual(self.store.budget_status()["total_committed_microdollars"], before["total_committed_microdollars"])
+        self.assertEqual(self.store.budget_status()["accounted_spend_microdollars"], before["accounted_spend_microdollars"])
+        self.assertEqual(chain_committed_microdollars(self.store), chain + 100_000)
+        self.fails("reservation_key_conflict", lambda: self.store.budget_reserve("chain-model-next", "anthropic", 1))
+
+    def test_settle_unknown_total_splits_one_bill_over_unknown_rows(self):
+        self.store.budget_reserve("oa-1", "openai", 1_000_000); self.store._budget_finish("oa-1", None, None)
+        self.store.budget_reserve("oa-2", "openai", 1_000_000); self.store._budget_finish("oa-2", None, None)
+        self.fails("reservation_missing", lambda: self.store.settle_unknown_total("google_cloud", ["oa-1"], 1, "bill"))
+        self.fails("settle_actual_requires_unknown", lambda: self.store.settle_unknown_total("openai", ["oa-1", "first-astra"], 1, "bill"))
+        before = self.store.budget_status()["held_microdollars"]
+        r = self.store.settle_unknown_total("openai", ["oa-1", "oa-2"], 301, "openai-usage-oct")
+        self.assertEqual((r["status"], r["rows"], r["total_microdollars"]), ("billed_total_settled", 2, 301))
+        rows = {x["reservation_key"]: x for x in self.backend.data["budget"]["reservations"]}
+        self.assertEqual((rows["oa-1"]["actual_microdollars"], rows["oa-2"]["actual_microdollars"]), (151, 150))
+        self.assertEqual(self.store.budget_status()["held_microdollars"], before - 2_000_000)
+        self.assertEqual(self.store.settle_unknown_total("openai", ["oa-1", "oa-2"], 301, "openai-usage-oct")["rows"], 2)
+        self.fails("settlement_conflict", lambda: self.store.settle_unknown_total("openai", ["oa-1", "oa-2"], 300, "openai-usage-oct"))
+        self.fails("settle_keys_invalid", lambda: self.store.settle_unknown_total("openai", ["oa-1", "oa-1"], 1, "x"))
+        self.fails("settle_provider_invalid", lambda: self.store.settle_unknown_total("visual_generation", ["oa-1"], 1, "x"))
+        self.store.settle_unknown_actual("probe", 0, "gcp-billing-oct")  # google_cloud unknown holds settle too
+        self.assertFalse(self.backend.data["budget"]["overrun_hold"])
+
     def test_extend_budget_expiry_moves_only_the_date_once(self):
         b = self.backend.data["budget"]
         b["expires_at"] = "2026-10-12T23:59:59+03:00"

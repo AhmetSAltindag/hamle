@@ -315,10 +315,10 @@ def source_digest(role, *parts):
 
 
 def chain_committed_microdollars(ledger):
-    """Chain model money already committed in the shared ledger (holds + settled actuals)."""
+    """Chain model money committed in the shared ledger this Istanbul month (holds + settled
+    actuals + archived actuals); the 30 USD cap renews with the budget period."""
     budget = ledger._run(lambda tx, _: ledger._budget(tx), allow_expired=True)
-    return sum((r.get("actual_microdollars") or 0) if r.get("state") == "settled" else r["reserved_microdollars"]
-               for r in budget["reservations"] if str(r.get("reservation_key", "")).startswith("chain-model-"))
+    return ledger._chain_committed(budget)
 
 
 def internal_cap_microdollars(catalog):

@@ -32,10 +32,25 @@ ANTHROPIC_EFFORTS = ("low", "medium", "high", "xhigh", "max")
 ANTHROPIC_USAGE_FIELDS = ("input_tokens", "output_tokens", "cache_read_input_tokens",
                           "cache_creation_input_tokens", "web_search_requests")
 KINDS = ("gmail_reply", "basecamp_todo", "basecamp_comment")
-LIMIT = 50_000_000
+LIMIT = 50_000_000  # per Istanbul calendar month (budget["period"]); renews by itself
 ISTANBUL = ZoneInfo("Europe/Istanbul")
+# Ledger compaction: the budget doc must stay under _json's 60 KB record limit (~170 rows).
+BUDGET_COMPACT_AT = 100        # current-month settled rows are archived from this many rows on
+BUDGET_COMPACT_MIN_AGE = 3600  # settled rows younger than this stay (settle replays find them)
+BUDGET_ARCHIVE_CHUNK = 80
+SETTLE_PROVIDERS = ("anthropic", "openai", "google_cloud")
 WORK_REF_FIELDS = ("work_id", "thread_id", "task_id", "account_id", "project_id", "version",
                    "escalation_status", "escalation_owner")
+
+
+def budget_period(now):
+    """Istanbul calendar month 'YYYY-MM' (Ahmet 2026-10-11: monthly cap that renews by itself)."""
+    return datetime.fromtimestamp(now, ISTANBUL).strftime("%Y-%m")
+
+
+def _in_period(b, r):
+    # Rows written before periods existed belong to the budget's current period until a roll stamps them.
+    return r.get("period", b.get("period")) == b.get("period")
 
 
 def _anthropic_receipt(r, *, failure):
@@ -741,14 +756,86 @@ class OperationsStore:
             p = b["providers"].get(name)
             if p is None:  # legacy budget without a Claude entry yet
                 continue
-            usage = p["baseline_microdollars"] + sum(r["actual_microdollars"] for r in b["reservations"] if r["provider"] == name and r["state"] == "settled")
-            reserved = sum(r["reserved_microdollars"] for r in b["reservations"] if r["provider"] == name and r["state"] != "settled")
+            rows = [r for r in b["reservations"] if r["provider"] == name and _in_period(b, r)]
+            usage = (p["baseline_microdollars"] + p.get("archived_microdollars", 0)
+                     + sum(r["actual_microdollars"] for r in rows if r["state"] == "settled"))
+            reserved = sum(r["reserved_microdollars"] for r in rows if r["state"] != "settled")
             spent += usage; held += reserved; paid += p["paid_microdollars"]
             committed += max(p["paid_microdollars"], usage + reserved)
         return {"limit_microdollars": LIMIT, "accounted_spend_microdollars": spent, "held_microdollars": held,
                 "prepaid_purchases_microdollars": paid, "total_committed_microdollars": committed,
                 "remaining_microdollars": max(0, LIMIT - committed), "overrun_hold": b["overrun_hold"],
-                "provider_hard_cap_installed": False}
+                "provider_hard_cap_installed": False, "period": b.get("period")}
+
+    @staticmethod
+    def _chain_committed(b):
+        """Chain model money of the budget's current month: archived actuals + holds + settled actuals."""
+        return b.get("archived_chain_microdollars", 0) + sum(
+            (r.get("actual_microdollars") or 0) if r.get("state") == "settled" else r["reserved_microdollars"]
+            for r in b["reservations"]
+            if str(r.get("reservation_key", "")).startswith("chain-model-") and _in_period(b, r))
+
+    def _roll(self, b, now):
+        """Monthly renewal and ledger compaction, in memory. Returns archive docs for the caller to write.
+
+        New Istanbul month: the old month's totals go to period_history, its rows are stamped with
+        their month (they stop counting), baselines/prepaid/archived sums restart at 0. Unsettled old
+        rows stay in the list so they can still be settled from a bill. Settled rows older than
+        BUDGET_COMPACT_MIN_AGE are moved to budget-archive-* docs: always for past months, and for
+        the current month once the list reaches BUDGET_COMPACT_AT (their sums stay in the totals).
+        """
+        period = budget_period(now)
+        if b.get("period") is None:  # first sight: stamp, no renewal (existing rows are this month's)
+            b["period"] = period
+        rolled = period > b["period"]
+        if rolled:
+            b.setdefault("period_history", []).append(
+                {"period": b["period"], "totals": self._totals(b), "chain_microdollars": self._chain_committed(b),
+                 "providers": copy.deepcopy(b["providers"]), "rolled_at": now})
+            for r in b["reservations"]:
+                r.setdefault("period", b["period"])
+            for p in b["providers"].values():
+                p.update(baseline_microdollars=0, paid_microdollars=0, archived_microdollars=0)
+            b["archived_chain_microdollars"] = 0
+            b["period"] = period
+        compact = len(b["reservations"]) >= BUDGET_COMPACT_AT
+        keep, moved = [], []
+        for r in b["reservations"]:
+            old_enough = now - (r.get("finished_at") or 0) >= BUDGET_COMPACT_MIN_AGE
+            if r["state"] == "settled" and old_enough and (not _in_period(b, r) or compact):
+                moved.append(r)
+            else:
+                keep.append(r)
+        for r in moved:
+            if _in_period(b, r):
+                p = b["providers"][r["provider"]]
+                p["archived_microdollars"] = p.get("archived_microdollars", 0) + r["actual_microdollars"]
+                if str(r["reservation_key"]).startswith("chain-model-"):
+                    b["archived_chain_microdollars"] = b.get("archived_chain_microdollars", 0) + r["actual_microdollars"]
+                r.setdefault("period", b["period"])
+        archives = []
+        for i in range(0, len(moved), BUDGET_ARCHIVE_CHUNK):
+            seq = b.get("archive_seq", 0) + 1
+            b["archive_seq"] = seq
+            archives.append(("budget-archive-%05d" % seq, {"kind": "budget_archive", "policy_id": POLICY,
+                             "period": b["period"], "archived_at": now, "rows": moved[i:i + BUDGET_ARCHIVE_CHUNK]}))
+        b["reservations"] = keep
+        return {"rolled": rolled, "archived_rows": len(moved), "archives": archives}
+
+    def roll_budget_period(self):
+        """Idempotent start-of-run step: monthly renewal + compaction (writes only when something changed)."""
+        def op(tx, now):
+            b = self._budget(tx)
+            before = b.get("period")
+            r = self._roll(b, now)
+            if before == b["period"] and not r["archived_rows"]:
+                return {"status": "budget_period_current", "period": b["period"], "archived_rows": 0}
+            for key, doc in r["archives"]:
+                _json(doc); tx.put(key, doc)
+            _json(b); tx.put("budget", b)
+            return {"status": "budget_period_rolled" if r["rolled"] else "budget_period_updated",
+                    "period": b["period"], "archived_rows": r["archived_rows"]}
+        return self._run(op)
 
     def initialize_budget(self, snapshot):
         b = copy.deepcopy(snapshot)
@@ -815,12 +902,17 @@ class OperationsStore:
             if old:
                 _require(old["provider"] == provider and old["reserved_microdollars"] == microdollars, "reservation_key_conflict")
                 return old
+            rolled = self._roll(b, now)
             _require(len(b["reservations"]) < self.MAX_RESERVATIONS, "budget_ledger_full")
             row = {"reservation_key": key, "provider": provider, "reserved_microdollars": microdollars,
-                   "actual_microdollars": None, "state": "reserved", "evidence_ref": None, "created_at": now}
+                   "actual_microdollars": None, "state": "reserved", "evidence_ref": None, "created_at": now,
+                   "period": b["period"]}
             b["reservations"].append(row)
             _require(self._totals(b)["total_committed_microdollars"] <= LIMIT, "aggregate_budget_exhausted")
-            _json(b); tx.put("budget", b)
+            _json(b)
+            for archive_key, doc in rolled["archives"]:
+                _json(doc); tx.put(archive_key, doc)
+            tx.put("budget", b)
             return row
         return self._run(op)
 
@@ -952,19 +1044,51 @@ class OperationsStore:
         return self._budget_finish(key, actual_microdollars, evidence_ref)
 
     def settle_unknown_actual(self, key, actual_microdollars, evidence):
-        """Operator one-shot: an Anthropic call whose outcome was 'unknown' (sent, no receipt)
-        is settled at the real cost read from the Anthropic Console. Only state 'unknown'
-        rows of provider anthropic; never lowers a settled amount; overrun rules unchanged."""
+        """Operator one-shot: a call or hold whose outcome was 'unknown' (sent, no receipt) is
+        settled at the real cost read from the provider's bill (Anthropic Console, OpenAI usage,
+        Google Cloud billing). Only state 'unknown' rows of SETTLE_PROVIDERS; never lowers a
+        settled amount; overrun rules unchanged."""
         _label(key); evidence = _label(evidence)
         _require(type(actual_microdollars) is int and 0 <= actual_microdollars <= 20_000_000, "settle_actual_invalid")
         b = self._run(lambda tx, now: self._budget(tx), allow_expired=True)
         r = next((r for r in b["reservations"] if r["reservation_key"] == key), None)
-        _require(r is not None and r["provider"] == "anthropic", "reservation_missing")
+        _require(r is not None and r["provider"] in SETTLE_PROVIDERS, "reservation_missing")
         if r["state"] == "settled":
             _require(r["actual_microdollars"] == actual_microdollars and r["evidence_ref"] == evidence, "settlement_conflict")
             return r
         _require(r["state"] == "unknown", "settle_actual_requires_unknown")
         return self._budget_finish(key, actual_microdollars, evidence)
+
+    def settle_unknown_total(self, provider, keys, total_microdollars, evidence):
+        """Operator one-shot: one bill covers several 'unknown' holds of one provider (e.g. the
+        OpenAI usage of 9-10 Oct, or the Google Cloud cost of the builds). The billed total is
+        split evenly over those rows (remainder on the first) in one transaction. Idempotent for
+        the same evidence and total; overrun rules unchanged."""
+        _require(provider in SETTLE_PROVIDERS, "settle_provider_invalid")
+        _require(isinstance(keys, (list, tuple)) and 1 <= len(keys) <= 50 and len(set(keys)) == len(keys), "settle_keys_invalid")
+        for k in keys:
+            _label(k)
+        evidence = _label(evidence)
+        _require(type(total_microdollars) is int and 0 <= total_microdollars <= LIMIT, "settle_actual_invalid")
+        def op(tx, now):
+            b = self._budget(tx)
+            rows = [next((r for r in b["reservations"] if r["reservation_key"] == k), None) for k in keys]
+            _require(all(r is not None and r["provider"] == provider for r in rows), "reservation_missing")
+            if all(r["state"] == "settled" and r["evidence_ref"] == evidence for r in rows):
+                _require(sum(r["actual_microdollars"] for r in rows) == total_microdollars, "settlement_conflict")
+                return {"status": "billed_total_settled", "rows": len(rows), "total_microdollars": total_microdollars}
+            _require(all(r["state"] == "unknown" for r in rows), "settle_actual_requires_unknown")
+            share, rest = divmod(total_microdollars, len(rows))
+            for i, r in enumerate(rows):
+                actual = share + (rest if i == 0 else 0)
+                r.update(state="settled", actual_microdollars=actual, evidence_ref=evidence, finished_at=now)
+                if actual > r["reserved_microdollars"]:
+                    b["overrun_hold"] = True
+            if self._totals(b)["total_committed_microdollars"] > LIMIT:
+                b["overrun_hold"] = True
+            tx.put("budget", b)
+            return {"status": "billed_total_settled", "rows": len(rows), "total_microdollars": total_microdollars}
+        return self._run(op, allow_expired=True)
 
     def _budget_finish(self, key, actual, evidence):
         _label(key)

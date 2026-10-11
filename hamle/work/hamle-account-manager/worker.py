@@ -6,6 +6,7 @@ import hashlib
 import json
 import os
 import re
+import sys
 from datetime import datetime, timezone
 
 from cloud_store import DEADLINE, START, StoreError, action_id, proposal_hash, WORK_REF_FIELDS
@@ -516,7 +517,7 @@ def main(argv=None):
     parser.add_argument("--mode", choices=("review", "scheduled_review", "verify", "dispatch", "track", "recover_followup",
                                            "chain_tick", "daily_digest", "basecamp_credential_review",
                                            "reconcile_model_holds", "extend_authorization",
-                                           "research_probe", "settle_model_actual"), required=True)
+                                           "research_probe", "settle_model_actual", "settle_billed_total"), required=True)
     parser.add_argument("--proposal-id")
     parser.add_argument("--work-id")
     parser.add_argument("--failure-evidence-sha256")
@@ -533,6 +534,9 @@ def main(argv=None):
     parser.add_argument("--evidence")
     parser.add_argument("--reservation-key")
     parser.add_argument("--actual-microdollars", type=int)
+    # settle_billed_total: one provider bill over several 'unknown' holds.
+    parser.add_argument("--provider")
+    parser.add_argument("--settle-key", action="append")
     args = parser.parse_args(argv)
     backend = secrets = None
     try:
@@ -573,8 +577,23 @@ def main(argv=None):
             from basecamp_cloud_auth import access_token
             token = access_token(secrets, claim_refresh=store.claim_credential_refresh)
             return providers.verify_basecamp_internal(token)
-        if args.mode == "settle_model_actual":
-            # Operator one-shot: settle one 'unknown' Anthropic hold at its Console actual.
+        if args.mode in ("chain_tick", "daily_digest", "research_probe"):
+            # Monthly budget renewal + ledger compaction before any budget gate reads the totals.
+            try:
+                roll = store.roll_budget_period()
+                if roll["status"] != "budget_period_current":
+                    print(json.dumps({"budget_roll": roll}, sort_keys=True), file=sys.stderr)
+            except Exception as exc:
+                print("budget_roll_failed " + _safe_error(exc), file=sys.stderr)
+        if args.mode == "settle_billed_total":
+            # Operator one-shot: one provider bill (OpenAI usage, Google Cloud billing, Anthropic
+            # Console) split evenly over several 'unknown' holds of that provider.
+            _require(args.provider and args.settle_key and args.actual_microdollars is not None and args.evidence,
+                     "settle_arguments_required")
+            result = store.settle_unknown_total(args.provider, args.settle_key, args.actual_microdollars, args.evidence)
+            result = dict(result, business_writes=0)
+        elif args.mode == "settle_model_actual":
+            # Operator one-shot: settle one 'unknown' hold at its billed actual.
             _require(args.reservation_key and args.actual_microdollars is not None and args.evidence,
                      "settle_arguments_required")
             row = store.settle_unknown_actual(args.reservation_key, args.actual_microdollars, args.evidence)
@@ -672,7 +691,7 @@ def main(argv=None):
                 read_reply=writers.read_reply, create_comment=writers.create_comment,
                 read_comment=writers.read_comment, read_task_status=writers.read_task_status)
         print(json.dumps(result, ensure_ascii=False, sort_keys=True))
-        return 0 if result["status"] in ("stopped", "review_required", "already_recorded", "read_verified", "internal_actions_readback_verified", "slot_already_claimed", "no_new_work", "work_status_read_verified", "chain_tick_completed", "digest_sent", "credential_review_ready", "reconciled_not_sent", "budget_expiry_extended", "already_current", "research_probe_ok", "model_actual_settled") else 2
+        return 0 if result["status"] in ("stopped", "review_required", "already_recorded", "read_verified", "internal_actions_readback_verified", "slot_already_claimed", "no_new_work", "work_status_read_verified", "chain_tick_completed", "digest_sent", "credential_review_ready", "reconciled_not_sent", "budget_expiry_extended", "already_current", "research_probe_ok", "model_actual_settled", "billed_total_settled") else 2
     except Exception as exc:
         try:
             reason = _safe_error(exc)
