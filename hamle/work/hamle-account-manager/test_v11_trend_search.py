@@ -29,7 +29,7 @@ def response(trends, *, cited=(), sources=(), extra=()):
     return row
 
 
-def trend(url, day="2026-10-10", brand="Cacaonly", platform="tiktok", name="Mini vlog akımı"):
+def trend(url, day="2026-10-10", brand="Altınmarka", platform="tiktok", name="Mini vlog akımı"):
     return {"trend": name, "platform": platform, "url": url, "date": day,
             "brand_idea": "Ürün hazırlığını 10 saniyelik vlog ile göster.", "brand": brand}
 
@@ -47,7 +47,7 @@ class Provider(Base):
         self.assertEqual((fmt["name"], fmt["strict"]), ("hamle_trend_radar", True))
         item = fmt["schema"]["properties"]["trends"]["items"]
         self.assertEqual(item["properties"]["platform"]["enum"], ["instagram", "tiktok", "x"])
-        self.assertIn("Cacaonly", item["properties"]["brand"]["enum"])
+        self.assertIn("Altınmarka", item["properties"]["brand"]["enum"])
         self.assertNotIn("Hamle İç Deneme", item["properties"]["brand"]["enum"])
         self.assertNotIn("Bikaldi", brands)  # no sector in the draft card -> not offered
         chain = cm.build_request("digest", {"items": []})
@@ -67,7 +67,7 @@ class Provider(Base):
                                                 "https://nodate.example.org/a"]))
         out = self.source(transport)(DAY)
         self.assertEqual(out, [{"title": "Mini vlog akımı (TikTok)", "url": good, "published_at": "2026-10-10",
-                                "summary": "", "idea": "Cacaonly: Ürün hazırlığını 10 saniyelik vlog ile göster."}])
+                                "summary": "", "idea": "Altınmarka: Ürün hazırlığını 10 saniyelik vlog ile göster."}])
         self.assertEqual(len(transport.calls), 1)
         self.assertEqual(len(self.chain_reservations()), 1)  # own hold, counted against the 30 USD chain cap
         sent = transport.calls[0]
@@ -104,9 +104,9 @@ class Provider(Base):
 
 
 class Flag(Base):
-    def test_disk_config_flag_is_off(self):
-        self.assertIs(dd.load_config()["trend_search_enabled"], False)
-        self.assertIs(dd.validate_config(dd.load_config())["trend_search"], False)
+    def test_disk_config_flag_is_on_per_decision(self):
+        self.assertIs(dd.load_config()["trend_search_enabled"], True)
+        self.assertIs(dd.validate_config(dd.load_config())["trend_search"], True)
         with self.assertRaises(dd.DigestError):
             dd.validate_config(config(trend_search_enabled="yes"))
 
@@ -124,7 +124,7 @@ class Flag(Base):
         self.assertEqual(p["status"], "digest_sent", p)
         self.assertEqual(len(transport.calls), 1)
         text = self.gmail.text()
-        self.assertIn(f"- Mini vlog akımı (TikTok) (2026-10-10) · {good} Uyarlama: Cacaonly: ", text)
+        self.assertIn(f"- Mini vlog akımı (TikTok) (2026-10-10) · {good} Uyarlama: Altınmarka: ", text)
         self.assertNotIn(dd.NO_TRENDS, text)
 
     def test_worker_builds_provider_only_when_flag_true(self):

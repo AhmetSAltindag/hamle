@@ -184,7 +184,7 @@ class Config(Base):
         self.assertEqual(cfg["recipients"], [n + "@gamechangers.com.tr" for n in
                          ("ahmet", "cansu", "ozge", "baris", "berkay", "ipek", "esma")])
         self.assertEqual(cfg["excluded"], frozenset({47875291}))
-        self.assertIs(cfg["trend_search"], False)
+        self.assertIs(cfg["trend_search"], True)
 
     def test_excluded_projects_validated_and_skipped(self):
         for bad in ("47875291", [0], [True], ["1"]):
@@ -398,11 +398,31 @@ class Sections(Base):
         self.assertEqual(stats["trends"], "provider_failed")
         self.assertIn(dd.NO_TRENDS, body)
 
+    def test_monday_research_sections_replace_calendar_and_add_new_business(self):
+        special = lambda d: [{"date": "2026-10-16", "name": "Dünya Gıda Günü", "brand": "Altınmarka",
+                              "idea": "Altın hediye seti", "url": "https://example.org/gida"}]
+        nb = lambda d: {"status": "ok", "brands": [{"brand": "Örnek A", "sector": "gıda", "reason": "Yeni lansman",
+                                                    "url": "https://example.org/a"}]}
+        body, stats = dd.build_digest(self.reader(), day=date(2026, 10, 12), day_note=None, cards=self.cards,
+                                      calendar=self.calendar, special_source=special, new_business_source=nb)
+        self.assertIn("16.10 Cum · Dünya Gıda Günü · Altınmarka: Altın hediye seti · https://example.org/gida", body)
+        self.assertIn("NEW BUSINESS — bu haftanın hedef markaları (@Cansu)", body)
+        self.assertIn("- Örnek A (gıda): Yeni lansman · https://example.org/a", body)
+        self.assertEqual((stats["special_days"], stats["new_business"]), ("1_researched", "1_sourced"))
+        def boom(d): raise RuntimeError("x")
+        body, stats = dd.build_digest(self.reader(), day=date(2026, 10, 12), day_note=None, cards=self.cards,
+                                      calendar=self.calendar, special_source=boom, new_business_source=boom)
+        self.assertIn("Dünya Gıda Günü · öneri:", body)  # calendar fallback
+        self.assertIn("Bugün kaynağı doğrulanmış hedef marka bulunamadı.", body)
+        body, stats = dd.build_digest(self.reader(), day=date(2026, 10, 13), day_note=None, cards=self.cards,
+                                      calendar=self.calendar, special_source=boom, new_business_source=nb)
+        self.assertNotIn("NEW BUSINESS", body)
+
     def test_special_days_only_on_monday_with_brand_suggestions(self):
         body, _ = dd.build_digest(self.reader(), day=date(2026, 10, 12), day_note=None,
                                   cards=self.cards, calendar=self.calendar)
         self.assertIn("ÖZEL GÜNLER (14 gün)", body)
-        self.assertIn("16.10 Cum · Dünya Gıda Günü · öneri: Cacaonly (", body)
+        self.assertIn("16.10 Cum · Dünya Gıda Günü · öneri: uygun kart yok", body)  # Cacaonly out of scope
         body, _ = dd.build_digest(self.reader(), day=date(2026, 10, 13), day_note=None,
                                   cards=self.cards, calendar=self.calendar)
         self.assertNotIn("ÖZEL GÜNLER", body)

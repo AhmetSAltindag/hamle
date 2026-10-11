@@ -46,7 +46,7 @@ def research_message(value, *, results=(GOOD,), cited=(CITED,), searches=2, stop
                                                                                        "web_fetch_requests": 0}))
 
 
-def trend(url, day="2026-10-10", brand="Cacaonly"):
+def trend(url, day="2026-10-10", brand="Altınmarka"):
     return {"trend": "Mini vlog akımı", "platform": "tiktok", "url": url, "date": day,
             "brand_idea": "Ürün hazırlığını 10 saniyelik vlog ile göster.", "brand": brand}
 
@@ -146,17 +146,17 @@ class SpecialDays(Research):
                                                routing=routing(**flags), client=client)
 
     def test_flag_off_by_default_means_no_provider(self):
-        self.assertFalse(model_routing.load().flag("monday_special_days_research_enabled"))
-        self.assertIsNone(self.build(FakeClient()))
+        self.assertTrue(model_routing.load().flag("monday_special_days_research_enabled"))  # on per Ahmet 2026-10-11
+        self.assertIsNone(self.build(FakeClient(), monday_special_days_research_enabled=False))
         self.assertEqual((self.keys, self.chain()), ([], []))
 
     def test_monday_only_sourced_days_in_window(self):
         days = {"days": [{"date": "2026-10-24", "name": "Birleşmiş Milletler Günü", "url": CITED, "brand": "Fenerium",
                           "idea": "Dünya kupası temalı taraftar serisi."},
                          {"date": "2026-10-13", "name": "Uydurma gün", "url": "https://unsearched.example/x",
-                          "brand": "Cacaonly", "idea": "x"},
-                         {"date": "2026-11-20", "name": "Çok ileri", "url": GOOD, "brand": "Cacaonly", "idea": "x"},
-                         {"date": "2026-10-16", "name": "Dünya Gıda Günü", "url": GOOD, "brand": "Cacaonly",
+                          "brand": "Altınmarka", "idea": "x"},
+                         {"date": "2026-11-20", "name": "Çok ileri", "url": GOOD, "brand": "Altınmarka", "idea": "x"},
+                         {"date": "2026-10-16", "name": "Dünya Gıda Günü", "url": GOOD, "brand": "Altınmarka",
                           "idea": "Kakao üreticisi hikâyesi."}]}
         client = FakeClient(research_message(days))
         research = self.build(client, monday_special_days_research_enabled=True)
@@ -176,8 +176,8 @@ class NewBusiness(Research):
                                                routing=routing(**flags), client=client)
 
     def test_flag_off_by_default_means_no_provider(self):
-        self.assertFalse(model_routing.load().flag("new_business_research_enabled"))
-        self.assertIsNone(self.build(FakeClient()))
+        self.assertTrue(model_routing.load().flag("new_business_research_enabled"))  # on per Ahmet 2026-10-11
+        self.assertIsNone(self.build(FakeClient(), new_business_research_enabled=False))
 
     def test_three_to_five_sourced_non_client_brands(self):
         urls = [f"https://news.example.com/{i}" for i in range(5)]

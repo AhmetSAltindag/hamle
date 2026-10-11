@@ -55,7 +55,8 @@
       ],
       "status": "taslak",
       "verified": false,
-      "include_in_suggestions": true
+      "include_in_suggestions": false,
+      "note_scope": "Cacaonly discontinued (Ahmet 2026-10-11); out of digest/automation."
     },
     {
       "project_id": 44320349,

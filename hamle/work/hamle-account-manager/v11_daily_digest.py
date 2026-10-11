@@ -55,7 +55,7 @@ WEEKDAYS = ("Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"
 SHORT_DAYS = ("Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz")
 MARKS = {"action_on_us": "🔴", "waiting_client": "🟡", "looks_done": "⚪"}
 MORE_LINKS = 4
-LIMITS = {"today": 3, "overdue": 6, "trends": 4, "special": 3}  # worst case ~26 non-blank lines
+LIMITS = {"today": 3, "overdue": 6, "trends": 4, "special": 3, "new_business": 5}  # worst case ~26 non-blank lines
 
 
 class DigestError(ValueError):
@@ -349,7 +349,7 @@ def special_days(calendar, cards, today, horizon=14):
 
 
 # ------------------------------------------------------------------ text
-def render(listing, *, day, day_note, overdue, trends, specials, classified):
+def render(listing, *, day, day_note, overdue, trends, specials, classified, new_business=None):
     items = listing["items"]
     today_iso = day.isoformat()
     due = [t for t in items if t["due_on"] == today_iso]
@@ -404,6 +404,10 @@ def render(listing, *, day, day_note, overdue, trends, specials, classified):
     if specials is not None:
         lines += ["", "ÖZEL GÜNLER (14 gün)"]
         for s in specials[:LIMITS["special"]]:
+            if s.get("url"):  # web-researched (Opus + web search): own source URL and brand idea
+                lines.append(f"- {s['date'].strftime('%d.%m')} {SHORT_DAYS[s['date'].weekday()]} · {s['name']} · "
+                             f"{s['brand']}: {s['idea']} · {s['url']}")
+                continue
             names = ", ".join(f"{b['brand']} ({b['main_platform'] or '?'})" for b in s["brands"][:3]) or "uygun kart yok"
             flag = "" if s["verified"] else " [tarih taslak]"
             note = f" {s['note']}" if s.get("note") else ""
@@ -411,6 +415,12 @@ def render(listing, *, day, day_note, overdue, trends, specials, classified):
                          f"öneri: {names}{note}")
         if not specials:
             lines.append("- Önümüzdeki 14 günde takvimde özel gün yok.")
+    if new_business is not None:
+        lines += ["", "NEW BUSINESS — bu haftanın hedef markaları (@Cansu)"]
+        for b in new_business[:LIMITS["new_business"]]:
+            lines.append(f"- {b['brand']} ({b['sector']}): {b['reason']} · {b['url']}")
+        if not new_business:
+            lines.append("- Bugün kaynağı doğrulanmış hedef marka bulunamadı.")
     lines += ["", "Hamle tarih değiştirmez, iş kapatmaz; yalnızca öneri yazar. Basecamp salt-okunur okundu."]
     return "\n".join(lines)
 
@@ -471,7 +481,8 @@ class DigestMailWriter:
 
 
 # ------------------------------------------------------------------ assembly
-def build_digest(reader, *, day, day_note, classifier=None, trend_source=None, cards=None, calendar=None):
+def build_digest(reader, *, day, day_note, classifier=None, trend_source=None, cards=None, calendar=None,
+                 special_source=None, new_business_source=None):
     """Read-only listing + optional batched classification -> (body, stats)."""
     listing = reader.collect()
     listing["cards"] = cards
@@ -513,11 +524,31 @@ def build_digest(reader, *, day, day_note, classifier=None, trend_source=None, c
             trend_status = f"{len(trends)}_sourced"
         except Exception:
             trend_status = "provider_failed"
-    specials = special_days(calendar, cards, day) if day.weekday() == 0 else None
+    specials, special_status, new_business, nb_status = None, "not_monday", None, "not_monday"
+    if day.weekday() == 0:
+        specials, special_status = special_days(calendar, cards, day), "calendar"
+        if special_source is not None:
+            try:
+                researched = [dict(r, date=date.fromisoformat(r["date"])) for r in special_source(day)]
+                if researched:
+                    specials, special_status = researched, f"{len(researched)}_researched"
+            except Exception:
+                special_status = "research_failed_calendar_used"
+        if new_business_source is not None:
+            try:
+                result = new_business_source(day)
+                new_business = result["brands"] if result.get("status") == "ok" else []
+                nb_status = f"{len(new_business)}_sourced"
+            except Exception:
+                new_business, nb_status = [], "provider_failed"
+        else:
+            nb_status = "no_provider"
     body = render(listing, day=day, day_note=day_note, overdue=overdue, trends=trends, specials=specials,
-                  classified=classified > 0)
+                  classified=classified > 0, new_business=new_business)
     return body, {"open_items": len(listing["items"]), "overdue": len(overdue), "classified": classified,
-                  "model": model_status, "trends": trend_status, "overdue_source": "report" if report is not None else "scan"}
+                  "model": model_status, "trends": trend_status, "special_days": special_status,
+                  "new_business": nb_status, "overdue_source": "report" if report is not None else "scan",
+                  "new_business_brands": new_business or []}
 
 
 # ------------------------------------------------------------------ run
@@ -544,7 +575,8 @@ def preview_target(value, today):
 
 
 def run_daily_digest(ops, *, config, reader_factory, writer, clock, window=DAILY_DIGEST_WINDOW,
-                     preview_to=None, preview_day=None, classifier=None, trend_source=None, cards=None, calendar=None):
+                     preview_to=None, preview_day=None, classifier=None, trend_source=None, cards=None, calendar=None,
+                     special_source=None, new_business_source=None):
     """One team digest per Istanbul weekday, or one preview per target day to ONE agency address.
 
     preview_day (only with preview_to): today or the next Istanbul weekday at most 3 days
@@ -591,7 +623,8 @@ def run_daily_digest(ops, *, config, reader_factory, writer, clock, window=DAILY
 
         body, stats = build_digest(reader_factory(), day=target, day_note=cfg["day_note"], classifier=classifier,
                                    trend_source=trend_source if cfg["trend_search"] else None,  # flag-gated
-                                   cards=cards, calendar=calendar)
+                                   cards=cards, calendar=calendar, special_source=special_source,
+                                   new_business_source=new_business_source)
         payload = {"from": HAMLE, "to": list(recipients), "cc": [],
                    "subject": f"{subject_prefix}Hamle günlük özet — {target.strftime('%d.%m.%Y')}", "body": body}
         sha = scope_digest(payload)
@@ -730,10 +763,18 @@ def run_worker_daily_digest(ops, secrets, *, clock=None, preview_to=None, previe
             trend_source = trend_search_source(ops, keys, load_catalog(), cards)
         except Exception:
             trend_source = None  # no cap/catalog -> NO_TRENDS
+    special_source = new_business_source = None
+    try:  # Monday research (Claude Opus + web search); each gated by its model-routing flag
+        from v11_trend_search import special_days_research_source, new_business_research_source
+        special_source = special_days_research_source(ops, keys, load_catalog(), cards)
+        new_business_source = new_business_research_source(ops, keys, load_catalog(), cards)
+    except Exception:
+        special_source = new_business_source = None  # calendar-only / section omitted
     try:
         return run_daily_digest(ops, config=config, reader_factory=reader_factory, writer=writer, clock=clock,
                                 preview_to=preview_to, preview_day=preview_day, classifier=classifier,
-                                trend_source=trend_source, cards=cards, calendar=load_calendar())
+                                trend_source=trend_source, cards=cards, calendar=load_calendar(),
+                                special_source=special_source, new_business_source=new_business_source)
     finally:
         for s in sessions:
             s.close()
