@@ -61,6 +61,34 @@ def _plain(value, limit=4000):
     return re.sub(r"\s+", " ", html.unescape(text)).strip()[:limit]
 
 
+CONVERSATION_MAX, CONVERSATION_CHARS = 6, 2000  # remembered request/question turns per work
+
+
+def _unquoted(text, limit=CONVERSATION_CHARS):
+    return "\n".join(l for l in str(text or "").splitlines() if not l.lstrip().startswith(">")).strip()[:limit]
+
+
+def interpreter_text(source, rec):
+    """Mail text for the interpreter. The Gmail reader hands over only the latest mail body, so an
+    answer to Hamle's questions is read together with the request and questions remembered in the
+    chain record (rec['conversation']); details given once are not lost and asked again."""
+    text = source.get("text", "")
+    turns = rec.get("conversation") or []
+    if rec.get("status") != "awaiting_clarification" or not turns:
+        return text
+    parts = []
+    for i, m in enumerate(turns):
+        label = "Hamle'nin soruları" if m.get("from") == HAMLE else ("İlk talep" if i == 0 else "Önceki yanıt")
+        parts.append(f"[{label} · {m.get('from')}]\n{m.get('text', '')}")
+    parts.append(f"[Son yanıt · {source.get('sender')}]\n{text}")
+    return "\n\n".join(parts)
+
+
+def remember_turns(rec, *turns):
+    rows = (rec.get("conversation") or []) + [{"from": f, "text": _unquoted(t)} for f, t in turns if _unquoted(t)]
+    rec["conversation"] = rows[-CONVERSATION_MAX:]
+
+
 class ChainDeps:
     """All side effects are injected.
 
@@ -360,7 +388,7 @@ class Chain:
                     return None
             return "no_action", "followup-mail-flagged"
         past = self._past_works(work)
-        result = self._model(self.d.interpreter, source.get("text", ""),
+        result = self._model(self.d.interpreter, interpreter_text(source, rec),
                              {"subject": source.get("subject"), "brand_id": work["brand_id"], "past_works": past,
                               "status": rec["status"]}) or {}
         requirements = copy.deepcopy(result.get("requirements") or {})
@@ -379,7 +407,9 @@ class Chain:
         rec["title"] = requirements.get("title") if isinstance(requirements.get("title"), str) else rec["title"]
         if plan["status"] == "needs_clarification":
             intent = plan["intents"][0]["payload"]
-            lines = ["Merhaba,", "", "İşe başlayabilmem için şu bilgilere ihtiyacım var:"]
+            first = next((str(c.get("name") or "").split(" ")[0] for c in self.catalog.get("contacts") or []
+                          if isinstance(c, dict) and c.get("email") == source["sender"]), "")
+            lines = [f"Merhaba {first}," if first else "Merhaba,", "", "İşe başlayabilmem için şu bilgilere ihtiyacım var:"]
             lines += ["- " + q["question"] for q in plan["questions"]]
             extra = [str(q).strip()[:300] for q in (result.get("missing_questions") or [])
                      if isinstance(q, str) and q.strip()][:3]  # bounded model questions, internal requester only
@@ -388,6 +418,7 @@ class Chain:
             payload = {"from": HAMLE, "to": [source["sender"]], "cc": [], "thread_id": intent["thread_id"],
                        "in_reply_to_message_id": intent["in_reply_to_message_id"],
                        "subject": "Re: " + str(source.get("subject") or "")[:180], "body": "\n".join(lines)}
+            remember_turns(rec, (source["sender"], source.get("text")), (HAMLE, "\n".join(lines[2:-3])))
             rec.update(status="awaiting_clarification", reason=plan["reason"])
             state = self._write(claim, work, rec, "clarify-" + source["message_id"][:150], "clarify_brief",
                                 "gmail", payload, self.d.mail_writer)

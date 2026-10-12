@@ -270,8 +270,9 @@ class Harness:
 
     def interpret(self, text, context):
         self.calls["interpreter"] += 1
-        self.last_context = context
-        return {"requirements": copy.deepcopy(self.requirements[text]),
+        self.last_context, self.last_text = context, text
+        key = text if text in self.requirements else text.rsplit("[Son yanıt · " + AHMET_MAIL + "]\n", 1)[-1]
+        return {"requirements": copy.deepcopy(self.requirements[key]),
                 "follow_ups": ["Aynı görselin story (1080x1920) uyarlaması"]}
 
     def classify(self, text, context):
@@ -488,6 +489,32 @@ class EndToEnd(unittest.TestCase):
         rec, work = h.record("t-c")
         self.assertEqual((rec["status"], work["task_id"] is not None), ("in_production", True))
         self.assertEqual(len(h.world.posts("/todos.json")), 1)
+
+    def test_answer_to_questions_is_read_with_the_original_request(self):
+        h = Harness()
+        h.mail_in("t-a", "29 Ekim story, teslim 13 Ekim Salı", complete=False)
+        h.tick()
+        mail, = h.mail.sent
+        self.assertTrue(mail["body"].startswith("Merhaba Ahmet,\n"))
+        rec, _ = h.record("t-a")
+        self.assertEqual([t["from"] for t in rec["conversation"]], [AHMET_MAIL, HAMLE])
+        h.mail_in("t-a", "JPG olsun\n> Merhaba Ahmet,")
+        questions = rec["conversation"][1]["text"]
+        combined = ("[İlk talep · " + AHMET_MAIL + "]\n29 Ekim story, teslim 13 Ekim Salı\n\n"
+                    "[Hamle'nin soruları · " + HAMLE + "]\n" + questions + "\n\n"
+                    "[Son yanıt · " + AHMET_MAIL + "]\nJPG olsun\n> Merhaba Ahmet,")
+        h.tick()
+        rec, work = h.record("t-a")
+        self.assertEqual(h.last_text, combined)
+        self.assertEqual((rec["status"], work["task_id"] is not None), ("in_production", True))
+
+    def test_fresh_request_ignores_remembered_turns(self):
+        source = {"text": "yeni talep", "sender": AHMET_MAIL}
+        rec = {"status": "new", "conversation": [{"from": AHMET_MAIL, "text": "eski"}]}
+        self.assertEqual(chain.interpreter_text(source, rec), "yeni talep")
+        self.assertEqual(chain.interpreter_text(source, {"status": "awaiting_clarification"}), "yeni talep")
+        chain.remember_turns(rec, *[(AHMET_MAIL, "x" * 5000 + "\n> alıntı")] * 9)
+        self.assertEqual((len(rec["conversation"]), len(rec["conversation"][0]["text"])), (6, 2000))
 
     def test_score_85_waits_for_human_approval(self):
         h = Harness()
