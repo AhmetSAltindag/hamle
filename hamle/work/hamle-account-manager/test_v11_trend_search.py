@@ -77,6 +77,15 @@ class Provider(Base):
         self.assertEqual(self.source(transport)(DAY), out)
         self.assertEqual((len(transport.calls), len(self.chain_reservations())), (1, 1))
 
+    def test_long_trend_names_keep_the_platform_label(self):
+        url = "https://www.example.org/trend/long"
+        long = trend(url, name="Herkes etkinlikteyken işi yürüten kişinin ADÉLA'nın Ain't In LA şarkısı eşliğinde "
+                              "kendini ofiste çektiği ve sonra da arkadaşlarına gönderdiği uzun açıklamalı video kalıbı")
+        out = ts.sourced({"trends": [long], "evidence": [url]}, DAY)
+        title = out[0]["title"]
+        self.assertTrue(title.endswith("… (TikTok)") and len(title) <= 120, title)
+        self.assertEqual(dd.sourced_trends(out, DAY)[0]["title"], title)  # digest cap no longer cuts it
+
     def test_http_and_unlisted_brand_or_tool_outputs_are_rejected(self):
         self.assertIsNone(ts.normalize_url("http://example.org/a"))
         self.assertIsNone(ts.normalize_url("https://user:pw@example.org/a"))

@@ -300,6 +300,15 @@ def _iso_day(value):
         return None
 
 
+def _fit(text, limit):
+    """Cut at a word boundary with an ellipsis (the digest caps titles at 120, ideas at 200)."""
+    text = " ".join(str(text).split())
+    if len(text) <= limit:
+        return text
+    cut = text[:limit - 1].rsplit(" ", 1)[0].rstrip(" ,.;:-")
+    return (cut or text[:limit - 1]) + "…"
+
+
 def sourced(output, today):
     """Drop every item whose URL is not https + in the web_search evidence, or whose date is bad."""
     evidence = set(output.get("evidence") or [])
@@ -311,9 +320,10 @@ def sourced(output, today):
                 or not today - timedelta(days=30) <= day <= today:
             continue
         seen.add(url)
-        out.append({"title": f"{t['trend']} ({ {'instagram': 'Instagram', 'tiktok': 'TikTok', 'x': 'X'}[t['platform']] })",
+        platform = " (" + {"instagram": "Instagram", "tiktok": "TikTok", "x": "X"}[t["platform"]] + ")"
+        out.append({"title": _fit(t["trend"], 120 - len(platform)) + platform,
                     "url": url, "published_at": day.isoformat(), "summary": "",
-                    "idea": f"{t['brand']}: {t['brand_idea']}"})
+                    "idea": _fit(f"{t['brand']}: {t['brand_idea']}", 200)})
     return out[:MAX_TRENDS]
 
 

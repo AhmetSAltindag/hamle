@@ -492,7 +492,7 @@ class PreviewDay(Base):
         msg = self.gmail.message()
         self.assertEqual(str(msg["Subject"]), "[ÖNİZLEME] Hamle AI: 12 Ekim Pzt Günü Kısa Özeti")
         text = msg.get_body(preferencelist=("plain",)).get_content()
-        for needle in ("12.10.2026 Pazartesi", f"- Afiş · Hamle İç Deneme · @Ahmet · {APP}/buckets/1/todos/1001",
+        for needle in ("Hamle AI: 12 Ekim Pzt Günü Kısa Özeti", f"- Afiş · Hamle İç Deneme · @Ahmet · {APP}/buckets/1/todos/1001",
                        "Story · Hamle İç Deneme · @Ahmet @Cansu · 2 gün gecikme", "ÖZEL GÜNLER (14 gün)"):
             self.assertIn(needle, text)
         row = self.ops.backend.data["daily-digest-preview-20261012"]

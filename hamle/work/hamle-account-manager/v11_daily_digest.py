@@ -355,7 +355,7 @@ def render(listing, *, day, day_note, overdue, trends, specials, classified, new
     items = listing["items"]
     today_iso = day.isoformat()
     due = [t for t in items if t["due_on"] == today_iso]
-    lines = [f"Hamle günlük özet — {day.strftime('%d.%m.%Y')} {WEEKDAYS[day.weekday()]}",
+    lines = [digest_title(day),
              f"Açık iş: {len(items)} · Bugün teslim: {len(due)} · Gecikmiş: {len(overdue)} "
              f"({listing['projects']} proje)"]
     if day_note:
