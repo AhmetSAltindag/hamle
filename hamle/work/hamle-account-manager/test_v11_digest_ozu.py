@@ -93,6 +93,16 @@ class Ozu(Base):
         self.assertIn("⚠️ Risk: “Lansman kartı” (https://3.basecamp.com/5898865/buckets/2/card_tables/cards/3001) "
                       "(WAT Mobilite) 4 gündür gecikmiş, son yorum 2 Ekim. @Özge bugün durum yazabilir mi?", body)
 
+    def test_risk_prefers_live_client_work_over_stalled_own_work(self):
+        self.bc.pages[f"{BASE}/buckets/2/recordings/2003/comments.json"] = (
+            [{"created_at": "2026-10-11T10:00:00Z", "creator": {"name": "Özge"}, "content": "Revize geldi."}], {})
+        items = self.reader().collect()["items"]
+        overdue = [dict(t, days_overdue=d, hamle_assigned=False, status="action_on_us", comments=c)
+                   for t, d, c in ((items[0], 13, [{"at": "2026-08-31"}]), (items[1], 7, [{"at": "2026-10-12"}]))]
+        overdue[0]["project_id"], overdue[1]["project_id"] = 40704459, 43886681  # Gamechangers vs BWI
+        risk = dd.pick_risk(self.reader(), [], overdue, date(2026, 10, 13))
+        self.assertEqual((risk["id"], risk["days_overdue"]), (overdue[1]["id"], 7))
+
     def test_tuesday_follows_up_mondays_suggestions(self):
         nb = lambda day: {"status": "ok", "brands": [{"brand": "Hisense", "sector": "elektronik",
                                                       "reason": "Türkiye lansmanı.", "url": "https://example.org/h"}]}

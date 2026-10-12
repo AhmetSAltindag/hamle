@@ -365,6 +365,7 @@ LEADS = {40694338: ("Özge", "Cansu"), 48639990: ("Özge", "Ahmet"), 43886681: (
          40704530: ("Esma", "Cansu"), 40704459: ("Ahmet", "Esma"), 44320349: ("Ahmet", "Ahmet"),
          40704547: ("Cansu", "Cansu")}
 NEW_BIZ = 40704547
+OWN_PROJECTS = frozenset({40704459, 49184053, NEW_BIZ})  # Gamechangers, Hamle İç Deneme, New Biz
 RISK_LOOKAHEAD, RISK_QUIET_DAYS, RISK_MAX_OVERDUE, RISK_READS = 3, 3, 21, 6
 MAX_FOLLOW_UPS = 6
 NO_RISK = "Bugün öne çıkan bir risk görünmüyor."
@@ -444,9 +445,15 @@ def pick_risk(reader, items, overdue, day):
         red = fresh
     if not red:
         return None
-    t = max(red, key=lambda t: (t["days_overdue"], t["title"]))
-    last = max((c["at"] for c in t.get("comments") or [] if c.get("at")), default=None)
-    return dict(_risk_row(t), kind="overdue", days_overdue=t["days_overdue"], last=last)
+    def last(t):
+        return max((c["at"] for c in t.get("comments") or [] if c.get("at")), default=None)
+
+    def rank(t):  # client work over our own, alive (comment in 14 days) over stalled, then most overdue
+        seen = _day(last(t))
+        return (t["project_id"] not in OWN_PROJECTS, seen is not None and (day - seen).days <= 14,
+                t["days_overdue"], t["title"])
+    t = max(red, key=rank)
+    return dict(_risk_row(t), kind="overdue", days_overdue=t["days_overdue"], last=last(t))
 
 
 def build_ozu(*, day, items, overdue, classified, risk, spark, trends, specials, new_business, cards):
