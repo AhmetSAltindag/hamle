@@ -33,6 +33,7 @@ import cloud_providers as provider
 from autonomy_policy import HAMLE, scope_digest
 from v11_artifact_inspector import INSPECTOR_ID, InspectionError, inspect_artifact
 from v11_brand_task import HAMLE_PERSON
+from v11_chain_mail import reply_subject
 from v11_quality_gate import MANDATORY_CHECKS, build_quality_binding
 from v11_work_queue import digest
 
@@ -415,7 +416,7 @@ class ChainQualityBridge:
                                                         "budget_authorization"}, "authority_source_invalid")
         request.update(copy.deepcopy(extra))
         public = {k: artifact[k] for k in ("brand_id", "work_id", "version", "sha256", "mime_type")}
-        subject = "Re: " + str(source.get("subject") or "")[:180]
+        subject = reply_subject(source.get("subject"))
         payload = {"from": HAMLE, "to": request["reply_to"], "cc": request["reply_cc"],
                    "thread_id": work["thread_id"], "subject": subject, "body": CUSTOMER_BODY, "artifact": public}
         binding = build_quality_binding({**request, "artifact": public,

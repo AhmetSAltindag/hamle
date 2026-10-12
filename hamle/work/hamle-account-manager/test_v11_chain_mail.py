@@ -187,6 +187,14 @@ class Writer(Base):
         self.assertEqual(self.posts(), [])
 
 
+class Subject(unittest.TestCase):
+    def test_reply_prefixes_never_stack(self):
+        for raw in ("Görsel Çalışma Talebi", "Re: Görsel Çalışma Talebi", "Re: Re: Re: Görsel Çalışma Talebi",
+                    "RE: ynt: Fwd: Görsel Çalışma Talebi"):
+            self.assertEqual(cmail.reply_subject(raw), "Re: Görsel Çalışma Talebi")
+        self.assertEqual(cmail.reply_subject("Rekor kampanya"), "Re: Rekor kampanya")
+
+
 class Reader(unittest.TestCase):
     def setUp(self):
         for name in ("socket", "create_connection"):

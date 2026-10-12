@@ -30,6 +30,7 @@ import business_writers as bw
 import cloud_providers as provider
 from v11_basecamp_reader import BasecampReader, ReadError, digest as record_digest
 from v11_brand_task import HAMLE_PERSON, create_stage_task, prepare_stage_task
+from v11_chain_mail import reply_subject
 from v11_delivery import DeliveryCoordinator, quality_feedback, record_outcome
 from v11_intake_plan import IntakeError, _contacts, _email, intake_requirements_digest, plan_intake, \
     record_producer_question
@@ -417,7 +418,7 @@ class Chain:
             lines += ["", "Teşekkürler,", "Hamle"]
             payload = {"from": HAMLE, "to": [source["sender"]], "cc": [], "thread_id": intent["thread_id"],
                        "in_reply_to_message_id": intent["in_reply_to_message_id"],
-                       "subject": "Re: " + str(source.get("subject") or "")[:180], "body": "\n".join(lines)}
+                       "subject": reply_subject(source.get("subject")), "body": "\n".join(lines)}
             remember_turns(rec, (source["sender"], source.get("text")), (HAMLE, "\n".join(lines[2:-3])))
             rec.update(status="awaiting_clarification", reason=plan["reason"])
             state = self._write(claim, work, rec, "clarify-" + source["message_id"][:150], "clarify_brief",
@@ -513,7 +514,7 @@ class Chain:
         lines += ["Görev: " + link, "", "Yanlış anladığım bir şey varsa bu maile yanıt verin.", "", "Hamle"]
         return {"from": HAMLE, "to": list(rec["reply"]["to"]), "cc": list(rec["reply"]["cc"]),
                 "thread_id": rec["reply"]["thread_id"], "in_reply_to_message_id": rec["reply"]["in_reply_to_message_id"],
-                "subject": "Re: " + str(source.get("subject") or "")[:180], "body": "\n".join(lines),
+                "subject": reply_subject(source.get("subject")), "body": "\n".join(lines),
                 "ack_task_id": int(task["task_id"])}
 
     def _route_requirements(self, claim, work, source, requirements):

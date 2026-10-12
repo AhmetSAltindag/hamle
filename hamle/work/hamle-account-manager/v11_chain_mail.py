@@ -101,6 +101,15 @@ def _addresses(values):
     return list(dict.fromkeys(out))
 
 
+REPLY_PREFIX = re.compile(r"\A(?:\s*(?:re|ynt|yanıt|fw|fwd|ilt)\s*:\s*)+", re.IGNORECASE)
+
+
+def reply_subject(subject):
+    """'Re: ' + the thread subject without stacked reply prefixes ('Re: Re: X' -> 'Re: X')."""
+    core = REPLY_PREFIX.sub("", str(subject or "")[:180]).strip()
+    return "Re: " + core
+
+
 def reply_all(sender, to, cc):
     """Same derivation as v11_intake_plan._email / autonomy_policy._reply_all."""
     to_out = [v for v in dict.fromkeys([sender] + list(to)) if v != HAMLE]
@@ -273,7 +282,7 @@ class GmailThreadReplyWriter:
     def _verify(self, kind, payload, src):
         to, cc = self._expected(kind, src)
         _need(payload["to"] == to and payload["cc"] == cc, "reply_recipients_changed")
-        _need(payload["subject"] == "Re: " + src["subject"][:180], "reply_subject_mismatch")
+        _need(payload["subject"] == reply_subject(src["subject"]), "reply_subject_mismatch")
 
     def source_evidence(self, thread_id, anchor):
         """Fresh provider evidence for DeliveryAdapter.read_authority (reads only)."""
