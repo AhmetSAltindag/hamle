@@ -200,10 +200,49 @@ class NewBusiness(Research):
         self.assertEqual((out["status"], len(out["brands"])), ("insufficient_sourced_brands", 1))
 
 
+class DailySpark(Research):
+    def build(self, client, **flags):
+        return ts.daily_spark_research_source(self.ops, {"anthropic": self.key}, load_catalog(), self.cards,
+                                              routing=routing(**flags), client=client)
+
+    def test_flag_on_and_off(self):
+        self.assertTrue(model_routing.load().flag("daily_spark_research_enabled"))
+        self.assertIsNone(self.build(FakeClient(), daily_spark_research_enabled=False))
+        self.assertEqual((self.keys, self.chain()), ([], []))
+
+    def test_only_sourced_items_in_their_windows_survive(self):
+        u = [f"https://news.example.com/{i}" for i in range(8)]
+        value = {"opportunities": [
+                     {"kind": "client", "brand": "WAT", "headline": "Rakip şarj ağı büyüdü.", "proposal": "Şunu önerebiliriz: x.",
+                      "url": u[0], "date": "2026-10-10"},
+                     {"kind": "new_business", "brand": "Fenerium", "headline": "Müşteri zaten.", "proposal": "x",
+                      "url": u[1], "date": "2026-10-10"}],
+                 "ideas": [{"brand": "Altınmarka", "hook": "Dünya Gıda Günü", "format": "carousel", "idea": "Kakao yolculuğu.",
+                            "url": u[2], "date": "2026-10-16"},
+                           {"brand": "Altınmarka", "hook": "İkinci", "format": "Reels", "idea": "Aynı marka.",
+                            "url": u[3], "date": "2026-10-10"},
+                           {"brand": "Bikaldi", "hook": "Çok ileri", "format": "Reels", "idea": "x",
+                            "url": u[4], "date": "2026-11-20"},
+                           {"brand": "Rabam", "hook": "Kaynaksız", "format": "Reels", "idea": "x",
+                            "url": "https://nowhere.example/x", "date": "2026-10-10"}],
+                 "inspirations": [{"title": "Kampanya", "company": "Örnek", "why": "İlham.", "url": u[5],
+                                   "date": "2026-10-01"}]}
+        client = FakeClient(research_message(value, results=u, cited=()))
+        out = self.build(client)(DAY, ["Bikaldi × Dünya Kahve Günü"])
+        self.assertEqual([(o["kind"], o["brand"]) for o in out["opportunities"]], [("client", "WAT Mobilite")])
+        self.assertEqual([(i["brand"], i["hook"]) for i in out["ideas"]], [("Altınmarka", "Dünya Gıda Günü")])
+        self.assertEqual([i["company"] for i in out["inspirations"]], ["Örnek"])
+        sent = json.loads(client.calls[0]["messages"][0]["content"])
+        self.assertEqual(sent["avoid"], ["Bikaldi × Dünya Kahve Günü"])
+        self.assertIn("Günün özü", client.calls[0]["system"])
+        [r] = self.chain()
+        self.assertEqual(r["state"], "settled")
+
+
 class Packaging(unittest.TestCase):
     def test_prompts_packaged(self):
         import package_chain_source as pkg
-        for name in ("chain_special_days_prompt.txt", "chain_new_business_prompt.txt"):
+        for name in ("chain_special_days_prompt.txt", "chain_new_business_prompt.txt", "chain_daily_spark_prompt.txt"):
             self.assertIn(pkg.APP + name, pkg.ALLOWLIST)
             self.assertTrue((Path(__file__).with_name(name)).is_file())
 

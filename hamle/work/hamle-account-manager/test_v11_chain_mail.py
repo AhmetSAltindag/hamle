@@ -195,6 +195,19 @@ class Subject(unittest.TestCase):
         self.assertEqual(cmail.reply_subject("Rekor kampanya"), "Re: Rekor kampanya")
 
 
+class DigestReply(unittest.TestCase):
+    def test_every_digest_title_is_recognised_only_as_itself(self):
+        from datetime import date, timedelta
+        import v11_daily_digest as dd
+        for n in range(7):
+            title = dd.digest_title(date(2026, 10, 12) + timedelta(days=n))
+            for subject in (title, "Re: " + title, "RE: Re: " + title, "Fwd: " + title, "Re: [ÖNİZLEME] " + title):
+                self.assertTrue(cmail.digest_reply(subject), subject)
+        for subject in ("Görsel Çalışma Talebi", "Re: Hamle AI için 29 Ekim görseli", None,
+                        "Hamle AI: 13 Ekim Salı Günü Kısa Özeti hakkında yeni iş"):
+            self.assertFalse(cmail.digest_reply(subject), subject)
+
+
 class Reader(unittest.TestCase):
     def setUp(self):
         for name in ("socket", "create_connection"):

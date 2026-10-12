@@ -595,7 +595,7 @@ class RealVolume(Base):
         self.assertEqual((stats["overdue"], stats["classified"], len(seen)), (15, 15, 1))
         self.assertLessEqual(len(json.dumps(seen[0], ensure_ascii=False).encode()), dd.MODEL_INPUT_BUDGET)
         lines = [l for l in body.splitlines() if l.strip()]
-        self.assertLessEqual(len(lines), 26, body)
+        self.assertLessEqual(len(lines), 33, body)  # ~26 + the 7-line Günün özü box (Ahmet 2026-10-12)
         self.assertIn("Bugün teslim: 7 · Gecikmiş: 15 (6 proje)", body)
         more_today = next(l for l in lines if l.startswith("- … +4 iş daha: "))
         self.assertEqual(more_today.count(APP), 4)

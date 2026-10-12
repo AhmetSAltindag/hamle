@@ -15,6 +15,12 @@ Basecamp link) from Hamle to the configured internal recipients (@gamechangers.c
                none -> "Bugün doğrulanmış trend kaynağı alınamadı."
   ÖZEL GÜNLER  Mondays: today..+14 days from tr-special-days-2026.json + brand-card ideas.
 
+Since 2026-10-13 (Ahmet: "her gün olsun") the mail opens with GÜNÜN ÖZÜ, five lines read
+in ten seconds: 📌 sayı, ⚠️ risk (a quiet item due within 3 days, else a fresh 🔴), 💼 fırsat,
+💡 fikir, ✨ ilham (daily_spark research, sourced; missing -> "alınamadı", never invented),
+then DÜNKÜ ÖNERİLERİM NE OLDU?: yesterday's stored suggestions are followed up with the
+brand's people (praise when Basecamp shows a new task / comment, else a friendly question).
+
 Hamle never changes dates or completes items; Basecamp access is GET-only.
 Durability (hamle_internal_v1): daily-digest-YYYYMMDD (team) / daily-digest-preview-
 YYYYMMDD (preview, never consumes the team send): claimed (lease) -> sending (intent
@@ -208,6 +214,8 @@ class BasecampDigestReader:
                 and re.fullmatch(r"\d{4}-\d{2}-\d{2}", row["due_on"]) else None,
                 "assignees": sorted({_plain(x.get("name") or str(x.get("id")), 40) for x in people}),
                 "assignee_ids": sorted({x["id"] for x in people if type(x.get("id")) is int}),
+                "created_on": row["created_at"][:10] if isinstance(row.get("created_at"), str)
+                and re.match(r"\d{4}-\d{2}-\d{2}", row["created_at"]) else None,
                 "app_url": self._app(row, pid, kind),
                 "comments_url": expected if comments in (None, expected) else expected}
 
@@ -350,8 +358,241 @@ def special_days(calendar, cards, today, horizon=14):
     return rows
 
 
+# ------------------------------------------------------------------ günün özü + follow-ups
+# Brand responsibles, Ahmet's GC-MarkaSorumlulari.xlsx (2026-10-11): (social media lead, customer rep).
+LEADS = {40694338: ("Özge", "Cansu"), 48639990: ("Özge", "Ahmet"), 43886681: ("Özge", "Ahmet"),
+         48562916: ("Esma", "Ahmet"), 48917059: ("Esma", "Cansu"), 40704523: ("Esma", "Cansu"),
+         40704530: ("Esma", "Cansu"), 40704459: ("Ahmet", "Esma"), 44320349: ("Ahmet", "Ahmet"),
+         40704547: ("Cansu", "Cansu")}
+NEW_BIZ = 40704547
+RISK_LOOKAHEAD, RISK_QUIET_DAYS, RISK_MAX_OVERDUE, RISK_READS = 3, 3, 21, 6
+MAX_FOLLOW_UPS = 6
+NO_RISK = "Bugün öne çıkan bir risk görünmüyor."
+NO_OPPORTUNITY = "Bugün kaynağı doğrulanmış bir fırsat alınamadı."
+NO_IDEA = "Bugün kaynağı doğrulanmış bir fikir alınamadı."
+NO_INSPIRATION = "Bugün kaynağı doğrulanmış bir ilham örneği alınamadı."
+FOLLOW_UP_HINT = ("Gelişme varsa ilgili Basecamp işine yorum yazmanız ya da yeni görev açmanız yeterli; "
+                  "Hamle yarın sabah oradan bakar.")
+STOP_WORDS = {"günü", "gunu", "dünya", "dunya", "ulusal", "uluslararası", "haftası", "trend", "trendi", "akımı",
+              "video", "reels", "story", "post", "için", "olan", "yeni"}
+
+
+def _key(text):
+    return re.sub(r"[^0-9a-zçğıöşü]+", "", str(text or "").casefold())
+
+
+def _tokens(text):
+    return {w for w in re.findall(r"[0-9a-zçğıöşü]+", str(text or "").casefold()) if len(w) >= 4 and w not in STOP_WORDS}
+
+
+def _day(value):
+    try:
+        return date.fromisoformat(str(value)[:10])
+    except ValueError:
+        return None
+
+
+def _when(d):
+    return f"{d.day} {MONTHS[d.month - 1]}"
+
+
+def _upper_tr(text):
+    return text.replace("i", "İ").replace("ı", "I").upper()
+
+
+def _and(names):
+    names = [n for n in names if n]
+    return names[0] if len(names) == 1 else ", ".join(names[:-1]) + " ve " + names[-1] if names else ""
+
+
+def _at(names):
+    return " ".join("@" + n for n in dict.fromkeys(n for n in names if n))
+
+
+def project_of(cards, brand):
+    key = _key(brand)
+    for b in (cards or {}).get("brands", []):
+        if key and isinstance(b, dict) and type(b.get("project_id")) is int and _key(b.get("brand")) == key:
+            return b["project_id"]
+    return None
+
+
+def _risk_row(t):
+    who = [n.split()[0] for n in t.get("assignees") or [] if n.split()] or [LEADS.get(t["project_id"], (None,))[0]]
+    return {"item_kind": t["kind"], "id": t["id"], "project_id": t["project_id"], "project": t["project"],
+            "title": t["title"], "app_url": t["app_url"], "who": [n for n in who if n]}
+
+
+def pick_risk(reader, items, overdue, day):
+    """Proactive first: an item due within 3 days with no comment for 3+ days; else the most
+    overdue fresh (<= 21 days) 🔴 item (any overdue item when nothing could be classified)."""
+    soon = sorted((t for t in items if t["due_on"] and HAMLE_PERSON not in t["assignee_ids"]
+                   and 0 < (date.fromisoformat(t["due_on"]) - day).days <= RISK_LOOKAHEAD),
+                  key=lambda t: (t["due_on"], t["project"], t["title"]))
+    for t in soon[:RISK_READS]:
+        try:
+            seen = [c["at"] for c in reader.last_comments(t, n=1) if c.get("at")]
+        except Exception:
+            continue
+        last = _day(max(seen + ([t["created_on"]] if t.get("created_on") else []), default=""))
+        if last is not None and (day - last).days >= RISK_QUIET_DAYS:
+            return dict(_risk_row(t), kind="soon", days_left=(date.fromisoformat(t["due_on"]) - day).days,
+                        quiet_days=(day - last).days)
+    fresh = [t for t in overdue if not t["hamle_assigned"] and t["days_overdue"] <= RISK_MAX_OVERDUE]
+    red = [t for t in fresh if t.get("status") == "action_on_us"]
+    if not red and not any(t.get("status") for t in overdue):
+        red = fresh
+    if not red:
+        return None
+    t = max(red, key=lambda t: (t["days_overdue"], t["title"]))
+    last = max((c["at"] for c in t.get("comments") or [] if c.get("at")), default=None)
+    return dict(_risk_row(t), kind="overdue", days_overdue=t["days_overdue"], last=last)
+
+
+def build_ozu(*, day, items, overdue, classified, risk, spark, trends, specials, new_business, cards):
+    """The five facts of the top box, as data (also stored for tomorrow's follow-ups)."""
+    due = sum(1 for t in items if t["due_on"] == day.isoformat())
+    red = sum(1 for t in overdue if t.get("status") == "action_on_us")
+    count = f"Bugün {due} iş teslim, {len(overdue)} iş gecikmiş" + (f" (aksiyon bizde: {red})" if classified else "") + "."
+    spark = spark or {}
+    firsat = None
+    for o in spark.get("opportunities") or []:
+        pid = project_of(cards, o["brand"]) if o["kind"] == "client" else NEW_BIZ
+        firsat = {"kind": o["kind"], "brand": o["brand"], "project_id": pid, "headline": o["headline"],
+                  "proposal": o["proposal"], "url": o["url"],
+                  "who": LEADS.get(pid, (None, "Cansu"))[1] if o["kind"] == "client" else "Cansu"}
+        break
+    if firsat is None and new_business:
+        b = new_business[0]
+        firsat = {"kind": "new_business", "brand": b["brand"], "project_id": NEW_BIZ,
+                  "headline": f"{b['brand']} ({b['sector']}): {b['reason']}", "proposal": "", "url": b["url"],
+                  "who": "Cansu"}
+    ideas = []
+    for i in spark.get("ideas") or []:
+        pid = project_of(cards, i["brand"])
+        ideas.append({"brand": i["brand"], "project_id": pid, "hook": i["hook"], "format": i["format"],
+                      "idea": i["idea"], "url": i["url"], "who": LEADS.get(pid, (None,))[0]})
+    if not ideas:  # fallback: today's trend radar adaptation, then Monday's researched special day
+        for t in trends or []:
+            brand, _, idea = str(t.get("idea") or "").partition(":")
+            pid = project_of(cards, brand.strip())
+            if pid is not None and idea.strip():
+                ideas.append({"brand": brand.strip(), "project_id": pid, "hook": t["title"], "format": "",
+                              "idea": idea.strip(), "url": t["url"], "who": LEADS.get(pid, (None,))[0]})
+                break
+    if not ideas:
+        for d in specials or []:
+            pid = project_of(cards, d.get("brand"))
+            if d.get("url") and pid is not None:
+                ideas.append({"brand": d["brand"], "project_id": pid, "hook": d["name"], "format": "",
+                              "idea": d["idea"], "url": d["url"], "who": LEADS.get(pid, (None,))[0]})
+                break
+    inspirations = spark.get("inspirations") or []
+    return {"count": count, "risk": risk, "firsat": firsat, "fikirler": ideas,
+            "ilham": inspirations[0] if inspirations else None}
+
+
+def ozu_lines(ozu, *, link):
+    """[(icon, label, text_parts)]; link(url, text) renders a linked title, text parts are plain."""
+    r, f, i = ozu["risk"], ozu["firsat"], ozu["ilham"]
+    if r is None:
+        risk = [NO_RISK]
+    else:
+        label = BRAND_LABELS.get(r["project_id"], r["project"])
+        state = (f"teslime {r['days_left']} gün var, {r['quiet_days']} gündür hareket yok." if r["kind"] == "soon"
+                 else f"{r['days_overdue']} gündür gecikmiş" + (f", son yorum {_when(_day(r['last']))}" if _day(r.get("last"))
+                                                                else ", henüz yorum yok") + ".")
+        risk = [link(r["app_url"], f"“{r['title']}”"), f" ({label}) {state} "
+                + (f"{_at(r['who'])} bugün durum yazabilir mi?" if r["who"] else "Bugün durumu netleştirelim.")]
+    if f is None:
+        firsat = [NO_OPPORTUNITY]
+    else:
+        firsat = [link(f["url"], f["headline"]), (" " + f["proposal"] if f["proposal"] else "") + f" {_at([f['who']])}"]
+    if not ozu["fikirler"]:
+        fikir = [NO_IDEA]
+    else:
+        x = ozu["fikirler"][0]
+        fikir = [link(x["url"], f"{x['brand']} × {x['hook']}"), f": {x['idea']}"
+                 + (f" ({x['format']})" if x["format"] else "") + (f" {_at([x['who']])}" if x["who"] else "")]
+    ilham = [NO_INSPIRATION] if i is None else [link(i["url"], f"{i['company']}: {i['title']}"), f". {i['why']}"]
+    return [("📌", "Sayı", [ozu["count"]]), ("⚠️", "Risk", risk), ("💼", "Fırsat", firsat),
+            ("💡", "Fikir", fikir), ("✨", "İlham", ilham)]
+
+
+def ozu_record(ozu):
+    """What tomorrow's follow-up needs (small, plain values only)."""
+    keep = ("brand", "project_id", "hook", "url", "who", "kind", "headline")
+    return {"risk": ozu["risk"] and {k: ozu["risk"][k] for k in ("item_kind", "id", "project_id", "title", "app_url",
+                                                                   "who")},
+            "firsat": ozu["firsat"] and {k: ozu["firsat"].get(k) for k in keep},
+            "fikirler": [{k: x.get(k) for k in keep} for x in ozu["fikirler"]]}
+
+
+def follow_ups(previous, *, reader, items, day):
+    """Yesterday's suggestions -> praise (Basecamp shows a new task / comment) or a friendly question."""
+    prev_day = _day((previous or {}).get("day"))
+    if prev_day is None:
+        return None
+    ozu = previous.get("ozu") or {}
+    nb = [b for b in previous.get("new_business_brands") or [] if isinstance(b, dict) and b.get("brand")]
+    when = "dün" if (day - prev_day).days == 1 else f"{WEEKDAYS[prev_day.weekday()]} günü"
+    since = prev_day.isoformat()
+    fresh = [t for t in items if (t.get("created_on") or "") >= since]
+    rows = []
+    for x in ozu.get("fikirler") or []:
+        hook = _tokens(x.get("hook"))
+        hit = next((t for t in fresh if t["project_id"] == x.get("project_id") and _tokens(t["title"]) & hook), None)
+        if hit:
+            rows.append(("👏", f"{x['brand']} × {x['hook']}: ", hit["app_url"], f"“{hit['title']}”", " açılmış, harika!"))
+        else:
+            rows.append(("", (f"{_at([x.get('who')])}, " if x.get("who") else "") + f"{when} önerdiğim ", x.get("url"),
+                         f"{x['brand']} × {x['hook']}", " fikri için bir gelişme var mı?"))
+    f = ozu.get("firsat")
+    if f and f.get("brand"):
+        key = _key(f["brand"])
+        hit = next((t for t in fresh if len(key) >= 3 and key in _key(t["title"])), None)
+        if hit:
+            rows.append(("👏", f"{f['brand']} fırsatı: ", hit["app_url"], f"“{hit['title']}”", " açılmış, harika!"))
+        else:
+            rows.append(("", f"{_at([f.get('who') or 'Cansu'])}, {when} paylaştığım ", f.get("url"),
+                         f"{f['brand']} fırsatı", " için bir adım attık mı?"))
+    r = ozu.get("risk")
+    if r and r.get("id"):
+        cur = next((t for t in items if t["kind"] == r.get("item_kind") and t["id"] == r["id"]), None)
+        who = _at(r.get("who") or [])
+        if cur is None:
+            rows.append(("✅", f"{when.capitalize()} riskli dediğim ", r.get("app_url"), f"“{r['title']}”",
+                         " artık açık işlerde görünmüyor, tamamlanmış olmalı." + (f" Teşekkürler {who}!" if who else "")))
+        else:
+            try:
+                last = max((c["at"] for c in reader.last_comments(cur, n=1) if c.get("at")), default="")
+            except Exception:
+                last = ""
+            if last >= since:
+                rows.append(("👍", "", cur["app_url"], f"“{r['title']}”", f" için {when} yorum yazılmış, takipteyim."))
+            else:
+                rows.append(("", (f"{who}, " if who else "") + f"{when} riskli dediğim ", cur["app_url"],
+                             f"“{r['title']}”", " için durum nedir?"))
+    if nb:
+        names = [b["brand"] for b in nb[:5]]
+        keys = [_key(n) for n in names if len(_key(n)) >= 3]
+        hit = next((t for t in fresh if any(k in _key(t["title"]) for k in keys)), None)
+        if hit:
+            rows.append(("👏", "New Business: ", hit["app_url"], f"“{hit['title']}”", " açılmış, harika!"))
+        else:
+            rows.append(("", f"@Cansu, {when} New Business'ta önerdiğim ", None, _and(names),
+                         " için bir adım attık mı?"))
+    title = "Dünkü önerilerim ne oldu?" if when == "dün" else f"{WEEKDAYS[prev_day.weekday()]} günkü önerilerim ne oldu?"
+    return {"when": when, "title": title, "rows": rows[:MAX_FOLLOW_UPS]} if rows else None
+
+
 # ------------------------------------------------------------------ text
-def render(listing, *, day, day_note, overdue, trends, specials, classified, new_business=None):
+def _plain_link(url, text):
+    return f"{text} ({url})" if url else text
+
+
+def render(listing, *, day, day_note, overdue, trends, specials, classified, new_business=None, ozu=None,
+           followups=None):
     items = listing["items"]
     today_iso = day.isoformat()
     due = [t for t in items if t["due_on"] == today_iso]
@@ -360,6 +601,14 @@ def render(listing, *, day, day_note, overdue, trends, specials, classified, new
              f"({listing['projects']} proje)"]
     if day_note:
         lines.append("Günün notu: " + day_note[:300])
+    if ozu is not None:
+        lines += ["", "GÜNÜN ÖZÜ"]
+        lines += [f"{icon} {label}: " + "".join(parts) for icon, label, parts in ozu_lines(ozu, link=_plain_link)]
+    if followups:
+        lines += ["", _upper_tr(followups["title"])]
+        for icon, prefix, url, text, suffix in followups["rows"]:
+            lines.append("- " + (icon + " " if icon else "") + prefix + _plain_link(url, text) + suffix)
+        lines.append(FOLLOW_UP_HINT)
 
     def who(t):
         return " ".join("@" + n for n in t["assignees"]) or "atanmamış"
@@ -390,6 +639,12 @@ def render(listing, *, day, day_note, overdue, trends, specials, classified, new
     elif len(overdue) > len(shown):
         lines.append(f"- … +{len(overdue) - len(shown)} geciken iş daha · tüm liste: "
                      f"{APP}/{listing.get('account')}/reports/todos/overdue")
+
+    if ozu is not None and len(ozu["fikirler"]) > 1:
+        lines += ["", "GÜNÜN HAMLESİ (çekime hazır fikirler)"]
+        for x in ozu["fikirler"]:
+            lines.append(f"- {_plain_link(x['url'], x['brand'] + ' × ' + x['hook'])}: {x['idea']}"
+                         + (f" ({x['format']})" if x["format"] else "") + (f" @{x['who']}" if x["who"] else ""))
 
     lines += ["", "TREND RADARI"]
     if trends:
@@ -496,7 +751,21 @@ def _p(text_html, style=""):
     return f'<div style="margin:2px 0;{style}">{text_html}</div>'
 
 
-def render_html(listing, *, day, day_note, overdue, trends, specials, classified, new_business=None):
+def _html_link(url, text):
+    return _a(url, text) if url else f"<b>{_e(text)}</b>"
+
+
+def _ozu_html(ozu):
+    rows = []
+    for icon, label, parts in ozu_lines(ozu, link=lambda url, text: (url, text)):
+        body = "".join(_html_link(*p) if isinstance(p, tuple) else _e(p) for p in parts)
+        rows.append(f'<div style="margin:3px 0;">{icon} <b>{_e(label)}:</b> {body}</div>')
+    return (f'<div style="margin:12px 0 4px;padding:10px 14px;background:#f3f6fb;border-left:4px solid {LINK};">'
+            f'<div style="font-weight:bold;font-size:15px;margin-bottom:4px;">Günün özü</div>{"".join(rows)}</div>')
+
+
+def render_html(listing, *, day, day_note, overdue, trends, specials, classified, new_business=None, ozu=None,
+                followups=None):
     """HTML twin of render(): same facts, full width, Tahoma, Basecamp/source titles as links, no raw URLs."""
     items = listing["items"]
     today_iso = day.isoformat()
@@ -510,6 +779,13 @@ def render_html(listing, *, day, day_note, overdue, trends, specials, classified
            _p(_e(" · ".join(counts)), f"color:{GREY};")]
     if day_note:
         out.append(_p("<b>Günün notu:</b> " + _e(day_note[:300])))
+    if ozu is not None:
+        out.append(_ozu_html(ozu))
+    if followups:
+        out.append(_h2("🔁 " + followups["title"]))
+        out.append(_ul([_li((icon + " " if icon else "") + _e(prefix) + _html_link(url, text) + _e(suffix))
+                        for icon, prefix, url, text, suffix in followups["rows"]]))
+        out.append(_p(_grey(FOLLOW_UP_HINT)))
 
     out.append(_h2(f"📌 Bugün teslim ({len(due)})"))
     out.append(_ul([_li(f"{_a(t['app_url'], _title(t['title']))} — {_grey(_label(t))} · {_e(_first_names(t))}")
@@ -539,6 +815,12 @@ def render_html(listing, *, day, day_note, overdue, trends, specials, classified
             lis.append(_li(_e(f"+{len(group) - HTML_GROUP_LIMIT} iş daha · ")
                            + _a(f"{APP}/{listing.get('account')}/reports/todos/overdue", "tüm gecikenler", False)))
         out.append(_ul(lis))
+
+    if ozu is not None and len(ozu["fikirler"]) > 1:
+        out.append(_h2("💡 Günün hamlesi (çekime hazır fikirler)"))
+        out.append(_ul([_li(_html_link(x["url"], f"{x['brand']} × {x['hook']}") + ": " + _e(x["idea"])
+                            + (" " + _grey("(" + x["format"] + ")") if x["format"] else "")
+                            + (" " + _e("@" + x["who"]) if x["who"] else "")) for x in ozu["fikirler"]]))
 
     out.append(_h2("📈 Trend radarı"))
     if trends:
@@ -647,8 +929,11 @@ class DigestMailWriter:
 
 # ------------------------------------------------------------------ assembly
 def build_digest(reader, *, day, day_note, classifier=None, trend_source=None, cards=None, calendar=None,
-                 special_source=None, new_business_source=None):
-    """Read-only listing + optional batched classification -> (body, stats)."""
+                 special_source=None, new_business_source=None, spark_source=None, previous=None):
+    """Read-only listing + optional batched classification -> (body, stats).
+
+    previous: the last weekday's sent team digest ({'day', 'ozu', 'new_business_brands'}) for
+    the follow-up section; None -> section omitted."""
     listing = reader.collect()
     listing["cards"] = cards
     listing["account"] = getattr(reader, "account", None)
@@ -708,14 +993,34 @@ def build_digest(reader, *, day, day_note, classifier=None, trend_source=None, c
                 new_business, nb_status = [], "provider_failed"
         else:
             nb_status = "no_provider"
+    spark, spark_status = None, "no_provider"
+    if spark_source is not None:
+        avoid = [f"{x.get('brand')} × {x.get('hook')}" for x in ((previous or {}).get("ozu") or {}).get("fikirler") or []]
+        try:
+            spark = spark_source(day, avoid)
+            spark_status = "{}_ideas_{}_opportunities_{}_inspirations".format(
+                *(len(spark.get(k) or []) for k in ("ideas", "opportunities", "inspirations")))
+        except Exception as exc:
+            spark_status = "provider_failed:" + str(getattr(exc, "code", None) or type(exc).__name__)[:80]
+    try:
+        risk = pick_risk(reader, listing["items"], overdue, day)
+    except Exception:
+        risk = None  # a risk line is a hint; never block the digest
+    ozu = build_ozu(day=day, items=listing["items"], overdue=overdue, classified=classified > 0, risk=risk,
+                    spark=spark, trends=trends, specials=specials, new_business=new_business, cards=cards)
+    try:
+        followups = follow_ups(previous, reader=reader, items=listing["items"], day=day)
+    except Exception:
+        followups = None
     parts = dict(day=day, day_note=day_note, overdue=overdue, trends=trends, specials=specials,
-                 classified=classified > 0, new_business=new_business)
+                 classified=classified > 0, new_business=new_business, ozu=ozu, followups=followups)
     body = render(listing, **parts)
     stats_html = render_html(listing, **parts)
     return body, {"html": stats_html, "open_items": len(listing["items"]), "overdue": len(overdue), "classified": classified,
                   "model": model_status, "trends": trend_status, "special_days": special_status,
                   "new_business": nb_status, "overdue_source": "report" if report is not None else "scan",
-                  "new_business_brands": new_business or []}
+                  "new_business_brands": new_business or [], "spark": spark_status, "ozu": ozu_record(ozu),
+                  "follow_ups": len((followups or {}).get("rows") or [])}
 
 
 # ------------------------------------------------------------------ run
@@ -741,9 +1046,27 @@ def preview_target(value, today):
     return target
 
 
+def previous_weekday(day):
+    day -= timedelta(days=1)
+    while day.weekday() >= 5:
+        day -= timedelta(days=1)
+    return day
+
+
+def _previous(row, day):
+    """The sent team digest of the previous weekday -> follow-up input, else None."""
+    if not isinstance(row, dict) or row.get("state") != "sent" or not isinstance(row.get("stats"), dict):
+        return None
+    stats = row["stats"]
+    return {"day": day.isoformat(), "ozu": stats.get("ozu") if isinstance(stats.get("ozu"), dict) else None,
+            "new_business_brands": stats.get("new_business_brands") if isinstance(stats.get("new_business_brands"), list)
+            else []}
+
+
 def run_daily_digest(ops, *, config, reader_factory, writer, clock, window=DAILY_DIGEST_WINDOW,
                      preview_to=None, preview_day=None, classifier=None, trend_source=None, cards=None, calendar=None,
-                     special_source=None, new_business_source=None, preview_attempt=None, sleep=time.sleep):
+                     special_source=None, new_business_source=None, spark_source=None, preview_attempt=None,
+                     sleep=time.sleep):
     """One team digest per Istanbul weekday, or one preview per target day to ONE agency address.
 
     preview_day (only with preview_to): today or the next Istanbul weekday at most 3 days
@@ -774,6 +1097,8 @@ def run_daily_digest(ops, *, config, reader_factory, writer, clock, window=DAILY
                 return {"status": "no_new_work", "reason": "outside_digest_window", "business_writes": 0}
             recipients, key, subject_prefix = cfg["recipients"], "daily-digest-" + local.strftime("%Y%m%d"), ""
         token = uuid.uuid4().hex
+        prev_day = previous_weekday(target)
+        previous = {}
 
         def claim_op(tx, ts):
             c = ops._control(tx); b = ops._budget(tx); row = tx.get(key)
@@ -781,6 +1106,7 @@ def run_daily_digest(ops, *, config, reader_factory, writer, clock, window=DAILY
             _need(not b["overrun_hold"], "budget_overrun_hold")
             if row is not None and not (row["state"] == "claimed" and ts >= row["lease_until"]):
                 return None  # claimed/sending/sent/unknown: never a second mail under this key
+            previous["value"] = _previous(tx.get("daily-digest-" + prev_day.strftime("%Y%m%d")), prev_day)
             new = {"key": key, "kind": "daily_digest_preview" if preview_to else "daily_digest", "state": "claimed",
                    "token": token, "generation": c["generation"], "claimed_at": ts,
                    "lease_until": ts + LEASE_SECONDS, "date": target.isoformat(), "run_date": local.date().isoformat()}
@@ -794,7 +1120,8 @@ def run_daily_digest(ops, *, config, reader_factory, writer, clock, window=DAILY
         body, stats = build_digest(reader_factory(), day=target, day_note=cfg["day_note"], classifier=classifier,
                                    trend_source=trend_source if cfg["trend_search"] else None,  # flag-gated
                                    cards=cards, calendar=calendar, special_source=special_source,
-                                   new_business_source=new_business_source)
+                                   new_business_source=new_business_source, spark_source=spark_source,
+                                   previous=previous.get("value"))
         if preview_to is None:  # team mail: prepared from 09:00, never sent before 09:15 Istanbul
             h, mnt = (int(v) for v in DAILY_DIGEST_SEND_AT.split(":"))
             send_at = local.replace(hour=h, minute=mnt, second=0, microsecond=0)
@@ -940,6 +1267,12 @@ def run_worker_daily_digest(ops, secrets, *, clock=None, preview_to=None, previe
             trend_source = trend_search_source(ops, keys, load_catalog(), cards)
         except Exception:
             trend_source = None  # no cap/catalog -> NO_TRENDS
+    spark_source = None
+    try:  # daily Günün özü research (Claude Opus + web search), gated by daily_spark_research_enabled
+        from v11_trend_search import daily_spark_research_source
+        spark_source = daily_spark_research_source(ops, keys, load_catalog(), cards)
+    except Exception:
+        spark_source = None  # box lines say "alınamadı"; nothing invented
     special_source = new_business_source = None
     try:  # Monday research (Claude Opus + web search); each gated by its model-routing flag
         from v11_trend_search import special_days_research_source, new_business_research_source
@@ -951,7 +1284,8 @@ def run_worker_daily_digest(ops, secrets, *, clock=None, preview_to=None, previe
         return run_daily_digest(ops, config=config, reader_factory=reader_factory, writer=writer, clock=clock,
                                 preview_to=preview_to, preview_day=preview_day, preview_attempt=preview_attempt,
                                 classifier=classifier, trend_source=trend_source, cards=cards, calendar=load_calendar(),
-                                special_source=special_source, new_business_source=new_business_source)
+                                special_source=special_source, new_business_source=new_business_source,
+                                spark_source=spark_source)
     finally:
         for s in sessions:
             s.close()

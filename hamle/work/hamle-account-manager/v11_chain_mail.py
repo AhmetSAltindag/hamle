@@ -104,6 +104,15 @@ def _addresses(values):
 REPLY_PREFIX = re.compile(r"\A(?:\s*(?:re|ynt|yanıt|fw|fwd|ilt)\s*:\s*)+", re.IGNORECASE)
 
 
+DIGEST_SUBJECT = re.compile(r"(?:\[ÖNİZLEME\] )?Hamle AI: \d{1,2} \S+ \S+ Günü Kısa Özeti")
+
+
+def digest_reply(subject):
+    """A reply to / forward of Hamle's 09:15 team digest (its questions invite answers): never a new request."""
+    core = REPLY_PREFIX.sub("", str(subject or "")[:180]).strip()
+    return DIGEST_SUBJECT.fullmatch(core) is not None
+
+
 def reply_subject(subject):
     """'Re: ' + the thread subject without stacked reply prefixes ('Re: Re: X' -> 'Re: X')."""
     core = REPLY_PREFIX.sub("", str(subject or "")[:180]).strip()

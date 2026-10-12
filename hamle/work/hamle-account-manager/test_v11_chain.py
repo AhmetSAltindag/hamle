@@ -403,6 +403,14 @@ class LiveClockOrder(unittest.TestCase):
         self.assertEqual(h.world.posts(f"/todolists/{LIST}/todos.json"), [])
         self.assertEqual(h.calls["interpreter"], 0)
 
+    def test_reply_to_the_team_digest_is_not_a_request(self):
+        """The 09:15 digest asks the team about yesterday's ideas; answers must never open work."""
+        h = Harness()
+        h.mail_in("t-digest", "Hisense için Cansu yarın arayacak.", title="Re: Hamle AI: 13 Ekim Salı Günü Kısa Özeti")
+        report = h.tick()
+        self.assertEqual([m["reason"] for m in report["ignored_mail"]], ["digest_reply_not_a_request"])
+        self.assertEqual((h.world.posts(f"/todolists/{LIST}/todos.json"), h.calls["interpreter"]), ([], 0))
+
     def test_mail_received_after_queue_open_is_processed(self):
         h = Harness()
         h.mail_in("t-new", "Merhaba Hamle, iç duyuru görseli lazım.")

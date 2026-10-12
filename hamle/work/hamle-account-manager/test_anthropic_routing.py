@@ -109,7 +109,7 @@ class RoutingConfig(NoNetwork):
         r = self.routing
         self.assertEqual(r.default_provider, "anthropic")
         opus = ("chain_interpreter", "chain_answerer", "customer_text", "trend_radar", "monday_special_days",
-                "new_business_research")
+                "new_business_research", "daily_spark")
         for role in opus:
             self.assertEqual((r.route(role).provider, r.route(role).model), ("anthropic", "claude-opus-5-5"), role)
         for role in ("chain_classifier", "digest_classifier"):
@@ -122,6 +122,7 @@ class RoutingConfig(NoNetwork):
         self.assertIsNone(r.route("chain_interpreter").web_search)
         self.assertTrue(r.flag("monday_special_days_research_enabled"))
         self.assertTrue(r.flag("new_business_research_enabled"))
+        self.assertTrue(r.flag("daily_spark_research_enabled"))
 
     def test_openai_stays_selectable_but_never_default_and_bad_files_fail_closed(self):
         doc = json.loads((ROOT / "outputs/gamechangers-internal/model-routing.json").read_text(encoding="utf-8"))

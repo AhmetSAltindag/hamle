@@ -37,6 +37,8 @@ from v11_chain_models import ChainModelError, _arr, _obj, _str, key_for, reserva
 PROMPT = Path(__file__).with_name("chain_trend_prompt.txt")
 SPECIAL_PROMPT = Path(__file__).with_name("chain_special_days_prompt.txt")
 NEW_BUSINESS_PROMPT = Path(__file__).with_name("chain_new_business_prompt.txt")
+SPARK_PROMPT = Path(__file__).with_name("chain_daily_spark_prompt.txt")
+MAX_SPARK_IDEAS, MAX_SPARK_OPPORTUNITIES, MAX_SPARK_INSPIRATIONS = 3, 2, 1
 MAX_SPECIAL_DAYS = 5
 SPECIAL_HORIZON_DAYS = 14
 MIN_NEW_BUSINESS, MAX_NEW_BUSINESS = 3, 5
@@ -453,4 +455,91 @@ def new_business_research_source(ops, load_key, catalog, cards, *, routing=None,
                                                         code="invalid_new_business_schema"),
                              provider=route.provider, hold=hold)
         return sourced_new_business(output, current)
+    return research
+
+
+# ---------------------------------------------------------------- daily "Günün özü" research (data only)
+def spark_schema(brands):
+    """Schema allows a little more than the prompt asks; sourced_spark keeps the first 1/3/1."""
+    return _obj({
+        "opportunities": _arr(_obj({"kind": {"type": "string", "enum": ["client", "new_business"]},
+                                    "brand": _str(80), "headline": _str(200), "proposal": _str(240),
+                                    "url": _str(300), "date": _str(10)}), MAX_SPARK_OPPORTUNITIES + 1),
+        "ideas": _arr(_obj({"brand": {"type": "string", "enum": list(brands)}, "hook": _str(120),
+                            "format": _str(60), "idea": _str(240), "url": _str(300), "date": _str(10)}),
+                      MAX_SPARK_IDEAS + 2),
+        "inspirations": _arr(_obj({"title": _str(160), "company": _str(80), "why": _str(240),
+                                   "url": _str(300), "date": _str(10)}), MAX_SPARK_INSPIRATIONS + 1)})
+
+
+def sourced_spark(output, today, brands, current_brands):
+    """Every item needs an https URL from the web_search evidence and a date in its window:
+    opportunities/inspirations today-30..today, ideas today-30..today+14 (special days ahead).
+    'client' opportunities must name one of our brands, 'new_business' ones must not."""
+    evidence = set(output.get("evidence") or [])
+    ours = {_brand_key(b): b for b in brands}
+    existing = {_brand_key(b) for b in current_brands} | set(ours)
+
+    def match(key, keys):  # "WAT" names "WAT Mobilite"; very short keys never match loosely
+        return next((k for k in keys if k == key or (len(key) >= 3 and (k.startswith(key) or key.startswith(k)))),
+                    None)
+
+    def ok(row, ahead=0):
+        url, day = normalize_url(row.get("url")), _iso_day(row.get("date"))
+        if url is None or url not in evidence or day is None \
+                or not today - timedelta(days=30) <= day <= today + timedelta(days=ahead):
+            return None
+        return url, day.isoformat()
+
+    opportunities, ideas, inspirations, seen = [], [], [], set()
+    for o in output.get("opportunities") or []:
+        got, key = ok(o), _brand_key(o.get("brand"))
+        mine = match(key, ours) if key else None
+        if got is None or not key or (o["kind"] == "client" and mine is None) \
+                or (o["kind"] == "new_business" and match(key, existing) is not None):
+            continue
+        opportunities.append({"kind": o["kind"], "brand": ours[mine] if mine else _fit(o["brand"], 80),
+                              "headline": _fit(o["headline"], 200), "proposal": _fit(o["proposal"], 240),
+                              "url": got[0], "date": got[1]})
+    for i in output.get("ideas") or []:
+        got = ok(i, ahead=SPECIAL_HORIZON_DAYS)
+        if got is None or i["brand"] in seen:
+            continue
+        seen.add(i["brand"])
+        ideas.append({"brand": i["brand"], "hook": _fit(i["hook"], 120), "format": _fit(i["format"], 60),
+                      "idea": _fit(i["idea"], 240), "url": got[0], "date": got[1]})
+    for i in output.get("inspirations") or []:
+        got = ok(i)
+        if got is not None:
+            inspirations.append({"title": _fit(i["title"], 160), "company": _fit(i["company"], 80),
+                                 "why": _fit(i["why"], 240), "url": got[0], "date": got[1]})
+    return {"opportunities": opportunities[:MAX_SPARK_OPPORTUNITIES], "ideas": ideas[:MAX_SPARK_IDEAS],
+            "inspirations": inspirations[:MAX_SPARK_INSPIRATIONS]}
+
+
+def daily_spark_research_source(ops, load_key, catalog, cards, *, routing=None, client=None):
+    """research(day, avoid=()) -> sourced fırsat / fikir / ilham for the digest's Günün özü box;
+    None when the flag is off. Once per Istanbul day and input (preview + team share the call)."""
+    routing = _routing(routing)
+    if not routing.flag("daily_spark_research_enabled"):
+        return None
+    route = routing.route("daily_spark")
+    _, hold, budget_ok, gate = _research_gate(ops, catalog, route)
+    brands = eligible_brands(cards)
+    names = [b["brand"] for b in brands]
+    current = [b["brand"][:60] for b in (cards or {}).get("brands", []) if isinstance(b, dict)
+               and isinstance(b.get("brand"), str)][:40]
+
+    def research(day, avoid=()):
+        _need(names, "trend_no_brand_cards")
+        _need(budget_ok(), "model_budget_unavailable")
+        request_input = {"today": day.isoformat(), "country": "TR", "agency": "Gamechangers", "brands": brands,
+                         "current_clients": current, "avoid": [_fit(a, 120) for a in avoid][:6]}
+        output = gate().once("daily_spark", source_digest("daily_spark", request_input,
+                                                          route_fingerprint(route, SPARK_PROMPT)),
+                             lambda: anthropic_research(route, SPARK_PROMPT, request_input, spark_schema(names),
+                                                        api_key=key_for(load_key, "anthropic"), client=client,
+                                                        code="invalid_daily_spark_schema"),
+                             provider=route.provider, hold=hold)
+        return sourced_spark(output, day, names, current)
     return research
