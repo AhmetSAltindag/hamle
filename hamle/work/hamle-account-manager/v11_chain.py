@@ -85,6 +85,60 @@ def interpreter_text(source, rec):
     return "\n\n".join(parts)
 
 
+DEFAULT_FORMATS = {"graphic": ["image/jpeg"], "animation": ["video/mp4"], "video": ["video/mp4"], "text": ["text/plain"]}
+
+
+def fill_internal_defaults(requirements, source, *, final):
+    """A verified agency request is never stalled on details the team can settle itself.
+
+    Non-blocking gaps (title, objective, audience, brand files, count, format, spec) are filled
+    with plainly labelled assumptions. Blocking gaps (deadline, what to produce) are asked once;
+    with final=True (the requester already answered one round) they are filled too, so the task
+    opens and the team settles the rest. Returns the assumptions, in Turkish, for the
+    confirmation mail. Never touches agreement or routing fields."""
+    notes = []
+    def put(key, value, note):
+        if not (isinstance(requirements.get(key), str) and requirements[key].strip()):
+            requirements[key] = value
+            notes.append(note)
+    subject = reply_subject(source.get("subject"))[4:].strip()
+    put("title", (subject or "İç talep")[:120], "İş adı mail konusundan alındı.")
+    title = requirements["title"]
+    put("objective", title, "Amaç ayrıca yazılmadığı için iş adından alındı.")
+    put("audience", "Markanın mevcut hedef kitlesi (talepte belirtilmedi)",
+        "Hedef kitle belirtilmedi; markanın mevcut kitlesi varsayıldı.")
+    put("assets_ref", "Ekipteki güncel onaylı marka dosyaları" + (" ve talep mailindeki ekler"
+                                                                 if source.get("has_attachments") else ""),
+        "Marka dosyası olarak ekipteki güncel onaylı dosyalar kullanılacak.")
+    items = requirements.get("deliverables")
+    if final and not (isinstance(items, list) and items):
+        requirements["deliverables"] = items = [{"id": "tasarim", "kind": "graphic"}]
+        notes.append("Çıktı türü yazılmadığı için statik tasarım varsayıldı.")
+    for item in items if isinstance(items, list) else []:
+        if not isinstance(item, dict):
+            continue
+        if item.get("kind") not in DEFAULT_FORMATS:
+            if not final:
+                continue
+            item["kind"] = "graphic"
+            notes.append(f"{item.get('id')}: tür belirtilmedi, statik tasarım varsayıldı.")
+        if not (isinstance(item.get("quantity"), int) and item["quantity"] > 0):
+            item["quantity"] = 1
+            notes.append(f"{item.get('id')}: adet yazılmadı, 1 adet varsayıldı.")
+        if not (isinstance(item.get("formats"), list) and item["formats"]):
+            item["formats"] = list(DEFAULT_FORMATS[item["kind"]])
+            notes.append(f"{item.get('id')}: format yazılmadı, {item['formats'][0]} varsayıldı.")
+        if not (isinstance(item.get("specification"), str) and item["specification"].strip()):
+            item["specification"] = title
+        if item["kind"] in ("animation", "video") and not item.get("duration_seconds") and final:
+            item["duration_seconds"] = 15
+            notes.append(f"{item.get('id')}: süre yazılmadı, 15 saniye varsayıldı.")
+    if final:
+        put("deadline", "Belirtilmedi (ekip talep sahibiyle netleştirecek)",
+            "Teslim tarihi yazılmadı; ekip talep sahibiyle netleştirecek.")
+    return notes
+
+
 def remember_turns(rec, *turns):
     rows = (rec.get("conversation") or []) + [{"from": f, "text": _unquoted(t)} for f, t in turns if _unquoted(t)]
     rec["conversation"] = rows[-CONVERSATION_MAX:]
@@ -399,6 +453,11 @@ class Chain:
         requirements.setdefault("category_key", chain.get("default_category_key"))
         requirements.pop("agreement", None)  # never accept an agreement claimed by model output
         work, routing_note, mention = self._route_requirements(claim, work, source, requirements)
+        # One question round at most: after an answer, remaining gaps become labelled assumptions.
+        rec["assumptions"] = fill_internal_defaults(requirements, source,
+                                                    final=rec["status"] == "awaiting_clarification")
+        rec["open_points"] = [str(q).strip()[:300] for q in (result.get("missing_questions") or [])
+                              if isinstance(q, str) and q.strip()][:3]
         rule = chain.get("agency_direct_request_counts_as_agreement", {})
         if rule.get("value") is True and rule.get("verified") is True:
             requirements["agreement"] = {"verified": True, "source_message_id": source["message_id"],
@@ -412,14 +471,13 @@ class Chain:
                           if isinstance(c, dict) and c.get("email") == source["sender"]), "")
             lines = [f"Merhaba {first}," if first else "Merhaba,", "", "İşe başlayabilmem için şu bilgilere ihtiyacım var:"]
             lines += ["- " + q["question"] for q in plan["questions"]]
-            extra = [str(q).strip()[:300] for q in (result.get("missing_questions") or [])
-                     if isinstance(q, str) and q.strip()][:3]  # bounded model questions, internal requester only
-            lines += ["- " + q for q in dict.fromkeys(extra) if q not in {x["question"] for x in plan["questions"]}]
-            lines += ["", "Teşekkürler,", "Hamle"]
+            # Model-suggested questions are not asked: they go to the team as open points.
+            lines += ["", "Diğer detayları ben tamamlıyorum; görevi açınca onay mailinde hepsini göreceksin.",
+                      "", "Teşekkürler,", "Hamle"]
             payload = {"from": HAMLE, "to": [source["sender"]], "cc": [], "thread_id": intent["thread_id"],
                        "in_reply_to_message_id": intent["in_reply_to_message_id"],
                        "subject": reply_subject(source.get("subject")), "body": "\n".join(lines)}
-            remember_turns(rec, (source["sender"], source.get("text")), (HAMLE, "\n".join(lines[2:-3])))
+            remember_turns(rec, (source["sender"], source.get("text")), (HAMLE, "\n".join(lines[2:-5])))
             rec.update(status="awaiting_clarification", reason=plan["reason"])
             state = self._write(claim, work, rec, "clarify-" + source["message_id"][:150], "clarify_brief",
                                 "gmail", payload, self.d.mail_writer)
@@ -511,7 +569,12 @@ class Chain:
         lines += ["", "Açıldığı yer: " + place, "Atanan: " + assignees]
         if brief.get("deadline"):
             lines.append("Teslim: " + line(brief["deadline"], 120))
-        lines += ["Görev: " + link, "", "Yanlış anladığım bir şey varsa bu maile yanıt verin.", "", "Hamle"]
+        lines += ["Görev: " + link]
+        notes = list(rec.get("assumptions") or []) + list(rec.get("open_points") or [])
+        if notes:
+            lines += ["", "Netleşecekler (ekip tamamlayacak, farklıysa bu maile yazman yeterli):"]
+            lines += ["- " + line(n, 300) for n in notes[:8]]
+        lines += ["", "Yanlış anladığım bir şey varsa bu maile yanıt verin.", "", "Hamle"]
         return {"from": HAMLE, "to": list(rec["reply"]["to"]), "cc": list(rec["reply"]["cc"]),
                 "thread_id": rec["reply"]["thread_id"], "in_reply_to_message_id": rec["reply"]["in_reply_to_message_id"],
                 "subject": reply_subject(source.get("subject")), "body": "\n".join(lines),

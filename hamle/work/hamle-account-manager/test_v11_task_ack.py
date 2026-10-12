@@ -114,6 +114,32 @@ class BrandAck(unittest.TestCase):
         self.assertNotIn("ack_task_id", mail)
         self.assertEqual(mail["to"], ["ahmet@gamechangers.com.tr"])
 
+    def test_one_question_round_then_task_opens_with_assumptions(self):
+        h = BrandHarness(ack_on(live_catalog()))
+        req = requirements("WAT story")
+        for key in ("deadline", "audience", "assets_ref", "objective"):
+            req.pop(key)
+        req["deliverables"][0].pop("formats")
+        h.brand_mail("t-r", "Re: Re: WAT story", "WAT için story, Instagram.", req=req)
+        h.tick()
+        rec, _ = h.record("t-r")
+        self.assertEqual(rec["status"], "awaiting_clarification")
+        question, = h.mail.sent
+        asked = [l for l in question["body"].splitlines() if l.startswith("- ")]
+        self.assertEqual(asked, ["- Bu iş için beklenen teslim tarihi nedir?"])  # only the blocking gap
+        self.assertEqual(question["subject"], "Re: WAT story")
+        # The answer still has no date: no second question round, the task opens anyway.
+        h.brand_mail("t-r", "Re: WAT story", "Ekip planlasın.", req=requirements("WAT story", complete=False))
+        h.tick()
+        rec, work, todo = h.task("t-r")
+        self.assertEqual(rec["status"], "in_production")
+        self.assertIn("Teslim tarihi: Belirtilmedi (ekip talep sahibiyle netleştirecek)", todo["description"])
+        ack = h.mail.sent[-1]
+        self.assertIn("ack_task_id", ack)
+        self.assertIn("Netleşecekler", ack["body"])
+        self.assertIn("Teslim tarihi yazılmadı", ack["body"])
+        self.assertEqual(len([m for m in h.mail.sent if "ack_task_id" not in m]), 1)
+
     def test_denied_ack_does_not_block_task(self):
         h = BrandHarness(ack_on(live_catalog()))
         h.authorize = lambda kind, payload: kind != "acknowledge"
