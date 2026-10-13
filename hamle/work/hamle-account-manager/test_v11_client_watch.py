@@ -313,6 +313,53 @@ class Reader(Base):
             self.assertTrue(reader.skipped)
 
 
+class AhmetsStyle(Base):
+    """Ahmet's own answers to the first four test mails (2026-10-13) shape every client draft."""
+
+    def test_prompt_carries_his_rules_and_examples_signed_as_hamle(self):
+        text = cw.PROMPT.read_text(encoding="utf-8")
+        for line in ("Dönüşünüze göre hızlıca iş listemize alacağız.",
+                     "Genel bir 29 Ekim içeriği hazırlıyoruz, hem fikiriz değil mi?",
+                     "Notlarınızı aldık ve beğenmenize çok sevindik, teşekkür ederiz!",
+                     "Tam olarak nasıl beklentimiz var, satış mı? Yoksa imaj mı?",
+                     "Revize notlarını tek tek geri sayma",
+                     "Müşterinin kendi koyduğu kesin tarihi teyit edebilirsin",
+                     "Mailde olmayan bir tarihi asla yazma."):
+            self.assertIn(line, text)
+        self.assertEqual(text.count("Sevgiler,\nHamle\nGamechangers"), 3)  # the three examples
+        self.assertNotIn("Sevgiler,\nAhmet", text)
+
+    def test_internal_terms(self):
+        for reply, terms in (("Basecamp'te görevini açtık.", ["Basecamp", "görev"]),
+                             ("Ekteki image/jpeg dosyası", ["dosya türü"]),
+                             ("linkedin_post: hazırlanıyor", ["sistem kodu"]),
+                             ("Hamle İşleri listesine aldık", ["Hamle İşleri"]),
+                             ("Bir to-do açtık", ["to-do"]),
+                             ("29 Ekim postumuz 4:5 olacak, ekibi görevlendirdik.", []),
+                             ("instagram.com/wat_mobilite hesabında, deniz_kaya@watmobilite.com.tr", [])):
+            self.assertEqual(cw.internal_terms(reply), terms, reply)
+
+    def test_internal_words_are_flagged_for_the_team_and_cap_confidence(self):
+        self.mails = [source(1)]
+        leaked = "Merhaba Ayşe,\nTalebinizi Basecamp'te görev olarak açtık.\nSevgiler,\nHamle\nGamechangers"
+        self.client.outputs = [message(draft_out(reply=leaked))]
+        self.watch().run()
+        body = self.todos.calls[0]["description"]
+        self.assertIn("Dikkat: taslakta müşteriye gitmemesi gereken iç ifade var (Basecamp, görev).", body)
+        self.assertIn("Güven: 50/100", body)
+        self.assertEqual(self.row("m1")["internal_terms"], ["Basecamp", "görev"])
+
+    def test_clean_draft_keeps_its_confidence_and_fixed_sentence_is_never_flagged(self):
+        self.mails = [source(1), source(2, thread="t9", subject="Kasım teklifi", text="Fiyat teklifinizi bekliyoruz.")]
+        leaked = "Merhaba,\nBasecamp'e aldık.\nSevgiler,\nHamle\nGamechangers"
+        self.client.outputs = [message(draft_out()), message(draft_out(reply=leaked))]
+        self.watch().run()
+        self.assertIn("Güven: 82/100", self.todos.calls[0]["description"])
+        self.assertNotIn("Dikkat:", self.todos.calls[0]["description"])
+        self.assertEqual((self.row("m1")["internal_terms"], self.row("m2")["internal_terms"]), ([], []))
+        self.assertIn(cw.FIXED_SENSITIVE_REPLY, self.todos.calls[1]["description"])
+
+
 class Disk(unittest.TestCase):
     def test_shipped_config_is_on_in_silent_draft_mode_and_valid(self):
         cfg = cw.validate_config(cw.load_config())

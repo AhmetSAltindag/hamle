@@ -69,6 +69,17 @@ QUOTE_MARKERS = (re.compile(r"^\s*on .{0,200} wrote:\s*$", re.I),
                  re.compile(r"^\s*-{2,}\s*(original message|orijinal ileti|özgün ileti|forwarded message|"
                             r"iletilen ileti)\s*-{2,}\s*$", re.I),
                  re.compile(r"^\s*(from|kimden|gönderen)\s*:\s*.+$", re.I))
+# Agency-internal words never belong in a client mail (Ahmet's answers, 2026-10-13). A hit does not
+# block the draft; it is shown to the team and caps the draft's confidence.
+INTERNAL_TERMS = (
+    ("Basecamp", re.compile(r"basecamp", re.I)),
+    ("to-do", re.compile(r"(?<![0-9a-zçğıöşü])to-?dos?(?![0-9a-zçğıöşü])", re.I)),
+    ("görev", re.compile(r"(?<![0-9a-zçğıöşü])görev(?!l)", re.I)),
+    ("Hamle İşleri", re.compile(r"hamle i̇?şleri", re.I)),
+    ("dosya türü", re.compile(r"(?<![0-9a-z])(?:image|video|audio|application)/[a-z0-9.+-]+", re.I)),
+    ("sistem kodu", re.compile(r"(?<![0-9a-zçğıöşü@._/-])[a-z]+(?:_[a-z]+)+(?![0-9a-zçğıöşü@/-])")),
+)
+INTERNAL_TERMS_CONFIDENCE = 50
 MAX_NEW_TEXT = 8000
 MAX_CONTEXT_TEXT = 3000
 LEASE_SECONDS = 900
@@ -217,6 +228,11 @@ def sensitive_hits(subject, text):
     return sorted({cat for cat, words in SENSITIVE_WORDS.items() for w in words if w.casefold() in blob})
 
 
+def internal_terms(reply):
+    text = str(reply or "")
+    return [label for label, pattern in INTERNAL_TERMS if pattern.search(text)]
+
+
 def _obj(props):
     return {"type": "object", "properties": props, "required": list(props), "additionalProperties": False}
 
@@ -307,6 +323,9 @@ def note_body(draft, brand, sender, source):
         lines += ["Eksik bilgi:"] + ["- " + m for m in draft["missing_info"]] + [""]
     if draft.get("team_next_step"):
         lines += ["Ekip için öneri: " + draft["team_next_step"]]
+    if draft.get("internal_terms"):
+        lines += ["Dikkat: taslakta müşteriye gitmemesi gereken iç ifade var (" + ", ".join(draft["internal_terms"])
+                  + "). Bu haliyle gönderilmez."]
     meta = "Tür: " + CATEGORY_TR.get(draft.get("category"), "-")
     if draft.get("confidence") is not None:
         meta += f" · Güven: {draft['confidence']}/100"
@@ -329,6 +348,9 @@ def finalize_draft(output, source, model_status):
         out["reply"] = FIXED_SENSITIVE_REPLY
     elif not out["reply"]:
         out["reply"] = "(taslak alınamadı: " + str(model_status) + ")"
+    out["internal_terms"] = [] if sensitive else internal_terms(out["reply"])
+    if out["internal_terms"] and isinstance(out["confidence"], int):
+        out["confidence"] = min(out["confidence"], INTERNAL_TERMS_CONFIDENCE)
     return out
 
 
@@ -566,7 +588,7 @@ class ClientWatch:
     @staticmethod
     def _fields(draft):
         return {k: draft.get(k) for k in ("category", "summary", "reply", "missing_info", "team_next_step",
-                                         "confidence", "sensitive", "model_status")}
+                                         "confidence", "sensitive", "internal_terms", "model_status")}
 
     # ----- evening summary to Ahmet
     def _summary(self):
@@ -626,7 +648,8 @@ def summary_payload(rows, book, day, to, target, link_base):
         state = {"noted": None, "unknown": "Basecamp notu belirsiz (tekrar denenmedi)",
                  "held": "Not yazılmadı: " + str(r.get("reason")), "claimed": "işleniyor",
                  "writing": "not yazılıyordu"}.get(r.get("state"), str(r.get("state")))
-        tag = (" · TEST" if r.get("test") else "") + (" · HASSAS" if r.get("sensitive") else "")
+        tag = ((" · TEST" if r.get("test") else "") + (" · HASSAS" if r.get("sensitive") else "")
+               + (" · İÇ DİL" if r.get("internal_terms") else ""))
         lines = [f"{i}. {brand} · {who} · {_when(r.get('received_at_ms'))}{tag}",
                  "Konu: " + (r.get("subject") or "(konu yok)")]
         if r.get("summary"):
