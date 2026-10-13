@@ -137,6 +137,27 @@ class AutoSend(ReplyBase):
         again = self.watch().run()
         self.assertEqual((again["sent"], len(self.replies.sent), len(self.client.calls)), (0, 1, 1))
 
+    def test_hamles_own_job_thread_gets_answered_and_the_teams_threads_do_not(self):
+        # Ahmet 13 Oct: in a thread Hamle answered and opened the job for, the client's reply is answered too.
+        from v11_client_job import job_thread_key
+        data = self.ops.backend.data
+        for thread in ("t1", "t3"):
+            data[job_thread_key(thread)] = {"key": job_thread_key(thread), "job_keys": ["client-job-x"]}
+        data[cw.reply_key("t1")] = {"key": cw.reply_key("t1"), "count": 1}
+        data[cw.reply_key("t2")] = {"key": cw.reply_key("t2"), "count": 1}
+        data[cw.reply_key("t3")] = {"key": cw.reply_key("t3"), "count": 5}
+        self.mails = [source(1, subject="Re: Ekim post revizesi"), source(2, thread="t2", subject="Re: Kasım planı"),
+                      source(3, thread="t3", subject="Re: Bornova")]
+        self.client.outputs = [message(clear()), message(clear()), message(clear())]
+        r = self.watch(reply_config(allow_questions=True, new_threads_only=True)).run()
+        self.assertEqual((r["sent"], r["awaiting_approval"]), (1, 2), r)
+        self.assertEqual([s["thread_id"] for s in self.replies.sent], ["t1"])
+        notes = {c["title"]: c["description"] for c in self.todos.calls}
+        team = next(d for t, d in notes.items() if "Kasım planı" in t)
+        self.assertIn("devam eden bir yazışma", team)
+        self.assertIn("bu zincire daha önce cevap verdim", team)
+        self.assertIn("bu zincire kendiliğinden 5 kez cevap verdim", next(d for t, d in notes.items() if "Bornova" in t))
+
     def test_question_in_the_reply_waits_for_the_brand_owner(self):
         self.mails = [source(1)]
         self.client.outputs = [message(clear(reply=ASKING))]

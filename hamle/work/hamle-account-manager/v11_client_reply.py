@@ -140,7 +140,12 @@ def fixed_body(fixed):
     return f"Merhaba,\n\n{fixed}\n\n{SIGNATURES[0]}"
 
 
-def check(draft, source, sender, settings, *, thread_replied, sent_today, unknown, not_direct=()):
+# In a thread Hamle answered itself and opened the Basecamp job for (Ahmet 13 Oct), the client's later mails are
+# answered too, at most this many times; the team's older threads stay with the team.
+OWN_THREAD_MAX_REPLIES = 5
+
+
+def check(draft, source, sender, settings, *, thread_replied, sent_today, unknown, not_direct=(), own_thread=False):
     """Reasons the draft may NOT go out by itself (empty list = auto-send)."""
     reasons = []
     if not draft.get("sensitive"):
@@ -161,14 +166,16 @@ def check(draft, source, sender, settings, *, thread_replied, sent_today, unknow
         if not reply.lstrip().startswith(("Merhaba", "Hi", "Hello", "Dear")) or not reply.rstrip().endswith(
                 tuple(s.split("\n", 1)[1] for s in SIGNATURES)):
             reasons.append("selamlama ya da imza eksik")
-    if settings["new_threads_only"] and ONGOING.match(str(source.get("subject") or "")):
+    if settings["new_threads_only"] and not own_thread and ONGOING.match(str(source.get("subject") or "")):
         reasons.append("devam eden bir yazışma; kendiliğinden yalnız yeni maillere cevap veriyorum")
     if unknown:
         reasons.append("tanımadığım alıcı var: " + ", ".join(unknown[:3]))
     if not_direct:
         reasons.append("bu kişilere onaysız yazmıyorum (Markalar: Hayır): " + ", ".join(not_direct[:3]))
-    if thread_replied:
+    if thread_replied and not own_thread:
         reasons.append("bu zincire daha önce cevap verdim")
+    if own_thread and int(thread_replied or 0) >= OWN_THREAD_MAX_REPLIES:
+        reasons.append(f"bu zincire kendiliğinden {OWN_THREAD_MAX_REPLIES} kez cevap verdim")
     if sent_today >= settings["max_sends_per_day"]:
         reasons.append("günlük gönderim sınırı doldu")
     return reasons

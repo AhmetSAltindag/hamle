@@ -150,6 +150,11 @@ class Text(unittest.TestCase):
     def test_latest_part_and_sensitive_words(self):
         mail = "Merhaba,\nGörseli onaylıyoruz.\n\n12 Eki 2026 Pzt, 10:00 tarihinde Özge şunu yazdı:\n> fiyat teklifi ekte"
         self.assertEqual(cw.latest_part(mail), "Merhaba,\nGörseli onaylıyoruz.")
+        live = ("Merhaba,\n\"Aydın Yönü\" kalksın.\n\nHamle <hamle@gamechangers.com.tr> adresine sahip kullanıcı "
+                "13 Eki 2026 Sal, 21:57 tarihinde şunu yazdı:\n> Merhaba Ahmet Bey,")
+        self.assertEqual(cw.latest_part(live), "Merhaba,\n\"Aydın Yönü\" kalksın.")  # Gmail TR, 13 Oct live
+        wrapped = live.replace("kullanıcı 13 Eki", "kullanıcı\n13 Eki")
+        self.assertEqual(cw.latest_part(wrapped), "Merhaba,\n\"Aydın Yönü\" kalksın.")
         self.assertEqual(cw.sensitive_hits("Re: görsel", mail), [])  # quoted 'fiyat' does not count
         self.assertEqual(cw.sensitive_hits("Ekim faturası", "Merhaba"), ["price"])
         self.assertEqual(cw.sensitive_hits("", "Bu işten hiç memnun değiliz, sözleşmeye bakacağız."),

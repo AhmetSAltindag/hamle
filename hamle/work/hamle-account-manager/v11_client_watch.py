@@ -82,7 +82,9 @@ SENSITIVE_WORDS = {
                   "çok kötü", "berbat", "complaint", "unacceptable"),
 }
 QUOTE_MARKERS = (re.compile(r"^\s*on .{0,200} wrote:\s*$", re.I),
-                 re.compile(r"^.{0,200}tarihinde .{0,200} şunu yazdı:\s*$", re.I),
+                 # live Gmail TR: "... <x@y> adresine sahip kullanıcı 13 Eki 2026 Sal, 21:57 tarihinde şunu yazdı:"
+                 re.compile(r"^.{0,300}tarihinde\s+(?:.{0,200}\s)?şunu yazdı:\s*$", re.I),
+                 re.compile(r"^.{0,200}adresine sahip kullanıcı(?:\s.{0,120})?$", re.I),  # the same line wrapped
                  re.compile(r"^\s*-{2,}\s*(original message|orijinal ileti|özgün ileti|forwarded message|"
                             r"iletilen ileti)\s*-{2,}\s*$", re.I),
                  re.compile(r"^\s*(from|kimden|gönderen)\s*:\s*.+$", re.I))
@@ -951,12 +953,14 @@ class ClientWatch:
         local = self.clock().astimezone(ISTANBUL)
         replied = (self._get(reply_key(source["thread_id"])) or {}).get("count")
         sent_today = int((self._get(day_key(local.date())) or {}).get("sent_count") or 0)
-        reasons = cr.check(draft, source, sender, self.reply, thread_replied=bool(replied), sent_today=sent_today,
-                           unknown=unknown, not_direct=cr.not_direct(to, cc, self.book, self.reply))
+        from v11_client_job import job_thread_key
+        own = self._get(job_thread_key(source["thread_id"])) is not None  # Hamle answered it and opened the job
+        reasons = cr.check(draft, source, sender, self.reply, thread_replied=int(replied or 0), sent_today=sent_today,
+                           unknown=unknown, not_direct=cr.not_direct(to, cc, self.book, self.reply), own_thread=own)
         outcome = "manual" if unknown else ("awaiting_approval" if reasons else "send")
         return {"outcome": outcome, "reasons": reasons, "to": to, "cc": cc,
                 "subject": reply_subject(source.get("subject")), "body": cr.body_for(draft),
-                "anchor": source["message_id"], "thread_id": source["thread_id"]}
+                "anchor": source["message_id"], "thread_id": source["thread_id"], "own_thread": own}
 
     def _owner(self, sender):
         """Brand owner on the note; a test sender's mail goes to the first approver (Ahmet), never the team."""
@@ -982,6 +986,7 @@ class ClientWatch:
             self.reply_writer.preflight("client_reply", copy.deepcopy(payload))
         except Exception as exc:
             return "blocked:" + _code(exc)
+        from v11_client_reply import OWN_THREAD_MAX_REPLIES
 
         def begin(tx, now):
             self._fence(tx, now)
@@ -989,7 +994,9 @@ class ClientWatch:
             _need(row is not None and row.get("token") == token, "client_claim_lost")
             if row.get("reply_state") not in (None, "awaiting_approval"):
                 raise ClientWatchError("blocked:client_reply_state_changed")
-            if approved_by is None and (done or {}).get("count"):
+            count = int((done or {}).get("count") or 0)
+            if approved_by is None and count and not (plan.get("own_thread") is True
+                                                      and count < OWN_THREAD_MAX_REPLIES):
                 raise ClientWatchError("blocked:thread_already_replied")
             if int(day.get("sent_count") or 0) >= self.reply["max_sends_per_day"]:
                 raise ClientWatchError("blocked:daily_send_limit")
