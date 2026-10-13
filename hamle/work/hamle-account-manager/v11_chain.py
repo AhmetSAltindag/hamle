@@ -72,6 +72,16 @@ NEXT_TR = {
 HELD_NEXT = ("bu işte benim otomatik adımım yok; kontrol, onay ve talep sahibine teslim ekipte. "
              "İşi yeniden bana devretmek için Ahmet'in onayı gerekiyor.")
 REASON_TR = {"quality_evidence_missing": "teslim edilen dosyayı göremediğim için puan veremedim"}
+# plan_intake hold reasons for non-routine requests -> (why, who decides with Hamle).
+NON_ROUTINE = {
+    "ozge_collaboration_required": ("Bu bir sosyal medya fikir ve planlama talebi.", ("Özge", "Cansu")),
+    "cansu_and_ahmet_decision_required": ("Bu talep strateji kararı içeriyor.", ("Cansu", "Ahmet")),
+    "ahmet_commercial_decision_required": ("Bu talep fiyat, teklif veya bütçe içeriyor.", ("Ahmet",)),
+    "risk_classification_missing": ("Talebin türünü net anlayamadım.", ("Cansu", "Özge")),
+}
+NON_ROUTINE_QUESTIONS = ("Hangi marka veya proje için düşünüyoruz?",
+                         "Yayın dönemi veya teslim tarihi ne olmalı?",
+                         "Bütçe, kanal veya format açısından bir sınır var mı?")
 HELD_LOOKBACK_SECONDS = 3 * 24 * 3600  # older comments on a held work are not answered
 HELD_LISTEN_SECONDS = 30 * 24 * 3600  # a work held longer than this is no longer read
 
@@ -126,6 +136,61 @@ def interpreter_text(source, rec):
 
 
 DEFAULT_FORMATS = {"graphic": ["image/jpeg"], "animation": ["video/mp4"], "video": ["video/mp4"], "text": ["text/plain"]}
+FORMAT_LABELS = {"image/jpeg": "JPG", "image/png": "PNG", "application/pdf": "PDF", "video/mp4": "MP4",
+                 "text/plain": "metin"}
+KIND_LABELS = {"graphic": "statik tasarım", "animation": "animasyon", "video": "video", "text": "metin"}
+
+
+def deliverable_label(item, limit=80):
+    """A deliverable in the requester's words: its specification, else its id without code marks."""
+    spec = re.sub(r"\s+", " ", str(item.get("specification") or "")).strip()
+    if spec:
+        return spec if len(spec) <= limit else spec[:limit].rsplit(" ", 1)[0] + "…"
+    return re.sub(r"[_-]+", " ", str(item.get("id") or "çıktı")).strip()
+
+
+def readable_questions(questions, requirements):
+    """plan_intake questions with deliverable ids ('linkedin_post: ...') replaced by readable labels."""
+    items = {str(i.get("id")): i for i in requirements.get("deliverables") or [] if isinstance(i, dict)}
+    out = []
+    for q in questions:
+        text, field = str(q["question"]), str(q.get("field") or "")
+        ident = field.split(".")[1] if field.startswith("deliverables.") and field.count(".") >= 2 else None
+        if ident in items and text.startswith(ident + ": "):
+            text = deliverable_label(items[ident]) + " için: " + text[len(ident) + 2:]
+        out.append(text)
+    return out
+
+
+def understanding(requirements):
+    """One plain sentence of what Hamle understood (no bullets: questions stay the only list)."""
+    title, objective = (str(requirements.get(k) or "").strip() for k in ("title", "objective"))
+    objective = objective.rstrip(".")
+    parts = [title + (": " + objective if objective and objective != title else "")]
+    outs = []
+    for item in requirements.get("deliverables") or []:
+        if not isinstance(item, dict):
+            continue
+        qty = item.get("quantity") if isinstance(item.get("quantity"), int) else None
+        outs.append((f"{qty} × " if qty else "") + deliverable_label(item, 120))
+    if outs:
+        parts.append(", ".join(outs))
+    if isinstance(requirements.get("deadline"), str) and requirements["deadline"].strip():
+        parts.append("teslim: " + requirements["deadline"].strip())
+    text = "; ".join(p for p in parts if p).rstrip(".")
+    return ("Anladığım kadarıyla: " + text[:700] + ".") if text else ""
+
+
+PRAISE = re.compile(r"beğendik|elinize sağlık|eline sağlık|harika olmuş|çok güzel olmuş|bayıldık|süper olmuş",
+                    re.IGNORECASE)
+
+
+def thanks_line(source, plural=False):
+    """A requester who praised the work hears it back (the team gets told too)."""
+    if not PRAISE.search(_unquoted(source.get("text"), 4000)):
+        return ""
+    return "Güzel geri bildiriminiz için teşekkürler, ekibe ileteceğim." if plural else \
+        "Güzel geri bildirimin için teşekkürler, ekibe ileteceğim."
 
 
 def fill_internal_defaults(requirements, source, *, final):
@@ -157,22 +222,21 @@ def fill_internal_defaults(requirements, source, *, final):
     for item in items if isinstance(items, list) else []:
         if not isinstance(item, dict):
             continue
-        if item.get("kind") not in DEFAULT_FORMATS:
-            if not final:
-                continue
+        if item.get("kind") not in DEFAULT_FORMATS:  # what to produce is known; its kind the team settles
             item["kind"] = "graphic"
-            notes.append(f"{item.get('id')}: tür belirtilmedi, statik tasarım varsayıldı.")
+            notes.append(f"{deliverable_label(item)}: tür belirtilmedi, statik tasarım varsayıldı.")
         if not (isinstance(item.get("quantity"), int) and item["quantity"] > 0):
             item["quantity"] = 1
-            notes.append(f"{item.get('id')}: adet yazılmadı, 1 adet varsayıldı.")
+            notes.append(f"{deliverable_label(item)}: adet yazılmadı, 1 adet varsayıldı.")
         if not (isinstance(item.get("formats"), list) and item["formats"]):
             item["formats"] = list(DEFAULT_FORMATS[item["kind"]])
-            notes.append(f"{item.get('id')}: format yazılmadı, {item['formats'][0]} varsayıldı.")
+            notes.append(f"{deliverable_label(item)}: format yazılmadı, "
+                         f"{FORMAT_LABELS.get(item['formats'][0], item['formats'][0])} varsayıldı.")
         if not (isinstance(item.get("specification"), str) and item["specification"].strip()):
             item["specification"] = title
         if item["kind"] in ("animation", "video") and not item.get("duration_seconds") and final:
             item["duration_seconds"] = 15
-            notes.append(f"{item.get('id')}: süre yazılmadı, 15 saniye varsayıldı.")
+            notes.append(f"{deliverable_label(item)}: süre yazılmadı, 15 saniye varsayıldı.")
     if final:
         put("deadline", "Belirtilmedi (ekip talep sahibiyle netleştirecek)",
             "Teslim tarihi yazılmadı; ekip talep sahibiyle netleştirecek.")
@@ -518,8 +582,12 @@ class Chain:
             intent = plan["intents"][0]["payload"]
             first = next((str(c.get("name") or "").split(" ")[0] for c in self.catalog.get("contacts") or []
                           if isinstance(c, dict) and c.get("email") == source["sender"]), "")
-            lines = [f"Merhaba {first}," if first else "Merhaba,", "", "İşe başlayabilmem için şu bilgilere ihtiyacım var:"]
-            lines += ["- " + q["question"] for q in plan["questions"]]
+            lines = [f"Merhaba {first}," if first else "Merhaba,", ""]
+            seen = " ".join(x for x in (thanks_line(source), understanding(requirements)) if x)
+            if seen:
+                lines += [seen, ""]
+            lines += ["İşe başlayabilmem için şu bilgilere ihtiyacım var:"]
+            lines += ["- " + q for q in readable_questions(plan["questions"], requirements)]
             # Model-suggested questions are not asked: they go to the team as open points.
             lines += ["", "Diğer detayları ben tamamlıyorum; görevi açınca onay mailinde hepsini göreceksin.",
                       "", "Teşekkürler,", "Hamle"]
@@ -531,6 +599,8 @@ class Chain:
             state = self._write(claim, work, rec, "clarify-" + source["message_id"][:150], "clarify_brief",
                                 "gmail", payload, self.d.mail_writer)
             return None if state == "unknown" else ("processed", "clarification:" + state)
+        if plan["status"] == "held" and plan["reason"] in NON_ROUTINE:
+            return self._non_routine(claim, work, rec, source, requirements, plan["reason"])
         _need(plan["status"] == "ready_internal_task", "intake_" + str(plan["reason"]))
         brief = plan["brief"]
         _need(brief["binding"]["list_id"] == work["list_id"] and brief["service_id"] == work["service_id"],
@@ -578,7 +648,8 @@ class Chain:
                 rec["authority"] = {"status": "not_granted", "reason": "intake_authority_failed"}
             self._save("chain-", rec)
         work = self.q.get_work(work["work_id"])
-        note = self._context_note(rec, past, result.get("follow_ups"), result.get("context_notes"))
+        note = self._context_note(rec, past, result.get("follow_ups"), result.get("context_notes"),
+                                  rec.get("open_points"))
         if routing_note:
             note = (self._tag([mention], routing_note) if mention else routing_note) + "\n\n" + note
         if self._comment(claim, work, rec, "context-note", note, [mention] if mention else []) is None:
@@ -589,6 +660,40 @@ class Chain:
                 return None  # ambiguous send: work blocked, never resent
         return "processed", "basecamp-readback:" + str(task["task_id"])
 
+    def _non_routine(self, claim, work, rec, source, requirements, reason):
+        """Idea, planning, strategy or price requests never go silent: the requester gets smart
+        questions once (round 1), then one closing line (round 2) and the work goes to the team.
+        No task is opened by Hamle for these; plan_intake keeps them out of the automatic flow."""
+        why, who = NON_ROUTINE[reason]
+        first = next((str(c.get("name") or "").split(" ")[0] for c in self.catalog.get("contacts") or []
+                      if isinstance(c, dict) and c.get("email") == source["sender"]), "")
+        people = [n for n in who if n != first]
+        team = (" ve ".join([", ".join(people[:-1]), people[-1]]) if len(people) > 1 else people[0]) if people else "ekip"
+        final = rec["status"] == "awaiting_clarification"
+        lines = [f"Merhaba {first}," if first else "Merhaba,", ""]
+        if not final:
+            asks = list(rec.get("open_points") or [])[:3] or list(NON_ROUTINE_QUESTIONS)
+            lines += ["Talebini aldım. " + why + " Bu yüzden görevi tek başıma açmıyorum; " + team
+                      + " ile birlikte ele alacağız.", "", "İyi bir öneriyle dönebilmemiz için birkaç şeyi netleştirelim:"]
+            lines += ["- " + str(q).strip()[:300] for q in asks]
+        else:
+            lines += ["Teşekkürler, bilgileri aldım. " + why + " Bu yüzden görevi ben açmıyorum; "
+                      + team + " ile netleştirip görev olarak açmanızı öneririm."]
+        lines += ["", "Teşekkürler,", "Hamle"]
+        payload = {"from": HAMLE, "to": [source["sender"]], "cc": [], "thread_id": source["thread_id"],
+                   "in_reply_to_message_id": source["message_id"],
+                   "subject": reply_subject(source.get("subject")), "body": "\n".join(lines)}
+        remember_turns(rec, (source["sender"], source.get("text")), (HAMLE, "\n".join(lines[2:-3])))
+        rec.update(status="held" if final else "awaiting_clarification", reason=reason)
+        self._note(rec, "non-routine " + reason + (" (closed)" if final else " (asked)"))
+        state = self._write(claim, work, rec, "clarify-" + source["message_id"][:150], "clarify_brief",
+                            "gmail", payload, self.d.mail_writer)
+        if state == "unknown":
+            return None
+        if final:
+            return "held_for_human", "non-routine:" + reason
+        return "processed", "non-routine-questions:" + state
+
     LIST_LABELS = {"social": "Sosyal Medya", "project": "Projeler", "motion": "Motion"}
 
     def _ack_enabled(self):
@@ -598,9 +703,8 @@ class Chain:
         """Same-thread confirmation (reply-all within the brief's verified agency envelope)."""
         def line(value, limit=240):
             return re.sub(r"\s+", " ", str(value)).strip()[:limit]
-        kinds = {"graphic": "statik tasarım", "animation": "animasyon", "video": "video", "text": "metin"}
-        outputs = ", ".join(f"{d.get('quantity')} × {kinds.get(d.get('kind'), d.get('kind'))} ({line(d.get('id'), 40)})"
-                            for d in brief.get("deliverables") or [])[:300]
+        outputs = ", ".join(f"{d.get('quantity')} × {KIND_LABELS.get(d.get('kind'), d.get('kind'))} "
+                            f"({line(deliverable_label(d, 120), 120)})" for d in brief.get("deliverables") or [])[:600]
         routed = self.cat.get("routed_brand")
         if routed:
             place = f"{routed['brand_name']} · {self.LIST_LABELS.get(self.cat['routes'][0].get('list_name'), 'liste')} listesi"
@@ -609,7 +713,8 @@ class Chain:
             place = f"{bc.get('project_name') or 'Hamle'} · {self.cat['routes'][0].get('list_name') or 'Hamle İşleri'} listesi"
         assignees = ", ".join(self.names.get(i, str(i)) for i in task["assignee_ids"]) or "-"
         link = f"https://3.basecamp.com/{task['account_id']}/buckets/{task['project_id']}/todos/{task['task_id']}"
-        lines = ["Merhaba,", "", "Talebinizi aldım ve Basecamp'te görevi açtım. Anladığım kadarıyla:",
+        lines = ["Merhaba,", "", " ".join(x for x in (thanks_line(source, plural=True), "Talebinizi aldım ve Basecamp'te görevi "
+                                                     "açtım. Anladığım kadarıyla:") if x),
                  "- İş: " + line(brief["title"]), "- Amaç: " + line(brief["objective"])]
         if brief.get("audience"):
             lines.append("- Hedef kitle: " + line(brief["audience"]))
@@ -619,7 +724,7 @@ class Chain:
         if brief.get("deadline"):
             lines.append("Teslim: " + line(brief["deadline"], 120))
         lines += ["Görev: " + link]
-        notes = list(rec.get("assumptions") or []) + list(rec.get("open_points") or [])
+        notes = list(rec.get("assumptions") or [])  # model questions go to the team note, not the requester
         if notes:
             lines += ["", "Netleşecekler (ekip tamamlayacak, farklıysa bu maile yazman yeterli):"]
             lines += ["- " + line(n, 300) for n in notes[:8]]
@@ -669,12 +774,16 @@ class Chain:
         return work, (f"Hamle marka yönlendirmesi: talep {name} markası için; {reason}. "
                       "İş iç 'Hamle İşleri' listesinde açıldı."), mention
 
-    def _context_note(self, rec, past, follow_ups, context_notes=None):
+    def _context_note(self, rec, past, follow_ups, context_notes=None, open_points=None):
         lines = ["Hamle iç bağlam notu — yalnız ekip içi, müşteriye/requester'a gönderilmez."]
         notes = [str(n)[:300] for n in (context_notes or []) if isinstance(n, str) and n.strip()][:5]
         if notes:
             lines.append("Talepten çıkan iç notlar (model önerisi):")
             lines += ["- " + n for n in notes]
+        points = [str(n)[:300] for n in (open_points or []) if isinstance(n, str) and n.strip()][:3]
+        if points:
+            lines.append("Ekibin netleştirmesi gerekebilecek sorular (talep sahibine sorulmadı):")
+            lines += ["- " + n for n in points]
         lines.append("Aynı marka/zincirdeki geçmiş işler:")
         lines += [f"- {p['title']} · durum: {p['status']}" + (f" · görev {p['task_id']}" if p["task_id"] else "")
                   + (" · aynı mail zinciri" if p["same_thread"] else "") for p in past] or ["- kayıt yok"]
