@@ -364,7 +364,8 @@ class Disk(unittest.TestCase):
     def test_shipped_config_is_on_in_silent_draft_mode_and_valid(self):
         cfg = cw.validate_config(cw.load_config())
         self.assertIs(cfg["enabled"], True)  # Ahmet 2026-10-13 07:32Z card "Evet, aç": test mails, drafts only
-        self.assertEqual(cfg["mode"], "silent_draft")
+        self.assertEqual(cfg["mode"], "reply")  # Ahmet 2026-10-13 15:08Z card "Aç": WAT replies (v11_client_reply)
+        self.assertEqual(cfg["reply"]["brands"], ["wat_mobilite"])
         self.assertEqual(cfg["summary_to"], ["ahmet@gamechangers.com.tr"])
         self.assertTrue(cw.PROMPT.is_file())
         self.assertEqual(model_routing.load().route(cw.ROLE).model, "claude-opus-5-5")

@@ -340,8 +340,12 @@ class Config(Base):
         self.assertEqual((ok["owner_ids"], sorted(ok["approver_ids"])), ({"wat_mobilite": CANSU_BC},
                                                                           sorted([AHMET_BC, CANSU_BC])))
 
-    def test_shipped_config_still_only_drafts(self):
-        self.assertEqual(cw.load_config()["mode"], "silent_draft")
+    def test_shipped_config_replies_for_wat_only_and_is_valid(self):
+        cfg = cw.validate_config(cw.load_config())
+        settings = cr.validate_reply(cfg["reply"], self.catalog)
+        self.assertEqual((settings["brands"], settings["auto_min_confidence"], settings["owner_ids"]),
+                         ({"wat_mobilite"}, 90, {"wat_mobilite": CANSU_BC}))
+        self.assertEqual(cfg["summary_to"], [AHMET])
 
 
 class GmailWriter(unittest.TestCase):
