@@ -11,7 +11,7 @@ import v11_client_watch as cw
 from autonomy_policy import scope_digest
 from test_anthropic_routing import KEY, message
 from test_v11_chain_mail import Rest, TOKEN
-from test_v11_client_watch import Base, Writer, config, draft_out, source
+from test_v11_client_watch import Base, Writer, config, contacts, draft_out, source
 
 AYSE, OZGE, AHMET, CANSU = ("ayse@watmobilite.com.tr", "ozge@gamechangers.com.tr", "ahmet@gamechangers.com.tr",
                             "cansu@gamechangers.com.tr")
@@ -93,10 +93,17 @@ class FakeBasecamp:
                      "comments_url": f"{self.ROOT}/buckets/49184053/recordings/{todo}/comments.json"}, {}
 
 
+def direct_contacts(direct=True):
+    doc = contacts()
+    doc["brands"]["wat_mobilite"]["contacts"][0]["direct"] = direct  # Markalar: "doğrudan yazabilir mi"
+    return doc
+
+
 class ReplyBase(Base):
     def setUp(self):
         super().setUp()
         self.replies, self.bc = FakeReplyWriter(), FakeBasecamp()
+        self.book = cw.validate_contacts(direct_contacts(), self.catalog, self.cards)
 
     def watch(self, cfg=None):
         return cw.ClientWatch(self.ops, config=cfg or reply_config(), book=self.book, reader=self.reader,
@@ -317,6 +324,42 @@ class Approval(ReplyBase):
         self.assertIn("Durum: Onay bekliyor: cevapta soru var", body)
 
 
+class Direct(ReplyBase):
+    """Markalar.xlsx 'Hamle bu kişiye doğrudan yazabilir mi?' = Hayır: every reply waits for an approver."""
+    def test_person_marked_no_waits_for_approval_then_goes_with_hamle_gonder(self):
+        self.book = cw.validate_contacts(direct_contacts(False), self.catalog, self.cards)
+        self.mails = [source(1)]
+        self.client.outputs = [message(clear())]
+        r = self.watch().run()
+        self.assertEqual((r["sent"], r["awaiting_approval"], self.replies.sent), (0, 1, []), r)
+        todo = self.todos.calls[0]
+        self.assertEqual(todo["assignee_ids"], [CANSU_BC])  # WAT's owner
+        self.assertIn("bu kişilere onaysız yazmıyorum (Markalar: Hayır): Ayşe Yılmaz", todo["description"])
+        self.bc.add(501, CANSU_BC, "<div>Hamle gönder</div>", self.later(5))
+        r = self.watch().run()
+        self.assertEqual((r["approvals"]["sent"], len(self.replies.sent)), (1, 1), r)
+        self.assertEqual(self.replies.sent[0]["body"], CLEAR)
+
+    def test_company_domain_match_is_never_direct(self):
+        self.mails = [source(1, sender="selin@watmobilite.com.tr")]
+        self.client.outputs = [message(clear())]
+        r = self.watch().run()
+        self.assertEqual((r["sent"], r["awaiting_approval"]), (0, 1), r)
+        self.assertIn("Markalar: Hayır): selin@watmobilite.com.tr", self.todos.calls[0]["description"])
+
+    def test_a_cc_person_marked_no_also_holds_the_reply(self):
+        doc = direct_contacts()
+        doc["brands"]["wat_mobilite"]["contacts"].append({"email": "berin@watmobilite.com.tr", "name": "Berin Avcı"})
+        self.book = cw.validate_contacts(doc, self.catalog, self.cards)
+        mail = source(1)
+        mail["cc"] = ["hamle@gamechangers.com.tr", "berin@watmobilite.com.tr"]
+        self.mails = [mail]
+        self.client.outputs = [message(clear())]
+        r = self.watch().run()
+        self.assertEqual((r["sent"], r["awaiting_approval"]), (0, 1), r)
+        self.assertIn("Berin Avcı", self.todos.calls[0]["description"])
+
+
 class Commands(unittest.TestCase):
     def test_commands(self):
         for html, want in (("Hamle gönder", ("send", None)), ("<div>hamle, GÖNDER</div>", ("send", None)),
@@ -346,6 +389,10 @@ class Config(Base):
         self.assertEqual((settings["brands"], settings["auto_min_confidence"], settings["owner_ids"]),
                          ({"wat_mobilite"}, 90, {"wat_mobilite": CANSU_BC}))
         self.assertEqual(cfg["summary_to"], [AHMET])
+        self.assertEqual(cfg["shadow_from"], [AHMET, CANSU])
+        cw.ClientWatch(self.ops, config=cfg, book=self.book, reader=list, draft=None, task_writer=None,
+                       comment_writer=None, mail_writer=None, catalog=self.catalog, clock=None,
+                       reply_writer=object(), basecamp_get=object(), shadow_reader=list)  # people verified
 
 
 class GmailWriter(unittest.TestCase):

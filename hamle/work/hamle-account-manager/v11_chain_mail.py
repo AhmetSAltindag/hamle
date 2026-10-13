@@ -115,6 +115,17 @@ def digest_reply(subject):
     return DIGEST_SUBJECT.fullmatch(core) is not None
 
 
+SHADOW = re.compile(r"g[öo]lge\s*[:\-–]", re.IGNORECASE)
+REPLY_ONLY = re.compile(r"\A\s*(?:re|ynt|yanıt)\s*:", re.IGNORECASE)
+
+
+def shadow_forward(subject):
+    """An old client mail Ahmet/Cansu forwarded to Hamle with 'Gölge:' in front (and any reply in that
+    thread): practice for the client watch, which drafts it silently. Never a team request."""
+    core = REPLY_PREFIX.sub("", str(subject or "")[:300]).strip()
+    return SHADOW.match(core) is not None
+
+
 def reply_subject(subject):
     """'Re: ' + the thread subject without stacked reply prefixes ('Re: Re: X' -> 'Re: X')."""
     core = REPLY_PREFIX.sub("", str(subject or "")[:180]).strip()
@@ -456,6 +467,9 @@ class ChainMailReader:
     Per-thread failures are skipped and counted, never guessed.
     """
 
+    shadow = False  # False: skip 'Gölge:' forwards; True: only them (client watch); None: no filter
+    max_body_bytes = None  # None: provider.MAX_BODY_BYTES
+
     def __init__(self, store, catalog, *, clock=time.time, max_threads=10, newer_than_days=3,
                  _service_factory=None, _credentials_factory=None, _request_factory=None):
         self.store, self.catalog, self.clock = store, catalog, clock
@@ -538,6 +552,11 @@ class ChainMailReader:
             return None  # Hamle (or nobody) spoke last: no new work in this thread
         if latest["from"] not in requesters or latest["automated"] or HAMLE not in latest["to"] + latest["cc"]:
             raise ChainMailError("latest_mail_not_eligible")
+        if self.shadow is not None:
+            subject = (subjects.get(latest["id"]) or {}).get("subject")
+            if shadow_forward(subject) != self.shadow or (self.shadow and REPLY_ONLY.match(str(subject or ""))):
+                self._skip("shadow_forward" if not self.shadow else "not_a_shadow_forward")
+                return None
         dates = {m["id"]: m["time_ms"] for m in md["messages"]}
         _need(set(dates) == set(subjects) and all(dates[k] == subjects[k]["time_ms"] for k in dates),
               "thread_changed_between_reads")
@@ -548,7 +567,8 @@ class ChainMailReader:
         _need(row["body_status"] == "decoded_unrendered" and not row["issues"] and row["envelope_eligible"],
               "mail_body_unavailable")
         plain = [p["text"] for p in row["body"] if p["mime_type"] == "text/plain"]
-        _need(len(plain) == 1 and plain[0].strip() and len(plain[0].encode("utf-8")) <= provider.MAX_BODY_BYTES,
+        _need(len(plain) == 1 and plain[0].strip()
+              and len(plain[0].encode("utf-8")) <= (self.max_body_bytes or provider.MAX_BODY_BYTES),
               "plaintext_body_required")
         rfc = subjects[latest["id"]]["message_ids"]
         _need(len(rfc) == 1 and isinstance(rfc[0], str) and re.fullmatch(bw.MESSAGE_ID, rfc[0].strip()),

@@ -130,7 +130,19 @@ class Contacts(Base):
         with self.assertRaises(cw.ClientWatchError):
             cw.import_contacts(self.ops, contacts(), actor="x@example.com", catalog=self.catalog)
         status = cw.contacts_status(self.ops, self.catalog)
-        self.assertEqual(status["brands"]["wat_mobilite"], {"addresses": 1, "domains": ["watmobilite.com.tr"]})
+        self.assertEqual(status["brands"]["wat_mobilite"], {"addresses": 1, "direct": 0,
+                                                            "domains": ["watmobilite.com.tr"]})
+
+    def test_direct_flag_defaults_to_no_for_real_rows_and_yes_for_test_rows(self):
+        book = cw.validate_contacts(contacts(), self.catalog, self.cards)
+        self.assertEqual((book.match("ayse@watmobilite.com.tr")["direct"], book.match("selin@watmobilite.com.tr")["direct"],
+                          book.match("ahmet.test@gmail.com")["direct"]), (False, False, True))
+        doc = contacts()
+        doc["brands"]["wat_mobilite"]["contacts"][0]["direct"] = True
+        self.assertTrue(cw.validate_contacts(doc, self.catalog, self.cards).match("ayse@watmobilite.com.tr")["direct"])
+        doc["brands"]["wat_mobilite"]["contacts"][0]["direct"] = "Hayır"  # only true/false
+        with self.assertRaises(cw.ClientWatchError):
+            cw.validate_contacts(doc, self.catalog, self.cards)
 
 
 class Text(unittest.TestCase):

@@ -18,6 +18,15 @@ readback, anything uncertain is 'unknown' and never retried. Global stop ('dur')
 config stops everything before any read. Model: role customer_text (Claude Opus 5.5) through
 ModelGate under the monthly 30 USD chain cap; one chance per message.
 
+Each client row may say whether Hamle may write to that person by itself ("direct", Markalar.xlsx
+"Hamle bu kişiye doğrudan yazabilir mi?"). Real rows default to false: every reply to them waits
+for "Hamle gönder". Test rows default to true. A company-domain match is never direct.
+
+Shadow forwards (Ahmet 2026-10-13): an old client mail that a person in config 'shadow_from' forwards
+to hamle@ with "Gölge:" in front of the subject is drafted exactly like a new client mail, but the
+draft never goes to anyone: it lands as a GÖLGE note next to the team's real reply (when that reply
+was forwarded too) and in the evening summary. The chain skips these forwards (v11_chain_mail).
+
 Mac operator commands (ADC credentials, Firestore only, no cost):
   python3 v11_client_watch.py contacts status
   python3 v11_client_watch.py contacts import --file client-contacts.json --actor ahmet@gamechangers.com.tr
@@ -141,6 +150,10 @@ def validate_config(cfg):
                   and EMAIL.fullmatch(a) for a in to), "client_watch_summary_recipients_invalid")
     after = cfg.get("summary_after")
     _need(isinstance(after, str) and re.fullmatch(r"(1[2-9]|2[0-2]):[0-5]\d", after), "client_watch_summary_time_invalid")
+    shadow = cfg.get("shadow_from", [])
+    _need(isinstance(shadow, list) and len(shadow) <= 3 and len(set(shadow)) == len(shadow)
+          and all(isinstance(a, str) and a.endswith("@" + AGENCY_DOMAIN) and a != HAMLE and EMAIL.fullmatch(a)
+                  for a in shadow), "client_watch_shadow_invalid")
     for key, low, high in (("max_threads", 1, 20), ("max_drafts_per_run", 1, 10), ("newer_than_days", 1, 7),
                            ("run_seconds", 60, 400)):
         _need(type(cfg.get(key)) is int and low <= cfg[key] <= high, "client_watch_config_invalid")
@@ -178,14 +191,16 @@ class ContactBook:
         _need(self.emails or self.domains, "client_contacts_empty")
 
     def _add(self, key, c, *, test):
-        _need(isinstance(c, dict) and set(c) <= {"email", "name", "title"}, "client_contacts_row_invalid")
+        _need(isinstance(c, dict) and set(c) <= {"email", "name", "title", "direct"}, "client_contacts_row_invalid")
+        _need(type(c.get("direct", test)) is bool, "client_contacts_row_invalid")
         email = c.get("email")
         _need(isinstance(email, str) and EMAIL.fullmatch(email) and not email.endswith("@" + AGENCY_DOMAIN)
               and email not in self.emails, "client_contacts_email_invalid")
         for field in ("name", "title"):
             _need(c.get(field) is None or (isinstance(c[field], str) and 0 < len(c[field].strip()) <= 120),
                   "client_contacts_row_invalid")
-        self.emails[email] = {"brand_key": key, "name": c.get("name"), "title": c.get("title"), "test": test}
+        self.emails[email] = {"brand_key": key, "name": c.get("name"), "title": c.get("title"), "test": test,
+                              "direct": c.get("direct", test)}  # Markalar: "doğrudan yazabilir mi"
 
     def match(self, address):
         if not isinstance(address, str):
@@ -195,7 +210,8 @@ class ContactBook:
             return dict(self.emails[address], email=address)
         domain = address.rsplit("@", 1)[-1]
         if "@" in address and domain in self.domains:
-            return {"brand_key": self.domains[domain], "name": None, "title": None, "test": False, "email": address}
+            return {"brand_key": self.domains[domain], "name": None, "title": None, "test": False, "direct": False,
+                    "email": address}
         return None
 
     def __contains__(self, address):  # ChainMailReader eligibility check
@@ -242,6 +258,91 @@ def sensitive_hits(subject, text):
 def internal_terms(reply):
     text = str(reply or "")
     return [label for label, pattern in INTERNAL_TERMS if pattern.search(text)]
+
+
+# ------------------------------------------------------------------ shadow forwards ('Gölge:')
+FWD_FROM = re.compile(r"^\s*\**\s*(?:from|kimden|gönderen|sender)\s*\**\s*:\s*(.+)$", re.I)
+FWD_FIELD = re.compile(r"^\s*\**\s*(date|sent|tarih|gönderildi|gönderilme tarihi|subject|konu|to|kime|alıcı|cc|"
+                       r"bilgi|reply-to)\s*\**\s*:\s*(.*)$", re.I)
+FWD_MARKER = re.compile(r"^\s*(?:-{2,}.*-{2,}|begin forwarded message:|başlangıç: iletilmiş ileti:?)\s*$", re.I)
+ATTRIBUTION = re.compile(r"(?:wrote|yazdı)\s*:\s*$", re.I)
+SHADOW_MAX_BODY_BYTES = 60_000
+SHADOW_MAX_THREADS = 20
+
+
+def _display_name(value):
+    name = re.split(r"[<\[(]", str(value or ""), maxsplit=1)[0].strip().strip("\"'* ").strip()
+    return _line(name, 120) if name and "@" not in name else None
+
+
+def forward_segments(text):
+    """'Gölge:' forward body -> [forwarder's note, newest forwarded mail, older quoted mails ...]."""
+    lines = [re.sub(r"^(?:[ \t]*>)+[ \t]?", "", ln) for ln in str(text or "").replace("\r\n", "\n").split("\n")]
+    segs = [{"author": None, "name": None, "date": None, "subject": None, "lines": []}]
+    i = 0
+    while i < len(lines):
+        line = lines[i]
+        head = FWD_FROM.match(line)
+        found = EMAIL.search(head.group(1).lower()) if head else None
+        if found:  # forwarded header block: From / Date / Subject / To / Cc
+            seg = {"author": found.group(0), "name": _display_name(head.group(1)), "date": None, "subject": None,
+                   "lines": []}
+            i += 1
+            while i < len(lines):
+                field = FWD_FIELD.match(lines[i])
+                if not field:
+                    break
+                name = field.group(1).lower()
+                if name in ("date", "sent", "tarih", "gönderildi", "gönderilme tarihi"):
+                    seg["date"] = _line(field.group(2), 80) or None
+                elif name in ("subject", "konu"):
+                    seg["subject"] = _line(field.group(2), 200) or None
+                i += 1
+            segs.append(seg)
+            continue
+        current, split = segs[-1]["lines"], False
+        if ATTRIBUTION.search(line):  # "On ... <address> wrote:" (may be wrapped over up to 3 lines)
+            for back in range(0, min(2, len(current)) + 1):
+                found = EMAIL.search(" ".join(current[len(current) - back:] + [line]).lower())
+                if found:
+                    del current[len(current) - back:]
+                    segs.append({"author": found.group(0), "name": None, "date": None, "subject": None, "lines": []})
+                    split = True
+                    break
+        if not split:
+            current.append(line)
+        i += 1
+    for seg in segs:
+        seg["text"] = "\n".join(ln for ln in seg.pop("lines") if not FWD_MARKER.match(ln)).strip()
+    return segs
+
+
+def parse_forward(text, book):
+    """Newest forwarded mail from a known client (+ the team's answer above it, when forwarded too)."""
+    segs = forward_segments(text)
+    for idx in range(1, len(segs)):
+        seg = segs[idx]
+        match = book.match(seg["author"])
+        if match is None or not seg["text"]:
+            continue
+        team = next((segs[j] for j in range(idx - 1, 0, -1) if segs[j]["text"]
+                     and segs[j]["author"].endswith("@" + AGENCY_DOMAIN) and segs[j]["author"] != HAMLE), None)
+        older = [(s["name"] or s["author"]) + ":\n" + s["text"] for s in segs[idx + 1:] if s["text"]]
+        return {"client": dict(match, name=match.get("name") or seg["name"]), "date": seg["date"],
+                "subject": seg["subject"], "text": seg["text"][:MAX_NEW_TEXT],
+                "context": "\n\n".join(older)[:MAX_CONTEXT_TEXT],
+                "team_reply": ({"email": team["author"], "name": team["name"], "text": team["text"][:2000]}
+                               if team else None),
+                "note": _line(segs[0]["text"], 600) or None}
+    return None
+
+
+def shadow_subject(subject):
+    """'Gölge: Fwd: X' -> 'X'."""
+    from v11_chain_mail import REPLY_PREFIX, SHADOW
+    core = REPLY_PREFIX.sub("", str(subject or "")).strip()
+    found = SHADOW.match(core)
+    return REPLY_PREFIX.sub("", core[found.end():] if found else core).strip()
 
 
 def _obj(props):
@@ -312,8 +413,8 @@ def _when(ms):
     return datetime.fromtimestamp(ms / 1000, ISTANBUL).strftime("%d.%m.%Y %H:%M") if isinstance(ms, int) else "-"
 
 
-def note_title(brand, sender, subject):
-    prefix = f"[TEST · {brand['name']}]" if sender.get("test") else f"[{brand['name']}]"
+def note_title(brand, sender, subject, shadow=False):
+    prefix = ("[GÖLGE · " if shadow else "[TEST · " if sender.get("test") else "[") + brand["name"] + "]"
     return f"{prefix} Müşteri maili · {_line(subject, 150) or '(konu yok)'}"[:200]
 
 
@@ -328,7 +429,13 @@ APPROVAL_HELP = ('Göndermek için bu nota "Hamle gönder" yaz. Düzeltip gönde
                  'altına cevabın tam metnini yaz. Gönderilmesin istersen "Hamle gönderme" yaz.')
 
 
-def note_header(plan):
+SHADOW_HEADER = ("GÖLGE · İletilen eski bir müşteri maili. Bu yanıt kimseye GÖNDERİLMEZ; ekibin gerçek cevabıyla "
+                 "karşılaştırmak için yazıldı.")
+
+
+def note_header(plan, shadow=False):
+    if shadow:
+        return SHADOW_HEADER
     if plan is None:
         return "SESSİZ DENEME · Bu yanıt müşteriye GÖNDERİLMEDİ. Hamle'nin göndereceği taslak aşağıda."
     if plan["outcome"] == "awaiting_approval":
@@ -339,13 +446,16 @@ def note_header(plan):
     return REPLY_HEADERS[plan["outcome"]]
 
 
-def note_body(draft, brand, sender, source, plan=None):
+def note_body(draft, brand, sender, source, plan=None, shadow=None):
     who = " ".join(x for x in (sender.get("name"), f"({sender['title']})" if sender.get("title") else None) if x)
-    lines = [note_header(plan), "",
+    lines = [note_header(plan, shadow is not None), "",
              "Marka: " + brand["name"],
              "Gönderen: " + ((who + " <" + sender["email"] + ">") if who else sender["email"]),
-             "Tarih: " + _when(source.get("received_at_ms")),
-             "Konu: " + (_line(source.get("subject"), 200) or "(konu yok)"), ""]
+             "Tarih: " + ((shadow["date"] or "-") if shadow is not None else _when(source.get("received_at_ms"))),
+             "Konu: " + (_line(source.get("subject"), 200) or "(konu yok)")]
+    if shadow is not None:
+        lines.append("İleten: " + str(shadow["forwarded_by"]) + (" · Notu: " + shadow["note"] if shadow["note"] else ""))
+    lines.append("")
     if draft.get("summary"):
         lines += ["Mail özeti (Hamle):", draft["summary"], ""]
     if plan is not None and plan["outcome"] in ("sent", "send_unknown"):
@@ -353,6 +463,11 @@ def note_body(draft, brand, sender, source, plan=None):
                   "Alıcılar: " + ", ".join(plan["to"]) + ("; CC: " + ", ".join(plan["cc"]) if plan["cc"] else ""), ""]
     else:
         lines += ["Hamle'nin yanıt taslağı:", plan["body"] if plan else draft["reply"], ""]
+    if shadow is not None:
+        team = shadow["team_reply"]
+        lines += (["Ekibin gerçek cevabı (" + (team["name"] or team["email"]) + "):", team["text"][:1200], ""] if team
+                  else ["Ekibin cevabı iletilen mailde yok. Karşılaştırmak için zincirdeki ekip cevabını da "
+                        "\"Gölge:\" ile iletebilirsin.", ""])
     if draft.get("sensitive"):
         lines += ["Hassas konu (" + ", ".join(CATEGORY_TR.get(c, c) for c in draft["sensitive"]) +
                   "): Hamle yalnız sabit cümleyle yanıt verir; konu Ahmet ve Cansu'da.", ""]
@@ -482,7 +597,7 @@ class ClientWatch:
     """One pass: read client mail, draft, write internal notes; then the evening summary."""
     def __init__(self, ops, *, config, book, reader, draft, task_writer, comment_writer, mail_writer, catalog,
                  clock, link_base="https://3.basecamp.com", monotonic=time.monotonic, started_at=None,
-                 reply_writer=None, basecamp_get=None):
+                 reply_writer=None, basecamp_get=None, shadow_reader=None):
         self.ops, self.cfg, self.book, self.reader = ops, validate_config(config), book, reader
         self.draft, self.task_writer, self.comment_writer = draft, task_writer, comment_writer
         self.mail_writer, self.catalog, self.clock = mail_writer, catalog, clock
@@ -493,6 +608,10 @@ class ClientWatch:
             self.reply = validate_reply(self.cfg["reply"], catalog)
             _need(reply_writer is not None and basecamp_get is not None, "client_reply_adapters_missing")
         self.reply_writer, self.basecamp_get = reply_writer, basecamp_get
+        if self.cfg.get("shadow_from"):
+            from v11_client_reply import agency_people
+            _need(set(self.cfg["shadow_from"]) <= set(agency_people(catalog)), "client_watch_shadow_unverified")
+        self.shadow_reader = shadow_reader if self.cfg.get("shadow_from") else None
         self.link_base, self.monotonic, self.started_at = link_base, monotonic, started_at
         self.generation = None
 
@@ -521,7 +640,7 @@ class ClientWatch:
         started = self.started_at if self.started_at is not None else self.monotonic()  # job start: chain time counts
         report = {"status": "client_watch_completed", "mails": 0, "notes": 0, "held": 0,
                   "skipped": 0, "summary": None, "model_calls": 0, "business_writes": 0,
-                  "sent": 0, "awaiting_approval": 0, "approvals": None}
+                  "sent": 0, "awaiting_approval": 0, "approvals": None, "shadows": 0}
         if not self.cfg["enabled"]:
             return dict(report, status="no_new_work", reason="client_watch_disabled")
         c = self.ops.control()
@@ -534,10 +653,18 @@ class ClientWatch:
             except Exception as exc:
                 report["approvals"] = {"status": "held", "reason": _code(exc)}
         try:
-            sources = sorted(self.reader() or [], key=lambda s: s.get("received_at_ms") or 0)
+            sources = [s for s in self.reader() or [] if not s.get("shadow")]
         except Exception as exc:  # the evening summary still goes out
             sources, report["reason"] = [], "mail_read_failed:" + _code(exc)
         report["mails"] = len(sources)
+        if self.shadow_reader is not None:
+            try:
+                shadows = [s for s in self.shadow_reader() or [] if s.get("shadow") is True]
+            except Exception as exc:
+                shadows, report["shadow_reason"] = [], "shadow_read_failed:" + _code(exc)
+            report["shadows"] = len(shadows)
+            sources += shadows
+        sources.sort(key=lambda s: (bool(s.get("shadow")), s.get("received_at_ms") or 0))  # real client mail first
         for source in sources:
             # Bounded per run (the chain job has a 600 s task timeout): later mails wait for the next tick.
             if (report["model_calls"] >= self.cfg["max_drafts_per_run"]
@@ -564,7 +691,20 @@ class ClientWatch:
 
     # ----- one client mail
     def _one(self, source, report):
-        sender = self.book.match(source.get("sender"))
+        shadow = None
+        if source.get("shadow"):  # 'Gölge:' forward: draft the forwarded client mail, never send
+            parsed = parse_forward(source.get("text"), self.book)
+            if parsed is None:
+                return self._shadow_unreadable(source)
+            shadow = dict(parsed, forwarded_by=source.get("sender"))
+            sender = parsed["client"]
+            context = ("\n\n-----Original Message-----\n" + parsed["context"]) if parsed["context"] else ""
+            source = {"message_id": source["message_id"], "thread_id": source["thread_id"],
+                      "fingerprint": source["fingerprint"], "received_at_ms": source.get("received_at_ms"),
+                      "subject": parsed["subject"] or shadow_subject(source.get("subject")),
+                      "text": parsed["text"] + context, "has_attachments": bool(source.get("has_attachments"))}
+        else:
+            sender = self.book.match(source.get("sender"))
         if sender is None:
             return "not_client"
         brand = self.book.brands[sender["brand_key"]]
@@ -584,6 +724,9 @@ class ClientWatch:
                    "sender_name": sender.get("name"), "sender_title": sender.get("title"),
                    "subject": _line(source.get("subject"), 200), "received_at_ms": source.get("received_at_ms"),
                    "day": local.date().isoformat()}
+            if shadow is not None:
+                new.update(shadow=True, forwarded_by=shadow["forwarded_by"], client_email=sender["email"],
+                           client_date=shadow["date"], team_reply=shadow["team_reply"], shadow_note=shadow["note"])
             new.update({k: v for k, v in (row or {}).items() if k in REPLY_KEEP})  # a reply already sent stays known
             keys = list((day or {}).get("message_keys") or [])
             if mkey not in keys:
@@ -607,7 +750,9 @@ class ClientWatch:
             output, status = None, "failed:" + _code(exc)
         draft = finalize_draft(output, source, status)
         prior = self._get(mkey) or {}
-        if prior.get("reply_state") in ("sent", "send_unknown", "sending"):  # released after the send: never again
+        if shadow is not None:
+            plan = None  # a shadow is never sent
+        elif prior.get("reply_state") in ("sent", "send_unknown", "sending"):  # released after the send: never again
             plan = {"outcome": "sent" if prior["reply_state"] == "sent" else "send_unknown", "reasons": [],
                     **{k: prior[k] for k in ("reply_to", "reply_cc", "reply_subject", "reply_body", "anchor")},
                     "thread_id": source["thread_id"]}
@@ -627,10 +772,11 @@ class ClientWatch:
                 "stale" if sent == "blocked:newer_incoming_mail_in_thread" else "awaiting_approval")
             if plan["outcome"] == "awaiting_approval":
                 plan["reasons"] = ["göndermeden önceki kontrol geçmedi (" + sent.split(":", 1)[-1] + ")"]
-        body = note_body(draft, brand, sender, source, plan)
+        body = note_body(draft, brand, sender, source, plan, shadow=shadow)
         if thread is None:
             kind, writer = "todo", self.task_writer
-            payload = {"target": dict(self.target), "title": note_title(brand, sender, source.get("subject")),
+            payload = {"target": dict(self.target),
+                       "title": note_title(brand, sender, source.get("subject"), shadow=shadow is not None),
                        "description": body}
             if plan is not None and plan["outcome"] in ("awaiting_approval", "manual"):  # the brand owner is notified
                 payload["assignee_ids"] = [self._owner(sender)]
@@ -684,6 +830,26 @@ class ClientWatch:
                 list((tx.get(APPROVALS_KEY) or {}).get("keys") or []) + [mkey]))[-50:]}), allow_expired=True)
         return "noted"
 
+    def _shadow_unreadable(self, source):
+        """A 'Gölge:' forward with no known client mail in it: one row so the evening summary says so."""
+        local = self.clock().astimezone(ISTANBUL)
+        mkey, dkey = mail_key(source["message_id"]), day_key(local.date())
+
+        def op(tx, now):
+            self._fence(tx, now)
+            if tx.get(mkey) is not None:
+                return "already_recorded"
+            day = tx.get(dkey) or {}
+            keys = list(day.get("message_keys") or [])
+            tx.put(dkey, dict(day, kind="client_day", day=local.date().isoformat(), message_keys=(keys + [mkey])[-200:]))
+            tx.put(mkey, {"key": mkey, "kind": "client_mail", "state": "held", "reason": "shadow_client_not_found",
+                          "shadow": True, "forwarded_by": source.get("sender"), "message_id": source["message_id"],
+                          "thread_id": source["thread_id"], "subject": _line(source.get("subject"), 200),
+                          "received_at_ms": source.get("received_at_ms"), "day": local.date().isoformat(),
+                          "claimed_at": now})
+            return "held"
+        return self.ops._run(op)
+
     # ----- client replies (v11_client_reply)
     def _plan(self, draft, source, sender):
         """None = silent draft as before; else the reply plan and whether it may go out by itself."""
@@ -698,7 +864,7 @@ class ClientWatch:
         replied = (self._get(reply_key(source["thread_id"])) or {}).get("count")
         sent_today = int((self._get(day_key(local.date())) or {}).get("sent_count") or 0)
         reasons = cr.check(draft, source, sender, self.reply, thread_replied=bool(replied), sent_today=sent_today,
-                           unknown=unknown)
+                           unknown=unknown, not_direct=cr.not_direct(to, cc, self.book, self.reply))
         outcome = "manual" if unknown else ("awaiting_approval" if reasons else "send")
         return {"outcome": outcome, "reasons": reasons, "to": to, "cc": cc,
                 "subject": reply_subject(source.get("subject")), "body": cr.body_for(draft),
@@ -958,22 +1124,30 @@ def summary_payload(rows, book, day, to, target, link_base, replying=False):
     text = [title, ""]
     blocks = []
     sent = sum(r.get("reply_state") == "sent" for r in rows)
+    shadows = sum(bool(r.get("shadow")) for r in rows)
+    real = len(rows) - shadows
+    extra = (f" Ayrıca iletilen {shadows} eski mail için gölge taslak yazdı; bunlar kimseye gitmez, ekibin cevabıyla "
+             "karşılaştırmak için." if shadows else "")
     if not rows:
         text.append("Bugün Hamle'nin gördüğü müşteri maili yok.")
     elif replying:
-        text.append(f"Bugün {len(rows)} müşteri maili geldi. Hamle {sent} tanesine yanıt gönderdi; durumlar aşağıda.")
+        text.append(f"Bugün {real} müşteri maili geldi. Hamle {sent} tanesine yanıt gönderdi; durumlar aşağıda." + extra)
     else:
-        text.append(f"Bugün {len(rows)} müşteri maili geldi. Hamle hiçbirine yanıt göndermedi; göndereceği taslaklar aşağıda.")
+        text.append(f"Bugün {real} müşteri maili geldi. Hamle hiçbirine yanıt göndermedi; göndereceği taslaklar "
+                    "aşağıda." + extra)
     for i, r in enumerate(rows, 1):
-        brand = (book.brands.get(r.get("brand_key")) or {}).get("name") or r.get("brand_key")
+        brand = (book.brands.get(r.get("brand_key")) or {}).get("name") or r.get("brand_key") or "Gölge"
         who = " ".join(x for x in (r.get("sender_name"), f"({r['sender_title']})" if r.get("sender_title") else None) if x) or "-"
         link = (f"{link_base}/{target['account_id']}/buckets/{target['project_id']}/todos/{r['todo_id']}"
                 if r.get("todo_id") else None)
         state = {"noted": None, "unknown": "Basecamp notu belirsiz (tekrar denenmedi)",
-                 "held": "Not yazılmadı: " + str(r.get("reason")), "claimed": "işleniyor",
+                 "held": ("İletilen mailde tanıdığım bir müşteri adresi bulamadım"
+                          if r.get("reason") == "shadow_client_not_found" else "Not yazılmadı: " + str(r.get("reason"))),
+                 "claimed": "işleniyor",
                  "writing": "not yazılıyordu"}.get(r.get("state"), str(r.get("state")))
         state = "; ".join(x for x in (reply_label(r), state) if x) or None
-        tag = ((" · TEST" if r.get("test") else "") + (" · HASSAS" if r.get("sensitive") else "")
+        tag = ((" · GÖLGE" if r.get("shadow") else "") + (" · TEST" if r.get("test") else "")
+               + (" · HASSAS" if r.get("sensitive") else "")
                + (" · İÇ DİL" if r.get("internal_terms") else ""))
         lines = [f"{i}. {brand} · {who} · {_when(r.get('received_at_ms'))}{tag}",
                  "Konu: " + (r.get("subject") or "(konu yok)")]
@@ -981,6 +1155,9 @@ def summary_payload(rows, book, day, to, target, link_base, replying=False):
             lines.append("Özet: " + _line(r["summary"], 500))
         lines.append(("Gönderilen yanıt: " if r.get("reply_state") == "sent" else "Hamle'nin taslağı: ")
                      + (r.get("reply_body") or r.get("reply") or "(yok)"))
+        team = r.get("team_reply") if r.get("shadow") else None
+        if team:
+            lines.append("Ekibin cevabı (" + str(team.get("name") or team.get("email")) + "): " + str(team.get("text")))
         if state:
             lines.append("Durum: " + state)
         if link:
@@ -1007,6 +1184,11 @@ def summary_payload(rows, book, day, to, target, link_base, replying=False):
         reply = esc(r.get("reply_body") or r.get("reply") or "(yok)").replace("\n", "<br>")
         item.append('<div style="margin:6px 0;padding:8px 10px;background:#f3f4f6;border-left:3px solid #1a56db;">'
                     f"{reply}</div>")
+        team = r.get("team_reply") if r.get("shadow") else None
+        if team:
+            item.append('<div style="margin:6px 0;padding:8px 10px;background:#fafafa;border-left:3px solid #9ca3af;">'
+                        f'<b>Ekibin cevabı ({esc(team.get("name") or team.get("email"))}):</b><br>'
+                        + esc(team.get("text") or "").replace("\n", "<br>") + "</div>")
         if state:
             item.append(f'<div style="margin:0 0 4px;color:#b45309;">{esc(state)}</div>')
         parts.append('<div style="margin:0 0 16px;padding:0 0 12px;border-bottom:1px solid #e5e7eb;">'
@@ -1032,12 +1214,32 @@ def client_mail_reader(gmail_store, book, cfg, **factories):
     from v11_chain_mail import ChainMailReader
 
     class ClientMailReader(ChainMailReader):
+        shadow = None  # client senders: no 'Gölge:' filter
+
         def _requesters(self):
             return book.query_terms()
 
         def _thread(self, tid, meta, requesters, *rest):
             return super()._thread(tid, meta, book, *rest)  # exact address or company domain
     return ClientMailReader(gmail_store, {"contacts": []}, max_threads=cfg["max_threads"],
+                            newer_than_days=cfg["newer_than_days"], **factories)
+
+
+def shadow_mail_reader(gmail_store, cfg, **factories):
+    """'Gölge:' forwards from the people in cfg['shadow_from'] (same verified Gmail read path)."""
+    from v11_chain_mail import ChainMailReader
+
+    class ShadowMailReader(ChainMailReader):
+        shadow = True
+        max_body_bytes = SHADOW_MAX_BODY_BYTES  # forwards carry the quoted history
+
+        def _requesters(self):
+            return set(cfg["shadow_from"])
+
+        def _thread(self, *args):
+            source = super()._thread(*args)
+            return None if source is None else dict(source, shadow=True)
+    return ShadowMailReader(gmail_store, {"contacts": []}, max_threads=SHADOW_MAX_THREADS,
                             newer_than_days=cfg["newer_than_days"], **factories)
 
 
@@ -1074,7 +1276,9 @@ def run_worker_client_watch(ops, secrets, *, clock=None, config=None, started_at
             task_writer=InternalNoteTaskWriter(catalog, token_provider=token),
             comment_writer=ChainCommentWriter(BasecampCommentWriter(catalog, token_provider=token)),
             mail_writer=DigestMailWriter(token_context=gmail_token_context(secrets), session_factory=provider._session),
-            started_at=started_at, reply_writer=reply_writer, basecamp_get=basecamp_get)
+            started_at=started_at, reply_writer=reply_writer, basecamp_get=basecamp_get,
+            shadow_reader=(shadow_mail_reader(provider.GmailSecretStore(secrets), cfg) if cfg.get("shadow_from")
+                           else None))
         try:
             return watch.run()
         finally:
@@ -1114,6 +1318,7 @@ def contacts_status(ops, catalog, cards=None):
     book = validate_contacts(doc, catalog, cards)
     return {"status": "client_contacts_ready", "sha256": doc.get("sha256"), "actor": doc.get("actor"),
             "brands": {k: {"addresses": sum(v["brand_key"] == k for v in book.emails.values()),
+                           "direct": sum(v["brand_key"] == k and v["direct"] for v in book.emails.values()),
                            "domains": sorted(d for d, b in book.domains.items() if b == k)} for k in sorted(book.brands)}}
 
 

@@ -6,8 +6,9 @@ received after reply.since. Everything else stays a silent draft exactly as befo
 Auto-send (no human step) only when every check passes: category request or feedback/approval,
 no question in the reply, no missing info, no internal words, confidence >= auto_min_confidence,
 greeting and Hamle signature present, the thread has no earlier Hamle reply, the day's send
-limit is not reached, and every reply-all recipient is a known client address of the same brand
-or a verified agency contact. Price / contract / complaint mails get Ahmet's fixed sentence with
+limit is not reached, every reply-all recipient is a known client address of the same brand
+or a verified agency contact, and every client recipient is marked "direct" in the contact table
+(Markalar.xlsx "Hamle bu kişiye doğrudan yazabilir mi?" = Evet). Price / contract / complaint mails get Ahmet's fixed sentence with
 Ahmet and Cansu added to CC (decision 6). Any failed check -> the draft waits for approval: the
 Basecamp note is assigned to the brand's owner, and an approver writing "Hamle gönder" on it
 sends the draft (or the corrected text written under that line); "Hamle gönderme" drops it.
@@ -119,11 +120,22 @@ def recipients(source, sender, book, settings, *, sensitive):
     return to, cc, unknown
 
 
+def not_direct(to, cc, book, settings):
+    """Client recipients Hamle may not write to by itself (Markalar: 'doğrudan yazabilir mi' = Hayır,
+    or only a company-domain match): the reply waits for an approver."""
+    out = []
+    for address in to + cc:
+        match = None if address in settings["agency"] else book.match(address)
+        if match is not None and match.get("direct") is not True:
+            out.append(match.get("name") or address)
+    return out
+
+
 def fixed_body(fixed):
     return f"Merhaba,\n\n{fixed}\n\n{SIGNATURES[0]}"
 
 
-def check(draft, source, sender, settings, *, thread_replied, sent_today, unknown):
+def check(draft, source, sender, settings, *, thread_replied, sent_today, unknown, not_direct=()):
     """Reasons the draft may NOT go out by itself (empty list = auto-send)."""
     reasons = []
     if not draft.get("sensitive"):
@@ -146,6 +158,8 @@ def check(draft, source, sender, settings, *, thread_replied, sent_today, unknow
             reasons.append("selamlama ya da imza eksik")
     if unknown:
         reasons.append("tanımadığım alıcı var: " + ", ".join(unknown[:3]))
+    if not_direct:
+        reasons.append("bu kişilere onaysız yazmıyorum (Markalar: Hayır): " + ", ".join(not_direct[:3]))
     if thread_replied:
         reasons.append("bu zincire daha önce cevap verdim")
     if sent_today >= settings["max_sends_per_day"]:

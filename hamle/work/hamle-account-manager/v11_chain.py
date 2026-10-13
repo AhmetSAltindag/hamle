@@ -30,7 +30,7 @@ import business_writers as bw
 import cloud_providers as provider
 from v11_basecamp_reader import BasecampReader, ReadError, digest as record_digest
 from v11_brand_task import HAMLE_PERSON, create_stage_task, prepare_stage_task
-from v11_chain_mail import digest_reply, reply_subject
+from v11_chain_mail import digest_reply, reply_subject, shadow_forward
 from v11_delivery import DeliveryCoordinator, quality_feedback, record_outcome
 from v11_intake_plan import IntakeError, _contacts, _email, intake_requirements_digest, plan_intake, \
     record_producer_question
@@ -407,6 +407,7 @@ class Chain:
             _need(received is None or (type(received) is int and received >= self._opened_ms),
                   "mail_before_queue_open")  # never pick up mail older than the current queue opening
             _need(not digest_reply(source.get("subject")), "digest_reply_not_a_request")
+            _need(not shadow_forward(source.get("subject")), "shadow_forward_not_a_request")
             route = self._default_route()
             project_id, list_id = self._binding_for(source)
             _need(routing.allowed_target(self.catalog, project_id, list_id), "route_target_not_allowed")
