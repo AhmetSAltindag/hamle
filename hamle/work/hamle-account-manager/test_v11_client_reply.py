@@ -142,6 +142,13 @@ class AutoSend(ReplyBase):
         self.assertIn('"Hamle gönder"', todo["description"])
         self.assertEqual(self.ops.backend.data[cw.APPROVALS_KEY]["keys"], [cw.mail_key("m1")])
 
+    def test_test_senders_waiting_mail_goes_to_ahmet_not_the_team(self):
+        self.mails = [source(1, sender="ahmet.test@gmail.com")]
+        self.client.outputs = [message(clear(reply=ASKING))]
+        self.watch(reply_config(brands=["gamechangers"], owners={"gamechangers": CANSU})).run()
+        self.assertEqual(self.todos.calls[0]["assignee_ids"], [AHMET_BC])
+        self.assertTrue(self.todos.calls[0]["title"].startswith("[TEST · "))
+
     def test_every_check_has_a_reason(self):
         settings = cr.validate_reply(reply_block(), self.catalog)
         sender = self.book.match(AYSE)

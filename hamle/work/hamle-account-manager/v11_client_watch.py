@@ -633,7 +633,7 @@ class ClientWatch:
             payload = {"target": dict(self.target), "title": note_title(brand, sender, source.get("subject")),
                        "description": body}
             if plan is not None and plan["outcome"] in ("awaiting_approval", "manual"):  # the brand owner is notified
-                payload["assignee_ids"] = [self.reply["owner_ids"][sender["brand_key"]]]
+                payload["assignee_ids"] = [self._owner(sender)]
         else:
             kind, writer = "comment", self.comment_writer
             payload = {"target": dict(self.target, task_id=thread["todo_id"]), "body": body, "mention_ids": [],
@@ -703,6 +703,10 @@ class ClientWatch:
         return {"outcome": outcome, "reasons": reasons, "to": to, "cc": cc,
                 "subject": reply_subject(source.get("subject")), "body": cr.body_for(draft),
                 "anchor": source["message_id"], "thread_id": source["thread_id"]}
+
+    def _owner(self, sender):
+        """Brand owner on the note; a test sender's mail goes to the first approver (Ahmet), never the team."""
+        return self.reply["first_approver"] if sender.get("test") else self.reply["owner_ids"][sender["brand_key"]]
 
     def _send(self, mkey, token, plan, report, approved_by=None, edited=False):
         """One same-thread reply: 'sent' | 'send_unknown' (never retried) | 'blocked:<code>' | 'released:<code>'."""

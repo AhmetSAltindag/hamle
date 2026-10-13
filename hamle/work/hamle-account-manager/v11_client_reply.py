@@ -92,7 +92,7 @@ def validate_reply(block, catalog):
           "client_reply_sensitive_cc_invalid")
     return {"brands": set(brands), "auto_min_confidence": low, "auto_categories": set(cats),
             "since_ms": int(since.timestamp() * 1000), "max_sends_per_day": block["max_sends_per_day"],
-            "approver_ids": {member(e): people[e]["name"] for e in approvers},
+            "approver_ids": {member(e): people[e]["name"] for e in approvers}, "first_approver": member(approvers[0]),
             "owner_ids": {b: member(e) for b, e in owners.items()}, "sensitive_cc": list(cc),
             "agency": set(people)}
 
