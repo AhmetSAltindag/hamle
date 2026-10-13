@@ -36,7 +36,8 @@ def jobs_block(**kw):
     block = {"enabled": True,
              "brands": {"wat_mobilite": {"title_prefix": "WM // ",
                                          "assignees": {"social": "berkay@gamechangers.com.tr", "project": CANSU},
-                                         "followers": [OZGE], "approvers": [OZGE, CANSU, AHMET]}},
+                                         "followers": [OZGE], "approvers": [OZGE, CANSU, AHMET],
+                                         "when_done": [AHMET, CANSU, OZGE]}},
              "send_min_score": 90, "approve_min_score": 80, "max_revisions": 2, "max_scorings_per_run": 1,
              "max_mail_mb": 18}
     block.update(kw)
@@ -201,6 +202,7 @@ class Open(JobBase):
         self.assertEqual((project["target"]["list_id"], project["assignee_ids"], project["due_on"]),
                          (PROJECT, [CANSU_BC], None))
         self.assertEqual(social["title"], "WM // Bornova şarj noktası post ve story")
+        self.assertEqual(social["completion_subscriber_ids"], sorted([AHMET_BC, CANSU_BC, OZGE_BC]))  # "When done"
         d = social["description"]
         self.assertTrue(d.startswith("4:5 post ve 9:16 story."), d)
         for text in ("Teslim: 25 Ekim 2026", "Talep: Ayşe Yılmaz (WAT Mobilite) · ",
@@ -494,11 +496,16 @@ class Parts(unittest.TestCase):
         self.assertIsNone(cj.validate_jobs(jobs_block(enabled=False), catalog, reply))
         s = cj.validate_jobs(jobs_block(), catalog, reply)
         self.assertEqual(s["brands"]["wat_mobilite"]["lists"], {"social": SOCIAL, "project": PROJECT})
+        self.assertEqual(s["brands"]["wat_mobilite"]["when_done"], sorted([AHMET_BC, CANSU_BC, OZGE_BC]))
         bad = [jobs_block(send_min_score=70), jobs_block(extra=1),
                jobs_block(brands={"rabam": jobs_block()["brands"]["wat_mobilite"]})]
         b = jobs_block()
         b["brands"]["wat_mobilite"]["assignees"]["social"] = "samet@gamechangers.com.tr"
         bad.append(b)
+        for when_done in ([OZGE, OZGE], ["someone@example.com"], OZGE):
+            b = jobs_block()
+            b["brands"]["wat_mobilite"]["when_done"] = when_done
+            bad.append(b)
         for block in bad:
             with self.assertRaises(cj.ClientJobError):
                 cj.validate_jobs(block, catalog, reply)
@@ -515,6 +522,8 @@ class Parts(unittest.TestCase):
         self.assertEqual((wat["title_prefix"], wat["assignees"]["social"]["id"], wat["assignees"]["project"]["id"],
                           sorted(wat["followers"]), sorted(wat["approvers"])),
                          ("WM // ", BERKAY_BC, CANSU_BC, [OZGE_BC], sorted([OZGE_BC, CANSU_BC, AHMET_BC])))
+        # Ahmet 13 Oct: "When done" on every WAT to-do = Ahmet, Cansu, Özge, Barış (demo week)
+        self.assertEqual(wat["when_done"], sorted([AHMET_BC, CANSU_BC, OZGE_BC, 52168172]))
         self.assertEqual((s["send_min_score"], s["approve_min_score"], s["max_revisions"]), (90, 80, 2))
 
 
@@ -549,18 +558,19 @@ class Readback(unittest.TestCase):
         settings = cj.validate_jobs(jobs_block(), catalog, cr.validate_reply(job_config()["reply"], catalog))
         payload = {"target": {"account_id": 5898865, "project_id": WAT, "list_id": SOCIAL},
                    "title": "WM // TEST – Sarayköy post", "description": "Müşteri: WAT Mobilite",
-                   "assignee_ids": [BERKAY_BC], "due_on": None}
+                   "assignee_ids": [BERKAY_BC], "due_on": None,
+                   "completion_subscriber_ids": sorted([AHMET_BC, CANSU_BC, OZGE_BC])}
         writer = cj.JobTodoWriter.__new__(cj.JobTodoWriter)
         writer.settings = settings
 
         class Http:
             ORIGIN = ROOT.rsplit("/", 1)[0]
 
-            def __init__(self, url):
-                self.url = url
+            def __init__(self, url, done=(AHMET_BC, CANSU_BC, OZGE_BC)):
+                self.url, self.done = url, done
 
             def _request(self, method, url, body=None, expected=200):
-                return {"id": 10401115561, "bucket": {"id": WAT}, "parent": {"id": SOCIAL, "type": "Todolist"},
+                return {"completion_subscribers": [{"id": i} for i in self.done], "id": 10401115561, "bucket": {"id": WAT}, "parent": {"id": SOCIAL, "type": "Todolist"},
                         "creator": {"id": HAMLE_PERSON}, "visible_to_clients": False, "content": payload["title"],
                         "completed": False, "assignees": [{"id": BERKAY_BC}], "due_on": None,
                         "description": "<div>Müşteri: WAT Mobilite</div>", "app_url": self.url}
@@ -573,6 +583,9 @@ class Readback(unittest.TestCase):
             writer._http = Http(url)
             with self.assertRaises(cj.ClientJobError):
                 writer.readback("10401115561", payload)
+        writer._http = Http(f"https://app.basecamp.com/5898865/buckets/{WAT}/todos/10401115561", (AHMET_BC, OZGE_BC))
+        with self.assertRaises(cj.ClientJobError):  # a "When done" person missing on Basecamp
+            writer.readback("10401115561", payload)
 
 
 class Transport(unittest.TestCase):

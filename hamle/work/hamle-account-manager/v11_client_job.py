@@ -138,7 +138,8 @@ def validate_jobs(block, catalog, reply):
     allowed = routing.allowlist(catalog)
     out = {}
     for key, row in brands.items():
-        _need(key in reply["brands"] and isinstance(row, dict) and set(row) == BRAND_FIELDS, "client_jobs_brands_invalid")
+        _need(key in reply["brands"] and isinstance(row, dict) and BRAND_FIELDS <= set(row) <= BRAND_FIELDS | {"when_done"},
+              "client_jobs_brands_invalid")
         route = (catalog.get("brand_routes") or {}).get(key)
         _need(isinstance(route, dict) and routing.route_problem(catalog, key) is None
               and route.get("lists_visible_to_clients") is False, "client_jobs_route_unusable")
@@ -155,11 +156,16 @@ def validate_jobs(block, catalog, reply):
         _need(isinstance(followers, list) and len(followers) <= 3 and len(set(followers)) == len(followers)
               and isinstance(approvers, list) and 1 <= len(approvers) <= 3 and len(set(approvers)) == len(approvers),
               "client_jobs_brands_invalid")
+        # Basecamp "When done" people on every job to-do (Ahmet 13 Oct: Ahmet, Cansu, Özge, Barış for the demo week)
+        when_done = row.get("when_done", [])
+        _need(isinstance(when_done, list) and len(when_done) <= 6 and len(set(when_done)) == len(when_done),
+              "client_jobs_brands_invalid")
         out[key] = {"name": route.get("brand_name") or key, "project_id": route["project_id"], "lists": lists,
                     "title_prefix": prefix,
                     "assignees": {n: {"id": person(e), "name": people[e]["name"]} for n, e in assignees.items()},
                     "followers": {person(e): people[e]["name"] for e in followers},
-                    "approvers": {person(e): people[e]["name"] for e in approvers}}
+                    "approvers": {person(e): people[e]["name"] for e in approvers},
+                    "when_done": sorted(person(e) for e in when_done)}
     return {"brands": out, "send_min_score": block["send_min_score"], "approve_min_score": block["approve_min_score"],
             "max_revisions": block["max_revisions"], "max_scorings_per_run": block["max_scorings_per_run"],
             "max_mail_bytes": block["max_mail_mb"] * 1024 * 1024,
@@ -228,10 +234,14 @@ class JobTodoWriter:
                                            session_factory=session_factory or provider._session)
 
     def _check(self, payload):
+        done = payload.get("completion_subscriber_ids") if isinstance(payload, dict) else None
+        _need(isinstance(done, list) and done == sorted(set(done)) and len(done) <= 6
+              and all(i in self.settings["agency_ids"] for i in done), "client_job_payload_invalid")
         t = payload.get("target") if isinstance(payload, dict) else None
         brand = next((b for b in self.settings["brands"].values()
                       if isinstance(t, dict) and b["project_id"] == t.get("project_id")), None)
-        _need(brand is not None and set(payload) == {"target", "title", "description", "assignee_ids", "due_on"}
+        _need(brand is not None and set(payload) == {"target", "title", "description", "assignee_ids", "due_on",
+                                                         "completion_subscriber_ids"}
               and set(t) == {"account_id", "project_id", "list_id"} and t["account_id"] == self.settings["account_id"]
               and t["list_id"] in brand["lists"].values()
               and isinstance(payload["title"], str) and 0 < len(payload["title"]) <= 150
@@ -246,7 +256,8 @@ class JobTodoWriter:
         import business_writers as bw
         base = self._check(payload)
         body = {"content": payload["title"], "description": bw._description(payload["description"]),
-                "assignee_ids": list(payload["assignee_ids"]), "completion_subscriber_ids": [], "notify": True}
+                "assignee_ids": list(payload["assignee_ids"]),
+                "completion_subscriber_ids": list(payload["completion_subscriber_ids"]), "notify": True}
         if payload["due_on"]:
             body["due_on"] = payload["due_on"]
         row = self._http._request("POST", f"{base}/todolists/{payload['target']['list_id']}/todos.json", body,
@@ -268,6 +279,8 @@ class JobTodoWriter:
               and row.get("content") == payload["title"] and row.get("completed") is False
               and sorted(a.get("id") for a in row.get("assignees") or [] if isinstance(a, dict))
               == payload["assignee_ids"] and (row.get("due_on") or None) == payload["due_on"]
+              and sorted(p.get("id") for p in row.get("completion_subscribers") or [] if isinstance(p, dict))
+              == payload["completion_subscriber_ids"]
               and bw._description_matches(row.get("description"), payload["description"])
               # the live app_url is https://app.basecamp.com/... (2026-10-13 18:04Z readback), older rows 3.basecamp.com
               and isinstance(url, str) and url.startswith(tuple(f"https://{host}/{payload['target']['account_id']}/"
@@ -826,7 +839,8 @@ class JobDesk:
                               "list_id": brand["lists"][item["list"]]},
                    "title": todo_title(brand, sender, item),
                    "description": todo_description(brand, sender, source, item, self.s),
-                   "assignee_ids": [assignee["id"]], "due_on": item["due_on"]}
+                   "assignee_ids": [assignee["id"]], "due_on": item["due_on"],
+                   "completion_subscriber_ids": list(brand.get("when_done") or [])}
         sha = scope_digest(payload)
         from v11_client_watch import latest_part
         job = {"key": key, "kind": "client_job", "state": "creating", "brand_key": sender["brand_key"],
