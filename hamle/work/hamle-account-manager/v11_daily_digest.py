@@ -117,12 +117,14 @@ def validate_config(cfg):
                            and not any(ord(c) < 32 and c not in "\n\t" for c in note)), "digest_day_note_invalid")
     _need(type(cfg.get("basecamp_account_id")) is int and cfg["basecamp_account_id"] > 0, "digest_account_invalid")
     _need(type(cfg.get("trend_search_enabled", False)) is bool, "digest_trend_flag_invalid")
+    _need(type(cfg.get("idea_tracking_enabled", False)) is bool, "digest_idea_flag_invalid")
     excluded = cfg.get("excluded_project_ids", [])
     _need(isinstance(excluded, list) and len(excluded) <= 50
           and all(type(x) is int and x > 0 for x in excluded), "digest_excluded_projects_invalid")
     return {"enabled": cfg["enabled"], "recipients": list(recipients), "excluded": frozenset(excluded),
             "day_note": " ".join(note.split()) if isinstance(note, str) and note.strip() else None,
-            "account_id": cfg["basecamp_account_id"], "trend_search": cfg.get("trend_search_enabled", False)}
+            "account_id": cfg["basecamp_account_id"], "trend_search": cfg.get("trend_search_enabled", False),
+            "idea_tracking": cfg.get("idea_tracking_enabled", False)}
 
 
 def _plain(value, limit):
@@ -374,6 +376,8 @@ NO_IDEA = "Bugün kaynağı doğrulanmış bir fikir alınamadı."
 NO_INSPIRATION = "Bugün kaynağı doğrulanmış bir ilham örneği alınamadı."
 FOLLOW_UP_HINT = ("Gelişme varsa ilgili Basecamp işine yorum yazmanız ya da yeni görev açmanız yeterli; "
                   "Hamle yarın sabah oradan bakar.")
+IDEA_HINT = ("Bu fikirler markanın Sosyal Medya listesinde “Hamle Fikir:” görevi olarak sorumlusuna açılır; "
+             "ne düşündüğünüzü altına tek satır yazın, uygun değilse “pas” yazmanız yeterli.")
 NB_HINT = ("Gelişmeyi ilgili “Hamle Öneri:” görevinin altına tek satır yazmanız yeterli; “pas” yazılan markayı "
            "Hamle 3 ay önermez.")
 
@@ -541,29 +545,36 @@ def ozu_record(ozu):
     return {"risk": ozu["risk"] and {k: ozu["risk"][k] for k in ("item_kind", "id", "project_id", "title", "app_url",
                                                                    "who")},
             "firsat": ozu["firsat"] and {k: ozu["firsat"].get(k) for k in keep},
-            "fikirler": [{k: x.get(k) for k in keep} for x in ozu["fikirler"]]}
+            "fikirler": [{k: x.get(k) for k in keep + ("idea", "format")} for x in ozu["fikirler"]]}
 
 
-def follow_ups(previous, *, reader, items, day, nb_state=None):
+def follow_ups(previous, *, reader, items, day, nb_state=None, idea_state=None):
     """Yesterday's suggestions -> praise (Basecamp shows a new task / comment) or a friendly question,
-    then the tracked New Business todos (v11_nb_tracking). 'nb_effects' is kept only once sent."""
+    the tracked idea todos (v11_idea_tracking), then the tracked New Business todos (v11_nb_tracking).
+    'idea_effects' / 'nb_effects' are kept only once sent."""
+    from v11_idea_tracking import PREFIX as IDEA_PREFIX, idea_follow_ups, idea_key, tracked_keys
     from v11_nb_tracking import PREFIX, brand_key, nb_follow_ups
     prev_day = _day((previous or {}).get("day"))
     if prev_day is None:
         last = previous_weekday(day)
         when = "dün" if (day - last).days == 1 else f"{WEEKDAYS[last.weekday()]} günü"
+        rows, idea_effects = _nb_rows(idea_follow_ups, idea_state, reader, items, day, MAX_FOLLOW_UPS, last, when)
         nb_rows, effects = _nb_rows(nb_follow_ups, nb_state, reader, items, day, MAX_FOLLOW_UPS, last, when)
-        return {"when": None, "title": "Önerilerim ne oldu?", "rows": [], "nb_rows": nb_rows,
-                "nb_effects": effects} if nb_rows else None
+        return {"when": None, "title": "Önerilerim ne oldu?", "rows": rows, "nb_rows": nb_rows,
+                "nb_effects": effects, "idea_effects": idea_effects} if rows or nb_rows else None
     ozu = previous.get("ozu") or {}
+    ideas_tracked = tracked_keys(idea_state)  # those get their own lines from v11_idea_tracking
     tracked = set(((nb_state or {}).get("brands") or {}))  # those get their own lines from v11_nb_tracking
     nb = [b for b in previous.get("new_business_brands") or [] if isinstance(b, dict) and b.get("brand")
           and brand_key(b["brand"]) not in tracked]
     when = "dün" if (day - prev_day).days == 1 else f"{WEEKDAYS[prev_day.weekday()]} günü"
     since = prev_day.isoformat()
-    fresh = [t for t in items if (t.get("created_on") or "") >= since and not t["title"].startswith(PREFIX)]
+    fresh = [t for t in items if (t.get("created_on") or "") >= since
+             and not t["title"].startswith((PREFIX, IDEA_PREFIX))]
     rows = []
     for x in ozu.get("fikirler") or []:
+        if x.get("brand") and idea_key(x["brand"], x.get("hook")) in ideas_tracked:
+            continue
         hook = _tokens(x.get("hook"))
         hit = next((t for t in fresh if t["project_id"] == x.get("project_id") and _tokens(t["title"]) & hook), None)
         if hit:
@@ -610,9 +621,12 @@ def follow_ups(previous, *, reader, items, day, nb_state=None):
     more, effects = _nb_rows(nb_follow_ups, nb_state, reader, items, day, MAX_FOLLOW_UPS - len(nb_rows), prev_day, when)
     nb_rows += more
     rows = rows[:MAX_FOLLOW_UPS]
+    tracked, idea_effects = _nb_rows(idea_follow_ups, idea_state, reader, items, day, MAX_FOLLOW_UPS - len(rows),
+                                     prev_day, when)
+    rows = tracked + rows
     title = "Dünkü önerilerim ne oldu?" if when == "dün" else f"{WEEKDAYS[prev_day.weekday()]} günkü önerilerim ne oldu?"
     return {"when": when, "title": title, "rows": rows, "nb_rows": nb_rows,
-            "nb_effects": effects} if rows or nb_rows else None
+            "nb_effects": effects, "idea_effects": idea_effects} if rows or nb_rows else None
 
 
 def _nb_rows(nb_follow_ups, nb_state, reader, items, day, limit, prev_day, when):
@@ -632,7 +646,7 @@ def _plain_link(url, text):
 
 
 def render(listing, *, day, day_note, overdue, trends, specials, classified, new_business=None, ozu=None,
-           followups=None):
+           followups=None, idea_tracking=False):
     items = listing["items"]
     today_iso = day.isoformat()
     due = [t for t in items if t["due_on"] == today_iso]
@@ -685,6 +699,8 @@ def render(listing, *, day, day_note, overdue, trends, specials, classified, new
         for x in ozu["fikirler"]:
             lines.append(f"- {_plain_link(x['url'], x['brand'] + ' × ' + x['hook'])}: {x['idea']}"
                          + (f" ({x['format']})" if x["format"] else "") + (f" @{x['who']}" if x["who"] else ""))
+        if idea_tracking:
+            lines.append(IDEA_HINT)
 
     lines += ["", "TREND RADARI"]
     if trends:
@@ -815,7 +831,7 @@ def _ozu_html(ozu):
 
 
 def render_html(listing, *, day, day_note, overdue, trends, specials, classified, new_business=None, ozu=None,
-                followups=None):
+                followups=None, idea_tracking=False):
     """HTML twin of render(): same facts, full width, Tahoma, Basecamp/source titles as links, no raw URLs."""
     items = listing["items"]
     today_iso = day.isoformat()
@@ -871,6 +887,8 @@ def render_html(listing, *, day, day_note, overdue, trends, specials, classified
         out.append(_ul([_li(_html_link(x["url"], f"{x['brand']} × {x['hook']}") + ": " + _e(x["idea"])
                             + (" " + _grey("(" + x["format"] + ")") if x["format"] else "")
                             + (" " + _e("@" + x["who"]) if x["who"] else "")) for x in ozu["fikirler"]]))
+        if idea_tracking:
+            out.append(_p(_grey(IDEA_HINT)))
 
     out.append(_h2("📈 Trend radarı"))
     if trends:
@@ -988,22 +1006,29 @@ class DigestMailWriter:
 
 # ------------------------------------------------------------------ assembly
 def build_digest(reader, *, day, day_note, classifier=None, trend_source=None, cards=None, calendar=None,
-                 special_source=None, new_business_source=None, spark_source=None, previous=None, nb_state=None):
+                 special_source=None, new_business_source=None, spark_source=None, previous=None, nb_state=None,
+                 idea_state=None, idea_tracking=False):
     """Read-only listing + optional batched classification -> (body, stats).
 
     previous: the last weekday's sent team digest ({'day', 'ozu', 'new_business_brands'}) for
     the follow-up section; None -> section omitted. nb_state: the New Business tracking record
-    (v11_nb_tracking): tracked or passed brands are not listed again, their todos are followed up."""
+    (v11_nb_tracking): tracked or passed brands are not listed again, their todos are followed up.
+    idea_state: the idea tracking record (v11_idea_tracking), read the same way; idea_tracking: the
+    config flag (the Günün hamlesi hint says the ideas become todos)."""
+    from v11_idea_tracking import avoid_ideas, is_idea_item
     from v11_nb_tracking import is_nb_item
+
+    def tracked(t):  # Ahmet: suggestion todos are followed up in their own lines, not listed as team work
+        return is_nb_item(t) or is_idea_item(t)
     listing = reader.collect()
-    all_items = listing["items"]  # follow-ups still read the NB suggestion todos
-    listing["items"] = [t for t in all_items if not is_nb_item(t)]  # Ahmet: NB stays in its own bottom section
+    all_items = listing["items"]  # follow-ups still read the suggestion todos
+    listing["items"] = [t for t in all_items if not tracked(t)]
     listing["cards"] = cards
     listing["account"] = getattr(reader, "account", None)
     today_iso = day.isoformat()
     report = reader.overdue_report(listing["project_names"])
     if report is not None:
-        report = [t for t in report if not is_nb_item(t)]
+        report = [t for t in report if not tracked(t)]
     todos = report if report is not None else [t for t in listing["items"] if t["kind"] == "todo"]
     cards_due = [t for t in listing["items"] if t["kind"] == "card"]
     overdue, seen = [], set()
@@ -1065,6 +1090,7 @@ def build_digest(reader, *, day, day_note, classifier=None, trend_source=None, c
     spark, spark_status = None, "no_provider"
     if spark_source is not None:
         avoid = [f"{x.get('brand')} × {x.get('hook')}" for x in ((previous or {}).get("ozu") or {}).get("fikirler") or []]
+        avoid += [a for a in avoid_ideas(idea_state, day) if a not in avoid]  # the team said no
         try:
             spark = spark_source(day, avoid)
             spark_status = "{}_ideas_{}_opportunities_{}_inspirations".format(
@@ -1078,11 +1104,13 @@ def build_digest(reader, *, day, day_note, classifier=None, trend_source=None, c
     ozu = build_ozu(day=day, items=listing["items"], overdue=overdue, classified=classified > 0, risk=risk,
                     spark=spark, trends=trends, specials=specials, new_business=new_business, cards=cards)
     try:
-        followups = follow_ups(previous, reader=reader, items=all_items, day=day, nb_state=nb_state)
+        followups = follow_ups(previous, reader=reader, items=all_items, day=day, nb_state=nb_state,
+                               idea_state=idea_state)
     except Exception:
         followups = None
     parts = dict(day=day, day_note=day_note, overdue=overdue, trends=trends, specials=specials,
-                 classified=classified > 0, new_business=new_business, ozu=ozu, followups=followups)
+                 classified=classified > 0, new_business=new_business, ozu=ozu, followups=followups,
+                 idea_tracking=idea_tracking)
     body = render(listing, **parts)
     stats_html = render_html(listing, **parts)
     return body, {"html": stats_html, "open_items": len(listing["items"]), "overdue": len(overdue), "classified": classified,
@@ -1090,7 +1118,7 @@ def build_digest(reader, *, day, day_note, classifier=None, trend_source=None, c
                   "new_business": nb_status, "overdue_source": "report" if report is not None else "scan",
                   "new_business_brands": new_business or [], "spark": spark_status, "ozu": ozu_record(ozu),
                   "follow_ups": len((followups or {}).get("rows") or []) + len((followups or {}).get("nb_rows") or []),
-                  "nb": (followups or {}).get("nb_effects")}
+                  "nb": (followups or {}).get("nb_effects"), "ideas": (followups or {}).get("idea_effects")}
 
 
 # ------------------------------------------------------------------ run
@@ -1168,7 +1196,7 @@ def run_daily_digest(ops, *, config, reader_factory, writer, clock, window=DAILY
             recipients, key, subject_prefix = cfg["recipients"], "daily-digest-" + local.strftime("%Y%m%d"), ""
         token = uuid.uuid4().hex
         prev_day = previous_weekday(target)
-        previous, nb = {}, {}
+        previous, nb, ideas = {}, {}, {}
 
         def claim_op(tx, ts):
             c = ops._control(tx); b = ops._budget(tx); row = tx.get(key)
@@ -1178,6 +1206,7 @@ def run_daily_digest(ops, *, config, reader_factory, writer, clock, window=DAILY
                 return None  # claimed/sending/sent/unknown: never a second mail under this key
             previous["value"] = _previous(tx.get("daily-digest-" + prev_day.strftime("%Y%m%d")), prev_day)
             nb["value"] = tx.get("nb-tracking")  # v11_nb_tracking.STATE_KEY (read-only here)
+            ideas["value"] = tx.get("idea-tracking")  # v11_idea_tracking.STATE_KEY (read-only here)
             new = {"key": key, "kind": "daily_digest_preview" if preview_to else "daily_digest", "state": "claimed",
                    "token": token, "generation": c["generation"], "claimed_at": ts,
                    "lease_until": ts + LEASE_SECONDS, "date": target.isoformat(), "run_date": local.date().isoformat()}
@@ -1192,7 +1221,8 @@ def run_daily_digest(ops, *, config, reader_factory, writer, clock, window=DAILY
                                    trend_source=trend_source if cfg["trend_search"] else None,  # flag-gated
                                    cards=cards, calendar=calendar, special_source=special_source,
                                    new_business_source=new_business_source, spark_source=spark_source,
-                                   previous=previous.get("value"), nb_state=nb.get("value"))
+                                   previous=previous.get("value"), nb_state=nb.get("value"),
+                                   idea_state=ideas.get("value"), idea_tracking=cfg["idea_tracking"])
         if preview_to is None:  # team mail: prepared from 09:00, never sent before 09:15 Istanbul
             h, mnt = (int(v) for v in DAILY_DIGEST_SEND_AT.split(":"))
             send_at = local.replace(hour=h, minute=mnt, second=0, microsecond=0)
@@ -1378,13 +1408,33 @@ def run_worker_daily_digest(ops, secrets, *, clock=None, preview_to=None, previe
             result["nb_tracking"] = run_nb_tracking(ops, http=http, stats=result["stats"], day=day, earlier=earlier)
         except Exception as exc:
             result["nb_tracking"] = {"status": "held", "reason": str(getattr(exc, "code", None) or type(exc).__name__)[:120]}
+        if validate_config(config)["idea_tracking"]:
+            # Sosyal medya fikir takibi: today's Günün hamlesi ideas -> todos for each brand's SM lead.
+            result["idea_tracking"] = _run_ideas(ops, secrets, config, stats=result["stats"],
+                                                 day=date.fromisoformat(result["day"]))
     return result
+
+
+def _run_ideas(ops, secrets, config, *, stats, day):
+    try:
+        import basecamp_cloud_auth
+        import cloud_providers as provider
+        from v11_chain_live import _memo, load_catalog
+        from v11_idea_tracking import IdeaBasecamp, routes, run_idea_tracking
+        from v11_nb_tracking import session_send
+        rts = routes(load_catalog())
+        token = _memo(lambda: basecamp_cloud_auth.access_token(secrets, claim_refresh=ops.claim_credential_refresh))
+        http = IdeaBasecamp(validate_config(config)["account_id"], rts, send=session_send(token, provider._session))
+        return run_idea_tracking(ops, http=http, routes=rts, stats=stats, day=day)
+    except Exception as exc:
+        return {"status": "held", "reason": str(getattr(exc, "code", None) or type(exc).__name__)[:120]}
 
 
 def run_worker_nb_open(ops, secrets, *, clock=None):
     """Operator one-shot (worker.py --mode nb_open, Ahmet 2026-10-13 07:39Z "dün gelen öneriler için hemen
-    aç"): open this week's sent Monday New Business suggestions as todos now. No mail, no model call;
-    the same records as the after-digest step, so nothing is ever opened twice."""
+    aç"): open this week's sent Monday New Business suggestions as todos now; with idea tracking on,
+    also today's sent Günün hamlesi ideas ('ideas'). No mail, no model call; the same records as the
+    after-digest step, so nothing is ever opened twice."""
     import basecamp_cloud_auth
     import cloud_providers as provider
     from v11_chain_live import _memo
@@ -1395,6 +1445,12 @@ def run_worker_nb_open(ops, secrets, *, clock=None):
     row = ops._run(lambda tx, _: tx.get("daily-digest-" + monday.strftime("%Y%m%d")), allow_expired=True)
     if not (isinstance(row, dict) and row.get("state") == "sent" and isinstance(row.get("stats"), dict)):
         return {"status": "held", "reason": "monday_digest_not_sent", "business_writes": 0}
+    config = load_config()
     token = _memo(lambda: basecamp_cloud_auth.access_token(secrets, claim_refresh=ops.claim_credential_refresh))
-    http = NbBasecamp(validate_config(load_config())["account_id"], send=session_send(token, provider._session))
-    return run_nb_tracking(ops, http=http, stats={}, day=today, earlier=[(monday, row["stats"])])
+    http = NbBasecamp(validate_config(config)["account_id"], send=session_send(token, provider._session))
+    result = run_nb_tracking(ops, http=http, stats={}, day=today, earlier=[(monday, row["stats"])])
+    sent = ops._run(lambda tx, _: tx.get("daily-digest-" + today.strftime("%Y%m%d")), allow_expired=True)
+    if validate_config(config)["idea_tracking"] and isinstance(sent, dict) and sent.get("state") == "sent" \
+            and isinstance(sent.get("stats"), dict):  # only the ideas, never the morning's reading effects again
+        result["ideas"] = _run_ideas(ops, secrets, config, stats={"ozu": sent["stats"].get("ozu")}, day=today)
+    return result

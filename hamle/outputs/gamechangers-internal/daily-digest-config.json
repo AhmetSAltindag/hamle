@@ -13,6 +13,7 @@
   "day_note": null,
   "basecamp_account_id": 5898865,
   "trend_search_enabled": true,
+  "idea_tracking_enabled": true,
   "send_window_istanbul": "Mon-Fri, first run at/after 09:15 (runtime_authority.DAILY_DIGEST_WINDOW 09:15-18:30)",
   "rules": "recipients: only @gamechangers.com.tr agency addresses (any other domain refuses the whole digest); never customer addresses. day_note: optional plain text 'günün notu' (<= 2000 chars) or null.",
   "to_enable": "Ahmet fills recipients (e.g. [\"ahmet@gamechangers.com.tr\", \"cansu@gamechangers.com.tr\", \"ozge@gamechangers.com.tr\"]), optionally day_note, then sets enabled=true. The image reads work/hamle-account-manager/chain-profile/daily-digest-config.json, so a rebuild (package_chain_source.py) is needed after editing.",
@@ -20,5 +21,6 @@
   "excluded_project_ids": [
     47875291
   ],
-  "decision_ref": "Ahmet in thread 2026-10-11 ~20:05Z: weekday 09:15 digest to these 7 agency addresses (Samet no mail); Cacaonly (47875291) out of scope."
+  "decision_ref": "Ahmet in thread 2026-10-11 ~20:05Z: weekday 09:15 digest to these 7 agency addresses (Samet no mail); Cacaonly (47875291) out of scope.",
+  "idea_tracking_rules": "Ahmet 2026-10-13 07:57Z card 'Görev aç': each Günün hamlesi idea of the sent team digest becomes one todo 'Hamle Fikir: <Marka> × <konu>' in that brand's verified client-hidden Sosyal Medya list (catalog brand_routes), assigned to the brand's social media lead, due the day it opens; comments are read the next weekdays (yes/no recorded, 'pas' = no, reminders after 5/7 quiet days). No model call. Set false to stop opening and following idea todos."
 }
