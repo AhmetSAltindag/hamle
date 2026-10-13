@@ -904,8 +904,10 @@ class JobDesk:
             if self._comment(job, body, report) == "written":
                 n += 1
             notes = (list(job.get("client_notes") or []) + [note])[-5:]
-            state = "open" if job["state"] == "delivered" else job["state"]
-            self._set(job["key"], client_notes=notes, state=state)
+            if job["state"] == "delivered":  # the client's new notes start a fresh revision round
+                self._set(job["key"], client_notes=notes, state="open", revisions=0)
+            else:
+                self._set(job["key"], client_notes=notes)
         return n
 
     # ----- 2. follow open jobs
@@ -1033,6 +1035,8 @@ class JobDesk:
                    "revision_round": int(job.get("revisions") or 0), "files": info, "not_reviewed": skipped,
                    "client_name": job.get("client_name"), "due_on": job.get("due_on"),
                    "today": self.watch.clock().date().isoformat()}
+        if job.get("deliveries"):
+            request["approved_before"] = {"by": job.get("accepted_by"), "accepted": list(job.get("accepted") or [])}
         out["scored"] += 1
         report["model_calls"] += 1
         try:
@@ -1147,8 +1151,12 @@ class JobDesk:
             _need(back.get("readback_sha256") == sha, "client_delivery_readback_mismatch")
         except Exception as exc:
             return self._unknown(job, exc, report)
+        # Ahmet 13 Oct: what a manager approved (or a 90+ score let through) is settled; later rounds never dock it
+        accepted = list(dict.fromkeys(list(job.get("accepted") or [])
+                                      + list((job.get("review") or {}).get("missing") or [])))[-12:]
         self._set(job["key"], state="delivered", delivered_at=self.watch.clock().timestamp(), delivery_remote_id=remote,
-                  deliveries=int(job.get("deliveries") or 0) + 1, deliver_pending=None)
+                  deliveries=int(job.get("deliveries") or 0) + 1, deliver_pending=None, accepted=accepted,
+                  accepted_by=approved_by or f"Hamle ({job.get('score')}/100)")
         out["sent"] += 1
         report["sent"] += 1
         who = ", ".join(plan["to"]) + ("; CC: " + ", ".join(plan["cc"]) if plan["cc"] else "")

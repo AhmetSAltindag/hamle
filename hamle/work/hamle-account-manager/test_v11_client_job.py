@@ -314,6 +314,32 @@ class Follow(JobBase):
         self.assertTrue(self.job_comments.calls[-1]["body"].startswith("✅ Cansu Akiş Kabil onayıyla müşteriye gönderdim"))
         self.assertEqual(len(self.vision.calls), 1)
 
+    def test_what_a_manager_approved_is_never_docked_again(self):
+        # Ahmet 13 Oct 19:24Z: once a manager said send, the next round only checks the client's new notes.
+        _, todo = self.opened()
+        self.upload(todo)
+        self.vision.outputs = [message(review(85))]
+        self.watch().run()
+        self.brand_bc.add(todo, CANSU_BC, "<div>uygun</div>", name="Cansu Akiş Kabil")
+        self.watch().run()
+        self.assertEqual((self.job()["state"], self.job()["accepted"], self.job()["accepted_by"]),
+                         ("delivered", ["Story yok"], "Cansu Akiş Kabil"))
+        self.later(60)
+        self.mails = [source(2, subject="Re: Ekim post revizesi", text="Merhaba,\nLogo biraz küçük, büyütelim.\nAyşe")]
+        self.client.outputs = [message(ready(summary="Logo büyütülsün."))]
+        self.ops.backend.data[cj.job_key("m1", 0)] = dict(self.job(), revisions=2)  # the earlier round used them up
+        self.watch().run()
+        self.assertEqual((self.job()["state"], self.job()["revisions"]), ("open", 0))
+        self.upload(todo, png(color=(1, 2, 3)))
+        self.vision.outputs = [message(review(93))]
+        self.watch().run()
+        request = json.loads(self.vision.calls[1]["messages"][0]["content"][-1]["text"])
+        self.assertEqual(request["approved_before"], {"by": "Cansu Akiş Kabil", "accepted": ["Story yok"]})
+        self.assertNotIn("approved_before", json.loads(self.vision.calls[0]["messages"][0]["content"][-1]["text"]))
+        self.assertEqual(len(self.delivery.sent), 2)
+        prompt = cj.REVIEW_PROMPT.read_text(encoding="utf-8")
+        self.assertIn("o iş artık 99/100 sayılır", prompt)
+
     def test_below_80_asks_the_designer_twice_then_the_approvers(self):
         _, todo = self.opened()
         for n, score in enumerate((70, 72), 1):
