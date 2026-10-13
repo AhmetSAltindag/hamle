@@ -502,6 +502,20 @@ class GmailWriter(unittest.TestCase):
         with self.assertRaises(cr.ClientReplyError):
             self.writer.write(self.payload(cc=["someone@example.com"]))
 
+    def test_same_people_in_another_order_is_not_a_changed_recipient_list(self):
+        # 13 Oct 18:24Z: Ahmet wrote To "esma, cansu"; the plan listed them sorted and the send was refused.
+        esma = "esma@gamechangers.com.tr"
+        self.rest.messages["a1"]["headers"].update({"To": f"hamle@gamechangers.com.tr, {OZGE}, {esma}",
+                                                    "Cc": f"{CANSU}, {AHMET}"})
+        receipt = self.writer.write(self.payload(to=sorted([AYSE, OZGE, esma]), cc=sorted([CANSU, AHMET])))
+        raw = self.rest.sent[receipt["remote_id"]]["raw"].decode()
+        self.assertIn("Cc: " + ", ".join(sorted([CANSU, AHMET])), raw)
+        for bad in (self.payload(to=sorted([AYSE, OZGE]), cc=sorted([CANSU, AHMET])),
+                    self.payload(to=sorted([AYSE, OZGE, esma]), cc=[CANSU])):
+            with self.assertRaises((cmail.ChainMailError, cr.ClientReplyError)) as got:
+                self.writer.write(bad)
+            self.assertEqual(got.exception.code, "reply_recipients_changed")
+
     def test_newer_incoming_mail_blocks(self):
         self.rest.messages["a2"] = dict(self.rest.messages["a1"], internal="2000")
         with self.assertRaises(cmail.ChainMailError) as got:

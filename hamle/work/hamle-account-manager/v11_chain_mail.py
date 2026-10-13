@@ -303,7 +303,8 @@ class GmailThreadReplyWriter:
 
     def _verify(self, kind, payload, src):
         to, cc = self._expected(kind, src)
-        _need(payload["to"] == to and payload["cc"] == cc, "reply_recipients_changed")
+        # same people, any order: the thread reader sorts To/CC, the anchor header keeps the sender's order (13 Oct)
+        _need(sorted(payload["to"]) == sorted(to) and sorted(payload["cc"]) == sorted(cc), "reply_recipients_changed")
         _need(payload["subject"] == reply_subject(src["subject"]), "reply_subject_mismatch")
 
     def source_evidence(self, thread_id, anchor):

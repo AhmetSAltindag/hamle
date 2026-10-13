@@ -673,7 +673,8 @@ def delivery_writer(book, reply, *, token_context, session_factory):
                     _need(self._latest_incoming(session, token, payload["thread_id"]) == payload["in_reply_to_message_id"],
                           "newer_incoming_mail_in_thread")
                     to, cc = reply_all(src["sender"], src["to"], src["cc"])
-                    _need(payload["to"] == to and payload["cc"] == cc, "reply_recipients_changed")
+                    _need(sorted(payload["to"]) == sorted(to) and sorted(payload["cc"]) == sorted(cc),
+                          "reply_recipients_changed")
                     _need(payload["subject"] == reply_subject(src["subject"]), "reply_subject_mismatch")
                     raw = self._mime(payload, src, data)
                     _need(len(raw) <= 30 * 1024 * 1024, "mail_payload_too_large")

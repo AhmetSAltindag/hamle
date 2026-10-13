@@ -225,8 +225,9 @@ def client_reply_writer(book, settings, *, token_context, session_factory):
 
         def _verify(self, kind, payload, src):
             to, cc = reply_all(src["sender"], src["to"], src["cc"])
-            extra = payload["cc"][len(cc):]
-            _need(payload["to"] == to and payload["cc"][:len(cc)] == cc
+            # same people in any order (13 Oct 18:24Z: To "esma, cansu" was planned sorted); added CC only Ahmet/Cansu
+            extra = [a for a in payload["cc"] if a not in cc]
+            _need(sorted(payload["to"]) == sorted(to) and set(cc) <= set(payload["cc"])
                   and all(a in settings["sensitive_cc"] for a in extra), "reply_recipients_changed")
             from v11_chain_mail import reply_subject
             _need(payload["subject"] == reply_subject(src["subject"]), "reply_subject_mismatch")
