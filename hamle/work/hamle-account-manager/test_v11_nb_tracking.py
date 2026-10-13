@@ -49,7 +49,7 @@ class FakeBasecamp:
                                "parent": {"id": nb.LIST_ID, "type": "Todolist"}, "bucket": {"id": NB},
                                "creator": {"id": nb.HAMLE_PERSON}, "visible_to_clients": False,
                                "assignees": [{"id": i, "name": "Cansu Akiş Kabil"} for i in body["assignee_ids"]],
-                               "app_url": f"{APP}/buckets/{NB}/todos/{tid}"}
+                               "due_on": body["due_on"], "app_url": f"{APP}/buckets/{NB}/todos/{tid}"}
             return {"id": tid}, {}
         m = re.fullmatch(rf"/{ACC}/buckets/{NB}/todos/(\d+)\.json", path)
         if m:
@@ -75,8 +75,9 @@ class Writes(Base):
         posts = fake.posts()
         self.assertEqual({p for p, b in posts}, {f"/{ACC}/buckets/{NB}/todolists/{nb.LIST_ID}/todos.json"})
         todos = [b for p, b in posts]
-        self.assertEqual([b["content"] for b in todos], ["NB // Hisense", "NB // lululemon", "NB // Alo Yoga"])  # no fırsat
-        self.assertTrue(all(b["assignee_ids"] == [nb.CANSU] and b["notify"] is True for b in todos))
+        self.assertEqual([b["content"] for b in todos], ["Hamle Öneri: Hisense", "Hamle Öneri: lululemon", "Hamle Öneri: Alo Yoga"])  # no fırsat
+        self.assertTrue(all(b["assignee_ids"] == [nb.CANSU] and b["notify"] is True and b["due_on"] == "2026-10-12"
+                            for b in todos))  # Ahmet 07:38Z: deadline = the day it opens
         self.assertIn("Neden şimdi: Türkiye lansmanı.<br>Kaynak: https://example.org/h<br>İletişim (tahmini, "
                       "doğrulanmamış): info@hisense.com.tr (kaynak: https://example.org/h), pazarlama@hisense.com.tr "
                       "(kalıp)<br>İlk adım önerisi: " + nb.FIRST_STEP, todos[0]["description"])
@@ -96,6 +97,7 @@ class Writes(Base):
         r = self.run_nb(fake, stats(new_business_brands=[]), day=date(2026, 10, 14), earlier=[(MON, stats())])
         self.assertEqual(r["created"], 3, r)
         self.assertIn("12 Ekim 2026 (Pazartesi New Business listesi)", fake.posts()[0][1]["description"])
+        self.assertEqual(fake.posts()[0][1]["due_on"], "2026-10-14")
         self.assertEqual(self.state()["brands"]["hisense"]["suggested_on"], "2026-10-12")
 
     def test_a_list_clients_could_see_is_never_written(self):
@@ -144,7 +146,7 @@ class NbProject(Base):
         projects.append({"id": NB, "name": "New Biz", "status": "active",
                          "dock": [{"name": "todoset", "id": 71, "enabled": True}]})
         self.bc.pages[f"{BASE}/buckets/{NB}/todosets/71/todolists.json"] = ([{"id": nb.LIST_ID}], {})
-        rows = [todo(t, f"NB // {b}", None, [(nb.CANSU, "Cansu Akiş Kabil")], created_at=f"{c}T09:00:00Z")
+        rows = [todo(t, f"Hamle Öneri: {b}", c, [(nb.CANSU, "Cansu Akiş Kabil")], created_at=f"{c}T09:00:00Z")
                 for t, b, c in ((9001, "Hisense", "2026-10-05"), (9002, "lululemon", "2026-10-05"),
                                 (9003, "Alo Yoga", "2026-10-05"), (9005, "Vestel", "2026-10-12"),
                                 (9006, "Arçelik", "2026-10-05"))]
@@ -177,17 +179,19 @@ class MorningReading(NbProject):
         self.assertEqual(r["status"], "digest_sent", r)
         text = self.gmail.text()
         self.assertNotIn("ÖNERİLERİM NE OLDU?", text)  # NB lines are not in the top follow-up section
+        top = text[:text.index("NEW BUSINESS (@Cansu)")]
+        self.assertNotIn("Hamle Öneri:", top)  # overdue suggestion todos stay out of the team lists
         section = text[text.index("NEW BUSINESS (@Cansu)"):]
         self.assertGreater(text.index("NEW BUSINESS (@Cansu)"), text.index("BUGÜN"))
         for needle in ("- @Cansu, dün açtığım New Business görevlerinde (Vestel) henüz hareket yok; bir adım attık mı?",
-                       f"- 👍 “NB // Hisense” ({APP}/buckets/{NB}/todos/9001): “Aradık, toplantı 20 Ekim.” "
+                       f"- 👍 “Hamle Öneri: Hisense” ({APP}/buckets/{NB}/todos/9001): “Aradık, toplantı 20 Ekim.” "
                        "(Cansu Akiş Kabil). Teşekkürler, takipteyim.",
-                       f"- 👌 “NB // lululemon” ({APP}/buckets/{NB}/todos/9002) için pas dendi; bu markayı 3 ay "
+                       f"- 👌 “Hamle Öneri: lululemon” ({APP}/buckets/{NB}/todos/9002) için pas dendi; bu markayı 3 ay "
                        "önermeyeceğim.",
-                       f"- @Cansu, “NB // Alo Yoga” ({APP}/buckets/{NB}/todos/9003) 8 gündür sessiz; bir adım atalım mı?",
-                       f"- @Cansu, “NB // Arçelik” ({APP}/buckets/{NB}/todos/9006) son yorumdan bu yana 6 gündür "
+                       f"- @Cansu, “Hamle Öneri: Alo Yoga” ({APP}/buckets/{NB}/todos/9003) 8 gündür sessiz; bir adım atalım mı?",
+                       f"- @Cansu, “Hamle Öneri: Arçelik” ({APP}/buckets/{NB}/todos/9006) son yorumdan bu yana 6 gündür "
                        "sessiz; biraz hızlandıralım mı?",
-                       f"- ✅ “NB // Getir” ({APP}/buckets/{NB}/todos/9004) artık açık değil, tamamlanmış olmalı. "
+                       f"- ✅ “Hamle Öneri: Getir” ({APP}/buckets/{NB}/todos/9004) artık açık değil, tamamlanmış olmalı. "
                        "Teşekkürler @Cansu!", dd.NB_HINT):
             self.assertIn(needle, section)
         self.assertIn("🚀 New Business (@Cansu)", self.gmail.html())
@@ -236,3 +240,20 @@ class MondayList(NbProject):
         self.assertIn(("", "@Cansu, Cuma günü New Business'ta önerdiğim ", None, "Beko", " için bir adım attık mı?"),
                       out["nb_rows"])
         self.assertEqual(out["rows"], [])
+
+
+class OperatorOpen(NbProject):
+    START = TUE_0916
+
+    def test_opens_this_weeks_monday_brands_now_once(self):
+        from unittest.mock import patch
+        self.assertEqual(dd.run_worker_nb_open(self.ops, None, clock=lambda: self.now)["reason"], "monday_digest_not_sent")
+        self.ops.backend.data["daily-digest-20261012"] = {"state": "sent", "stats": stats()}
+        self.ops.backend.data[nb.STATE_KEY] = nb.empty_state()
+        fake = FakeBasecamp()
+        with patch.object(nb, "session_send", lambda token, factory: fake.send):
+            r = dd.run_worker_nb_open(self.ops, None, clock=lambda: self.now)
+            self.assertEqual(r["created"], 3, r)
+            self.assertEqual({b["due_on"] for p, b in fake.posts()}, {"2026-10-13"})
+            self.assertEqual(dd.run_worker_nb_open(self.ops, None, clock=lambda: self.now)["status"], "no_new_work")
+        self.assertEqual(len(fake.posts()), 3)

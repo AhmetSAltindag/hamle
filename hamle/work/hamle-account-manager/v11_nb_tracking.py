@@ -2,8 +2,10 @@
 
 Ahmet's rules (2026-10-13 ~07:25Z): New Business is a Monday thing. Each brand of the sent
 Monday digest (5 a week, with why-now, source and up to 2 "tahmini, doğrulanmamış" company
-addresses) becomes one todo "NB // <Marka>" in the list Ahmet opened in New Biz ("Hamle
-Öneriler", 10398528523), assigned to Cansu; his weekly umbrella todo stays as it is. The team
+addresses) becomes one todo "Hamle Öneri: <Marka>" in the list Ahmet opened in New Biz ("Hamle
+Öneriler", 10398528523), assigned to Cansu, due the day it is opened ("Cansu'nun ana işi bu",
+Ahmet 07:38Z). These todos stay out of the team's due/overdue lists; their lines live in the
+digest's New Business section at the bottom. The team
 writes progress as a one-line comment and the next weekday digests read them (nb_follow_ups):
 - the day after a todo opens with no activity: one grouped question to Cansu;
 - a new comment: thanks (recorded as progress); "pas": not suggested again for 90 days (recorded
@@ -28,7 +30,7 @@ from urllib.parse import urlsplit
 
 NB_PROJECT = 40704547
 LIST_ID = 10398528523  # "Hamle Öneriler", opened by Ahmet 2026-10-13 (visible_to_clients false)
-PREFIX = "NB // "
+PREFIX = "Hamle Öneri: "
 CANSU = 48793256
 HAMLE_PERSON = 53358100
 STATE_KEY = "nb-tracking"
@@ -142,6 +144,11 @@ def suggestions(stats):
 # ------------------------------------------------------------------ morning read (digest follow-ups)
 def _comment_id(c):
     return hashlib.sha256(f"{c.get('at')}|{c.get('by')}|{c.get('text')}".encode("utf-8")).hexdigest()[:16]
+
+
+def is_nb_item(t):
+    """A tracked suggestion todo (shown only in the New Business section of the digest)."""
+    return t.get("project_id") == NB_PROJECT and str(t.get("title") or "").startswith(PREFIX)
 
 
 def _and(names):
@@ -334,7 +341,8 @@ class NbTracker:
         self._write(lambda st, now: st.update(list={"state": "ready", "id": LIST_ID, "checked_at": now}))
         return LIST_ID
 
-    def add(self, s, list_id, day):
+    def add(self, s, list_id, day, due):
+        """day: when Hamle suggested the brand; due: the day the todo opens (its deadline, Ahmet 07:38Z)."""
         key, title, text = brand_key(s["brand"]), PREFIX + s["brand"], description(s, day)
 
         def begin(st, now):
@@ -348,7 +356,7 @@ class NbTracker:
         try:
             row, _ = self.http.call("POST", f"{self.base}/todolists/{list_id}/todos.json",
                                     {"content": title, "description": _html(text), "assignee_ids": [CANSU],
-                                     "completion_subscriber_ids": [], "notify": True}, 201)
+                                     "completion_subscriber_ids": [], "notify": True, "due_on": due.isoformat()}, 201)
             tid = row.get("id") if isinstance(row, dict) else None
             _need(type(tid) is int and tid > 0, "nb_todo_receipt_invalid")
             back = self.http.one(f"{self.base}/todos/{tid}.json")
@@ -357,6 +365,7 @@ class NbTracker:
                   and parent.get("type") == "Todolist" and (back.get("bucket") or {}).get("id") == NB_PROJECT
                   and (back.get("creator") or {}).get("id") == HAMLE_PERSON and back.get("visible_to_clients") is False
                   and sorted(x.get("id") for x in back.get("assignees") or [] if isinstance(x, dict)) == [CANSU]
+                  and back.get("due_on") == due.isoformat()
                   and text_matches(back.get("description"), text), "nb_todo_readback_mismatch")
         except Exception as exc:
             reason = _code(exc)
@@ -390,7 +399,7 @@ def run_nb_tracking(ops, *, http, stats, day, earlier=()):
             return dict(report, status="no_new_work")
         list_id = tracker.ensure_list()
         for d, s in fresh[:MAX_NEW]:
-            outcome = tracker.add(s, list_id, d)
+            outcome = tracker.add(s, list_id, d, due=day)
             report["business_writes"] += outcome in ("created", "unknown")
             report[outcome] += 1
         return report

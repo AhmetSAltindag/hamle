@@ -374,8 +374,8 @@ NO_IDEA = "Bugün kaynağı doğrulanmış bir fikir alınamadı."
 NO_INSPIRATION = "Bugün kaynağı doğrulanmış bir ilham örneği alınamadı."
 FOLLOW_UP_HINT = ("Gelişme varsa ilgili Basecamp işine yorum yazmanız ya da yeni görev açmanız yeterli; "
                   "Hamle yarın sabah oradan bakar.")
-NB_HINT = ("Gelişmeyi ilgili “NB //” görevinin altına tek satır yazmanız yeterli; “pas” yazılan markayı Hamle "
-           "3 ay önermez.")
+NB_HINT = ("Gelişmeyi ilgili “Hamle Öneri:” görevinin altına tek satır yazmanız yeterli; “pas” yazılan markayı "
+           "Hamle 3 ay önermez.")
 
 
 def _contacts(b):
@@ -994,11 +994,16 @@ def build_digest(reader, *, day, day_note, classifier=None, trend_source=None, c
     previous: the last weekday's sent team digest ({'day', 'ozu', 'new_business_brands'}) for
     the follow-up section; None -> section omitted. nb_state: the New Business tracking record
     (v11_nb_tracking): tracked or passed brands are not listed again, their todos are followed up."""
+    from v11_nb_tracking import is_nb_item
     listing = reader.collect()
+    all_items = listing["items"]  # follow-ups still read the NB suggestion todos
+    listing["items"] = [t for t in all_items if not is_nb_item(t)]  # Ahmet: NB stays in its own bottom section
     listing["cards"] = cards
     listing["account"] = getattr(reader, "account", None)
     today_iso = day.isoformat()
     report = reader.overdue_report(listing["project_names"])
+    if report is not None:
+        report = [t for t in report if not is_nb_item(t)]
     todos = report if report is not None else [t for t in listing["items"] if t["kind"] == "todo"]
     cards_due = [t for t in listing["items"] if t["kind"] == "card"]
     overdue, seen = [], set()
@@ -1073,7 +1078,7 @@ def build_digest(reader, *, day, day_note, classifier=None, trend_source=None, c
     ozu = build_ozu(day=day, items=listing["items"], overdue=overdue, classified=classified > 0, risk=risk,
                     spark=spark, trends=trends, specials=specials, new_business=new_business, cards=cards)
     try:
-        followups = follow_ups(previous, reader=reader, items=listing["items"], day=day, nb_state=nb_state)
+        followups = follow_ups(previous, reader=reader, items=all_items, day=day, nb_state=nb_state)
     except Exception:
         followups = None
     parts = dict(day=day, day_note=day_note, overdue=overdue, trends=trends, specials=specials,
@@ -1358,7 +1363,7 @@ def run_worker_daily_digest(ops, secrets, *, clock=None, preview_to=None, previe
     finally:
         for s in sessions:
             s.close()
-    if preview_to is None and result.get("status") == "digest_sent":
+    if preview_to is None and result.get("status") == "digest_sent":  # see also run_worker_nb_open
         # New Business takibi: only after the team mail is really sent (never for a preview).
         try:
             from v11_chain_live import _memo
@@ -1374,3 +1379,22 @@ def run_worker_daily_digest(ops, secrets, *, clock=None, preview_to=None, previe
         except Exception as exc:
             result["nb_tracking"] = {"status": "held", "reason": str(getattr(exc, "code", None) or type(exc).__name__)[:120]}
     return result
+
+
+def run_worker_nb_open(ops, secrets, *, clock=None):
+    """Operator one-shot (worker.py --mode nb_open, Ahmet 2026-10-13 07:39Z "dün gelen öneriler için hemen
+    aç"): open this week's sent Monday New Business suggestions as todos now. No mail, no model call;
+    the same records as the after-digest step, so nothing is ever opened twice."""
+    import basecamp_cloud_auth
+    import cloud_providers as provider
+    from v11_chain_live import _memo
+    from v11_nb_tracking import NbBasecamp, run_nb_tracking, session_send
+    clock = clock or (lambda: datetime.now(timezone.utc))
+    today = clock().astimezone(ISTANBUL).date()
+    monday = today - timedelta(days=today.weekday())
+    row = ops._run(lambda tx, _: tx.get("daily-digest-" + monday.strftime("%Y%m%d")), allow_expired=True)
+    if not (isinstance(row, dict) and row.get("state") == "sent" and isinstance(row.get("stats"), dict)):
+        return {"status": "held", "reason": "monday_digest_not_sent", "business_writes": 0}
+    token = _memo(lambda: basecamp_cloud_auth.access_token(secrets, claim_refresh=ops.claim_credential_refresh))
+    http = NbBasecamp(validate_config(load_config())["account_id"], send=session_send(token, provider._session))
+    return run_nb_tracking(ops, http=http, stats={}, day=today, earlier=[(monday, row["stats"])])

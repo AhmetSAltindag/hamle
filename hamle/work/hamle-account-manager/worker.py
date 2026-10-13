@@ -517,7 +517,7 @@ def main(argv=None):
     job_started = time.monotonic()
     parser = argparse.ArgumentParser(description="Hamle internal worker; dispatch requires an exact approved proposal")
     parser.add_argument("--mode", choices=("review", "scheduled_review", "verify", "dispatch", "track", "recover_followup",
-                                           "chain_tick", "daily_digest", "basecamp_credential_review",
+                                           "chain_tick", "daily_digest", "nb_open", "basecamp_credential_review",
                                            "reconcile_model_holds", "extend_authorization",
                                            "research_probe", "settle_model_actual", "settle_billed_total"), required=True)
     parser.add_argument("--proposal-id")
@@ -647,6 +647,10 @@ def main(argv=None):
                 # internal Basecamp notes + one evening summary to Ahmet; never a client send.
                 from v11_client_watch import run_worker_client_watch
                 result["client_watch"] = run_worker_client_watch(store, secrets, started_at=job_started)
+        elif args.mode == "nb_open":
+            # Operator one-shot: this week's Monday New Business suggestions -> todos for Cansu now.
+            from v11_daily_digest import run_worker_nb_open
+            result = run_worker_nb_open(store, secrets)
         elif args.mode == "daily_digest":
             # Non-default: one internal team digest per Istanbul weekday (v11_daily_digest).
             from v11_daily_digest import run_worker_daily_digest
