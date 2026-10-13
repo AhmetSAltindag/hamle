@@ -538,6 +538,40 @@ class Readback(unittest.TestCase):
                                                      if "good" not in bad else "a https://good.example"), bad)
 
 
+    def test_job_todo_readback_takes_the_live_app_host_and_nothing_else(self):
+        from test_v11_chain import live_catalog
+        from v11_brand_task import HAMLE_PERSON
+        import v11_client_reply as cr
+        catalog = live_catalog()
+        settings = cj.validate_jobs(jobs_block(), catalog, cr.validate_reply(job_config()["reply"], catalog))
+        payload = {"target": {"account_id": 5898865, "project_id": WAT, "list_id": SOCIAL},
+                   "title": "WM // TEST – Sarayköy post", "description": "Müşteri: WAT Mobilite",
+                   "assignee_ids": [BERKAY_BC], "due_on": None}
+        writer = cj.JobTodoWriter.__new__(cj.JobTodoWriter)
+        writer.settings = settings
+
+        class Http:
+            ORIGIN = ROOT.rsplit("/", 1)[0]
+
+            def __init__(self, url):
+                self.url = url
+
+            def _request(self, method, url, body=None, expected=200):
+                return {"id": 10401115561, "bucket": {"id": WAT}, "parent": {"id": SOCIAL, "type": "Todolist"},
+                        "creator": {"id": HAMLE_PERSON}, "visible_to_clients": False, "content": payload["title"],
+                        "completed": False, "assignees": [{"id": BERKAY_BC}], "due_on": None,
+                        "description": "<div>Müşteri: WAT Mobilite</div>", "app_url": self.url}
+
+        for host in ("app.basecamp.com", "3.basecamp.com"):
+            writer._http = Http(f"https://{host}/5898865/buckets/{WAT}/todos/10401115561")
+            self.assertEqual(writer.readback("10401115561", payload)["app_url"], writer._http.url)
+        for url in ("https://evil.example/5898865/buckets/1/todos/2", "https://app.basecamp.com/1234567/x",
+                    "http://app.basecamp.com/5898865/x", None):
+            writer._http = Http(url)
+            with self.assertRaises(cj.ClientJobError):
+                writer.readback("10401115561", payload)
+
+
 class Transport(unittest.TestCase):
     def setUp(self):
         import socket

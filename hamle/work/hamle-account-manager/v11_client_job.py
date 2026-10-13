@@ -278,7 +278,9 @@ class JobTodoWriter:
               and sorted(a.get("id") for a in row.get("assignees") or [] if isinstance(a, dict))
               == payload["assignee_ids"] and (row.get("due_on") or None) == payload["due_on"]
               and bw._description_matches(row.get("description"), payload["description"])
-              and isinstance(url, str) and url.startswith(f"https://3.basecamp.com/{payload['target']['account_id']}/"),
+              # the live app_url is https://app.basecamp.com/... (2026-10-13 18:04Z readback), older rows 3.basecamp.com
+              and isinstance(url, str) and url.startswith(tuple(f"https://{host}/{payload['target']['account_id']}/"
+                                                                for host in ("3.basecamp.com", "app.basecamp.com"))),
               "client_job_readback_mismatch")
         return {"readback_sha256": scope_digest(payload), "app_url": url}
 
