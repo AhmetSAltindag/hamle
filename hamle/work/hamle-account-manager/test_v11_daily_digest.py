@@ -410,7 +410,7 @@ class Sections(Base):
         body, stats = dd.build_digest(self.reader(), day=date(2026, 10, 12), day_note=None, cards=self.cards,
                                       calendar=self.calendar, special_source=special, new_business_source=nb)
         self.assertIn("16.10 Cum · Dünya Gıda Günü · Altınmarka: Altın hediye seti · https://example.org/gida", body)
-        self.assertIn("NEW BUSINESS — bu haftanın hedef markaları (@Cansu)", body)
+        self.assertIn("NEW BUSINESS (@Cansu)\nBu haftanın hedef markaları:", body)
         self.assertIn("- Örnek A (gıda): Yeni lansman · https://example.org/a", body)
         self.assertEqual((stats["special_days"], stats["new_business"]), ("1_researched", "1_sourced"))
         def boom(d): raise RuntimeError("x")

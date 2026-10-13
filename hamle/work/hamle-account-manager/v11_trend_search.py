@@ -409,8 +409,37 @@ def special_days_research_source(ops, load_key, catalog, cards, *, routing=None,
 
 # ---------------------------------------------------------------- New Business target brands (data only)
 def new_business_schema():
+    contact = _obj({"email": _str(120), "basis": {"type": "string", "enum": ["kaynakta", "kalıp"]}, "url": _str(300)})
     return _obj({"brands": _arr(_obj({"brand": _str(80), "sector": _str(80), "reason": _str(300),
-                                      "url": _str(300)}), MAX_NEW_BUSINESS)})
+                                      "url": _str(300), "contacts": _arr(contact, MAX_NB_CONTACTS)}),
+                                MAX_NEW_BUSINESS)})
+
+
+# Ahmet 2026-10-13: up to 2 likely contact addresses per NB brand, always "tahmini, doğrulanmamış".
+# Only company addresses: one published on a page actually opened ("kaynakta"), or a common role
+# address on the brand's own domain ("kalıp"). Never a guessed personal address; no free-mail domains.
+MAX_NB_CONTACTS = 2
+NB_EMAIL = re.compile(r"[a-z0-9][a-z0-9._%+-]{0,63}@[a-z0-9-]+(?:\.[a-z0-9-]+)+")
+FREE_MAIL = frozenset(("gmail.com", "googlemail.com", "hotmail.com", "hotmail.com.tr", "outlook.com", "outlook.com.tr",
+                       "live.com", "msn.com", "yahoo.com", "yahoo.com.tr", "icloud.com", "me.com", "yandex.com",
+                       "yandex.com.tr", "mail.ru", "protonmail.com", "proton.me", "aol.com", "gmx.com", "mynet.com"))
+ROLE_LOCALS = frozenset(("info", "bilgi", "iletisim", "contact", "hello", "merhaba", "pazarlama", "marketing", "press",
+                         "basin", "media", "medya", "pr", "kurumsal", "corporate", "communications", "kurumsaliletisim",
+                         "partnership", "partnerships", "isbirligi", "sponsorluk", "reklam", "musteri", "destek"))
+
+
+def sourced_contacts(raw, evidence):
+    out = []
+    for c in raw or []:
+        email = str((c or {}).get("email") or "").strip().lower()
+        if not NB_EMAIL.fullmatch(email) or email.rsplit("@", 1)[1] in FREE_MAIL or email in {x["email"] for x in out}:
+            continue
+        url = normalize_url(c.get("url"))
+        if c.get("basis") == "kaynakta" and url is not None and url in evidence:
+            out.append({"email": email, "basis": "kaynakta", "url": url})
+        elif c.get("basis") == "kalıp" and email.split("@")[0] in ROLE_LOCALS:
+            out.append({"email": email, "basis": "kalıp", "url": url})
+    return out[:MAX_NB_CONTACTS]
 
 
 def _brand_key(name):
@@ -427,7 +456,8 @@ def sourced_new_business(output, current_brands):
         if url is None or url not in evidence or not key or key in existing or key in seen:
             continue
         seen.add(key)
-        out.append({"brand": b["brand"], "sector": b["sector"], "reason": b["reason"], "url": url})
+        out.append({"brand": b["brand"], "sector": b["sector"], "reason": b["reason"], "url": url,
+                    "contacts": sourced_contacts(b.get("contacts"), evidence)})
     out = out[:MAX_NEW_BUSINESS]
     return {"status": "ok" if len(out) >= MIN_NEW_BUSINESS else "insufficient_sourced_brands", "brands": out}
 
@@ -449,7 +479,7 @@ def new_business_research_source(ops, load_key, catalog, cards, *, routing=None,
         _need(budget_ok(), "model_budget_unavailable")
         request_input = {"today": day.isoformat(), "country": "TR", "agency": "Gamechangers",
                          "current_clients": current, "served_sectors": sectors,
-                         "wanted": f"{MIN_NEW_BUSINESS}-{MAX_NEW_BUSINESS}"}
+                         "wanted": str(MAX_NEW_BUSINESS)}
         if avoid:
             request_input["avoid"] = [str(a)[:60] for a in avoid][:40]
         output = gate().once("new_business", source_digest("new_business", request_input, route_fingerprint(route, NEW_BUSINESS_PROMPT)),

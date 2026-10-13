@@ -1,16 +1,21 @@
 """New Business takibi (Ahmet 2026-10-13 07:04Z: "Basecamp'te bu işi Hamle'nin takip etmesi için ne yapabiliriz?").
 
-Each New Business suggestion of a SENT team digest (the Monday research brands and a
-new-business fırsat) becomes one todo "NB // <Marka>" in the New Biz project's "Hamle Önerileri"
-list, assigned to Cansu, with why-now, source and a first step. The team writes progress as a
-one-line comment; the next weekday digest reads them (nb_follow_ups): thanks for a new comment,
-"pas" -> the brand is not suggested again for 90 days, one reminder after 7 quiet days, thanks
-once when the todo is no longer open. Hamle never closes a task or sets a date.
+Ahmet's rules (2026-10-13 ~07:25Z): New Business is a Monday thing. Each brand of the sent
+Monday digest (5 a week, with why-now, source and up to 2 "tahmini, doğrulanmamış" company
+addresses) becomes one todo "NB // <Marka>" in the list Ahmet opened in New Biz ("Hamle
+Öneriler", 10398528523), assigned to Cansu; his weekly umbrella todo stays as it is. The team
+writes progress as a one-line comment and the next weekday digests read them (nb_follow_ups):
+- the day after a todo opens with no activity: one grouped question to Cansu;
+- a new comment: thanks (recorded as progress); "pas": not suggested again for 90 days (recorded
+  as a no);
+- activity, then 5 quiet days: a reminder asking to speed up; no activity at all for 7 days: a
+  kind reminder; each once per quiet stretch;
+- the todo no longer open: thanks once.
+Hamle never closes a task or sets a date, and never writes to a brand (Ahmet: only after "GO").
 
-Writes: Basecamp project 40704547 only (allow-listed URLs): the list once (found by its exact
-name, else created), then todos. Same rules as the chain: durable record before every write,
-one attempt, readback, anything uncertain is 'unknown' and never retried. Global stop ('dur')
-blocks every write.
+Writes: Basecamp list 10398528523 in project 40704547 only (allow-listed URLs). Same rules as
+the chain: durable record before every write, one attempt, readback, anything uncertain is
+'unknown' and never retried. Global stop ('dur') blocks every write.
 """
 from __future__ import annotations
 
@@ -22,14 +27,12 @@ import re
 from urllib.parse import urlsplit
 
 NB_PROJECT = 40704547
-LIST_NAME = "Hamle Önerileri"
-LIST_DESCRIPTION = ("Hamle'nin New Business önerileri. Gelişmeyi görevin altına tek satır yorum olarak yazın; "
-                    "'pas' yazılan markayı Hamle 3 ay önermez. Görevleri kapatmak ekipte.")
+LIST_ID = 10398528523  # "Hamle Öneriler", opened by Ahmet 2026-10-13 (visible_to_clients false)
 PREFIX = "NB // "
 CANSU = 48793256
 HAMLE_PERSON = 53358100
 STATE_KEY = "nb-tracking"
-PASS_DAYS, QUIET_DAYS, MAX_NEW, MAX_READS = 90, 7, 6, 15
+PASS_DAYS, QUIET_DAYS, STALL_DAYS, MAX_NEW, MAX_READS, MAX_HISTORY = 90, 7, 5, 6, 15, 12
 FIRST_STEP = "Pazarlama yöneticisine kısa bir tanışma maili ve 2-3 fikirlik bir ön sunum önerisi."
 API = "https://3.basecampapi.com"
 APP = "https://3.basecamp.com"
@@ -75,8 +78,18 @@ def avoid_brands(state, day):
     return out[:40]
 
 
+def contact_text(contacts):
+    """'info@x.com (kaynak: https://...), pazarlama@x.com (kalıp)' or ''."""
+    parts = [f"{c['email']} ({'kaynak: ' + c['url'] if c.get('basis') == 'kaynakta' and c.get('url') else 'kalıp'})"
+             for c in contacts or [] if isinstance(c, dict) and c.get("email")]
+    return ", ".join(parts[:2])
+
+
 def description(s, day):
-    return (f"Neden şimdi: {_line(s['reason'], 400)}\nKaynak: {s['url']}\nİlk adım önerisi: {_line(s['first_step'], 240)}\n"
+    who = contact_text(s.get("contacts"))
+    return (f"Neden şimdi: {_line(s['reason'], 400)}\nKaynak: {s['url']}\n"
+            + (f"İletişim (tahmini, doğrulanmamış): {who}\n" if who else "")
+            + f"İlk adım önerisi: {_line(s['first_step'], 240)}\n"
             f"Öneren: Hamle, {day.day} {MONTHS[day.month - 1]} {day.year} ({s['source']})\n\n"
             "Gelişmeyi bu görevin altına tek satır yorum olarak yazın (ör. \"aradık\", \"toplantı 20 Ekim\"). "
             "\"pas\" yazarsanız Hamle bu markayı 3 ay önermez. Görevi kapatmak sizde.")
@@ -110,16 +123,13 @@ def text_matches(actual_html, expected):
 
 
 def suggestions(stats):
-    """New Business suggestions of one sent team digest -> todo inputs (deduplicated by brand)."""
+    """The Monday New Business brands of one sent team digest -> todo inputs (deduplicated by brand)."""
     out, seen = [], set()
     for b in (stats or {}).get("new_business_brands") or []:
         if isinstance(b, dict) and b.get("brand") and str(b.get("url") or "").startswith("https://"):
             out.append({"brand": _line(b["brand"], 80), "reason": b.get("reason") or "", "url": b["url"],
+                        "contacts": [c for c in b.get("contacts") or [] if isinstance(c, dict)][:2],
                         "first_step": FIRST_STEP, "source": "Pazartesi New Business listesi"})
-    f = ((stats or {}).get("ozu") or {}).get("firsat") or {}
-    if f.get("kind") == "new_business" and f.get("brand") and str(f.get("url") or "").startswith("https://"):
-        out.append({"brand": _line(f["brand"], 80), "reason": f.get("headline") or "", "url": f["url"],
-                    "first_step": f.get("proposal") or FIRST_STEP, "source": "Günün özü fırsatı"})
     keep = []
     for s in out:
         key = brand_key(s["brand"])
@@ -134,12 +144,22 @@ def _comment_id(c):
     return hashlib.sha256(f"{c.get('at')}|{c.get('by')}|{c.get('text')}".encode("utf-8")).hexdigest()[:16]
 
 
-def nb_follow_ups(state, *, reader, items, day, limit=8):
+def _and(names):
+    names = [n for n in names if n]
+    return names[0] if len(names) == 1 else ", ".join(names[:-1]) + " ve " + names[-1] if names else ""
+
+
+def nb_follow_ups(state, *, reader, items, day, limit=8, prev_day=None, when="dün"):
     """Tracked NB todos -> follow-up rows (icon, prefix, url, text, suffix) + effects to keep once
-    the team digest is sent: {'seen': {key: comment id}, 'passes': [key], 'reminded': [key], 'done': [key]}."""
-    rows, eff = [], {"seen": {}, "passes": [], "reminded": [], "done": []}
+    the team digest is sent: {'seen': {key: comment id}, 'passes': [key], 'reminded': {key: last
+    activity day}, 'done': [key], 'history': {key: [entry]}}. prev_day: the previous weekday
+    (a todo opened then with no activity gets the grouped day-after question)."""
+    rows, eff = [], {"seen": {}, "passes": [], "reminded": {}, "done": [], "history": {}}
     open_by_id = {t["id"]: t for t in items if t.get("kind") == "todo" and t.get("project_id") == NB_PROJECT}
-    reads = 0
+    fresh_quiet, reads = [], 0
+
+    def note(key, kind, text=""):
+        eff["history"].setdefault(key, []).append({"day": day.isoformat(), "kind": kind, "text": _line(text, 160)})
     for key, r in sorted(((state or {}).get("brands") or {}).items(), key=lambda kv: kv[1].get("suggested_on") or ""):
         if len(rows) >= limit:
             break
@@ -150,6 +170,7 @@ def nb_follow_ups(state, *, reader, items, day, limit=8):
         if t is None:
             rows.append(("✅", "", r.get("app_url"), title, " artık açık değil, tamamlanmış olmalı. Teşekkürler @Cansu!"))
             eff["done"].append(key)
+            note(key, "kapandı")
             continue
         if reads >= MAX_READS:
             continue
@@ -164,19 +185,36 @@ def nb_follow_ups(state, *, reader, items, day, limit=8):
             if PASS.search(str(latest.get("text") or "").casefold()):
                 rows.append(("👌", "", t["app_url"], title, " için pas dendi; bu markayı 3 ay önermeyeceğim."))
                 eff["passes"].append(key)
+                note(key, "olumsuz", latest.get("text"))
             else:
                 rows.append(("👍", "", t["app_url"], title,
                              f": “{_line(latest.get('text'), 90)}” ({_line(latest.get('by'), 40)}). Teşekkürler, takipteyim."))
+                note(key, "ilerleme", latest.get("text"))
             continue
-        seen = [c.get("at") for c in comments if c.get("at")] + [t.get("created_on") or r.get("suggested_on") or ""]
+        opened = str(t.get("created_on") or r.get("suggested_on") or "")[:10]
+        if not comments and prev_day is not None and opened == prev_day.isoformat():
+            fresh_quiet.append(r["brand"])
+            continue
+        last = max([str(c.get("at") or "")[:10] for c in comments if c.get("at")] + [opened])
         try:
-            quiet = (day - date.fromisoformat(max(seen)[:10])).days
+            quiet = (day - date.fromisoformat(last)).days
         except ValueError:
             continue
-        if quiet >= QUIET_DAYS and not r.get("reminded_on"):
+        if r.get("reminded_for") == last:
+            continue  # one reminder per quiet stretch
+        if comments and quiet >= STALL_DAYS:
+            rows.append(("", "@Cansu, ", t["app_url"], title,
+                         f" son yorumdan bu yana {quiet} gündür sessiz; biraz hızlandıralım mı?"))
+        elif not comments and quiet >= QUIET_DAYS:
             rows.append(("", "@Cansu, ", t["app_url"], title, f" {quiet} gündür sessiz; bir adım atalım mı?"))
-            eff["reminded"].append(key)
-    return rows, eff
+        else:
+            continue
+        eff["reminded"][key] = last
+        note(key, "hatırlatma")
+    if fresh_quiet:
+        rows.insert(0, ("", f"@Cansu, {when} açtığım New Business görevlerinde (", None, _and(fresh_quiet),
+                        ") henüz hareket yok; bir adım attık mı?"))
+    return rows[:limit], eff
 
 
 # ------------------------------------------------------------------ Basecamp (project 40704547 only)
@@ -186,9 +224,8 @@ class NbBasecamp:
         _need(type(account_id) is int and account_id > 0, "nb_account_invalid")
         self.account, self.send = account_id, send
         b = rf"/{account_id}/buckets/{NB_PROJECT}"
-        self.allowed = {"GET": (rf"/{account_id}/projects/{NB_PROJECT}", rf"{b}/todosets/[1-9][0-9]*/todolists",
-                                rf"{b}/todolists/[1-9][0-9]*", rf"{b}/todos/[1-9][0-9]*"),
-                        "POST": (rf"{b}/todosets/[1-9][0-9]*/todolists", rf"{b}/todolists/[1-9][0-9]*/todos")}
+        self.allowed = {"GET": (rf"{b}/todolists/{LIST_ID}", rf"{b}/todos/[1-9][0-9]*"),
+                        "POST": (rf"{b}/todolists/{LIST_ID}/todos",)}
 
     def call(self, method, url, body=None, expected=200):
         p = urlsplit(url)
@@ -270,54 +307,32 @@ class NbTracker:
 
         def fn(st, now):
             n = 0
-            for key, cid in (effects.get("seen") or {}).items():
-                if key in st["brands"]:
-                    st["brands"][key]["seen_comment"] = cid; n += 1
-            for field, value in (("passes", ("passed_until", until)), ("reminded", ("reminded_on", day.isoformat())),
-                                 ("done", ("done_on", day.isoformat()))):
+            brands = st["brands"]
+            for field, name in (("seen", "seen_comment"), ("reminded", "reminded_for")):
+                for key, value in (effects.get(field) or {}).items():
+                    if key in brands:
+                        brands[key][name] = value; n += 1
+            for field, name, value in (("passes", "passed_until", until), ("done", "done_on", day.isoformat())):
                 for key in effects.get(field) or []:
-                    if key in st["brands"]:
-                        st["brands"][key][value[0]] = value[1]; n += 1
+                    if key in brands:
+                        brands[key][name] = value; n += 1
+            for key, entries in (effects.get("history") or {}).items():
+                if key in brands and isinstance(entries, list):
+                    brands[key]["history"] = (list(brands[key].get("history") or []) + entries)[-MAX_HISTORY:]
             return n
         return self._write(fn, fenced=False)
 
     def ensure_list(self):
+        """Ahmet's list, checked once: in New Biz, hidden from clients, active."""
         lst = self.state().get("list") or {}
-        if lst.get("state") == "ready":
-            return lst["id"]
-        _need(not lst, "nb_list_outcome_unknown")  # a create that may have landed: a human checks, never a second list
-        project = self.http.one(f"{API}/{self.http.account}/projects/{NB_PROJECT}.json")
-        sets = [d.get("id") for d in project.get("dock") or [] if isinstance(d, dict) and d.get("name") == "todoset"
-                and d.get("enabled") is True]
-        _need(len(sets) == 1 and type(sets[0]) is int and sets[0] > 0, "nb_todoset_missing")
-        url = f"{self.base}/todosets/{sets[0]}/todolists.json"
-        same = [x for x in self.http.all(url) if isinstance(x, dict)
-                and _line(x.get("name") or x.get("title"), 200) == LIST_NAME]
-        _need(len(same) <= 1, "nb_list_ambiguous")
-        if same:
-            lid = same[0].get("id")
-            _need(type(lid) is int and lid > 0 and same[0].get("visible_to_clients") is not True, "nb_list_unusable")
-            self._write(lambda st, now: st.update(list={"state": "ready", "id": lid, "found_at": now}))
-            return lid
-
-        def begin(st, now):
-            _need(not st.get("list"), "nb_list_race")
-            st["list"] = {"state": "creating", "at": now}
-        self._write(begin)
-        try:
-            row, _ = self.http.call("POST", url, {"name": LIST_NAME, "description": _html(LIST_DESCRIPTION)}, 201)
-            lid = row.get("id") if isinstance(row, dict) else None
-            _need(type(lid) is int and lid > 0, "nb_list_receipt_invalid")
-            back = self.http.one(f"{self.base}/todolists/{lid}.json")
-            _need(back.get("id") == lid and _line(back.get("name") or back.get("title"), 200) == LIST_NAME
-                  and (back.get("bucket") or {}).get("id") == NB_PROJECT and back.get("visible_to_clients") is False
-                  and (back.get("creator") or {}).get("id") == HAMLE_PERSON, "nb_list_readback_mismatch")
-        except Exception as exc:
-            reason = _code(exc)
-            self._write(lambda st, now: st.update(list={"state": "unknown", "reason": reason, "at": now}), fenced=False)
-            raise NbError("nb_list_outcome_unknown") from None
-        self._write(lambda st, now: st.update(list={"state": "ready", "id": lid, "created_at": now}), fenced=False)
-        return lid
+        if lst.get("state") == "ready" and lst.get("id") == LIST_ID:
+            return LIST_ID
+        back = self.http.one(f"{self.base}/todolists/{LIST_ID}.json")
+        _need(back.get("id") == LIST_ID and (back.get("bucket") or {}).get("id") == NB_PROJECT
+              and back.get("visible_to_clients") is False and back.get("status") in (None, "active")
+              and back.get("type") in (None, "Todolist"), "nb_list_unusable")
+        self._write(lambda st, now: st.update(list={"state": "ready", "id": LIST_ID, "checked_at": now}))
+        return LIST_ID
 
     def add(self, s, list_id, day):
         key, title, text = brand_key(s["brand"]), PREFIX + s["brand"], description(s, day)

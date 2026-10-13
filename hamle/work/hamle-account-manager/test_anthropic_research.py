@@ -181,11 +181,11 @@ class NewBusiness(Research):
 
     def test_three_to_five_sourced_non_client_brands(self):
         urls = [f"https://news.example.com/{i}" for i in range(5)]
-        brands = {"brands": [{"brand": "Fenerium", "sector": "perakende", "reason": "Mevcut müşteri.", "url": urls[0]},
-                             {"brand": "Yeni Kahve", "sector": "gıda", "reason": "Yeni yatırım aldı.", "url": urls[1]},
-                             {"brand": "Mavi Mobil", "sector": "mobilite", "reason": "Lansman yapıyor.", "url": urls[2]},
-                             {"brand": "Kuzey Kozmetik", "sector": "kozmetik", "reason": "Ajans arıyor.", "url": urls[3]},
-                             {"brand": "Kaynaksız", "sector": "x", "reason": "x", "url": "https://nowhere.example/x"}]}
+        brands = {"brands": [{"brand": "Fenerium", "sector": "perakende", "reason": "Mevcut müşteri.", "url": urls[0], "contacts": []},
+                             {"brand": "Yeni Kahve", "sector": "gıda", "reason": "Yeni yatırım aldı.", "url": urls[1], "contacts": []},
+                             {"brand": "Mavi Mobil", "sector": "mobilite", "reason": "Lansman yapıyor.", "url": urls[2], "contacts": []},
+                             {"brand": "Kuzey Kozmetik", "sector": "kozmetik", "reason": "Ajans arıyor.", "url": urls[3], "contacts": []},
+                             {"brand": "Kaynaksız", "sector": "x", "reason": "x", "url": "https://nowhere.example/x", "contacts": []}]}
         client = FakeClient(research_message(brands, results=urls, cited=()))
         out = self.build(client, new_business_research_enabled=True)(DAY)
         self.assertEqual(out["status"], "ok")
@@ -196,8 +196,8 @@ class NewBusiness(Research):
 
     def test_tracked_or_passed_brands_are_sent_as_avoid_and_dropped(self):
         urls = [f"https://news.example.com/{i}" for i in range(3)]
-        brands = {"brands": [{"brand": "Hisense", "sector": "elektronik", "reason": "Lansman.", "url": urls[0]},
-                             {"brand": "Yeni Kahve", "sector": "gıda", "reason": "Yatırım.", "url": urls[1]}]}
+        brands = {"brands": [{"brand": "Hisense", "sector": "elektronik", "reason": "Lansman.", "url": urls[0], "contacts": []},
+                             {"brand": "Yeni Kahve", "sector": "gıda", "reason": "Yatırım.", "url": urls[1], "contacts": []}]}
         client = FakeClient(research_message(brands, results=urls, cited=()))
         research = ts.new_business_research_source(self.ops, {"anthropic": self.key}, load_catalog(), self.cards,
                                                    routing=routing(new_business_research_enabled=True), client=client,
@@ -206,8 +206,20 @@ class NewBusiness(Research):
         self.assertEqual([b["brand"] for b in out["brands"]], ["Yeni Kahve"])
         self.assertEqual(json.loads(client.calls[0]["messages"][0]["content"])["avoid"], ["Hisense"])
 
+    def test_contacts_are_company_addresses_only(self):
+        ev = {"https://news.example.com/1"}
+        raw = [{"email": "Basin@Marka.com.tr", "basis": "kaynakta", "url": "https://news.example.com/1"},
+               {"email": "satis@marka.com.tr", "basis": "kaynakta", "url": "https://unseen.example/x"},
+               {"email": "ayse.kaya@marka.com.tr", "basis": "kalıp", "url": "https://marka.com.tr"},
+               {"email": "marka.tr@gmail.com", "basis": "kaynakta", "url": "https://news.example.com/1"},
+               {"email": "pazarlama@marka.com.tr", "basis": "kalıp", "url": "https://marka.com.tr"},
+               {"email": "info@marka.com.tr", "basis": "kalıp", "url": None}]
+        self.assertEqual(ts.sourced_contacts(raw, ev),
+                         [{"email": "basin@marka.com.tr", "basis": "kaynakta", "url": "https://news.example.com/1"},
+                          {"email": "pazarlama@marka.com.tr", "basis": "kalıp", "url": "https://marka.com.tr"}])
+
     def test_fewer_than_three_is_flagged(self):
-        brands = {"brands": [{"brand": "Yeni Kahve", "sector": "gıda", "reason": "Yatırım.", "url": GOOD}]}
+        brands = {"brands": [{"brand": "Yeni Kahve", "sector": "gıda", "reason": "Yatırım.", "url": GOOD, "contacts": []}]}
         out = self.build(FakeClient(research_message(brands)), new_business_research_enabled=True)(DAY)
         self.assertEqual((out["status"], len(out["brands"])), ("insufficient_sourced_brands", 1))
 

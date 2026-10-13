@@ -374,6 +374,15 @@ NO_IDEA = "Bugün kaynağı doğrulanmış bir fikir alınamadı."
 NO_INSPIRATION = "Bugün kaynağı doğrulanmış bir ilham örneği alınamadı."
 FOLLOW_UP_HINT = ("Gelişme varsa ilgili Basecamp işine yorum yazmanız ya da yeni görev açmanız yeterli; "
                   "Hamle yarın sabah oradan bakar.")
+NB_HINT = ("Gelişmeyi ilgili “NB //” görevinin altına tek satır yazmanız yeterli; “pas” yazılan markayı Hamle "
+           "3 ay önermez.")
+
+
+def _contacts(b):
+    from v11_nb_tracking import contact_text
+    return contact_text(b.get("contacts"))
+
+
 STOP_WORDS = {"günü", "gunu", "dünya", "dunya", "ulusal", "uluslararası", "haftası", "trend", "trendi", "akımı",
               "video", "reels", "story", "post", "için", "olan", "yeni"}
 
@@ -538,13 +547,18 @@ def ozu_record(ozu):
 def follow_ups(previous, *, reader, items, day, nb_state=None):
     """Yesterday's suggestions -> praise (Basecamp shows a new task / comment) or a friendly question,
     then the tracked New Business todos (v11_nb_tracking). 'nb_effects' is kept only once sent."""
-    from v11_nb_tracking import PREFIX, nb_follow_ups
+    from v11_nb_tracking import PREFIX, brand_key, nb_follow_ups
     prev_day = _day((previous or {}).get("day"))
     if prev_day is None:
-        rows, effects = _nb_rows(nb_follow_ups, nb_state, reader, items, day, MAX_FOLLOW_UPS)
-        return {"when": None, "title": "Önerilerim ne oldu?", "rows": rows, "nb_effects": effects} if rows else None
+        last = previous_weekday(day)
+        when = "dün" if (day - last).days == 1 else f"{WEEKDAYS[last.weekday()]} günü"
+        nb_rows, effects = _nb_rows(nb_follow_ups, nb_state, reader, items, day, MAX_FOLLOW_UPS, last, when)
+        return {"when": None, "title": "Önerilerim ne oldu?", "rows": [], "nb_rows": nb_rows,
+                "nb_effects": effects} if nb_rows else None
     ozu = previous.get("ozu") or {}
-    nb = [b for b in previous.get("new_business_brands") or [] if isinstance(b, dict) and b.get("brand")]
+    tracked = set(((nb_state or {}).get("brands") or {}))  # those get their own lines from v11_nb_tracking
+    nb = [b for b in previous.get("new_business_brands") or [] if isinstance(b, dict) and b.get("brand")
+          and brand_key(b["brand"]) not in tracked]
     when = "dün" if (day - prev_day).days == 1 else f"{WEEKDAYS[prev_day.weekday()]} günü"
     since = prev_day.isoformat()
     fresh = [t for t in items if (t.get("created_on") or "") >= since and not t["title"].startswith(PREFIX)]
@@ -583,30 +597,33 @@ def follow_ups(previous, *, reader, items, day, nb_state=None):
             else:
                 rows.append(("", (f"{who}, " if who else "") + f"{when} riskli dediğim ", cur["app_url"],
                              f"“{r['title']}”", " için durum nedir?"))
+    nb_rows = []  # Ahmet: New Business lines live at the bottom of the mail
     if nb:
         names = [b["brand"] for b in nb[:5]]
         keys = [_key(n) for n in names if len(_key(n)) >= 3]
         hit = next((t for t in fresh if any(k in _key(t["title"]) for k in keys)), None)
         if hit:
-            rows.append(("👏", "New Business: ", hit["app_url"], f"“{hit['title']}”", " açılmış, harika!"))
+            nb_rows.append(("👏", "New Business: ", hit["app_url"], f"“{hit['title']}”", " açılmış, harika!"))
         else:
-            rows.append(("", f"@Cansu, {when} New Business'ta önerdiğim ", None, _and(names),
-                         " için bir adım attık mı?"))
+            nb_rows.append(("", f"@Cansu, {when} New Business'ta önerdiğim ", None, _and(names),
+                            " için bir adım attık mı?"))
+    more, effects = _nb_rows(nb_follow_ups, nb_state, reader, items, day, MAX_FOLLOW_UPS - len(nb_rows), prev_day, when)
+    nb_rows += more
     rows = rows[:MAX_FOLLOW_UPS]
-    more, effects = _nb_rows(nb_follow_ups, nb_state, reader, items, day, MAX_FOLLOW_UPS - len(rows))
-    rows += more
     title = "Dünkü önerilerim ne oldu?" if when == "dün" else f"{WEEKDAYS[prev_day.weekday()]} günkü önerilerim ne oldu?"
-    return {"when": when, "title": title, "rows": rows, "nb_effects": effects} if rows else None
+    return {"when": when, "title": title, "rows": rows, "nb_rows": nb_rows,
+            "nb_effects": effects} if rows or nb_rows else None
 
 
-def _nb_rows(nb_follow_ups, nb_state, reader, items, day, limit):
+def _nb_rows(nb_follow_ups, nb_state, reader, items, day, limit, prev_day, when):
     if not nb_state or limit <= 0:
         return [], None
     try:
-        rows, effects = nb_follow_ups(nb_state, reader=reader, items=items, day=day, limit=limit)
+        rows, effects = nb_follow_ups(nb_state, reader=reader, items=items, day=day, limit=limit, prev_day=prev_day,
+                                      when=when)
     except Exception:
         return [], None  # a hint section: never block the digest
-    return rows, effects if rows else None
+    return rows, effects if any(effects.values()) else None
 
 
 # ------------------------------------------------------------------ text
@@ -627,7 +644,7 @@ def render(listing, *, day, day_note, overdue, trends, specials, classified, new
     if ozu is not None:
         lines += ["", "GÜNÜN ÖZÜ"]
         lines += [f"{icon} {label}: " + "".join(parts) for icon, label, parts in ozu_lines(ozu, link=_plain_link)]
-    if followups:
+    if followups and followups["rows"]:
         lines += ["", _upper_tr(followups["title"])]
         for icon, prefix, url, text, suffix in followups["rows"]:
             lines.append("- " + (icon + " " if icon else "") + prefix + _plain_link(url, text) + suffix)
@@ -695,12 +712,22 @@ def render(listing, *, day, day_note, overdue, trends, specials, classified, new
                          f"öneri: {names}{note}")
         if not specials:
             lines.append("- Önümüzdeki 14 günde takvimde özel gün yok.")
+    nb_rows = (followups or {}).get("nb_rows") or []
+    if new_business is not None or nb_rows:
+        lines += ["", "NEW BUSINESS (@Cansu)"]
     if new_business is not None:
-        lines += ["", "NEW BUSINESS — bu haftanın hedef markaları (@Cansu)"]
+        lines.append("Bu haftanın hedef markaları:")
         for b in new_business[:LIMITS["new_business"]]:
-            lines.append(f"- {b['brand']} ({b['sector']}): {b['reason']} · {b['url']}")
+            who = _contacts(b)
+            lines.append(f"- {b['brand']} ({b['sector']}): {b['reason']} · {b['url']}"
+                         + (f" · İletişim (tahmini, doğrulanmamış): {who}" if who else ""))
         if not new_business:
             lines.append("- Bugün kaynağı doğrulanmış hedef marka bulunamadı.")
+    if nb_rows:
+        lines.append("Takip:")
+        for icon, prefix, url, text, suffix in nb_rows:
+            lines.append("- " + (icon + " " if icon else "") + prefix + _plain_link(url, text) + suffix)
+        lines.append(NB_HINT)
     lines += ["", FOOTER]
     return "\n".join(lines)
 
@@ -804,7 +831,7 @@ def render_html(listing, *, day, day_note, overdue, trends, specials, classified
         out.append(_p("<b>Günün notu:</b> " + _e(day_note[:300])))
     if ozu is not None:
         out.append(_ozu_html(ozu))
-    if followups:
+    if followups and followups["rows"]:
         out.append(_h2("🔁 " + followups["title"]))
         out.append(_ul([_li((icon + " " if icon else "") + _e(prefix) + _html_link(url, text) + _e(suffix))
                         for icon, prefix, url, text, suffix in followups["rows"]]))
@@ -879,11 +906,20 @@ def render_html(listing, *, day, day_note, overdue, trends, specials, classified
                     + ("" if s["verified"] else " " + _grey("[tarih taslak]"))
             lis.append(_li(f"{_grey(when)} · {name}", note))
         out.append(_ul(lis) if lis else _p("Önümüzdeki 14 günde takvimde özel gün yok."))
+    nb_rows = (followups or {}).get("nb_rows") or []
+    if new_business is not None or nb_rows:
+        out.append(_h2("🚀 New Business (@Cansu)"))
     if new_business is not None:
-        out.append(_h2("🚀 New Business — bu haftanın hedef markaları (@Cansu)"))
-        lis = [_li(f"{_a(b['url'], b['brand'])} {_grey('(' + b['sector'] + ')')}", _e(b["reason"]))
+        lis = [_li(f"{_a(b['url'], b['brand'])} {_grey('(' + b['sector'] + ')')}", _e(b["reason"])
+                   + (("<br>" + _grey("İletişim (tahmini, doğrulanmamış): " + _contacts(b))) if _contacts(b) else ""))
                for b in new_business[:LIMITS["new_business"]]]
+        out.append(_p("<b>Bu haftanın hedef markaları</b>"))
         out.append(_ul(lis) if lis else _p("Bugün kaynağı doğrulanmış hedef marka bulunamadı."))
+    if nb_rows:
+        out.append(_p("<b>Takip</b>"))
+        out.append(_ul([_li((icon + " " if icon else "") + _e(prefix) + _html_link(url, text) + _e(suffix))
+                        for icon, prefix, url, text, suffix in nb_rows]))
+        out.append(_p(_grey(NB_HINT)))
     out.append(f'<div style="margin-top:26px;padding-top:8px;border-top:1px solid #e5e7eb;font-size:12px;'
                f'color:{GREY};">{_e(FOOTER)}</div>')
     return ('<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="margin:0;padding:0;">'
@@ -1048,7 +1084,7 @@ def build_digest(reader, *, day, day_note, classifier=None, trend_source=None, c
                   "model": model_status, "trends": trend_status, "special_days": special_status,
                   "new_business": nb_status, "overdue_source": "report" if report is not None else "scan",
                   "new_business_brands": new_business or [], "spark": spark_status, "ozu": ozu_record(ozu),
-                  "follow_ups": len((followups or {}).get("rows") or []),
+                  "follow_ups": len((followups or {}).get("rows") or []) + len((followups or {}).get("nb_rows") or []),
                   "nb": (followups or {}).get("nb_effects")}
 
 

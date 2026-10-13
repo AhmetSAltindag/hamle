@@ -125,8 +125,11 @@ class Ozu(Base):
                        "gelişme var mı?",
                        "- @Cansu, dün paylaştığım Altınmarka fırsatı (https://example.org/firsat) için bir adım attık mı?",
                        f"- @Özge, dün riskli dediğim “Lansman planı” ({APP}/buckets/2/todos/2003) için durum nedir?",
-                       "- @Cansu, dün New Business'ta önerdiğim Hisense için bir adım attık mı?", dd.FOLLOW_UP_HINT):
+                       dd.FOLLOW_UP_HINT):
             self.assertIn(needle, section)
+        bottom = text[text.index("NEW BUSINESS (@Cansu)"):]  # Ahmet: New Business lines at the bottom
+        self.assertIn("- @Cansu, dün New Business'ta önerdiğim Hisense için bir adım attık mı?", bottom)
+        self.assertNotIn("New Business'ta önerdiğim", section)
         self.assertIn("🔁 Dünkü önerilerim ne oldu?", self.gmail.html())
         self.assertEqual(self.ops.backend.data["daily-digest-20261013"]["stats"]["follow_ups"], 5)
 
