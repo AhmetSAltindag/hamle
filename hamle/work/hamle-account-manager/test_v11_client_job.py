@@ -446,6 +446,7 @@ class Follow(JobBase):
         self.brand_bc.__class__ = type("Flaky", (BrandBasecamp,), {"__call__": flaky})
         r = self.watch().run()
         self.assertEqual((r["jobs"]["held"], self.job()["state"], self.job()["failures"]), (0, "open", 1))
+        self.assertEqual(self.job()["reason"], "basecamp_transport_failed")  # the real reason, not "ReadError"
         self.upload(todo)
         self.vision.outputs = [message(review(85))]
         self.watch().run()

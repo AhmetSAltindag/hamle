@@ -20,7 +20,9 @@ from urllib.parse import urlsplit, parse_qs
 
 
 class ReadError(ValueError):
-    pass
+    @property
+    def code(self):  # the real reason (e.g. basecamp_read_rejected) in held/job reports, not just "ReadError"
+        return str(self.args[0]) if self.args else "basecamp_read_failed"
 
 
 def need(ok, code):
