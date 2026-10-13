@@ -103,7 +103,7 @@ Alanlar:
   - list: sosyal medya içeriği (post, story, reels, carousel, sosyal medya videosu ya da animasyonu, kapak, profil görseli) ise "social"; geri kalan her şey (basılı iş, roll-up, billboard, sunum, rapor, web, etkinlik, kampanya planı) "project".
   - brief: tasarımcı için kısa ve net brief (Ahmet: müşterinin mailini kopyalama, özetle). En fazla 6 satır, her satır "Etiket: değer" biçiminde, yalnız bilinen satırları bu sırayla yaz:
     İş: ne üretilecek, kaç adet, ölçü ve format (ör. "1 Instagram post, 4:5 (1080x1350)")
-    Görsel metni: görselde yazacak metin, müşterinin yazdığı haliyle tırnak içinde
+    Görsel metni: görselde yazacak metin, müşterinin mailinde ya da konu satırında yazdığı haliyle harfi harfine tırnak içinde (ek, yazım ve büyük-küçük harf dahil; "Tesisleri"ni "Tesisi" yapma). Düzeltme, kısaltma, kendi yorumunu ya da "teyit edilecek" notu ekleme
     Görselde: görselde mutlaka görünmesi gerekenler
     Bilgi: işe gereken kısa bilgi (konum, teknik bilgi, kampanya)
     Not: ton ya da dikkat notu (ör. "sade, ekstra öğe yok", "ACİL")
