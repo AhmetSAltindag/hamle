@@ -44,6 +44,8 @@ ACK_FIELDS = CLARIFY_FIELDS | {"ack_task_id"}  # task_ack: one confirmation afte
 DELIVER_FIELDS = {"from", "to", "cc", "thread_id", "subject", "body", "artifact"}
 ARTIFACT_FIELDS = {"brand_id", "work_id", "version", "sha256", "mime_type"}
 FILENAME = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,100}\Z")
+# Text-only same-thread replies anchored on a given incoming message (client_reply: v11_client_reply).
+THREAD_REPLY_KINDS = ("clarify_brief", "acknowledge", "client_reply")
 
 
 
@@ -216,7 +218,7 @@ class GmailThreadReplyWriter:
         bw._text(payload["body"], 16000)
         if kind == "acknowledge":
             _need(type(payload["ack_task_id"]) is int and payload["ack_task_id"] > 0, "mail_ack_task_invalid")
-        if kind in ("clarify_brief", "acknowledge"):
+        if kind in THREAD_REPLY_KINDS:
             _need(isinstance(payload["in_reply_to_message_id"], str)
                   and HEX.fullmatch(payload["in_reply_to_message_id"]), "mail_anchor_invalid")
         else:
@@ -228,7 +230,7 @@ class GmailThreadReplyWriter:
         return kind
 
     def _anchor(self, kind, payload):
-        if kind in ("clarify_brief", "acknowledge"):
+        if kind in THREAD_REPLY_KINDS:
             return payload["in_reply_to_message_id"]
         anchor = self.anchor_lookup(payload["thread_id"])
         _need(isinstance(anchor, str) and HEX.fullmatch(anchor), "mail_anchor_missing")
@@ -427,7 +429,7 @@ class GmailThreadReplyWriter:
                    or (re.fullmatch(bw.MESSAGE_ID, returned) and returned.endswith("@mail.gmail.com>")))
               and not message.defects, "mail_readback_header_mismatch")
         expected_body = payload["body"] + ("" if payload["body"].endswith("\n") else "\n")
-        if kind in ("clarify_brief", "acknowledge"):
+        if kind in THREAD_REPLY_KINDS:
             plain = message.get_body(preferencelist=("plain",)) if message.is_multipart() else None
             _need(message.get_content_type() == "multipart/alternative" and plain is not None
                   and message.get_body(preferencelist=("html",)) is not None

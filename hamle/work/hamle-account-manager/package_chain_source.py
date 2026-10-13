@@ -22,7 +22,7 @@ CHAIN_FILES = ("v11_chain.py", "v11_brand_task.py", "v11_intake_plan.py", "v11_b
                "chain_answerer_prompt.txt", "chain_digest_prompt.txt",
                "v11_trend_search.py", "chain_trend_prompt.txt", "model_routing.py",
                "chain_special_days_prompt.txt", "chain_new_business_prompt.txt", "v11_brand_routing.py",
-               "v11_client_watch.py", "client_draft_prompt.txt",
+               "v11_client_watch.py", "v11_client_reply.py", "client_draft_prompt.txt",
                "chain_daily_spark_prompt.txt", "v11_nb_tracking.py",
                "v11_idea_tracking.py")
 ALLOWLIST = dict(base.ALLOWLIST)
