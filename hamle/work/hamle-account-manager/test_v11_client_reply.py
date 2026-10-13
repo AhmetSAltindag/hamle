@@ -131,7 +131,7 @@ class AutoSend(ReplyBase):
         todo = self.todos.calls[0]
         self.assertTrue(todo["description"].startswith("GÖNDERİLDİ"), todo["description"])
         self.assertIn("Gönderilen yanıt:", todo["description"])
-        self.assertNotIn("assignee_ids", todo)
+        self.assertEqual(todo["assignee_ids"], sorted([CANSU_BC, OZGE_BC]))  # the team opens the job
         row = self.row("m1")
         self.assertEqual((row["reply_state"], row["state"], row["reply_remote_id"]), ("sent", "noted", "s1"))
         again = self.watch().run()
@@ -368,6 +368,9 @@ class WatGo(ReplyBase):
         r = self.watch(reply_config(allow_questions=True, new_threads_only=True)).run()
         self.assertEqual((r["sent"], r["awaiting_approval"]), (1, 0), r)
         self.assertEqual(self.replies.sent[0]["body"], ASKING)
+        todo = self.todos.calls[0]
+        self.assertEqual(todo["assignee_ids"], sorted([CANSU_BC, OZGE_BC]))  # WAT's team opens the job
+        self.assertIn("Ekip: işi markanın Basecamp projesinde açıp", todo["description"])
 
     def test_reply_in_an_ongoing_thread_waits_for_the_team(self):
         self.mails = [source(1, subject="Re: Ekim post revizesi")]

@@ -425,7 +425,8 @@ def note_title(brand, sender, subject, shadow=False):
 
 
 REPLY_HEADERS = {
-    "sent": "GÖNDERİLDİ · Hamle bu yanıtı müşteriye aynı mail zincirinde, alıcıları koruyarak gönderdi.",
+    "sent": ("GÖNDERİLDİ · Hamle bu yanıtı müşteriye aynı mail zincirinde, alıcıları koruyarak gönderdi. "
+             "Ekip: işi markanın Basecamp projesinde açıp müşteriye söylendiği gibi ilerletin."),
     "send_unknown": ("GÖNDERİM BELİRSİZ · Hamle yanıtı gönderdi ama teyit edemedi ve tekrar denemedi. "
                      "Gmail'de Gönderilmiş kutusuna bakın."),
     "stale": ("GÖNDERİLMEDİ · Zincirde daha yeni bir mail var (müşteri yeniden yazdı ya da ekipten biri cevap "
@@ -786,6 +787,8 @@ class ClientWatch:
                        "description": body}
             if plan is not None and plan["outcome"] in ("awaiting_approval", "manual"):  # the brand owner is notified
                 payload["assignee_ids"] = [self._owner(sender)]
+            elif plan is not None and plan["outcome"] in ("sent", "send_unknown"):  # the team opens the job
+                payload["assignee_ids"] = self._team(sender)
         else:
             kind, writer = "comment", self.comment_writer
             payload = {"target": dict(self.target, task_id=thread["todo_id"]), "body": body, "mention_ids": [],
@@ -879,6 +882,15 @@ class ClientWatch:
     def _owner(self, sender):
         """Brand owner on the note; a test sender's mail goes to the first approver (Ahmet), never the team."""
         return self.reply["first_approver"] if sender.get("test") else self.reply["owner_ids"][sender["brand_key"]]
+
+    def _team(self, sender):
+        """After Hamle answered: the brand's social media lead and owner open the job (a test goes to Ahmet)."""
+        if sender.get("test"):
+            return [self.reply["first_approver"]]
+        from v11_client_reply import agency_people
+        members = {p["basecamp_id"] for p in agency_people(self.catalog).values() if p["basecamp_id"]}
+        sm = self.book.brands[sender["brand_key"]].get("sm_person_id")
+        return sorted({self.reply["owner_ids"][sender["brand_key"]]} | ({sm} if sm in members else set()))
 
     def _send(self, mkey, token, plan, report, approved_by=None, edited=False):
         """One same-thread reply: 'sent' | 'send_unknown' (never retried) | 'blocked:<code>' | 'released:<code>'."""
