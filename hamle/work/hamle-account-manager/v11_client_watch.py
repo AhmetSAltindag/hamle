@@ -18,9 +18,11 @@ readback, anything uncertain is 'unknown' and never retried. Global stop ('dur')
 config stops everything before any read. Model: role customer_text (Claude Opus 5.5) through
 ModelGate under the monthly 30 USD chain cap; one chance per message.
 
-Each client row may say whether Hamle may write to that person by itself ("direct", Markalar.xlsx
-"Hamle bu kişiye doğrudan yazabilir mi?"). Real rows default to false: every reply to them waits
-for "Hamle gönder". Test rows default to true. A company-domain match is never direct.
+Whether Hamle may write to a client by itself ("direct"): a brand row's "direct" is Markalar.xlsx
+"Hamle müşteriye cevap verebilir mi?" (default false) and covers its people and company domains;
+a person row may override it ("Hamle bu kişiye doğrudan yazabilir mi?"). Test rows default to true.
+Anything not direct waits for "Hamle gönder". A brand row's "note" (tone, house rules, who is who)
+goes to the model with every draft for that brand.
 
 Shadow forwards (Ahmet 2026-10-13): an old client mail that a person in config 'shadow_from' forwards
 to hamle@ with "Gölge:" in front of the subject is drafted exactly like a new client mail, but the
@@ -165,11 +167,13 @@ class ContactBook:
     def __init__(self, doc, brands):
         _need(isinstance(doc, dict) and doc.get("schema_version") == 1 and isinstance(doc.get("brands"), dict)
               and 1 <= len(doc["brands"]) <= 30, "client_contacts_invalid")
-        self.brands, self.emails, self.domains = {}, {}, {}
+        self.brands, self.emails, self.domains, self.direct, self.notes = {}, {}, {}, {}, {}
         for key, row in doc["brands"].items():
-            _need(key in brands and isinstance(row, dict) and set(row) <= {"contacts", "domains", "note"},
+            _need(key in brands and isinstance(row, dict) and set(row) <= {"contacts", "domains", "note", "direct"},
                   "client_contacts_brand_unknown")
-            self.brands[key] = brands[key]
+            _need(type(row.get("direct", False)) is bool and (row.get("note") is None or (
+                isinstance(row["note"], str) and 0 < len(row["note"].strip()) <= 600)), "client_contacts_brand_invalid")
+            self.brands[key], self.direct[key], self.notes[key] = brands[key], row.get("direct", False), row.get("note")
             for domain in row.get("domains") or []:
                 _need(isinstance(domain, str) and DOMAIN.fullmatch(domain) and domain not in PUBLIC_DOMAINS
                       and not domain.endswith(AGENCY_DOMAIN) and domain not in self.domains,
@@ -192,7 +196,8 @@ class ContactBook:
 
     def _add(self, key, c, *, test):
         _need(isinstance(c, dict) and set(c) <= {"email", "name", "title", "direct"}, "client_contacts_row_invalid")
-        _need(type(c.get("direct", test)) is bool, "client_contacts_row_invalid")
+        default = True if test else self.direct.get(key, False)
+        _need(type(c.get("direct", default)) is bool, "client_contacts_row_invalid")
         email = c.get("email")
         _need(isinstance(email, str) and EMAIL.fullmatch(email) and not email.endswith("@" + AGENCY_DOMAIN)
               and email not in self.emails, "client_contacts_email_invalid")
@@ -200,7 +205,7 @@ class ContactBook:
             _need(c.get(field) is None or (isinstance(c[field], str) and 0 < len(c[field].strip()) <= 120),
                   "client_contacts_row_invalid")
         self.emails[email] = {"brand_key": key, "name": c.get("name"), "title": c.get("title"), "test": test,
-                              "direct": c.get("direct", test)}  # Markalar: "doğrudan yazabilir mi"
+                              "direct": c.get("direct", default)}  # Markalar: brand "Evet" unless the person says no
 
     def match(self, address):
         if not isinstance(address, str):
@@ -210,7 +215,8 @@ class ContactBook:
             return dict(self.emails[address], email=address)
         domain = address.rsplit("@", 1)[-1]
         if "@" in address and domain in self.domains:
-            return {"brand_key": self.domains[domain], "name": None, "title": None, "test": False, "direct": False,
+            key = self.domains[domain]
+            return {"brand_key": key, "name": None, "title": None, "test": False, "direct": self.direct.get(key, False),
                     "email": address}
         return None
 
@@ -368,7 +374,7 @@ def model_input(source, sender, brand, day):
     rest = text.replace("\r\n", "\n")
     context = rest[len(new):].strip()[:MAX_CONTEXT_TEXT] if rest.startswith(new) else ""
     return {"today": day.isoformat(), "agency": "Gamechangers",
-            "brand": {k: brand.get(k) for k in ("name", "sector", "audience", "main_platform")},
+            "brand": {k: brand.get(k) for k in ("name", "sector", "audience", "main_platform", "note")},
             "sender": {"name": sender.get("name"), "title": sender.get("title")},
             "subject": _line(source.get("subject"), 300), "new_text": new, "quoted_context": context,
             "has_attachments": bool(source.get("has_attachments"))}
@@ -707,7 +713,7 @@ class ClientWatch:
             sender = self.book.match(source.get("sender"))
         if sender is None:
             return "not_client"
-        brand = self.book.brands[sender["brand_key"]]
+        brand = dict(self.book.brands[sender["brand_key"]], note=self.book.notes.get(sender["brand_key"]))
         local = self.clock().astimezone(ISTANBUL)
         mkey, tkey = mail_key(source["message_id"]), thread_key(source["thread_id"])
         dkey = day_key(local.date())
@@ -1317,7 +1323,8 @@ def contacts_status(ops, catalog, cards=None):
         return {"status": "client_contacts_missing"}
     book = validate_contacts(doc, catalog, cards)
     return {"status": "client_contacts_ready", "sha256": doc.get("sha256"), "actor": doc.get("actor"),
-            "brands": {k: {"addresses": sum(v["brand_key"] == k for v in book.emails.values()),
+            "brands": {k: {"brand_direct": book.direct.get(k, False),
+                           "addresses": sum(v["brand_key"] == k for v in book.emails.values()),
                            "direct": sum(v["brand_key"] == k and v["direct"] for v in book.emails.values()),
                            "domains": sorted(d for d, b in book.domains.items() if b == k)} for k in sorted(book.brands)}}
 

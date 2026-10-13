@@ -14,7 +14,7 @@
     "ahmet@gamechangers.com.tr",
     "cansu@gamechangers.com.tr"
   ],
-  "decision_ref": "Ahmet 2026-10-11 decision 6: Monday no client replies; Tuesday the team CCs hamle@ and Hamle only drafts (client-hidden Basecamp notes in the internal 'Hamle İşleri' list) with an evening 'böyle yanıtlardım' summary to Ahmet; Wednesday first brand auto-reply only after the drafts are reviewed. Price/contract/complaint -> fixed sentence + Ahmet & Cansu. | 2026-10-13 07:32Z: Ahmet approved on the thread card 'Evet, aç' (silent draft mode for the 10 WAT test mails); only the Firestore table's test_contacts row (his own non-agency address as WAT) is read until Ahmet/Cansu import the real table. | 2026-10-13 14:56Z: Ahmet chose 'Yaz' (write the client reply feature) and 15:08Z 'Aç' on the card 'Müşteriye cevap gönderme özelliğini bu akşam senin test adresinle açayım mı?': reply mode for WAT; tonight only his own test address is in the contact table. Clear confirm replies at confidence 90+ go out by themselves, the rest wait for 'Hamle gönder' from Ahmet or Cansu; fixed sentence + Ahmet/Cansu CC for price/contract/complaint. Real WAT addresses reach Hamle only when Ahmet imports them (his GO). | 2026-10-13 15:28Z: Ahmet asked to try Hamle on WAT's last 10 mails; agreed path: start with new jobs, old WAT mails are forwarded to hamle@ with 'Gölge:' in front of the subject (shadow drafts, never sent, compared with the team's real reply). Markalar.xlsx: WAT brand 'Evet', every WAT person 'Hayır' -> contact rows carry direct=false and every reply to them waits for 'Hamle gönder'.",
+  "decision_ref": "Ahmet 2026-10-11 decision 6: Monday no client replies; Tuesday the team CCs hamle@ and Hamle only drafts (client-hidden Basecamp notes in the internal 'Hamle İşleri' list) with an evening 'böyle yanıtlardım' summary to Ahmet; Wednesday first brand auto-reply only after the drafts are reviewed. Price/contract/complaint -> fixed sentence + Ahmet & Cansu. | 2026-10-13 07:32Z: Ahmet approved on the thread card 'Evet, aç' (silent draft mode for the 10 WAT test mails); only the Firestore table's test_contacts row (his own non-agency address as WAT) is read until Ahmet/Cansu import the real table. | 2026-10-13 14:56Z: Ahmet chose 'Yaz' (write the client reply feature) and 15:08Z 'Aç' on the card 'Müşteriye cevap gönderme özelliğini bu akşam senin test adresinle açayım mı?': reply mode for WAT; tonight only his own test address is in the contact table. Clear confirm replies at confidence 90+ go out by themselves, the rest wait for 'Hamle gönder' from Ahmet or Cansu; fixed sentence + Ahmet/Cansu CC for price/contract/complaint. Real WAT addresses reach Hamle only when Ahmet imports them (his GO). | 2026-10-13 15:28Z: Ahmet asked to try Hamle on WAT's last 10 mails; agreed path: start with new jobs, old WAT mails are forwarded to hamle@ with 'Gölge:' in front of the subject (shadow drafts, never sent, compared with the team's real reply). Markalar.xlsx: WAT brand 'Evet', every WAT person 'Hayır' -> contact rows carry direct=false and every reply to them waits for 'Hamle gönder'. | 2026-10-13 15:48Z Ahmet: 'Yarın WAT Mobilite'den gelen yeni bir mail olursa ilk olarak artık cevap verecek olan Hamle olsun... WAT markasına haber verdim ve bunun bir demo olduğunu da söyledim... Bu şekilde güncelleme çıkalım.' The person-level 'Hayır' in Markalar.xlsx was the template default; brand 'Evet' governs. WAT: replies with production questions go out by themselves (allow_questions), all categories except 'other', confidence 90+ only (80-89 and lower wait for approval), only new threads (a 'Re:' mail waits for the team), price/contract/complaint keep the fixed sentence + Ahmet/Cansu CC.",
   "rules": "enabled=true only with Ahmet's word in the thread. Client addresses come from the Firestore 'client-contacts' doc (v11_client_watch.py contacts import on the Mac), never from this file or git. mode 'silent_draft': nothing is ever sent. mode 'reply': only brands in reply.brands and mails received after reply.since get a same-thread reply (v11_client_reply); every other mail stays a silent draft. Adding a brand or a client address is Ahmet's GO. shadow_from: agency people whose 'Gölge:' forwards are drafted silently (never sent; the chain skips them). A contact row is auto-send only with direct=true (Markalar 'doğrudan yazabilir mi' = Evet).",
   "reply": {
     "brands": [
@@ -23,7 +23,10 @@
     "auto_min_confidence": 90,
     "auto_categories": [
       "request",
-      "feedback_or_approval"
+      "feedback_or_approval",
+      "question",
+      "information",
+      "meeting"
     ],
     "since": "2026-10-13T18:00:00+03:00",
     "max_sends_per_day": 10,
@@ -37,6 +40,8 @@
     "sensitive_cc": [
       "ahmet@gamechangers.com.tr",
       "cansu@gamechangers.com.tr"
-    ]
+    ],
+    "allow_questions": true,
+    "new_threads_only": true
   }
 }

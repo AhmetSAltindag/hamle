@@ -26,7 +26,7 @@ def reply_block(**kw):
     block = {"brands": ["wat_mobilite"], "auto_min_confidence": 90,
              "auto_categories": ["request", "feedback_or_approval"], "since": "2026-10-13T00:00:00+03:00",
              "max_sends_per_day": 10, "approvers": [AHMET, CANSU], "owners": {"wat_mobilite": CANSU},
-             "sensitive_cc": [AHMET, CANSU]}
+             "sensitive_cc": [AHMET, CANSU], "allow_questions": False, "new_threads_only": False}
     block.update(kw)
     return block
 
@@ -360,6 +360,50 @@ class Direct(ReplyBase):
         self.assertIn("Berin Avcı", self.todos.calls[0]["description"])
 
 
+class WatGo(ReplyBase):
+    """Ahmet 2026-10-13 15:48Z: WAT's new mails are answered by Hamle first, questions included."""
+    def test_reply_with_production_questions_goes_out_when_questions_are_allowed(self):
+        self.mails = [source(1)]
+        self.client.outputs = [message(clear(reply=ASKING, missing_info=["dış ses"]))]
+        r = self.watch(reply_config(allow_questions=True, new_threads_only=True)).run()
+        self.assertEqual((r["sent"], r["awaiting_approval"]), (1, 0), r)
+        self.assertEqual(self.replies.sent[0]["body"], ASKING)
+
+    def test_reply_in_an_ongoing_thread_waits_for_the_team(self):
+        self.mails = [source(1, subject="Re: Ekim post revizesi")]
+        self.client.outputs = [message(clear())]
+        r = self.watch(reply_config(allow_questions=True, new_threads_only=True)).run()
+        self.assertEqual((r["sent"], r["awaiting_approval"]), (0, 1), r)
+        self.assertIn("devam eden bir yazışma", self.todos.calls[0]["description"])
+
+    def test_low_confidence_and_other_still_wait(self):
+        self.mails = [source(1), source(2, thread="t2")]
+        self.client.outputs = [message(clear(confidence=85)), message(clear(category="other"))]
+        r = self.watch(reply_config(allow_questions=True, auto_categories=list(cr.AUTO_CATEGORIES))).run()
+        self.assertEqual((r["sent"], r["awaiting_approval"]), (0, 2), r)
+
+    def test_brand_yes_covers_its_people_and_domain_unless_a_person_says_no(self):
+        doc = contacts()
+        doc["brands"]["wat_mobilite"]["direct"] = True
+        doc["brands"]["wat_mobilite"]["contacts"].append({"email": "berin@watmobilite.com.tr", "direct": False})
+        book = cw.validate_contacts(doc, self.catalog, self.cards)
+        self.assertEqual([book.match(a)["direct"] for a in ("ayse@watmobilite.com.tr", "yeni@watmobilite.com.tr",
+                                                             "berin@watmobilite.com.tr", "mert.kaya@gmail.com")],
+                         [True, True, False, False])
+
+    def test_brand_note_reaches_the_model(self):
+        doc = direct_contacts()
+        doc["brands"]["wat_mobilite"]["note"] = "Hitap: siz. Koç Grubu kurallarına uy."
+        self.book = cw.validate_contacts(doc, self.catalog, self.cards)
+        self.mails = [source(1)]
+        self.client.outputs = [message(clear())]
+        self.watch().run()
+        self.assertIn("Koç Grubu kurallarına uy", str(self.client.calls[0]))
+        doc["brands"]["wat_mobilite"]["note"] = "x" * 700
+        with self.assertRaises(cw.ClientWatchError):
+            cw.validate_contacts(doc, self.catalog, self.cards)
+
+
 class Commands(unittest.TestCase):
     def test_commands(self):
         for html, want in (("Hamle gönder", ("send", None)), ("<div>hamle, GÖNDER</div>", ("send", None)),
@@ -390,6 +434,8 @@ class Config(Base):
                          ({"wat_mobilite"}, 90, {"wat_mobilite": CANSU_BC}))
         self.assertEqual(cfg["summary_to"], [AHMET])
         self.assertEqual(cfg["shadow_from"], [AHMET, CANSU])
+        self.assertEqual((settings["allow_questions"], settings["new_threads_only"], settings["auto_categories"]),
+                         (True, True, set(cr.AUTO_CATEGORIES)))
         cw.ClientWatch(self.ops, config=cfg, book=self.book, reader=list, draft=None, task_writer=None,
                        comment_writer=None, mail_writer=None, catalog=self.catalog, clock=None,
                        reply_writer=object(), basecamp_get=object(), shadow_reader=list)  # people verified

@@ -3,8 +3,9 @@
 Only for brands listed in the config's reply block (Ahmet's GO per brand) and only for mails
 received after reply.since. Everything else stays a silent draft exactly as before.
 
-Auto-send (no human step) only when every check passes: category request or feedback/approval,
-no question in the reply, no missing info, no internal words, confidence >= auto_min_confidence,
+Auto-send (no human step) only when every check passes: category in auto_categories, no question
+in the reply and no missing info (unless allow_questions: Ahmet's own replies ask production
+questions), the mail starts a new thread (when new_threads_only), no internal words, confidence >= auto_min_confidence,
 greeting and Hamle signature present, the thread has no earlier Hamle reply, the day's send
 limit is not reached, every reply-all recipient is a known client address of the same brand
 or a verified agency contact, and every client recipient is marked "direct" in the contact table
@@ -25,11 +26,12 @@ from datetime import datetime
 
 from autonomy_policy import HAMLE
 
-AUTO_CATEGORIES = ("request", "feedback_or_approval")
+AUTO_CATEGORIES = ("request", "feedback_or_approval", "question", "information", "meeting")
 SIGNATURES = ("Sevgiler,\nHamle\nGamechangers", "Best,\nHamle\nGamechangers")
 APPROVAL_WINDOW_SECONDS = 3 * 24 * 3600
 REPLY_FIELDS = {"brands", "auto_min_confidence", "auto_categories", "since", "max_sends_per_day", "approvers",
-                "owners", "sensitive_cc"}
+                "owners", "sensitive_cc", "allow_questions", "new_threads_only"}
+ONGOING = re.compile(r"\A\s*(?:re|ynt|yanıt|cevap|aw|sv)\s*:", re.IGNORECASE)  # a reply in an existing thread
 SEND = re.compile(r"(?<![0-9a-zçğıöşü])hamle\W{0,3}gönder(?![a-zçğıöşü])", re.IGNORECASE)
 DONT_SEND = re.compile(r"(?<![0-9a-zçğıöşü])hamle\W{0,3}gönderme(?![a-zçğıöşü])", re.IGNORECASE)
 MIN_EDIT_CHARS = 20
@@ -78,6 +80,8 @@ def validate_reply(block, catalog):
     _need(since.tzinfo is not None, "client_reply_since_invalid")
     _need(type(block["max_sends_per_day"]) is int and 1 <= block["max_sends_per_day"] <= 30,
           "client_reply_limit_invalid")
+    _need(type(block["allow_questions"]) is bool and type(block["new_threads_only"]) is bool,
+          "client_reply_config_invalid")
 
     def member(email):
         _need(isinstance(email, str) and email in people and people[email]["basecamp_id"] is not None,
@@ -95,7 +99,8 @@ def validate_reply(block, catalog):
             "since_ms": int(since.timestamp() * 1000), "max_sends_per_day": block["max_sends_per_day"],
             "approver_ids": {member(e): people[e]["name"] for e in approvers}, "first_approver": member(approvers[0]),
             "owner_ids": {b: member(e) for b, e in owners.items()}, "sensitive_cc": list(cc),
-            "agency": set(people)}
+            "agency": set(people), "allow_questions": block["allow_questions"],
+            "new_threads_only": block["new_threads_only"]}
 
 
 def reply_all(sender, to, cc):
@@ -144,9 +149,9 @@ def check(draft, source, sender, settings, *, thread_replied, sent_today, unknow
             reasons.append("taslak alınamadı")
         if draft.get("category") not in settings["auto_categories"]:
             reasons.append("mail türü kendi başıma cevaplayacağım türden değil")
-        if "?" in reply:
+        if "?" in reply and not settings["allow_questions"]:
             reasons.append("cevapta soru var")
-        if draft.get("missing_info"):
+        if draft.get("missing_info") and not settings["allow_questions"]:
             reasons.append("eksik bilgi var")
         if draft.get("internal_terms"):
             reasons.append("taslakta iç ifade var")
@@ -156,6 +161,8 @@ def check(draft, source, sender, settings, *, thread_replied, sent_today, unknow
         if not reply.lstrip().startswith(("Merhaba", "Hi", "Hello", "Dear")) or not reply.rstrip().endswith(
                 tuple(s.split("\n", 1)[1] for s in SIGNATURES)):
             reasons.append("selamlama ya da imza eksik")
+    if settings["new_threads_only"] and ONGOING.match(str(source.get("subject") or "")):
+        reasons.append("devam eden bir yazışma; kendiliğinden yalnız yeni maillere cevap veriyorum")
     if unknown:
         reasons.append("tanımadığım alıcı var: " + ", ".join(unknown[:3]))
     if not_direct:

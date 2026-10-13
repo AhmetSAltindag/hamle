@@ -130,7 +130,7 @@ class Contacts(Base):
         with self.assertRaises(cw.ClientWatchError):
             cw.import_contacts(self.ops, contacts(), actor="x@example.com", catalog=self.catalog)
         status = cw.contacts_status(self.ops, self.catalog)
-        self.assertEqual(status["brands"]["wat_mobilite"], {"addresses": 1, "direct": 0,
+        self.assertEqual(status["brands"]["wat_mobilite"], {"brand_direct": False, "addresses": 1, "direct": 0,
                                                             "domains": ["watmobilite.com.tr"]})
 
     def test_direct_flag_defaults_to_no_for_real_rows_and_yes_for_test_rows(self):
