@@ -512,6 +512,13 @@ def run_track(store, *, read_task_status, verify_latest_sent_receipt=None, clock
                 "business_writes": 0, "automatic_retry_allowed": False}
 
 
+# Worker statuses that end the job with exit code 0; anything else exits 2.
+OK_STATUSES = ("stopped", "review_required", "already_recorded", "read_verified", "internal_actions_readback_verified",
+               "slot_already_claimed", "no_new_work", "work_status_read_verified", "chain_tick_completed", "digest_sent",
+               "credential_review_ready", "reconciled_not_sent", "budget_expiry_extended", "already_current",
+               "research_probe_ok", "model_actual_settled", "billed_total_settled", "nb_tracking_completed")
+
+
 def main(argv=None):
     import time
     job_started = time.monotonic()
@@ -702,7 +709,7 @@ def main(argv=None):
                 read_reply=writers.read_reply, create_comment=writers.create_comment,
                 read_comment=writers.read_comment, read_task_status=writers.read_task_status)
         print(json.dumps(result, ensure_ascii=False, sort_keys=True))
-        return 0 if result["status"] in ("stopped", "review_required", "already_recorded", "read_verified", "internal_actions_readback_verified", "slot_already_claimed", "no_new_work", "work_status_read_verified", "chain_tick_completed", "digest_sent", "credential_review_ready", "reconciled_not_sent", "budget_expiry_extended", "already_current", "research_probe_ok", "model_actual_settled", "billed_total_settled") else 2
+        return 0 if result["status"] in OK_STATUSES else 2
     except Exception as exc:
         try:
             reason = _safe_error(exc)

@@ -254,6 +254,8 @@ class OperatorOpen(NbProject):
         with patch.object(nb, "session_send", lambda token, factory: fake.send):
             r = dd.run_worker_nb_open(self.ops, None, clock=lambda: self.now)
             self.assertEqual(r["created"], 3, r)
+            import worker
+            self.assertIn(r["status"], worker.OK_STATUSES)  # the job exits 0, not 2
             self.assertEqual({b["due_on"] for p, b in fake.posts()}, {"2026-10-13"})
             self.assertEqual(dd.run_worker_nb_open(self.ops, None, clock=lambda: self.now)["status"], "no_new_work")
         self.assertEqual(len(fake.posts()), 3)
