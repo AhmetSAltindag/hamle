@@ -194,6 +194,18 @@ class NewBusiness(Research):
         sent = json.loads(client.calls[0]["messages"][0]["content"])
         self.assertIn("Fenerium", sent["current_clients"])
 
+    def test_tracked_or_passed_brands_are_sent_as_avoid_and_dropped(self):
+        urls = [f"https://news.example.com/{i}" for i in range(3)]
+        brands = {"brands": [{"brand": "Hisense", "sector": "elektronik", "reason": "Lansman.", "url": urls[0]},
+                             {"brand": "Yeni Kahve", "sector": "gıda", "reason": "Yatırım.", "url": urls[1]}]}
+        client = FakeClient(research_message(brands, results=urls, cited=()))
+        research = ts.new_business_research_source(self.ops, {"anthropic": self.key}, load_catalog(), self.cards,
+                                                   routing=routing(new_business_research_enabled=True), client=client,
+                                                   avoid=["Hisense"])
+        out = research(DAY)
+        self.assertEqual([b["brand"] for b in out["brands"]], ["Yeni Kahve"])
+        self.assertEqual(json.loads(client.calls[0]["messages"][0]["content"])["avoid"], ["Hisense"])
+
     def test_fewer_than_three_is_flagged(self):
         brands = {"brands": [{"brand": "Yeni Kahve", "sector": "gıda", "reason": "Yatırım.", "url": GOOD}]}
         out = self.build(FakeClient(research_message(brands)), new_business_research_enabled=True)(DAY)
@@ -244,7 +256,8 @@ class DailySpark(Research):
 class Packaging(unittest.TestCase):
     def test_prompts_packaged(self):
         import package_chain_source as pkg
-        for name in ("chain_special_days_prompt.txt", "chain_new_business_prompt.txt", "chain_daily_spark_prompt.txt"):
+        for name in ("chain_special_days_prompt.txt", "chain_new_business_prompt.txt", "chain_daily_spark_prompt.txt",
+                     "v11_nb_tracking.py"):
             self.assertIn(pkg.APP + name, pkg.ALLOWLIST)
             self.assertTrue((Path(__file__).with_name(name)).is_file())
 

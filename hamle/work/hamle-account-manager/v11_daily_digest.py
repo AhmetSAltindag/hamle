@@ -367,7 +367,7 @@ LEADS = {40694338: ("Özge", "Cansu"), 48639990: ("Özge", "Ahmet"), 43886681: (
 NEW_BIZ = 40704547
 OWN_PROJECTS = frozenset({40704459, 49184053, NEW_BIZ})  # Gamechangers, Hamle İç Deneme, New Biz
 RISK_LOOKAHEAD, RISK_QUIET_DAYS, RISK_MAX_OVERDUE, RISK_READS = 3, 3, 21, 6
-MAX_FOLLOW_UPS = 6
+MAX_FOLLOW_UPS = 8
 NO_RISK = "Bugün öne çıkan bir risk görünmüyor."
 NO_OPPORTUNITY = "Bugün kaynağı doğrulanmış bir fırsat alınamadı."
 NO_IDEA = "Bugün kaynağı doğrulanmış bir fikir alınamadı."
@@ -528,23 +528,26 @@ def ozu_lines(ozu, *, link):
 
 def ozu_record(ozu):
     """What tomorrow's follow-up needs (small, plain values only)."""
-    keep = ("brand", "project_id", "hook", "url", "who", "kind", "headline")
+    keep = ("brand", "project_id", "hook", "url", "who", "kind", "headline", "proposal")
     return {"risk": ozu["risk"] and {k: ozu["risk"][k] for k in ("item_kind", "id", "project_id", "title", "app_url",
                                                                    "who")},
             "firsat": ozu["firsat"] and {k: ozu["firsat"].get(k) for k in keep},
             "fikirler": [{k: x.get(k) for k in keep} for x in ozu["fikirler"]]}
 
 
-def follow_ups(previous, *, reader, items, day):
-    """Yesterday's suggestions -> praise (Basecamp shows a new task / comment) or a friendly question."""
+def follow_ups(previous, *, reader, items, day, nb_state=None):
+    """Yesterday's suggestions -> praise (Basecamp shows a new task / comment) or a friendly question,
+    then the tracked New Business todos (v11_nb_tracking). 'nb_effects' is kept only once sent."""
+    from v11_nb_tracking import PREFIX, nb_follow_ups
     prev_day = _day((previous or {}).get("day"))
     if prev_day is None:
-        return None
+        rows, effects = _nb_rows(nb_follow_ups, nb_state, reader, items, day, MAX_FOLLOW_UPS)
+        return {"when": None, "title": "Önerilerim ne oldu?", "rows": rows, "nb_effects": effects} if rows else None
     ozu = previous.get("ozu") or {}
     nb = [b for b in previous.get("new_business_brands") or [] if isinstance(b, dict) and b.get("brand")]
     when = "dün" if (day - prev_day).days == 1 else f"{WEEKDAYS[prev_day.weekday()]} günü"
     since = prev_day.isoformat()
-    fresh = [t for t in items if (t.get("created_on") or "") >= since]
+    fresh = [t for t in items if (t.get("created_on") or "") >= since and not t["title"].startswith(PREFIX)]
     rows = []
     for x in ozu.get("fikirler") or []:
         hook = _tokens(x.get("hook"))
@@ -589,8 +592,21 @@ def follow_ups(previous, *, reader, items, day):
         else:
             rows.append(("", f"@Cansu, {when} New Business'ta önerdiğim ", None, _and(names),
                          " için bir adım attık mı?"))
+    rows = rows[:MAX_FOLLOW_UPS]
+    more, effects = _nb_rows(nb_follow_ups, nb_state, reader, items, day, MAX_FOLLOW_UPS - len(rows))
+    rows += more
     title = "Dünkü önerilerim ne oldu?" if when == "dün" else f"{WEEKDAYS[prev_day.weekday()]} günkü önerilerim ne oldu?"
-    return {"when": when, "title": title, "rows": rows[:MAX_FOLLOW_UPS]} if rows else None
+    return {"when": when, "title": title, "rows": rows, "nb_effects": effects} if rows else None
+
+
+def _nb_rows(nb_follow_ups, nb_state, reader, items, day, limit):
+    if not nb_state or limit <= 0:
+        return [], None
+    try:
+        rows, effects = nb_follow_ups(nb_state, reader=reader, items=items, day=day, limit=limit)
+    except Exception:
+        return [], None  # a hint section: never block the digest
+    return rows, effects if rows else None
 
 
 # ------------------------------------------------------------------ text
@@ -936,11 +952,12 @@ class DigestMailWriter:
 
 # ------------------------------------------------------------------ assembly
 def build_digest(reader, *, day, day_note, classifier=None, trend_source=None, cards=None, calendar=None,
-                 special_source=None, new_business_source=None, spark_source=None, previous=None):
+                 special_source=None, new_business_source=None, spark_source=None, previous=None, nb_state=None):
     """Read-only listing + optional batched classification -> (body, stats).
 
     previous: the last weekday's sent team digest ({'day', 'ozu', 'new_business_brands'}) for
-    the follow-up section; None -> section omitted."""
+    the follow-up section; None -> section omitted. nb_state: the New Business tracking record
+    (v11_nb_tracking): tracked or passed brands are not listed again, their todos are followed up."""
     listing = reader.collect()
     listing["cards"] = cards
     listing["account"] = getattr(reader, "account", None)
@@ -995,6 +1012,10 @@ def build_digest(reader, *, day, day_note, classifier=None, trend_source=None, c
             try:
                 result = new_business_source(day)
                 new_business = result["brands"] if result.get("status") == "ok" else []
+                if nb_state:
+                    from v11_nb_tracking import avoid_brands, brand_key
+                    avoid = {brand_key(b) for b in avoid_brands(nb_state, day)}
+                    new_business = [b for b in new_business if brand_key(b["brand"]) not in avoid]
                 nb_status = f"{len(new_business)}_sourced"
             except Exception:
                 new_business, nb_status = [], "provider_failed"
@@ -1016,7 +1037,7 @@ def build_digest(reader, *, day, day_note, classifier=None, trend_source=None, c
     ozu = build_ozu(day=day, items=listing["items"], overdue=overdue, classified=classified > 0, risk=risk,
                     spark=spark, trends=trends, specials=specials, new_business=new_business, cards=cards)
     try:
-        followups = follow_ups(previous, reader=reader, items=listing["items"], day=day)
+        followups = follow_ups(previous, reader=reader, items=listing["items"], day=day, nb_state=nb_state)
     except Exception:
         followups = None
     parts = dict(day=day, day_note=day_note, overdue=overdue, trends=trends, specials=specials,
@@ -1027,7 +1048,8 @@ def build_digest(reader, *, day, day_note, classifier=None, trend_source=None, c
                   "model": model_status, "trends": trend_status, "special_days": special_status,
                   "new_business": nb_status, "overdue_source": "report" if report is not None else "scan",
                   "new_business_brands": new_business or [], "spark": spark_status, "ozu": ozu_record(ozu),
-                  "follow_ups": len((followups or {}).get("rows") or [])}
+                  "follow_ups": len((followups or {}).get("rows") or []),
+                  "nb": (followups or {}).get("nb_effects")}
 
 
 # ------------------------------------------------------------------ run
@@ -1105,7 +1127,7 @@ def run_daily_digest(ops, *, config, reader_factory, writer, clock, window=DAILY
             recipients, key, subject_prefix = cfg["recipients"], "daily-digest-" + local.strftime("%Y%m%d"), ""
         token = uuid.uuid4().hex
         prev_day = previous_weekday(target)
-        previous = {}
+        previous, nb = {}, {}
 
         def claim_op(tx, ts):
             c = ops._control(tx); b = ops._budget(tx); row = tx.get(key)
@@ -1114,6 +1136,7 @@ def run_daily_digest(ops, *, config, reader_factory, writer, clock, window=DAILY
             if row is not None and not (row["state"] == "claimed" and ts >= row["lease_until"]):
                 return None  # claimed/sending/sent/unknown: never a second mail under this key
             previous["value"] = _previous(tx.get("daily-digest-" + prev_day.strftime("%Y%m%d")), prev_day)
+            nb["value"] = tx.get("nb-tracking")  # v11_nb_tracking.STATE_KEY (read-only here)
             new = {"key": key, "kind": "daily_digest_preview" if preview_to else "daily_digest", "state": "claimed",
                    "token": token, "generation": c["generation"], "claimed_at": ts,
                    "lease_until": ts + LEASE_SECONDS, "date": target.isoformat(), "run_date": local.date().isoformat()}
@@ -1128,7 +1151,7 @@ def run_daily_digest(ops, *, config, reader_factory, writer, clock, window=DAILY
                                    trend_source=trend_source if cfg["trend_search"] else None,  # flag-gated
                                    cards=cards, calendar=calendar, special_source=special_source,
                                    new_business_source=new_business_source, spark_source=spark_source,
-                                   previous=previous.get("value"))
+                                   previous=previous.get("value"), nb_state=nb.get("value"))
         if preview_to is None:  # team mail: prepared from 09:00, never sent before 09:15 Istanbul
             h, mnt = (int(v) for v in DAILY_DIGEST_SEND_AT.split(":"))
             send_at = local.replace(hour=h, minute=mnt, second=0, microsecond=0)
@@ -1172,7 +1195,7 @@ def run_daily_digest(ops, *, config, reader_factory, writer, clock, window=DAILY
                     "automatic_retry_allowed": False}
         mark("sent", remote_id=remote)
         return {"status": "digest_sent", "key": key, "recipients": len(payload["to"]), "stats": stats,
-                "business_writes": 1}
+                "day": target.isoformat(), "business_writes": 1}
     except Exception as exc:
         reason = re.sub(r"[^A-Za-z0-9_.:@-]", "_", str(getattr(exc, "code", None) or type(exc).__name__))[:120]
         if claim is not None:
@@ -1282,17 +1305,36 @@ def run_worker_daily_digest(ops, secrets, *, clock=None, preview_to=None, previe
         spark_source = None  # box lines say "alınamadı"; nothing invented
     special_source = new_business_source = None
     try:  # Monday research (Claude Opus + web search); each gated by its model-routing flag
+        from v11_nb_tracking import STATE_KEY, avoid_brands
         from v11_trend_search import special_days_research_source, new_business_research_source
         special_source = special_days_research_source(ops, keys, load_catalog(), cards)
-        new_business_source = new_business_research_source(ops, keys, load_catalog(), cards)
+        nb_avoid = avoid_brands(ops._run(lambda tx, _: tx.get(STATE_KEY), allow_expired=True),
+                                clock().astimezone(ISTANBUL).date())
+        new_business_source = new_business_research_source(ops, keys, load_catalog(), cards, avoid=nb_avoid)
     except Exception:
         special_source = new_business_source = None  # calendar-only / section omitted
     try:
-        return run_daily_digest(ops, config=config, reader_factory=reader_factory, writer=writer, clock=clock,
-                                preview_to=preview_to, preview_day=preview_day, preview_attempt=preview_attempt,
-                                classifier=classifier, trend_source=trend_source, cards=cards, calendar=load_calendar(),
-                                special_source=special_source, new_business_source=new_business_source,
-                                spark_source=spark_source)
+        result = run_daily_digest(ops, config=config, reader_factory=reader_factory, writer=writer, clock=clock,
+                                  preview_to=preview_to, preview_day=preview_day, preview_attempt=preview_attempt,
+                                  classifier=classifier, trend_source=trend_source, cards=cards, calendar=load_calendar(),
+                                  special_source=special_source, new_business_source=new_business_source,
+                                  spark_source=spark_source)
     finally:
         for s in sessions:
             s.close()
+    if preview_to is None and result.get("status") == "digest_sent":
+        # New Business takibi: only after the team mail is really sent (never for a preview).
+        try:
+            from v11_chain_live import _memo
+            from v11_nb_tracking import NbBasecamp, run_nb_tracking, session_send
+            token = _memo(lambda: basecamp_cloud_auth.access_token(secrets, claim_refresh=ops.claim_credential_refresh))
+            http = NbBasecamp(validate_config(config)["account_id"], send=session_send(token, provider._session))
+            day = date.fromisoformat(result["day"])
+            monday = day - timedelta(days=day.weekday())
+            row = ops._run(lambda tx, _: tx.get("daily-digest-" + monday.strftime("%Y%m%d")), allow_expired=True)
+            earlier = [(monday, row["stats"])] if monday != day and isinstance(row, dict) and row.get("state") == "sent" \
+                and isinstance(row.get("stats"), dict) else []
+            result["nb_tracking"] = run_nb_tracking(ops, http=http, stats=result["stats"], day=day, earlier=earlier)
+        except Exception as exc:
+            result["nb_tracking"] = {"status": "held", "reason": str(getattr(exc, "code", None) or type(exc).__name__)[:120]}
+    return result

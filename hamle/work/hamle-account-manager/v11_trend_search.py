@@ -432,8 +432,9 @@ def sourced_new_business(output, current_brands):
     return {"status": "ok" if len(out) >= MIN_NEW_BUSINESS else "insufficient_sourced_brands", "brands": out}
 
 
-def new_business_research_source(ops, load_key, catalog, cards, *, routing=None, client=None):
-    """research(day) -> {'status', 'brands': [...]}; None when the flag is off. Data only."""
+def new_business_research_source(ops, load_key, catalog, cards, *, routing=None, client=None, avoid=()):
+    """research(day) -> {'status', 'brands': [...]}; None when the flag is off. Data only.
+    avoid: brands already tracked in New Biz or passed by the team (v11_nb_tracking)."""
     routing = _routing(routing)
     if not routing.flag("new_business_research_enabled"):
         return None
@@ -449,12 +450,14 @@ def new_business_research_source(ops, load_key, catalog, cards, *, routing=None,
         request_input = {"today": day.isoformat(), "country": "TR", "agency": "Gamechangers",
                          "current_clients": current, "served_sectors": sectors,
                          "wanted": f"{MIN_NEW_BUSINESS}-{MAX_NEW_BUSINESS}"}
+        if avoid:
+            request_input["avoid"] = [str(a)[:60] for a in avoid][:40]
         output = gate().once("new_business", source_digest("new_business", request_input, route_fingerprint(route, NEW_BUSINESS_PROMPT)),
                              lambda: anthropic_research(route, NEW_BUSINESS_PROMPT, request_input, new_business_schema(),
                                                         api_key=key_for(load_key, "anthropic"), client=client,
                                                         code="invalid_new_business_schema"),
                              provider=route.provider, hold=hold)
-        return sourced_new_business(output, current)
+        return sourced_new_business(output, current + list(request_input.get("avoid") or []))
     return research
 
 
