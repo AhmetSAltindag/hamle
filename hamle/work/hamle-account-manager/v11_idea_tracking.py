@@ -90,8 +90,10 @@ def avoid_ideas(state, day):
 
 
 def description(x, day):
-    return (f"Fikir: {_line(x['idea'], 600)}\n" + (f"Format: {_line(x['format'], 80)}\n" if x.get("format") else "")
-            + f"Kaynak: {x['url']}\nÖneren: Hamle, {day.day} {MONTHS[day.month - 1]} {day.year} (Günün hamlesi)\n\n"
+    when = f"{day.day} {MONTHS[day.month - 1]} {day.year}"
+    idea = _line(x.get("idea"), 600) or f"ayrıntısı {when} tarihli Hamle özet mailinin “Günün hamlesi” bölümünde"
+    return (f"Fikir: {idea}\n" + (f"Format: {_line(x['format'], 80)}\n" if x.get("format") else "")
+            + f"Kaynak: {x['url']}\nÖneren: Hamle, {when} (Günün hamlesi)\n\n"
             "Ne düşündüğünüzü bu görevin altına tek satır yorum olarak yazın (ör. \"çekiyoruz, 16 Ekim\", "
             "\"müşteriye sunduk\"). Uygun değilse \"pas\" yazmanız yeterli; Hamle bunu olumsuz olarak not alır ve "
             "bu fikri bir daha önermez. Görevi kapatmak sizde.")
@@ -101,14 +103,14 @@ def suggestions(stats, rts):
     """The ideas of one sent team digest that have a verified Sosyal Medya route -> todo inputs."""
     out, seen = [], set()
     for x in (((stats or {}).get("ozu") or {}).get("fikirler")) or []:
-        if not (isinstance(x, dict) and x.get("brand") and x.get("hook") and x.get("idea")
+        if not (isinstance(x, dict) and x.get("brand") and x.get("hook")  # 'idea' only in records from 14 Oct
                 and str(x.get("url") or "").startswith("https://") and x.get("project_id") in rts):
             continue
         key = idea_key(x["brand"], x["hook"])
         if len(key) > 11 and key not in seen:
             seen.add(key)
             out.append({"key": key, "brand": _line(x["brand"], 80), "hook": _line(x["hook"], 100),
-                        "idea": _line(x["idea"], 600), "format": _line(x.get("format"), 80), "url": x["url"],
+                        "idea": _line(x.get("idea"), 600), "format": _line(x.get("format"), 80), "url": x["url"],
                         "project_id": x["project_id"], "who": _line(x.get("who"), 30) or None})
     return out
 

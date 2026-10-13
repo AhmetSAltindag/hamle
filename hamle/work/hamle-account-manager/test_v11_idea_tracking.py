@@ -135,6 +135,13 @@ class Writes(Base):
         self.assertEqual(self.run_ideas(fake)["status"], "no_new_work")
         self.assertEqual(len(fake.posts()), 2)
 
+    def test_records_sent_before_the_idea_text_was_kept_still_open(self):
+        legacy = {k: v for k, v in idea("WAT Mobilite", WAT, "Mini vlog akımı", "Özge").items() if k not in ("idea", "format")}
+        fake = FakeBasecamp()
+        self.assertEqual(self.run_ideas(fake, stats(legacy))["created"], 1)
+        self.assertIn("Fikir: ayrıntısı 13 Ekim 2026 tarihli Hamle özet mailinin “Günün hamlesi” bölümünde<br>Kaynak: "
+                      "https://example.org/mini", fake.posts()[0][1]["description"])
+
     def test_a_list_clients_could_see_is_never_written(self):
         fake = FakeBasecamp(client_visible={ALTIN})
         r = self.run_ideas(fake)
