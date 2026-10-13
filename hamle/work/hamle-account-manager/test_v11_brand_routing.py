@@ -197,7 +197,7 @@ class CatalogRoutes(unittest.TestCase):
         self.assertEqual(routing.route_problem(cat, "fenerium"), "brand_route_unverified")
         self.assertEqual(routing.route_problem(cat, "new_biz"), "brand_route_unverified")
         self.assertEqual((r["han_spaces"]["clients_enabled"], r["ya_da"]["clients_enabled"]), (True, True))
-        self.assertEqual(r["altinmarka"]["list_id"], 10388829175)
+        self.assertEqual(r["altinmarka"]["list_id"], 8238555593)
         self.assertEqual(r["rabam"]["lists"]["motion"], None)
         allowed = routing.allowlist(cat)
         self.assertEqual(allowed[49184053], {10393654435})

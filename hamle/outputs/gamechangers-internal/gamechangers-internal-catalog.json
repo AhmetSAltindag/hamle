@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "brand_id": "gamechangers",
-  "version": "gc-internal-20261011-brandroutes1",
+  "version": "gc-internal-20261013-altinmarka-sm-list",
   "status": "accepted",
   "verified": true,
   "verification_note": "Accepted by Ahmet for internal live (2026-10-11). Ids read back on Ahmet's Mac. Internal brand only; WAT/customers stay off.",
@@ -570,9 +570,9 @@
       "match_scope": "subject_and_body",
       "project_id": 40704523,
       "todoset_id": 8234508319,
-      "list_id": 10388829175,
+      "list_id": 8238555593,
       "lists": {
-        "social": 10388829175,
+        "social": 8238555593,
         "project": 9445996875,
         "motion": 9353328703
       },
@@ -583,7 +583,7 @@
       "hamle_member": true,
       "sm_person_id": 53167312,
       "rep_person_id": 48793256,
-      "note": "Two Sosyal Medya lists (10388829175 and 8238555593); the newest 10388829175 is used (confirmed by Ahmet 2026-10-12 01:04; the old list is fully completed)."
+      "note": "Two Sosyal Medya lists (10388829175 and 8238555593). 10388829175 was used from Ahmet's 2026-10-12 01:04 confirmation until it was found ARCHIVED (mac read-only check 2026-10-13 ~09:40Z); 8238555593 (name 'Sosyal Medya ' with a trailing space, active, visible_to_clients false, todoset 8234508319) is used since Ahmet's card choice on 2026-10-13."
     },
     "bikaldi": {
       "brand_name": "Bikaldi",

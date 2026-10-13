@@ -73,7 +73,7 @@ class FakeBasecamp:
 
 class Routes(Base):
     def test_only_verified_client_hidden_social_lists_with_their_lead(self):
-        self.assertEqual(ROUTES[ALTIN], {"list_id": 10388829175, "person_id": ESMA, "brand_key": "altinmarka"})
+        self.assertEqual(ROUTES[ALTIN], {"list_id": 8238555593, "person_id": ESMA, "brand_key": "altinmarka"})
         self.assertEqual(ROUTES[WAT], {"list_id": 8231779952, "person_id": OZGE, "brand_key": "wat_mobilite"})
         self.assertEqual(len(ROUTES), 8)
         self.assertNotIn(FENER, ROUTES)  # no verified Sosyal Medya list
@@ -119,7 +119,7 @@ class Writes(Base):
         r = self.run_ideas(fake)
         self.assertEqual((r["status"], r["created"], r["business_writes"]), ("idea_tracking_completed", 2, 2), r)
         posts = fake.posts()
-        self.assertEqual([p for p, b in posts], [f"/{ACC}/buckets/{ALTIN}/todolists/10388829175/todos.json",
+        self.assertEqual([p for p, b in posts], [f"/{ACC}/buckets/{ALTIN}/todolists/8238555593/todos.json",
                                                  f"/{ACC}/buckets/{WAT}/todolists/8231779952/todos.json"])
         a, w = (b for p, b in posts)
         self.assertEqual((a["content"], a["assignee_ids"], a["due_on"], a["notify"]),
@@ -131,7 +131,7 @@ class Writes(Base):
         st = self.state()
         self.assertEqual(sorted((v["brand"], v["state"], v["todo_id"], v["who"]) for v in st["ideas"].values()),
                          [("Altınmarka", "ready", 9001, "Esma"), ("WAT Mobilite", "ready", 9002, "Özge")])
-        self.assertEqual(st["lists"], {"10388829175": "ready", "8231779952": "ready"})
+        self.assertEqual(st["lists"], {"8238555593": "ready", "8231779952": "ready"})
         self.assertEqual(self.run_ideas(fake)["status"], "no_new_work")
         self.assertEqual(len(fake.posts()), 2)
 
@@ -176,7 +176,7 @@ class Writes(Base):
 class MorningReading(Base):
     """Tuesday digest with tracked idea todos in Altınmarka's Sosyal Medya list in every state."""
     START = TUE_0916
-    LIST = 10388829175
+    LIST = 8238555593
 
     def setUp(self):
         super().setUp()
