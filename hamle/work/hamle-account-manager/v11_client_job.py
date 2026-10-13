@@ -203,22 +203,13 @@ def todo_title(brand, sender, item):
 
 
 def todo_description(brand, sender, source, item, settings):
-    from v11_client_watch import latest_part
-    who = " · ".join(x for x in (sender.get("name"), sender.get("title")) if x) or sender["email"]
-    approvers = ", ".join(brand["approvers"].values())
-    lines = ["Müşteri: " + brand["name"] + " · " + who + " <" + sender["email"] + ">",
-             "Mail: " + (_line(source.get("subject"), 200) or "(konu yok)") + " · " + _when(source.get("received_at_ms")),
-             "", "Brief (Hamle):", item["brief"], "",
-             "Teslim: " + (_tr_date(item["due_on"]) + " (müşterinin verdiği tarih)" if item["due_on"]
-                           else "Müşteri tarih vermedi."),
-             "", "Müşterinin maili:", latest_part(source.get("text"))[:1500], "",
-             "Nasıl ilerliyoruz: Çalışmayı bu to-do'ya yorum olarak dosya ekleyip yükleyin (PNG, JPG ya da PDF). "
-             f"Hamle dosyayı briefle karşılaştırıp puanlar: {settings['send_min_score']} ve üstünü müşteriye kendisi "
-             f"gönderir; {settings['approve_min_score']}-{settings['send_min_score'] - 1} arası için {approvers} "
-             f"arasından birinin \"uygun\" yazmasını bekler; {settings['approve_min_score']} altında tasarımcıdan "
-             f"gerekçesiyle revize ister (en fazla {settings['max_revisions']} tur)."]
-    if sender.get("test"):
-        lines = ["TEST · Ahmet'in deneme maili; müşteriye gitmez, teslim Ahmet'in test adresine gider.", ""] + lines
+    """Short designer brief (Ahmet 13 Oct: no client mail text, no process paragraph)."""
+    who = sender.get("name") or sender["email"]
+    lines = (["TEST · müşteriye gitmez", ""] if sender.get("test") else []) + [
+        item["brief"].strip(), "",
+        "Teslim: " + (_tr_date(item["due_on"]) if item["due_on"] else "müşteri tarih vermedi"),
+        "Talep: " + who + " (" + brand["name"] + ") · " + _when(source.get("received_at_ms")),
+        "Çalışmayı bu to-do'ya dosya olarak yükle; Hamle kontrol edip müşteriye iletir."]
     return "\n".join(lines)[:3900]
 
 

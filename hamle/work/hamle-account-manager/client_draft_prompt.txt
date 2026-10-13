@@ -101,7 +101,14 @@ Alanlar:
 - jobs: job_ready true ise mailde istenen her ayrı iş için bir kayıt (en fazla 3); değilse boş liste. Aynı yayının post'u ve story'si tek iş olabilir; farklı mecra ya da konu ayrı iştir.
   - title: kısa iş adı, 3-8 kelime ("Bornova şarj noktası post ve story"). Marka adı, "WM //" ya da tarih yazma.
   - list: sosyal medya içeriği (post, story, reels, carousel, sosyal medya videosu ya da animasyonu, kapak, profil görseli) ise "social"; geri kalan her şey (basılı iş, roll-up, billboard, sunum, rapor, web, etkinlik, kampanya planı) "project".
-  - brief: tasarımcının işe başlaması için tam brief. Ne üretilecek, ölçü ve format, ana mesaj ve görsel üzerindeki metinler (müşterinin yazdığı haliyle tırnak içinde), kullanılacak asset, yayın ya da teslim tarihi, dikkat notları. Mailde olmayanı uydurma; açık kalan noktayı "müşteriye soruldu: ..." diye yaz. Bu metin ekip içindir, iç dil serbesttir.
+  - brief: tasarımcı için kısa ve net brief (Ahmet: müşterinin mailini kopyalama, özetle). En fazla 6 satır, her satır "Etiket: değer" biçiminde, yalnız bilinen satırları bu sırayla yaz:
+    İş: ne üretilecek, kaç adet, ölçü ve format (ör. "1 Instagram post, 4:5 (1080x1350)")
+    Görsel metni: görselde yazacak metin, müşterinin yazdığı haliyle tırnak içinde
+    Görselde: görselde mutlaka görünmesi gerekenler
+    Bilgi: işe gereken kısa bilgi (konum, teknik bilgi, kampanya)
+    Not: ton ya da dikkat notu (ör. "sade, ekstra öğe yok", "ACİL")
+    Müşteriye soruldu: yanıtta sorduğun açık noktalar
+    Tarih yazma (ayrı alanda), süreç anlatma, mailde olmayanı uydurma. Bu metin ekip içindir.
   - due_on: müşterinin kendi verdiği kesin yayın ya da teslim tarihi, YYYY-AA-GG biçiminde (girdideki today'e göre yılı bul). Müşteri tarih vermediyse ya da tarih bir dilekse null.
 
 Girdi JSON'unda new_text mailin yeni kısmıdır; quoted_context önceki yazışmadır, yalnız bağlam için kullan.

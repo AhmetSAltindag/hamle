@@ -202,11 +202,14 @@ class Open(JobBase):
                          (PROJECT, [CANSU_BC], None))
         self.assertEqual(social["title"], "WM // Bornova şarj noktası post ve story")
         d = social["description"]
-        for text in ("Müşteri: WAT Mobilite · Ayşe Yılmaz · Pazarlama Müdürü <ayse@watmobilite.com.tr>",
-                     "Brief (Hamle):\n4:5 post ve 9:16 story.", "Teslim: 25 Ekim 2026 (müşterinin verdiği tarih)",
-                     "Müşterinin maili:\nMerhaba Özge,", "\"uygun\" yazmasını bekler", "en fazla 2 tur"):
+        self.assertTrue(d.startswith("4:5 post ve 9:16 story."), d)
+        for text in ("Teslim: 25 Ekim 2026", "Talep: Ayşe Yılmaz (WAT Mobilite) · ",
+                     "Çalışmayı bu to-do'ya dosya olarak yükle; Hamle kontrol edip müşteriye iletir."):
             self.assertIn(text, d)
-        self.assertIn("Teslim: Müşteri tarih vermedi.", project["description"])
+        for text in ("Merhaba Özge", "Müşterinin maili", "uygun", "tur", "@watmobilite"):
+            self.assertNotIn(text, d)
+        self.assertLess(len(d.splitlines()), 10, d)
+        self.assertIn("Teslim: müşteri tarih vermedi", project["description"])
         self.assertEqual(self.todo_writer.subs, [(900001, [OZGE_BC]), (900002, [OZGE_BC])])
         note = self.todos.calls[0]
         self.assertNotIn("assignee_ids", note)  # the job is open: nobody has to open it by hand
@@ -240,7 +243,7 @@ class Open(JobBase):
         self.watch().run()
         call = self.todo_writer.calls[0]
         self.assertEqual(call["title"], "WM // TEST – Bornova şarj noktası post ve story")
-        self.assertTrue(call["description"].startswith("TEST · Ahmet'in deneme maili"))
+        self.assertTrue(call["description"].startswith("TEST · müşteriye gitmez"))
         self.assertEqual(self.job()["state"], "unknown")
         note = self.todos.calls[0]["description"]
         self.assertIn("AÇILIP AÇILMADIĞI BELİRSİZ", note)
