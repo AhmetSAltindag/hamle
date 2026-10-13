@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
-  "enabled": false,
+  "enabled": true,
   "mode": "silent_draft",
   "summary_to": [
     "ahmet@gamechangers.com.tr"
   ],
   "summary_after": "18:25",
   "max_threads": 10,
-  "max_drafts_per_run": 2,
+  "max_drafts_per_run": 4,
   "newer_than_days": 2,
   "run_seconds": 240,
-  "decision_ref": "Ahmet 2026-10-11 decision 6: Monday no client replies; Tuesday the team CCs hamle@ and Hamle only drafts (client-hidden Basecamp notes in the internal 'Hamle İşleri' list) with an evening 'böyle yanıtlardım' summary to Ahmet; Wednesday first brand auto-reply only after the drafts are reviewed. Price/contract/complaint -> fixed sentence + Ahmet & Cansu.",
+  "decision_ref": "Ahmet 2026-10-11 decision 6: Monday no client replies; Tuesday the team CCs hamle@ and Hamle only drafts (client-hidden Basecamp notes in the internal 'Hamle İşleri' list) with an evening 'böyle yanıtlardım' summary to Ahmet; Wednesday first brand auto-reply only after the drafts are reviewed. Price/contract/complaint -> fixed sentence + Ahmet & Cansu. | 2026-10-13 07:32Z: Ahmet approved on the thread card 'Evet, aç' (silent draft mode for the 10 WAT test mails); only the Firestore table's test_contacts row (his own non-agency address as WAT) is read until Ahmet/Cansu import the real table.",
   "rules": "enabled=true only with Ahmet's word in the thread. Client addresses come from the Firestore 'client-contacts' doc (v11_client_watch.py contacts import on the Mac), never from this file or git. mode 'silent_draft' is the only mode: nothing is ever sent to a client."
 }
