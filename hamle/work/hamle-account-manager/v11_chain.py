@@ -43,6 +43,37 @@ import v11_brand_routing as routing
 MANAGER_ROLES = ("social_manager", "principal", "strategy_owner")
 CLASSES = ("question", "submission", "approval", "other")
 MAX_EVENTS_PER_WORK = 25
+# A manager's Basecamp comment is for Hamle only when it names Hamle (plain text or @mention).
+ADDRESSED = re.compile(r"(?<![0-9a-zçğıöşü])hamle(?![0-9a-zçğıöşü])", re.IGNORECASE)
+# Work status / next step in the team's words (manager answers and held-work notes).
+STATUS_TR = {
+    "new": "talep yeni geldi, görev henüz açılmadı",
+    "awaiting_clarification": "talep sahibinden eksik bilgileri bekliyorum",
+    "in_production": "üretimde",
+    "awaiting_internal_clarification": "üreticinin sorusu cevap bekliyor",
+    "changes_requested": "iç düzeltme istendi, yeni dosya bekleniyor",
+    "awaiting_human_approval": "kalite puanı 80-89, yönetici onayı bekleniyor",
+    "quality_held": "kalite kontrolünü tamamlayamadım, iş ekipte",
+    "delivery_held": "teslim, gönderim öncesi kontrollerde durdu, iş ekipte",
+    "delivered": "teslim edildi",
+    "human_handoff": "iç düzeltme turları doldu, iş ekibe devredildi",
+    "held": "bir kontrolde durdum, iş ekipte",
+    "write_outcome_unknown": "bir yazma işleminin sonucunu doğrulayamadım, iş ekipte",
+}
+NEXT_TR = {
+    "new": "talep maili okununca görevi açacağım",
+    "awaiting_clarification": "talep sahibi eksikleri yanıtlayınca görevi açacağım",
+    "in_production": "üretici dosyayı bu görevin altına yükleyip teslim ettiğini yazınca puanlayacağım",
+    "awaiting_internal_clarification": "üreticinin sorusu yanıtlanınca üretim devam edecek",
+    "changes_requested": "üretici düzeltilmiş dosyayı yükleyince yeniden puanlayacağım",
+    "awaiting_human_approval": "Özge, Ahmet veya Cansu bu görevin altına onay yazınca teslim adımına geçeceğim",
+    "delivered": "bu işte benim yapacağım bir adım kalmadı",
+}
+HELD_NEXT = ("bu işte benim otomatik adımım yok; kontrol, onay ve talep sahibine teslim ekipte. "
+             "İşi yeniden bana devretmek için Ahmet'in onayı gerekiyor.")
+REASON_TR = {"quality_evidence_missing": "teslim edilen dosyayı göremediğim için puan veremedim"}
+HELD_LOOKBACK_SECONDS = 3 * 24 * 3600  # older comments on a held work are not answered
+HELD_LISTEN_SECONDS = 30 * 24 * 3600  # a work held longer than this is no longer read
 
 
 class ChainError(ValueError):
@@ -60,6 +91,15 @@ def _plain(value, limit=4000):
     """Untrusted Basecamp HTML -> bounded plain text (never rendered or executed)."""
     text = re.sub(r"<[^>]*>", " ", value if isinstance(value, str) else "")
     return re.sub(r"\s+", " ", html.unescape(text)).strip()[:limit]
+
+
+def _timestamp(value):
+    """Basecamp ISO time -> epoch seconds, or None."""
+    try:
+        moment = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    return moment.timestamp() if moment.tzinfo is not None else None
 
 
 CONVERSATION_MAX, CONVERSATION_CHARS = 6, 2000  # remembered request/question turns per work
@@ -254,7 +294,7 @@ class Chain:
         _need(isinstance(now, datetime) and now.tzinfo is not None, "clock_timezone_required")
         report = {"status": "ok", "reason": None, "provider_writes": 0, "model_calls": 0,
                   "ignored_mail": [], "works": {}}
-        self._report, self._now = report, now
+        self._report, self._now, self._tasks = report, now, {}
         control = self.q.control()
         if control["mode"] != "queue_open":
             report.update(status="stopped", reason="global_" + control["mode"])
@@ -331,6 +371,13 @@ class Chain:
         out = {"events": 0, "status": None}
         if work["mode"] != "active":
             out["status"] = "work_" + work["mode"]
+            if work["mode"] == "takeover" and work.get("task_id"):
+                try:
+                    note = self._held_listen(work)
+                except (ReadError, QueueError, ChainError) as exc:
+                    note = "held_note_error:" + str(getattr(exc, "code", None) or exc)[:100]
+                if note:
+                    out["held_note"] = note
             return out
         comments = {}
         if work.get("task_id"):
@@ -401,6 +448,7 @@ class Chain:
         remember(batch)
         self._save("chain-", rec)
         self.journal.drain(work["work_id"], expected_generation=self.gen, max_events=100)
+        self._tasks[work["work_id"]] = observation["task"]
         return {str(c["id"]): c for c in observation["comments"]}
 
     # ---------- event dispatch ----------
@@ -659,6 +707,11 @@ class Chain:
             return self._submission(claim, work, rec, comment)
         if kind == "approval" and author in self.approvers and rec["status"] == "awaiting_human_approval":
             return self._approval(claim, work, rec, comment)
+        if manager and ADDRESSED.search(text):
+            if kind == "question":
+                return self._manager_question(claim, work, rec, comment, text)
+            if kind == "approval":  # approval outside the approval step: say why it is not used
+                return self._manager_status(claim, work, rec, comment, approval=True)
         return "no_action", "comment-class-" + str(kind)[:40]
 
     def _question(self, claim, work, rec, comment, text):
@@ -697,6 +750,141 @@ class Chain:
         rec["questions"][qid]["intent"] = result
         self._save("chain-", rec)
         return "processed", "producer-question:" + status
+
+    # ---------- manager questions (Ahmet, Cansu, Özge tag Hamle on its task) ----------
+    def _work_facts(self, rec, task=None):
+        """Hamle's own record of the work in the team's words (no model, no provider read)."""
+        status = rec["status"]
+        reason = REASON_TR.get(rec.get("reason") or "", "")
+        task = task if task is not None else self._tasks.get(rec["work_id"]) or {}
+        due = task.get("due_on") if isinstance(task.get("due_on"), str) else None
+        return {"status": STATUS_TR.get(status, status) + (f" ({reason})" if reason else ""),
+                "next_step": NEXT_TR.get(status, HELD_NEXT),
+                "assignees": ", ".join(self.names.get(i, str(i)) for i in rec["assignee_ids"]),
+                "due_on": due}
+
+    def _status_text(self, facts):
+        lines = ["İşin durumu: " + facts["status"] + ".", "Sıradaki adım: " + facts["next_step"]
+                 + ("" if facts["next_step"].endswith(".") else ".")]
+        if facts["assignees"]:
+            lines.append("Üretici: " + facts["assignees"] + ".")
+        if facts["due_on"]:
+            lines.append("Görevdeki teslim tarihi: " + facts["due_on"] + ".")
+        return "\n".join(lines)
+
+    def _manager_question(self, claim, work, rec, comment, text):
+        """A manager asks Hamle on the task: answer from the brief and Hamle's own record of the
+        work; never records a producer question, never changes the work or the brief."""
+        prod = self._load("chain-prod-", work["work_id"]) or {}
+        brief = (prod.get("intake_work") or {}).get("brief") or {}
+        facts = self._work_facts(rec)
+        answer = self._model(self.d.answerer, text, {"brief": {k: brief.get(k) for k in (
+            "title", "objective", "audience", "deadline", "assets_ref", "deliverables")},
+            "profile": {k: self.cat.get(k) for k in ("brand_id", "terms", "verification_scope")},
+            "work": facts})
+        allowed = {"brief." + k for k in ("title", "objective", "audience", "deadline", "assets_ref", "deliverables")}
+        allowed |= {"profile." + k for k in ("terms", "brand_id", "verification_scope")}
+        allowed |= {"work." + k for k in ("status", "next_step", "assignees", "due_on")}
+        refs = answer.get("grounded_in") if isinstance(answer, dict) else None
+        grounded = (isinstance(answer, dict) and isinstance(answer.get("answer"), str) and answer["answer"].strip()
+                    and isinstance(refs, list) and refs and all(isinstance(r, str) and r.split("[")[0] in allowed
+                                                                for r in refs))
+        author = comment["creator"]["id"]
+        name = self.names.get(author, "")
+        if grounded:
+            body = f"@{name} {answer['answer'].strip()[:3000]}\n(Dayanak: {', '.join(refs)})"
+            status = "answered"
+        else:
+            body = (f"@{name} Bu soruya brief'ten ve kayıtlarımdan net bir cevap çıkaramadım; "
+                    "ekipten biri burada yanıtlayabilir.\n" + self._status_text(facts))
+            status = "status_given"
+        key = "manager-" + str(comment["id"])
+        rec["questions"][key] = {"status": status}
+        result = self._comment(claim, work, rec, "answer-" + key, body, [author])
+        if result is None:
+            return None
+        rec["questions"][key]["intent"] = result
+        self._save("chain-", rec)
+        return "processed", "manager-question:" + status
+
+    def _manager_status(self, claim, work, rec, comment, approval=False):
+        author = comment["creator"]["id"]
+        lead = ("Onayın için teşekkürler; ama bu iş şu an onay adımında değil, bu yüzden onay olarak "
+                "işleyemiyorum. Onayı, kalite puanı 80-89 çıktığında bu görevin altında isterim."
+                if approval else "Notunu gördüm.")
+        body = f"@{self.names.get(author, '')} {lead}\n" + self._status_text(self._work_facts(rec))
+        if self._comment(claim, work, rec, "status-" + str(comment["id"]), body, [author]) is None:
+            return None
+        return "processed", "manager-status" + (":approval-out-of-step" if approval else "")
+
+    # ---------- held works: managers tagging Hamle get one status note ----------
+    def _held_listen(self, work):
+        """Work in human takeover: no event is claimed and nothing about the work changes. When a
+        manager or producer names Hamle in a new comment, Hamle writes ONE status note for that
+        burst of comments (durable intent, fresh authorization, never retried)."""
+        rec = self._load("chain-", work["work_id"])
+        if not rec or not rec.get("task_id"):
+            return None
+        self._use(work)
+        if "held_since" not in rec:  # last save before the hold ~= when the work was held
+            rec["held_since"] = rec.get("updated_at") or self._now.timestamp()
+            rec["held_seen"] = []
+            self._save("chain-", rec)
+        if self._now.timestamp() - float(rec["held_since"]) > HELD_LISTEN_SECONDS:
+            return None
+        if any(i.get("status") in ("prepared", "started", "unknown") for k, i in rec["intents"].items()
+               if k.startswith("held-note-")):
+            return "held_note_unresolved"
+        reader = BasecampReader(self.d.basecamp_get)  # read-only: no journal, no queue event
+        observation = reader.poll({k: work[k] for k in ("work_id", "account_id", "project_id", "list_id", "task_id")},
+                                  previous=None, observed_at=self._now)
+        floor = max(float(rec["held_since"]), self._now.timestamp() - HELD_LOOKBACK_SECONDS)
+        team = set(self.managers) | set(rec["assignee_ids"])
+        fresh = []
+        for c in sorted(observation["comments"], key=lambda c: int(c["id"])):
+            author = (c.get("creator") or {}).get("id")
+            if str(c["id"]) in rec["held_seen"] or author == HAMLE_PERSON or author not in team:
+                continue
+            created = _timestamp(c.get("created_at"))
+            if created is None or created <= floor or not ADDRESSED.search(_plain(c.get("content"))):
+                continue
+            fresh.append(c)
+        if not fresh:
+            return None
+        last = fresh[-1]
+        authors = list(dict.fromkeys(c["creator"]["id"] for c in fresh))
+        approval = any(re.search(r"onay(lıyorum|ladım| veriyorum)|gönderilebilir|paylaşabiliriz",
+                                 _plain(c.get("content")).lower()) for c in fresh)
+        facts = self._work_facts(rec, observation["task"])
+        lead = "Notunu gördüm." + (" Onayını not ettim; ama iş ekipte olduğu için gönderimi ben yapmayacağım."
+                                   if approval else "")
+        body = self._tag(authors, lead + "\n" + self._status_text(facts))
+        seen = (rec["held_seen"] + [str(c["id"]) for c in fresh])[-50:]
+        key = "held-note-" + str(last["id"])
+        payload = {"target": {k: work[k] for k in ("account_id", "project_id", "list_id", "task_id")},
+                   "body": body[:12000], "mention_ids": sorted(set(authors)), "internal_only": True}
+        sha = scope_digest(payload)
+        rec["intents"][key] = {"kind": "add_comment", "provider": "basecamp", "status": "prepared",
+                               "payload_sha256": sha, "event_id": None}
+        self._save("chain-", rec)  # durable intent BEFORE any authority/provider step
+        if self.d.authorize("add_comment", copy.deepcopy(payload)) is not True:
+            rec["intents"][key]["status"] = "denied"  # nothing written: the next tick may ask again
+            self._save("chain-", rec)
+            return "held_note_denied"
+        rec["intents"][key]["status"] = "started"
+        rec["held_seen"] = seen  # from here on this burst is never answered twice
+        self._save("chain-", rec)
+        try:
+            self._report["provider_writes"] += 1
+            remote = self._one_write(self.d.comment_writer, payload, sha)
+        except Exception:
+            rec["intents"][key]["status"] = "unknown"  # never retried; the next note waits for a human
+            self._save("chain-", rec)
+            return "held_note_unknown"
+        rec["intents"][key].update(status="confirmed", remote_id=remote)
+        self._note(rec, "held note -> " + ",".join(str(a) for a in authors))
+        self._save("chain-", rec)
+        return "held_note_written"
 
     def _evidence(self, rec, comment):
         view = self._view(rec)

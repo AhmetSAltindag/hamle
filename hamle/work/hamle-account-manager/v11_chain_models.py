@@ -4,7 +4,7 @@ Anthropic transport; the existing OpenAI Responses path stays selectable, never 
 Three bounded, strict-JSON roles for v11_chain.ChainDeps:
   interpreter(text, context) -> {'requirements','missing_questions','context_notes','follow_ups'}
   classifier(text, context)  -> 'question' | 'submission' | 'approval' | 'other'
-  answerer(text, context)    -> {'answer','grounded_in'} only when grounded in brief/profile, else None
+  answerer(text, context)    -> {'answer','grounded_in'} only when grounded in brief/profile(/work), else None
 
 Every call goes through ModelGate: ONE model chance per stable source digest.
 The gate durably reserves and begins the shared budget (cloud_store ledger) and
@@ -42,7 +42,10 @@ CLASSES = ("question", "submission", "approval", "other")
 MIMES = ("image/png", "image/jpeg", "application/pdf", "text/plain", "video/mp4")
 BRIEF_REFS = ("title", "objective", "audience", "deadline", "assets_ref", "deliverables")
 PROFILE_REFS = ("terms", "brand_id", "verification_scope")
-ANSWER_REFS = tuple("brief." + k for k in BRIEF_REFS) + tuple("profile." + k for k in PROFILE_REFS)
+# Hamle's own record of the work (status, next step, producers, due date): managers ask about these.
+WORK_REFS = ("status", "next_step", "assignees", "due_on")
+ANSWER_REFS = (tuple("brief." + k for k in BRIEF_REFS) + tuple("profile." + k for k in PROFILE_REFS)
+               + tuple("work." + k for k in WORK_REFS))
 ROUTING_ROLES = {"interpreter": "chain_interpreter", "classifier": "chain_classifier",
                  "answerer": "chain_answerer", "digest": "digest_classifier"}
 # Fixed codes after which nothing can have been billed: the hold is settled at 0.
@@ -509,11 +512,16 @@ class ChainModels:
 
     def answerer(self, text, context):
         brief, profile = context.get("brief") or {}, context.get("profile") or {}
+        work = context.get("work") or {}
         request_input = {"question": (text or "")[:4000], "brief": brief, "profile": profile}
-        output = self._call("answerer", request_input, source_digest("answerer", text, brief, profile))
+        parts = [text, brief, profile]
+        if work:  # manager questions also see Hamle's own record of the work
+            request_input["work"] = work
+            parts.append(work)
+        output = self._call("answerer", request_input, source_digest("answerer", *parts))
         if output["answerable"] is not True or output["answer"] is None or not output["grounded_in"]:
             return None
-        values = {"brief": brief, "profile": profile}
+        values = {"brief": brief, "profile": profile, "work": work}
         for ref in output["grounded_in"]:
             area, key = ref.split(".", 1)
             if values[area].get(key) in (None, "", [], {}):
