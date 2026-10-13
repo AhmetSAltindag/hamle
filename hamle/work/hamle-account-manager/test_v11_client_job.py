@@ -522,6 +522,14 @@ class Readback(unittest.TestCase):
         saved = ('<div>Gönderen: Ahmet (test) &lt;<a href="mailto:ahmetsukrua@gmail.com">ahmetsukrua@gmail.com</a>&gt;'
                  '<br>İş: <a href="https://3.basecamp.com/5898865/x">https://3.basecamp.com/5898865/x</a></div>')
         self.assertTrue(bw._description_matches(saved, text))
+        live = ('<div>Gönderen: Ahmet (test) &lt;<a href="mailto:ahmetsukrua@gmail.com" class="autolinked" '
+                'data-behavior="truncate">ahmetsukrua@gmail.com</a>&gt;<br>İş: <a href="https://3.basecamp.com/5898865/x" '
+                'class="autolinked" data-behavior="truncate">https://3.basecamp.com/5898865/x</a></div>')
+        self.assertTrue(bw._description_matches(live, text))  # Basecamp's own autolink markup (2026-10-13 live)
+        for bad in (live.replace('class="autolinked"', 'class="x"', 1),
+                    live.replace('data-behavior="truncate"', 'data-behavior="hover"', 1),
+                    live.replace('class="autolinked"', 'style="color:red"', 1)):
+            self.assertFalse(bw._description_matches(bad, text), bad)
         for bad in (saved.replace("mailto:ahmetsukrua", "mailto:baska"),
                     '<div>a <a href="https://evil.example">https://good.example</a></div>',
                     '<div>a <a href="x" onclick="y">x</a></div>', '<div>a <a href="x"><b>x</b></a></div>',

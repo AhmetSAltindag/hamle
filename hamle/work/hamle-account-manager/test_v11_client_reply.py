@@ -385,6 +385,21 @@ class WatGo(ReplyBase):
         r = self.watch(reply_config(allow_questions=True, auto_categories=list(cr.AUTO_CATEGORIES))).run()
         self.assertEqual((r["sent"], r["awaiting_approval"]), (0, 2), r)
 
+    def test_confidence_is_the_sum_of_ahmets_five_criteria(self):
+        # Ahmet 13 Oct: the Sarayköy-type reply is ~98, never 82; the rubric sum decides, not a self-estimate.
+        full = {"understanding": 30, "reply_type": 25, "no_promises": 20, "questions": 15, "tone": 10}
+        short = dict(full, no_promises=5)
+        self.mails = [source(1), source(2, thread="t2")]
+        self.client.outputs = [message(clear(reply=ASKING, confidence=85, rubric=full)),
+                               message(clear(reply=ASKING, confidence=95, rubric=short))]
+        r = self.watch(reply_config(allow_questions=True)).run()
+        self.assertEqual((r["sent"], r["awaiting_approval"]), (1, 1), r)
+        self.assertEqual((self.row("m1")["confidence"], self.row("m2")["confidence"]), (100, 85))
+        self.assertEqual(self.row("m1")["rubric"], full)
+        self.assertIn("Güven: 100/100 (anlama 30/30, yanıt türü 25/25, söz vermeme 20/20, sorular 15/15, ton 10/10)",
+                      self.todos.calls[0]["description"])
+        self.assertIn("güvenim 85/100", self.todos.calls[1]["description"])
+
     def test_brand_yes_covers_its_people_and_domain_unless_a_person_says_no(self):
         doc = contacts()
         doc["brands"]["wat_mobilite"]["direct"] = True

@@ -133,10 +133,12 @@ class _PlainDescription(HTMLParser):
         if tag == "a":
             # Basecamp autolinks bare addresses and URLs on save (2026-10-13 live readback):
             # accepted only when the link points exactly at its own visible text.
-            names = [k for k, _ in attrs]
-            href = dict(attrs).get("href")
-            if (len(names) != len(set(names)) or "href" not in names or not set(names) <= {"href", "rel", "target"}
-                    or not isinstance(href, str)):
+            names, values = [k for k, _ in attrs], dict(attrs)
+            href = values.get("href")
+            if (len(names) != len(set(names)) or "href" not in names or not isinstance(href, str)
+                    or not set(names) <= {"href", "rel", "target", "class", "data-behavior"}
+                    or values.get("class", "autolinked") != "autolinked"
+                    or values.get("data-behavior", "truncate") != "truncate"):
                 self.invalid = True
             self.link = (href, len(self.parts))
             return

@@ -97,6 +97,9 @@ INTERNAL_TERMS = (
     ("sistem kodu", re.compile(r"(?<![0-9a-zçğıöşü@._/-])[a-z]+(?:_[a-z]+)+(?![0-9a-zçğıöşü@/-])")),
 )
 INTERNAL_TERMS_CONFIDENCE = 50
+RUBRIC = {"understanding": 30, "reply_type": 25, "no_promises": 20, "questions": 15, "tone": 10}
+RUBRIC_TR = {"understanding": "anlama", "reply_type": "yanıt türü", "no_promises": "söz vermeme", "questions": "sorular",
+             "tone": "ton"}
 MAX_NEW_TEXT = 8000
 MAX_CONTEXT_TEXT = 3000
 LEASE_SECONDS = 900
@@ -370,6 +373,14 @@ DRAFT_SCHEMA = _obj({
     "missing_info": {"type": "array", "items": _str(200), "maxItems": 3},
     "team_next_step": _str(300),
     "confidence": {"type": ["integer", "null"], "minimum": 0, "maximum": 100},
+    # Ahmet's 5 criteria (13 Oct): the confidence used for auto-send is their sum, not a single self-estimate.
+    "rubric": {"type": ["object", "null"], "properties": {
+        "understanding": {"type": "integer", "minimum": 0, "maximum": 30},
+        "reply_type": {"type": "integer", "minimum": 0, "maximum": 25},
+        "no_promises": {"type": "integer", "minimum": 0, "maximum": 20},
+        "questions": {"type": "integer", "minimum": 0, "maximum": 15},
+        "tone": {"type": "integer", "minimum": 0, "maximum": 10}},
+        "required": ["understanding", "reply_type", "no_promises", "questions", "tone"], "additionalProperties": False},
     # Client jobs (v11_client_job): production can start now, and the separate jobs in the mail.
     "job_ready": {"type": "boolean"},
     "jobs": {"type": "array", "maxItems": 3, "items": _obj({
@@ -528,6 +539,8 @@ def note_body(draft, brand, sender, source, plan=None, shadow=None, jobs=None):
     meta = "Tür: " + CATEGORY_TR.get(draft.get("category"), "-")
     if draft.get("confidence") is not None:
         meta += f" · Güven: {draft['confidence']}/100"
+        if draft.get("rubric"):
+            meta += " (" + ", ".join(f"{RUBRIC_TR[k]} {draft['rubric'][k]}/{RUBRIC[k]}" for k in RUBRIC) + ")"
     if draft.get("model_status") != "ok":
         meta += " · Model: " + str(draft.get("model_status"))
     lines.append(meta)
@@ -537,10 +550,15 @@ def note_body(draft, brand, sender, source, plan=None, shadow=None, jobs=None):
 def finalize_draft(output, source, model_status):
     hits = sensitive_hits(source.get("subject"), source.get("text"))
     out = {"category": None, "summary": None, "reply": None, "missing_info": [], "team_next_step": None,
-           "confidence": None, "model_status": model_status, "job_ready": False, "jobs": []}
+           "confidence": None, "rubric": None, "model_status": model_status, "job_ready": False, "jobs": []}
     if isinstance(output, dict):
         out.update({k: output.get(k) for k in ("category", "summary", "reply", "team_next_step", "confidence")})
         out["missing_info"] = list(output.get("missing_info") or [])
+        rubric = output.get("rubric")
+        if isinstance(rubric, dict) and set(rubric) == set(RUBRIC) and all(
+                type(rubric[k]) is int and 0 <= rubric[k] <= RUBRIC[k] for k in RUBRIC):
+            out["rubric"] = dict(rubric)
+            out["confidence"] = sum(rubric.values())
         out["job_ready"] = output.get("job_ready") is True
         out["jobs"] = copy.deepcopy(list(output.get("jobs") or []))
     sensitive = sorted(set(hits) | ({out["category"]} if out["category"] in SENSITIVE else set()))
@@ -1136,7 +1154,7 @@ class ClientWatch:
     def _fields(draft):
         return {k: draft.get(k) for k in ("category", "summary", "reply", "missing_info", "team_next_step",
                                          "confidence", "sensitive", "internal_terms", "model_status", "job_ready",
-                                         "jobs")}
+                                         "jobs", "rubric")}
 
     # ----- evening summary to Ahmet
     def _summary(self):
