@@ -473,7 +473,8 @@ def spark_schema(brands):
 
 
 def sourced_spark(output, today, brands, current_brands):
-    """Every item needs an https URL from the web_search evidence and a date in its window:
+    """Every item needs an https URL from the web_search evidence (a page, never a bare homepage)
+    and a date in its window:
     opportunities/inspirations today-30..today, ideas today-30..today+14 (special days ahead).
     'client' opportunities must name one of our brands, 'new_business' ones must not."""
     evidence = set(output.get("evidence") or [])
@@ -486,7 +487,7 @@ def sourced_spark(output, today, brands, current_brands):
 
     def ok(row, ahead=0):
         url, day = normalize_url(row.get("url")), _iso_day(row.get("date"))
-        if url is None or url not in evidence or day is None \
+        if url is None or url not in evidence or day is None or urlsplit(url).path in ("", "/") \
                 or not today - timedelta(days=30) <= day <= today + timedelta(days=ahead):
             return None
         return url, day.isoformat()

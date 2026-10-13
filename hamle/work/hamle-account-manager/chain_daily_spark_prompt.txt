@@ -10,6 +10,8 @@ Mağaza, ürün listesi ve fiyat sayfaları kaynak değildir; haber, blog, kampa
 opportunities (1 tane, en fazla 2):
 - kind "client": girdideki "brands" listesindeki bir müşterimizin ya da doğrudan rakibinin son 30 gündeki somut bir gelişmesi (lansman, kampanya, haber, rakip hamlesi) ve müşteri temsilcimizin müşteriye önerebileceği somut bir iş. "brand" alanına müşterimizin adını "brands" listesinde yazdığı gibi yaz.
 - kind "new_business": müşterimiz olmayan, son 30 günde somut bir gelişme yaşamış (yeni lansman, pazara giriş, yatırım, yeni mağaza, ajans arayışı) ve ajansımıza iş fırsatı olabilecek bir marka. "current_clients" listesindekileri yazma.
+- Fırsat, ajansa YENİ bir iş kapısı açmalı. Müşterimizin kendi duyurusu ya da ajansın zaten yürüttüğü bir iş (ör. müşterimizin kendi etkinlik programının açıklanması) fırsat sayılmaz; böyle bir durumda rakip hamlesi ya da new_business markası ara.
+- "url": olayın anlatıldığı haber ya da duyuru sayfası; sitenin ana sayfası olamaz.
 - "headline": olayın tek cümlelik özeti. "proposal": "Şunu önerebiliriz:" diye başlayan tek kısa cümle.
 
 ideas (2-3 tane, her biri farklı marka):

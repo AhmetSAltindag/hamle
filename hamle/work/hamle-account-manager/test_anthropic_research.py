@@ -225,9 +225,11 @@ class DailySpark(Research):
                             "url": u[4], "date": "2026-11-20"},
                            {"brand": "Rabam", "hook": "Kaynaksız", "format": "Reels", "idea": "x",
                             "url": "https://nowhere.example/x", "date": "2026-10-10"}],
-                 "inspirations": [{"title": "Kampanya", "company": "Örnek", "why": "İlham.", "url": u[5],
+                 "inspirations": [{"title": "Ana sayfa", "company": "Site", "why": "x.", "url": "https://news.example.com/",
+                                   "date": "2026-10-01"},
+                                  {"title": "Kampanya", "company": "Örnek", "why": "İlham.", "url": u[5],
                                    "date": "2026-10-01"}]}
-        client = FakeClient(research_message(value, results=u, cited=()))
+        client = FakeClient(research_message(value, results=u + ["https://news.example.com/"], cited=()))
         out = self.build(client)(DAY, ["Bikaldi × Dünya Kahve Günü"])
         self.assertEqual([(o["kind"], o["brand"]) for o in out["opportunities"]], [("client", "WAT Mobilite")])
         self.assertEqual([(i["brand"], i["hook"]) for i in out["ideas"]], [("Altınmarka", "Dünya Gıda Günü")])
