@@ -126,10 +126,22 @@ def _description(text):
 
 class _PlainDescription(HTMLParser):
     def __init__(self):
-        super().__init__(convert_charrefs=True); self.parts = []; self.invalid = False
+        super().__init__(convert_charrefs=True); self.parts = []; self.invalid = False; self.link = None
     def handle_starttag(self, tag, attrs):
+        if self.link is not None:  # nothing may hide inside an autolink
+            self.invalid = True
+        if tag == "a":
+            # Basecamp autolinks bare addresses and URLs on save (2026-10-13 live readback):
+            # accepted only when the link points exactly at its own visible text.
+            names = [k for k, _ in attrs]
+            href = dict(attrs).get("href")
+            if (len(names) != len(set(names)) or "href" not in names or not set(names) <= {"href", "rel", "target"}
+                    or not isinstance(href, str)):
+                self.invalid = True
+            self.link = (href, len(self.parts))
+            return
         # Basecamp adds this exact bidirectional-text wrapper on saved content.
-        # All other attributes (links, events, styles, etc.) remain rejected.
+        # All other attributes (events, styles, etc.) remain rejected.
         safe_attrs = not attrs or (tag == "div" and attrs == [("dir", "auto")])
         if not safe_attrs or tag not in ("div", "p", "br", "span", "strong", "b", "em", "i"):
             self.invalid = True
@@ -137,9 +149,23 @@ class _PlainDescription(HTMLParser):
         if tag in ("div", "p") and self.parts and not self.parts[-1].endswith("\n"):
             self.parts.append("\n")
     def handle_endtag(self, tag):
+        if tag == "a":
+            if self.link is None:
+                self.invalid = True
+                return
+            href, start = self.link
+            self.link = None
+            text = "".join(self.parts[start:])
+            if not text or href not in (text, "mailto:" + text, "http://" + text, "https://" + text):
+                self.invalid = True
+            return
         if tag in ("div", "p") and self.parts and not self.parts[-1].endswith("\n"):
             self.parts.append("\n")
     def handle_data(self, data): self.parts.append(data)
+    def close(self):
+        super().close()
+        if self.link is not None:
+            self.invalid = True
 
 
 def _description_matches(actual, expected):

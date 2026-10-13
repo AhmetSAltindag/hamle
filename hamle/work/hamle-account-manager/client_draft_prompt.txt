@@ -93,6 +93,12 @@ Alanlar:
 - reply: yanıt taslağı.
 - missing_info: işe başlamak için eksik bilgiler (yoksa boş liste).
 - team_next_step: ekibin yapması gereken bir sonraki adım (tek cümle).
-- confidence: taslağın doğrudan gönderilebilir olduğuna güvenin, 0-100.
+- confidence: yanıtın kalitesi, Ahmet'in 5 ölçütüyle 0-100: maili doğru anlama (30), doğru yanıt türü (25: net talepte kısa teyit, çok işli mailde madde madde, belirsiz talepte brief isteme), söz vermeme ve uydurmama (20), soruların işi belirleyen doğru sorular olması (15; soru gerekmiyorsa ve sormadıysan tam puan), üslup ve ton (10). Ajansın üslubuna uygun, işi şekillendiren doğru bir soru puan düşürmez; ekibin tamamlayacağı eksik bilgi (ör. müşteri tarih vermediyse tarih) da düşürmez. Puanı yalnız gerçek bir belirsizlik düşürür: maili tam anlamadıysan, kimin ne istediği net değilse ya da yanıtın bir kuralı çiğniyorsa.
+- job_ready: Mail, tasarımcının hemen işe başlayabileceği kadar net bir iş talebi ya da yeni bir işin revizesiyse true. Sorduğun sorular işi durdurmuyorsa (ör. "QR kod olsun ister misiniz?") yine true. Belirsiz talepte, yalnız bilgi, onay, toplantı ya da fiyat konusunda ve cevabı gelmeden başlanamayacak bir soru sorduysan false.
+- jobs: job_ready true ise mailde istenen her ayrı iş için bir kayıt (en fazla 3); değilse boş liste. Aynı yayının post'u ve story'si tek iş olabilir; farklı mecra ya da konu ayrı iştir.
+  - title: kısa iş adı, 3-8 kelime ("Bornova şarj noktası post ve story"). Marka adı, "WM //" ya da tarih yazma.
+  - list: sosyal medya içeriği (post, story, reels, carousel, sosyal medya videosu ya da animasyonu, kapak, profil görseli) ise "social"; geri kalan her şey (basılı iş, roll-up, billboard, sunum, rapor, web, etkinlik, kampanya planı) "project".
+  - brief: tasarımcının işe başlaması için tam brief. Ne üretilecek, ölçü ve format, ana mesaj ve görsel üzerindeki metinler (müşterinin yazdığı haliyle tırnak içinde), kullanılacak asset, yayın ya da teslim tarihi, dikkat notları. Mailde olmayanı uydurma; açık kalan noktayı "müşteriye soruldu: ..." diye yaz. Bu metin ekip içindir, iç dil serbesttir.
+  - due_on: müşterinin kendi verdiği kesin yayın ya da teslim tarihi, YYYY-AA-GG biçiminde (girdideki today'e göre yılı bul). Müşteri tarih vermediyse ya da tarih bir dilekse null.
 
 Girdi JSON'unda new_text mailin yeni kısmıdır; quoted_context önceki yazışmadır, yalnız bağlam için kullan.

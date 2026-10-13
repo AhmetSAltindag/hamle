@@ -29,6 +29,10 @@ to hamle@ with "Gölge:" in front of the subject is drafted exactly like a new c
 draft never goes to anyone: it lands as a GÖLGE note next to the team's real reply (when that reply
 was forwarded too) and in the evening summary. The chain skips these forwards (v11_chain_mail).
 
+Client jobs (Ahmet 2026-10-13 17:05Z, config 'jobs', v11_client_job): a clear request of a listed brand opens
+to-dos in the brand's Basecamp lists, Hamle follows them, scores each upload against the brief and mails 90+
+work to the client in the same thread (80-89 waits for an approver's "uygun", below 80 is a revision request).
+
 Mac operator commands (ADC credentials, Firestore only, no cost):
   python3 v11_client_watch.py contacts status
   python3 v11_client_watch.py contacts import --file client-contacts.json --actor ahmet@gamechangers.com.tr
@@ -365,7 +369,12 @@ DRAFT_SCHEMA = _obj({
     "reply": _str(2500),
     "missing_info": {"type": "array", "items": _str(200), "maxItems": 3},
     "team_next_step": _str(300),
-    "confidence": {"type": ["integer", "null"], "minimum": 0, "maximum": 100}})
+    "confidence": {"type": ["integer", "null"], "minimum": 0, "maximum": 100},
+    # Client jobs (v11_client_job): production can start now, and the separate jobs in the mail.
+    "job_ready": {"type": "boolean"},
+    "jobs": {"type": "array", "maxItems": 3, "items": _obj({
+        "title": _str(80), "list": {"type": "string", "enum": ["social", "project"]}, "brief": _str(1500),
+        "due_on": {"type": ["string", "null"], "minLength": 10, "maxLength": 10}})}})
 
 
 def model_input(source, sender, brand, day):
@@ -440,9 +449,38 @@ SHADOW_HEADER = ("GÖLGE · İletilen eski bir müşteri maili. Bu yanıt kimsey
                  "karşılaştırmak için yazıldı.")
 
 
-def note_header(plan, shadow=False):
+JOBS_OPENED = ("GÖNDERİLDİ · Hamle bu yanıtı müşteriye aynı mail zincirinde, alıcıları koruyarak gönderdi ve işi "
+               "markanın Basecamp projesinde açtı (aşağıda). Hamle işi orada takip ediyor.")
+
+
+JOB_STATES = {"open": None, "creating": "açılıyordu", "awaiting_approval": "onay bekliyor",
+              "delivered": "müşteriye teslim edildi", "team": "teslim ekipte", "closed": "tamamlandı",
+              "send_unknown": "teslim belirsiz", "expired": "takip bitti", "held": "takip durdu",
+              "unknown": "AÇILIP AÇILMADIĞI BELİRSİZ, markanın projesine bakın (tekrar denenmedi)"}
+
+
+def jobs_lines(jobs):
+    """Note lines for the client jobs of this mail (v11_client_job.JobDesk.from_mail)."""
+    if jobs and jobs.get("kind") == "held":
+        return ["İşi Basecamp'te açamadım (" + str(jobs.get("reason")) + "); ekip açsın.", ""]
+    if not jobs or not jobs.get("jobs"):
+        return []
+    out = ["Bu zincirin Basecamp işleri:" if jobs.get("kind") == "followup" else "Basecamp'te açılan iş:"]
+    for j in jobs["jobs"]:
+        state = JOB_STATES.get(j.get("state"), j.get("state"))
+        out.append("- " + str(j.get("title")) + (" · " + j["url"] if j.get("url") else "")
+                   + (" (" + j["assignee"] + ")" if j.get("assignee") else "") + (" · " + state if state else ""))
+    if jobs.get("kind") == "followup":
+        out.append("Müşterinin yeni maili bu işlerin to-do'larına yorum olarak yazıldı." if jobs.get("comments")
+                   else "Müşterinin yeni mailini işlerin to-do'larına yazamadım; ekip baksın.")
+    return out + [""]
+
+
+def note_header(plan, shadow=False, jobs_opened=False):
     if shadow:
         return SHADOW_HEADER
+    if jobs_opened and plan is not None and plan["outcome"] == "sent":
+        return JOBS_OPENED
     if plan is None:
         return "SESSİZ DENEME · Bu yanıt müşteriye GÖNDERİLMEDİ. Hamle'nin göndereceği taslak aşağıda."
     if plan["outcome"] == "awaiting_approval":
@@ -453,9 +491,10 @@ def note_header(plan, shadow=False):
     return REPLY_HEADERS[plan["outcome"]]
 
 
-def note_body(draft, brand, sender, source, plan=None, shadow=None):
+def note_body(draft, brand, sender, source, plan=None, shadow=None, jobs=None):
     who = " ".join(x for x in (sender.get("name"), f"({sender['title']})" if sender.get("title") else None) if x)
-    lines = [note_header(plan, shadow is not None), "",
+    opened = bool(jobs) and jobs.get("kind") == "opened" and any(j.get("state") == "open" for j in jobs["jobs"])
+    lines = [note_header(plan, shadow is not None, jobs_opened=opened), "",
              "Marka: " + brand["name"],
              "Gönderen: " + ((who + " <" + sender["email"] + ">") if who else sender["email"]),
              "Tarih: " + ((shadow["date"] or "-") if shadow is not None else _when(source.get("received_at_ms"))),
@@ -470,6 +509,7 @@ def note_body(draft, brand, sender, source, plan=None, shadow=None):
                   "Alıcılar: " + ", ".join(plan["to"]) + ("; CC: " + ", ".join(plan["cc"]) if plan["cc"] else ""), ""]
     else:
         lines += ["Hamle'nin yanıt taslağı:", plan["body"] if plan else draft["reply"], ""]
+    lines += jobs_lines(jobs)
     if shadow is not None:
         team = shadow["team_reply"]
         lines += (["Ekibin gerçek cevabı (" + (team["name"] or team["email"]) + "):", team["text"][:1200], ""] if team
@@ -497,10 +537,12 @@ def note_body(draft, brand, sender, source, plan=None, shadow=None):
 def finalize_draft(output, source, model_status):
     hits = sensitive_hits(source.get("subject"), source.get("text"))
     out = {"category": None, "summary": None, "reply": None, "missing_info": [], "team_next_step": None,
-           "confidence": None, "model_status": model_status}
+           "confidence": None, "model_status": model_status, "job_ready": False, "jobs": []}
     if isinstance(output, dict):
         out.update({k: output.get(k) for k in ("category", "summary", "reply", "team_next_step", "confidence")})
         out["missing_info"] = list(output.get("missing_info") or [])
+        out["job_ready"] = output.get("job_ready") is True
+        out["jobs"] = copy.deepcopy(list(output.get("jobs") or []))
     sensitive = sorted(set(hits) | ({out["category"]} if out["category"] in SENSITIVE else set()))
     out["sensitive"] = sensitive
     if sensitive:
@@ -604,7 +646,7 @@ class ClientWatch:
     """One pass: read client mail, draft, write internal notes; then the evening summary."""
     def __init__(self, ops, *, config, book, reader, draft, task_writer, comment_writer, mail_writer, catalog,
                  clock, link_base="https://3.basecamp.com", monotonic=time.monotonic, started_at=None,
-                 reply_writer=None, basecamp_get=None, shadow_reader=None):
+                 reply_writer=None, basecamp_get=None, shadow_reader=None, jobs_factory=None):
         self.ops, self.cfg, self.book, self.reader = ops, validate_config(config), book, reader
         self.draft, self.task_writer, self.comment_writer = draft, task_writer, comment_writer
         self.mail_writer, self.catalog, self.clock = mail_writer, catalog, clock
@@ -621,6 +663,12 @@ class ClientWatch:
         self.shadow_reader = shadow_reader if self.cfg.get("shadow_from") else None
         self.link_base, self.monotonic, self.started_at = link_base, monotonic, started_at
         self.generation = None
+        self.jobs = None  # client jobs (v11_client_job): Basecamp to-do, visual check, delivery
+        if self.reply is not None and jobs_factory is not None:
+            from v11_client_job import JobDesk, validate_jobs
+            settings = validate_jobs(self.cfg.get("jobs"), catalog, self.reply)
+            if settings is not None:
+                self.jobs = JobDesk(self, settings, basecamp_get=basecamp_get, **jobs_factory(settings))
 
     # ----- control
     def _fence(self, tx, now):
@@ -688,6 +736,11 @@ class ClientWatch:
                 report["held"] += 1
             else:
                 report["skipped"] += 1
+        if self.jobs is not None:
+            try:
+                report["jobs"] = self.jobs.follow(report, started)
+            except Exception as exc:
+                report["jobs"] = {"status": "held", "reason": _code(exc)}
         try:
             report["summary"] = self._summary()
         except Exception as exc:
@@ -779,7 +832,14 @@ class ClientWatch:
                 "stale" if sent == "blocked:newer_incoming_mail_in_thread" else "awaiting_approval")
             if plan["outcome"] == "awaiting_approval":
                 plan["reasons"] = ["göndermeden önceki kontrol geçmedi (" + sent.split(":", 1)[-1] + ")"]
-        body = note_body(draft, brand, sender, source, plan, shadow=shadow)
+        jobs = None
+        if self.jobs is not None and shadow is None:
+            try:
+                jobs = self.jobs.from_mail(source, sender, draft, plan, report)
+            except Exception as exc:
+                jobs = {"kind": "held", "jobs": [], "comments": 0, "reason": _code(exc)}
+        body = note_body(draft, brand, sender, source, plan, shadow=shadow, jobs=jobs)
+        opened = bool(jobs) and jobs.get("kind") == "opened" and any(j.get("state") == "open" for j in jobs["jobs"])
         if thread is None:
             kind, writer = "todo", self.task_writer
             payload = {"target": dict(self.target),
@@ -787,7 +847,7 @@ class ClientWatch:
                        "description": body}
             if plan is not None and plan["outcome"] in ("awaiting_approval", "manual"):  # the brand owner is notified
                 payload["assignee_ids"] = [self._owner(sender)]
-            elif plan is not None and plan["outcome"] in ("sent", "send_unknown"):  # the team opens the job
+            elif plan is not None and plan["outcome"] in ("sent", "send_unknown") and not opened:  # the team opens the job
                 payload["assignee_ids"] = self._team(sender)
         else:
             kind, writer = "comment", self.comment_writer
@@ -829,7 +889,8 @@ class ClientWatch:
                                                                 updated_at=now)), allow_expired=True)
             return "unknown"
         todo_id = int(remote) if kind == "todo" else thread["todo_id"]
-        row = self._update(mkey, token, state="noted", remote_id=remote, todo_id=todo_id, noted_at=self.clock().timestamp())
+        row = self._update(mkey, token, state="noted", remote_id=remote, todo_id=todo_id, noted_at=self.clock().timestamp(),
+                           jobs=(jobs or {}).get("jobs") or None)
         if kind == "todo":
             self.ops._run(lambda tx, now: tx.put(tkey, dict(tx.get(tkey), state="ready", todo_id=todo_id,
                                                             updated_at=now)), allow_expired=True)
@@ -1074,7 +1135,8 @@ class ClientWatch:
     @staticmethod
     def _fields(draft):
         return {k: draft.get(k) for k in ("category", "summary", "reply", "missing_info", "team_next_step",
-                                         "confidence", "sensitive", "internal_terms", "model_status")}
+                                         "confidence", "sensitive", "internal_terms", "model_status", "job_ready",
+                                         "jobs")}
 
     # ----- evening summary to Ahmet
     def _summary(self):
@@ -1178,6 +1240,9 @@ def summary_payload(rows, book, day, to, target, link_base, replying=False):
             lines.append("Ekibin cevabı (" + str(team.get("name") or team.get("email")) + "): " + str(team.get("text")))
         if state:
             lines.append("Durum: " + state)
+        for j in r.get("jobs") or []:
+            lines.append("İş: " + str(j.get("title")) + (" (" + j["assignee"] + ")" if j.get("assignee") else "")
+                         + (" · " + j["url"] if j.get("url") else ""))
         if link:
             lines.append("Basecamp: " + link)
         text += [""] + lines
@@ -1209,6 +1274,11 @@ def summary_payload(rows, book, day, to, target, link_base, replying=False):
                         + esc(team.get("text") or "").replace("\n", "<br>") + "</div>")
         if state:
             item.append(f'<div style="margin:0 0 4px;color:#b45309;">{esc(state)}</div>')
+        for j in r.get("jobs") or []:
+            name = esc(j.get("title")) + (" (" + esc(j["assignee"]) + ")" if j.get("assignee") else "")
+            if j.get("url"):
+                name = f'<a href="{esc(j["url"])}" style="color:#1a56db;text-decoration:none;">{name}</a>'
+            item.append(f'<div style="margin:0 0 4px;">İş: {name}</div>')
         parts.append('<div style="margin:0 0 16px;padding:0 0 12px;border-bottom:1px solid #e5e7eb;">'
                      + "".join(item) + "</div>")
     parts.append(f'<p style="margin:16px 0 0;color:#6b7280;font-size:12px;">'
@@ -1278,15 +1348,25 @@ def run_worker_client_watch(ops, secrets, *, clock=None, config=None, started_at
         book = validate_contacts(load_contacts(ops), catalog, load_brand_cards())
         token = _memo(lambda: basecamp_cloud_auth.access_token(secrets, claim_refresh=ops.claim_credential_refresh))
         keys = {"anthropic": lambda: provider.anthropic_key(secrets)}
-        reply_writer = basecamp_get = bc_session = None
+        reply_writer = basecamp_get = bc_session = jobs_factory = None
         if cfg["mode"] == "reply":
             from v11_basecamp_reader import SessionGet
             from v11_client_reply import client_reply_writer, validate_reply
-            reply_writer = client_reply_writer(book, validate_reply(cfg["reply"], catalog),
-                                               token_context=gmail_token_context(secrets),
+            settings = validate_reply(cfg["reply"], catalog)
+            reply_writer = client_reply_writer(book, settings, token_context=gmail_token_context(secrets),
                                                session_factory=provider._session)
             bc_session = provider._session()
             basecamp_get = SessionGet(bc_session, token)
+            if (cfg.get("jobs") or {}).get("enabled") is True:
+                import v11_client_job as cj
+
+                def jobs_factory(job_settings):
+                    return {"todo_writer": cj.JobTodoWriter(catalog, job_settings, token_provider=token),
+                            "comment_writer": BasecampCommentWriter(catalog, token_provider=token),
+                            "download": cj.basecamp_downloader(job_settings["account_id"], token_provider=token),
+                            "review": cj.review_source(ops, keys, catalog),
+                            "delivery": cj.delivery_writer(book, settings, token_context=gmail_token_context(secrets),
+                                                           session_factory=provider._session)}
         watch = ClientWatch(
             ops, config=cfg, book=book, catalog=catalog, clock=clock,
             reader=client_mail_reader(provider.GmailSecretStore(secrets), book, cfg),
@@ -1294,7 +1374,7 @@ def run_worker_client_watch(ops, secrets, *, clock=None, config=None, started_at
             task_writer=InternalNoteTaskWriter(catalog, token_provider=token),
             comment_writer=ChainCommentWriter(BasecampCommentWriter(catalog, token_provider=token)),
             mail_writer=DigestMailWriter(token_context=gmail_token_context(secrets), session_factory=provider._session),
-            started_at=started_at, reply_writer=reply_writer, basecamp_get=basecamp_get,
+            started_at=started_at, reply_writer=reply_writer, basecamp_get=basecamp_get, jobs_factory=jobs_factory,
             shadow_reader=(shadow_mail_reader(provider.GmailSecretStore(secrets), cfg) if cfg.get("shadow_from")
                            else None))
         try:
