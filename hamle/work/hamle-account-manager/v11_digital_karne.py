@@ -79,6 +79,8 @@ FOOTER = ("Bu karne yalnız ekip içindir, müşteriye gitmez. Kırmızı maddel
           "yorumları okur. Görevi kapatmak sizde.")
 ALARM_FOOTER = ("Bu, Hamle'nin haftalık site alarmıdır: yalnız kırmızı bir sorun olduğunda açılır. Ayrıntılı karne "
                 "her ayın ilk pazartesi gelir. Sorun giderilince görevi kapatabilirsiniz.")
+PROSPECT_FOOTER = ("Bu ön karne, görüşme öncesi ajans içi hazırlıktır; markaya kendiliğinden gitmez. Hamle markanın "
+                   "resmi hesaplarını bilmediği için sosyal medya bağlantısı ve uygulama kontrolleri yapılmadı.")
 DIGEST_HINT = ("Karneler yalnız ekip içindir. Kırmızılar bu hafta içinde; yanlış bir madde varsa to-do'ya yorum "
                "yazın, Hamle bir sonraki karnede okur.")
 
@@ -422,7 +424,7 @@ def site_checks(b, web, today, now):
     out, facts = [], {"checked": []}
     site = b.get("website")
     if not site:
-        return [_finding("site", "bakilamadi", "Sitenin adresi karne ayarında yok.")], facts
+        return [_finding("site", "bakilamadi", "Sitenin adresi verilmediği için site kontrolleri yapılamadı.")], facts
     try:
         page = web.get(site)
     except KarneError as exc:
@@ -721,9 +723,10 @@ def read_output(text):
             "not_checked": not_checked[:MAX_NOT_CHECKED], "skipped": skipped}
 
 
-def model_input(b, card, today, checks, facts, feedback, period_days=30):
-    """Bounded request (<= 15000 bytes): the home page excerpt shrinks first."""
-    inp = {"brand": b["brand"], "sector": (card or {}).get("sector"), "website": b.get("website"),
+def model_input(b, card, today, checks, facts, feedback, period_days=30, purpose="client"):
+    """Bounded request (<= 15000 bytes): the home page excerpt shrinks first. purpose 'prospect': a brand we are
+    about to meet (not a client yet)."""
+    inp = {"purpose": purpose, "brand": b["brand"], "sector": (card or {}).get("sector"), "website": b.get("website"),
            "socials": b.get("socials") or {}, "rivals": b.get("rivals") or [], "notes": b.get("notes"),
            "today": today.isoformat(), "period_from": (today - timedelta(days=period_days)).isoformat(),
            "site_checks": [f"{ICONS[f['level']]} {AREAS.get(f['area'], 'Diğer')}: {f['text']}" for f in checks][:24],
@@ -789,7 +792,13 @@ def counts(findings):
 def description(brand, day, findings, kind="full", summary=None):
     """-> (html, visible text). Basecamp rich text: div, strong, a, br only."""
     c = counts(findings)
-    if kind == "alarm":
+    if kind == "prospect":
+        lines = [f"<strong>{escape(f'Ön Dijital Karne · {brand} · {month_name(day)} ({_when(day)})')}</strong>",
+                 escape("Özet: " + " · ".join(f"{ICONS[k]} {c[k]} {COUNT_WORDS[k]}" for k in LEVELS
+                                              if c[k] or k not in ("firsat", "bakilamadi")))]
+        if summary:
+            lines.append(escape("Hamle'nin özeti: " + summary))
+    elif kind == "alarm":
         lines = [f"<strong>{escape(f'Haftalık site alarmı · {brand} · {_when(day)}')}</strong>",
                  escape(f"🔴 {c['kirmizi']} acil sorun buldum.")]
     else:
@@ -813,7 +822,7 @@ def description(brand, day, findings, kind="full", summary=None):
             if f.get("url"):
                 line += f' <a href="{escape(f["url"], quote=True)}">kaynak</a>'
             lines.append(line)
-    lines += ["<br>", escape(ALARM_FOOTER if kind == "alarm" else FOOTER)]
+    lines += ["<br>", escape({"alarm": ALARM_FOOTER, "prospect": PROSPECT_FOOTER}.get(kind, FOOTER))]
     html = "".join(f"<div>{line}</div>" for line in lines)
     p = _Text()
     p.feed(html)
@@ -975,7 +984,7 @@ def card_for(cards, project_id):
                  and c.get("project_id") == project_id), None)
 
 
-def brand_report(b, card, web, today, now, feedback=(), period_days=30, psi_key=None):
+def brand_report(b, card, web, today, now, feedback=(), period_days=30, psi_key=None, purpose="client"):
     """All checks for the full karne -> (checks, research request input, allowed URLs)."""
     checks, facts = site_checks(b, web, today, now)
     checks += pagespeed_check(web, facts.get("final_url"), psi_key)
@@ -983,7 +992,7 @@ def brand_report(b, card, web, today, now, feedback=(), period_days=30, psi_key=
     checks += more
     facts["reviews"] = app_facts["reviews"]
     facts["checked"] = list(facts.get("checked") or []) + app_facts["checked"]
-    request_input = model_input(b, card, today, checks, facts, list(feedback), period_days)
+    request_input = model_input(b, card, today, checks, facts, list(feedback), period_days, purpose)
     return checks, request_input, allowed_urls(b, facts)
 
 
@@ -1108,6 +1117,39 @@ def run_digital_karne(ops, *, config, catalog, cards, web, research, http, clock
         return dict(report, status="held", reason=_code(exc))
 
 
+def prospect_brand(name, website=None, notes=None):
+    """A brand we are going to meet: name (2-80 chars) and its website (https added when missing)."""
+    name = _line(name, 81)
+    _need(2 <= len(name) <= 80 and not any(ord(c) < 32 for c in name), "karne_prospect_name_invalid")
+    site = None
+    if website:
+        raw = str(website).strip()
+        raw = "https://" + raw[len("http://"):] if raw.lower().startswith("http://") else raw
+        site = normalize_url(raw if "://" in raw else "https://" + raw)
+        _need(site is not None and len(site) <= 300, "karne_prospect_site_invalid")
+    _need(notes is None or (isinstance(notes, str) and len(notes) <= 400), "karne_prospect_notes_invalid")
+    return {"key": "prospect", "brand": name, "website": site, "website_verified": False, "socials": {},
+            "app_store_ids": [], "rivals": [], "notes": notes}
+
+
+def run_prospect_karne(name, website=None, *, web, research, clock, psi_key=None, period_days=30, notes=None):
+    """One-off karne for a brand we are going to meet (Ahmet 2026-10-14: "görüşeceğimiz, ilk görüşmede etkilemek
+    istediğimiz markalara da önerebiliriz"). Same checks and research as the monthly karne, no app or social link
+    checks (Hamle does not know the brand's accounts). Writes nothing; the caller decides where the text goes."""
+    try:
+        b = prospect_brand(name, website, notes)
+        now = clock()
+        today = now.astimezone(ISTANBUL).date()
+        checks, request_input, allowed = brand_report(b, None, web, today, now, (), period_days, psi_key, "prospect")
+        findings, status, summary = with_research(checks, request_input, allowed, research, today, period_days)
+    except Exception as exc:
+        return {"status": "held", "reason": _code(exc), "model_calls": 0, "business_writes": 0}
+    html, text = description(b["brand"], today, findings, "prospect", summary)
+    called = status != "not_called" and not status.startswith(("model_budget", "internal_live"))
+    return {"status": "prospect_karne_ready", "brand": b["brand"], "website": b["website"], "counts": counts(findings),
+            "research": status, "html": html, "text": text, "model_calls": int(called), "business_writes": 0}
+
+
 def digest_rows(state, day):
     """The digest the day after a full karne: {'title', 'rows'} (one row per brand, reds first) or None."""
     if not isinstance(state, dict) or state.get("run_kind") != "full" or state.get("monday") != monday_of(day).isoformat():
@@ -1127,8 +1169,9 @@ def digest_counts(row):
                       if k != "firsat" or row["counts"][k])
 
 
-def run_worker_digital_karne(ops, secrets, *, preview=None, only=None, clock=None):
-    """Entry for worker.py --mode digital_karne (existing credential loaders only)."""
+def run_worker_digital_karne(ops, secrets, *, preview=None, only=None, clock=None, prospect=None, site=None):
+    """Entry for worker.py --mode digital_karne (existing credential loaders only). prospect + site: the one-off
+    karne of a brand we are going to meet (operator preview, no write)."""
     import basecamp_cloud_auth
     import cloud_providers as provider
     from v11_chain_live import _memo, load_catalog
@@ -1151,5 +1194,12 @@ def run_worker_digital_karne(ops, secrets, *, preview=None, only=None, clock=Non
         token = _memo(lambda: basecamp_cloud_auth.access_token(secrets, claim_refresh=ops.claim_credential_refresh))
         http = KarneBasecamp(catalog["basecamp"]["account_id"], destinations(catalog),
                              send=session_send(token, provider._session))
+    if prospect is not None:
+        r = run_prospect_karne(prospect, site, web=public_web(), research=research, clock=clock, psi_key=psi_key)
+        if r["status"] != "prospect_karne_ready":
+            return r
+        return {"status": "digital_karne_preview", "prospect": True, "model_calls": r["model_calls"],
+                "business_writes": 0, "brands": [{"key": "prospect", "brand": r["brand"], "website": r["website"],
+                                                  "counts": r["counts"], "research": r["research"], "text": r["text"]}]}
     return run_digital_karne(ops, config=load_config(), catalog=catalog, cards=load_brand_cards(), web=public_web(),
                              research=research, http=http, clock=clock, preview=preview, only=only, psi_key=psi_key)

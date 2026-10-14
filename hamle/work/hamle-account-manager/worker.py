@@ -552,6 +552,9 @@ def main(argv=None):
     # brands when the config has at most 3; no write).
     parser.add_argument("--karne-preview", choices=("checks", "full"))
     parser.add_argument("--karne-brand")
+    # one-off karne of a brand we are going to meet (needs --karne-preview; no write)
+    parser.add_argument("--karne-prospect")
+    parser.add_argument("--karne-site")
     args = parser.parse_args(argv)
     backend = secrets = None
     try:
@@ -577,9 +580,13 @@ def main(argv=None):
                  "preview_attempt_requires_preview_to")
         _require((args.mode == "reconcile_model_holds") == (args.cache_key is not None and args.evidence is not None),
                  "reconcile_arguments_required")
-        _require((args.karne_preview is None and args.karne_brand is None) or
+        _require((args.karne_preview is None and args.karne_brand is None and args.karne_prospect is None
+                  and args.karne_site is None) or
                  (args.mode == "digital_karne" and args.karne_preview is not None
-                  and (args.karne_brand is None or re.fullmatch(r"[a-z_]{2,40}", args.karne_brand))),
+                  and (args.karne_brand is None or re.fullmatch(r"[a-z_]{2,40}", args.karne_brand))
+                  and (args.karne_prospect is None or (args.karne_brand is None
+                                                       and 2 <= len(args.karne_prospect.strip()) <= 80))
+                  and (args.karne_site is None or (args.karne_prospect is not None and len(args.karne_site) <= 300))),
                  "karne_preview_arguments_invalid")
         _require(os.environ.get("HAMLE_ALLOW_FIRESTORE_OPERATIONS") == "yes", "cloud_opt_in_required")
         _require(os.environ.get("HAMLE_PROJECT_ID") == "gamechangers-hamle" and
@@ -672,7 +679,8 @@ def main(argv=None):
             # Dijital Karne (Ahmet 2026-10-14): Monday 10:00 job hamle-digital-karne, a monthly karne on the first
             # Monday and a silent site alarm on the others; team to-dos only.
             from v11_digital_karne import run_worker_digital_karne
-            result = run_worker_digital_karne(store, secrets, preview=args.karne_preview, only=args.karne_brand)
+            result = run_worker_digital_karne(store, secrets, preview=args.karne_preview, only=args.karne_brand,
+                                              prospect=args.karne_prospect, site=args.karne_site)
         elif args.mode == "daily_digest":
             # Non-default: one internal team digest per Istanbul weekday (v11_daily_digest).
             from v11_daily_digest import run_worker_daily_digest

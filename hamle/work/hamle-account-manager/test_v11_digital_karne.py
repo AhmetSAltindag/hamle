@@ -713,6 +713,11 @@ class Run(Karne):
     def test_worker_karne_arguments_only_with_the_karne_mode(self):
         for argv in (["--mode", "daily_digest", "--karne-preview", "checks"],
                      ["--mode", "digital_karne", "--karne-brand", "wat_mobilite"],
+                     ["--mode", "digital_karne", "--karne-prospect", "Koton"],  # needs a preview
+                     ["--mode", "digital_karne", "--karne-preview", "full", "--karne-prospect", "Koton",
+                      "--karne-brand", "rabam"],
+                     ["--mode", "digital_karne", "--karne-preview", "full", "--karne-site", "https://koton.com"],
+                     ["--mode", "digital_karne", "--karne-preview", "full", "--karne-prospect", "K"],
                      ["--mode", "digital_karne", "--karne-preview", "checks", "--karne-brand", "WAT;rm"]):
             out = io.StringIO()
             with redirect_stdout(out):
@@ -720,6 +725,44 @@ class Run(Karne):
             self.assertEqual(json.loads(out.getvalue())["reason"], "karne_preview_arguments_invalid", argv)
         for status in ("digital_karne_completed", "digital_karne_partial", "digital_karne_preview"):
             self.assertIn(status, worker.OK_STATUSES)
+
+
+class Prospect(Karne):
+    def test_a_brand_we_are_going_to_meet_gets_the_same_checks_and_research_without_writing(self):
+        research = Research({"summary": "Site yavaş, iletişimde fırsat var.", "evidence": [EVENT], "not_checked": [],
+                             "findings": [{"area": "firsat", "level": "sari", "text": "Kasım'daki ofis fuarı.",
+                                           "suggestion": "Görüşmede fuar içeriği önerin.", "url": EVENT, "date": None}]})
+        self.web.pages[kw.pagespeed_api("https://hanspaces.com")] = (200, psi(0.31))
+        r = kw.run_prospect_karne("HAN Spaces", "hanspaces.com/", web=self.web, research=research, clock=lambda: self.now)
+        self.assertEqual((r["status"], r["brand"], r["website"], r["research"], r["model_calls"], r["business_writes"]),
+                         ("prospect_karne_ready", "HAN Spaces", "https://hanspaces.com", "1_sourced", 1, 0))
+        [inp] = research.inputs
+        self.assertEqual((inp["purpose"], inp["website"], inp["period_from"], inp["socials"], inp["app_reviews"]),
+                         ("prospect", "https://hanspaces.com", "2026-09-19", {}, []))
+        flat = " ".join(r["text"].split())
+        self.assertTrue(flat.startswith("Ön Dijital Karne · HAN Spaces · Ekim 2026 (19 Ekim 2026)"), flat)
+        self.assertIn("Hamle'nin özeti: Site yavaş, iletişimde fırsat var.", flat)
+        self.assertIn("Mobil hız skoru düşük: 31/100 (PageSpeed).", flat)
+        self.assertIn("💡 Fırsatlar • Fırsat: Kasım'daki ofis fuarı.", flat)
+        self.assertIn("markaya kendiliğinden gitmez", flat)
+        self.assertNotIn("Sosyal medya:", flat)  # Hamle does not know the brand's accounts
+        self.assertNotIn("itunes", " ".join(self.web.calls))
+        self.assertTrue(text_matches(r["html"], r["text"]))
+        self.assertEqual((self.http_fake.calls, self.state()), ([], None))
+        self.assertEqual(kw.model_input(brand("rabam"), None, MON, [], {}, [])["purpose"], "client")
+
+    def test_names_and_sites_are_checked(self):
+        self.assertEqual(kw.prospect_brand("  Koton  ", "http://www.Koton.com/tr/?utm_source=x")["website"],
+                         "https://www.koton.com/tr")
+        self.assertIsNone(kw.prospect_brand("Koton")["website"])
+        for name, site in (("K", None), ("Koton\x07", None), ("x" * 81, None), ("Koton", "ftp://koton.com"),
+                           ("Koton", "https://koton.com/a b")):
+            r = kw.run_prospect_karne(name, site, web=self.web, research=Research(), clock=lambda: self.now)
+            self.assertEqual(r["status"], "held", (name, site))
+        self.assertEqual(self.web.calls, [])
+        r = kw.run_prospect_karne("Yeni Marka", None, web=self.web, research=None, clock=lambda: self.now)
+        self.assertEqual((r["status"], r["research"], r["model_calls"]), ("prospect_karne_ready", "not_called", 0))
+        self.assertIn("Sitenin adresi verilmediği için site kontrolleri yapılamadı.", r["text"])
 
 
 class Alarm(Karne):
