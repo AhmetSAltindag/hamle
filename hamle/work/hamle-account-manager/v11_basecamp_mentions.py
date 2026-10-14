@@ -55,6 +55,9 @@ NOTIFY_FROM = "notifications@app.basecamp.com"
 LINK = re.compile(r"https://(?:app|3)\.basecamp\.com/([1-9][0-9]{0,11})/buckets/([1-9][0-9]{0,14})/todos/"
                   r"([1-9][0-9]{0,14})(?:#__recording_([1-9][0-9]{0,14}))?")
 NAMES_HAMLE = re.compile(r"(?<![0-9a-zçğıöşü])hamle(?![0-9a-zçğıöşü])", re.IGNORECASE)
+# A to-do assigned to Hamle (Ahmet 14 Oct: "kendisine açılan Basecamp'i kontrol etmesi çok önemli"): Basecamp's
+# to-do notifications carry "Assigned to: Hamle A."; the API check (Hamle among the assignees) decides.
+ASSIGNED_TO_HAMLE = re.compile(r"Assigned to:[^\n<]{0,200}?\bHamle\b", re.IGNORECASE)
 ACTIONS = ("answer", "ask", "cannot", "client_mail", "follow")
 FIELDS = {"enabled", "since", "max_per_run", "newer_than_days"}
 DRAFTS_KEY = "bc-mention-drafts"
@@ -194,20 +197,26 @@ def parse_notification(message, account_id):
         if isinstance(h, dict) and str(h.get("name") or "").lower() in ("from", "subject"):
             heads.setdefault(str(h["name"]).lower(), []).append(str(h.get("value") or ""))
     froms, subjects = heads.get("from", []), heads.get("subject", [])
-    if (len(froms) != 1 or parseaddr(froms[0])[1].lower() != NOTIFY_FROM or len(subjects) != 1
-            or "mentioned you" not in subjects[0]):
+    if len(froms) != 1 or parseaddr(froms[0])[1].lower() != NOTIFY_FROM or len(subjects) != 1:
         return None
     try:
         ms = int(message.get("internalDate"))
     except (TypeError, ValueError):
         return None
     texts = _part_texts(payload)
+    if "mentioned you" in subjects[0]:
+        kind = "mention"
+    elif ("assigned you" in subjects[0].lower() or any(ASSIGNED_TO_HAMLE.search(t or "") for t in texts.values())) \
+            and "completed a to-do" not in subjects[0]:
+        kind = "assigned"
+    else:
+        return None
     for text in (texts.get("text/plain"), texts.get("text/html")):
         for m in LINK.finditer(text or ""):
             if int(m.group(1)) == account_id:
                 return {"message_id": str(message.get("id")), "received_at_ms": ms, "project_id": int(m.group(2)),
-                        "todo_id": int(m.group(3)), "comment_id": int(m.group(4)) if m.group(4) else None,
-                        "subject": subjects[0][:200]}
+                        "todo_id": int(m.group(3)), "kind": kind, "subject": subjects[0][:200],
+                        "comment_id": int(m.group(4)) if m.group(4) and kind == "mention" else None}
     return None
 
 
@@ -225,7 +234,8 @@ def mention_mail_reader(gmail_store, settings, *, _service_factory=None, _creden
                 if request_factory is None:
                     auth_session = provider._session()
                     request_factory = lambda: provider._GoogleRequest(auth_session, gmail=True)
-                query = f"from:{NOTIFY_FROM} subject:mentioned newer_than:{int(settings['newer_than_days'])}d"
+                query = (f'from:{NOTIFY_FROM} (subject:mentioned OR subject:assigned OR "Assigned to Hamle") '
+                         f'-subject:"completed a to-do" newer_than:{int(settings["newer_than_days"])}d')
                 with helper.verified_gmail(gmail_store, service_factory, _credentials_factory,
                                            request_factory) as (service, _):
                     found = service.users().threads().list(
@@ -583,17 +593,26 @@ class MentionDesk:
             if source is None:
                 return self._skip(key, token, "mention_comment_missing")
             author, html, created = (source.get("creator") or {}), source.get("content"), source.get("created_at")
-        else:  # the mention is in the to-do itself
+        else:  # the mention is in the to-do itself, or the to-do was assigned to Hamle
             author, html, created = (todo.get("creator") or {}), todo.get("description"), todo.get("created_at")
+        from v11_brand_task import HAMLE_PERSON
+        assigned = cid is None and any(isinstance(a, dict) and a.get("id") == HAMLE_PERSON
+                                       for a in todo.get("assignees") or [])
         person = self.s["agency"].get(author.get("id"))
         if person is None:
             return self._skip(key, token, "author_not_agency")
         at = _seconds(created)
+        if assigned and p.get("kind") == "assigned":  # an old to-do assigned now: the notification's time counts
+            at = (p.get("received_at_ms") or 0) / 1000
         if at is None or at < self.s["since"]:
             return self._skip(key, token, "before_since")
+        if todo.get("completed") is True:
+            return self._skip(key, token, "todo_completed")
         text = cr.comment_text(html)
-        if not NAMES_HAMLE.search(text):
-            return self._skip(key, token, "hamle_not_named")
+        if not NAMES_HAMLE.search(text) and not assigned:
+            return self._skip(key, token, "hamle_not_named" if p.get("kind") != "assigned" else "not_assigned_to_hamle")
+        if assigned and not NAMES_HAMLE.search(text):
+            text = "(Bu to-do Hamle'ye atandı.) " + text
         tkey = todo_key(todo_id)
         if cr.command(html) is not None and (self._get(tkey) or {}).get("draft_keys"):
             return self._skip(key, token, "draft_command")  # the draft check reads it
@@ -608,8 +627,8 @@ class MentionDesk:
         brand_key = self.s["projects"].get(project)
         brand = self._brand(brand_key)
         draft = self._open_draft(todo_id)
-        request = self._request(todo, comments, {"author": person["name"], "at": _when(at), "text": text[:4000]},
-                                brand, draft)
+        request = self._request(todo, comments, {"author": person["name"], "at": _when(at), "text": text[:4000],
+                                                 "assigned_to_hamle": assigned}, brand, draft)
         # Ahmet 14 Oct, no exceptions: the to-do's files are read too (the client's WhatsApp files live here)
         files, blocks = self._files(todo, comments)
         request["attachments"] = [{k: v for k, v in row.items() if k in ("name", "type", "read", "reason", "pages",

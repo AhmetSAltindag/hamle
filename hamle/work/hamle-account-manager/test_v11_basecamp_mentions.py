@@ -194,10 +194,21 @@ class Notification(unittest.TestCase):
                                                  '10095930436">WM // Yerli Sanayi</a>'), 5898865)
         self.assertEqual((p["todo_id"], p["comment_id"]), (10095930436, None))
 
+    def test_a_todo_assigned_to_hamle_is_a_pointer_to_the_todo(self):
+        # Ahmet 14 Oct: "kendisine açılan Basecamp'i kontrol etmesi çok önemli"
+        p = bm.parse_notification(self.mail(self.TEXT, subject="(WAT Mobilite) Ahmet Ş. assigned you a to-do"), 5898865)
+        self.assertEqual((p["kind"], p["todo_id"], p["comment_id"]), ("assigned", 10402860490, None))
+        body = ("Ahmet Ş. added a to-do! Sosyal Medya ○ WM // Kampanya story Assigned to: Hamle A. Notes: Cuma 12:00\n"
+                "https://app.basecamp.com/5898865/buckets/40694338/todos/10410000001")
+        p = bm.parse_notification(self.mail(body, subject="(WAT Mobilite) New to-do: WM // Kampanya story"), 5898865)
+        self.assertEqual((p["kind"], p["todo_id"]), ("assigned", 10410000001))
+
     def test_anything_else_is_not_a_pointer(self):
         for msg in (self.mail(self.TEXT, sender="notifications@app.basecamp.com.evil.com"),
                     self.mail(self.TEXT, sender="ahmet@gamechangers.com.tr"),
-                    self.mail(self.TEXT, subject="(WAT) Ahmet assigned you a to-do"),
+                    self.mail(self.TEXT, subject="(WAT) Ahmet commented on a to-do"),
+                    self.mail("Assigned to: Hamle A.\nhttps://app.basecamp.com/5898865/buckets/40694338/todos/7",
+                              subject="(WAT) Özge Y. completed a to-do"),
                     self.mail("https://app.basecamp.com/5898865/buckets/40694338/messages/123"),
                     self.mail("https://app.basecamp.com/999/buckets/40694338/todos/1#__recording_2"),
                     dict(self.mail(self.TEXT), internalDate="x"), None):
@@ -612,6 +623,25 @@ class WhatsAppJob(MentionBase):
         self.mclient.outputs = [message(follow_out())]
         self.watch().run()
         self.assertIn("Sosyal Medya ve Projeler listelerinde", self.hamle_said(WA_TODO + 1)[-1])
+
+    def test_a_todo_assigned_to_hamle_without_a_tag_is_taken_on(self):
+        import v11_client_job as cj
+        self.bc.todos[WA_TODO]["assignees"] = [{"id": HAMLE_PERSON, "name": "Hamle A."}]
+        self.pointers.append({"message_id": "n1", "received_at_ms": int(self.now.timestamp() * 1000), "kind": "assigned",
+                              "project_id": WAT, "todo_id": WA_TODO, "comment_id": None, "subject": "(WAT) assigned"})
+        self.mclient.outputs = [message(follow_out(attachments_read=[]))]
+        r = self.watch().run()
+        self.assertEqual(r["mentions"]["followed"], 1, r["mentions"])
+        request = json.loads(self.mclient.calls[0]["messages"][0]["content"])
+        self.assertTrue(request["mention"]["assigned_to_hamle"])
+        self.assertTrue(request["mention"]["text"].startswith("(Bu to-do Hamle'ye atandı.) Cuma 12:00"), request["mention"])
+        self.assertEqual(self.ops.backend.data[cj.todo_job_key(WA_TODO)]["assignee_name"], "Berkay Kayaköylü")
+
+    def test_an_assigned_pointer_for_someone_elses_todo_is_skipped(self):
+        self.pointers.append({"message_id": "n1", "received_at_ms": int(self.now.timestamp() * 1000), "kind": "assigned",
+                              "project_id": WAT, "todo_id": WA_TODO, "comment_id": None, "subject": "(WAT) assigned"})
+        r = self.watch().run()
+        self.assertEqual((r["mentions"]["skipped"], self.mclient.calls, self.hamle_said(WA_TODO)), (1, [], []))
 
     def test_a_file_hamle_cannot_read_is_named(self):
         self.bc.add(WA_TODO, OZGE_BC, "<div>video</div>")
