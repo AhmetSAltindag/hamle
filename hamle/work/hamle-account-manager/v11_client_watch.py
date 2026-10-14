@@ -33,6 +33,10 @@ Client jobs (Ahmet 2026-10-13 17:05Z, config 'jobs', v11_client_job): a clear re
 to-dos in the brand's Basecamp lists, Hamle follows them, scores each upload against the brief and mails 90+
 work to the client in the same thread (80-89 waits for an approver's "uygun", below 80 is a revision request).
 
+Basecamp mentions (Ahmet 2026-10-14, config 'mentions', v11_basecamp_mentions): when the team tags Hamle on a
+Basecamp to-do, Hamle reads it and answers there, asks one question, says what it cannot do, or drafts a new mail
+to the client that goes out after "Hamle gönder"; the client's answer is written back on that to-do.
+
 Mac operator commands (ADC credentials, Firestore only, no cost):
   python3 v11_client_watch.py contacts status
   python3 v11_client_watch.py contacts import --file client-contacts.json --actor ahmet@gamechangers.com.tr
@@ -666,7 +670,8 @@ class ClientWatch:
     """One pass: read client mail, draft, write internal notes; then the evening summary."""
     def __init__(self, ops, *, config, book, reader, draft, task_writer, comment_writer, mail_writer, catalog,
                  clock, link_base="https://3.basecamp.com", monotonic=time.monotonic, started_at=None,
-                 reply_writer=None, basecamp_get=None, shadow_reader=None, jobs_factory=None):
+                 reply_writer=None, basecamp_get=None, shadow_reader=None, jobs_factory=None, mentions_factory=None,
+                 brands=None):
         self.ops, self.cfg, self.book, self.reader = ops, validate_config(config), book, reader
         self.draft, self.task_writer, self.comment_writer = draft, task_writer, comment_writer
         self.mail_writer, self.catalog, self.clock = mail_writer, catalog, clock
@@ -689,6 +694,14 @@ class ClientWatch:
             settings = validate_jobs(self.cfg.get("jobs"), catalog, self.reply)
             if settings is not None:
                 self.jobs = JobDesk(self, settings, basecamp_get=basecamp_get, **jobs_factory(settings))
+        self.mentions = None  # Basecamp mentions (v11_basecamp_mentions): answers, drafts, "Hamle gönder"
+        if self.reply is not None and mentions_factory is not None:
+            from v11_basecamp_mentions import MentionDesk, validate_mentions
+            settings = validate_mentions(self.cfg.get("mentions"), catalog, self.reply)
+            if settings is not None:
+                self.mentions = MentionDesk(self, settings, basecamp_get=basecamp_get,
+                                            brands=brands if brands is not None else brand_index(catalog, None),
+                                            **mentions_factory(settings))
 
     # ----- control
     def _fence(self, tx, now):
@@ -756,6 +769,11 @@ class ClientWatch:
                 report["held"] += 1
             else:
                 report["skipped"] += 1
+        if self.mentions is not None:
+            try:
+                report["mentions"] = self.mentions.run(report, started)
+            except Exception as exc:
+                report["mentions"] = {"status": "held", "reason": _code(exc)}
         if self.jobs is not None:
             try:
                 report["jobs"] = self.jobs.follow(report, started)
@@ -918,6 +936,11 @@ class ClientWatch:
             report["awaiting_approval"] += 1
             self.ops._run(lambda tx, now: tx.put(APPROVALS_KEY, {"kind": "client_approvals", "keys": list(dict.fromkeys(
                 list((tx.get(APPROVALS_KEY) or {}).get("keys") or []) + [mkey]))[-50:]}), allow_expired=True)
+        if self.mentions is not None and shadow is None:  # a thread Hamle started from a Basecamp mention
+            try:
+                self.mentions.client_mail(source, sender, row, todo_id, report)
+            except Exception:
+                pass
         return "noted"
 
     def _shadow_unreadable(self, source):
@@ -1373,7 +1396,7 @@ def run_worker_client_watch(ops, secrets, *, clock=None, config=None, started_at
         book = validate_contacts(load_contacts(ops), catalog, load_brand_cards())
         token = _memo(lambda: basecamp_cloud_auth.access_token(secrets, claim_refresh=ops.claim_credential_refresh))
         keys = {"anthropic": lambda: provider.anthropic_key(secrets)}
-        reply_writer = basecamp_get = bc_session = jobs_factory = None
+        reply_writer = basecamp_get = bc_session = jobs_factory = mentions_factory = None
         if cfg["mode"] == "reply":
             from v11_basecamp_reader import SessionGet
             from v11_client_reply import client_reply_writer, validate_reply
@@ -1392,6 +1415,17 @@ def run_worker_client_watch(ops, secrets, *, clock=None, config=None, started_at
                             "review": cj.review_source(ops, keys, catalog),
                             "delivery": cj.delivery_writer(book, settings, token_context=gmail_token_context(secrets),
                                                            session_factory=provider._session)}
+            if (cfg.get("mentions") or {}).get("enabled") is True:
+                import v11_basecamp_mentions as bm
+
+                def mentions_factory(mention_settings):
+                    writer = BasecampCommentWriter(catalog, token_provider=token)
+                    writer.allowed = {p: frozenset(ls) for p, ls in mention_settings["allowed"].items()}
+                    return {"reader": bm.mention_mail_reader(provider.GmailSecretStore(secrets), mention_settings),
+                            "model": bm.mention_source(ops, keys, catalog),
+                            "comment_writer": writer,
+                            "mail_writer": bm.NewClientMailWriter(book, settings, token_context=gmail_token_context(secrets),
+                                                                  session_factory=provider._session)}
         watch = ClientWatch(
             ops, config=cfg, book=book, catalog=catalog, clock=clock,
             reader=client_mail_reader(provider.GmailSecretStore(secrets), book, cfg),
@@ -1400,6 +1434,7 @@ def run_worker_client_watch(ops, secrets, *, clock=None, config=None, started_at
             comment_writer=ChainCommentWriter(BasecampCommentWriter(catalog, token_provider=token)),
             mail_writer=DigestMailWriter(token_context=gmail_token_context(secrets), session_factory=provider._session),
             started_at=started_at, reply_writer=reply_writer, basecamp_get=basecamp_get, jobs_factory=jobs_factory,
+            mentions_factory=mentions_factory, brands=brand_index(catalog, load_brand_cards()),
             shadow_reader=(shadow_mail_reader(provider.GmailSecretStore(secrets), cfg) if cfg.get("shadow_from")
                            else None))
         try:
