@@ -695,10 +695,10 @@ def render(listing, *, day, day_note, overdue, trends, specials, classified, new
                      f"{APP}/{listing.get('account')}/reports/todos/overdue")
 
     if karne:
-        from v11_weekly_karne import DIGEST_HINT, digest_counts, week_number
-        lines += ["", f"HAFTALIK DİJİTAL KARNE ({week_number(day)}. HAFTA)"]
+        from v11_digital_karne import DIGEST_HINT, digest_counts
+        lines += ["", _upper_tr(karne["title"])]
         lines += [f"- {_plain_link(r['url'], r['brand'])}: {digest_counts(r)}" + (f" @{r['who']}" if r.get("who") else "")
-                  for r in karne]
+                  for r in karne["rows"]]
         lines.append(DIGEST_HINT)
 
     if ozu is not None and len(ozu["fikirler"]) > 1:
@@ -890,10 +890,10 @@ def render_html(listing, *, day, day_note, overdue, trends, specials, classified
         out.append(_ul(lis))
 
     if karne:
-        from v11_weekly_karne import DIGEST_HINT, digest_counts, week_number
-        out.append(_h2(f"🩺 Haftalık dijital karne ({week_number(day)}. hafta)"))
+        from v11_digital_karne import DIGEST_HINT, digest_counts
+        out.append(_h2("🩺 " + karne["title"]))
         out.append(_ul([_li(_a(r["url"], r["brand"]) + " " + _e(digest_counts(r))
-                            + (" " + _e("@" + r["who"]) if r.get("who") else "")) for r in karne]))
+                            + (" " + _e("@" + r["who"]) if r.get("who") else "")) for r in karne["rows"]]))
         out.append(_p(_grey(DIGEST_HINT)))
 
     if ozu is not None and len(ozu["fikirler"]) > 1:
@@ -1028,11 +1028,11 @@ def build_digest(reader, *, day, day_note, classifier=None, trend_source=None, c
     the follow-up section; None -> section omitted. nb_state: the New Business tracking record
     (v11_nb_tracking): tracked or passed brands are not listed again, their todos are followed up.
     idea_state: the idea tracking record (v11_idea_tracking), read the same way; idea_tracking: the
-    config flag (the Günün hamlesi hint says the ideas become todos). karne: Tuesday's rows of this week's
-    Haftalık Dijital Karne (v11_weekly_karne.digest_rows); None -> section omitted."""
+    config flag (the Günün hamlesi hint says the ideas become todos). karne: the Tuesday after a monthly
+    Dijital Karne, {'title', 'rows'} (v11_digital_karne.digest_rows); None -> section omitted."""
     from v11_idea_tracking import avoid_ideas, is_idea_item
     from v11_nb_tracking import is_nb_item
-    from v11_weekly_karne import is_karne_item
+    from v11_digital_karne import is_karne_item
 
     def tracked(t):  # Ahmet: suggestion todos are followed up in their own lines, not listed as team work
         return is_nb_item(t) or is_idea_item(t) or is_karne_item(t)
@@ -1135,13 +1135,13 @@ def build_digest(reader, *, day, day_note, classifier=None, trend_source=None, c
                   "new_business_brands": new_business or [], "spark": spark_status, "ozu": ozu_record(ozu),
                   "follow_ups": len((followups or {}).get("rows") or []) + len((followups or {}).get("nb_rows") or []),
                   "nb": (followups or {}).get("nb_effects"), "ideas": (followups or {}).get("idea_effects"),
-                  "karne": len(karne or [])}
+                  "karne": len((karne or {}).get("rows") or [])}
 
 
 # ------------------------------------------------------------------ run
-def _karne_rows(digest_rows, state):
+def _karne_rows(digest_rows, state, day):
     try:  # a karne line is a hint; never block the digest
-        return digest_rows(state) if digest_rows is not None and state else None
+        return digest_rows(state, day) if digest_rows is not None and state else None
     except Exception:
         return None
 
@@ -1221,10 +1221,10 @@ def run_daily_digest(ops, *, config, reader_factory, writer, clock, window=DAILY
         token = uuid.uuid4().hex
         prev_day = previous_weekday(target)
         try:
-            from v11_weekly_karne import digest_rows, state_key
+            from v11_digital_karne import digest_rows, state_key
             karne_key = state_key(target)
         except Exception:
-            digest_rows, karne_key = None, "weekly-karne-unavailable"
+            digest_rows, karne_key = None, "digital-karne-unavailable"
         previous, nb, ideas, karne = {}, {}, {}, {}
 
         def claim_op(tx, ts):
@@ -1236,7 +1236,7 @@ def run_daily_digest(ops, *, config, reader_factory, writer, clock, window=DAILY
             previous["value"] = _previous(tx.get("daily-digest-" + prev_day.strftime("%Y%m%d")), prev_day)
             nb["value"] = tx.get("nb-tracking")  # v11_nb_tracking.STATE_KEY (read-only here)
             ideas["value"] = tx.get("idea-tracking")  # v11_idea_tracking.STATE_KEY (read-only here)
-            if target.weekday() == 1:  # Tuesday: this week's karne to-dos (v11_weekly_karne, read-only here)
+            if target.weekday() == 1:  # Tuesday: this week's monthly karne to-dos (v11_digital_karne, read-only here)
                 karne["value"] = tx.get(karne_key)
             new = {"key": key, "kind": "daily_digest_preview" if preview_to else "daily_digest", "state": "claimed",
                    "token": token, "generation": c["generation"], "claimed_at": ts,
@@ -1254,7 +1254,7 @@ def run_daily_digest(ops, *, config, reader_factory, writer, clock, window=DAILY
                                    new_business_source=new_business_source, spark_source=spark_source,
                                    previous=previous.get("value"), nb_state=nb.get("value"),
                                    idea_state=ideas.get("value"), idea_tracking=cfg["idea_tracking"],
-                                   karne=_karne_rows(digest_rows, karne.get("value")))
+                                   karne=_karne_rows(digest_rows, karne.get("value"), target))
         if preview_to is None:  # team mail: prepared from 09:00, never sent before 09:15 Istanbul
             h, mnt = (int(v) for v in DAILY_DIGEST_SEND_AT.split(":"))
             send_at = local.replace(hour=h, minute=mnt, second=0, microsecond=0)

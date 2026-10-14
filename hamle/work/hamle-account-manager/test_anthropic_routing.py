@@ -116,9 +116,10 @@ class RoutingConfig(NoNetwork):
             self.assertEqual((r.route(role).provider, r.route(role).model), ("anthropic", "claude-haiku-5-5"), role)
         for role in model_routing.ROLES:
             self.assertIn(r.route(role).effort, model_routing.EFFORTS)  # effort always explicit
-        for role in model_routing.WEB_SEARCH_ROLES:
-            self.assertEqual(r.route(role).web_search, {"type": "web_search_20260209", "max_uses": 4,
-                                                        "fee_microdollars": 10_000})
+        for role in model_routing.WEB_SEARCH_ROLES:  # the monthly karne searches more (Ahmet 2026-10-14)
+            self.assertEqual(r.route(role).web_search, {"type": "web_search_20260209",
+                                                        "max_uses": 8 if role == "digital_karne" else 4,
+                                                        "fee_microdollars": 10_000}, role)
         self.assertIsNone(r.route("chain_interpreter").web_search)
         self.assertTrue(r.flag("monday_special_days_research_enabled"))
         self.assertTrue(r.flag("new_business_research_enabled"))

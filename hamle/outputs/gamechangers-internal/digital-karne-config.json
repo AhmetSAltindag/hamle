@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "kind": "digital_karne_config",
+  "version": "digital-karne-20261014-v2",
+  "enabled": true,
+  "decision_ref": "Ahmet in the project thread 2026-10-14 16:08Z: the digital audit only for WAT Mobilite, Rabam and ya da Multicosmetics (the brands we work on most deeply); detailed and strong, once a month is enough, weekly at that detail would not be read. Earlier ask 12:27Z: Monday 10:00 digital audit per brand. Team only, never to clients.",
+  "window": {
+    "weekday": 0,
+    "start": "09:50",
+    "end": "13:00"
+  },
+  "time_budget_seconds": 1500,
+  "period_days": 30,
+  "full_first_monday": true,
+  "alarm_other_mondays": true,
+  "extra_full_days": [
+    "2026-10-19"
+  ],
+  "brands": [
+    {
+      "key": "wat_mobilite",
+      "brand": "WAT Mobilite",
+      "website": "https://watmobilite.com",
+      "website_verified": true,
+      "socials": {
+        "instagram": "https://www.instagram.com/watmobilite",
+        "linkedin": "https://www.linkedin.com/company/watmobilite",
+        "tiktok": "https://www.tiktok.com/@watmobilite",
+        "x": "https://x.com/watmobilite",
+        "youtube": "https://www.youtube.com/@watmobilite"
+      },
+      "app_store_ids": [],
+      "rivals": [
+        "Trugo",
+        "ZES",
+        "E-Şarj",
+        "Astor",
+        "Voltrun"
+      ],
+      "notes": "Koç Topluluğu markası: içeriklerin Koç Topluluğu kurallarına uygun olması önemli."
+    },
+    {
+      "key": "rabam",
+      "brand": "Rabam",
+      "website": "https://rabam.com",
+      "website_verified": true,
+      "socials": {
+        "instagram": "https://www.instagram.com/rabam",
+        "linkedin": "https://www.linkedin.com/company/rabam",
+        "tiktok": "https://www.tiktok.com/@rabamcom",
+        "x": "https://x.com/rabamcom",
+        "youtube": "https://www.youtube.com/@Rabam"
+      },
+      "app_store_ids": [
+        "1571183769"
+      ],
+      "rivals": [],
+      "notes": "Siyasi ve politik içeriklerden, alkol ve benzeri konulardan uzak durur."
+    },
+    {
+      "key": "ya_da",
+      "brand": "ya da Multicosmetics",
+      "website": "https://yadacosmetics.com",
+      "website_verified": true,
+      "socials": {},
+      "app_store_ids": [],
+      "rivals": [],
+      "notes": "Dermokozmetik (eczane kanalı): sağlık beyanı gibi okunabilecek iddialara dikkat."
+    }
+  ],
+  "sources": "Websites, social accounts, rivals and notes from Ahmet's Markalar sheet (2026-10-14, brand columns only; no client contact data here).",
+  "cadence": "Full karne (site checks + web research over the last period_days) on the first Monday of each month and on extra_full_days (19 Oct 2026 is the start run). On the other Mondays a silent site alarm: site checks only, no model; a to-do only when a red finding is new.",
+  "rules": "Edit only via a reviewed commit; the image reads work/hamle-account-manager/chain-profile/digital-karne-config.json. A brand key must exist in the catalog brand_routes. enabled=false stops every karne run; alarm_other_mondays=false stops only the weekly alarm."
+}

@@ -1,21 +1,25 @@
-"""Haftalık Dijital Karne (Ahmet 2026-10-14 12:27Z: "her pazartesi sabah 10:00'da ... her marka için haftalık
-olarak küçük bir digital audit": dijital varlıklarda, sosyal medyada ve genel web'de her şey yolunda mı, hatalı
-ya da güncellenmemiş bir şey var mı?). Plan: Claude Doc "Hamle AI · Gerçekçi Vizyon", section 1.
+"""Dijital Karne (Ahmet 2026-10-14 12:27Z: "her marka için küçük bir digital audit": dijital varlıklarda,
+sosyal medyada ve genel web'de her şey yolunda mı, hatalı ya da güncellenmemiş bir şey var mı?). Plan: Claude Doc
+"Hamle AI · Gerçekçi Vizyon", section 1. Ahmet 16:08Z: only the brands we work on most closely (WAT Mobilite,
+Rabam, ya da Multicosmetics), a detailed report once a month instead of every Monday.
 
-Every Monday from 10:00 Istanbul (job hamle-weekly-karne), for each brand of weekly-karne-config.json:
-1. Checks Hamle measures itself (public web, GET only, no model): the home page answers and how fast, the
-   SSL certificate and (non-.tr) domain expiry, up to 20 links of the home page, the © year, a KVKK / çerez
-   link, the social links on the site vs the brand's accounts; App Store rating, last update and the last
-   7 days' reviews for configured apps.
-2. One Claude Opus 5.5 web-search call (role weekly_karne): news and complaints of the last days, the social
-   accounts, competitors, outdated content on the home page. A finding survives only with an https URL from
-   the search evidence or a page Hamle opened itself; news, complaint and competitor findings also need a
-   date in the last 14 days. Anything else is dropped, never repaired.
-3. One to-do "Hamle Karne: <Marka> · <n>. Hafta" in the brand's Sosyal Medya list (catalog brand_routes:
-   verified, hidden from clients, Hamle a member), assigned to the brand's social media lead, due Wednesday.
-   A brand without a verified route (Fenerium) goes to the internal "Hamle İşleri" list for its owner.
-   Karne to-dos stay out of the team's due/overdue lists; Tuesday's digest shows one line per brand. The
-   next week the team's comments on these to-dos go to the model as feedback.
+Mondays from 10:00 Istanbul (job hamle-digital-karne), for each brand of digital-karne-config.json:
+- the first Monday of a month (plus the configured start day): the full karne.
+  1. Checks Hamle measures itself (public web, GET only, no model): the home page answers and how fast, the
+     SSL certificate and (non-.tr) domain expiry, up to 20 links of the home page, the © year, a KVKK / çerez
+     link, the social links on the site vs the brand's accounts, the mobile PageSpeed score; App Store rating,
+     last update and the last 30 days' reviews for configured apps.
+  2. One Claude Opus 5.5 web-search call (role digital_karne, more searches than the daily research): the
+     month's news and complaints, the social accounts, competitors, outdated content on the home page and
+     next month's opportunities. A finding survives only with an https URL from the search evidence or a page
+     Hamle opened itself; news, complaint and competitor findings also need a date in the last 30 days.
+     Anything else is dropped, never repaired; the model's summary is shown only when nothing was dropped.
+  3. One to-do "Hamle Karne: <Marka> · <Ay Yıl>" in the brand's Sosyal Medya list (catalog brand_routes:
+     verified, hidden from clients, Hamle a member), assigned to the brand's social media lead, due Friday.
+     Karne to-dos stay out of the team's due/overdue lists; the next day's digest shows one line per brand.
+     The next karne gives the team's comments on the previous one to the model as feedback.
+- the other Mondays: a silent alarm. Only the site checks (no model, no cost); a to-do "Hamle Alarm: <Marka> ·
+  <gün>" opens only when there is a red finding that was not already reported the week before.
 
 The karne is for the team only: no mail, nothing to clients, Hamle never posts or edits a site.
 Writes: same rules as idea tracking (durable record before the POST, one attempt, readback, anything
@@ -36,7 +40,7 @@ import socket
 import ssl
 import time
 import uuid
-from urllib.parse import urljoin, urlsplit
+from urllib.parse import quote, urljoin, urlsplit
 from zoneinfo import ZoneInfo
 
 from v11_chain_models import _arr, _nstr, _obj, _str, key_for, source_digest
@@ -44,19 +48,20 @@ from v11_nb_tracking import API, APP, HAMLE_PERSON, MONTHS, NbBasecamp, _Text, _
 from v11_trend_search import _iso_day, _research_gate, _routing, anthropic_research, normalize_url, route_fingerprint
 
 ISTANBUL = ZoneInfo("Europe/Istanbul")
-CONFIG_NAME = "weekly-karne-config.json"
-PROMPT = Path(__file__).with_name("weekly_karne_prompt.txt")
-ROLE = "weekly_karne"
-PREFIX = "Hamle Karne: "
+CONFIG_NAME = "digital-karne-config.json"
+PROMPT = Path(__file__).with_name("digital_karne_prompt.txt")
+ROLE = "digital_karne"
+PREFIX, ALARM_PREFIX = "Hamle Karne: ", "Hamle Alarm: "
 AREAS = {"site": "Site", "icerik": "İçerik", "uygulama": "Uygulama", "sikayet": "Şikayet", "gundem": "Gündem",
-         "sosyal": "Sosyal medya", "rakip": "Rakip"}
-LEVELS = ("kirmizi", "sari", "yesil", "bakilamadi")
-ICONS = {"kirmizi": "🔴", "sari": "🟡", "yesil": "🟢", "bakilamadi": "⚪"}
-HEADS = {"kirmizi": "Bu hafta ele alınmalı", "sari": "Dikkat", "yesil": "Sorunsuz", "bakilamadi": "Bakılamadı"}
-COUNT_WORDS = {"kirmizi": "acil", "sari": "dikkat", "yesil": "sorunsuz", "bakilamadi": "bakılamadı"}
+         "sosyal": "Sosyal medya", "rakip": "Rakip", "firsat": "Fırsat"}
+LEVELS = ("kirmizi", "sari", "firsat", "yesil", "bakilamadi")
+ICONS = {"kirmizi": "🔴", "sari": "🟡", "firsat": "💡", "yesil": "🟢", "bakilamadi": "⚪"}
+HEADS = {"kirmizi": "Hemen ele alınmalı", "sari": "Dikkat", "firsat": "Fırsatlar", "yesil": "Sorunsuz",
+         "bakilamadi": "Bakılamadı"}
+COUNT_WORDS = {"kirmizi": "acil", "sari": "dikkat", "firsat": "fırsat", "yesil": "sorunsuz", "bakilamadi": "bakılamadı"}
 DATED_AREAS = ("gundem", "sikayet", "rakip")
-MAX_FINDINGS, MAX_NOT_CHECKED, NEWS_DAYS, MAX_LINKS, LINK_WORKERS = 8, 5, 14, 20, 6
-SLOW_SECONDS, APP_STALE_DAYS, LOW_RATING, LOW_REVIEWS = 6.0, 180, 3.5, 3
+MAX_FINDINGS, MAX_NOT_CHECKED, MAX_LINKS, LINK_WORKERS, FEEDBACK_WEEKS = 12, 5, 20, 6, 6
+SLOW_SECONDS, APP_STALE_DAYS, LOW_RATING, LOW_REVIEWS, LOW_SPEED = 6.0, 180, 3.5, 5, 50
 MAX_INPUT_BYTES, HOME_TEXT_CHARS, READ_SECONDS = 15_000, 3000, 30
 LEADS = {52096503: "Özge", 53167312: "Esma", 47470759: "Ahmet", 48793256: "Cansu"}
 SOCIAL_HOSTS = {"instagram.com": "instagram", "tiktok.com": "tiktok", "x.com": "x", "twitter.com": "x",
@@ -68,11 +73,13 @@ IGNORED_HANDLES = frozenset(("intent", "share", "sharer", "sharer.php", "home", 
 PRIVACY = ("kvkk", "gizlilik", "privacy", "çerez", "cerez", "cookie", "aydınlatma", "aydinlatma", "kişisel veri",
            "kisisel-veri", "kisisel_veri")
 UNCHECKABLE = (401, 403, 405, 406, 429)
-FOOTER = ("Bu karne yalnız ekip içindir, müşteriye gitmez. Kırmızı maddeleri çarşamba gününe kadar ele alalım. "
-          "Yanlış bulduğunuz bir madde varsa bu to-do'ya yorum yazın; Hamle gelecek haftaki karneyi hazırlarken "
+FOOTER = ("Bu karne yalnız ekip içindir, müşteriye gitmez. Kırmızı maddeleri bu hafta içinde ele alalım. "
+          "Yanlış bulduğunuz bir madde varsa bu to-do'ya yorum yazın; Hamle bir sonraki karneyi hazırlarken "
           "yorumları okur. Görevi kapatmak sizde.")
-DIGEST_HINT = ("Karneler yalnız ekip içindir. Kırmızılar çarşamba gününe kadar; yanlış bir madde varsa to-do'ya "
-               "yorum yazın, Hamle gelecek hafta okur.")
+ALARM_FOOTER = ("Bu, Hamle'nin haftalık site alarmıdır: yalnız kırmızı bir sorun olduğunda açılır. Ayrıntılı karne "
+                "her ayın ilk pazartesi gelir. Sorun giderilince görevi kapatabilirsiniz.")
+DIGEST_HINT = ("Karneler yalnız ekip içindir. Kırmızılar bu hafta içinde; yanlış bir madde varsa to-do'ya yorum "
+               "yazın, Hamle bir sonraki karnede okur.")
 
 
 class KarneError(ValueError):
@@ -105,7 +112,7 @@ def _https(value):
 
 
 def validate_config(doc):
-    _need(isinstance(doc, dict) and doc.get("schema_version") == 1 and doc.get("kind") == "weekly_karne_config",
+    _need(isinstance(doc, dict) and doc.get("schema_version") == 1 and doc.get("kind") == "digital_karne_config",
           "karne_config_invalid")
     _need(type(doc.get("enabled")) is bool and isinstance(doc.get("version"), str), "karne_config_invalid")
     w = doc.get("window")
@@ -114,6 +121,12 @@ def validate_config(doc):
           and w["start"] < w["end"], "karne_window_invalid")
     _need(type(doc.get("time_budget_seconds")) is int and 300 <= doc["time_budget_seconds"] <= 3300,
           "karne_time_budget_invalid")
+    _need(type(doc.get("period_days")) is int and 7 <= doc["period_days"] <= 45, "karne_period_invalid")
+    _need(type(doc.get("full_first_monday")) is bool and type(doc.get("alarm_other_mondays")) is bool,
+          "karne_cadence_invalid")
+    extra = doc.get("extra_full_days") or []
+    _need(isinstance(extra, list) and all(_iso_day(d) is not None and _iso_day(d).weekday() == w["weekday"]
+                                          for d in extra), "karne_extra_days_invalid")
     brands, seen = [], set()
     for b in doc.get("brands") or []:
         _need(isinstance(b, dict) and isinstance(b.get("key"), str) and b["key"] not in seen
@@ -135,7 +148,18 @@ def validate_config(doc):
                        "app_store_ids": list(apps), "rivals": list(rivals)[:8], "notes": b.get("notes")})
     _need(brands, "karne_no_brands")
     return {"enabled": doc["enabled"], "version": doc["version"], "window": dict(w),
-            "time_budget_seconds": doc["time_budget_seconds"], "brands": brands}
+            "time_budget_seconds": doc["time_budget_seconds"], "period_days": doc["period_days"],
+            "full_first_monday": doc["full_first_monday"], "alarm_other_mondays": doc["alarm_other_mondays"],
+            "extra_full_days": sorted(set(extra)), "brands": brands}
+
+
+def kind_of(day, cfg):
+    """'full' (first Monday of the month or a configured start day), 'alarm' (the other Mondays) or None."""
+    if day.weekday() != cfg["window"]["weekday"]:
+        return None
+    if day.isoformat() in cfg["extra_full_days"] or (cfg["full_first_monday"] and day.day <= 7):
+        return "full"
+    return "alarm" if cfg["alarm_other_mondays"] else None
 
 
 def destinations(catalog):
@@ -166,21 +190,23 @@ def monday_of(day):
     return day - timedelta(days=day.weekday())
 
 
-def week_number(day):
-    return monday_of(day).isocalendar().week
-
-
 def state_key(day):
-    iso = monday_of(day).isocalendar()
-    return f"weekly-karne-{iso.year}-W{iso.week:02d}"
+    """One record per run Monday (full karne or alarm)."""
+    return "digital-karne-" + monday_of(day).isoformat()
 
 
-def title(brand, day):
-    return PREFIX + _line(f"{brand} · {week_number(day)}. Hafta", 150)
+def month_name(day):
+    return f"{MONTHS[day.month - 1]} {day.year}"
+
+
+def title(brand, day, kind="full"):
+    if kind == "alarm":
+        return ALARM_PREFIX + _line(f"{brand} · {day.day} {MONTHS[day.month - 1]}", 150)
+    return PREFIX + _line(f"{brand} · {month_name(day)}", 150)
 
 
 def is_karne_item(t):
-    """A karne to-do (shown in its own Tuesday line, not listed as team work)."""
+    """A karne to-do (shown in its own digest lines, not listed as team work). Alarms are ordinary work."""
     return t.get("kind") == "todo" and str(t.get("title") or "").startswith(PREFIX)
 
 
@@ -219,7 +245,7 @@ class Web:
             raise KarneError("web_dns_failed") from None
         _need(rows and all(ipaddress.ip_address(r[4][0]).is_global for r in rows), "web_host_not_public")
 
-    def get(self, url, *, max_bytes=2_000_000):
+    def get(self, url, *, max_bytes=2_000_000, read_seconds=None):
         """{'status', 'url' (final), 'body', 'seconds', 'headers'}; at most 5 redirects."""
         started = self.clock()
         for _ in range(6):
@@ -230,7 +256,8 @@ class Web:
             try:
                 r = session.request("GET", url, headers={"User-Agent": self.UA, "Accept": "text/html,application/json,*/*",
                                                          "Accept-Language": "tr-TR,tr;q=0.9"},
-                                    timeout=self.timeout, allow_redirects=False, stream=True)
+                                    timeout=(self.timeout[0], read_seconds or self.timeout[1]),
+                                    allow_redirects=False, stream=True)
                 headers = {k.lower(): v for k, v in dict(r.headers).items()}
                 if r.status_code in (301, 302, 303, 307, 308) and headers.get("location"):
                     url = urljoin(url, headers["location"])
@@ -240,7 +267,7 @@ class Web:
                     for chunk in r.iter_content(chunk_size=16384):
                         chunks.append(chunk)
                         size += len(chunk)
-                        if size >= max_bytes or self.clock() - started > READ_SECONDS:
+                        if size >= max_bytes or self.clock() - started > (read_seconds or READ_SECONDS) + 5:
                             break
                 return {"status": r.status_code, "url": url, "body": b"".join(chunks)[:max_bytes],
                         "seconds": round(self.clock() - started, 2), "headers": headers}
@@ -255,8 +282,8 @@ class Web:
                 session.close()
         raise KarneError("web_too_many_redirects")
 
-    def json(self, url):
-        page = self.get(url, max_bytes=1_500_000)
+    def json(self, url, *, read_seconds=None):
+        page = self.get(url, max_bytes=1_500_000, read_seconds=read_seconds)
         _need(page["status"] == 200, f"web_http_{page['status']}")
         try:
             return json.loads(page["body"].decode("utf-8"))
@@ -541,8 +568,27 @@ def link_check(web, final, urls, facts):
     return out
 
 
-def app_checks(b, web, today):
-    """-> (findings, facts {'reviews': [...], 'checked': [app page URLs]})."""
+def pagespeed_check(web, url):
+    """Mobile performance score from the public PageSpeed Insights API (no key; may be rate limited)."""
+    if not url:
+        return []
+    api = ("https://www.googleapis.com/pagespeedonline/v5/runPagespeed?strategy=mobile&category=performance&url="
+           + quote(url, safe=""))
+    try:
+        score = web.json(api, read_seconds=90)["lighthouseResult"]["categories"]["performance"]["score"]
+        _need(isinstance(score, (int, float)) and 0 <= score <= 1, "pagespeed_score_invalid")
+    except Exception:
+        return [_finding("site", "bakilamadi", "Mobil hız skoru (PageSpeed) bu ay okunamadı.")]
+    points = round(score * 100)
+    page = "https://pagespeed.web.dev/analysis?url=" + quote(url, safe="")
+    if points < LOW_SPEED:
+        return [_finding("site", "sari", f"Mobil hız skoru düşük: {points}/100 (PageSpeed).", page,
+                         "Site ekibiyle görselleri ve açılışta yüklenen kodu küçültün.")]
+    return [_finding("site", "yesil", f"Mobil hız skoru {points}/100 (PageSpeed).", page)]
+
+
+def app_checks(b, web, today, days=7):
+    """-> (findings, facts {'reviews': [...], 'checked': [app page URLs]}); reviews of the last `days` days."""
     out, facts = [], {"reviews": [], "checked": []}
     for app_id in b.get("app_store_ids") or []:
         try:
@@ -584,16 +630,17 @@ def app_checks(b, web, today):
                 stars = int(e["im:rating"]["label"])
             except (KeyError, TypeError, ValueError):
                 continue
-            if today - timedelta(days=7) <= day <= today:
+            if today - timedelta(days=days) <= day <= today:
                 recent.append((day, stars, _line((e.get("title") or {}).get("label"), 80),
                                _line((e.get("content") or {}).get("label"), 200)))
         low = [r for r in recent if r[1] <= 2]
         facts["reviews"] += [{"rating": s, "date": d.isoformat(), "title": t, "text": c} for d, s, t, c in low[:5]]
         if len(low) >= LOW_REVIEWS:
-            out.append(_finding("uygulama", "sari", f"Son 7 günde App Store'da {len(low)} tane 1-2 yıldızlı yorum geldi.",
-                                page, "Yorumlardaki ortak sorunu müşteriye iletin; yorumlara yanıt verilmesini önerin."))
+            out.append(_finding("uygulama", "sari", f"Son {days} günde App Store'da {len(low)} tane 1-2 yıldızlı "
+                                "yorum geldi.", page,
+                                "Yorumlardaki ortak sorunu müşteriye iletin; yorumlara yanıt verilmesini önerin."))
         elif recent:
-            notes.append(f"son 7 günde {len(recent)} yeni yorum ({len(low)} tanesi 1-2 yıldız)")
+            notes.append(f"son {days} günde {len(recent)} yeni yorum ({len(low)} tanesi 1-2 yıldız)")
         if notes:
             out.append(_finding("uygulama", "yesil", f"{name}: " + ", ".join(notes) + ".", page))
     return out, facts
@@ -601,18 +648,19 @@ def app_checks(b, web, today):
 
 # ------------------------------------------------------------------ model (one web-search call per brand)
 def karne_schema():
-    return _obj({"findings": _arr(_obj({"area": {"type": "string", "enum": list(AREAS)},
+    return _obj({"summary": _nstr(600),
+                 "findings": _arr(_obj({"area": {"type": "string", "enum": list(AREAS)},
                                         "level": {"type": "string", "enum": ["kirmizi", "sari", "yesil"]},
-                                        "text": _str(240), "suggestion": _nstr(240), "url": _str(300),
+                                        "text": _str(280), "suggestion": _nstr(240), "url": _str(300),
                                         "date": _nstr(10)}), MAX_FINDINGS + 2),
                  "not_checked": _arr(_str(160), MAX_NOT_CHECKED)})
 
 
-def model_input(b, card, today, checks, facts, feedback):
+def model_input(b, card, today, checks, facts, feedback, period_days=30):
     """Bounded request (<= 15000 bytes): the home page excerpt shrinks first."""
     inp = {"brand": b["brand"], "sector": (card or {}).get("sector"), "website": b.get("website"),
            "socials": b.get("socials") or {}, "rivals": b.get("rivals") or [], "notes": b.get("notes"),
-           "today": today.isoformat(), "week_from": (today - timedelta(days=7)).isoformat(),
+           "today": today.isoformat(), "period_from": (today - timedelta(days=period_days)).isoformat(),
            "site_checks": [f"{ICONS[f['level']]} {AREAS.get(f['area'], 'Diğer')}: {f['text']}" for f in checks][:24],
            "homepage_text": (facts.get("text") or "")[:HOME_TEXT_CHARS], "app_reviews": facts.get("reviews") or [],
            "team_feedback": [_line(x, 240) for x in feedback][:5]}
@@ -632,23 +680,24 @@ def allowed_urls(b, facts):
     return sorted({n for n in (normalize_url(u) for u in urls if u) if n})
 
 
-def sourced(output, allowed, today):
+def sourced(output, allowed, today, period_days=30):
     """Model findings with an https URL from the search evidence or a page Hamle opened; dated areas need a
-    date in the last 14 days. -> (findings, not_checked)."""
+    date in the period. Opportunities ('firsat') get their own group. -> (findings, not_checked, dropped)."""
     ok_urls = set(output.get("evidence") or []) | set(allowed)
-    out, seen = [], set()
+    out, seen, dropped = [], set(), 0
     for f in output.get("findings") or []:
         url, day = normalize_url(f.get("url")), _iso_day(f.get("date")) if f.get("date") else None
-        if url is None or url not in ok_urls or (f.get("date") and day is None) or (day is not None and day > today):
-            continue
-        if f["area"] in DATED_AREAS and (day is None or day < today - timedelta(days=NEWS_DAYS)):
+        bad = url is None or url not in ok_urls or (f.get("date") and day is None) or (day is not None and day > today)
+        if bad or (f["area"] in DATED_AREAS and (day is None or day < today - timedelta(days=period_days))):
+            dropped += 1
             continue
         key = (f["area"], " ".join(f["text"].casefold().split()))
         if key in seen:
             continue
         seen.add(key)
-        out.append(_finding(f["area"], f["level"], f["text"], url, f.get("suggestion")))
-    return out[:MAX_FINDINGS], [_line(x, 160) for x in output.get("not_checked") or []][:MAX_NOT_CHECKED]
+        level = "firsat" if f["area"] == "firsat" else f["level"]
+        out.append(_finding(f["area"], level, f["text"], url, f.get("suggestion")))
+    return out[:MAX_FINDINGS], [_line(x, 160) for x in output.get("not_checked") or []][:MAX_NOT_CHECKED], dropped
 
 
 def research_source(ops, load_key, catalog, *, routing=None, client=None):
@@ -661,7 +710,7 @@ def research_source(ops, load_key, catalog, *, routing=None, client=None):
         return gate().once(ROLE, source_digest(ROLE, request_input, route_fingerprint(route, PROMPT)),
                            lambda: anthropic_research(route, PROMPT, request_input, karne_schema(),
                                                       api_key=key_for(load_key, "anthropic"), client=client,
-                                                      code="invalid_weekly_karne_schema"),
+                                                      code="invalid_digital_karne_schema"),
                            provider=route.provider, hold=hold)
     research.timeout_seconds = route.timeout_seconds
     return research
@@ -672,14 +721,20 @@ def counts(findings):
     return {lvl: sum(1 for f in findings if f["level"] == lvl) for lvl in LEVELS}
 
 
-def description(brand, day, findings):
+def description(brand, day, findings, kind="full", summary=None):
     """-> (html, visible text). Basecamp rich text: div, strong, a, br only."""
     c = counts(findings)
-    lines = [f"<strong>{escape(f'Haftalık Dijital Karne · {week_number(day)}. Hafta ({_when(monday_of(day))})')}</strong>",
-             escape("Özet: " + " · ".join(f"{ICONS[k]} {c[k]} {COUNT_WORDS[k]}" for k in LEVELS
-                                          if c[k] or k != "bakilamadi"))]
-    if not c["kirmizi"] and not c["sari"]:
-        lines.append(escape("Bu hafta acil ya da dikkat isteyen bir konu bulmadım."))
+    if kind == "alarm":
+        lines = [f"<strong>{escape(f'Haftalık site alarmı · {brand} · {_when(day)}')}</strong>",
+                 escape(f"🔴 {c['kirmizi']} acil sorun buldum.")]
+    else:
+        lines = [f"<strong>{escape(f'Aylık Dijital Karne · {brand} · {month_name(day)} ({_when(day)})')}</strong>",
+                 escape("Özet: " + " · ".join(f"{ICONS[k]} {c[k]} {COUNT_WORDS[k]}" for k in LEVELS
+                                              if c[k] or k not in ("firsat", "bakilamadi")))]
+        if summary:
+            lines.append(escape("Hamle'nin özeti: " + summary))
+        if not c["kirmizi"] and not c["sari"]:
+            lines.append(escape("Bu ay acil ya da dikkat isteyen bir konu bulmadım."))
     for lvl in LEVELS:
         group = [f for f in findings if f["level"] == lvl]
         if not group:
@@ -693,7 +748,7 @@ def description(brand, day, findings):
             if f.get("url"):
                 line += f' <a href="{escape(f["url"], quote=True)}">kaynak</a>'
             lines.append(line)
-    lines += ["<br>", escape(FOOTER)]
+    lines += ["<br>", escape(ALARM_FOOTER if kind == "alarm" else FOOTER)]
     html = "".join(f"<div>{line}</div>" for line in lines)
     p = _Text()
     p.feed(html)
@@ -716,27 +771,30 @@ class KarneBasecamp(NbBasecamp):
         self.allowed = {"GET": tuple(sorted(gets)), "POST": tuple(sorted(posts))}
 
 
-def empty_state(day):
-    return {"kind": "weekly_karne", "schema_version": 1, "monday": monday_of(day).isoformat(), "lease": None,
-            "lists": {}, "brands": {}}
+def empty_state(day, kind="full"):
+    return {"kind": "digital_karne", "schema_version": 1, "monday": monday_of(day).isoformat(), "run_kind": kind,
+            "lease": None, "lists": {}, "brands": {}}
 
 
 class KarneTracker:
-    def __init__(self, ops, http, day):
-        self.ops, self.http, self.day, self.key = ops, http, day, state_key(day)
+    def __init__(self, ops, http, day, kind="full"):
+        self.ops, self.http, self.day, self.kind, self.key = ops, http, day, kind, state_key(day)
 
     def base(self, pid):
         return f"{API}/{self.http.account}/buckets/{pid}"
 
+    def _get(self, key):
+        return self.ops._run(lambda tx, _: tx.get(key), allow_expired=True)
+
     def state(self):
-        return self.ops._run(lambda tx, _: tx.get(self.key), allow_expired=True) or empty_state(self.day)
+        return self._get(self.key) or empty_state(self.day, self.kind)
 
     def _write(self, fn, *, fenced=True):
         def op(tx, now):
             if fenced:  # 'dur' / takeover: no new write starts
                 c = self.ops._control(tx)
                 self.ops._open(c, c["generation"], now)
-            st = tx.get(self.key) or empty_state(self.day)
+            st = tx.get(self.key) or empty_state(self.day, self.kind)
             out = fn(st, now)
             tx.put(self.key, st)
             return out
@@ -775,7 +833,7 @@ class KarneTracker:
 
         def begin(st, now):
             row = st["brands"].setdefault(key, {})
-            if row.get("state") in ("writing", "ready", "unknown"):
+            if row.get("state") in ("writing", "ready", "unknown", "quiet"):
                 return False
             row.update(state="writing", project_id=pid, list_id=lid, person_id=person, todo_id=None, app_url=None,
                        title=name, at=now, **summary)
@@ -808,11 +866,21 @@ class KarneTracker:
         self._write(lambda st, now: st["brands"][key].update(state="ready", todo_id=tid, app_url=app), fenced=False)
         return "created"
 
+    def last_site_reds(self, key):
+        """The red site findings of this brand on the previous Monday (karne or alarm), or None."""
+        row = ((self._get(state_key(self.day - timedelta(days=7))) or {}).get("brands") or {}).get(key) or {}
+        return row.get("site_reds") if isinstance(row.get("site_reds"), list) else None
+
     def feedback(self, key):
-        """The team's comments on last week's karne to-do of this brand (never Hamle's own), newest last."""
-        prev = self.ops._run(lambda tx, _: tx.get(state_key(self.day - timedelta(days=7))), allow_expired=True) or {}
-        row = (prev.get("brands") or {}).get(key) or {}
-        if row.get("state") != "ready" or type(row.get("todo_id")) is not int:
+        """The team's comments on this brand's previous karne to-do (never Hamle's own), newest last."""
+        row = None
+        for weeks in range(1, FEEDBACK_WEEKS + 1):
+            st = self._get(state_key(self.day - timedelta(days=7 * weeks))) or {}
+            r = (st.get("brands") or {}).get(key) or {}
+            if st.get("run_kind") == "full" and r.get("state") == "ready" and type(r.get("todo_id")) is int:
+                row = r
+                break
+        if row is None:
             return []
         try:
             rows = self.http.all(f"{self.base(row['project_id'])}/recordings/{row['todo_id']}/comments.json", max_pages=2)
@@ -842,70 +910,86 @@ def card_for(cards, project_id):
                  and c.get("project_id") == project_id), None)
 
 
-def brand_report(b, card, web, today, now, feedback=()):
-    """Checks + research for one brand -> (findings, research status, request input)."""
+def brand_report(b, card, web, today, now, feedback=(), period_days=30):
+    """All checks for the full karne -> (checks, research request input, allowed URLs)."""
     checks, facts = site_checks(b, web, today, now)
-    more, app_facts = app_checks(b, web, today)
+    checks += pagespeed_check(web, facts.get("final_url"))
+    more, app_facts = app_checks(b, web, today, days=period_days)
     checks += more
     facts["reviews"] = app_facts["reviews"]
     facts["checked"] = list(facts.get("checked") or []) + app_facts["checked"]
-    request_input = model_input(b, card, today, checks, facts, list(feedback))
+    request_input = model_input(b, card, today, checks, facts, list(feedback), period_days)
     return checks, request_input, allowed_urls(b, facts)
 
 
-def with_research(checks, request_input, allowed, research, today):
-    findings, status = list(checks), "not_called"
+def with_research(checks, request_input, allowed, research, today, period_days=30):
+    """-> (findings, research status, the model's summary only when none of its findings was dropped)."""
+    findings, status, summary = list(checks), "not_called", None
     if research is not None:
         try:
-            found, not_checked = sourced(research(request_input), allowed, today)
+            output = research(request_input)
+            found, not_checked, dropped = sourced(output, allowed, today, period_days)
             findings += found + [_finding(None, "bakilamadi", x) for x in not_checked]
-            status = f"{len(found)}_sourced"
+            status = f"{len(found)}_sourced" + (f"_{dropped}_dropped" if dropped else "")
+            if found and not dropped and output.get("summary"):
+                summary = _line(output["summary"], 600)
         except Exception as exc:
             status = _code(exc)
-            findings.append(_finding(None, "bakilamadi", "Gündem, şikayet ve sosyal medya araştırması bu hafta "
+            findings.append(_finding(None, "bakilamadi", "Gündem, şikayet, sosyal medya ve rakip araştırması bu ay "
                                      f"alınamadı ({status})."))
-    return findings, status
+    return findings, status, summary
 
 
-def run_weekly_karne(ops, *, config, catalog, cards, web, research, http, clock, monotonic=time.monotonic,
-                     preview=None, only=None):
-    """Scheduled run (preview None) or an operator preview ('checks': no model; 'full': one brand with the
-    model). A preview never writes to Basecamp or the karne record."""
-    report = {"status": "weekly_karne_completed", "created": 0, "unknown": 0, "already": 0, "skipped": [],
-              "research": {}, "counts": {}, "model_calls": 0, "business_writes": 0}
+def _site_reds(checks):
+    return sorted(f["text"] for f in checks if f["level"] == "kirmizi")
+
+
+def run_digital_karne(ops, *, config, catalog, cards, web, research, http, clock, monotonic=time.monotonic,
+                      preview=None, only=None):
+    """Scheduled run (preview None: the full karne or the silent alarm, by the day) or an operator preview of
+    the full karne ('checks': no model; 'full': with the model). A preview never writes to Basecamp or the
+    karne record."""
+    report = {"status": "digital_karne_completed", "created": 0, "unknown": 0, "already": 0, "quiet": 0,
+              "skipped": [], "research": {}, "counts": {}, "model_calls": 0, "business_writes": 0}
     try:
         cfg = validate_config(config)
         now = clock()
         local = now.astimezone(ISTANBUL)
         today = local.date()
-        report["week"] = state_key(today)[len("weekly-karne-"):]
+        period = cfg["period_days"]
+        report["monday"] = monday_of(today).isoformat()
         _need(preview in (None, "checks", "full"), "karne_preview_invalid")
-        _need(preview != "full" or only is not None, "karne_full_preview_needs_one_brand")
         brands = [b for b in cfg["brands"] if only is None or b["key"] == only]
         _need(brands, "karne_brand_unknown")
+        _need(preview != "full" or len(brands) <= 3, "karne_full_preview_too_many_brands")
         dests = destinations(catalog)
         if preview is not None:
             out = []
             for b in brands:
                 dest = dests.get(b["key"]) or {}
                 checks, request_input, allowed = brand_report(b, card_for(cards, dest.get("card_project_id")), web,
-                                                              today, now)
-                findings, status = with_research(checks, request_input, allowed,
-                                                 research if preview == "full" else None, today)
-                _, text = description(b["brand"], today, findings)
+                                                              today, now, period_days=period)
+                findings, status, summary = with_research(checks, request_input, allowed,
+                                                          research if preview == "full" else None, today, period)
+                _, text = description(b["brand"], today, findings, "full", summary)
                 out.append({"key": b["key"], "counts": counts(findings), "research": status,
                             "to": LEADS.get(dest.get("person_id")), "internal": dest.get("internal"), "text": text})
-            return {"status": "weekly_karne_preview", "week": report["week"], "brands": out,
-                    "model_calls": int(preview == "full"), "business_writes": 0}
+            return {"status": "digital_karne_preview", "monday": report["monday"], "brands": out,
+                    "model_calls": sum(b["research"] != "not_called" for b in out), "business_writes": 0}
         if not cfg["enabled"]:
             return dict(report, status="no_new_work", reason="karne_disabled")
         if not _in_window(local, cfg["window"]):
             return dict(report, status="no_new_work", reason="outside_karne_window")
+        kind = kind_of(today, cfg)
+        if kind is None:
+            return dict(report, status="no_new_work", reason="no_karne_today")
+        report["kind"] = kind
         _need(http is not None, "karne_basecamp_missing")
-        tracker, token, started = KarneTracker(ops, http, today), uuid.uuid4().hex, monotonic()
+        tracker, token, started = KarneTracker(ops, http, today, kind), uuid.uuid4().hex, monotonic()
         if not tracker.claim(token, cfg["time_budget_seconds"] + 300):
             return dict(report, status="slot_already_claimed", reason="karne_run_in_progress")
-        reserve = (getattr(research, "timeout_seconds", None) or 480) + 240  # worst-case checks + one model call
+        # worst-case checks (+ one model call on the full karne)
+        reserve = 240 + ((getattr(research, "timeout_seconds", None) or 600) if kind == "full" else 0)
         try:
             for b in brands:
                 key, dest = b["key"], dests.get(b["key"])
@@ -913,29 +997,41 @@ def run_weekly_karne(ops, *, config, catalog, cards, web, research, http, clock,
                     report["skipped"].append(key + ":no_route")
                     continue
                 row = tracker.state()["brands"].get(key) or {}
-                if row.get("state") in ("writing", "ready", "unknown"):
+                if row.get("state") in ("writing", "ready", "unknown", "quiet"):
                     report["already"] += 1
                     continue
                 if monotonic() - started + reserve > cfg["time_budget_seconds"]:
-                    report["status"], report["left"] = "weekly_karne_partial", report.get("left", 0) + 1
+                    report["status"], report["left"] = "digital_karne_partial", report.get("left", 0) + 1
                     continue
-                if row.get("input"):  # a run stopped after the checks: the same request, never a second paid one
-                    checks, request_input, allowed = row["checks"], row["input"], row["allowed"]
+                summary = None
+                if kind == "alarm":
+                    checks, _ = site_checks(b, web, today, now)
+                    reds = _site_reds(checks)
+                    if not reds or reds == tracker.last_site_reds(key):  # nothing new to say: stay silent
+                        tracker.save(key, {"state": "quiet", "brand": b["brand"], "site_reds": reds})
+                        report["quiet"] += 1
+                        continue
+                    findings, status = [f for f in checks if f["level"] == "kirmizi"], "not_called"
                 else:
-                    checks, request_input, allowed = brand_report(b, card_for(cards, dest["card_project_id"]), web,
-                                                                  today, now, tracker.feedback(key))
-                    tracker.save(key, {"state": "checked", "brand": b["brand"], "checks": checks,
-                                       "input": request_input, "allowed": allowed})
-                findings, status = with_research(checks, request_input, allowed, research, today)
-                report["research"][key] = status
-                report["model_calls"] += status.endswith("_sourced")
+                    if row.get("input"):  # a run stopped after the checks: the same request, never a second paid one
+                        checks, request_input, allowed = row["checks"], row["input"], row["allowed"]
+                    else:
+                        checks, request_input, allowed = brand_report(b, card_for(cards, dest["card_project_id"]),
+                                                                      web, today, now, tracker.feedback(key), period)
+                        tracker.save(key, {"state": "checked", "brand": b["brand"], "checks": checks,
+                                           "input": request_input, "allowed": allowed})
+                    reds = _site_reds(checks)
+                    findings, status, summary = with_research(checks, request_input, allowed, research, today, period)
+                    report["research"][key] = status
+                    report["model_calls"] += status != "not_called" and not status.startswith(("model_budget",
+                                                                                               "internal_live"))
                 tracker.ensure_list(dest["project_id"], dest["list_id"])
-                html, text = description(b["brand"], today, findings)
+                html, text = description(b["brand"], today, findings, kind, summary)
                 c = counts(findings)
-                summary = {"brand": b["brand"], "counts": c, "who": LEADS.get(dest["person_id"]), "research": status,
-                           "checks": None, "allowed": None}
-                outcome = tracker.add(key, dest, title(b["brand"], today), html, text, monday_of(today) + timedelta(days=2),
-                                      summary)
+                due = monday_of(today) + timedelta(days=4 if kind == "full" else 2)
+                fields = {"brand": b["brand"], "counts": c, "who": LEADS.get(dest["person_id"]), "research": status,
+                          "site_reds": reds, "checks": None, "allowed": None}
+                outcome = tracker.add(key, dest, title(b["brand"], today, kind), html, text, due, fields)
                 report["counts"][key] = c
                 report["business_writes"] += outcome in ("created", "unknown")
                 report[{"created": "created", "unknown": "unknown"}.get(outcome, "already")] += 1
@@ -946,24 +1042,27 @@ def run_weekly_karne(ops, *, config, catalog, cards, web, research, http, clock,
         return dict(report, status="held", reason=_code(exc))
 
 
-def digest_rows(state):
-    """Tuesday digest: one row per karne to-do of the week, reds first."""
+def digest_rows(state, day):
+    """The digest the day after a full karne: {'title', 'rows'} (one row per brand, reds first) or None."""
+    if not isinstance(state, dict) or state.get("run_kind") != "full" or state.get("monday") != monday_of(day).isoformat():
+        return None
     rows = []
-    for key, r in ((state or {}).get("brands") or {}).items():
+    for key, r in (state.get("brands") or {}).items():
         if r.get("state") != "ready" or not r.get("app_url") or not isinstance(r.get("counts"), dict):
             continue
         rows.append({"brand": _line(r.get("brand") or key, 60), "url": r["app_url"], "who": r.get("who"),
                      "counts": {k: int(r["counts"].get(k) or 0) for k in LEVELS}})
     rows.sort(key=lambda r: (-r["counts"]["kirmizi"], -r["counts"]["sari"], r["brand"]))
-    return rows
+    return {"title": f"Aylık dijital karne ({month_name(monday_of(day))})", "rows": rows} if rows else None
 
 
 def digest_counts(row):
-    return " · ".join(f"{ICONS[k]} {row['counts'][k]}" for k in ("kirmizi", "sari", "yesil"))
+    return " · ".join(f"{ICONS[k]} {row['counts'][k]}" for k in ("kirmizi", "sari", "firsat", "yesil")
+                      if k != "firsat" or row["counts"][k])
 
 
-def run_worker_weekly_karne(ops, secrets, *, preview=None, only=None, clock=None):
-    """Entry for worker.py --mode weekly_karne (existing credential loaders only)."""
+def run_worker_digital_karne(ops, secrets, *, preview=None, only=None, clock=None):
+    """Entry for worker.py --mode digital_karne (existing credential loaders only)."""
     import basecamp_cloud_auth
     import cloud_providers as provider
     from v11_chain_live import _memo, load_catalog
@@ -982,5 +1081,5 @@ def run_worker_weekly_karne(ops, secrets, *, preview=None, only=None, clock=None
         token = _memo(lambda: basecamp_cloud_auth.access_token(secrets, claim_refresh=ops.claim_credential_refresh))
         http = KarneBasecamp(catalog["basecamp"]["account_id"], destinations(catalog),
                              send=session_send(token, provider._session))
-    return run_weekly_karne(ops, config=load_config(), catalog=catalog, cards=load_brand_cards(), web=public_web(),
-                            research=research, http=http, clock=clock, preview=preview, only=only)
+    return run_digital_karne(ops, config=load_config(), catalog=catalog, cards=load_brand_cards(), web=public_web(),
+                             research=research, http=http, clock=clock, preview=preview, only=only)

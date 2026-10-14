@@ -18,8 +18,8 @@ from model_profiles import PROFILES
 NAME = "model-routing.json"
 SCHEMA_VERSION = 1
 ROLES = ("chain_interpreter", "chain_answerer", "customer_text", "chain_classifier", "digest_classifier",
-         "trend_radar", "monday_special_days", "new_business_research", "daily_spark", "weekly_karne")
-WEB_SEARCH_ROLES = ("trend_radar", "monday_special_days", "new_business_research", "daily_spark", "weekly_karne")
+         "trend_radar", "monday_special_days", "new_business_research", "daily_spark", "digital_karne")
+WEB_SEARCH_ROLES = ("trend_radar", "monday_special_days", "new_business_research", "daily_spark", "digital_karne")
 PROVIDERS = ("anthropic", "openai")
 ANTHROPIC_MODELS = ("claude-opus-5-5", "claude-haiku-5-5")
 EFFORTS = ("low", "medium", "high", "xhigh", "max")
@@ -84,7 +84,7 @@ def _route(role, raw, web):
         _need(role not in WEB_SEARCH_ROLES or role == "trend_radar", "model_provider_unsupported")
         return Route(role, "openai", profile.model, profile.reasoning_effort, profile.max_output_tokens,
                      None, profile.profile_id)
-    allowed = {"provider", "model", "effort", "max_tokens", "timeout_seconds", "web_search"}
+    allowed = {"provider", "model", "effort", "max_tokens", "timeout_seconds", "web_search", "web_search_max_uses"}
     _need(set(raw) <= allowed and {"provider", "model", "effort", "max_tokens", "timeout_seconds"} <= set(raw))
     _need(raw["model"] in ANTHROPIC_MODELS, "model_unknown")
     _need(raw["effort"] in EFFORTS, "model_effort_invalid")
@@ -97,8 +97,12 @@ def _route(role, raw, web):
     if role in WEB_SEARCH_ROLES:
         _need(raw.get("web_search") is True, "web_search_required")
         search = dict(web)
+        if "web_search_max_uses" in raw:  # a role may search more (or less) than the shared default
+            _need(type(raw["web_search_max_uses"]) is int and 1 <= raw["web_search_max_uses"] <= 10,
+                  "web_search_config_invalid")
+            search["max_uses"] = raw["web_search_max_uses"]
     else:
-        _need("web_search" not in raw, "web_search_not_allowed")
+        _need("web_search" not in raw and "web_search_max_uses" not in raw, "web_search_not_allowed")
     return Route(role, "anthropic", raw["model"], raw["effort"], raw["max_tokens"], raw["timeout_seconds"],
                  None, search)
 
