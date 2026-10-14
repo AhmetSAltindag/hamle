@@ -919,6 +919,10 @@ class JobDesk:
         drop = []
         for key in list((self._get(JOBS_KEY) or {}).get("keys") or []):
             job = self._get(key)
+            if isinstance(job, dict) and job.get("state") == "binding":  # a to-do the team opened (bind_job)
+                if self._bind(job, report) in ("team", "held"):
+                    drop.append(key)
+                continue
             if not isinstance(job, dict) or job.get("state") not in FOLLOW_STATES:
                 drop.append(key)
                 continue
@@ -948,6 +952,48 @@ class JobDesk:
         if drop:
             self._index(drop=drop)
         return out
+
+    def _bind(self, job, report):
+        """First run after bind_job: read the hand-opened to-do, fill the job from it and say so on the to-do."""
+        url = (f"https://3.basecampapi.com/{job['account_id']}/buckets/{job['project_id']}/todos/"
+               f"{job['todo_id']}.json")
+        try:
+            status, task, _ = self.get(url, {})
+            parent = (task or {}).get("parent") if isinstance(task, dict) else None
+            _need(status == 200 and isinstance(task, dict) and task.get("type") == "Todo"
+                  and task.get("id") == job["todo_id"] and (task.get("bucket") or {}).get("id") == job["project_id"]
+                  and isinstance(parent, dict) and parent.get("id") == job["list_id"], "client_job_bind_todo_unreadable")
+        except Exception as exc:
+            failures = int(job.get("failures") or 0) + 1
+            held = failures >= MAX_FAILURES
+            self._set(job["key"], failures=failures, reason=_code(exc), **({"state": "held"} if held else {}))
+            return "held" if held else "waiting"
+        if task.get("visible_to_clients") is not False or task.get("completed") is not False:
+            self._set(job["key"], state="team", reason="bind_todo_visible_or_completed")
+            return "team"
+        import v11_client_reply as cr
+        brand = self.s["brands"][job["brand_key"]]
+        default = brand["assignees"][job["list"]]
+        people = [a.get("id") for a in task.get("assignees") or [] if isinstance(a, dict)
+                  and a.get("id") in self.s["agency_ids"]]
+        assignee_id = people[0] if people else default["id"]
+        assignee_name = self.s["agency_ids"].get(assignee_id) or default["name"]
+        title = _line(task.get("content"), 150) or brand["name"]
+        core = re.sub(r"^[^/]{1,20}//\s*", "", title).strip() or title
+        brief = cr.comment_text(task.get("description") or "").strip()[:1500] or core
+        due = task.get("due_on") if isinstance(task.get("due_on"), str) and DATE.fullmatch(task["due_on"]) else None
+        client = self.watch.book.match(job["client_email"]) or {}
+        row = self._set(job["key"], state="open", opened_at=self.watch.clock().timestamp(), title=title,
+                        title_core=core, brief=brief, due_on=due, assignee_id=assignee_id, assignee_name=assignee_name,
+                        client_name=client.get("name"), app_url=task.get("app_url"), failures=0)
+        report.setdefault("jobs_bound", 0)
+        report["jobs_bound"] += 1
+        who = client.get("name") or job["client_email"]
+        self._comment(row, f"Bu işi ben takip ediyorum: {who} ile olan mail zincirine bağladım. "
+                           f"{assignee_name.split(' ')[0]}, çalışmayı bu to-do'ya dosya olarak yükleyince briefle "
+                           "karşılaştırıp puanlayacağım; uygunsa müşteriye aynı zincirde ekli olarak göndereceğim. "
+                           "Müşteriden bu işle ilgili yeni mail gelirse buraya yazacağım.", report)
+        return "bound"
 
     def _one(self, job, reader, now, report, out):
         observation = reader.poll(self._work(job), previous=None, observed_at=now)
@@ -1176,3 +1222,77 @@ class JobDesk:
         self._set(job["key"], state="team", reason=why[:200], deliver_pending=None)
         self._comment(job, f"Müşteriye göndermedim: {why}. Teslimi ekip yapsın.", report)
         return "team"
+
+
+# ------------------------------------------------------------------ a to-do the team opened (Ahmet 14 Oct)
+def bind_job(ops, catalog, config, *, thread_id, message_id, todo_id, list_name, brand_key, client_email, actor):
+    """Make a brand to-do the team opened by hand Hamle's job for a client mail thread (Firestore only). The next
+    client_watch run reads the to-do and says on it that Hamle follows; from then on the job runs like one Hamle
+    opened: the client's mails in the thread are answered and written on the to-do, uploads are scored, and the
+    approved work goes to the client in the same thread."""
+    from v11_chain_mail import HEX
+    from v11_client_watch import EMAIL
+    _need(isinstance(actor, str) and actor.endswith("@gamechangers.com.tr") and actor != HAMLE, "actor_invalid")
+    _need(all(isinstance(v, str) and HEX.fullmatch(v) for v in (thread_id, message_id)) and type(todo_id) is int
+          and todo_id > 0 and list_name in LISTS and isinstance(client_email, str)
+          and EMAIL.fullmatch(client_email.strip().lower()) and not client_email.endswith("@gamechangers.com.tr"),
+          "client_job_bind_invalid")
+    jobs = (config or {}).get("jobs") or {}
+    route = (catalog.get("brand_routes") or {}).get(brand_key) or {}
+    list_id = (route.get("lists") or {}).get(list_name)
+    _need(jobs.get("enabled") is True and brand_key in (jobs.get("brands") or {}) and type(route.get("project_id")) is int
+          and type(list_id) is int, "client_job_bind_brand_invalid")
+    key, tkey = job_key(message_id, 0), job_thread_key(thread_id)
+    job = {"key": key, "kind": "client_job", "state": "binding", "bound_by": actor, "brand_key": brand_key,
+           "test": False, "message_id": message_id, "thread_id": thread_id, "index": 0, "list": list_name,
+           "account_id": catalog["basecamp"]["account_id"], "project_id": route["project_id"], "list_id": list_id,
+           "todo_id": todo_id, "client_email": client_email.strip().lower(), "client_text": "", "client_notes": [],
+           "revisions": 0, "last_seen": 0}
+
+    def op(tx, now):
+        old, thread, index = tx.get(key), tx.get(tkey), tx.get(JOBS_KEY)  # Firestore: every read first
+        _need(old is None, "client_job_exists")
+        thread = thread or {"kind": "client_job_thread", "thread_id": thread_id, "job_keys": []}
+        thread["job_keys"] = list(dict.fromkeys(list(thread.get("job_keys") or []) + [key]))[-10:]
+        keys = list((index or {}).get("keys") or [])
+        tx.put(key, dict(job, created_at=now, updated_at=now))
+        tx.put(tkey, thread)
+        tx.put(JOBS_KEY, {"kind": "client_jobs", "keys": list(dict.fromkeys(keys + [key]))[-80:]})
+        return {"status": "client_job_bound", "job_key": key}
+    return ops._run(op, allow_expired=True)
+
+
+def main(argv=None):
+    import argparse
+    import sys
+    parser = argparse.ArgumentParser(description="Client jobs (Firestore only)")
+    parser.add_argument("action", choices=("bind",))
+    parser.add_argument("--thread", required=True)
+    parser.add_argument("--message", required=True)
+    parser.add_argument("--todo", type=int, required=True)
+    parser.add_argument("--list", choices=LISTS, required=True)
+    parser.add_argument("--brand", required=True)
+    parser.add_argument("--client", required=True)
+    parser.add_argument("--actor", required=True)
+    args = parser.parse_args(argv)
+    try:
+        from cloud_store import FirestoreBackend, OperationsStore
+        from import_cloud_credentials import credentials
+        from v11_chain_live import load_catalog
+        from v11_client_watch import load_config
+        ops = OperationsStore(FirestoreBackend(opt_in="yes", credentials=credentials()))
+        result = bind_job(ops, load_catalog(), load_config(), thread_id=args.thread, message_id=args.message,
+                          todo_id=args.todo, list_name=args.list, brand_key=args.brand, client_email=args.client,
+                          actor=args.actor)
+        print(json.dumps(result, ensure_ascii=False))
+        return 0
+    except ClientJobError as exc:
+        print(json.dumps({"status": "held", "reason": exc.code}))
+        return 2
+    except Exception as exc:
+        print(json.dumps({"status": "held", "reason": "client_job_command_failed:" + _code(exc)}))
+        return 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

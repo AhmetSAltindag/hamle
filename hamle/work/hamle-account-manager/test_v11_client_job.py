@@ -96,6 +96,7 @@ class BrandBasecamp:
     """GET-only Basecamp for job to-dos in brand lists (and the internal notes' comments)."""
     def __init__(self, test):
         self.test, self.comments, self.completed, self.lists, self.next = test, {}, set(), {}, 50000
+        self.meta = {}  # extra to-do fields (a to-do the team opened by hand)
 
     def add(self, todo_id, author, html="", files=(), name="Berkay Kayaköylü"):
         self.next += 1
@@ -112,10 +113,12 @@ class BrandBasecamp:
             todo = int(path.split("/recordings/")[1].split("/")[0])
             return 200, copy.deepcopy(self.comments.get(todo, [])), {}
         todo = int(path.rsplit("/", 1)[1].split(".")[0])
-        return 200, {"type": "Todo", "id": todo, "bucket": {"id": WAT}, "parent": {"id": self.lists.get(todo, SOCIAL)},
-                     "status": "active", "visible_to_clients": False, "completed": todo in self.completed,
-                     "assignees": [], "comments_count": len(self.comments.get(todo, [])),
-                     "comments_url": f"{ROOT}/buckets/{WAT}/recordings/{todo}/comments.json"}, {}
+        row = {"type": "Todo", "id": todo, "bucket": {"id": WAT}, "parent": {"id": self.lists.get(todo, SOCIAL)},
+               "status": "active", "visible_to_clients": False, "completed": todo in self.completed,
+               "assignees": [], "comments_count": len(self.comments.get(todo, [])),
+               "comments_url": f"{ROOT}/buckets/{WAT}/recordings/{todo}/comments.json"}
+        row.update(copy.deepcopy(self.meta.get(todo, {})))
+        return 200, row, {}
 
 
 class FakeDelivery:
@@ -148,7 +151,7 @@ class JobBase(ReplyBase):
     def _get(self, url, conditional):  # internal notes and brand jobs share one GET transport
         self.brand_bc.lists = {int(self.todo_writer.next) - len(self.todo_writer.calls) + 1 + i: c["target"]["list_id"]
                                for i, c in enumerate(self.todo_writer.calls)}
-        if f"/buckets/{WAT}/" in url or any(f"/todos/{t}.json" in url for t in self.todo_ids()):
+        if f"/buckets/{WAT}/" in url or any(f"/todos/{t}.json" in url for t in self.todo_ids() + list(self.brand_bc.meta)):
             return self.brand_bc(url, conditional)
         return type(self.bc).__mro__[1].__call__(self.bc, url, conditional)
 
@@ -471,6 +474,81 @@ class Follow(JobBase):
         self.ops.stop_all("dur") if hasattr(self.ops, "stop_all") else self.ops.stop("dur")
         r = self.watch().run()
         self.assertEqual((r["status"], self.delivery.sent, self.vision.calls), ("stopped", [], []))
+
+
+class Bind(JobBase):
+    """A to-do the team opened by hand becomes Hamle's job for a client thread (Ahmet 14 Oct, Rabam story)."""
+    THREAD, MESSAGE, TODO = "1a139e3fccf3f390", "1a139e3fccf3f391", 10404000001
+
+    def setUp(self):
+        super().setUp()
+        self.brand_bc.meta[self.TODO] = {
+            "content": "WM // Instagram kampanya story", "due_on": "2026-10-16",
+            "description": "<div>Cuma öğle Instagram'a özel indirim kampanyası için 9:16 story. Paket görseli ekte.</div>",
+            "assignees": [{"id": OZGE_BC, "name": "Özge Yağmur"}],
+            "app_url": f"https://app.basecamp.com/5898865/buckets/{WAT}/todos/{self.TODO}"}
+
+    def bind(self, **kw):
+        args = dict(thread_id=self.THREAD, message_id=self.MESSAGE, todo_id=self.TODO, list_name="social",
+                    brand_key="wat_mobilite", client_email=AYSE, actor=AHMET)
+        args.update(kw)
+        return cj.bind_job(self.ops, self.catalog, job_config(), **args)
+
+    def bound(self):
+        self.assertEqual(self.bind()["status"], "client_job_bound")
+        r = self.watch().run()
+        return r, self.ops.backend.data[cj.job_key(self.MESSAGE, 0)]
+
+    def test_first_run_reads_the_todo_and_says_hamle_follows(self):
+        r, job = self.bound()
+        self.assertEqual(r.get("jobs_bound"), 1, r)
+        self.assertEqual((job["state"], job["title_core"], job["assignee_name"], job["due_on"], job["client_name"]),
+                         ("open", "Instagram kampanya story", "Özge Yağmur", "2026-10-16", "Ayşe Yılmaz"))
+        self.assertIn("indirim kampanyası için 9:16 story", job["brief"])
+        said = self.job_comments.calls[-1]
+        self.assertEqual(said["target"]["task_id"], self.TODO)
+        self.assertTrue(said["body"].startswith("Bu işi ben takip ediyorum: Ayşe Yılmaz ile olan mail zincirine"),
+                        said["body"])
+        self.watch().run()
+        self.assertEqual(len(self.job_comments.calls), 1)  # said once
+
+    def test_upload_on_the_bound_todo_is_scored_and_delivered_in_the_client_thread(self):
+        self.bound()
+        self.later(20)
+        self.upload(self.TODO, author=OZGE_BC)
+        self.vision.outputs = [message(review(94))]
+        r = self.watch().run()
+        self.assertEqual((r["jobs"]["scored"], r["jobs"]["sent"]), (1, 1), r)
+        request = json.loads(self.vision.calls[0]["messages"][0]["content"][-1]["text"])
+        self.assertEqual((request["job"], request["due_on"]), ("Instagram kampanya story", "2026-10-16"))
+        payload, _ = self.delivery.sent[0]
+        self.assertEqual(payload["thread_id"], self.THREAD)
+        self.assertEqual(self.ops.backend.data[cj.job_key(self.MESSAGE, 0)]["state"], "delivered")
+
+    def test_the_clients_next_mail_in_the_thread_is_hamles_and_lands_on_the_todo(self):
+        self.bound()
+        self.later(30)
+        self.mails = [source(5, thread=self.THREAD, subject="Re: Ynt: Sosyal Medyaya Özel Kampanya Tasarımı",
+                             text="Merhaba,\nİndirim kodu RABAM25, kampanya Cuma 12:00'de başlıyor.\nMert")]
+        self.client.outputs = [message(clear())]
+        r = self.watch().run()
+        self.assertEqual(r["sent"], 1, r)  # own thread: answered by the usual rules
+        note = self.job_comments.calls[-1]
+        self.assertEqual(note["target"]["task_id"], self.TODO)
+        self.assertIn("İndirim kodu RABAM25", note["body"])
+
+    def test_a_client_visible_or_finished_todo_is_left_to_the_team(self):
+        self.brand_bc.meta[self.TODO]["visible_to_clients"] = True
+        r, job = self.bound()
+        self.assertEqual((job["state"], self.job_comments.calls), ("team", []))
+        self.assertNotIn(cj.job_key(self.MESSAGE, 0), self.ops.backend.data[cj.JOBS_KEY]["keys"])
+
+    def test_bad_input_and_twice_are_refused(self):
+        self.bind()
+        for kw in ({}, {"thread_id": "t1"}, {"list_name": "motion"}, {"brand_key": "altinmarka"},
+                   {"client_email": OZGE}, {"actor": "biri@gmail.com"}):
+            with self.assertRaises(cj.ClientJobError):
+                self.bind(**kw)
 
 
 class Parts(unittest.TestCase):
