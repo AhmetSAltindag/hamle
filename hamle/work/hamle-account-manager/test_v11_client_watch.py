@@ -159,6 +159,11 @@ class Text(unittest.TestCase):
         self.assertEqual(cw.sensitive_hits("Ekim faturası", "Merhaba"), ["price"])
         self.assertEqual(cw.sensitive_hits("", "Bu işten hiç memnun değiliz, sözleşmeye bakacağız."),
                          ["complaint", "contract"])
+        campaign = ("Selamlar,\nCuma günü öğle saatlerinde bir paketimiz için Instagram'a özel bir kampanya çıkmak "
+                    "istiyoruz.\nEkte paylaştığım içeriğe özel bir indirim kurgusu çalışıp duyuracağız.\nİndirim "
+                    "kodunu ve kampanya detaylarını paylaşacağım.")
+        self.assertEqual(cw.sensitive_hits("Ynt: Sosyal Medyaya Özel Kampanya Tasarımı", campaign), [])
+        self.assertEqual(cw.sensitive_hits("", "Bu ay için bir indirim yapabilir misiniz?"), ["price"])
 
 
 class Flow(Base):

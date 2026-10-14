@@ -83,7 +83,7 @@ Sınıflandırma (category):
 - question: bilgi sorusu
 - information: bilgilendirme, aksiyon gerektirmeyen
 - meeting: toplantı/görüşme planlama
-- price: fiyat, teklif, bütçe, fatura, ödeme
+- price: ajansın fiyatı, teklifi, bütçesi, faturası, ödemesi. Müşterinin kendi ürünü için indirim ya da kampanya kurgusu fiyat konusu değildir, iş talebidir (request).
 - contract: sözleşme, hukuki konular
 - complaint: şikayet, memnuniyetsizlik
 - other: diğer

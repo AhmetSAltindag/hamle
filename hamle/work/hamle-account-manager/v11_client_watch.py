@@ -79,8 +79,10 @@ CATEGORY_TR = {"request": "iş talebi", "feedback_or_approval": "geri bildirim /
 # Deterministic backstop on the NEW part of the mail (quoted history stripped): any hit makes
 # the mail sensitive even if the model says otherwise. Over-flagging only costs a fixed sentence.
 SENSITIVE_WORDS = {
-    "price": ("fiyat", "teklif", "ücret", "bütçe", "fatura", "ödeme", "maliyet", "indirim", "tutar", "kdv",
-              "havale", "price", "quote", "invoice", "payment", "budget"),
+    # bare 'indirim' is the client's own campaign (Rabam 14 Oct: "indirim kurgusu" story); only asking us for one counts
+    "price": ("fiyat", "teklif", "ücret", "bütçe", "fatura", "ödeme", "maliyet", "indirim yap", "indirim rica",
+              "indirim talep", "indirim isti", "indirim bekl", "iskonto", "tutar", "kdv", "havale", "price", "quote",
+              "invoice", "payment", "budget"),
     "contract": ("sözleşme", "kontrat", "fesih", "hukuk", "avukat", "ihtar", "noter", "contract"),
     "complaint": ("şikayet", "şikâyet", "memnun değil", "hayal kırıklığı", "kabul edilemez", "rezalet",
                   "çok kötü", "berbat", "complaint", "unacceptable"),
