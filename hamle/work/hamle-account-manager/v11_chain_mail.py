@@ -459,6 +459,19 @@ class GmailThreadReplyWriter:
         return {"readback_sha256": scope_digest(payload)}
 
 
+def mail_attachments(inventory):
+    """The attachment parts of one mail: [{'filename','mime_type','size_bytes','attachment_id'}] (at most 12)."""
+    out = []
+    for item in inventory or []:
+        if not item.get("is_attachment") or item.get("mime_type", "").startswith("multipart/"):
+            continue
+        out.append({"filename": str(item.get("filename") or "")[:255] or "(adsız ek)",
+                    "mime_type": str(item.get("mime_type") or "application/octet-stream")[:120],
+                    "size_bytes": item.get("size_bytes") if type(item.get("size_bytes")) is int else None,
+                    "attachment_id": item.get("attachment_id") if isinstance(item.get("attachment_id"), str) else None})
+    return out[:12]
+
+
 class ChainMailReader:
     """Verified latest incoming mail per thread for the chain (bodies stay in memory).
 
@@ -470,6 +483,7 @@ class ChainMailReader:
 
     shadow = False  # False: skip 'Gölge:' forwards; True: only them (client watch); None: no filter
     max_body_bytes = None  # None: provider.MAX_BODY_BYTES
+    keep_attachments = False  # True: the source lists the latest mail's attachments (client watch reads them)
 
     def __init__(self, store, catalog, *, clock=time.time, max_threads=10, newer_than_days=3,
                  _service_factory=None, _credentials_factory=None, _request_factory=None):
@@ -586,4 +600,5 @@ class ChainMailReader:
                 "subject": subjects[latest["id"]]["subject"][:300], "text": plain[0],
                 "source_order": latest["time_ms"], "received_at_ms": latest["time_ms"], "rfc_message_id": rfc[0].strip(),
                 "attachments_fetched": False,
-                "has_attachments": any(i.get("is_attachment") for i in row["mime_inventory"])}
+                "has_attachments": any(i.get("is_attachment") for i in row["mime_inventory"]),
+                **({"attachments": mail_attachments(row["mime_inventory"])} if self.keep_attachments else {})}

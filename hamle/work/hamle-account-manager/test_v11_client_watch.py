@@ -47,7 +47,7 @@ def source(n, *, thread="t1", sender="ayse@watmobilite.com.tr", subject="Ekim po
 def draft_out(category="request", reply="Merhaba Ayşe,\nTalebinizi aldık, ekip görseli güncelleyecek.\nSevgiler,\nHamle"):
     return {"category": category, "summary": "Müşteri görselin daha aydınlık olmasını istiyor.", "reply": reply,
             "missing_info": [], "team_next_step": "Özge görseli Berkay'a revizeye versin.", "confidence": 82,
-            "rubric": None, "job_ready": False, "jobs": []}
+            "rubric": None, "attachments_read": [], "job_ready": False, "jobs": []}
 
 
 class Writer:

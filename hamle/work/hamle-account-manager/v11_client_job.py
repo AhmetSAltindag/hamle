@@ -20,6 +20,10 @@ Runs inside v11_client_watch (mode 'reply', brands in the config's 'jobs' block)
      decision to the approvers.
    Files Hamle cannot score (video, large PDF) or a failed model call go to the approvers the same way.
 3. A completed to-do closes the job. Hamle never changes dates or closes to-dos.
+4. Jobs with no client mail (Ahmet 14 Oct: most client work comes by WhatsApp): the team writes the job on a
+   brand to-do and tags Hamle (v11_basecamp_mentions, action 'follow'). The job is followed the same way; the
+   team's comments are its client notes, and a work that passes (90+ or an approver's "uygun") is marked ready
+   on the to-do for the team to send on WhatsApp (there is no thread to mail).
 
 Same rules as client replies: durable record before every provider write, one attempt, exact readback,
 anything uncertain is 'unknown' and never retried; global stop ('dur') fences every write; the day's send
@@ -99,6 +103,11 @@ def job_key(message_id, index):
 
 def job_thread_key(thread_id):
     return "client-job-thread-" + _sha(thread_id)
+
+
+def todo_job_key(todo_id):
+    """A job with no client mail (WhatsApp, phone): the team wrote it on Basecamp and tagged Hamle."""
+    return "client-job-bc-" + _sha(str(todo_id))
 
 
 # ------------------------------------------------------------------ config
@@ -208,11 +217,24 @@ def todo_title(brand, sender, item):
     return (brand["title_prefix"] + ("TEST – " if sender.get("test") else "") + item["title"])[:150]
 
 
-def todo_description(brand, sender, source, item, settings):
-    """Short designer brief (Ahmet 13 Oct: no client mail text, no process paragraph)."""
+def client_files(draft):
+    """What the client's attachments are, as the draft model read them: [{'name', 'what'}] (Ahmet 14 Oct)."""
+    return [{"name": _line(d.get("name"), 255), "what": _line(d.get("what"), 500)}
+            for d in (draft or {}).get("attachments_read") or [] if isinstance(d, dict) and d.get("name")][:12]
+
+
+def file_lines(files, unread=()):
+    return (["- " + f["name"] + ": " + f["what"] for f in files]
+            + ["- " + n + ": okunamadı, mailden açıp bakın" for n in unread])
+
+
+def todo_description(brand, sender, source, item, settings, files=(), unread=()):
+    """Short designer brief (Ahmet 13 Oct: no client mail text, no process paragraph) plus the client's files."""
     who = sender.get("name") or sender["email"]
+    attached = (["", "Müşterinin mailindeki ekler (dosyalar hamle@ mailinde, aynı zincirde):"]
+                + file_lines(files, unread) if files or unread else [])
     lines = (["TEST · müşteriye gitmez", ""] if sender.get("test") else []) + [
-        item["brief"].strip(), "",
+        item["brief"].strip()] + attached + ["",
         "Teslim: " + (_tr_date(item["due_on"]) if item["due_on"] else "müşteri tarih vermedi"),
         "Talep: " + who + " (" + brand["name"] + ") · " + _when(source.get("received_at_ms")),
         "Çalışmayı bu to-do'ya dosya olarak yükle; Hamle kontrol edip müşteriye iletir."]
@@ -824,21 +846,68 @@ class JobDesk:
             return None
         out = []
         for i, item in enumerate(items):
-            out.append(self._open(i, item, brand, source, sender, report))
+            out.append(self._open(i, item, brand, source, sender, report, draft=draft))
         return {"kind": "opened", "jobs": out, "comments": 0}
+
+    # ----- 1b. a job the team wrote on Basecamp (WhatsApp, phone), Hamle tagged with 'follow'
+    def todo_job(self, brand_key, todo, list_id, *, brief, files, request_text, followed_by, last_seen):
+        """(job record, None) or (None, why in Turkish). No store write: MentionDesk writes it with its claim."""
+        brand = self.s["brands"].get(brand_key)
+        if brand is None:
+            return None, "bu markada iş takibini henüz açmadık (şimdilik WAT Mobilite ve Rabam)"
+        kind = next((n for n, i in brand["lists"].items() if i == list_id), None)
+        if kind is None:
+            return None, "işleri yalnız markanın Sosyal Medya ve Projeler listelerinde takip ediyorum"
+        if todo.get("completed") is True:
+            return None, "to-do tamamlanmış"
+        people = [a.get("id") for a in todo.get("assignees") or [] if isinstance(a, dict)
+                  and a.get("id") in self.s["agency_ids"]]
+        default = brand["assignees"][kind]
+        assignee_id = people[0] if people else default["id"]
+        title = _line(todo.get("content") or todo.get("title"), 150) or brand["name"]
+        core = re.sub(r"^[^/]{1,20}//\s*", "", title).strip() or title
+        due = todo.get("due_on") if isinstance(todo.get("due_on"), str) and DATE.fullmatch(todo["due_on"]) else None
+        return {"key": todo_job_key(todo["id"]), "kind": "client_job", "state": "open", "origin": "basecamp",
+                "followed_by": followed_by, "brand_key": brand_key, "test": False, "message_id": None,
+                "thread_id": None, "index": 0, "list": kind, "account_id": self.s["account_id"],
+                "project_id": brand["project_id"], "list_id": list_id, "todo_id": todo["id"], "title": title,
+                "title_core": core, "brief": str(brief).strip()[:1500], "client_text": str(request_text)[:1500],
+                "due_on": due, "assignee_id": assignee_id,
+                "assignee_name": self.s["agency_ids"].get(assignee_id) or default["name"], "client_name": None,
+                "client_email": None, "client_notes": [], "client_files": list(files or [])[:12], "revisions": 0,
+                "last_seen": int(last_seen or 0), "app_url": todo.get("app_url")}, None
+
+    def _team_notes(self, job, fresh):
+        """A WhatsApp job: the team's new plain comments carry the client's words; they join client_notes."""
+        import v11_client_reply as cr
+        seen = {n.get("id") for n in job.get("client_notes") or []}
+        new = []
+        for c in fresh:
+            who = (c.get("creator") or {}).get("id")
+            if who not in self.s["agency_ids"] or c["id"] in seen or upload_files(c) or approval(c.get("content")):
+                continue
+            text = cr.comment_text(c.get("content")).strip()
+            if text:
+                new.append({"id": c["id"], "at": str(c.get("created_at") or "")[:16].replace("T", " "),
+                            "from": self.s["agency_ids"][who] + " (ekip)", "summary": "", "text": text[:800]})
+        if not new:
+            return job
+        return self._set(job["key"], client_notes=(list(job.get("client_notes") or []) + new)[-5:])
 
     @staticmethod
     def _brief(job):
         return {"title": job.get("title"), "url": job.get("app_url"), "state": job.get("state"),
                 "assignee": job.get("assignee_name")}
 
-    def _open(self, index, item, brand, source, sender, report):
+    def _open(self, index, item, brand, source, sender, report, draft=None):
         key, tkey = job_key(source["message_id"], index), job_thread_key(source["thread_id"])
         assignee = brand["assignees"][item["list"]]
+        files = client_files(draft)
+        unread = [n for n in (draft or {}).get("attachments_unread") or [] if n not in {f["name"] for f in files}]
         payload = {"target": {"account_id": self.s["account_id"], "project_id": brand["project_id"],
                               "list_id": brand["lists"][item["list"]]},
                    "title": todo_title(brand, sender, item),
-                   "description": todo_description(brand, sender, source, item, self.s),
+                   "description": todo_description(brand, sender, source, item, self.s, files, unread),
                    "assignee_ids": [assignee["id"]], "due_on": item["due_on"],
                    "completion_subscriber_ids": list(brand.get("when_done") or [])}
         sha = scope_digest(payload)
@@ -850,8 +919,8 @@ class JobDesk:
                "title": payload["title"], "title_core": item["title"], "brief": item["brief"],
                "client_text": latest_part(source.get("text"))[:1500], "due_on": item["due_on"],
                "assignee_id": assignee["id"], "assignee_name": assignee["name"], "client_name": sender.get("name"),
-               "client_email": sender["email"], "client_notes": [], "revisions": 0, "last_seen": 0,
-               "payload_sha256": sha}
+               "client_email": sender["email"], "client_notes": [], "client_files": files, "revisions": 0,
+               "last_seen": 0, "payload_sha256": sha}
 
         def begin(tx, now):
             self.watch._fence(tx, now)
@@ -893,21 +962,28 @@ class JobDesk:
         text = latest_part(source.get("text"))[:1500]
         note = {"at": _when(source.get("received_at_ms")), "from": sender.get("name") or sender["email"],
                 "summary": _line(draft.get("summary"), 400), "text": text[:800]}
+        files = client_files(draft)
+        unread = [n for n in draft.get("attachments_unread") or [] if n not in {f["name"] for f in files}]
+        attached = ("\n\nMaildeki ekler (hamle@ mailinde, aynı zincirde):\n" + "\n".join(file_lines(files, unread))
+                    if files or unread else "")
         n = 0
         for job in jobs:
             if job.get("state") not in FOLLOW_STATES or job.get("todo_id") is None:
                 continue
             body = ("Müşteriden bu işle ilgili yeni mail geldi (" + note["from"] + ", " + note["at"] + ").\n"
                     + ("Özet: " + note["summary"] + "\n" if note["summary"] else "") + "\nMailin yeni kısmı:\n" + text
+                    + attached
                     + f"\n\n{job['assignee_name']}, bu notları dikkate alalım. Yeni dosya yüklendiğinde briefi bu "
                       "notlarla birlikte kontrol edeceğim.")
             if self._comment(job, body, report) == "written":
                 n += 1
             notes = (list(job.get("client_notes") or []) + [note])[-5:]
+            known = list(job.get("client_files") or [])
+            known = (known + [f for f in files if f not in known])[-12:]
             if job["state"] == "delivered":  # the client's new notes start a fresh revision round
-                self._set(job["key"], client_notes=notes, state="open", revisions=0)
+                self._set(job["key"], client_notes=notes, client_files=known, state="open", revisions=0)
             else:
-                self._set(job["key"], client_notes=notes)
+                self._set(job["key"], client_notes=notes, client_files=known)
         return n
 
     # ----- 2. follow open jobs
@@ -1005,6 +1081,8 @@ class JobDesk:
         fresh = [c for c in comments if int(c["id"]) > int(job.get("last_seen") or 0)
                  and (c.get("creator") or {}).get("id") != HAMLE_PERSON]
         uploads = [c for c in fresh if (c.get("creator") or {}).get("id") in self.s["agency_ids"] and upload_files(c)]
+        if job.get("thread_id") is None:
+            job = self._team_notes(job, fresh)
         brand = self.s["brands"][job["brand_key"]]
         verdicts = [(c, approval(c.get("content"))) for c in fresh if (c.get("creator") or {}).get("id") in brand["approvers"]]
         verdicts = [(c, v) for c, v in verdicts if v is not None]
@@ -1078,6 +1156,8 @@ class JobDesk:
         notes = [dict(n, text=str(n.get("text") or "")[:600]) for n in (job.get("client_notes") or [])[-3:]]
         request = {"brand": brand["name"], "job": job["title_core"], "list": job["list"], "brief": job["brief"],
                    "client_mail": job["client_text"][:1200], "client_notes": notes,
+                   "client_files": [{"name": f["name"][:120], "what": f["what"][:300]}
+                                    for f in list(job.get("client_files") or [])[-6:]],
                    "revision_round": int(job.get("revisions") or 0), "files": info, "not_reviewed": skipped,
                    "client_name": job.get("client_name"), "due_on": job.get("due_on"),
                    "today": self.watch.clock().date().isoformat()}
@@ -1130,9 +1210,13 @@ class JobDesk:
             lines = [f"🟡 {problem}."] + ([result["summary"]] if result else [])
         if result and result["missing"]:
             lines += ["", "Eksik ya da tartışmalı:"] + ["- " + m for m in result["missing"]]
-        lines += ["", f"{names}: uygunsa bu to-do'ya \"uygun\" yazın, müşteriye hemen göndereyim. Revize gerekiyorsa "
-                      "tasarımcıya yazın; yeni dosyayı da takip edeceğim. Teslimi siz yapacaksanız \"Hamle gönderme\" "
-                      "yazın."]
+        if job.get("thread_id") is None:
+            lines += ["", f"{names}: uygunsa bu to-do'ya \"uygun\" yazın; iş WhatsApp'tan geldiği için dosyayı "
+                          "müşteriye siz iletirsiniz. Revize gerekiyorsa tasarımcıya yazın; yeni dosyayı da takip edeceğim."]
+        else:
+            lines += ["", f"{names}: uygunsa bu to-do'ya \"uygun\" yazın, müşteriye hemen göndereyim. Revize "
+                          "gerekiyorsa tasarımcıya yazın; yeni dosyayı da takip edeceğim. Teslimi siz yapacaksanız "
+                          "\"Hamle gönderme\" yazın."]
         self._comment(job, "\n".join(lines), report)
 
     # ----- 3. delivery
@@ -1141,6 +1225,8 @@ class JobDesk:
         files = upload.get("files") or []
         if not files:
             return "waiting"
+        if job.get("thread_id") is None:
+            return self._ready(job, report, out, approved_by)
         brand = self.s["brands"][job["brand_key"]]
         reply = self.watch.reply
         try:
@@ -1211,6 +1297,24 @@ class JobDesk:
         self._comment(job, head + f" ({who}).\n\nGönderilen mail:\n{body}\n\nEkler: "
                       + ", ".join(f["filename"] for f in files), report)
         return "sent"
+
+    def _ready(self, job, report, out, approved_by):
+        """No client mail thread (WhatsApp job): the work passed; the team sends it, Hamle says it is ready."""
+        files = (job.get("upload") or {}).get("files") or []
+        head = (f"✅ Puan: {job.get('score')}/100. Briefle uyumlu, müşteriye gitmeye hazır" if approved_by is None
+                else f"✅ {approved_by} onayladı, müşteriye gitmeye hazır")
+        written = self._comment(job, head + ". İş WhatsApp'tan geldiği için mail zinciri yok: dosyayı ("
+                                + ", ".join(f["filename"] for f in files) + ") müşteriye siz iletin. Müşteri revize "
+                                "isterse notunu buraya yazın; yeni dosyayı yine kontrol ederim.", report)
+        if written.startswith("denied:"):
+            return "waiting"  # 'dur' or a limit: deliver_pending stays, tried again next run
+        accepted = list(dict.fromkeys(list(job.get("accepted") or [])
+                                      + list((job.get("review") or {}).get("missing") or [])))[-12:]
+        self._set(job["key"], state="delivered", delivered_at=self.watch.clock().timestamp(), delivered_by="team",
+                  deliveries=int(job.get("deliveries") or 0) + 1, deliver_pending=None, accepted=accepted,
+                  accepted_by=approved_by or f"Hamle ({job.get('score')}/100)")
+        out["ready"] = out.get("ready", 0) + 1
+        return "ready"
 
     def _unknown(self, job, exc, report):
         self._set(job["key"], state="send_unknown", reason=_code(exc), deliver_pending=None)

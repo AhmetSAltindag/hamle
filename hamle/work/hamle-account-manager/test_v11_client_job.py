@@ -174,7 +174,7 @@ class JobBase(ReplyBase):
                                                     client=self.client),
                               task_writer=self.todos, comment_writer=self.comments, mail_writer=self.summaries,
                               catalog=self.catalog, clock=lambda: self.now, reply_writer=self.replies,
-                              basecamp_get=self.bc, jobs_factory=factory)
+                              basecamp_get=self.bc, jobs_factory=factory, attachments=getattr(self, "fetch", None))
 
     def job(self, i=0, message_id="m1"):
         return self.ops.backend.data.get(cj.job_key(message_id, i))
@@ -255,6 +255,27 @@ class Open(JobBase):
         self.assertEqual(self.todos.calls[0]["assignee_ids"], [AHMET_BC])  # not opened: the test goes to Ahmet
         self.watch().run()
         self.assertEqual(len(self.todo_writer.calls), 1)
+
+    def test_the_clients_files_go_into_the_todo_and_the_scoring(self):
+        # Ahmet 14 Oct: the attachment is part of the request; the designer and the scorer both see what it is
+        self.fetch = lambda message_id, attachment_id: png(1080, 1920)
+        m = source(1)
+        m.update(has_attachments=True, attachments=[{"filename": "App Banner.png", "mime_type": "image/png",
+                                                     "size_bytes": 3000, "attachment_id": "ANGjdJ8_x"}])
+        self.mails = [m]
+        said = [{"name": "App Banner.png", "what": "Paket görseli: aylık 1.124 TL, yıllık 7.110 TL tasarruf"}]
+        self.client.outputs = [message(ready(jobs=copy.deepcopy(ITEMS[:1]), attachments_read=said))]
+        self.watch().run()
+        d = self.todo_writer.calls[0]["description"]
+        self.assertIn("Müşterinin mailindeki ekler (dosyalar hamle@ mailinde, aynı zincirde):\n"
+                      "- App Banner.png: Paket görseli: aylık 1.124 TL, yıllık 7.110 TL tasarruf", d)
+        self.assertEqual(self.job()["client_files"], said)
+        self.later(20)
+        self.upload(self.job()["todo_id"])
+        self.vision.outputs = [message(review(94))]
+        self.watch().run()
+        request = json.loads(self.vision.calls[0]["messages"][0]["content"][-1]["text"])
+        self.assertEqual(request["client_files"], said)
 
     def test_draft_items_are_cleaned(self):
         items = cj.job_items({"jobs": [

@@ -55,7 +55,7 @@ NOTIFY_FROM = "notifications@app.basecamp.com"
 LINK = re.compile(r"https://(?:app|3)\.basecamp\.com/([1-9][0-9]{0,11})/buckets/([1-9][0-9]{0,14})/todos/"
                   r"([1-9][0-9]{0,14})(?:#__recording_([1-9][0-9]{0,14}))?")
 NAMES_HAMLE = re.compile(r"(?<![0-9a-zçğıöşü])hamle(?![0-9a-zçğıöşü])", re.IGNORECASE)
-ACTIONS = ("answer", "ask", "cannot", "client_mail")
+ACTIONS = ("answer", "ask", "cannot", "client_mail", "follow")
 FIELDS = {"enabled", "since", "max_per_run", "newer_than_days"}
 DRAFTS_KEY = "bc-mention-drafts"
 DRAFT_WINDOW_SECONDS = 3 * 24 * 3600
@@ -264,10 +264,16 @@ def _str(maximum):
     return {"type": "string", "minLength": 1, "maxLength": maximum}
 
 
+from v11_attachments import DESCRIBED_SCHEMA  # noqa: E402
+
 MENTION_SCHEMA = _obj({
     "action": {"type": "string", "enum": list(ACTIONS)},
     "understood": _str(300),
     "comment": _str(3000),
+    "attachments_read": DESCRIBED_SCHEMA,
+    # follow (Ahmet 14 Oct): a job that came by WhatsApp, written on Basecamp by the team; Hamle follows the to-do
+    "job": {"type": ["object", "null"], "properties": {"brief": _str(1500)}, "required": ["brief"],
+            "additionalProperties": False},
     "mail": {"type": ["object", "null"], "properties": {
         "to": {"type": "array", "items": _str(120), "maxItems": 3},
         "subject": _str(200),
@@ -288,7 +294,7 @@ def mention_source(ops, load_key, catalog, *, routing=None, client=None):
     cap = internal_cap_microdollars(catalog)
     hold = reservation_for(route)
 
-    def decide(request, parts):
+    def decide(request, parts, blocks=()):
         digest = source_digest("basecamp_mention", *parts, route_fingerprint(route, PROMPT))
         gate = ModelGate(ledger=ops, cache=ops, generation=ops.control()["generation"], cap_microdollars=cap)
 
@@ -299,8 +305,22 @@ def mention_source(ops, load_key, catalog, *, routing=None, client=None):
                 raise MentionError("mention_prompt_unavailable") from None
             key = key_for(load_key, "anthropic")
             try:
-                return base.anthropic_json(route, system, request, MENTION_SCHEMA, api_key=key, client=client,
-                                           validator=lambda v: validate(v, MENTION_SCHEMA) or v)
+                if not blocks:
+                    return base.anthropic_json(route, system, request, MENTION_SCHEMA, api_key=key, client=client,
+                                               validator=lambda v: validate(v, MENTION_SCHEMA) or v)
+                # the to-do's files go to the model with it (images, PDFs, document text)
+                text = json.dumps(request, ensure_ascii=False, sort_keys=True)
+                _need(len(text.encode("utf-8")) <= base.MAX_INPUT_BYTES, "mention_input_too_large")
+                kwargs = base.anthropic_request(route, system, text, schema=MENTION_SCHEMA)
+                kwargs["messages"] = [{"role": "user", "content": list(blocks) + [{"type": "text", "text": text}]}]
+                data = base.anthropic_send(key, route, kwargs, client=client)
+                result = base.anthropic_extract(route, data, structured=True)
+                try:
+                    value = base._loads(result["text"])
+                    validate(value, MENTION_SCHEMA)
+                except Exception:
+                    raise base._anthropic_error("invalid_analysis_schema", data, route) from None
+                return {"output": value, "receipt": result["receipt"]}
             finally:
                 del key
         return gate.once("basecamp_mention", digest, call, provider="anthropic", hold=hold)
@@ -415,10 +435,12 @@ def failure_text(first):
 # ------------------------------------------------------------------ the desk
 class MentionDesk:
     """Mentions and their client-mail drafts for ClientWatch (same ops store, fence and day counters)."""
-    def __init__(self, watch, settings, *, reader, model, comment_writer, mail_writer, basecamp_get, brands):
+    def __init__(self, watch, settings, *, reader, model, comment_writer, mail_writer, basecamp_get, brands,
+                 download=None):
         self.watch, self.ops, self.s = watch, watch.ops, settings
         self.reader, self.model, self.comments, self.mail = reader, model, comment_writer, mail_writer
         self.get, self.brands = basecamp_get, brands
+        self.download = download  # Basecamp file download (v11_client_job.basecamp_downloader); None: files not read
         self.calls = 0
 
     # ----- store helpers
@@ -478,7 +500,7 @@ class MentionDesk:
 
     # ----- run
     def run(self, report, started):
-        out = {"read": 0, "answered": 0, "drafts": 0, "sent": 0, "skipped": 0, "held": 0, "waiting": 0}
+        out = {"read": 0, "answered": 0, "followed": 0, "drafts": 0, "sent": 0, "skipped": 0, "held": 0, "waiting": 0}
         self.calls = 0
         try:
             self._drafts(report, started, out)
@@ -500,6 +522,8 @@ class MentionDesk:
                 outcome = "error:" + _code(exc)
             if outcome in ("answer", "ask", "cannot", "failed"):
                 out["answered"] += 1
+            elif outcome == "follow":
+                out["followed"] += 1
             elif outcome == "client_mail":
                 out["drafts"] += 1
             elif outcome == "waiting":
@@ -573,7 +597,8 @@ class MentionDesk:
         tkey = todo_key(todo_id)
         if cr.command(html) is not None and (self._get(tkey) or {}).get("draft_keys"):
             return self._skip(key, token, "draft_command")  # the draft check reads it
-        if self._job_todo(todo_id):
+        followed = self._job_todo(todo_id)
+        if followed:
             from v11_client_job import approval
             if approval(html) is not None:
                 return self._skip(key, token, "job_approval")  # the client job reads it
@@ -585,16 +610,39 @@ class MentionDesk:
         draft = self._open_draft(todo_id)
         request = self._request(todo, comments, {"author": person["name"], "at": _when(at), "text": text[:4000]},
                                 brand, draft)
+        # Ahmet 14 Oct, no exceptions: the to-do's files are read too (the client's WhatsApp files live here)
+        files, blocks = self._files(todo, comments)
+        request["attachments"] = [{k: v for k, v in row.items() if k in ("name", "type", "read", "reason", "pages",
+                                                                       "ratio", "width", "height", "note")}
+                                  for row in files]
+        why = self._follow_problem(brand_key, parent["id"], followed)
+        request["job_tracking"] = {"followed": followed, "possible": why is None, "why": why}
+        self._fit(request)
         self.calls += 1
         report["model_calls"] += 1
         try:
-            result = self.model(request, [key, scope_digest(request)])
+            result = (self.model(request, [key, scope_digest(request)], blocks) if blocks
+                      else self.model(request, [key, scope_digest(request)]))
             status = "ok"
         except Exception as exc:
             result, status = None, "failed:" + _code(exc)
         target = self._target(project, parent["id"], todo_id)
         first = _first(person["name"])
-        mail, action = None, "failed"
+        mail, action, job = None, "failed", None
+        described = list((result or {}).get("attachments_read") or []) if isinstance(result, dict) else []
+        if isinstance(result, dict) and result["action"] == "follow":
+            if why is None:
+                job, why = self.watch.jobs.todo_job(
+                    brand_key, todo, parent["id"], brief=(result.get("job") or {}).get("brief")
+                    or cr.comment_text(todo.get("description")) or str(todo.get("content") or ""),
+                    files=[{"name": _line(d.get("name"), 255), "what": _line(d.get("what"), 500)}
+                           for d in described if isinstance(d, dict) and d.get("name")],
+                    request_text=(cr.comment_text(todo.get("description")) + "\n\n" + text).strip(),
+                    followed_by=person["email"], last_seen=max([int(c["id"]) for c in comments] or [0]))
+            if job is None:
+                result = dict(result, action="answer" if followed else "cannot",
+                              comment=f"{first}, bu işi zaten takip ediyorum." if followed
+                              else f"{first}, bu işi takibe alamıyorum: {why}.")
         if isinstance(result, dict):
             action = result["action"]
             if action == "client_mail":
@@ -619,16 +667,26 @@ class MentionDesk:
                                 + "). Düzeltilmiş metni \"Hamle gönder\" satırının altına yazın.")
             if not mail["body"].rstrip().endswith(SIGNATURE_END):
                 warnings.append("İmza eksik görünüyor.")
+            missed = self._unread(files, described)
+            if missed:
+                warnings.append("Şu dosyaları okuyamadım, maili göndermeden önce bakın: " + missed + ".")
             body = draft_text(result["comment"], mail, self._name, self._approvers(), warnings)
+        elif action == "follow":
+            body = result["comment"] + "\n\n" + self._follow_text(job)
         else:
             body = result["comment"]
+        if action != "failed" and action != "client_mail" and self._unread(files, described):
+            body += "\n\nOkuyamadığım dosyalar: " + self._unread(files, described) + "."
         payload_target = dict(target)
         dkey = draft_key(key)
         local = self.watch.clock().astimezone(ISTANBUL).date().isoformat()
 
+        from v11_client_job import JOBS_KEY
+
         def begin(tx, now):
             self.watch._fence(tx, now)
             row, t = tx.get(key), tx.get(tkey) or {"key": tkey, "kind": "bc_mention_todo", "todo_id": todo_id}
+            old_job, index = (tx.get(job["key"]), tx.get(JOBS_KEY)) if job is not None else (None, None)  # reads first
             _need(row is not None and row.get("token") == token and row["state"] == "claimed", "mention_claim_lost")
             count = int(t.get("count") or 0) if t.get("day") == local else 0
             _need(count < MAX_PER_TODO_PER_DAY, "mention_todo_daily_limit")
@@ -642,6 +700,10 @@ class MentionDesk:
                               "target": payload_target, "list_id": parent["id"], "todo_id": todo_id,
                               "brand_key": brand_key, "requester_id": author["id"], **mail, "created_at": now})
             tx.put(tkey, t)
+            if job is not None and old_job is None:  # Hamle follows the to-do from the next run on
+                tx.put(job["key"], dict(job, created_at=now, updated_at=now, opened_at=now, mention_key=key))
+                keys = list((index or {}).get("keys") or [])
+                tx.put(JOBS_KEY, {"kind": "client_jobs", "keys": list(dict.fromkeys(keys + [job["key"]]))[-80:]})
         try:
             self.ops._run(begin)
         except Exception as exc:
@@ -671,8 +733,83 @@ class MentionDesk:
             self.ops._run(index, allow_expired=True)
         return action
 
+    def _files(self, todo, comments):
+        """(status rows, model blocks) for the files on the to-do and its comments (newest kept)."""
+        from v11_attachments import MAX_FILES, read_files
+        from v11_client_job import upload_files
+        metas = upload_files({"content": todo.get("description")})
+        for c in comments:
+            metas += upload_files(c)
+        metas = metas[-MAX_FILES:]
+        if not metas:
+            return [], []
+        files = []
+        for m in metas:
+            meta = {"filename": m["filename"], "content_type": m["content_type"]}
+            if self.download is None:
+                files.append((dict(meta, reason="dosya okuma bu çalışmada kapalı"), None))
+                continue
+            try:
+                files.append((meta, self.download(m["download_url"], m["byte_size"])))
+            except Exception as exc:
+                files.append((dict(meta, reason="indirilemedi (" + _code(exc) + ")"), None))
+        out = read_files(files)
+        return out["status"], out["blocks"]
+
+    @staticmethod
+    def _unread(files, described):
+        from v11_attachments import unread
+        names = unread(files, described)
+        why = {r["name"]: r.get("reason") for r in files}
+        return ", ".join(n + (f" ({why[n]})" if why.get(n) else "") for n in names[:6])
+
+    def _follow_problem(self, brand_key, list_id, followed):
+        """None when this to-do can become a followed job (action 'follow'), else why not."""
+        if followed:
+            return "bu işi zaten takip ediyorum"
+        jobs = self.watch.jobs
+        if jobs is None:
+            return "iş takibi kapalı"
+        brand = jobs.s["brands"].get(brand_key)
+        if brand is None:
+            return "bu markada iş takibini henüz açmadık (şimdilik WAT Mobilite ve Rabam)"
+        if list_id not in brand["lists"].values():
+            return "işleri yalnız markanın Sosyal Medya ve Projeler listelerinde takip ediyorum"
+        return None
+
+    def _follow_text(self, job):
+        brand = self.watch.jobs.s["brands"][job["brand_key"]]
+        approvers = " ya da ".join(_first(n) for n in brand["approvers"].values())
+        files = job.get("client_files") or []
+        lines = ["Bu işi takip ediyorum. " + _first(job["assignee_name"]) + ", çalışmayı bu to-do'ya dosya olarak "
+                 "yükleyince briefle karşılaştırıp puanlayacağım: 90 ve üstüne \"hazır\" derim, 80-89 arası "
+                 + approvers + " onayına sunarım, altında gerekçeli revize isterim. İş WhatsApp'tan geldiği için "
+                 "müşteriye gönderimi siz yaparsınız; müşterinin yeni isteklerini buraya yorum olarak yazın, briefe "
+                 "eklerim.", "", "Anladığım brief:", job["brief"]]
+        if files:
+            lines += ["", "Müşterinin dosyaları:"] + ["- " + f["name"] + ": " + f["what"] for f in files]
+        return "\n".join(lines)
+
+    @staticmethod
+    def _fit(request, limit=14_000):
+        """Keep the model input under its byte limit: the oldest comments go first, then texts get shorter."""
+        def size():
+            return len(json.dumps(request, ensure_ascii=False, sort_keys=True).encode("utf-8"))
+        while size() > limit and len(request["comments"]) > 3:
+            request["comments"].pop(0)
+        for cap in (800, 400, 200):
+            if size() <= limit:
+                break
+            for c in request["comments"]:
+                c["text"] = c["text"][:cap]
+            request["todo"]["description"] = request["todo"]["description"][:cap * 2]
+            request["mention"]["text"] = request["mention"]["text"][:cap * 2]
+        return request
+
     def _job_todo(self, todo_id):
-        from v11_client_job import JOBS_KEY
+        from v11_client_job import JOBS_KEY, todo_job_key
+        if self._get(todo_job_key(todo_id)) is not None:
+            return True
         for k in (self._get(JOBS_KEY) or {}).get("keys") or []:
             if (self._get(k) or {}).get("todo_id") == todo_id:
                 return True

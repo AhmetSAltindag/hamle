@@ -314,6 +314,9 @@ def anthropic_key(secrets):
         raise ProviderError("anthropic_credential_unavailable") from None
 
 
+ATTACHMENT_RESPONSE_LIMIT = 28_000_000  # base64 JSON of a 20 MB attachment
+
+
 class _ReadOnlyGmailHttp:
     def __init__(self, credentials):
         self.credentials = credentials
@@ -321,14 +324,18 @@ class _ReadOnlyGmailHttp:
     def request(self, uri, method="GET", body=None, headers=None, **kwargs):
         from httplib2 import Response
         parsed = urlsplit(uri)
+        attachment = re.fullmatch(r"/gmail/v1/users/me/messages/[a-fA-F0-9]{1,64}/attachments/[A-Za-z0-9_-]{1,4096}",
+                                  parsed.path)  # a client mail's attachment (Ahmet 14 Oct: read every attachment)
         if (method != "GET" or body is not None or parsed.scheme != "https"
                 or parsed.netloc != "gmail.googleapis.com"
-                or not re.fullmatch(r"/gmail/v1/users/me/(profile|threads(?:/[a-fA-F0-9]{1,64})?)", parsed.path)):
+                or not (attachment or re.fullmatch(r"/gmail/v1/users/me/(profile|threads(?:/[a-fA-F0-9]{1,64})?)",
+                                                   parsed.path))):
             raise ProviderError("gmail_read_path_forbidden")
         if not self.credentials.valid:
             raise ProviderError("gmail_credential_expired")
         raw, response_headers = _request(self.session, "GET", uri,
-            headers={"Authorization": "Bearer " + _token(self.credentials.token)}, limit=2_097_152)
+            headers={"Authorization": "Bearer " + _token(self.credentials.token)},
+            limit=ATTACHMENT_RESPONSE_LIMIT if attachment else 2_097_152)
         return Response({**response_headers, "status": "200"}), raw
     def close(self):
         self.session.close()

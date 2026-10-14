@@ -422,7 +422,12 @@ class ProviderTests(unittest.TestCase):
             http = app._ReadOnlyGmailHttp(Cred())
             for uri, method in (("https://gmail.googleapis.com/gmail/v1/users/me/messages/send", "POST"),
                                 ("https://evil.example/gmail/v1/users/me/profile", "GET"),
-                                ("https://gmail.googleapis.com/gmail/v1/users/other/profile", "GET")):
+                                ("https://gmail.googleapis.com/gmail/v1/users/other/profile", "GET"),
+                                # attachments (Ahmet 14 Oct) are readable by GET only, nothing around them
+                                ("https://gmail.googleapis.com/gmail/v1/users/me/messages/1a2b/attachments/ANGj", "POST"),
+                                ("https://gmail.googleapis.com/gmail/v1/users/me/messages/1a2b", "GET"),
+                                ("https://gmail.googleapis.com/gmail/v1/users/me/messages/1a2b/attachments/a/../send", "GET"),
+                                ("https://gmail.googleapis.com/gmail/v1/users/me/messages/zz/attachments/ANGj", "GET")):
                 self.error("gmail_read_path_forbidden", lambda: http.request(uri, method=method))
 
     def test_basecamp_reads_fixed_project_identity_and_private_members(self):

@@ -366,6 +366,9 @@ def shadow_subject(subject):
     return REPLY_PREFIX.sub("", core[found.end():] if found else core).strip()
 
 
+from v11_attachments import DESCRIBED_SCHEMA  # noqa: E402  (schema shared with the mention prompt)
+
+
 def _obj(props):
     return {"type": "object", "properties": props, "required": list(props), "additionalProperties": False}
 
@@ -390,6 +393,8 @@ DRAFT_SCHEMA = _obj({
         "tone": {"type": "integer", "minimum": 0, "maximum": 10}},
         "required": ["understanding", "reply_type", "no_promises", "questions", "tone"], "additionalProperties": False},
     # Client jobs (v11_client_job): production can start now, and the separate jobs in the mail.
+    # Ahmet 14 Oct: every attachment is read; the model names what each read file is (v11_attachments.unread)
+    "attachments_read": DESCRIBED_SCHEMA,
     "job_ready": {"type": "boolean"},
     "jobs": {"type": "array", "maxItems": 3, "items": _obj({
         "title": _str(80), "list": {"type": "string", "enum": ["social", "project"]}, "brief": _str(1500),
@@ -405,7 +410,10 @@ def model_input(source, sender, brand, day):
             "brand": {k: brand.get(k) for k in ("name", "sector", "audience", "main_platform", "note")},
             "sender": {"name": sender.get("name"), "title": sender.get("title")},
             "subject": _line(source.get("subject"), 300), "new_text": new, "quoted_context": context,
-            "has_attachments": bool(source.get("has_attachments"))}
+            "has_attachments": bool(source.get("has_attachments")),
+            "attachments": [{k: v for k, v in row.items() if k in ("name", "type", "read", "reason", "pages", "ratio",
+                                                                  "width", "height", "note")}
+                            for row in source.get("attachment_status") or []]}
 
 
 def draft_source(ops, load_key, catalog, *, routing=None, client=None):
@@ -421,9 +429,11 @@ def draft_source(ops, load_key, catalog, *, routing=None, client=None):
     hold = reservation_for(route)
     budget_ok = budget_gate(ops, hold, cap)
 
-    def draft(source, sender, brand, day):
+    def draft(source, sender, brand, day, blocks=()):
         request = model_input(source, sender, brand, day)
-        digest = source_digest("client_draft", source["fingerprint"], route_fingerprint(route, PROMPT))
+        read = sorted(r["name"] for r in source.get("attachment_status") or [] if r.get("read"))
+        digest = source_digest("client_draft", source["fingerprint"], route_fingerprint(route, PROMPT),
+                               *(["files"] + read if read else []))
         gate = ModelGate(ledger=ops, cache=ops, generation=ops.control()["generation"], cap_microdollars=cap)
 
         def call():
@@ -433,8 +443,22 @@ def draft_source(ops, load_key, catalog, *, routing=None, client=None):
                 raise ClientWatchError("client_draft_prompt_unavailable") from None
             key = key_for(load_key, "anthropic")
             try:
-                return base.anthropic_json(route, system, request, DRAFT_SCHEMA, api_key=key, client=client,
-                                           validator=lambda v: validate(v, DRAFT_SCHEMA) or v)
+                if not blocks:
+                    return base.anthropic_json(route, system, request, DRAFT_SCHEMA, api_key=key, client=client,
+                                               validator=lambda v: validate(v, DRAFT_SCHEMA) or v)
+                # the mail's attachments go to the model with it (images, PDFs, document text)
+                text = json.dumps(request, ensure_ascii=False, sort_keys=True)
+                _need(len(text.encode("utf-8")) <= base.MAX_INPUT_BYTES, "client_draft_input_too_large")
+                kwargs = base.anthropic_request(route, system, text, schema=DRAFT_SCHEMA)
+                kwargs["messages"] = [{"role": "user", "content": list(blocks) + [{"type": "text", "text": text}]}]
+                data = base.anthropic_send(key, route, kwargs, client=client)
+                result = base.anthropic_extract(route, data, structured=True)
+                try:
+                    value = base._loads(result["text"])
+                    validate(value, DRAFT_SCHEMA)
+                except Exception:
+                    raise base._anthropic_error("invalid_analysis_schema", data, route) from None
+                return {"output": value, "receipt": result["receipt"]}
             finally:
                 del key
         return gate.once("client_draft", digest, call, provider="anthropic", hold=hold)
@@ -537,6 +561,10 @@ def note_body(draft, brand, sender, source, plan=None, shadow=None, jobs=None):
     if draft.get("sensitive"):
         lines += ["Hassas konu (" + ", ".join(CATEGORY_TR.get(c, c) for c in draft["sensitive"]) +
                   "): Hamle yalnız sabit cümleyle yanıt verir; konu Ahmet ve Cansu'da.", ""]
+    if draft.get("attachments") or draft.get("attachments_unread"):
+        from v11_attachments import status_lines
+        lines += ["Ekler:"] + (status_lines(draft.get("attachments"), draft.get("attachments_read"))
+                               or ["- ekler alınamadı"]) + [""]
     if draft.get("missing_info"):
         lines += ["Eksik bilgi:"] + ["- " + m for m in draft["missing_info"]] + [""]
     if draft.get("team_next_step"):
@@ -576,6 +604,13 @@ def finalize_draft(output, source, model_status):
     elif not out["reply"]:
         out["reply"] = "(taslak alınamadı: " + str(model_status) + ")"
     out["internal_terms"] = [] if sensitive else internal_terms(out["reply"])
+    # Attachments (Ahmet 14 Oct, no exceptions): a file not read, or read but not described, stops auto-send
+    from v11_attachments import unread
+    out["attachments"] = list(source.get("attachment_status") or [])
+    out["attachments_read"] = list((output or {}).get("attachments_read") or []) if isinstance(output, dict) else []
+    out["attachments_unread"] = unread(out["attachments"], out["attachments_read"])
+    if source.get("has_attachments") and not out["attachments"]:
+        out["attachments_unread"] = ["(ekler alınamadı)"]
     if out["internal_terms"] and isinstance(out["confidence"], int):
         out["confidence"] = min(out["confidence"], INTERNAL_TERMS_CONFIDENCE)
     return out
@@ -673,8 +708,9 @@ class ClientWatch:
     def __init__(self, ops, *, config, book, reader, draft, task_writer, comment_writer, mail_writer, catalog,
                  clock, link_base="https://3.basecamp.com", monotonic=time.monotonic, started_at=None,
                  reply_writer=None, basecamp_get=None, shadow_reader=None, jobs_factory=None, mentions_factory=None,
-                 brands=None):
+                 brands=None, attachments=None):
         self.ops, self.cfg, self.book, self.reader = ops, validate_config(config), book, reader
+        self.fetch_attachment = attachments  # (message_id, attachment_id) -> bytes; None: attachments not read
         self.draft, self.task_writer, self.comment_writer = draft, task_writer, comment_writer
         self.mail_writer, self.catalog, self.clock = mail_writer, catalog, clock
         self.target = internal_target(catalog)
@@ -807,6 +843,10 @@ class ClientWatch:
             sender = self.book.match(source.get("sender"))
         if sender is None:
             return "not_client"
+        if self.reply is not None and source["thread_id"] in self.reply["team_threads"]:
+            return "team_thread"  # Ahmet: this conversation is the team's; Hamle does nothing in it
+        if shadow is None and self._team_first(source, sender):
+            return "waiting_for_team"  # nothing claimed: if the teammate answers, the thread is theirs
         brand = dict(self.book.brands[sender["brand_key"]], note=self.book.notes.get(sender["brand_key"]))
         local = self.clock().astimezone(ISTANBUL)
         mkey, tkey = mail_key(source["message_id"]), thread_key(source["thread_id"])
@@ -843,9 +883,14 @@ class ClientWatch:
             self._update(mkey, token, state="held", reason="thread_note_outcome_unknown",
                          **self._fields(finalize_draft(None, source, "not_called")))
             return "held"
+        blocks = ()
+        if source.get("has_attachments") or source.get("attachments"):
+            source, blocks = self._attachments(source)
         try:
             report["model_calls"] += 1
-            output, status = self.draft(source, sender, brand, local.date()), "ok"
+            output = (self.draft(source, sender, brand, local.date(), blocks) if blocks
+                      else self.draft(source, sender, brand, local.date()))
+            status = "ok"
         except Exception as exc:
             output, status = None, "failed:" + _code(exc)
         draft = finalize_draft(output, source, status)
@@ -966,6 +1011,36 @@ class ClientWatch:
         return self.ops._run(op)
 
     # ----- client replies (v11_client_reply)
+    def _team_first(self, source, sender):
+        """A client mail written to a teammate (hamle@ only in CC) waits team_grace_minutes for that person."""
+        grace = (self.reply or {}).get("team_grace_seconds") or 0
+        if not grace or sender.get("test") or sender["brand_key"] not in self.reply["brands"]:
+            return False
+        to = [str(a).lower() for a in source.get("to") or []]
+        if HAMLE in to or not any(a in self.reply["agency"] for a in to):
+            return False
+        received = source.get("received_at_ms")
+        return isinstance(received, int) and self.clock().timestamp() * 1000 - received < grace * 1000
+
+    def _attachments(self, source):
+        """Every attachment of the client's mail, fetched and turned into model input (v11_attachments)."""
+        from v11_attachments import read_files
+        files = []
+        for a in source.get("attachments") or []:
+            meta = {"filename": a.get("filename"), "content_type": a.get("mime_type")}
+            if self.fetch_attachment is None or not a.get("attachment_id"):
+                files.append((dict(meta, reason="ek mailin içinden alınamadı"), None))
+                continue
+            if isinstance(a.get("size_bytes"), int) and a["size_bytes"] > 20 * 1024 * 1024:
+                files.append((dict(meta, reason=f"dosya çok büyük ({a['size_bytes'] / 1048576:.1f} MB)"), None))
+                continue
+            try:
+                files.append((meta, self.fetch_attachment(source["message_id"], a["attachment_id"])))
+            except Exception as exc:
+                files.append((dict(meta, reason="indirilemedi (" + _code(exc) + ")"), None))
+        out = read_files(files)
+        return dict(source, attachment_status=out["status"]), out["blocks"]
+
     def _plan(self, draft, source, sender):
         """None = silent draft as before; else the reply plan and whether it may go out by itself."""
         if self.reply is None or sender["brand_key"] not in self.reply["brands"]:
@@ -976,12 +1051,16 @@ class ClientWatch:
         from v11_chain_mail import reply_subject
         to, cc, unknown = cr.recipients(source, sender, self.book, self.reply, sensitive=bool(draft.get("sensitive")))
         local = self.clock().astimezone(ISTANBUL)
-        replied = (self._get(reply_key(source["thread_id"])) or {}).get("count")
+        done = self._get(reply_key(source["thread_id"])) or {}
+        replied = done.get("count")
+        last = self._get(done["last_message_key"]) if done.get("last_message_key") else None
+        uncertain = isinstance(last, dict) and last.get("reply_state") in ("send_unknown", "sending")
         sent_today = int((self._get(day_key(local.date())) or {}).get("sent_count") or 0)
         from v11_client_job import job_thread_key
         own = self._get(job_thread_key(source["thread_id"])) is not None  # Hamle answered it and opened the job
         reasons = cr.check(draft, source, sender, self.reply, thread_replied=int(replied or 0), sent_today=sent_today,
-                           unknown=unknown, not_direct=cr.not_direct(to, cc, self.book, self.reply), own_thread=own)
+                           unknown=unknown, not_direct=cr.not_direct(to, cc, self.book, self.reply), own_thread=own,
+                           last_uncertain=uncertain)
         outcome = "manual" if unknown else ("awaiting_approval" if reasons else "send")
         return {"outcome": outcome, "reasons": reasons, "to": to, "cc": cc,
                 "subject": reply_subject(source.get("subject")), "body": cr.body_for(draft),
@@ -1020,8 +1099,8 @@ class ClientWatch:
             if row.get("reply_state") not in (None, "awaiting_approval"):
                 raise ClientWatchError("blocked:client_reply_state_changed")
             count = int((done or {}).get("count") or 0)
-            if approved_by is None and count and not (plan.get("own_thread") is True
-                                                      and count < OWN_THREAD_MAX_REPLIES):
+            keeps_talking = plan.get("own_thread") is True or self.reply["full_control"] is True
+            if approved_by is None and count and not (keeps_talking and count < OWN_THREAD_MAX_REPLIES):
                 raise ClientWatchError("blocked:thread_already_replied")
             if int(day.get("sent_count") or 0) >= self.reply["max_sends_per_day"]:
                 raise ClientWatchError("blocked:daily_send_limit")
@@ -1353,6 +1432,7 @@ def client_mail_reader(gmail_store, book, cfg, **factories):
 
     class ClientMailReader(ChainMailReader):
         shadow = None  # client senders: no 'Gölge:' filter
+        keep_attachments = True  # Ahmet 14 Oct: the attachments are read with the mail
 
         def _requesters(self):
             return book.query_terms()
@@ -1361,6 +1441,36 @@ def client_mail_reader(gmail_store, book, cfg, **factories):
             return super()._thread(tid, meta, book, *rest)  # exact address or company domain
     return ClientMailReader(gmail_store, {"contacts": []}, max_threads=cfg["max_threads"],
                             newer_than_days=cfg["newer_than_days"], **factories)
+
+
+def mail_attachment_fetcher(gmail_store, *, _service_factory=None, _credentials_factory=None, _request_factory=None):
+    """fetch(message_id, attachment_id) -> bytes over the verified read-only hamle@ Gmail path."""
+    import cloud_providers as provider
+    from v11_chain_mail import HEX
+
+    def fetch(message_id, attachment_id):
+        _need(isinstance(message_id, str) and HEX.fullmatch(message_id) and isinstance(attachment_id, str)
+              and re.fullmatch(r"[A-Za-z0-9_-]{1,4096}", attachment_id), "attachment_id_invalid")
+        helper, reader, _, _ = provider._modules()
+        service_factory, request_factory = _service_factory or provider._gmail_service, _request_factory
+        auth_session = None
+        with reader._quiet_call():
+            try:
+                if request_factory is None:
+                    auth_session = provider._session()
+                    request_factory = lambda: provider._GoogleRequest(auth_session, gmail=True)
+                with helper.verified_gmail(gmail_store, service_factory, _credentials_factory,
+                                           request_factory) as (service, _):
+                    row = service.users().messages().attachments().get(
+                        userId="me", messageId=message_id, id=attachment_id).execute(num_retries=0)
+            finally:
+                if auth_session is not None:
+                    auth_session.close()
+        data = row.get("data") if isinstance(row, dict) else None
+        _need(isinstance(data, str) and re.fullmatch(r"[A-Za-z0-9_-]*={0,2}", data), "attachment_data_invalid")
+        import base64
+        return base64.urlsafe_b64decode(data + "=" * (-len(data) % 4))
+    return fetch
 
 
 def shadow_mail_reader(gmail_store, cfg, **factories):
@@ -1419,6 +1529,7 @@ def run_worker_client_watch(ops, secrets, *, clock=None, config=None, started_at
                                                            session_factory=provider._session)}
             if (cfg.get("mentions") or {}).get("enabled") is True:
                 import v11_basecamp_mentions as bm
+                from v11_client_job import basecamp_downloader as cj_download
 
                 def mentions_factory(mention_settings):
                     writer = BasecampCommentWriter(catalog, token_provider=token)
@@ -1427,7 +1538,8 @@ def run_worker_client_watch(ops, secrets, *, clock=None, config=None, started_at
                             "model": bm.mention_source(ops, keys, catalog),
                             "comment_writer": writer,
                             "mail_writer": bm.NewClientMailWriter(book, settings, token_context=gmail_token_context(secrets),
-                                                                  session_factory=provider._session)}
+                                                                  session_factory=provider._session),
+                            "download": cj_download(mention_settings["account_id"], token_provider=token)}
         watch = ClientWatch(
             ops, config=cfg, book=book, catalog=catalog, clock=clock,
             reader=client_mail_reader(provider.GmailSecretStore(secrets), book, cfg),
@@ -1437,6 +1549,7 @@ def run_worker_client_watch(ops, secrets, *, clock=None, config=None, started_at
             mail_writer=DigestMailWriter(token_context=gmail_token_context(secrets), session_factory=provider._session),
             started_at=started_at, reply_writer=reply_writer, basecamp_get=basecamp_get, jobs_factory=jobs_factory,
             mentions_factory=mentions_factory, brands=brand_index(catalog, load_brand_cards()),
+            attachments=mail_attachment_fetcher(provider.GmailSecretStore(secrets)),
             shadow_reader=(shadow_mail_reader(provider.GmailSecretStore(secrets), cfg) if cfg.get("shadow_from")
                            else None))
         try:

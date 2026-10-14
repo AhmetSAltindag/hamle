@@ -47,13 +47,14 @@ def mention_config(**kw):
 def mail_out(**kw):
     out = {"action": "client_mail", "understood": "Ahmet Standartlar Günü story önerisini müşteriye sormamı istedi.",
            "comment": "Ahmet, taslağı hazırladım, aşağıda.",
-           "mail": {"to": [AYSE], "subject": SUBJECT, "body": BODY}}
+           "mail": {"to": [AYSE], "subject": SUBJECT, "body": BODY}, "attachments_read": [], "job": None}
     out.update(kw)
     return out
 
 
 def answer_out(text="Ahmet, bu to-do'da henüz yüklenmiş bir görsel yok; Özge'de görünüyor.", action="answer"):
-    return {"action": action, "understood": "Ahmet işin durumunu sordu.", "comment": text, "mail": None}
+    return {"action": action, "understood": "Ahmet işin durumunu sordu.", "comment": text, "mail": None,
+            "attachments_read": [], "job": None}
 
 
 class MentionBasecamp:
@@ -232,6 +233,7 @@ class Config(MentionBase):
         import package_chain_source as pkg
         self.assertIn("v11_basecamp_mentions.py", pkg.CHAIN_FILES)
         self.assertIn("basecamp_mention_prompt.txt", pkg.CHAIN_FILES)
+        self.assertIn("v11_attachments.py", pkg.CHAIN_FILES)
 
 
 class Draft(MentionBase):
@@ -466,6 +468,161 @@ class Sync(MentionBase):
         with self.assertRaises(bm.MentionError):
             bm.adopt_command(self.ops, self.catalog, thread_id="1a139ccc07e2cff5", project_id=WAT, todo_id=TODO,
                              list_id=SOCIAL, brand_key="rabam", actor=AHMET)
+
+
+def has_pil():
+    try:
+        import PIL  # noqa: F401
+        return True
+    except ImportError:
+        return False
+
+
+WA_TODO = 10410000001
+FOLLOW = '<div>Hamle bu işi takip eder misin? Müşteri WhatsApp\'tan iletti.</div>'
+
+
+def follow_out(**kw):
+    out = {"action": "follow", "understood": "Ahmet WhatsApp'tan gelen story işini takip etmemi istedi.",
+           "comment": "Ahmet, tamam: Cuma 12:00'ye Instagram story, paket görseli ekte.", "mail": None,
+           "attachments_read": [{"name": "banner.png", "what": "Rabam Plus paket görseli, 1.124 TL aylık"}],
+           "job": {"brief": "9:16 Instagram story. Paket: Rabam Plus, aylık 1.124 TL. Cuma 12:00 yayında."}}
+    out.update(kw)
+    return out
+
+
+@unittest.skipUnless(has_pil(), "Pillow is in the cloud image")
+class WhatsAppJob(MentionBase):
+    """Ahmet 14 Oct: most jobs come by WhatsApp; the team writes them on Basecamp and Hamle follows the to-do."""
+    BERKAY = 47658175
+
+    def setUp(self):
+        super().setUp()
+        import test_v11_client_job as tj
+        self.tj = tj
+        self.blobs, self.vision, self.delivery = {}, FakeClient(), tj.FakeDelivery()
+        self.bc.todo(WA_TODO, title="WM // Kampanya story", description="<div>Cuma 12:00 Instagram story</div>")
+
+    def file(self, todo, author, name, html="<div>ekte</div>"):
+        data = self.tj.png(1080, 1920)
+        url = f"{ROOT}/blobs/{len(self.blobs) + 1}abc/download/{name}"
+        self.blobs[url] = data
+        cid = self.bc.add(todo, author, html)
+        self.bc.comments[todo][-1]["content_attachments"] = [{"filename": name, "content_type": "image/png",
+                                                             "byte_size": len(data), "download_url": url}]
+        return cid
+
+    def download(self, url, size):
+        assert len(self.blobs[url]) == size
+        return self.blobs[url]
+
+    def watch(self, cfg=None):
+        cfg = cfg or mention_config()
+        cfg["jobs"] = self.tj.jobs_block()
+
+        def mentions(settings):
+            return {"reader": self.read_pointers, "comment_writer": self.mention_comments, "mail_writer": self.mail,
+                    "model": bm.mention_source(self.ops, lambda: KEY, self.catalog, routing=model_routing.load(),
+                                               client=self.mclient), "download": self.download}
+
+        def jobs(settings):
+            import v11_client_job as cj
+            return {"todo_writer": self.tj.FakeTodos(), "comment_writer": self.mention_comments,
+                    "download": self.download, "delivery": self.delivery,
+                    "review": cj.review_source(self.ops, lambda: KEY, self.catalog, routing=model_routing.load(),
+                                               client=self.vision)}
+        return cw.ClientWatch(self.ops, config=cfg, book=self.book, reader=self.reader,
+                              draft=cw.draft_source(self.ops, lambda: KEY, self.catalog, routing=model_routing.load(),
+                                                    client=self.client),
+                              task_writer=self.todos, comment_writer=self.comments, mail_writer=self.summaries,
+                              catalog=self.catalog, clock=lambda: self.now, reply_writer=self.replies,
+                              basecamp_get=self.bc, mentions_factory=mentions, jobs_factory=jobs,
+                              brands=cw.brand_index(self.catalog, self.cards))
+
+    def followed(self):
+        import v11_client_job as cj
+        self.file(WA_TODO, OZGE_BC, "banner.png")
+        self.mention(FOLLOW, todo=WA_TODO)
+        self.mclient.outputs = [message(follow_out())]
+        r = self.watch().run()
+        return r, self.ops.backend.data.get(cj.todo_job_key(WA_TODO))
+
+    def test_tagged_hamle_reads_the_files_and_follows_the_todo(self):
+        import v11_client_job as cj
+        r, job = self.followed()
+        self.assertEqual(r["mentions"]["followed"], 1, r["mentions"])
+        content = self.mclient.calls[0]["messages"][0]["content"]
+        self.assertEqual([b["type"] for b in content], ["text", "image", "text"])  # the client's file was seen
+        request = json.loads(content[-1]["text"])
+        self.assertEqual(request["attachments"][0]["name"], "banner.png")
+        self.assertEqual(request["job_tracking"], {"followed": False, "possible": True, "why": None})
+        self.assertEqual((job["state"], job["thread_id"], job["origin"], job["list"], job["followed_by"]),
+                         ("open", None, "basecamp", "social", AHMET))
+        self.assertEqual(job["client_files"], [{"name": "banner.png", "what": "Rabam Plus paket görseli, 1.124 TL aylık"}])
+        self.assertIn("aylık 1.124 TL", job["brief"])
+        self.assertIn(cj.todo_job_key(WA_TODO), self.ops.backend.data[cj.JOBS_KEY]["keys"])
+        (said,) = self.hamle_said(WA_TODO)
+        for text in ("Bu işi takip ediyorum. Özge, çalışmayı", "müşteriye gönderimi siz yaparsınız",
+                     "Anladığım brief:", "- banner.png: Rabam Plus paket görseli"):
+            self.assertIn(text, said)
+        self.assertGreater(job["last_seen"], 0)  # the client's own file is not the work to score
+
+    def test_the_designs_score_says_ready_for_whatsapp_and_no_mail_goes(self):
+        import v11_client_job as cj
+        self.followed()
+        self.later(15)
+        self.bc.add(WA_TODO, OZGE_BC, "<div>Müşteri logoyu biraz büyütelim dedi.</div>")
+        self.file(WA_TODO, self.BERKAY, "story.png")
+        self.vision.outputs = [message(self.tj.review(93))]
+        r = self.watch().run()
+        self.assertEqual((r["jobs"]["scored"], r["jobs"]["sent"], r["jobs"].get("ready")), (1, 0, 1), r["jobs"])
+        request = json.loads(self.vision.calls[0]["messages"][0]["content"][-1]["text"])
+        self.assertEqual(request["client_notes"][0]["from"], "Özge Yağmur (ekip)")
+        self.assertIn("logoyu biraz büyütelim", request["client_notes"][0]["text"])
+        self.assertEqual(request["client_files"][0]["name"], "banner.png")
+        self.assertEqual((self.delivery.sent, self.delivery.anchors, self.mail.sent), ([], 0, []))
+        said = self.hamle_said(WA_TODO)[-1]
+        self.assertTrue(said.startswith("✅ Puan: 93/100. Briefle uyumlu, müşteriye gitmeye hazır"), said)
+        self.assertIn("dosyayı (story.png) müşteriye siz iletin", said)
+        self.assertEqual(self.ops.backend.data[cj.todo_job_key(WA_TODO)]["state"], "delivered")
+
+    def test_80_89_asks_the_approvers_and_uygun_marks_it_ready(self):
+        self.followed()
+        self.later(15)
+        self.file(WA_TODO, self.BERKAY, "story.png")
+        self.vision.outputs = [message(self.tj.review(85))]
+        self.watch().run()
+        asked = self.hamle_said(WA_TODO)[-1]
+        self.assertIn("iş WhatsApp'tan geldiği için dosyayı müşteriye siz iletirsiniz", asked)
+        self.later(15)
+        self.bc.add(WA_TODO, CANSU_BC, "<div>uygun</div>")
+        self.watch().run()
+        self.assertTrue(self.hamle_said(WA_TODO)[-1].startswith("✅ Cansu Akiş Kabil onayladı, müşteriye gitmeye hazır"))
+        self.assertEqual(self.delivery.sent, [])
+
+    def test_twice_or_outside_the_job_lists_is_an_honest_answer(self):
+        self.followed()
+        self.later(5)
+        self.mention(FOLLOW, todo=WA_TODO)
+        self.mclient.outputs = [message(follow_out())]
+        self.watch().run()
+        self.assertEqual(self.hamle_said(WA_TODO)[-1], "Ahmet, bu işi zaten takip ediyorum.")
+        self.bc.todo(WA_TODO + 1, list_id=9381497228, title="WM // Motion")  # the motion list is not a job list
+        self.mention(FOLLOW, todo=WA_TODO + 1)
+        self.mclient.outputs = [message(follow_out())]
+        self.watch().run()
+        self.assertIn("Sosyal Medya ve Projeler listelerinde", self.hamle_said(WA_TODO + 1)[-1])
+
+    def test_a_file_hamle_cannot_read_is_named(self):
+        self.bc.add(WA_TODO, OZGE_BC, "<div>video</div>")
+        self.bc.comments[WA_TODO][-1]["content_attachments"] = [
+            {"filename": "reels.mp4", "content_type": "video/mp4", "byte_size": 10,
+             "download_url": f"{ROOT}/blobs/9abc/download/reels.mp4"}]
+        self.blobs[f"{ROOT}/blobs/9abc/download/reels.mp4"] = b"x" * 10
+        self.mention('<div>Hamle bu işin durumu ne?</div>', todo=WA_TODO)
+        self.mclient.outputs = [message(answer_out())]
+        self.watch().run()
+        self.assertIn("Okuyamadığım dosyalar: reels.mp4 (bu dosya türünü okuyamıyorum).", self.hamle_said(WA_TODO)[-1])
 
 
 class Writer(unittest.TestCase):

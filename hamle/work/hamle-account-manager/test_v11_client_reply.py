@@ -272,6 +272,133 @@ class AutoSend(ReplyBase):
         self.assertEqual(self.row("m1")["reply_state"], "sent")
 
 
+PNG_BYTES = None
+
+
+def png_bytes():
+    global PNG_BYTES
+    if PNG_BYTES is None:
+        import io
+        from PIL import Image
+        out = io.BytesIO()
+        Image.new("RGB", (1080, 1920), (20, 120, 200)).save(out, "PNG")
+        PNG_BYTES = out.getvalue()
+    return PNG_BYTES
+
+
+def with_banner(m):
+    m.update(has_attachments=True, attachments=[{"filename": "App Banner.png", "mime_type": "image/png",
+                                                 "size_bytes": 3000, "attachment_id": "ANGjdJ8_banner"}])
+    return m
+
+
+def has_pil():
+    try:
+        import PIL  # noqa: F401
+        import pypdf  # noqa: F401
+        return True
+    except ImportError:
+        return False
+
+
+class FullControl(ReplyBase):
+    """Ahmet 14 Oct: WAT and Rabam fully with Hamle; every attachment read first; one Rabam thread is Özge's."""
+    def full(self, **kw):
+        return reply_config(full_control=True, allow_questions=True, **kw)
+
+    def watch_files(self, cfg, fetch):
+        return cw.ClientWatch(self.ops, config=cfg, book=self.book, reader=self.reader,
+                              draft=cw.draft_source(self.ops, lambda: KEY, self.catalog, routing=model_routing.load(),
+                                                    client=self.client),
+                              task_writer=self.todos, comment_writer=self.comments, mail_writer=self.summaries,
+                              catalog=self.catalog, clock=lambda: self.now, reply_writer=self.replies,
+                              basecamp_get=self.bc, attachments=fetch)
+
+    def test_ongoing_thread_is_answered_and_carried_on(self):
+        self.mails = [source(1, subject="Ynt: Ekim post revizesi")]
+        self.client.outputs = [message(clear())]
+        self.watch(self.full()).run()
+        self.assertEqual(len(self.replies.sent), 1)
+        self.mails = [source(1, subject="Ynt: Ekim post revizesi"), source(2, subject="Ynt: Ekim post revizesi")]
+        self.client.outputs = [message(clear())]
+        self.watch(self.full()).run()
+        self.assertEqual([s["in_reply_to_message_id"] for s in self.replies.sent], ["m1", "m2"])
+
+    def test_not_after_an_unconfirmed_send(self):
+        self.mails = [source(1)]
+        self.client.outputs = [message(clear()), message(clear())]
+        self.replies.fail = TimeoutError("synthetic")
+        self.watch(self.full()).run()
+        self.replies.fail = None
+        self.mails = [source(1), source(2, text="Bir de logo büyüsün lütfen.")]
+        self.watch(self.full()).run()
+        self.assertEqual((len(self.replies.sent), self.row("m2")["reply_state"]), (1, "awaiting_approval"))
+        self.assertIn("son gönderimimi teyit edemedim", self.comments.calls[0]["body"])
+
+    def test_the_teams_thread_is_left_alone(self):
+        self.mails = [source(1, thread="1a139e3fccf3f390")]
+        r = self.watch(self.full(team_threads=["1a139e3fccf3f390"])).run()
+        self.assertEqual((r["notes"], self.client.calls, self.todos.calls, self.row("m1")), (0, [], [], None))
+
+    def test_mail_to_a_teammate_waits_for_them_first(self):
+        self.mails = [source(1, ms=int(self.now.timestamp() * 1000) - 5 * 60 * 1000)]  # To: Özge, hamle@ in CC
+        cfg = self.full(team_grace_minutes=20)
+        r = self.watch(cfg).run()
+        self.assertEqual((r["notes"], self.client.calls, self.row("m1")), (0, [], None))  # nothing claimed
+        self.later(16)  # Özge did not answer in 20 minutes: Hamle does
+        self.client.outputs = [message(clear())]
+        self.watch(cfg).run()
+        self.assertEqual(len(self.replies.sent), 1)
+        mine = source(2, thread="t2", ms=int(self.now.timestamp() * 1000))
+        mine["to"], mine["cc"] = ["hamle@gamechangers.com.tr"], [OZGE]
+        self.mails = [mine]
+        self.client.outputs = [message(clear())]
+        self.watch(cfg).run()  # written to Hamle: no wait
+        self.assertEqual(len(self.replies.sent), 2)
+
+    @unittest.skipUnless(has_pil(), "Pillow is in the cloud image")
+    def test_attachment_is_read_with_the_mail_and_described(self):
+        fetched = []
+
+        def fetch(message_id, attachment_id):
+            fetched.append((message_id, attachment_id))
+            return png_bytes()
+        self.mails = [with_banner(source(1))]
+        self.client.outputs = [message(clear(attachments_read=[{"name": "App Banner.png",
+                                                                "what": "Rabam Plus paket görseli, story ölçüsü"}]))]
+        r = self.watch_files(self.full(), fetch).run()
+        self.assertEqual((fetched, r["sent"]), ([("m1", "ANGjdJ8_banner")], 1))
+        content = self.client.calls[0]["messages"][0]["content"]
+        self.assertEqual([b["type"] for b in content], ["text", "image", "text"])
+        self.assertIn('"read": true', content[-1]["text"])
+        self.assertIn("App Banner.png: Rabam Plus paket görseli, story ölçüsü", self.todos.calls[0]["description"])
+
+    @unittest.skipUnless(has_pil(), "Pillow is in the cloud image")
+    def test_attachment_not_described_or_not_read_waits_for_a_person(self):
+        self.mails = [with_banner(source(1))]
+        self.client.outputs = [message(clear())]  # the model said nothing about the file
+        self.watch_files(self.full(), lambda m, a: png_bytes()).run()
+        self.assertEqual(self.replies.sent, [])
+        self.assertIn("ek okunamadı ya da anlaşılmadı: App Banner.png", self.todos.calls[0]["description"])
+
+        def broken(message_id, attachment_id):
+            raise TimeoutError("synthetic")
+        self.mails = [with_banner(source(2, thread="t2"))]
+        self.client.outputs = [message(clear(attachments_read=[{"name": "App Banner.png", "what": "uydurma"}]))]
+        self.watch_files(self.full(), broken).run()
+        self.assertEqual(self.replies.sent, [])
+        self.assertIn("App Banner.png: OKUNAMADI (indirilemedi", self.todos.calls[1]["description"])
+
+    def test_attachments_that_never_arrived_are_not_skipped_silently(self):
+        m = source(1)
+        m["has_attachments"] = True  # the reader saw files but none could be listed
+        self.mails = [m]
+        self.client.outputs = [message(clear())]
+        self.watch(self.full()).run()
+        self.assertEqual(self.replies.sent, [])
+        self.assertIn("(ekler alınamadı)", self.todos.calls[0]["description"])
+
+
 class Approval(ReplyBase):
     def waiting(self, reply=ASKING):
         self.mails = [source(1)]
@@ -483,7 +610,10 @@ class Config(Base):
         self.assertEqual(cfg["summary_to"], [AHMET])
         self.assertEqual(cfg["shadow_from"], [AHMET, CANSU])
         self.assertEqual((settings["allow_questions"], settings["new_threads_only"], settings["auto_categories"]),
-                         (True, True, set(cr.AUTO_CATEGORIES)))
+                         (True, False, set(cr.AUTO_CATEGORIES)))
+        # Ahmet 14 Oct: full control for WAT and Rabam; one Rabam campaign thread stays with Özge
+        self.assertEqual((settings["full_control"], settings["team_grace_seconds"], settings["team_threads"]),
+                         (True, 20 * 60, frozenset({"1a139e3fccf3f390"})))
         cw.ClientWatch(self.ops, config=cfg, book=self.book, reader=list, draft=None, task_writer=None,
                        comment_writer=None, mail_writer=None, catalog=self.catalog, clock=None,
                        reply_writer=object(), basecamp_get=object(), shadow_reader=list)  # people verified

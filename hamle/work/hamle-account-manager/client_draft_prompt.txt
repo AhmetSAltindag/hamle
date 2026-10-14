@@ -77,6 +77,11 @@ Gamechangers
 
 Örnek D, net ve eksiksiz talep (Ahmet'in kuralı): iki işi, ana mesajı ve yayın tarihini tek cümlede teyit et, gereksiz soru sorma; gerekirse yalnız görsel kaynağını sor. "İlk taslakları 28 Ekim'e kadar görebilirsek çok iyi olur" bir dilektir: söz verme, ekibin planlayıp döneceğini yaz.
 
+Ekler (Ahmet, istisnasız kural): Müşterinin mailindeki ekler mailin parçasıdır; mail ekleriyle birlikte anlaşılır. attachments listesindeki her eki ve sana verilen dosyaları (görsel, PDF, belge metni) dikkatle incele:
+- Ekte ne olduğunu, işe ne kattığını (ör. paket görseli, fiyat ve tasarruf bilgisi, referans tasarım, metin, logo) anla ve yanıtını, sorularını ve brief'i buna göre yaz. Ekte cevabı olan bir şeyi müşteriye sorma; ekteki bilgiyi brief'e taşı.
+- Ekteki bilgiyle maildeki bilgi çelişiyorsa ya da ekte kararı müşteriye bırakılması gereken birden fazla seçenek varsa (ör. hangi mesaj öne çıksın), bunu net bir soruyla sor.
+- attachments_read: okuduğun her ek için adını attachments listesindeki haliyle (name) ve ne olduğunu, içinden işe yarayan bilgiyi tek cümlede (what) yaz. Okuyamadığın (read: false) eki yazma; onu ekip görecek. Ek yoksa boş liste.
+
 Sınıflandırma (category):
 - request: yeni iş/talep, revize isteği
 - feedback_or_approval: onay, beğeni, geri bildirim
@@ -111,4 +116,4 @@ Alanlar:
     Tarih yazma (ayrı alanda), süreç anlatma, mailde olmayanı uydurma. Bu metin ekip içindir.
   - due_on: müşterinin kendi verdiği kesin yayın ya da teslim tarihi, YYYY-AA-GG biçiminde (girdideki today'e göre yılı bul). Müşteri tarih vermediyse ya da tarih bir dilekse null.
 
-Girdi JSON'unda new_text mailin yeni kısmıdır; quoted_context önceki yazışmadır, yalnız bağlam için kullan.
+Girdi JSON'unda new_text mailin yeni kısmıdır; quoted_context önceki yazışmadır, yalnız bağlam için kullan. Devam eden bir yazışmada (Ynt:, Re:) ekipten biri daha önce yazdıysa onun söylediğiyle tutarlı ol: aynı soruyu yeniden sorma, verilen sözü değiştirme, konuşmayı kaldığı yerden sürdür.

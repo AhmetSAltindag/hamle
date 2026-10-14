@@ -17,6 +17,11 @@ sends the draft (or the corrected text written under that line); "Hamle gönderm
 The send is the chain's same-thread Gmail reply (exact To/CC re-derived from the anchor, one
 POST, raw readback). The anchor must still be the newest incoming mail of the thread: if the
 client wrote again or a teammate answered first, Hamle does not send.
+
+Full control (Ahmet 2026-10-14, WAT and Rabam: full_control true, new_threads_only false): ongoing threads are
+answered too, and a thread Hamle already answered is carried on, at most OWN_THREAD_MAX_REPLIES times by itself
+(not after a send it could not confirm). A mail addressed to a teammate (hamle@ only in CC) waits
+team_grace_minutes so that person can answer first; team_threads are left to the team entirely.
 """
 from __future__ import annotations
 
@@ -63,7 +68,15 @@ def agency_people(catalog):
 def validate_reply(block, catalog):
     """Config 'reply' block -> resolved settings. Approvers and owners must be verified Basecamp members."""
     people = agency_people(catalog)
-    _need(isinstance(block, dict) and set(block) == REPLY_FIELDS, "client_reply_config_invalid")
+    _need(isinstance(block, dict) and REPLY_FIELDS <= set(block) <= REPLY_FIELDS | {"team_threads", "team_grace_minutes", "full_control"},
+          "client_reply_config_invalid")
+    grace = block.get("team_grace_minutes", 0)
+    _need(type(grace) is int and 0 <= grace <= 240, "client_reply_team_grace_invalid")
+    _need(type(block.get("full_control", False)) is bool, "client_reply_config_invalid")
+    # Threads the team runs by itself (Ahmet 14 Oct, a Rabam campaign thread): Hamle neither answers nor notes them
+    team = block.get("team_threads", [])
+    _need(isinstance(team, list) and len(team) <= 50 and all(isinstance(t, str) and re.fullmatch(r"[0-9a-f]{8,32}", t)
+                                                            for t in team), "client_reply_team_threads_invalid")
     brands = block["brands"]
     _need(isinstance(brands, list) and 1 <= len(brands) <= 10 and len(set(brands)) == len(brands)
           and all(isinstance(b, str) and re.fullmatch(r"[a-z0-9_]{2,40}", b) for b in brands),
@@ -106,7 +119,8 @@ def validate_reply(block, catalog):
             "approver_ids": {member(e): people[e]["name"] for e in approvers}, "first_approver": member(approvers[0]),
             "owner_ids": {b: member(e) for b, e in owners.items()}, "sensitive_cc": list(cc),
             "agency": set(people), "allow_questions": block["allow_questions"],
-            "new_threads_only": block["new_threads_only"]}
+            "new_threads_only": block["new_threads_only"], "team_threads": frozenset(team),
+            "team_grace_seconds": grace * 60, "full_control": block.get("full_control", False)}
 
 
 def reply_all(sender, to, cc):
@@ -151,7 +165,8 @@ def fixed_body(fixed):
 OWN_THREAD_MAX_REPLIES = 5
 
 
-def check(draft, source, sender, settings, *, thread_replied, sent_today, unknown, not_direct=(), own_thread=False):
+def check(draft, source, sender, settings, *, thread_replied, sent_today, unknown, not_direct=(), own_thread=False,
+          last_uncertain=False):
     """Reasons the draft may NOT go out by itself (empty list = auto-send)."""
     reasons = []
     if not draft.get("sensitive"):
@@ -166,6 +181,8 @@ def check(draft, source, sender, settings, *, thread_replied, sent_today, unknow
             reasons.append("eksik bilgi var")
         if draft.get("internal_terms"):
             reasons.append("taslakta iç ifade var")
+        if draft.get("attachments_unread"):  # Ahmet 14 Oct: no exceptions, every attachment is understood first
+            reasons.append("ek okunamadı ya da anlaşılmadı: " + ", ".join(draft["attachments_unread"][:3]))
         confidence = draft.get("confidence")
         if not isinstance(confidence, int) or confidence < settings["auto_min_confidence"]:
             reasons.append(f"güvenim {confidence if isinstance(confidence, int) else '-'}/100")
@@ -178,9 +195,12 @@ def check(draft, source, sender, settings, *, thread_replied, sent_today, unknow
         reasons.append("tanımadığım alıcı var: " + ", ".join(unknown[:3]))
     if not_direct:
         reasons.append("bu kişilere onaysız yazmıyorum (Markalar: Hayır): " + ", ".join(not_direct[:3]))
-    if thread_replied and not own_thread:
+    keeps_talking = own_thread or settings.get("full_control") is True  # Hamle carries the thread on
+    if thread_replied and not keeps_talking:
         reasons.append("bu zincire daha önce cevap verdim")
-    if own_thread and int(thread_replied or 0) >= OWN_THREAD_MAX_REPLIES:
+    if thread_replied and keeps_talking and last_uncertain:
+        reasons.append("bu zincirdeki son gönderimimi teyit edemedim")
+    if keeps_talking and int(thread_replied or 0) >= OWN_THREAD_MAX_REPLIES:
         reasons.append(f"bu zincire kendiliğinden {OWN_THREAD_MAX_REPLIES} kez cevap verdim")
     if sent_today >= settings["max_sends_per_day"]:
         reasons.append("günlük gönderim sınırı doldu")

@@ -25,7 +25,7 @@ CHAIN_FILES = ("v11_chain.py", "v11_brand_task.py", "v11_intake_plan.py", "v11_b
                "v11_client_watch.py", "v11_client_reply.py", "client_draft_prompt.txt",
                "chain_daily_spark_prompt.txt", "v11_nb_tracking.py",
                "v11_idea_tracking.py", "v11_client_job.py", "client_job_review_prompt.txt",
-               "v11_basecamp_mentions.py", "basecamp_mention_prompt.txt")
+               "v11_basecamp_mentions.py", "basecamp_mention_prompt.txt", "v11_attachments.py")
 ALLOWLIST = dict(base.ALLOWLIST)
 ALLOWLIST["cloudbuild.yaml"] = APP + "cloudbuild-v11-chain.yaml"
 ALLOWLIST.update({APP + name: APP + name for name in CHAIN_FILES})
