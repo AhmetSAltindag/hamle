@@ -1,0 +1,47 @@
+{
+  "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.17/MicrosoftTeams.schema.json",
+  "manifestVersion": "1.17",
+  "version": "1.0.0",
+  "id": "00000000-0000-0000-0000-000000000000",
+  "developer": {
+    "name": "Gamechangers",
+    "websiteUrl": "https://www.gamechangers.com.tr",
+    "privacyUrl": "https://www.gamechangers.com.tr",
+    "termsOfUseUrl": "https://www.gamechangers.com.tr"
+  },
+  "name": {
+    "short": "Hamle",
+    "full": "Hamle - Gamechangers AI müşteri temsilcisi"
+  },
+  "description": {
+    "short": "Ajansın AI müşteri temsilcisi; etiketlenince cevap verir.",
+    "full": "Hamle eklendiği kanal ve grup sohbetlerindeki mesajları bağlam olarak okur ve yalnız @Hamle diye etiketlendiğinde ya da birebir yazıldığında cevap verir. İş istenirse Basecamp'te ilgili markanın to-do'sunu açar ya da to-do'ya not düşer; işlerin kaydı Basecamp'tir. Kişiler arasındaki birebir sohbetleri okumaz."
+  },
+  "icons": {
+    "color": "color.png",
+    "outline": "outline.png"
+  },
+  "accentColor": "#111111",
+  "bots": [
+    {
+      "botId": "00000000-0000-0000-0000-000000000000",
+      "scopes": ["team", "groupChat", "personal"],
+      "supportsFiles": false,
+      "isNotificationOnly": false
+    }
+  ],
+  "permissions": ["identity"],
+  "validDomains": [],
+  "webApplicationInfo": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "resource": "https://RscBasedStoreApp"
+  },
+  "authorization": {
+    "permissions": {
+      "resourceSpecific": [
+        {"name": "ChannelMessage.Read.Group", "type": "Application"},
+        {"name": "ChatMessage.Read.Chat", "type": "Application"}
+      ]
+    }
+  }
+}

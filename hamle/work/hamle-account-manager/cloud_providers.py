@@ -31,6 +31,9 @@ SECRET_NAMES = frozenset((GMAIL_SECRET, OPENAI_SECRET, BASECAMP_SECRET))
 ANTHROPIC_SECRET = "hamle-anthropic-api-key"
 PAGESPEED_SECRET = "hamle-pagespeed-api-key"  # Google API key limited to the PageSpeed Insights API (Dijital Karne)
 SECRET_NAMES = SECRET_NAMES | frozenset((ANTHROPIC_SECRET, PAGESPEED_SECRET))
+# Microsoft Teams bot (v11_teams, 2026-10-14): client secret of the agency's single-tenant Entra app registration.
+TEAMS_SECRET = "hamle-teams-bot-secret"
+SECRET_NAMES = SECRET_NAMES | frozenset((TEAMS_SECRET,))
 INTERNAL_SUBJECT = "HAMLE-IC-IS-20261010-01"
 PRODUCTION_INTERNAL_SUBJECT = "HAMLE-IC-URETIM-20261010-01"
 INTERNAL_SUBJECTS = frozenset((INTERNAL_SUBJECT, PRODUCTION_INTERNAL_SUBJECT))
@@ -313,6 +316,20 @@ def anthropic_key(secrets):
         return _token(value)
     except Exception:
         raise ProviderError("anthropic_credential_unavailable") from None
+
+
+def teams_bot_secret(secrets):
+    """Teams bot app client secret from hamle-teams-bot-secret (Bot Connector token only).
+
+    Errors are one fixed code; the value is never logged or returned in one.
+    """
+    try:
+        value = secrets.access(TEAMS_SECRET).decode("ascii").strip()
+        if not re.fullmatch(r"[\x21-\x7e]{16,256}", value):
+            raise ValueError()
+        return value
+    except Exception:
+        raise ProviderError("teams_credential_unavailable") from None
 
 
 def pagespeed_key(secrets):
