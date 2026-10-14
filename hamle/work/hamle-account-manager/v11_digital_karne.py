@@ -32,6 +32,7 @@ from concurrent.futures import ThreadPoolExecutor
 from datetime import date, datetime, timedelta
 from html import escape
 from html.parser import HTMLParser
+import hashlib
 import ipaddress
 import json
 from pathlib import Path
@@ -44,7 +45,8 @@ from urllib.parse import quote, urljoin, urlsplit
 from zoneinfo import ZoneInfo
 
 from v11_chain_models import _arr, _nstr, _obj, _str, key_for, source_digest
-from v11_nb_tracking import API, APP, HAMLE_PERSON, MONTHS, NbBasecamp, _Text, _code, _line, text_matches
+from v11_nb_tracking import (API, APP, HAMLE_PERSON, MONTHS, NB_PROJECT, NbBasecamp, _Text, _code, _line,
+                              text_matches)
 from v11_trend_search import (_iso_day, _research_gate, _routing, anthropic_research, normalize_url, route_fingerprint,
                               strict_json_text)
 
@@ -996,7 +998,7 @@ def brand_report(b, card, web, today, now, feedback=(), period_days=30, psi_key=
     return checks, request_input, allowed_urls(b, facts)
 
 
-def with_research(checks, request_input, allowed, research, today, period_days=30):
+def with_research(checks, request_input, allowed, research, today, period_days=30, when="bu ay"):
     """-> (findings, research status, the model's summary only when none of its findings was dropped)."""
     findings, status, summary = list(checks), "not_called", None
     if research is not None:
@@ -1009,8 +1011,8 @@ def with_research(checks, request_input, allowed, research, today, period_days=3
                 summary = _line(output["summary"], 600)
         except Exception as exc:
             status = _code(exc)
-            findings.append(_finding(None, "bakilamadi", "Gündem, şikayet, sosyal medya ve rakip araştırması bu ay "
-                                     f"alınamadı ({status})."))
+            findings.append(_finding(None, "bakilamadi", "Gündem, şikayet, sosyal medya ve rakip araştırması "
+                                     f"{when} alınamadı ({status})."))
     return findings, status, summary
 
 
@@ -1141,13 +1143,173 @@ def run_prospect_karne(name, website=None, *, web, research, clock, psi_key=None
         now = clock()
         today = now.astimezone(ISTANBUL).date()
         checks, request_input, allowed = brand_report(b, None, web, today, now, (), period_days, psi_key, "prospect")
-        findings, status, summary = with_research(checks, request_input, allowed, research, today, period_days)
+        findings, status, summary = with_research(checks, request_input, allowed, research, today, period_days,
+                                                  "bu kez")
     except Exception as exc:
         return {"status": "held", "reason": _code(exc), "model_calls": 0, "business_writes": 0}
     html, text = description(b["brand"], today, findings, "prospect", summary)
     called = status != "not_called" and not status.startswith(("model_budget", "internal_live"))
     return {"status": "prospect_karne_ready", "brand": b["brand"], "website": b["website"], "counts": counts(findings),
             "research": status, "html": html, "text": text, "model_calls": int(called), "business_writes": 0}
+
+
+# ------------------------------------------------------------------ prospect karne asked on Basecamp
+# A team member tags Hamle on a New Business to-do ("@Hamle Koton için ön karne hazırla, site koton.com"): the
+# mention desk (v11_basecamp_mentions, action 'karne') queues a request here; the next hamle-digital-karne run
+# prepares the karne and writes it as one comment on that to-do.
+REQUESTS_KEY = "prospect-karne-requests"
+PROSPECT_PER_DAY, PROSPECT_PER_RUN, PROSPECT_LEASE, PROSPECT_ATTEMPTS = 5, 2, 1500, 2
+PROSPECT_REASONS = {"karne_prospect_name_invalid": "marka adı okunamadı",
+                    "karne_prospect_site_invalid": "site adresi okunamadı"}
+
+
+def request_key(mention_key):
+    return "prospect-karne-" + hashlib.sha256(str(mention_key).encode()).hexdigest()[:32]
+
+
+def prospect_room(index, day):
+    """True while fewer than PROSPECT_PER_DAY requests were queued on this Istanbul day."""
+    return int(((index or {}).get("days") or {}).get(day, 0)) < PROSPECT_PER_DAY
+
+
+def prospect_request(*, mention_key, project_id, todo_id, brand, website, requested_by, day, now):
+    """The queued request row (written by the mention desk inside its own transaction)."""
+    _need(project_id == NB_PROJECT and type(todo_id) is int and todo_id > 0, "prospect_karne_target_invalid")
+    b = prospect_brand(brand, website)
+    return {"key": request_key(mention_key), "kind": "prospect_karne_request", "state": "queued",
+            "mention_key": mention_key, "project_id": project_id, "todo_id": todo_id, "brand": b["brand"],
+            "website": b["website"], "requested_by": {"name": _line(requested_by.get("name"), 80),
+                                                       "email": _line(requested_by.get("email"), 120)},
+            "day": day, "requested_at": now, "attempts": 0}
+
+
+def prospect_index(index, key, day):
+    """The index after queueing `key` (only today's count is kept)."""
+    _need(prospect_room(index, day), "prospect_karne_daily_limit")
+    days = {day: int(((index or {}).get("days") or {}).get(day, 0)) + 1}
+    keys = [k for k in (index or {}).get("keys") or [] if k != key] + [key]
+    return {"kind": "prospect_karne_requests", "keys": keys[-30:], "days": days}
+
+
+class ProspectBasecamp(NbBasecamp):
+    """Allow-listed: read a New Business to-do and a comment, POST one comment on a to-do there."""
+    def __init__(self, account_id, *, send):
+        super().__init__(account_id, send=send)
+        b = rf"/{account_id}/buckets/{NB_PROJECT}"
+        self.allowed = {"GET": (rf"{b}/todos/[1-9][0-9]*", rf"{b}/comments/[1-9][0-9]*"),
+                        "POST": (rf"{b}/recordings/[1-9][0-9]*/comments",)}
+
+
+def _visible(html):
+    p = _Text()
+    p.feed(html)
+    p.close()
+    return "".join(p.parts)
+
+
+def run_prospect_requests(ops, *, http, web, research, clock, monotonic=time.monotonic, psi_key=None,
+                          budget_seconds=1500):
+    """Prepare the queued prospect karnes (at most PROSPECT_PER_RUN per run) and write each as one comment on the
+    to-do it was asked on. Same write rules as the karne to-dos: fenced claim ('dur' stops it), durable 'writing'
+    record before the POST, readback, anything uncertain is 'unknown' and never retried."""
+    report = {"done": 0, "failed": 0, "unknown": 0, "left": 0, "model_calls": 0, "business_writes": 0, "brands": []}
+
+    def get(key):
+        return ops._run(lambda tx, _: tx.get(key), allow_expired=True)
+
+    def update(key, token, fenced, **fields):
+        def op(tx, now):
+            if fenced:
+                c = ops._control(tx)
+                ops._open(c, c["generation"], now)
+            row = tx.get(key)
+            if row is None or (token is not None and row.get("token") != token):
+                return None
+            row.update(fields, updated_at=now)
+            tx.put(key, row)
+            return row
+        return ops._run(op, allow_expired=not fenced)
+    if research is None:  # a karne without its research is not worth a comment: the requests wait
+        return dict(report, status="held", reason="prospect_research_unavailable")
+    try:
+        keys = list((get(REQUESTS_KEY) or {}).get("keys") or [])
+    except Exception as exc:
+        return dict(report, status="held", reason=_code(exc))
+    started, worked = monotonic(), 0
+    reserve = 240 + (getattr(research, "timeout_seconds", None) or 600)
+    for key in keys:
+        row = get(key)
+        now = clock().timestamp()
+        if row is None or not (row.get("state") == "queued" or (row.get("state") == "running"
+                                                                  and now >= row.get("lease_until", 0))):
+            continue
+        if worked >= PROSPECT_PER_RUN or monotonic() - started + reserve > budget_seconds:
+            report["left"] += 1
+            continue
+        token = uuid.uuid4().hex
+
+        def claim(tx, ts):
+            c = ops._control(tx)
+            ops._open(c, c["generation"], ts)
+            r = tx.get(key)
+            if r is None or not (r.get("state") == "queued" or (r.get("state") == "running"
+                                                                 and ts >= r.get("lease_until", 0))):
+                return None
+            attempts = int(r.get("attempts") or 0) + 1
+            r.update(state="running" if attempts <= PROSPECT_ATTEMPTS else "failed", token=token, attempts=attempts,
+                     lease_until=ts + PROSPECT_LEASE, updated_at=ts,
+                     **({} if attempts <= PROSPECT_ATTEMPTS else {"reason": "prospect_karne_attempts"}))
+            tx.put(key, r)
+            return r if attempts <= PROSPECT_ATTEMPTS else None
+        try:
+            row = ops._run(claim)
+        except Exception as exc:
+            report.setdefault("reasons", []).append(_code(exc))
+            break  # 'dur' or a new generation: nothing more this run
+        if row is None:
+            continue
+        worked += 1
+        r = run_prospect_karne(row["brand"], row.get("website"), web=web, research=research, clock=clock,
+                               psi_key=psi_key)
+        report["model_calls"] += r.get("model_calls", 0)
+        first = (row.get("requested_by") or {}).get("name", "").split(" ")[0] or "Merhaba"
+        if r["status"] == "prospect_karne_ready":
+            html = (f"<div>{escape(first)}, {escape(row['brand'])} için ön karne hazır.</div><div><br></div>"
+                    + r["html"])
+        else:
+            why = PROSPECT_REASONS.get(r.get("reason"), "teknik bir hata oldu")
+            html = (f"<div>{escape(first)}, {escape(row['brand'])} için ön karneyi hazırlayamadım ({escape(why)}). "
+                    "Markanın adını ve sitesini kontrol edip beni yeniden etiketleyebilirsin.</div>")
+        text = _visible(html)
+        try:
+            if update(key, token, True, state="writing", research=r.get("research"),
+                      counts=r.get("counts"), karne_status=r["status"]) is None:
+                continue
+        except Exception as exc:
+            update(key, token, False, state="queued", lease_until=0)  # nothing written: the next run tries again
+            report.setdefault("reasons", []).append(_code(exc))
+            break
+        report["business_writes"] += 1
+        base = f"{API}/{http.account}/buckets/{row['project_id']}"
+        try:
+            back, _ = http.call("POST", f"{base}/recordings/{row['todo_id']}/comments.json", {"content": html}, 201)
+            cid = back.get("id") if isinstance(back, dict) else None
+            _need(type(cid) is int and cid > 0, "prospect_comment_receipt_invalid")
+            got = http.one(f"{base}/comments/{cid}.json")
+            _need(got.get("id") == cid and (got.get("parent") or {}).get("id") == row["todo_id"]
+                  and (got.get("bucket") or {}).get("id") == row["project_id"]
+                  and (got.get("creator") or {}).get("id") == HAMLE_PERSON and got.get("visible_to_clients") is False
+                  and text_matches(got.get("content"), text), "prospect_comment_readback_mismatch")
+        except Exception as exc:
+            update(key, token, False, state="unknown", reason=_code(exc))
+            report["unknown"] += 1
+            continue
+        done = r["status"] == "prospect_karne_ready"
+        update(key, token, False, state="ready" if done else "failed", comment_id=cid,
+               reason=None if done else r.get("reason"))
+        report["done" if done else "failed"] += 1
+        report["brands"].append({"brand": row["brand"], "research": r.get("research"), "counts": r.get("counts")})
+    return dict(report, status="prospect_karne_completed" if not report["left"] else "prospect_karne_partial")
 
 
 def digest_rows(state, day):
@@ -1201,5 +1363,13 @@ def run_worker_digital_karne(ops, secrets, *, preview=None, only=None, clock=Non
         return {"status": "digital_karne_preview", "prospect": True, "model_calls": r["model_calls"],
                 "business_writes": 0, "brands": [{"key": "prospect", "brand": r["brand"], "website": r["website"],
                                                   "counts": r["counts"], "research": r["research"], "text": r["text"]}]}
-    return run_digital_karne(ops, config=load_config(), catalog=catalog, cards=load_brand_cards(), web=public_web(),
-                             research=research, http=http, clock=clock, preview=preview, only=only, psi_key=psi_key)
+    started = time.monotonic()
+    web = public_web()
+    result = run_digital_karne(ops, config=load_config(), catalog=catalog, cards=load_brand_cards(), web=web,
+                               research=research, http=http, clock=clock, preview=preview, only=only, psi_key=psi_key)
+    if preview is None:  # every scheduled run also prepares the prospect karnes asked on Basecamp
+        result["prospects"] = run_prospect_requests(
+            ops, http=ProspectBasecamp(catalog["basecamp"]["account_id"], send=session_send(token, provider._session)),
+            web=web, research=research, clock=clock, psi_key=psi_key,
+            budget_seconds=max(0, 1650 - int(time.monotonic() - started)))
+    return result

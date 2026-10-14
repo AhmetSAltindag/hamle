@@ -58,7 +58,7 @@ NAMES_HAMLE = re.compile(r"(?<![0-9a-zçğıöşü])hamle(?![0-9a-zçğıöşü]
 # A to-do assigned to Hamle (Ahmet 14 Oct: "kendisine açılan Basecamp'i kontrol etmesi çok önemli"): Basecamp's
 # to-do notifications carry "Assigned to: Hamle A."; the API check (Hamle among the assignees) decides.
 ASSIGNED_TO_HAMLE = re.compile(r"Assigned to:[^\n<]{0,200}?\bHamle\b", re.IGNORECASE)
-ACTIONS = ("answer", "ask", "cannot", "client_mail", "follow")
+ACTIONS = ("answer", "ask", "cannot", "client_mail", "follow", "karne")
 FIELDS = {"enabled", "since", "max_per_run", "newer_than_days"}
 DRAFTS_KEY = "bc-mention-drafts"
 DRAFT_WINDOW_SECONDS = 3 * 24 * 3600
@@ -284,6 +284,10 @@ MENTION_SCHEMA = _obj({
     # follow (Ahmet 14 Oct): a job that came by WhatsApp, written on Basecamp by the team; Hamle follows the to-do
     "job": {"type": ["object", "null"], "properties": {"brief": _str(1500)}, "required": ["brief"],
             "additionalProperties": False},
+    # karne (Ahmet 14 Oct): a one-off digital karne of a brand we are going to meet (New Business only)
+    "karne": {"type": ["object", "null"], "properties": {
+        "brand": _str(80), "website": {"type": ["string", "null"], "minLength": 1, "maxLength": 300}},
+        "required": ["brand", "website"], "additionalProperties": False},
     "mail": {"type": ["object", "null"], "properties": {
         "to": {"type": "array", "items": _str(120), "maxItems": 3},
         "subject": _str(200),
@@ -530,7 +534,7 @@ class MentionDesk:
                 outcome = self._one(p, report)
             except Exception as exc:
                 outcome = "error:" + _code(exc)
-            if outcome in ("answer", "ask", "cannot", "failed"):
+            if outcome in ("answer", "ask", "cannot", "failed", "karne"):
                 out["answered"] += 1
             elif outcome == "follow":
                 out["followed"] += 1
@@ -581,6 +585,7 @@ class MentionDesk:
               and type(parent.get("id")) is int, "mention_todo_unreadable")
         if todo.get("visible_to_clients") is not False:
             return self._skip(key, token, "todo_visible_to_clients")
+        bucket = _line((todo.get("bucket") or {}).get("name"), 120) or None
         from v11_basecamp_reader import BasecampReader
         work = {"work_id": key, "account_id": self.s["account_id"], "project_id": project, "list_id": parent["id"],
                 "task_id": todo_id}
@@ -636,6 +641,8 @@ class MentionDesk:
                                   for row in files]
         why = self._follow_problem(brand_key, parent["id"], followed)
         request["job_tracking"] = {"followed": followed, "possible": why is None, "why": why}
+        from v11_nb_tracking import NB_PROJECT
+        request["project"] = {"name": bucket, "new_biz": project == NB_PROJECT}
         self._fit(request)
         self.calls += 1
         report["model_calls"] += 1
@@ -662,6 +669,26 @@ class MentionDesk:
                 result = dict(result, action="answer" if followed else "cannot",
                               comment=f"{first}, bu işi zaten takip ediyorum." if followed
                               else f"{first}, bu işi takibe alamıyorum: {why}.")
+        local = self.watch.clock().astimezone(ISTANBUL).date().isoformat()
+        karne = None
+        if isinstance(result, dict) and result["action"] == "karne":
+            import v11_digital_karne as dk
+            k = result.get("karne") or {}
+            if project != dk.NB_PROJECT:
+                result = dict(result, action="cannot", comment=(
+                    f"{first}, ön karneyi yalnız New Business projesindeki to-do'larda hazırlıyorum; görüşeceğimiz "
+                    "marka için orada bir to-do açıp beni etiketlersen hazırlarım."))
+            elif not dk.prospect_room(self._get(dk.REQUESTS_KEY), local):
+                result = dict(result, action="cannot", comment=f"{first}, bugün için {dk.PROSPECT_PER_DAY} ön karne "
+                              "sınırına ulaştık; yarın beni yeniden etiketlersen hazırlarım.")
+            else:
+                try:
+                    karne = dk.prospect_request(mention_key=key, project_id=project, todo_id=todo_id,
+                                                brand=k.get("brand"), website=k.get("website"),
+                                                requested_by=person, day=local, now=self.watch.clock().timestamp())
+                except Exception:
+                    result = dict(result, action="ask", comment=f"{first}, karne için markanın adını ve sitesini "
+                                  "tam anlayamadım; ikisini de yazar mısın?")
         if isinstance(result, dict):
             action = result["action"]
             if action == "client_mail":
@@ -692,13 +719,17 @@ class MentionDesk:
             body = draft_text(result["comment"], mail, self._name, self._approvers(), warnings)
         elif action == "follow":
             body = result["comment"] + "\n\n" + self._follow_text(job)
+        elif action == "karne":
+            body = (result["comment"] + "\n\n" + karne["brand"] + " için ön karneyi hazırlayıp bu to-do'ya yorum "
+                    "olarak yazacağım: siteyi ölçer, son 30 günün haberlerine, şikayetlere, sosyal medyaya, rakiplere "
+                    "ve fırsatlara bakarım. Hafta içi 09:15 ile 18:45 arasında yarım saatte bir bakıyorum; karne "
+                    "yalnız ekip içindir, markaya kendiliğinden gitmez.")
         else:
             body = result["comment"]
         if action != "failed" and action != "client_mail" and self._unread(files, described):
             body += "\n\nOkuyamadığım dosyalar: " + self._unread(files, described) + "."
         payload_target = dict(target)
         dkey = draft_key(key)
-        local = self.watch.clock().astimezone(ISTANBUL).date().isoformat()
 
         from v11_client_job import JOBS_KEY
 
@@ -706,6 +737,9 @@ class MentionDesk:
             self.watch._fence(tx, now)
             row, t = tx.get(key), tx.get(tkey) or {"key": tkey, "kind": "bc_mention_todo", "todo_id": todo_id}
             old_job, index = (tx.get(job["key"]), tx.get(JOBS_KEY)) if job is not None else (None, None)  # reads first
+            if karne is not None:
+                import v11_digital_karne as dk
+                k_index, k_old = tx.get(dk.REQUESTS_KEY), tx.get(karne["key"])
             _need(row is not None and row.get("token") == token and row["state"] == "claimed", "mention_claim_lost")
             count = int(t.get("count") or 0) if t.get("day") == local else 0
             _need(count < MAX_PER_TODO_PER_DAY, "mention_todo_daily_limit")
@@ -719,6 +753,9 @@ class MentionDesk:
                               "target": payload_target, "list_id": parent["id"], "todo_id": todo_id,
                               "brand_key": brand_key, "requester_id": author["id"], **mail, "created_at": now})
             tx.put(tkey, t)
+            if karne is not None and k_old is None:  # the next hamle-digital-karne run prepares it
+                tx.put(karne["key"], dict(karne))
+                tx.put(dk.REQUESTS_KEY, dk.prospect_index(k_index, karne["key"], local))
             if job is not None and old_job is None:  # Hamle follows the to-do from the next run on
                 tx.put(job["key"], dict(job, created_at=now, updated_at=now, opened_at=now, mention_key=key))
                 keys = list((index or {}).get("keys") or [])

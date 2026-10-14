@@ -763,7 +763,202 @@ class Prospect(Karne):
         r = kw.run_prospect_karne("Yeni Marka", None, web=self.web, research=None, clock=lambda: self.now)
         self.assertEqual((r["status"], r["research"], r["model_calls"]), ("prospect_karne_ready", "not_called", 0))
         self.assertIn("Sitenin adresi verilmediği için site kontrolleri yapılamadı.", r["text"])
+        failing = Research(fail=kw.KarneError("model_timeout"))
+        r = kw.run_prospect_karne("Yeni Marka", None, web=self.web, research=failing, clock=lambda: self.now)
+        self.assertIn("araştırması bu kez alınamadı (model_timeout)", " ".join(r["text"].split()))
 
+
+
+NB, NB_TODO = 40704547, 10400000001
+AHMET_P = {"name": "Ahmet Şükrü Altındağ", "email": "ahmet@gamechangers.com.tr"}
+
+
+class NbFake:
+    """The New Business project: comments POSTed on a to-do and read back."""
+    def __init__(self):
+        self.calls, self.comments, self.next_id, self.fail_post, self.mangle = [], {}, 9000, None, False
+
+    def send(self, method, url, body, expected):
+        self.calls.append((method, url, body))
+        path = urlsplit(url).path
+        m = re.fullmatch(rf"/{ACC}/buckets/{NB}/recordings/(\d+)/comments\.json", path)
+        if m and method == "POST":
+            assert expected == 201
+            if self.fail_post:
+                raise self.fail_post
+            self.next_id += 1
+            self.comments[self.next_id] = {"id": self.next_id, "parent": {"id": int(m[1])}, "bucket": {"id": NB},
+                                           "creator": {"id": HAMLE_PERSON}, "visible_to_clients": False,
+                                           "content": body["content"] + ("<div>x</div>" if self.mangle else "")}
+            return {"id": self.next_id}, {}
+        m = re.fullmatch(rf"/{ACC}/buckets/{NB}/comments/(\d+)\.json", path)
+        if m and method == "GET":
+            return dict(self.comments[int(m[1])]), {}
+        raise AssertionError(url)
+
+    def posts(self):
+        return [b["content"] for m, u, b in self.calls if m == "POST"]
+
+
+class ProspectRequests(Karne):
+    """Ahmet 14 Oct: "görüşeceğimiz markalara da önerebiliriz". A team member tags Hamle on a New Business to-do;
+    the next hamle-digital-karne run writes the karne there as one comment."""
+    def setUp(self):
+        super().setUp()
+        self.nb = NbFake()
+        self.bc = kw.ProspectBasecamp(ACC, send=self.nb.send)
+        self.web.pages[kw.pagespeed_api("https://hanspaces.com")] = (200, psi(0.31))
+
+    def queue(self, brand="HAN Spaces", site="hanspaces.com", mention="bc-mention-1", todo_id=NB_TODO, **row):
+        r = dict(kw.prospect_request(mention_key=mention, project_id=NB, todo_id=todo_id, brand=brand, website=site,
+                                     requested_by=AHMET_P, day="2026-10-19", now=self.now.timestamp()), **row)
+
+        def op(tx, _):
+            index = tx.get(kw.REQUESTS_KEY)
+            tx.put(r["key"], r)
+            tx.put(kw.REQUESTS_KEY, kw.prospect_index(index, r["key"], "2026-10-19"))
+        self.ops._run(op)
+        return r["key"]
+
+    def row(self, key):
+        return self.ops._run(lambda tx, _: tx.get(key), allow_expired=True)
+
+    def run_requests(self, research="default", **k):
+        research = Research(self.research()) if research == "default" else research
+        return kw.run_prospect_requests(self.ops, http=self.bc, web=self.web, research=research,
+                                        clock=lambda: self.now, monotonic=lambda: self.tick[0], **k)
+
+    @staticmethod
+    def research():
+        return {"summary": "Site yavaş.", "evidence": [EVENT], "not_checked": [],
+                "findings": [{"area": "firsat", "level": "sari", "text": "Kasım'daki ofis fuarı.",
+                              "suggestion": "Görüşmede fuar içeriği önerin.", "url": EVENT, "date": None}]}
+
+    def test_a_queued_request_becomes_one_comment_on_its_todo(self):
+        key = self.queue()
+        r = self.run_requests()
+        self.assertEqual((r["status"], r["done"], r["model_calls"], r["business_writes"]),
+                         ("prospect_karne_completed", 1, 1, 1), r)
+        [post] = self.nb.posts()
+        self.assertTrue(post.startswith("<div>Ahmet, HAN Spaces için ön karne hazır.</div>"), post)
+        flat = " ".join(kw._visible(post).split())
+        self.assertIn("Ön Dijital Karne · HAN Spaces · Ekim 2026", flat)
+        self.assertIn("Mobil hız skoru düşük: 31/100 (PageSpeed).", flat)
+        self.assertIn("Fırsat: Kasım'daki ofis fuarı.", flat)
+        self.assertIn(f"/buckets/{NB}/recordings/{NB_TODO}/comments.json", self.nb.calls[0][1])
+        row = self.row(key)
+        self.assertEqual((row["state"], row["comment_id"], row["research"], row["attempts"]),
+                         ("ready", 9001, "1_sourced", 1))
+        self.assertEqual(self.run_requests()["done"], 0)  # never twice
+        self.assertEqual(len(self.nb.posts()), 1)
+
+    def test_without_research_the_requests_wait(self):
+        key = self.queue()
+        r = self.run_requests(None)
+        self.assertEqual((r["status"], r["reason"]), ("held", "prospect_research_unavailable"))
+        self.assertEqual((self.nb.calls, self.row(key)["state"]), ([], "queued"))
+
+    def test_an_uncertain_comment_is_unknown_and_never_written_again(self):
+        key = self.queue()
+        self.nb.fail_post = ConnectionError("reset")
+        r = self.run_requests()
+        self.assertEqual((r["unknown"], r["business_writes"]), (1, 1))
+        self.assertEqual(self.row(key)["state"], "unknown")
+        self.nb.fail_post = None
+        self.run_requests()
+        self.assertEqual(len(self.nb.posts()), 1)
+        key2 = self.queue(mention="bc-mention-2")
+        self.nb.mangle = True  # the comment does not read back as written
+        self.assertEqual(self.run_requests()["unknown"], 1)
+        self.assertEqual((self.row(key2)["state"], self.row(key2)["reason"]),
+                         ("unknown", "prospect_comment_readback_mismatch"))
+
+    def test_dur_stops_before_any_work(self):
+        key = self.queue()
+        self.ops.set_mode("stopped", "ahmet-dur")
+        r = self.run_requests()
+        self.assertEqual((r["done"], r["model_calls"], self.nb.calls), (0, 0, []))
+        self.assertEqual(self.row(key)["state"], "queued")
+
+    def test_two_per_run_and_a_twice_failed_run_is_given_up(self):
+        keys = [self.queue(brand=f"Marka {i}", site=None, mention=f"m{i}") for i in range(3)]
+        r = self.run_requests()
+        self.assertEqual((r["status"], r["done"], r["left"]), ("prospect_karne_partial", 2, 1))
+        self.assertEqual(self.run_requests()["done"], 1)
+        self.assertEqual([self.row(k)["state"] for k in keys], ["ready", "ready", "ready"])
+        stuck = self.queue(mention="m9", state="running", attempts=2, lease_until=0)
+        self.assertEqual(self.run_requests()["done"], 0)
+        self.assertEqual((self.row(stuck)["state"], self.row(stuck)["reason"]), ("failed", "prospect_karne_attempts"))
+        self.assertEqual(len(self.nb.posts()), 3)
+
+    def test_time_budget_leaves_the_request_for_the_next_run(self):
+        key = self.queue()
+        r = self.run_requests(budget_seconds=600)
+        self.assertEqual((r["status"], r["left"], self.nb.calls), ("prospect_karne_partial", 1, []))
+        self.assertEqual(self.row(key)["state"], "queued")
+
+    def test_a_karne_that_cannot_be_prepared_says_why_on_the_todo(self):
+        r = kw.prospect_request(mention_key="m1", project_id=NB, todo_id=NB_TODO, brand="Koton", website=None,
+                                requested_by=AHMET_P, day="2026-10-19", now=0)
+        bad = dict(r, brand="K")
+        self.ops._run(lambda tx, _: (tx.put(bad["key"], bad),
+                                     tx.put(kw.REQUESTS_KEY, kw.prospect_index(None, bad["key"], "2026-10-19"))))
+        out = self.run_requests()
+        self.assertEqual((out["failed"], out["model_calls"]), (1, 0))
+        [post] = self.nb.posts()
+        self.assertIn("ön karneyi hazırlayamadım (marka adı okunamadı)", kw._visible(post))
+        self.assertEqual(self.row(bad["key"])["state"], "failed")
+
+    def test_requests_only_on_new_business_and_five_a_day(self):
+        for project, todo_id, name, site in ((WAT, NB_TODO, "Koton", None), (NB, 0, "Koton", None),
+                                             (NB, NB_TODO, "K", None), (NB, NB_TODO, "Koton", "ftp://koton.com")):
+            with self.assertRaises(kw.KarneError):
+                kw.prospect_request(mention_key="m", project_id=project, todo_id=todo_id, brand=name, website=site,
+                                    requested_by=AHMET_P, day="2026-10-19", now=0)
+        r = kw.prospect_request(mention_key="m", project_id=NB, todo_id=NB_TODO, brand=" Koton ",
+                                website="www.koton.com", requested_by=AHMET_P, day="2026-10-19", now=0)
+        self.assertEqual((r["brand"], r["website"], r["state"], r["key"]),
+                         ("Koton", "https://www.koton.com", "queued", kw.request_key("m")))
+        index = None
+        for i in range(5):
+            self.assertTrue(kw.prospect_room(index, "2026-10-19"))
+            index = kw.prospect_index(index, f"k{i}", "2026-10-19")
+        self.assertFalse(kw.prospect_room(index, "2026-10-19"))
+        with self.assertRaises(kw.KarneError):
+            kw.prospect_index(index, "k5", "2026-10-19")
+        index = kw.prospect_index(index, "k5", "2026-10-20")  # a new day
+        self.assertEqual((index["days"], index["keys"][-1]), ({"2026-10-20": 1}, "k5"))
+
+    def test_the_basecamp_client_writes_only_comments_in_new_business(self):
+        for method, path in (("POST", f"/buckets/{WAT}/recordings/{NB_TODO}/comments.json"),
+                             ("POST", f"/buckets/{NB}/todolists/10398528523/todos.json"),
+                             ("PUT", f"/buckets/{NB}/todos/{NB_TODO}.json"),
+                             ("GET", f"/buckets/{WAT}/comments/1.json")):
+            with self.assertRaises(Exception, msg=path):
+                self.bc.call(method, f"https://3.basecampapi.com/{ACC}{path}", {}, 201)
+        self.assertEqual(self.nb.calls, [])
+
+
+    def test_every_scheduled_run_also_prepares_the_requests_and_previews_do_not(self):
+        from unittest.mock import patch
+        seen = []
+
+        def requests(ops, **k):
+            seen.append(k)
+            return {"status": "prospect_karne_completed"}
+        with patch.object(kw, "run_digital_karne", side_effect=lambda *a, **k: {"status": "no_new_work"}), \
+                patch.object(kw, "run_prospect_requests", side_effect=requests), \
+                patch.object(kw, "research_source", return_value=Research()), \
+                patch("cloud_providers.pagespeed_key", side_effect=RuntimeError("no key")):
+            r = kw.run_worker_digital_karne(self.ops, {}, clock=lambda: self.now)
+            self.assertEqual((r["status"], r["prospects"]["status"]), ("no_new_work", "prospect_karne_completed"))
+            [k] = seen
+            self.assertIsInstance(k["http"], kw.ProspectBasecamp)
+            self.assertLessEqual(k["budget_seconds"], 1650)
+            self.assertIsNone(k["psi_key"])
+            r = kw.run_worker_digital_karne(self.ops, {}, preview="checks", clock=lambda: self.now)
+            self.assertNotIn("prospects", r)
+            self.assertEqual(len(seen), 1)
 
 class Alarm(Karne):
     START = datetime.fromisoformat("2026-10-26T10:00:00+03:00")

@@ -47,14 +47,14 @@ def mention_config(**kw):
 def mail_out(**kw):
     out = {"action": "client_mail", "understood": "Ahmet Standartlar Günü story önerisini müşteriye sormamı istedi.",
            "comment": "Ahmet, taslağı hazırladım, aşağıda.",
-           "mail": {"to": [AYSE], "subject": SUBJECT, "body": BODY}, "attachments_read": [], "job": None}
+           "mail": {"to": [AYSE], "subject": SUBJECT, "body": BODY}, "attachments_read": [], "job": None, "karne": None}
     out.update(kw)
     return out
 
 
 def answer_out(text="Ahmet, bu to-do'da henüz yüklenmiş bir görsel yok; Özge'de görünüyor.", action="answer"):
     return {"action": action, "understood": "Ahmet işin durumunu sordu.", "comment": text, "mail": None,
-            "attachments_read": [], "job": None}
+            "attachments_read": [], "job": None, "karne": None}
 
 
 class MentionBasecamp:
@@ -497,7 +497,7 @@ def follow_out(**kw):
     out = {"action": "follow", "understood": "Ahmet WhatsApp'tan gelen story işini takip etmemi istedi.",
            "comment": "Ahmet, tamam: Cuma 12:00'ye Instagram story, paket görseli ekte.", "mail": None,
            "attachments_read": [{"name": "banner.png", "what": "Rabam Plus paket görseli, 1.124 TL aylık"}],
-           "job": {"brief": "9:16 Instagram story. Paket: Rabam Plus, aylık 1.124 TL. Cuma 12:00 yayında."}}
+           "job": {"brief": "9:16 Instagram story. Paket: Rabam Plus, aylık 1.124 TL. Cuma 12:00 yayında."}, "karne": None}
     out.update(kw)
     return out
 
@@ -654,6 +654,77 @@ class WhatsAppJob(MentionBase):
         self.watch().run()
         self.assertIn("Okuyamadığım dosyalar: reels.mp4 (bu dosya türünü okuyamıyorum).", self.hamle_said(WA_TODO)[-1])
 
+
+
+def karne_out(brand="Koton", website="koton.com", comment="Ahmet, Koton için ön karneyi hazırlıyorum."):
+    return dict(answer_out(comment, action="karne"), understood="Ahmet Koton için ön karne istedi.",
+                karne={"brand": brand, "website": website})
+
+
+class ProspectKarne(MentionBase):
+    """Ahmet 14 Oct: the karne can be offered to brands we are going to meet; asked on a New Business to-do."""
+    NB_TODO = 10400000001
+
+    def setUp(self):
+        super().setUp()
+        self.bc.todo(self.NB_TODO, project=NB, list_id=NB_LIST, title="Koton ilk görüşme")
+        self.bc.todos[self.NB_TODO]["bucket"]["name"] = "New Business"
+
+    def requests(self):
+        import v11_digital_karne as dk
+        index = self.ops.backend.data.get(dk.REQUESTS_KEY)
+        return index, [self.ops.backend.data.get(k) for k in (index or {}).get("keys") or []]
+
+    def test_tag_on_a_new_business_todo_queues_one_karne(self):
+        self.mention("<div>Hamle, Koton için ön karne hazırlar mısın? Siteleri koton.com</div>", todo=self.NB_TODO,
+                     project=NB)
+        self.mclient.outputs = [message(karne_out())]
+        r = self.watch().run()
+        self.assertEqual(r["mentions"]["answered"], 1, r)
+        request = json.loads(self.mclient.calls[0]["messages"][0]["content"])
+        self.assertEqual(request["project"], {"name": "New Business", "new_biz": True})
+        (said,) = self.hamle_said(self.NB_TODO)
+        self.assertTrue(said.startswith("Ahmet, Koton için ön karneyi hazırlıyorum."), said)
+        self.assertIn("Koton için ön karneyi hazırlayıp bu to-do'ya yorum olarak yazacağım", said)
+        self.assertIn("karne yalnız ekip içindir", said)
+        index, rows = self.requests()
+        day = self.now.astimezone(bm.ISTANBUL).date().isoformat()
+        self.assertEqual(index["days"], {day: 1})
+        [row] = rows
+        self.assertEqual((row["state"], row["brand"], row["website"], row["project_id"], row["todo_id"]),
+                         ("queued", "Koton", "https://koton.com", NB, self.NB_TODO))
+        self.assertEqual(row["requested_by"]["email"], AHMET)
+
+    def test_karne_outside_new_business_is_an_honest_no(self):
+        self.mention("<div>Hamle WAT için karne hazırla</div>")
+        self.mclient.outputs = [message(karne_out("WAT Mobilite", None))]
+        self.watch().run()
+        request = json.loads(self.mclient.calls[0]["messages"][0]["content"])
+        self.assertEqual(request["project"], {"name": "WAT Mobilite", "new_biz": False})
+        (said,) = self.hamle_said()
+        self.assertIn("yalnız New Business projesindeki to-do'larda", said)
+        self.assertEqual(self.requests(), (None, []))
+
+    def test_five_a_day_then_an_honest_no(self):
+        import v11_digital_karne as dk
+        day = self.now.astimezone(bm.ISTANBUL).date().isoformat()
+        self.ops._run(lambda tx, _: tx.put(dk.REQUESTS_KEY, {"kind": "prospect_karne_requests", "keys": [],
+                                                              "days": {day: dk.PROSPECT_PER_DAY}}))
+        self.mention("<div>Hamle Koton için karne</div>", todo=self.NB_TODO, project=NB)
+        self.mclient.outputs = [message(karne_out())]
+        self.watch().run()
+        (said,) = self.hamle_said(self.NB_TODO)
+        self.assertIn("5 ön karne sınırına ulaştık", said)
+        self.assertEqual(self.requests()[1], [])
+
+    def test_an_unreadable_brand_or_site_becomes_one_question(self):
+        self.mention("<div>Hamle karne?</div>", todo=self.NB_TODO, project=NB)
+        self.mclient.outputs = [message(karne_out("K", "ftp://koton.com"))]
+        r = self.watch().run()
+        (said,) = self.hamle_said(self.NB_TODO)
+        self.assertIn("markanın adını ve sitesini tam anlayamadım", said)
+        self.assertEqual(self.requests(), (None, []))
+        self.assertEqual(r["mentions"]["answered"], 1, r)
 
 class Writer(unittest.TestCase):
     class Gmail:
