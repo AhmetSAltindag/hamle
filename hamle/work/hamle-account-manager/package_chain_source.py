@@ -25,14 +25,16 @@ CHAIN_FILES = ("v11_chain.py", "v11_brand_task.py", "v11_intake_plan.py", "v11_b
                "v11_client_watch.py", "v11_client_reply.py", "client_draft_prompt.txt",
                "chain_daily_spark_prompt.txt", "v11_nb_tracking.py",
                "v11_idea_tracking.py", "v11_client_job.py", "client_job_review_prompt.txt",
-               "v11_basecamp_mentions.py", "basecamp_mention_prompt.txt", "v11_attachments.py")
+               "v11_basecamp_mentions.py", "basecamp_mention_prompt.txt", "v11_attachments.py",
+               "v11_weekly_karne.py", "weekly_karne_prompt.txt")
 ALLOWLIST = dict(base.ALLOWLIST)
 ALLOWLIST["cloudbuild.yaml"] = APP + "cloudbuild-v11-chain.yaml"
 ALLOWLIST.update({APP + name: APP + name for name in CHAIN_FILES})
 ALLOWLIST.update({APP + "chain-profile/" + name: PROFILE + name for name in (
     "gamechangers-internal-catalog.json", "gamechangers-internal-quality-rubric.json",
     "gamechangers-internal-work-authority-policy.json", "daily-digest-config.json",
-    "brand-cards.json", "tr-special-days-2026.json", "model-routing.json", "client-watch-config.json")})
+    "brand-cards.json", "tr-special-days-2026.json", "model-routing.json", "client-watch-config.json",
+    "weekly-karne-config.json")})
 
 
 def package(root=base.ROOT):

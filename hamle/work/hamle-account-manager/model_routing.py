@@ -18,8 +18,8 @@ from model_profiles import PROFILES
 NAME = "model-routing.json"
 SCHEMA_VERSION = 1
 ROLES = ("chain_interpreter", "chain_answerer", "customer_text", "chain_classifier", "digest_classifier",
-         "trend_radar", "monday_special_days", "new_business_research", "daily_spark")
-WEB_SEARCH_ROLES = ("trend_radar", "monday_special_days", "new_business_research", "daily_spark")
+         "trend_radar", "monday_special_days", "new_business_research", "daily_spark", "weekly_karne")
+WEB_SEARCH_ROLES = ("trend_radar", "monday_special_days", "new_business_research", "daily_spark", "weekly_karne")
 PROVIDERS = ("anthropic", "openai")
 ANTHROPIC_MODELS = ("claude-opus-5-5", "claude-haiku-5-5")
 EFFORTS = ("low", "medium", "high", "xhigh", "max")

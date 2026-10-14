@@ -1,0 +1,986 @@
+"""Haftalık Dijital Karne (Ahmet 2026-10-14 12:27Z: "her pazartesi sabah 10:00'da ... her marka için haftalık
+olarak küçük bir digital audit": dijital varlıklarda, sosyal medyada ve genel web'de her şey yolunda mı, hatalı
+ya da güncellenmemiş bir şey var mı?). Plan: Claude Doc "Hamle AI · Gerçekçi Vizyon", section 1.
+
+Every Monday from 10:00 Istanbul (job hamle-weekly-karne), for each brand of weekly-karne-config.json:
+1. Checks Hamle measures itself (public web, GET only, no model): the home page answers and how fast, the
+   SSL certificate and (non-.tr) domain expiry, up to 20 links of the home page, the © year, a KVKK / çerez
+   link, the social links on the site vs the brand's accounts; App Store rating, last update and the last
+   7 days' reviews for configured apps.
+2. One Claude Opus 5.5 web-search call (role weekly_karne): news and complaints of the last days, the social
+   accounts, competitors, outdated content on the home page. A finding survives only with an https URL from
+   the search evidence or a page Hamle opened itself; news, complaint and competitor findings also need a
+   date in the last 14 days. Anything else is dropped, never repaired.
+3. One to-do "Hamle Karne: <Marka> · <n>. Hafta" in the brand's Sosyal Medya list (catalog brand_routes:
+   verified, hidden from clients, Hamle a member), assigned to the brand's social media lead, due Wednesday.
+   A brand without a verified route (Fenerium) goes to the internal "Hamle İşleri" list for its owner.
+   Karne to-dos stay out of the team's due/overdue lists; Tuesday's digest shows one line per brand. The
+   next week the team's comments on these to-dos go to the model as feedback.
+
+The karne is for the team only: no mail, nothing to clients, Hamle never posts or edits a site.
+Writes: same rules as idea tracking (durable record before the POST, one attempt, readback, anything
+uncertain is 'unknown' and never retried; 'dur' blocks every write). Resumable: a run stops before its
+time budget and the next scheduled run continues with the brands left.
+"""
+from __future__ import annotations
+
+from concurrent.futures import ThreadPoolExecutor
+from datetime import date, datetime, timedelta
+from html import escape
+from html.parser import HTMLParser
+import ipaddress
+import json
+from pathlib import Path
+import re
+import socket
+import ssl
+import time
+import uuid
+from urllib.parse import urljoin, urlsplit
+from zoneinfo import ZoneInfo
+
+from v11_chain_models import _arr, _nstr, _obj, _str, key_for, source_digest
+from v11_nb_tracking import API, APP, HAMLE_PERSON, MONTHS, NbBasecamp, _Text, _code, _line, text_matches
+from v11_trend_search import _iso_day, _research_gate, _routing, anthropic_research, normalize_url, route_fingerprint
+
+ISTANBUL = ZoneInfo("Europe/Istanbul")
+CONFIG_NAME = "weekly-karne-config.json"
+PROMPT = Path(__file__).with_name("weekly_karne_prompt.txt")
+ROLE = "weekly_karne"
+PREFIX = "Hamle Karne: "
+AREAS = {"site": "Site", "icerik": "İçerik", "uygulama": "Uygulama", "sikayet": "Şikayet", "gundem": "Gündem",
+         "sosyal": "Sosyal medya", "rakip": "Rakip"}
+LEVELS = ("kirmizi", "sari", "yesil", "bakilamadi")
+ICONS = {"kirmizi": "🔴", "sari": "🟡", "yesil": "🟢", "bakilamadi": "⚪"}
+HEADS = {"kirmizi": "Bu hafta ele alınmalı", "sari": "Dikkat", "yesil": "Sorunsuz", "bakilamadi": "Bakılamadı"}
+COUNT_WORDS = {"kirmizi": "acil", "sari": "dikkat", "yesil": "sorunsuz", "bakilamadi": "bakılamadı"}
+DATED_AREAS = ("gundem", "sikayet", "rakip")
+MAX_FINDINGS, MAX_NOT_CHECKED, NEWS_DAYS, MAX_LINKS, LINK_WORKERS = 8, 5, 14, 20, 6
+SLOW_SECONDS, APP_STALE_DAYS, LOW_RATING, LOW_REVIEWS = 6.0, 180, 3.5, 3
+MAX_INPUT_BYTES, HOME_TEXT_CHARS, READ_SECONDS = 15_000, 3000, 30
+LEADS = {52096503: "Özge", 53167312: "Esma", 47470759: "Ahmet", 48793256: "Cansu"}
+SOCIAL_HOSTS = {"instagram.com": "instagram", "tiktok.com": "tiktok", "x.com": "x", "twitter.com": "x",
+                "linkedin.com": "linkedin", "youtube.com": "youtube", "facebook.com": "facebook"}
+PLATFORM_NAMES = {"instagram": "Instagram", "tiktok": "TikTok", "x": "X", "linkedin": "LinkedIn",
+                  "youtube": "YouTube", "facebook": "Facebook"}
+IGNORED_HANDLES = frozenset(("intent", "share", "sharer", "sharer.php", "home", "hashtag", "p", "reel", "reels",
+                             "watch", "embed", "explore", "stories", "tr"))
+PRIVACY = ("kvkk", "gizlilik", "privacy", "çerez", "cerez", "cookie", "aydınlatma", "aydinlatma", "kişisel veri",
+           "kisisel-veri", "kisisel_veri")
+UNCHECKABLE = (401, 403, 405, 406, 429)
+FOOTER = ("Bu karne yalnız ekip içindir, müşteriye gitmez. Kırmızı maddeleri çarşamba gününe kadar ele alalım. "
+          "Yanlış bulduğunuz bir madde varsa bu to-do'ya yorum yazın; Hamle gelecek haftaki karneyi hazırlarken "
+          "yorumları okur. Görevi kapatmak sizde.")
+DIGEST_HINT = ("Karneler yalnız ekip içindir. Kırmızılar çarşamba gününe kadar; yanlış bir madde varsa to-do'ya "
+               "yorum yazın, Hamle gelecek hafta okur.")
+
+
+class KarneError(ValueError):
+    def __init__(self, code):
+        super().__init__(code)
+        self.code = code
+
+
+def _need(ok, code):
+    if not ok:
+        raise KarneError(code)
+
+
+# ------------------------------------------------------------------ config
+def load_config(path=None):
+    root = Path(__file__).resolve().parents[2]
+    candidates = [Path(path)] if path else [Path(__file__).with_name("chain-profile") / CONFIG_NAME,
+                                            root / "outputs/gamechangers-internal" / CONFIG_NAME]
+    for candidate in candidates:
+        if candidate.is_file():
+            try:
+                return json.loads(candidate.read_text(encoding="utf-8"))
+            except (OSError, UnicodeError, ValueError):
+                raise KarneError("karne_config_unreadable") from None
+    raise KarneError("karne_config_missing")
+
+
+def _https(value):
+    return isinstance(value, str) and normalize_url(value) is not None
+
+
+def validate_config(doc):
+    _need(isinstance(doc, dict) and doc.get("schema_version") == 1 and doc.get("kind") == "weekly_karne_config",
+          "karne_config_invalid")
+    _need(type(doc.get("enabled")) is bool and isinstance(doc.get("version"), str), "karne_config_invalid")
+    w = doc.get("window")
+    _need(isinstance(w, dict) and w.get("weekday") in range(5)
+          and all(isinstance(w.get(k), str) and re.fullmatch(r"([01]\d|2[0-3]):[0-5]\d", w[k]) for k in ("start", "end"))
+          and w["start"] < w["end"], "karne_window_invalid")
+    _need(type(doc.get("time_budget_seconds")) is int and 300 <= doc["time_budget_seconds"] <= 3300,
+          "karne_time_budget_invalid")
+    brands, seen = [], set()
+    for b in doc.get("brands") or []:
+        _need(isinstance(b, dict) and isinstance(b.get("key"), str) and b["key"] not in seen
+              and isinstance(b.get("brand"), str) and 0 < len(b["brand"]) <= 80, "karne_brand_invalid")
+        _need(b.get("website") is None or _https(b["website"]), "karne_website_invalid")
+        socials = b.get("socials") or {}
+        _need(isinstance(socials, dict) and all(p in PLATFORM_NAMES and _https(u) for p, u in socials.items()),
+              "karne_socials_invalid")
+        apps = b.get("app_store_ids") or []
+        _need(isinstance(apps, list) and len(apps) <= 3 and all(isinstance(a, str) and re.fullmatch(r"\d{6,12}", a)
+                                                                for a in apps), "karne_apps_invalid")
+        rivals = b.get("rivals") or []
+        _need(isinstance(rivals, list) and all(isinstance(r, str) and 0 < len(r) <= 60 for r in rivals),
+              "karne_rivals_invalid")
+        _need(b.get("notes") is None or (isinstance(b["notes"], str) and len(b["notes"]) <= 400), "karne_notes_invalid")
+        seen.add(b["key"])
+        brands.append({"key": b["key"], "brand": b["brand"], "website": b.get("website"),
+                       "website_verified": b.get("website_verified") is True, "socials": dict(socials),
+                       "app_store_ids": list(apps), "rivals": list(rivals)[:8], "notes": b.get("notes")})
+    _need(brands, "karne_no_brands")
+    return {"enabled": doc["enabled"], "version": doc["version"], "window": dict(w),
+            "time_budget_seconds": doc["time_budget_seconds"], "brands": brands}
+
+
+def destinations(catalog):
+    """{brand_key: {'project_id', 'list_id', 'person_id', 'internal', 'card_project_id'}}.
+
+    The brand's Sosyal Medya list and lead when the route is verified as client-hidden with Hamle a member
+    (as idea tracking); otherwise the verified internal "Hamle İşleri" list for the brand's owner, when that
+    owner is a read-back member of the internal project (Fenerium -> Ahmet)."""
+    out, catalog = {}, catalog or {}
+    bc = catalog.get("basecamp") or {}
+    internal = next((r for r in catalog.get("routes") or [] if isinstance(r, dict) and r.get("category_key") == "internal"
+                     and r.get("verified") is True and type(r.get("list_id")) is int), None)
+    inside = bc.get("verified") is True and bc.get("customer_visible") is False and type(bc.get("project_id")) is int
+    for key, r in (catalog.get("brand_routes") or {}).items():
+        if not isinstance(r, dict):
+            continue
+        pid, lid, person = r.get("project_id"), (r.get("lists") or {}).get("social"), r.get("sm_person_id")
+        if r.get("verified") is True and r.get("lists_visible_to_clients") is False and r.get("hamle_member") is True \
+                and all(type(x) is int and x > 0 for x in (pid, lid, person)):
+            out[key] = {"project_id": pid, "list_id": lid, "person_id": person, "internal": False, "card_project_id": pid}
+        elif internal and inside and type(person) is int and person in (bc.get("member_ids_readback") or []):
+            out[key] = {"project_id": bc["project_id"], "list_id": internal["list_id"], "person_id": person,
+                        "internal": True, "card_project_id": pid}
+    return out
+
+
+def monday_of(day):
+    return day - timedelta(days=day.weekday())
+
+
+def week_number(day):
+    return monday_of(day).isocalendar().week
+
+
+def state_key(day):
+    iso = monday_of(day).isocalendar()
+    return f"weekly-karne-{iso.year}-W{iso.week:02d}"
+
+
+def title(brand, day):
+    return PREFIX + _line(f"{brand} · {week_number(day)}. Hafta", 150)
+
+
+def is_karne_item(t):
+    """A karne to-do (shown in its own Tuesday line, not listed as team work)."""
+    return t.get("kind") == "todo" and str(t.get("title") or "").startswith(PREFIX)
+
+
+def _when(d):
+    return f"{d.day} {MONTHS[d.month - 1]} {d.year}"
+
+
+def _num(value, digits=1):
+    text = f"{value:,.{digits}f}" if digits else f"{int(value):,}"
+    return text.replace(",", "§").replace(".", ",").replace("§", ".")
+
+
+# ------------------------------------------------------------------ public web (GET only)
+class Web:
+    """Public pages for the karne: https GET only, no credentials, manual redirects (https, public hosts),
+    bounded bodies. session_factory() -> requests-like session; resolve(host) -> getaddrinfo rows."""
+    UA = "Mozilla/5.0 (compatible; HamleKarne/1.0; +https://gamechangers.com.tr)"
+
+    def __init__(self, session_factory, *, resolve=None, cert_reader=None, timeout=(6, 15), clock=time.monotonic):
+        self.session_factory, self.timeout, self.clock = session_factory, timeout, clock
+        self.resolve = resolve or (lambda host: socket.getaddrinfo(host, 443, proto=socket.IPPROTO_TCP))
+        self.cert_reader = cert_reader or self._cert
+
+    def _public(self, host):
+        _need(isinstance(host, str) and "." in host and not host.endswith((".internal", ".local", ".localhost")),
+              "web_host_not_public")
+        try:
+            ipaddress.ip_address(host)
+            literal = True
+        except ValueError:
+            literal = False
+        _need(not literal, "web_ip_literal")
+        try:
+            rows = self.resolve(host)
+        except OSError:
+            raise KarneError("web_dns_failed") from None
+        _need(rows and all(ipaddress.ip_address(r[4][0]).is_global for r in rows), "web_host_not_public")
+
+    def get(self, url, *, max_bytes=2_000_000):
+        """{'status', 'url' (final), 'body', 'seconds', 'headers'}; at most 5 redirects."""
+        started = self.clock()
+        for _ in range(6):
+            p = urlsplit(url)
+            _need(p.scheme == "https" and p.port in (None, 443) and not p.username, "web_url_not_https")
+            self._public(p.hostname)
+            session, r = self.session_factory(), None
+            try:
+                r = session.request("GET", url, headers={"User-Agent": self.UA, "Accept": "text/html,application/json,*/*",
+                                                         "Accept-Language": "tr-TR,tr;q=0.9"},
+                                    timeout=self.timeout, allow_redirects=False, stream=True)
+                headers = {k.lower(): v for k, v in dict(r.headers).items()}
+                if r.status_code in (301, 302, 303, 307, 308) and headers.get("location"):
+                    url = urljoin(url, headers["location"])
+                    continue
+                chunks, size = [], 0
+                if max_bytes:
+                    for chunk in r.iter_content(chunk_size=16384):
+                        chunks.append(chunk)
+                        size += len(chunk)
+                        if size >= max_bytes or self.clock() - started > READ_SECONDS:
+                            break
+                return {"status": r.status_code, "url": url, "body": b"".join(chunks)[:max_bytes],
+                        "seconds": round(self.clock() - started, 2), "headers": headers}
+            except KarneError:
+                raise
+            except Exception as exc:
+                name = type(exc).__name__.lower()
+                raise KarneError("web_timeout" if "timeout" in name else "web_unreachable") from None
+            finally:
+                if r is not None:
+                    r.close()
+                session.close()
+        raise KarneError("web_too_many_redirects")
+
+    def json(self, url):
+        page = self.get(url, max_bytes=1_500_000)
+        _need(page["status"] == 200, f"web_http_{page['status']}")
+        try:
+            return json.loads(page["body"].decode("utf-8"))
+        except (UnicodeError, ValueError):
+            raise KarneError("web_json_invalid") from None
+
+    def cert_days(self, host, now):
+        """Days until the TLS certificate expires; KarneError('ssl_invalid') when it does not verify."""
+        self._public(host)
+        return self.cert_reader(host, now)
+
+    @staticmethod
+    def _cert(host, now):
+        ctx = ssl.create_default_context()
+        try:
+            with socket.create_connection((host, 443), timeout=10) as sock:
+                with ctx.wrap_socket(sock, server_hostname=host) as s:
+                    cert = s.getpeercert()
+        except ssl.SSLCertVerificationError:
+            raise KarneError("ssl_invalid") from None
+        except OSError:
+            raise KarneError("ssl_unreachable") from None
+        return int((ssl.cert_time_to_seconds(cert["notAfter"]) - now.timestamp()) // 86400)
+
+
+def public_web(**kw):
+    import requests
+
+    def session():
+        s = requests.Session()
+        s.trust_env = False
+        s.mount("https://", requests.adapters.HTTPAdapter(max_retries=0))
+        return s
+    return Web(session, **kw)
+
+
+# ------------------------------------------------------------------ deterministic checks
+class _Page(HTMLParser):
+    SKIP = ("script", "style", "noscript", "template", "svg")
+    BREAKS = ("br", "p", "div", "li", "h1", "h2", "h3", "h4", "section", "footer", "header", "tr")
+
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.links, self.title, self.parts, self._skip, self._title, self._a = [], "", [], 0, False, None
+
+    def handle_starttag(self, tag, attrs):
+        if tag in self.SKIP:
+            self._skip += 1
+        elif tag == "title":
+            self._title = True
+        elif tag == "a":
+            href = dict(attrs).get("href")
+            self._a = [href, []] if href else None
+            if self._a:
+                self.links.append(self._a)
+        if tag in self.BREAKS:
+            self.parts.append("\n")
+
+    def handle_endtag(self, tag):
+        if tag in self.SKIP and self._skip:
+            self._skip -= 1
+        elif tag == "title":
+            self._title = False
+        elif tag == "a":
+            self._a = None
+
+    def handle_data(self, data):
+        if self._skip:
+            return
+        if self._title:
+            self.title += data
+            return
+        self.parts.append(data)
+        if self._a is not None:
+            self._a[1].append(data)
+
+    def text(self):
+        lines = (" ".join(line.split()) for line in "".join(self.parts).split("\n"))
+        return "\n".join(line for line in lines if line)
+
+
+def parse_page(body):
+    p = _Page()
+    try:
+        p.feed(body.decode("utf-8", errors="replace"))
+        p.close()
+    except Exception:
+        pass
+    return p
+
+
+def _host(url):
+    h = (urlsplit(url).hostname or "").lower()
+    return h[4:] if h.startswith("www.") else h
+
+
+def social_of(url):
+    """(platform, handle) of a social profile URL, or None."""
+    p = urlsplit(url or "")
+    host = (p.hostname or "").lower()
+    for prefix in ("www.", "m.", "tr."):
+        host = host[len(prefix):] if host.startswith(prefix) else host
+    platform = SOCIAL_HOSTS.get(host)
+    if platform is None:
+        return None
+    segs = [s for s in p.path.split("/") if s]
+    if platform == "linkedin" and len(segs) >= 2 and segs[0] in ("company", "showcase", "school"):
+        handle = segs[1]
+    elif platform == "youtube" and len(segs) >= 2 and segs[0] in ("c", "channel", "user"):
+        handle = segs[1]
+    else:
+        handle = segs[0] if segs else ""
+    handle = handle.lstrip("@").casefold()
+    return platform, ("" if handle in IGNORED_HANDLES else handle)
+
+
+def _finding(area, level, text, url=None, suggestion=None):
+    return {"area": area, "level": level, "text": _line(text, 300), "url": url,
+            "suggestion": _line(suggestion, 240) or None}
+
+
+def _link_status(web, url):
+    try:
+        return web.get(url, max_bytes=0)["status"]
+    except KarneError as exc:
+        return exc.code
+    except Exception:
+        return "web_unreachable"
+
+
+def site_checks(b, web, today, now):
+    """-> (findings, facts). facts: final_url, text, checked (URLs Hamle opened), title."""
+    out, facts = [], {"checked": []}
+    site = b.get("website")
+    if not site:
+        return [_finding("site", "bakilamadi", "Sitenin adresi karne ayarında yok.")], facts
+    try:
+        page = web.get(site)
+    except KarneError as exc:
+        if b.get("website_verified"):
+            out.append(_finding("site", "kirmizi", f"Site Hamle'nin kontrolünde açılmadı ({exc.code}).", site,
+                                "Siteyi tarayıcıdan açıp kontrol edin; sorun sürüyorsa site ekibine iletin."))
+        else:
+            out.append(_finding("site", "bakilamadi", f"Site açılmadı ({exc.code}); karnedeki site adresi henüz "
+                                "doğrulanmadı, doğru adresi Hamle'ye bildirin.", site))
+        return out, facts
+    status, final = page["status"], page["url"]
+    facts.update(final_url=final, checked=[site, final])
+    if status in UNCHECKABLE or (status == 503 and "cloudflare" in str(page["headers"].get("server", "")).lower()):
+        out.append(_finding("site", "bakilamadi", f"Site otomatik kontrole izin vermedi (HTTP {status}); ana sayfaya "
+                            "tarayıcıdan bakın.", final))
+    elif status >= 400:
+        out.append(_finding("site", "kirmizi", f"Ana sayfa hata veriyor (HTTP {status}).", final,
+                            "Site ekibine hemen iletin."))
+    elif page["seconds"] > SLOW_SECONDS:
+        out.append(_finding("site", "sari", f"Ana sayfa yavaş açılıyor ({_num(page['seconds'])} sn).", final,
+                            "Ağır görselleri küçültüp mobil hız testini (PageSpeed) yeniden yapın."))
+    else:
+        out.append(_finding("site", "yesil", f"Ana sayfa açılıyor ({_num(page['seconds'])} sn).", final))
+    host = urlsplit(final).hostname
+    try:
+        days = web.cert_days(host, now)
+        if days < 21:
+            out.append(_finding("site", "kirmizi", f"SSL sertifikasının süresi {max(days, 0)} gün içinde doluyor.",
+                                final, "Site ekibine sertifikayı yenilemesini hemen iletin."))
+        elif days < 45:
+            out.append(_finding("site", "sari", f"SSL sertifikasının süresi {days} gün sonra doluyor.", final,
+                                "Site ekibine yenileme tarihini hatırlatın."))
+        else:
+            out.append(_finding("site", "yesil", f"SSL sertifikası {days} gün daha geçerli.", final))
+    except KarneError as exc:
+        if exc.code == "ssl_invalid":
+            out.append(_finding("site", "kirmizi", "SSL sertifikası geçersiz; tarayıcı güvenlik uyarısı gösterebilir.",
+                                final, "Site ekibine hemen iletin."))
+        else:
+            out.append(_finding("site", "bakilamadi", f"SSL sertifikası okunamadı ({exc.code})."))
+    out += domain_check(web, host, today)
+    if not 200 <= status < 300:
+        return out, facts
+    p = parse_page(page["body"])
+    facts.update(title=_line(p.title, 120), text=p.text()[:HOME_TEXT_CHARS * 2])
+    if len(p.links) < 5:
+        out.append(_finding("site", "bakilamadi", "Ana sayfanın içeriği tarayıcıda oluşuyor; bağlantı, KVKK ve "
+                            "sosyal medya bağlantısı kontrolleri yapılamadı.", final))
+        return out, facts
+    if not p.title.strip():
+        out.append(_finding("site", "sari", "Ana sayfanın başlığı (title) boş.", final,
+                            "Arama sonuçlarında görünen başlığı site ekibiyle birlikte yazın."))
+    years = [int(y) for y in re.findall(r"(?:©|\(c\)|copyright)\s*(?:(?:19|20)\d{2}\s*[-–]\s*)?((?:19|20)\d{2})",
+                                        p.text(), flags=re.I)]
+    if years and max(years) < today.year and today.month > 1:
+        out.append(_finding("icerik", "sari", f"Sitenin alt bilgisinde “© {max(years)}” yazıyor.", final,
+                            "Yılı güncelleyin ya da otomatik yıla bağlayın."))
+    anchors = [(urljoin(final, href.strip()), " ".join("".join(t).split())) for href, t in p.links]
+    if not any(any(w in (u + " " + t).casefold() for w in PRIVACY) for u, t in anchors):
+        out.append(_finding("icerik", "sari", "Ana sayfada KVKK, gizlilik ya da çerez politikası bağlantısı görünmüyor.",
+                            final, "Alt bilgiye KVKK aydınlatma metni ve çerez politikası bağlantısı eklenmeli."))
+    out += social_link_check(b, [u for u, _ in anchors], final)
+    out += link_check(web, final, [u for u, _ in anchors], facts)
+    return out, facts
+
+
+def domain_check(web, host, today):
+    """RDAP expiry for generic TLDs (.com.tr has no public RDAP: skipped quietly)."""
+    name = _host("https://" + (host or ""))
+    if not name or name.endswith(".tr") or name.count(".") < 1:
+        return []
+    domain = ".".join(name.split(".")[-2:])
+    try:
+        data = web.json(f"https://rdap.org/domain/{domain}")
+        ends = [e.get("eventDate") for e in data.get("events") or [] if isinstance(e, dict)
+                and e.get("eventAction") == "expiration"]
+        until = datetime.fromisoformat(str(ends[0]).replace("Z", "+00:00")).date()
+    except Exception:
+        return [_finding("site", "bakilamadi", f"Alan adının ({domain}) bitiş tarihi okunamadı.")]
+    days = (until - today).days
+    if days < 30:
+        return [_finding("site", "kirmizi", f"Alan adının ({domain}) süresi {max(days, 0)} gün içinde doluyor.", None,
+                         "Alan adını yenilemesi için müşteriye ve site ekibine hemen haber verin.")]
+    if days < 60:
+        return [_finding("site", "sari", f"Alan adının ({domain}) süresi {days} gün sonra doluyor.", None,
+                         "Yenileme tarihini müşteriye hatırlatın.")]
+    return [_finding("site", "yesil", f"Alan adı ({domain}) {_when(until)} tarihine kadar kayıtlı.")]
+
+
+def social_link_check(b, urls, final):
+    wanted = {p: social_of(u) for p, u in (b.get("socials") or {}).items()}
+    wanted = {p: s[1] for p, s in wanted.items() if s and s[1]}
+    if not wanted:
+        return []
+    found = {}
+    for u in urls:
+        s = social_of(u)
+        if s and s[1]:
+            found.setdefault(s[0], set()).add(s[1])
+    missing = [PLATFORM_NAMES[p] for p in wanted if p not in found]
+    wrong = [f"{PLATFORM_NAMES[p]} ({', '.join(sorted(found[p]))[:60]})" for p, h in wanted.items()
+             if p in found and h not in found[p]]
+    out = []
+    if wrong:
+        out.append(_finding("sosyal", "sari", "Sitedeki sosyal medya bağlantısı başka bir hesaba gidiyor: "
+                            + ", ".join(wrong) + ".", final, "Bağlantıları markanın resmi hesaplarıyla değiştirin."))
+    if missing:
+        out.append(_finding("sosyal", "sari", "Sitede şu hesapların bağlantısı yok: " + ", ".join(missing) + ".", final,
+                            "Sitenin alt bilgisine resmi hesapların bağlantılarını ekleyin."))
+    if not out:
+        out.append(_finding("sosyal", "yesil", "Sitedeki sosyal medya bağlantıları doğru hesaplara gidiyor.", final))
+    return out
+
+
+def link_check(web, final, urls, facts):
+    home, seen, todo = _host(final), {normalize_url(final)}, []
+    for u in urls:
+        n = normalize_url(u.split("#", 1)[0])
+        if n is None or _host(n) != home or n in seen:
+            continue
+        seen.add(n)
+        todo.append(n)
+    todo = todo[:MAX_LINKS]
+    if not todo:
+        return []
+    with ThreadPoolExecutor(max_workers=LINK_WORKERS) as pool:
+        results = list(zip(todo, pool.map(lambda u: _link_status(web, u), todo)))
+    facts["checked"] += todo
+    broken = [u for u, s in results if s in (404, 410)]
+    failing = [u for u, s in results if isinstance(s, int) and s >= 500]
+    unknown = [u for u, s in results if not (isinstance(s, int) and (200 <= s < 400 or s in (404, 410) or s >= 500))]
+
+    def paths(us):
+        return ", ".join(_line(urlsplit(u).path or "/", 60) for u in us[:3]) + (" …" if len(us) > 3 else "")
+    out = []
+    if broken:
+        out.append(_finding("site", "kirmizi", f"Ana sayfadaki {len(broken)} bağlantı açılmıyor (404): {paths(broken)}.",
+                            broken[0], "Bağlantıları düzeltin ya da kaldırın; site ekibine iletin."))
+    if failing:
+        out.append(_finding("site", "sari", f"{len(failing)} bağlantı sunucu hatası verdi (HTTP 5xx): {paths(failing)}.",
+                            failing[0], "Site ekibine iletin."))
+    ok = len(results) - len(broken) - len(failing) - len(unknown)
+    if not broken and not failing:
+        out.append(_finding("site", "yesil", f"Ana sayfadaki {ok} bağlantı sağlam"
+                            + (f", {len(unknown)} tanesi kontrol edilemedi." if unknown else "."), final))
+    return out
+
+
+def app_checks(b, web, today):
+    """-> (findings, facts {'reviews': [...], 'checked': [app page URLs]})."""
+    out, facts = [], {"reviews": [], "checked": []}
+    for app_id in b.get("app_store_ids") or []:
+        try:
+            rows = web.json(f"https://itunes.apple.com/lookup?id={app_id}&country=tr").get("results") or []
+            app = rows[0]
+            page = normalize_url(app.get("trackViewUrl")) or f"https://apps.apple.com/tr/app/id{app_id}"
+            name = _line(app.get("trackName"), 60) or "Uygulama"
+        except Exception:
+            out.append(_finding("uygulama", "bakilamadi", f"App Store bilgisi okunamadı (uygulama {app_id})."))
+            continue
+        facts["checked"].append(page)
+        rating, count = app.get("averageUserRating"), app.get("userRatingCount")
+        try:
+            updated = datetime.fromisoformat(str(app.get("currentVersionReleaseDate")).replace("Z", "+00:00")).date()
+        except ValueError:
+            updated = None
+        notes = []
+        if isinstance(rating, (int, float)) and isinstance(count, int) and count >= 20 and rating < LOW_RATING:
+            out.append(_finding("uygulama", "sari", f"{name} App Store puanı {_num(rating)} ({_num(count, 0)} "
+                                "değerlendirme).", page, "Düşük puanlı yorumlardaki ortak sorunu müşteriye iletin."))
+        elif isinstance(rating, (int, float)) and isinstance(count, int):
+            notes.append(f"puanı {_num(rating)} ({_num(count, 0)} değerlendirme)")
+        if updated and (today - updated).days > APP_STALE_DAYS:
+            out.append(_finding("uygulama", "sari", f"{name} {(today - updated).days // 30} aydır güncellenmemiş "
+                                f"(son sürüm {_when(updated)}).", page, "Müşteriye uygulamanın güncelleme planını sorun."))
+        elif updated:
+            notes.append(f"son sürüm {_when(updated)}")
+        try:
+            feed = web.json(f"https://itunes.apple.com/tr/rss/customerreviews/id={app_id}/sortBy=mostRecent/json")
+            entries = (feed.get("feed") or {}).get("entry") or []
+            entries = [entries] if isinstance(entries, dict) else entries
+        except Exception:
+            entries = None
+            out.append(_finding("uygulama", "bakilamadi", f"{name} için App Store yorumları okunamadı."))
+        recent = []
+        for e in entries or []:
+            try:
+                day = datetime.fromisoformat(e["updated"]["label"]).date()
+                stars = int(e["im:rating"]["label"])
+            except (KeyError, TypeError, ValueError):
+                continue
+            if today - timedelta(days=7) <= day <= today:
+                recent.append((day, stars, _line((e.get("title") or {}).get("label"), 80),
+                               _line((e.get("content") or {}).get("label"), 200)))
+        low = [r for r in recent if r[1] <= 2]
+        facts["reviews"] += [{"rating": s, "date": d.isoformat(), "title": t, "text": c} for d, s, t, c in low[:5]]
+        if len(low) >= LOW_REVIEWS:
+            out.append(_finding("uygulama", "sari", f"Son 7 günde App Store'da {len(low)} tane 1-2 yıldızlı yorum geldi.",
+                                page, "Yorumlardaki ortak sorunu müşteriye iletin; yorumlara yanıt verilmesini önerin."))
+        elif recent:
+            notes.append(f"son 7 günde {len(recent)} yeni yorum ({len(low)} tanesi 1-2 yıldız)")
+        if notes:
+            out.append(_finding("uygulama", "yesil", f"{name}: " + ", ".join(notes) + ".", page))
+    return out, facts
+
+
+# ------------------------------------------------------------------ model (one web-search call per brand)
+def karne_schema():
+    return _obj({"findings": _arr(_obj({"area": {"type": "string", "enum": list(AREAS)},
+                                        "level": {"type": "string", "enum": ["kirmizi", "sari", "yesil"]},
+                                        "text": _str(240), "suggestion": _nstr(240), "url": _str(300),
+                                        "date": _nstr(10)}), MAX_FINDINGS + 2),
+                 "not_checked": _arr(_str(160), MAX_NOT_CHECKED)})
+
+
+def model_input(b, card, today, checks, facts, feedback):
+    """Bounded request (<= 15000 bytes): the home page excerpt shrinks first."""
+    inp = {"brand": b["brand"], "sector": (card or {}).get("sector"), "website": b.get("website"),
+           "socials": b.get("socials") or {}, "rivals": b.get("rivals") or [], "notes": b.get("notes"),
+           "today": today.isoformat(), "week_from": (today - timedelta(days=7)).isoformat(),
+           "site_checks": [f"{ICONS[f['level']]} {AREAS.get(f['area'], 'Diğer')}: {f['text']}" for f in checks][:24],
+           "homepage_text": (facts.get("text") or "")[:HOME_TEXT_CHARS], "app_reviews": facts.get("reviews") or [],
+           "team_feedback": [_line(x, 240) for x in feedback][:5]}
+
+    def size():
+        return len(json.dumps(inp, ensure_ascii=False, separators=(",", ":")).encode("utf-8"))
+    while size() > MAX_INPUT_BYTES and inp["homepage_text"]:
+        inp["homepage_text"] = inp["homepage_text"][:max(0, len(inp["homepage_text"]) - 500)]
+    while size() > MAX_INPUT_BYTES and (inp["app_reviews"] or inp["team_feedback"]):
+        (inp["app_reviews"] or inp["team_feedback"]).pop()
+    _need(size() <= MAX_INPUT_BYTES, "karne_input_too_large")
+    return inp
+
+
+def allowed_urls(b, facts):
+    urls = [b.get("website"), facts.get("final_url"), *(b.get("socials") or {}).values(), *(facts.get("checked") or [])]
+    return sorted({n for n in (normalize_url(u) for u in urls if u) if n})
+
+
+def sourced(output, allowed, today):
+    """Model findings with an https URL from the search evidence or a page Hamle opened; dated areas need a
+    date in the last 14 days. -> (findings, not_checked)."""
+    ok_urls = set(output.get("evidence") or []) | set(allowed)
+    out, seen = [], set()
+    for f in output.get("findings") or []:
+        url, day = normalize_url(f.get("url")), _iso_day(f.get("date")) if f.get("date") else None
+        if url is None or url not in ok_urls or (f.get("date") and day is None) or (day is not None and day > today):
+            continue
+        if f["area"] in DATED_AREAS and (day is None or day < today - timedelta(days=NEWS_DAYS)):
+            continue
+        key = (f["area"], " ".join(f["text"].casefold().split()))
+        if key in seen:
+            continue
+        seen.add(key)
+        out.append(_finding(f["area"], f["level"], f["text"], url, f.get("suggestion")))
+    return out[:MAX_FINDINGS], [_line(x, 160) for x in output.get("not_checked") or []][:MAX_NOT_CHECKED]
+
+
+def research_source(ops, load_key, catalog, *, routing=None, client=None):
+    """research(request_input) -> raw output with evidence; one chance per request (ModelGate)."""
+    route = _routing(routing).route(ROLE)
+    _, hold, budget_ok, gate = _research_gate(ops, catalog, route)
+
+    def research(request_input):
+        _need(budget_ok(), "model_budget_unavailable")
+        return gate().once(ROLE, source_digest(ROLE, request_input, route_fingerprint(route, PROMPT)),
+                           lambda: anthropic_research(route, PROMPT, request_input, karne_schema(),
+                                                      api_key=key_for(load_key, "anthropic"), client=client,
+                                                      code="invalid_weekly_karne_schema"),
+                           provider=route.provider, hold=hold)
+    research.timeout_seconds = route.timeout_seconds
+    return research
+
+
+# ------------------------------------------------------------------ the to-do text
+def counts(findings):
+    return {lvl: sum(1 for f in findings if f["level"] == lvl) for lvl in LEVELS}
+
+
+def description(brand, day, findings):
+    """-> (html, visible text). Basecamp rich text: div, strong, a, br only."""
+    c = counts(findings)
+    lines = [f"<strong>{escape(f'Haftalık Dijital Karne · {week_number(day)}. Hafta ({_when(monday_of(day))})')}</strong>",
+             escape("Özet: " + " · ".join(f"{ICONS[k]} {c[k]} {COUNT_WORDS[k]}" for k in LEVELS
+                                          if c[k] or k != "bakilamadi"))]
+    if not c["kirmizi"] and not c["sari"]:
+        lines.append(escape("Bu hafta acil ya da dikkat isteyen bir konu bulmadım."))
+    for lvl in LEVELS:
+        group = [f for f in findings if f["level"] == lvl]
+        if not group:
+            continue
+        lines += ["<br>", f"<strong>{escape(ICONS[lvl] + ' ' + HEADS[lvl])}</strong>"]
+        for f in group:
+            head = f"<strong>{escape(AREAS[f['area']])}:</strong> " if f.get("area") in AREAS else ""
+            line = "• " + head + escape(f["text"])
+            if f.get("suggestion"):
+                line += " " + escape("Öneri: " + f["suggestion"])
+            if f.get("url"):
+                line += f' <a href="{escape(f["url"], quote=True)}">kaynak</a>'
+            lines.append(line)
+    lines += ["<br>", escape(FOOTER)]
+    html = "".join(f"<div>{line}</div>" for line in lines)
+    p = _Text()
+    p.feed(html)
+    p.close()
+    return html, "".join(p.parts)
+
+
+# ------------------------------------------------------------------ Basecamp
+class KarneBasecamp(NbBasecamp):
+    """Allow-listed calls only: the destination lists, their to-dos and comments, POST a to-do into them."""
+    def __init__(self, account_id, dests, *, send):
+        super().__init__(account_id, send=send)
+        _need(isinstance(dests, dict) and dests, "karne_routes_missing")
+        gets, posts = set(), set()
+        for d in dests.values():
+            b = rf"/{account_id}/buckets/{d['project_id']}"
+            gets |= {rf"{b}/todolists/{d['list_id']}", rf"{b}/todos/[1-9][0-9]*",
+                     rf"{b}/recordings/[1-9][0-9]*/comments"}
+            posts.add(rf"{b}/todolists/{d['list_id']}/todos")
+        self.allowed = {"GET": tuple(sorted(gets)), "POST": tuple(sorted(posts))}
+
+
+def empty_state(day):
+    return {"kind": "weekly_karne", "schema_version": 1, "monday": monday_of(day).isoformat(), "lease": None,
+            "lists": {}, "brands": {}}
+
+
+class KarneTracker:
+    def __init__(self, ops, http, day):
+        self.ops, self.http, self.day, self.key = ops, http, day, state_key(day)
+
+    def base(self, pid):
+        return f"{API}/{self.http.account}/buckets/{pid}"
+
+    def state(self):
+        return self.ops._run(lambda tx, _: tx.get(self.key), allow_expired=True) or empty_state(self.day)
+
+    def _write(self, fn, *, fenced=True):
+        def op(tx, now):
+            if fenced:  # 'dur' / takeover: no new write starts
+                c = self.ops._control(tx)
+                self.ops._open(c, c["generation"], now)
+            st = tx.get(self.key) or empty_state(self.day)
+            out = fn(st, now)
+            tx.put(self.key, st)
+            return out
+        return self.ops._run(op, allow_expired=not fenced)
+
+    def claim(self, token, seconds):
+        def fn(st, now):
+            lease = st.get("lease")
+            if lease and lease.get("until", 0) > now and lease.get("token") != token:
+                return False
+            st["lease"] = {"token": token, "until": now + seconds}
+            return True
+        return self._write(fn)
+
+    def release(self, token):
+        def fn(st, now):
+            if (st.get("lease") or {}).get("token") == token:
+                st["lease"]["until"] = now
+        self._write(fn, fenced=False)
+
+    def save(self, key, fields):
+        self._write(lambda st, now: st["brands"].setdefault(key, {}).update(fields, at=now))
+
+    def ensure_list(self, pid, lid):
+        if (self.state().get("lists") or {}).get(str(lid)) == "ready":
+            return lid
+        back = self.http.one(f"{self.base(pid)}/todolists/{lid}.json")
+        _need(back.get("id") == lid and (back.get("bucket") or {}).get("id") == pid
+              and back.get("visible_to_clients") is False and back.get("status") in (None, "active")
+              and back.get("type") in (None, "Todolist"), "karne_list_unusable")
+        self._write(lambda st, now: st.setdefault("lists", {}).update({str(lid): "ready"}))
+        return lid
+
+    def add(self, key, dest, name, html, text, due, summary):
+        pid, lid, person = dest["project_id"], dest["list_id"], dest["person_id"]
+
+        def begin(st, now):
+            row = st["brands"].setdefault(key, {})
+            if row.get("state") in ("writing", "ready", "unknown"):
+                return False
+            row.update(state="writing", project_id=pid, list_id=lid, person_id=person, todo_id=None, app_url=None,
+                       title=name, at=now, **summary)
+            row.pop("input", None)
+            return True
+        if not self._write(begin):
+            return "already_tracked"
+        try:
+            row, _ = self.http.call("POST", f"{self.base(pid)}/todolists/{lid}/todos.json",
+                                    {"content": name, "description": html, "assignee_ids": [person],
+                                     "completion_subscriber_ids": [], "notify": True, "due_on": due.isoformat()}, 201)
+            tid = row.get("id") if isinstance(row, dict) else None
+            _need(type(tid) is int and tid > 0, "karne_todo_receipt_invalid")
+            back = self.http.one(f"{self.base(pid)}/todos/{tid}.json")
+            parent = back.get("parent") or {}
+            _need(back.get("id") == tid and back.get("content") == name and parent.get("id") == lid
+                  and parent.get("type") == "Todolist" and (back.get("bucket") or {}).get("id") == pid
+                  and (back.get("creator") or {}).get("id") == HAMLE_PERSON and back.get("visible_to_clients") is False
+                  and sorted(a.get("id") for a in back.get("assignees") or [] if isinstance(a, dict)) == [person]
+                  and back.get("due_on") == due.isoformat()
+                  and text_matches(back.get("description"), text), "karne_todo_readback_mismatch")
+        except Exception as exc:
+            reason = _code(exc)
+            self._write(lambda st, now: st["brands"][key].update(state="unknown", reason=reason), fenced=False)
+            return "unknown"
+        app = back.get("app_url")
+        if not (isinstance(app, str) and app.startswith(f"{APP}/{self.http.account}/buckets/{pid}/todos/")
+                and len(app) <= 300 and not any(c in app for c in " <>\"'")):
+            app = f"{APP}/{self.http.account}/buckets/{pid}/todos/{tid}"
+        self._write(lambda st, now: st["brands"][key].update(state="ready", todo_id=tid, app_url=app), fenced=False)
+        return "created"
+
+    def feedback(self, key):
+        """The team's comments on last week's karne to-do of this brand (never Hamle's own), newest last."""
+        prev = self.ops._run(lambda tx, _: tx.get(state_key(self.day - timedelta(days=7))), allow_expired=True) or {}
+        row = (prev.get("brands") or {}).get(key) or {}
+        if row.get("state") != "ready" or type(row.get("todo_id")) is not int:
+            return []
+        try:
+            rows = self.http.all(f"{self.base(row['project_id'])}/recordings/{row['todo_id']}/comments.json", max_pages=2)
+        except Exception:
+            return []
+        out = []
+        for c in rows:
+            if not isinstance(c, dict) or (c.get("creator") or {}).get("id") == HAMLE_PERSON:
+                continue
+            p = _Text()
+            p.feed(str(c.get("content") or ""))
+            p.close()
+            text = _line("".join(p.parts), 240)
+            if text:
+                out.append(text)
+        return out[-5:]
+
+
+# ------------------------------------------------------------------ run
+def _in_window(local, window):
+    hm = local.strftime("%H:%M")
+    return local.weekday() == window["weekday"] and window["start"] <= hm <= window["end"]
+
+
+def card_for(cards, project_id):
+    return next((c for c in (cards or {}).get("brands") or [] if isinstance(c, dict)
+                 and c.get("project_id") == project_id), None)
+
+
+def brand_report(b, card, web, today, now, feedback=()):
+    """Checks + research for one brand -> (findings, research status, request input)."""
+    checks, facts = site_checks(b, web, today, now)
+    more, app_facts = app_checks(b, web, today)
+    checks += more
+    facts["reviews"] = app_facts["reviews"]
+    facts["checked"] = list(facts.get("checked") or []) + app_facts["checked"]
+    request_input = model_input(b, card, today, checks, facts, list(feedback))
+    return checks, request_input, allowed_urls(b, facts)
+
+
+def with_research(checks, request_input, allowed, research, today):
+    findings, status = list(checks), "not_called"
+    if research is not None:
+        try:
+            found, not_checked = sourced(research(request_input), allowed, today)
+            findings += found + [_finding(None, "bakilamadi", x) for x in not_checked]
+            status = f"{len(found)}_sourced"
+        except Exception as exc:
+            status = _code(exc)
+            findings.append(_finding(None, "bakilamadi", "Gündem, şikayet ve sosyal medya araştırması bu hafta "
+                                     f"alınamadı ({status})."))
+    return findings, status
+
+
+def run_weekly_karne(ops, *, config, catalog, cards, web, research, http, clock, monotonic=time.monotonic,
+                     preview=None, only=None):
+    """Scheduled run (preview None) or an operator preview ('checks': no model; 'full': one brand with the
+    model). A preview never writes to Basecamp or the karne record."""
+    report = {"status": "weekly_karne_completed", "created": 0, "unknown": 0, "already": 0, "skipped": [],
+              "research": {}, "counts": {}, "model_calls": 0, "business_writes": 0}
+    try:
+        cfg = validate_config(config)
+        now = clock()
+        local = now.astimezone(ISTANBUL)
+        today = local.date()
+        report["week"] = state_key(today)[len("weekly-karne-"):]
+        _need(preview in (None, "checks", "full"), "karne_preview_invalid")
+        _need(preview != "full" or only is not None, "karne_full_preview_needs_one_brand")
+        brands = [b for b in cfg["brands"] if only is None or b["key"] == only]
+        _need(brands, "karne_brand_unknown")
+        dests = destinations(catalog)
+        if preview is not None:
+            out = []
+            for b in brands:
+                dest = dests.get(b["key"]) or {}
+                checks, request_input, allowed = brand_report(b, card_for(cards, dest.get("card_project_id")), web,
+                                                              today, now)
+                findings, status = with_research(checks, request_input, allowed,
+                                                 research if preview == "full" else None, today)
+                _, text = description(b["brand"], today, findings)
+                out.append({"key": b["key"], "counts": counts(findings), "research": status,
+                            "to": LEADS.get(dest.get("person_id")), "internal": dest.get("internal"), "text": text})
+            return {"status": "weekly_karne_preview", "week": report["week"], "brands": out,
+                    "model_calls": int(preview == "full"), "business_writes": 0}
+        if not cfg["enabled"]:
+            return dict(report, status="no_new_work", reason="karne_disabled")
+        if not _in_window(local, cfg["window"]):
+            return dict(report, status="no_new_work", reason="outside_karne_window")
+        _need(http is not None, "karne_basecamp_missing")
+        tracker, token, started = KarneTracker(ops, http, today), uuid.uuid4().hex, monotonic()
+        if not tracker.claim(token, cfg["time_budget_seconds"] + 300):
+            return dict(report, status="slot_already_claimed", reason="karne_run_in_progress")
+        reserve = (getattr(research, "timeout_seconds", None) or 480) + 240  # worst-case checks + one model call
+        try:
+            for b in brands:
+                key, dest = b["key"], dests.get(b["key"])
+                if dest is None:
+                    report["skipped"].append(key + ":no_route")
+                    continue
+                row = tracker.state()["brands"].get(key) or {}
+                if row.get("state") in ("writing", "ready", "unknown"):
+                    report["already"] += 1
+                    continue
+                if monotonic() - started + reserve > cfg["time_budget_seconds"]:
+                    report["status"], report["left"] = "weekly_karne_partial", report.get("left", 0) + 1
+                    continue
+                if row.get("input"):  # a run stopped after the checks: the same request, never a second paid one
+                    checks, request_input, allowed = row["checks"], row["input"], row["allowed"]
+                else:
+                    checks, request_input, allowed = brand_report(b, card_for(cards, dest["card_project_id"]), web,
+                                                                  today, now, tracker.feedback(key))
+                    tracker.save(key, {"state": "checked", "brand": b["brand"], "checks": checks,
+                                       "input": request_input, "allowed": allowed})
+                findings, status = with_research(checks, request_input, allowed, research, today)
+                report["research"][key] = status
+                report["model_calls"] += status.endswith("_sourced")
+                tracker.ensure_list(dest["project_id"], dest["list_id"])
+                html, text = description(b["brand"], today, findings)
+                c = counts(findings)
+                summary = {"brand": b["brand"], "counts": c, "who": LEADS.get(dest["person_id"]), "research": status,
+                           "checks": None, "allowed": None}
+                outcome = tracker.add(key, dest, title(b["brand"], today), html, text, monday_of(today) + timedelta(days=2),
+                                      summary)
+                report["counts"][key] = c
+                report["business_writes"] += outcome in ("created", "unknown")
+                report[{"created": "created", "unknown": "unknown"}.get(outcome, "already")] += 1
+        finally:
+            tracker.release(token)
+        return report
+    except Exception as exc:
+        return dict(report, status="held", reason=_code(exc))
+
+
+def digest_rows(state):
+    """Tuesday digest: one row per karne to-do of the week, reds first."""
+    rows = []
+    for key, r in ((state or {}).get("brands") or {}).items():
+        if r.get("state") != "ready" or not r.get("app_url") or not isinstance(r.get("counts"), dict):
+            continue
+        rows.append({"brand": _line(r.get("brand") or key, 60), "url": r["app_url"], "who": r.get("who"),
+                     "counts": {k: int(r["counts"].get(k) or 0) for k in LEVELS}})
+    rows.sort(key=lambda r: (-r["counts"]["kirmizi"], -r["counts"]["sari"], r["brand"]))
+    return rows
+
+
+def digest_counts(row):
+    return " · ".join(f"{ICONS[k]} {row['counts'][k]}" for k in ("kirmizi", "sari", "yesil"))
+
+
+def run_worker_weekly_karne(ops, secrets, *, preview=None, only=None, clock=None):
+    """Entry for worker.py --mode weekly_karne (existing credential loaders only)."""
+    import basecamp_cloud_auth
+    import cloud_providers as provider
+    from v11_chain_live import _memo, load_catalog
+    from v11_daily_digest import load_brand_cards
+    from v11_nb_tracking import session_send
+    clock = clock or (lambda: datetime.now(ISTANBUL))
+    catalog = load_catalog()
+    research = None
+    if preview != "checks":
+        try:
+            research = research_source(ops, {"anthropic": lambda: provider.anthropic_key(secrets)}, catalog)
+        except Exception:
+            research = None  # the to-do says the research could not be taken
+    http = None
+    if preview is None:
+        token = _memo(lambda: basecamp_cloud_auth.access_token(secrets, claim_refresh=ops.claim_credential_refresh))
+        http = KarneBasecamp(catalog["basecamp"]["account_id"], destinations(catalog),
+                             send=session_send(token, provider._session))
+    return run_weekly_karne(ops, config=load_config(), catalog=catalog, cards=load_brand_cards(), web=public_web(),
+                            research=research, http=http, clock=clock, preview=preview, only=only)

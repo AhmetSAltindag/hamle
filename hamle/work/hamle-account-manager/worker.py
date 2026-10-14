@@ -516,7 +516,8 @@ def run_track(store, *, read_task_status, verify_latest_sent_receipt=None, clock
 OK_STATUSES = ("stopped", "review_required", "already_recorded", "read_verified", "internal_actions_readback_verified",
                "slot_already_claimed", "no_new_work", "work_status_read_verified", "chain_tick_completed", "digest_sent",
                "credential_review_ready", "reconciled_not_sent", "budget_expiry_extended", "already_current",
-               "research_probe_ok", "model_actual_settled", "billed_total_settled", "nb_tracking_completed")
+               "research_probe_ok", "model_actual_settled", "billed_total_settled", "nb_tracking_completed",
+               "weekly_karne_completed", "weekly_karne_partial", "weekly_karne_preview")
 
 
 def main(argv=None):
@@ -526,7 +527,8 @@ def main(argv=None):
     parser.add_argument("--mode", choices=("review", "scheduled_review", "verify", "dispatch", "track", "recover_followup",
                                            "chain_tick", "daily_digest", "nb_open", "basecamp_credential_review",
                                            "reconcile_model_holds", "extend_authorization",
-                                           "research_probe", "settle_model_actual", "settle_billed_total"), required=True)
+                                           "research_probe", "settle_model_actual", "settle_billed_total",
+                                           "weekly_karne"), required=True)
     parser.add_argument("--proposal-id")
     parser.add_argument("--work-id")
     parser.add_argument("--failure-evidence-sha256")
@@ -546,6 +548,9 @@ def main(argv=None):
     # settle_billed_total: one provider bill over several 'unknown' holds.
     parser.add_argument("--provider")
     parser.add_argument("--settle-key", action="append")
+    # weekly_karne operator preview: 'checks' (no model, no write) or 'full' (one brand with the model, no write).
+    parser.add_argument("--karne-preview", choices=("checks", "full"))
+    parser.add_argument("--karne-brand")
     args = parser.parse_args(argv)
     backend = secrets = None
     try:
@@ -571,6 +576,11 @@ def main(argv=None):
                  "preview_attempt_requires_preview_to")
         _require((args.mode == "reconcile_model_holds") == (args.cache_key is not None and args.evidence is not None),
                  "reconcile_arguments_required")
+        _require((args.karne_preview is None and args.karne_brand is None) or
+                 (args.mode == "weekly_karne" and args.karne_preview is not None
+                  and (args.karne_brand is None or re.fullmatch(r"[a-z_]{2,40}", args.karne_brand))
+                  and (args.karne_preview != "full" or args.karne_brand is not None)),
+                 "karne_preview_arguments_invalid")
         _require(os.environ.get("HAMLE_ALLOW_FIRESTORE_OPERATIONS") == "yes", "cloud_opt_in_required")
         _require(os.environ.get("HAMLE_PROJECT_ID") == "gamechangers-hamle" and
                  os.environ.get("HAMLE_FIRESTORE_DATABASE") == "hamle-operations", "cloud_scope_invalid")
@@ -586,7 +596,7 @@ def main(argv=None):
             from basecamp_cloud_auth import access_token
             token = access_token(secrets, claim_refresh=store.claim_credential_refresh)
             return providers.verify_basecamp_internal(token)
-        if args.mode in ("chain_tick", "daily_digest", "research_probe"):
+        if args.mode in ("chain_tick", "daily_digest", "research_probe", "weekly_karne"):
             # Monthly budget renewal + ledger compaction before any budget gate reads the totals.
             try:
                 roll = store.roll_budget_period()
@@ -658,6 +668,10 @@ def main(argv=None):
             # Operator one-shot: this week's Monday New Business suggestions -> todos for Cansu now.
             from v11_daily_digest import run_worker_nb_open
             result = run_worker_nb_open(store, secrets)
+        elif args.mode == "weekly_karne":
+            # Haftalık Dijital Karne (Ahmet 2026-10-14): Monday 10:00 job hamle-weekly-karne; team to-dos only.
+            from v11_weekly_karne import run_worker_weekly_karne
+            result = run_worker_weekly_karne(store, secrets, preview=args.karne_preview, only=args.karne_brand)
         elif args.mode == "daily_digest":
             # Non-default: one internal team digest per Istanbul weekday (v11_daily_digest).
             from v11_daily_digest import run_worker_daily_digest

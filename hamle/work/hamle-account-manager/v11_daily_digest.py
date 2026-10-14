@@ -646,7 +646,7 @@ def _plain_link(url, text):
 
 
 def render(listing, *, day, day_note, overdue, trends, specials, classified, new_business=None, ozu=None,
-           followups=None, idea_tracking=False):
+           followups=None, idea_tracking=False, karne=None):
     items = listing["items"]
     today_iso = day.isoformat()
     due = [t for t in items if t["due_on"] == today_iso]
@@ -693,6 +693,13 @@ def render(listing, *, day, day_note, overdue, trends, specials, classified, new
     elif len(overdue) > len(shown):
         lines.append(f"- … +{len(overdue) - len(shown)} geciken iş daha · tüm liste: "
                      f"{APP}/{listing.get('account')}/reports/todos/overdue")
+
+    if karne:
+        from v11_weekly_karne import DIGEST_HINT, digest_counts, week_number
+        lines += ["", f"HAFTALIK DİJİTAL KARNE ({week_number(day)}. HAFTA)"]
+        lines += [f"- {_plain_link(r['url'], r['brand'])}: {digest_counts(r)}" + (f" @{r['who']}" if r.get("who") else "")
+                  for r in karne]
+        lines.append(DIGEST_HINT)
 
     if ozu is not None and len(ozu["fikirler"]) > 1:
         lines += ["", "GÜNÜN HAMLESİ (çekime hazır fikirler)"]
@@ -831,7 +838,7 @@ def _ozu_html(ozu):
 
 
 def render_html(listing, *, day, day_note, overdue, trends, specials, classified, new_business=None, ozu=None,
-                followups=None, idea_tracking=False):
+                followups=None, idea_tracking=False, karne=None):
     """HTML twin of render(): same facts, full width, Tahoma, Basecamp/source titles as links, no raw URLs."""
     items = listing["items"]
     today_iso = day.isoformat()
@@ -881,6 +888,13 @@ def render_html(listing, *, day, day_note, overdue, trends, specials, classified
             lis.append(_li(_e(f"+{len(group) - HTML_GROUP_LIMIT} iş daha · ")
                            + _a(f"{APP}/{listing.get('account')}/reports/todos/overdue", "tüm gecikenler", False)))
         out.append(_ul(lis))
+
+    if karne:
+        from v11_weekly_karne import DIGEST_HINT, digest_counts, week_number
+        out.append(_h2(f"🩺 Haftalık dijital karne ({week_number(day)}. hafta)"))
+        out.append(_ul([_li(_a(r["url"], r["brand"]) + " " + _e(digest_counts(r))
+                            + (" " + _e("@" + r["who"]) if r.get("who") else "")) for r in karne]))
+        out.append(_p(_grey(DIGEST_HINT)))
 
     if ozu is not None and len(ozu["fikirler"]) > 1:
         out.append(_h2("💡 Günün hamlesi (çekime hazır fikirler)"))
@@ -1007,19 +1021,21 @@ class DigestMailWriter:
 # ------------------------------------------------------------------ assembly
 def build_digest(reader, *, day, day_note, classifier=None, trend_source=None, cards=None, calendar=None,
                  special_source=None, new_business_source=None, spark_source=None, previous=None, nb_state=None,
-                 idea_state=None, idea_tracking=False):
+                 idea_state=None, idea_tracking=False, karne=None):
     """Read-only listing + optional batched classification -> (body, stats).
 
     previous: the last weekday's sent team digest ({'day', 'ozu', 'new_business_brands'}) for
     the follow-up section; None -> section omitted. nb_state: the New Business tracking record
     (v11_nb_tracking): tracked or passed brands are not listed again, their todos are followed up.
     idea_state: the idea tracking record (v11_idea_tracking), read the same way; idea_tracking: the
-    config flag (the Günün hamlesi hint says the ideas become todos)."""
+    config flag (the Günün hamlesi hint says the ideas become todos). karne: Tuesday's rows of this week's
+    Haftalık Dijital Karne (v11_weekly_karne.digest_rows); None -> section omitted."""
     from v11_idea_tracking import avoid_ideas, is_idea_item
     from v11_nb_tracking import is_nb_item
+    from v11_weekly_karne import is_karne_item
 
     def tracked(t):  # Ahmet: suggestion todos are followed up in their own lines, not listed as team work
-        return is_nb_item(t) or is_idea_item(t)
+        return is_nb_item(t) or is_idea_item(t) or is_karne_item(t)
     listing = reader.collect()
     all_items = listing["items"]  # follow-ups still read the suggestion todos
     listing["items"] = [t for t in all_items if not tracked(t)]
@@ -1110,7 +1126,7 @@ def build_digest(reader, *, day, day_note, classifier=None, trend_source=None, c
         followups = None
     parts = dict(day=day, day_note=day_note, overdue=overdue, trends=trends, specials=specials,
                  classified=classified > 0, new_business=new_business, ozu=ozu, followups=followups,
-                 idea_tracking=idea_tracking)
+                 idea_tracking=idea_tracking, karne=karne or None)
     body = render(listing, **parts)
     stats_html = render_html(listing, **parts)
     return body, {"html": stats_html, "open_items": len(listing["items"]), "overdue": len(overdue), "classified": classified,
@@ -1118,10 +1134,18 @@ def build_digest(reader, *, day, day_note, classifier=None, trend_source=None, c
                   "new_business": nb_status, "overdue_source": "report" if report is not None else "scan",
                   "new_business_brands": new_business or [], "spark": spark_status, "ozu": ozu_record(ozu),
                   "follow_ups": len((followups or {}).get("rows") or []) + len((followups or {}).get("nb_rows") or []),
-                  "nb": (followups or {}).get("nb_effects"), "ideas": (followups or {}).get("idea_effects")}
+                  "nb": (followups or {}).get("nb_effects"), "ideas": (followups or {}).get("idea_effects"),
+                  "karne": len(karne or [])}
 
 
 # ------------------------------------------------------------------ run
+def _karne_rows(digest_rows, state):
+    try:  # a karne line is a hint; never block the digest
+        return digest_rows(state) if digest_rows is not None and state else None
+    except Exception:
+        return None
+
+
 def next_weekday(day):
     day += timedelta(days=1)
     while day.weekday() >= 5:
@@ -1196,7 +1220,12 @@ def run_daily_digest(ops, *, config, reader_factory, writer, clock, window=DAILY
             recipients, key, subject_prefix = cfg["recipients"], "daily-digest-" + local.strftime("%Y%m%d"), ""
         token = uuid.uuid4().hex
         prev_day = previous_weekday(target)
-        previous, nb, ideas = {}, {}, {}
+        try:
+            from v11_weekly_karne import digest_rows, state_key
+            karne_key = state_key(target)
+        except Exception:
+            digest_rows, karne_key = None, "weekly-karne-unavailable"
+        previous, nb, ideas, karne = {}, {}, {}, {}
 
         def claim_op(tx, ts):
             c = ops._control(tx); b = ops._budget(tx); row = tx.get(key)
@@ -1207,6 +1236,8 @@ def run_daily_digest(ops, *, config, reader_factory, writer, clock, window=DAILY
             previous["value"] = _previous(tx.get("daily-digest-" + prev_day.strftime("%Y%m%d")), prev_day)
             nb["value"] = tx.get("nb-tracking")  # v11_nb_tracking.STATE_KEY (read-only here)
             ideas["value"] = tx.get("idea-tracking")  # v11_idea_tracking.STATE_KEY (read-only here)
+            if target.weekday() == 1:  # Tuesday: this week's karne to-dos (v11_weekly_karne, read-only here)
+                karne["value"] = tx.get(karne_key)
             new = {"key": key, "kind": "daily_digest_preview" if preview_to else "daily_digest", "state": "claimed",
                    "token": token, "generation": c["generation"], "claimed_at": ts,
                    "lease_until": ts + LEASE_SECONDS, "date": target.isoformat(), "run_date": local.date().isoformat()}
@@ -1222,7 +1253,8 @@ def run_daily_digest(ops, *, config, reader_factory, writer, clock, window=DAILY
                                    cards=cards, calendar=calendar, special_source=special_source,
                                    new_business_source=new_business_source, spark_source=spark_source,
                                    previous=previous.get("value"), nb_state=nb.get("value"),
-                                   idea_state=ideas.get("value"), idea_tracking=cfg["idea_tracking"])
+                                   idea_state=ideas.get("value"), idea_tracking=cfg["idea_tracking"],
+                                   karne=_karne_rows(digest_rows, karne.get("value")))
         if preview_to is None:  # team mail: prepared from 09:00, never sent before 09:15 Istanbul
             h, mnt = (int(v) for v in DAILY_DIGEST_SEND_AT.split(":"))
             send_at = local.replace(hour=h, minute=mnt, second=0, microsecond=0)
