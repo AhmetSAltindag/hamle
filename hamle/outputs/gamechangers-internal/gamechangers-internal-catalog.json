@@ -422,9 +422,9 @@
     "decision": "accept_internal_live_profile"
   },
   "budget": {
-    "internal_live_cap_usd": 30,
-    "internal_live_cap_microdollars": 30000000,
-    "scope": "chain model-call holds/actuals (reservation keys chain-model-*) in the shared hamle_internal_v1 ledger; per-call 2 USD hold logic unchanged; shared ledger limit (50 USD) still applies",
+    "internal_live_cap_usd": 50,
+    "internal_live_cap_microdollars": 50000000,
+    "scope": "chain model-call holds/actuals (reservation keys chain-model-*: client drafts, visual reviews, digest research, chain) in the shared hamle_internal_v1 ledger; per-call 2 USD hold logic unchanged; shared monthly ledger limit (75 USD, cloud_store.LIMIT) still applies. 2026-10-14: Ahmet chose 75 USD a month on the decision card; this model sub-cap moves 30 -> 50 USD so it does not stop Hamle before the monthly limit (the rest of the 75 is legacy OpenAI/Google holds and cloud).",
     "expires_at": "2027-12-31T23:59:59+03:00",
     "accepted_by": "ahmet@gamechangers.com.tr",
     "accepted_at": "2026-10-11T15:07:55+00:00",

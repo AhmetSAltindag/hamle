@@ -346,7 +346,7 @@ class AcceptedProfile(unittest.TestCase):
         for pid in ("47470759", "48793256", "52096503"):
             self.assertTrue(data["basecamp_people"][pid]["project_member"])
         self.assertFalse(data["basecamp_people"]["47658175"]["project_member"])
-        self.assertEqual(data["budget"]["internal_live_cap_microdollars"], 30_000_000)
+        self.assertEqual(data["budget"]["internal_live_cap_microdollars"], 50_000_000)
         self.assertTrue(data["chain"]["agency_direct_request_counts_as_agreement"]["verified"])
         self.assertEqual(data["brand_id"], "gamechangers")
 
