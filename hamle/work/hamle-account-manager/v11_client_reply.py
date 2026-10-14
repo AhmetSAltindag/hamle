@@ -73,11 +73,17 @@ def validate_reply(block, catalog):
     cats = block["auto_categories"]
     _need(isinstance(cats, list) and len(set(cats)) == len(cats) and set(cats) <= set(AUTO_CATEGORIES),
           "client_reply_categories_invalid")
-    try:
-        since = datetime.fromisoformat(str(block["since"]).replace("Z", "+00:00"))
-    except ValueError:
-        raise ClientReplyError("client_reply_since_invalid") from None
-    _need(since.tzinfo is not None, "client_reply_since_invalid")
+    # One start time for every brand, or one per brand (a brand opened later never answers older mails)
+    raw = block["since"] if isinstance(block["since"], dict) else {b: block["since"] for b in brands}
+    _need(set(raw) == set(brands), "client_reply_since_invalid")
+    since_ms = {}
+    for b, value in raw.items():
+        try:
+            since = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+        except ValueError:
+            raise ClientReplyError("client_reply_since_invalid") from None
+        _need(since.tzinfo is not None, "client_reply_since_invalid")
+        since_ms[b] = int(since.timestamp() * 1000)
     _need(type(block["max_sends_per_day"]) is int and 1 <= block["max_sends_per_day"] <= 30,
           "client_reply_limit_invalid")
     _need(type(block["allow_questions"]) is bool and type(block["new_threads_only"]) is bool,
@@ -96,7 +102,7 @@ def validate_reply(block, catalog):
     _need(isinstance(cc, list) and 1 <= len(cc) <= 2 and len(set(cc)) == len(cc) and all(c in people for c in cc),
           "client_reply_sensitive_cc_invalid")
     return {"brands": set(brands), "auto_min_confidence": low, "auto_categories": set(cats),
-            "since_ms": int(since.timestamp() * 1000), "max_sends_per_day": block["max_sends_per_day"],
+            "since_ms": since_ms, "max_sends_per_day": block["max_sends_per_day"],
             "approver_ids": {member(e): people[e]["name"] for e in approvers}, "first_approver": member(approvers[0]),
             "owner_ids": {b: member(e) for b, e in owners.items()}, "sensitive_cc": list(cc),
             "agency": set(people), "allow_questions": block["allow_questions"],

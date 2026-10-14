@@ -945,7 +945,7 @@ class ClientWatch:
         """None = silent draft as before; else the reply plan and whether it may go out by itself."""
         if self.reply is None or sender["brand_key"] not in self.reply["brands"]:
             return None
-        if not isinstance(source.get("received_at_ms"), int) or source["received_at_ms"] < self.reply["since_ms"]:
+        if not isinstance(source.get("received_at_ms"), int) or source["received_at_ms"] < self.reply["since_ms"][sender["brand_key"]]:
             return None
         import v11_client_reply as cr
         from v11_chain_mail import reply_subject

@@ -539,7 +539,7 @@ class Parts(unittest.TestCase):
         with self.assertRaises(cj.ClientJobError):
             cj.validate_jobs(jobs_block(), catalog, None)
 
-    def test_shipped_config_runs_wat_jobs(self):
+    def test_shipped_config_runs_wat_and_rabam_jobs(self):
         from v11_chain_live import load_catalog
         import v11_client_reply as cr
         cfg = cw.validate_config(cw.load_config())
@@ -552,6 +552,14 @@ class Parts(unittest.TestCase):
         # Ahmet 13 Oct: "When done" on every WAT to-do = Ahmet, Cansu, Özge, Barış (demo week)
         self.assertEqual(wat["when_done"], sorted([AHMET_BC, CANSU_BC, OZGE_BC, 52168172]))
         self.assertEqual((s["send_min_score"], s["approve_min_score"], s["max_revisions"]), (90, 80, 2))
+        # Ahmet 14 Oct "Rabam'ı da yayına alalım": the team's own "Rabam // " titles, Barış designs, Ahmet is the rep
+        rabam = s["brands"]["rabam"]
+        self.assertEqual((rabam["title_prefix"], rabam["project_id"], rabam["lists"],
+                          rabam["assignees"]["social"]["id"], rabam["assignees"]["project"]["id"],
+                          sorted(rabam["followers"]), sorted(rabam["approvers"]), rabam["when_done"]),
+                         ("Rabam // ", 48639990, {"social": 10239606739, "project": 10239607231}, 52168172, AHMET_BC,
+                          [OZGE_BC], sorted([OZGE_BC, CANSU_BC, AHMET_BC]),
+                          sorted([AHMET_BC, CANSU_BC, OZGE_BC, 52168172])))
 
 
 class Readback(unittest.TestCase):

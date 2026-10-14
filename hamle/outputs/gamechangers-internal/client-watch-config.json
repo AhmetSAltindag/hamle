@@ -14,11 +14,12 @@
     "ahmet@gamechangers.com.tr",
     "cansu@gamechangers.com.tr"
   ],
-  "decision_ref": "Ahmet 2026-10-11 decision 6: Monday no client replies; Tuesday the team CCs hamle@ and Hamle only drafts (client-hidden Basecamp notes in the internal 'Hamle İşleri' list) with an evening 'böyle yanıtlardım' summary to Ahmet; Wednesday first brand auto-reply only after the drafts are reviewed. Price/contract/complaint -> fixed sentence + Ahmet & Cansu. | 2026-10-13 07:32Z: Ahmet approved on the thread card 'Evet, aç' (silent draft mode for the 10 WAT test mails); only the Firestore table's test_contacts row (his own non-agency address as WAT) is read until Ahmet/Cansu import the real table. | 2026-10-13 14:56Z: Ahmet chose 'Yaz' (write the client reply feature) and 15:08Z 'Aç' on the card 'Müşteriye cevap gönderme özelliğini bu akşam senin test adresinle açayım mı?': reply mode for WAT; tonight only his own test address is in the contact table. Clear confirm replies at confidence 90+ go out by themselves, the rest wait for 'Hamle gönder' from Ahmet or Cansu; fixed sentence + Ahmet/Cansu CC for price/contract/complaint. Real WAT addresses reach Hamle only when Ahmet imports them (his GO). | 2026-10-13 15:28Z: Ahmet asked to try Hamle on WAT's last 10 mails; agreed path: start with new jobs, old WAT mails are forwarded to hamle@ with 'Gölge:' in front of the subject (shadow drafts, never sent, compared with the team's real reply). Markalar.xlsx: WAT brand 'Evet', every WAT person 'Hayır' -> contact rows carry direct=false and every reply to them waits for 'Hamle gönder'. | 2026-10-13 15:48Z Ahmet: 'Yarın WAT Mobilite'den gelen yeni bir mail olursa ilk olarak artık cevap verecek olan Hamle olsun... WAT markasına haber verdim ve bunun bir demo olduğunu da söyledim... Bu şekilde güncelleme çıkalım.' The person-level 'Hayır' in Markalar.xlsx was the template default; brand 'Evet' governs. WAT: replies with production questions go out by themselves (allow_questions), all categories except 'other', confidence 90+ only (80-89 and lower wait for approval), only new threads (a 'Re:' mail waits for the team), price/contract/complaint keep the fixed sentence + Ahmet/Cansu CC. | 2026-10-13 17:05Z Ahmet: end-to-end success = Hamle takes the WAT mail, understands it, keeps the exact To/CC, opens a to-do in the WAT Mobilite Basecamp project ('Sosyal Medya' for social media work, 'Projeler' for everything else), follows it and checks the visual against the brief: 90+ Hamle mails it to WAT itself, 80-89 waits for Cansu or Özge 'uygun', below 80 Hamle asks the designer for a reasoned revision. Decisions relayed by the Mac session ~17:30Z: social/design to-dos to Berkay with Özge following, Projeler to Cansu, no due date unless the client gave one, delivery only as a mail attachment.",
+  "decision_ref": "Ahmet 2026-10-11 decision 6: Monday no client replies; Tuesday the team CCs hamle@ and Hamle only drafts (client-hidden Basecamp notes in the internal 'Hamle İşleri' list) with an evening 'böyle yanıtlardım' summary to Ahmet; Wednesday first brand auto-reply only after the drafts are reviewed. Price/contract/complaint -> fixed sentence + Ahmet & Cansu. | 2026-10-13 07:32Z: Ahmet approved on the thread card 'Evet, aç' (silent draft mode for the 10 WAT test mails); only the Firestore table's test_contacts row (his own non-agency address as WAT) is read until Ahmet/Cansu import the real table. | 2026-10-13 14:56Z: Ahmet chose 'Yaz' (write the client reply feature) and 15:08Z 'Aç' on the card 'Müşteriye cevap gönderme özelliğini bu akşam senin test adresinle açayım mı?': reply mode for WAT; tonight only his own test address is in the contact table. Clear confirm replies at confidence 90+ go out by themselves, the rest wait for 'Hamle gönder' from Ahmet or Cansu; fixed sentence + Ahmet/Cansu CC for price/contract/complaint. Real WAT addresses reach Hamle only when Ahmet imports them (his GO). | 2026-10-13 15:28Z: Ahmet asked to try Hamle on WAT's last 10 mails; agreed path: start with new jobs, old WAT mails are forwarded to hamle@ with 'Gölge:' in front of the subject (shadow drafts, never sent, compared with the team's real reply). Markalar.xlsx: WAT brand 'Evet', every WAT person 'Hayır' -> contact rows carry direct=false and every reply to them waits for 'Hamle gönder'. | 2026-10-13 15:48Z Ahmet: 'Yarın WAT Mobilite'den gelen yeni bir mail olursa ilk olarak artık cevap verecek olan Hamle olsun... WAT markasına haber verdim ve bunun bir demo olduğunu da söyledim... Bu şekilde güncelleme çıkalım.' The person-level 'Hayır' in Markalar.xlsx was the template default; brand 'Evet' governs. WAT: replies with production questions go out by themselves (allow_questions), all categories except 'other', confidence 90+ only (80-89 and lower wait for approval), only new threads (a 'Re:' mail waits for the team), price/contract/complaint keep the fixed sentence + Ahmet/Cansu CC. | 2026-10-13 17:05Z Ahmet: end-to-end success = Hamle takes the WAT mail, understands it, keeps the exact To/CC, opens a to-do in the WAT Mobilite Basecamp project ('Sosyal Medya' for social media work, 'Projeler' for everything else), follows it and checks the visual against the brief: 90+ Hamle mails it to WAT itself, 80-89 waits for Cansu or Özge 'uygun', below 80 Hamle asks the designer for a reasoned revision. Decisions relayed by the Mac session ~17:30Z: social/design to-dos to Berkay with Özge following, Projeler to Cansu, no due date unless the client gave one, delivery only as a mail attachment. | 2026-10-14 12:20 Istanbul Ahmet: 'şimdi sırada Rabam'ı yayına almak var, Rabam'ı da yayına alalım hadi'. Rabam joins reply mode with the WAT rules (new threads only, questions allowed, confidence 90+); Rabam replies count only for mails received from 2026-10-14 13:00 Istanbul. Defaults told to Ahmet (he may correct): Sosyal Medya to-dos -> Barış (most recent Rabam design work), Özge follows; Projeler to-dos and reply notes -> Ahmet (Rabam rep in Markalar.xlsx); approvers Özge, Cansu, Ahmet; When done Ahmet, Cansu, Özge, Barış. Title prefix 'Rabam // ' (the team's own format).",
   "rules": "enabled=true only with Ahmet's word in the thread. Client addresses come from the Firestore 'client-contacts' doc (v11_client_watch.py contacts import on the Mac), never from this file or git. mode 'silent_draft': nothing is ever sent. mode 'reply': only brands in reply.brands and mails received after reply.since get a same-thread reply (v11_client_reply); every other mail stays a silent draft. Adding a brand or a client address is Ahmet's GO. shadow_from: agency people whose 'Gölge:' forwards are drafted silently (never sent; the chain skips them). A contact row is auto-send only with direct=true (Markalar 'doğrudan yazabilir mi' = Evet). jobs: client mails of the listed brands that the draft marks job_ready open to-dos in the brand's Basecamp lists (v11_client_job); uploads are scored once each; 90+ goes to the client as an attachment in the same thread, 80-89 waits for an approver's 'uygun', below 80 is a revision request (max_revisions), then the approvers decide.",
   "reply": {
     "brands": [
-      "wat_mobilite"
+      "wat_mobilite",
+      "rabam"
     ],
     "auto_min_confidence": 90,
     "auto_categories": [
@@ -28,14 +29,18 @@
       "information",
       "meeting"
     ],
-    "since": "2026-10-13T18:00:00+03:00",
+    "since": {
+      "wat_mobilite": "2026-10-13T18:00:00+03:00",
+      "rabam": "2026-10-14T13:00:00+03:00"
+    },
     "max_sends_per_day": 10,
     "approvers": [
       "ahmet@gamechangers.com.tr",
       "cansu@gamechangers.com.tr"
     ],
     "owners": {
-      "wat_mobilite": "cansu@gamechangers.com.tr"
+      "wat_mobilite": "cansu@gamechangers.com.tr",
+      "rabam": "ahmet@gamechangers.com.tr"
     },
     "sensitive_cc": [
       "ahmet@gamechangers.com.tr",
@@ -52,6 +57,27 @@
         "assignees": {
           "social": "berkay@gamechangers.com.tr",
           "project": "cansu@gamechangers.com.tr"
+        },
+        "followers": [
+          "ozge@gamechangers.com.tr"
+        ],
+        "approvers": [
+          "ozge@gamechangers.com.tr",
+          "cansu@gamechangers.com.tr",
+          "ahmet@gamechangers.com.tr"
+        ],
+        "when_done": [
+          "ahmet@gamechangers.com.tr",
+          "cansu@gamechangers.com.tr",
+          "ozge@gamechangers.com.tr",
+          "baris@gamechangers.com.tr"
+        ]
+      },
+      "rabam": {
+        "title_prefix": "Rabam // ",
+        "assignees": {
+          "social": "baris@gamechangers.com.tr",
+          "project": "ahmet@gamechangers.com.tr"
         },
         "followers": [
           "ozge@gamechangers.com.tr"

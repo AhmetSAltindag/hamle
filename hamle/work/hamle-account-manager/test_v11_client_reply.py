@@ -231,7 +231,7 @@ class AutoSend(ReplyBase):
     def test_older_mails_and_other_brands_stay_silent_drafts(self):
         self.mails = [source(1), source(2, thread="t2", sender="mert.kaya@gmail.com")]
         self.client.outputs = [message(clear()), message(clear())]
-        self.watch(reply_config(since="2026-10-14T00:00:00+00:00")).run()
+        self.watch(reply_config(since={"wat_mobilite": "2026-10-14T00:00:00+00:00"})).run()  # the brand's own start
         self.assertEqual(self.replies.sent, [])
         self.assertTrue(all(c["description"].startswith("SESSİZ DENEME") for c in self.todos.calls))
         self.assertIsNone(self.row("m1").get("reply_state"))
@@ -465,12 +465,21 @@ class Config(Base):
         ok = cr.validate_reply(reply_block(), self.catalog)
         self.assertEqual((ok["owner_ids"], sorted(ok["approver_ids"])), ({"wat_mobilite": CANSU_BC},
                                                                           sorted([AHMET_BC, CANSU_BC])))
+        # a start time per brand: every listed brand needs one
+        for bad in (reply_block(since={}), reply_block(since={"wat_mobilite": "yarın"}),
+                    reply_block(since={"wat_mobilite": "2026-10-13T00:00:00+03:00", "rabam": "2026-10-14T00:00:00+03:00"})):
+            with self.assertRaises(cr.ClientReplyError):
+                cr.validate_reply(bad, self.catalog)
+        one = cr.validate_reply(reply_block(since={"wat_mobilite": "2026-10-13T00:00:00+03:00"}), self.catalog)
+        self.assertEqual(one["since_ms"], ok["since_ms"])
 
-    def test_shipped_config_replies_for_wat_only_and_is_valid(self):
+    def test_shipped_config_replies_for_wat_and_rabam_and_is_valid(self):
         cfg = cw.validate_config(cw.load_config())
         settings = cr.validate_reply(cfg["reply"], self.catalog)
         self.assertEqual((settings["brands"], settings["auto_min_confidence"], settings["owner_ids"]),
-                         ({"wat_mobilite"}, 90, {"wat_mobilite": CANSU_BC}))
+                         ({"wat_mobilite", "rabam"}, 90, {"wat_mobilite": CANSU_BC, "rabam": AHMET_BC}))
+        # Ahmet 14 Oct: Rabam opened later than WAT; its older mails never get an answer
+        self.assertLess(settings["since_ms"]["wat_mobilite"], settings["since_ms"]["rabam"])
         self.assertEqual(cfg["summary_to"], [AHMET])
         self.assertEqual(cfg["shadow_from"], [AHMET, CANSU])
         self.assertEqual((settings["allow_questions"], settings["new_threads_only"], settings["auto_categories"]),
