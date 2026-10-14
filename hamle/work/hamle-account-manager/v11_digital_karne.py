@@ -45,7 +45,8 @@ from zoneinfo import ZoneInfo
 
 from v11_chain_models import _arr, _nstr, _obj, _str, key_for, source_digest
 from v11_nb_tracking import API, APP, HAMLE_PERSON, MONTHS, NbBasecamp, _Text, _code, _line, text_matches
-from v11_trend_search import _iso_day, _research_gate, _routing, anthropic_research, normalize_url, route_fingerprint
+from v11_trend_search import (_iso_day, _research_gate, _routing, anthropic_research, normalize_url, route_fingerprint,
+                              strict_json_text)
 
 ISTANBUL = ZoneInfo("Europe/Istanbul")
 CONFIG_NAME = "digital-karne-config.json"
@@ -60,7 +61,7 @@ HEADS = {"kirmizi": "Hemen ele alınmalı", "sari": "Dikkat", "firsat": "Fırsat
          "bakilamadi": "Bakılamadı"}
 COUNT_WORDS = {"kirmizi": "acil", "sari": "dikkat", "firsat": "fırsat", "yesil": "sorunsuz", "bakilamadi": "bakılamadı"}
 DATED_AREAS = ("gundem", "sikayet", "rakip")
-MAX_FINDINGS, MAX_NOT_CHECKED, MAX_LINKS, LINK_WORKERS, FEEDBACK_WEEKS = 12, 5, 20, 6, 6
+MAX_FINDINGS, MAX_NOT_CHECKED, MAX_LINKS, LINK_WORKERS, FEEDBACK_WEEKS = 12, 3, 20, 6, 6
 SLOW_SECONDS, APP_STALE_DAYS, LOW_RATING, LOW_REVIEWS, LOW_SPEED = 6.0, 180, 3.5, 5, 50
 MAX_INPUT_BYTES, HOME_TEXT_CHARS, READ_SECONDS = 15_000, 3000, 30
 LEADS = {52096503: "Özge", 53167312: "Esma", 47470759: "Ahmet", 48793256: "Cansu"}
@@ -245,7 +246,7 @@ class Web:
             raise KarneError("web_dns_failed") from None
         _need(rows and all(ipaddress.ip_address(r[4][0]).is_global for r in rows), "web_host_not_public")
 
-    def get(self, url, *, max_bytes=2_000_000, read_seconds=None):
+    def get(self, url, *, max_bytes=2_000_000, read_seconds=None, accept="text/html,application/json,*/*"):
         """{'status', 'url' (final), 'body', 'seconds', 'headers'}; at most 5 redirects."""
         started = self.clock()
         for _ in range(6):
@@ -254,7 +255,7 @@ class Web:
             self._public(p.hostname)
             session, r = self.session_factory(), None
             try:
-                r = session.request("GET", url, headers={"User-Agent": self.UA, "Accept": "text/html,application/json,*/*",
+                r = session.request("GET", url, headers={"User-Agent": self.UA, "Accept": accept,
                                                          "Accept-Language": "tr-TR,tr;q=0.9"},
                                     timeout=(self.timeout[0], read_seconds or self.timeout[1]),
                                     allow_redirects=False, stream=True)
@@ -282,8 +283,10 @@ class Web:
                 session.close()
         raise KarneError("web_too_many_redirects")
 
-    def json(self, url, *, read_seconds=None):
-        page = self.get(url, max_bytes=1_500_000, read_seconds=read_seconds)
+    def json(self, url, *, read_seconds=None, max_bytes=1_500_000):
+        # a JSON Accept header: rdap.org sends browsers (text/html) to its web client instead of the data
+        page = self.get(url, max_bytes=max_bytes, read_seconds=read_seconds,
+                        accept="application/json, application/rdap+json;q=0.9")
         _need(page["status"] == 200, f"web_http_{page['status']}")
         try:
             return json.loads(page["body"].decode("utf-8"))
@@ -401,7 +404,7 @@ def social_of(url):
 
 
 def _finding(area, level, text, url=None, suggestion=None):
-    return {"area": area, "level": level, "text": _line(text, 300), "url": url,
+    return {"area": area, "level": level, "text": _line(text, 400), "url": url,
             "suggestion": _line(suggestion, 240) or None}
 
 
@@ -492,8 +495,11 @@ def domain_check(web, host, today):
     if not name or name.endswith(".tr") or name.count(".") < 1:
         return []
     domain = ".".join(name.split(".")[-2:])
+    tld = domain.rsplit(".", 1)[-1]
+    url = (f"https://rdap.verisign.com/{tld}/v1/domain/{domain}" if tld in ("com", "net")
+           else f"https://rdap.org/domain/{domain}")
     try:
-        data = web.json(f"https://rdap.org/domain/{domain}")
+        data = web.json(url)
         ends = [e.get("eventDate") for e in data.get("events") or [] if isinstance(e, dict)
                 and e.get("eventAction") == "expiration"]
         until = datetime.fromisoformat(str(ends[0]).replace("Z", "+00:00")).date()
@@ -509,6 +515,12 @@ def domain_check(web, host, today):
     return [_finding("site", "yesil", f"Alan adı ({domain}) {_when(until)} tarihine kadar kayıtlı.")]
 
 
+def _comparable(platform, handle):
+    """A YouTube channel id (UC…) or a numeric LinkedIn company id says nothing about the handle: not a mismatch."""
+    return not ((platform == "youtube" and re.fullmatch(r"uc[0-9a-z_-]{22}", handle))
+                or (platform == "linkedin" and handle.isdigit()))
+
+
 def social_link_check(b, urls, final):
     wanted = {p: social_of(u) for p, u in (b.get("socials") or {}).items()}
     wanted = {p: s[1] for p, s in wanted.items() if s and s[1]}
@@ -521,7 +533,7 @@ def social_link_check(b, urls, final):
             found.setdefault(s[0], set()).add(s[1])
     missing = [PLATFORM_NAMES[p] for p in wanted if p not in found]
     wrong = [f"{PLATFORM_NAMES[p]} ({', '.join(sorted(found[p]))[:60]})" for p, h in wanted.items()
-             if p in found and h not in found[p]]
+             if p in found and h not in found[p] and all(_comparable(p, x) for x in found[p])]
     out = []
     if wrong:
         out.append(_finding("sosyal", "sari", "Sitedeki sosyal medya bağlantısı başka bir hesaba gidiyor: "
@@ -568,17 +580,24 @@ def link_check(web, final, urls, facts):
     return out
 
 
-def pagespeed_check(web, url):
-    """Mobile performance score from the public PageSpeed Insights API (no key; may be rate limited)."""
+def pagespeed_api(url, key=None):
+    return ("https://www.googleapis.com/pagespeedonline/v5/runPagespeed?strategy=mobile&category=performance"
+            "&fields=lighthouseResult%2Fcategories%2Fperformance%2Fscore&url=" + quote(url, safe="")
+            + ("&key=" + quote(key, safe="") if key else ""))
+
+
+def pagespeed_check(web, url, key=None):
+    """Mobile performance score from the PageSpeed Insights API. key: hamle-pagespeed-api-key (keyless calls
+    share a daily quota that is usually spent). The key never appears in a finding or an error."""
     if not url:
         return []
-    api = ("https://www.googleapis.com/pagespeedonline/v5/runPagespeed?strategy=mobile&category=performance&url="
-           + quote(url, safe=""))
     try:
-        score = web.json(api, read_seconds=90)["lighthouseResult"]["categories"]["performance"]["score"]
+        score = web.json(pagespeed_api(url, key), read_seconds=90,
+                         max_bytes=6_000_000)["lighthouseResult"]["categories"]["performance"]["score"]
         _need(isinstance(score, (int, float)) and 0 <= score <= 1, "pagespeed_score_invalid")
-    except Exception:
-        return [_finding("site", "bakilamadi", "Mobil hız skoru (PageSpeed) bu ay okunamadı.")]
+    except Exception as exc:
+        reason = exc.code if isinstance(exc, KarneError) else "pagespeed_answer_invalid"
+        return [_finding("site", "bakilamadi", f"Mobil hız skoru (PageSpeed) bu ay okunamadı ({reason}).")]
     points = round(score * 100)
     page = "https://pagespeed.web.dev/analysis?url=" + quote(url, safe="")
     if points < LOW_SPEED:
@@ -639,6 +658,10 @@ def app_checks(b, web, today, days=7):
             out.append(_finding("uygulama", "sari", f"Son {days} günde App Store'da {len(low)} tane 1-2 yıldızlı "
                                 "yorum geldi.", page,
                                 "Yorumlardaki ortak sorunu müşteriye iletin; yorumlara yanıt verilmesini önerin."))
+        elif len(low) >= 2 and 2 * len(low) >= len(recent):  # few reviews, but mostly 1-2 stars
+            out.append(_finding("uygulama", "sari", f"Son {days} günde App Store'a gelen {len(recent)} yorumun "
+                                f"{len(low)} tanesi 1-2 yıldızlı.", page,
+                                "Yorumlardaki sorunu müşteriye iletin; yorumlara yanıt verilmesini önerin."))
         elif recent:
             notes.append(f"son {days} günde {len(recent)} yeni yorum ({len(low)} tanesi 1-2 yıldız)")
         if notes:
@@ -654,6 +677,48 @@ def karne_schema():
                                         "text": _str(280), "suggestion": _nstr(240), "url": _str(300),
                                         "date": _nstr(10)}), MAX_FINDINGS + 2),
                  "not_checked": _arr(_str(160), MAX_NOT_CHECKED)})
+
+
+def _json_object(text):
+    """The answer's JSON object: the whole text, or the last object with 'findings' when the model wrote
+    a sentence around it (a search-heavy answer sometimes narrates between searches)."""
+    try:
+        return strict_json_text(text)
+    except Exception:
+        pass
+    decoder, best = json.JSONDecoder(), None
+    for m in re.finditer(r"\{", text or ""):
+        try:
+            value, _ = decoder.raw_decode(text, m.start())
+        except ValueError:
+            continue
+        if isinstance(value, dict) and "findings" in value:
+            best = value
+    _need(best is not None, "karne_output_not_json")
+    return best
+
+
+def read_output(text):
+    """Model answer -> {'summary', 'findings', 'not_checked', 'skipped'}. A malformed finding is skipped and
+    counted (as a dropped one: the summary is then not shown), never repaired; only lengths are trimmed."""
+    value = _json_object(text)
+    _need(isinstance(value.get("findings", []), list), "karne_output_invalid")
+
+    def s(x, limit):
+        return _line(x, limit) if isinstance(x, str) and x.strip() else None
+    findings, skipped = [], 0
+    for f in value.get("findings") or []:
+        if not (isinstance(f, dict) and f.get("area") in AREAS and f.get("level") in ("kirmizi", "sari", "yesil", "firsat")
+                and s(f.get("text"), 400) and s(f.get("url"), 600)):
+            skipped += 1
+            continue
+        findings.append({"area": f["area"], "level": "sari" if f["level"] == "firsat" else f["level"],
+                         "text": s(f["text"], 400), "suggestion": s(f.get("suggestion"), 240), "url": s(f["url"], 600),
+                         "date": s(f.get("date"), 10)})
+    not_checked = [s(x, 160) for x in value.get("not_checked") or [] if s(x, 160)] \
+        if isinstance(value.get("not_checked"), list) else []
+    return {"summary": s(value.get("summary"), 600), "findings": findings[:MAX_FINDINGS + 4],
+            "not_checked": not_checked[:MAX_NOT_CHECKED], "skipped": skipped}
 
 
 def model_input(b, card, today, checks, facts, feedback, period_days=30):
@@ -684,7 +749,7 @@ def sourced(output, allowed, today, period_days=30):
     """Model findings with an https URL from the search evidence or a page Hamle opened; dated areas need a
     date in the period. Opportunities ('firsat') get their own group. -> (findings, not_checked, dropped)."""
     ok_urls = set(output.get("evidence") or []) | set(allowed)
-    out, seen, dropped = [], set(), 0
+    out, seen, dropped = [], set(), int(output.get("skipped") or 0)
     for f in output.get("findings") or []:
         url, day = normalize_url(f.get("url")), _iso_day(f.get("date")) if f.get("date") else None
         bad = url is None or url not in ok_urls or (f.get("date") and day is None) or (day is not None and day > today)
@@ -710,7 +775,7 @@ def research_source(ops, load_key, catalog, *, routing=None, client=None):
         return gate().once(ROLE, source_digest(ROLE, request_input, route_fingerprint(route, PROMPT)),
                            lambda: anthropic_research(route, PROMPT, request_input, karne_schema(),
                                                       api_key=key_for(load_key, "anthropic"), client=client,
-                                                      code="invalid_digital_karne_schema"),
+                                                      code="invalid_digital_karne_schema", reader=read_output),
                            provider=route.provider, hold=hold)
     research.timeout_seconds = route.timeout_seconds
     return research
@@ -910,10 +975,10 @@ def card_for(cards, project_id):
                  and c.get("project_id") == project_id), None)
 
 
-def brand_report(b, card, web, today, now, feedback=(), period_days=30):
+def brand_report(b, card, web, today, now, feedback=(), period_days=30, psi_key=None):
     """All checks for the full karne -> (checks, research request input, allowed URLs)."""
     checks, facts = site_checks(b, web, today, now)
-    checks += pagespeed_check(web, facts.get("final_url"))
+    checks += pagespeed_check(web, facts.get("final_url"), psi_key)
     more, app_facts = app_checks(b, web, today, days=period_days)
     checks += more
     facts["reviews"] = app_facts["reviews"]
@@ -945,7 +1010,7 @@ def _site_reds(checks):
 
 
 def run_digital_karne(ops, *, config, catalog, cards, web, research, http, clock, monotonic=time.monotonic,
-                      preview=None, only=None):
+                      preview=None, only=None, psi_key=None):
     """Scheduled run (preview None: the full karne or the silent alarm, by the day) or an operator preview of
     the full karne ('checks': no model; 'full': with the model). A preview never writes to Basecamp or the
     karne record."""
@@ -968,7 +1033,7 @@ def run_digital_karne(ops, *, config, catalog, cards, web, research, http, clock
             for b in brands:
                 dest = dests.get(b["key"]) or {}
                 checks, request_input, allowed = brand_report(b, card_for(cards, dest.get("card_project_id")), web,
-                                                              today, now, period_days=period)
+                                                              today, now, period_days=period, psi_key=psi_key)
                 findings, status, summary = with_research(checks, request_input, allowed,
                                                           research if preview == "full" else None, today, period)
                 _, text = description(b["brand"], today, findings, "full", summary)
@@ -1017,7 +1082,8 @@ def run_digital_karne(ops, *, config, catalog, cards, web, research, http, clock
                         checks, request_input, allowed = row["checks"], row["input"], row["allowed"]
                     else:
                         checks, request_input, allowed = brand_report(b, card_for(cards, dest["card_project_id"]),
-                                                                      web, today, now, tracker.feedback(key), period)
+                                                                      web, today, now, tracker.feedback(key), period,
+                                                                      psi_key)
                         tracker.save(key, {"state": "checked", "brand": b["brand"], "checks": checks,
                                            "input": request_input, "allowed": allowed})
                     reds = _site_reds(checks)
@@ -1076,10 +1142,14 @@ def run_worker_digital_karne(ops, secrets, *, preview=None, only=None, clock=Non
             research = research_source(ops, {"anthropic": lambda: provider.anthropic_key(secrets)}, catalog)
         except Exception:
             research = None  # the to-do says the research could not be taken
+    try:
+        psi_key = provider.pagespeed_key(secrets)
+    except Exception:
+        psi_key = None  # keyless: the shared daily quota, usually spent (the karne says it could not read the score)
     http = None
     if preview is None:
         token = _memo(lambda: basecamp_cloud_auth.access_token(secrets, claim_refresh=ops.claim_credential_refresh))
         http = KarneBasecamp(catalog["basecamp"]["account_id"], destinations(catalog),
                              send=session_send(token, provider._session))
     return run_digital_karne(ops, config=load_config(), catalog=catalog, cards=load_brand_cards(), web=public_web(),
-                             research=research, http=http, clock=clock, preview=preview, only=only)
+                             research=research, http=http, clock=clock, preview=preview, only=only, psi_key=psi_key)

@@ -26,8 +26,9 @@ WAT_LIST, RABAM_LIST, YADA_LIST = 8231779952, 10239606739, 10310036095
 OZGE, ESMA = 52096503, 53167312
 CATALOG = load_catalog()
 DESTS = kw.destinations(CATALOG)
-PSI = ("https://www.googleapis.com/pagespeedonline/v5/runPagespeed?strategy=mobile&category=performance&url="
-       "https%3A%2F%2Fwatmobilite.com")
+PSI = ("https://www.googleapis.com/pagespeedonline/v5/runPagespeed?strategy=mobile&category=performance"
+       "&fields=lighthouseResult%2Fcategories%2Fperformance%2Fscore&url=https%3A%2F%2Fwatmobilite.com")
+PSI_KEY = "AIza" + "k" * 35
 
 WAT_HOME = """<html><head><title>WAT Mobilite</title></head><body>
 <a href="/">Ana sayfa</a><a href="/istasyonlar/">İstasyonlar</a><a href="/kampanyalar">Kampanyalar</a>
@@ -62,10 +63,11 @@ def psi(score):
 
 class FakeWeb(kw.Web):
     def __init__(self, pages=None, certs=None):
-        self.pages, self.certs, self.calls = dict(pages or {}), dict(certs or {}), []
+        self.pages, self.certs, self.calls, self.accepts = dict(pages or {}), dict(certs or {}), [], {}
 
-    def get(self, url, *, max_bytes=2_000_000, read_seconds=None):
+    def get(self, url, *, max_bytes=2_000_000, read_seconds=None, accept=None):
         self.calls.append(url)
+        self.accepts[url] = accept
         raw = any(x in url for x in ("itunes", "rdap", "googleapis"))
         v = self.pages.get(url if raw else kw.normalize_url(url))
         if v is None:
@@ -88,7 +90,7 @@ def wat_web():
         "https://watmobilite.com": (200, WAT_HOME, 0.8),
         "https://watmobilite.com/istasyonlar": (200, ""), "https://watmobilite.com/kampanyalar": (404, ""),
         "https://watmobilite.com/blog": (403, ""), "https://watmobilite.com/iletisim": (200, ""),
-        "https://rdap.org/domain/watmobilite.com": (200, {"events": [{"eventAction": "expiration",
+        "https://rdap.verisign.com/com/v1/domain/watmobilite.com": (200, {"events": [{"eventAction": "expiration",
                                                                       "eventDate": "2027-03-01T00:00:00Z"}]}),
         PSI: (200, psi(0.42)),
         "https://rabam.com": (200, JS_HOME, 1.1),
@@ -273,6 +275,8 @@ class Checks(Karne):
         self.assertEqual(found(findings, "yesil"), ["Ana sayfa açılıyor (0,8 sn).",
                                                     "Alan adı (watmobilite.com) 1 Mart 2027 tarihine kadar kayıtlı."])
         self.assertIn("30 Eylül 2026", facts["text"])
+        self.assertTrue(self.web.accepts["https://rdap.verisign.com/com/v1/domain/watmobilite.com"].startswith(
+            "application/json"))  # rdap.org sends a browser Accept to its web client
         self.assertEqual(sorted(facts["checked"][2:]), ["https://watmobilite.com/blog", "https://watmobilite.com/iletisim",
                                                         "https://watmobilite.com/istasyonlar",
                                                         "https://watmobilite.com/kampanyalar"])
@@ -315,11 +319,51 @@ class Checks(Karne):
         self.web.pages[PSI] = (200, psi(0.9))
         self.assertEqual(found(kw.pagespeed_check(self.web, "https://watmobilite.com"), "yesil"),
                          ["Mobil hız skoru 90/100 (PageSpeed)."])
-        for broken in ((429, {"error": "quota"}), (200, {"lighthouseResult": {}}), (200, psi(7))):
+        for broken, reason in (((429, {"error": "quota"}), "web_http_429"),
+                               ((200, {"lighthouseResult": {}}), "pagespeed_answer_invalid"),
+                               ((200, psi(7)), "pagespeed_score_invalid")):
             self.web.pages[PSI] = broken
             self.assertEqual(found(kw.pagespeed_check(self.web, "https://watmobilite.com"), "bakilamadi"),
-                             ["Mobil hız skoru (PageSpeed) bu ay okunamadı."], broken)
+                             [f"Mobil hız skoru (PageSpeed) bu ay okunamadı ({reason})."], broken)
         self.assertEqual(kw.pagespeed_check(self.web, None), [])
+
+    def test_pagespeed_key_is_sent_but_never_shown(self):
+        self.web.pages[PSI + "&key=" + PSI_KEY] = (200, psi(0.77))
+        [f] = kw.pagespeed_check(self.web, "https://watmobilite.com", PSI_KEY)
+        self.assertEqual((f["level"], f["text"]), ("yesil", "Mobil hız skoru 77/100 (PageSpeed)."))
+        self.assertNotIn(PSI_KEY, json.dumps(f))
+        self.assertTrue(self.web.calls[-1].endswith("&key=" + PSI_KEY))
+        self.web.pages.pop(PSI + "&key=" + PSI_KEY)
+        [f] = kw.pagespeed_check(self.web, "https://watmobilite.com", PSI_KEY)
+        self.assertNotIn(PSI_KEY, json.dumps(f))  # errors carry a code, never the URL
+
+        class Secrets:
+            def __init__(self, value):
+                self.value, self.names = value, []
+
+            def access(self, name):
+                self.names.append(name)
+                if self.value is None:
+                    raise RuntimeError("not found")
+                return self.value.encode()
+        import cloud_providers
+        secrets = Secrets(" " + PSI_KEY + "\n")
+        self.assertEqual(cloud_providers.pagespeed_key(secrets), PSI_KEY)
+        self.assertEqual(secrets.names, ["hamle-pagespeed-api-key"])
+        self.assertIn("hamle-pagespeed-api-key", cloud_providers.SECRET_NAMES)
+        for bad in (None, "sk-ant-xyz", "AIza-short"):
+            with self.assertRaises(cloud_providers.ProviderError) as ctx:
+                cloud_providers.pagespeed_key(Secrets(bad))
+            self.assertEqual(str(ctx.exception), "pagespeed_credential_unavailable")
+
+    def test_a_youtube_channel_id_on_the_site_is_not_a_wrong_account(self):
+        urls = ["https://www.youtube.com/channel/UCceclPocoo7v0InnabysURW", "https://www.linkedin.com/company/1234567",
+                "https://www.instagram.com/watmobilite/", "https://www.tiktok.com/@watmobilite", "https://x.com/watmobilite"]
+        self.assertEqual(found(kw.social_link_check(brand("wat_mobilite"), urls, "https://watmobilite.com")),
+                         ["Sitedeki sosyal medya bağlantıları doğru hesaplara gidiyor."])
+        urls[0] = "https://www.youtube.com/@baskakanal"
+        self.assertEqual(found(kw.social_link_check(brand("wat_mobilite"), urls, "https://watmobilite.com"), "sari"),
+                         ["Sitedeki sosyal medya bağlantısı başka bir hesaba gidiyor: YouTube (baskakanal)."])
 
     def test_app_store_rating_update_and_the_months_reviews_without_names(self):
         findings, facts = kw.app_checks(brand("rabam"), self.web, MON, days=30)
@@ -331,8 +375,13 @@ class Checks(Karne):
                          ["Uygulama açılmıyor", "Randevu hatası", "Giriş sorunu", "Ödeme hatası", "Yavaş"])
         self.assertNotIn("Gerçek Kişi", json.dumps(facts, ensure_ascii=False))
         self.assertEqual(facts["checked"], ["https://apps.apple.com/tr/app/rabam/id1571183769?uo=4"])
-        findings, _ = kw.app_checks(brand("rabam"), self.web, MON, days=7)  # fewer than 5 low reviews: a note
-        self.assertEqual(found(findings, "yesil"), ["Rabam: son 7 günde 4 yeni yorum (3 tanesi 1-2 yıldız)."])
+        findings, _ = kw.app_checks(brand("rabam"), self.web, MON, days=7)  # few reviews, mostly low: still yellow
+        self.assertEqual(found(findings, "sari")[-1], "Son 7 günde App Store'a gelen 4 yorumun 3 tanesi 1-2 yıldızlı.")
+        self.web.pages["https://itunes.apple.com/tr/rss/customerreviews/id=1571183769/sortBy=mostRecent/json"] = (
+            200, {"feed": {"entry": [review("2026-10-18", 1, "Kötü"), review("2026-10-17", 5, "İyi"),
+                                     review("2026-10-16", 4, "Fena değil")]}})
+        findings, _ = kw.app_checks(brand("rabam"), self.web, MON, days=30)
+        self.assertEqual(found(findings, "yesil"), ["Rabam: son 30 günde 3 yeni yorum (1 tanesi 1-2 yıldız)."])
 
     def test_social_handles_and_share_links(self):
         self.assertEqual(kw.social_of("https://www.linkedin.com/company/WatMobilite/"), ("linkedin", "watmobilite"))
@@ -420,6 +469,25 @@ class Model(Karne):
         findings, status, _ = kw.with_research([], {}, [], Research(fail=kw.KarneError("model_timeout")), MON, 30)
         self.assertEqual(status, "model_timeout")
         self.assertIn("bu ay alınamadı (model_timeout)", found(findings, "bakilamadi")[0])
+
+    def test_the_answer_is_read_even_with_a_sentence_around_it_and_bad_findings_are_skipped(self):
+        good = {"area": "sikayet", "level": "kirmizi", "text": "Arızalı istasyon şikayetleri arttı.",
+                "suggestion": "", "url": EVIDENCE, "date": "2026-10-17"}
+        answer = {"summary": "Şikayetler bu ayın ana konusu.", "not_checked": ["a", "b", "c", "d", " "],
+                  "findings": [good, dict(good, level="acil"), {"area": "sikayet", "text": "Kaynaksız."},
+                               dict(good, area="firsat", level="firsat", text="Fuar.", date=None), "metin"]}
+        text = "Aramalarımı bitirdim, karne şu:\n" + json.dumps(answer, ensure_ascii=False) + "\nUmarım işe yarar."
+        out = kw.read_output(text)
+        self.assertEqual(out["skipped"], 3)
+        self.assertEqual([(f["area"], f["level"], f["suggestion"]) for f in out["findings"]],
+                         [("sikayet", "kirmizi", None), ("firsat", "sari", None)])
+        self.assertEqual(out["not_checked"], ["a", "b", "c"])
+        self.assertEqual(kw.read_output(json.dumps(answer))["findings"], out["findings"])  # the plain answer too
+        findings, status, summary = kw.with_research([], {}, [], Research(dict(out, evidence=[EVIDENCE])), MON, 30)
+        self.assertEqual((status, summary), ("2_sourced_3_dropped", None))  # skipped findings hide the summary
+        for bad in ("Karne hazırlayamadım.", '{"summary": "x"} değil', '{"findings": "yok"}'):
+            with self.assertRaises(kw.KarneError, msg=bad):
+                kw.read_output(bad)
 
     def test_research_request_is_bounded_and_one_paid_call_per_input(self):
         b = brand("wat_mobilite")
@@ -680,7 +748,7 @@ class Alarm(Karne):
         self.web.certs["rabam.com"] = 200
         for page in ("a", "b", "c", "kvkk", "cerez"):
             self.web.pages[f"https://rabam.com/{page}"] = (200, "")
-        self.web.pages["https://rdap.org/domain/rabam.com"] = (200, {"events": [{"eventAction": "expiration",
+        self.web.pages["https://rdap.verisign.com/com/v1/domain/rabam.com"] = (200, {"events": [{"eventAction": "expiration",
                                                                                  "eventDate": "2027-06-01T00:00:00Z"}]})
         r = self.run_karne(config=only("wat_mobilite", "rabam"))
         self.assertEqual((r["created"], r["quiet"], r["business_writes"]), (0, 2, 0))

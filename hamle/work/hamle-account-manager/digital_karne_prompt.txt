@@ -21,4 +21,6 @@ Kurallar:
 - "summary": yalnız yazdığın bulgulara dayanan 2-3 cümlelik genel değerlendirme: marka bu ay dijitalde nasıl görünüyor, ekibin önceliği ne olmalı. Bulgularda olmayan hiçbir şeyi özete yazma. Bulgu yoksa null.
 - En çok 12 bulgu. Türkçe, kısa ve net cümleler. Uydurma, abartma, tahmin yürütme.
 - Kişisel veri yazma: şikayet edenlerin ya da yorum yazanların adları yok.
-- Markayla ilgili kayda değer bir şey bulamazsan bulgu listesini boş bırakabilirsin; neye bakamadığını "not_checked" listesine kısa cümlelerle yaz.
+- Markayla ilgili kayda değer bir şey bulamazsan bulgu listesini boş bırakabilirsin.
+- "not_checked": bakmak isteyip bakamadığın en önemli en çok 3 konu, kısa cümlelerle. Girdide olmayan bir şeyi yazma (ör. "app_reviews" boşsa uygulama yorumları).
+- Aramalar arasında açıklama yazma; cevabın yalnız tek bir JSON nesnesi olsun.

@@ -29,7 +29,8 @@ SECRET_NAMES = frozenset((GMAIL_SECRET, OPENAI_SECRET, BASECAMP_SECRET))
 # Claude API key (Secret Manager, added by Ahmet 2026-10-11). Kept on its own lines so the
 # names above stay untouched; the secret allowlist is the union.
 ANTHROPIC_SECRET = "hamle-anthropic-api-key"
-SECRET_NAMES = SECRET_NAMES | frozenset((ANTHROPIC_SECRET,))
+PAGESPEED_SECRET = "hamle-pagespeed-api-key"  # Google API key limited to the PageSpeed Insights API (Dijital Karne)
+SECRET_NAMES = SECRET_NAMES | frozenset((ANTHROPIC_SECRET, PAGESPEED_SECRET))
 INTERNAL_SUBJECT = "HAMLE-IC-IS-20261010-01"
 PRODUCTION_INTERNAL_SUBJECT = "HAMLE-IC-URETIM-20261010-01"
 INTERNAL_SUBJECTS = frozenset((INTERNAL_SUBJECT, PRODUCTION_INTERNAL_SUBJECT))
@@ -312,6 +313,20 @@ def anthropic_key(secrets):
         return _token(value)
     except Exception:
         raise ProviderError("anthropic_credential_unavailable") from None
+
+
+def pagespeed_key(secrets):
+    """PageSpeed Insights API key from hamle-pagespeed-api-key (keyless calls share an exhausted daily quota).
+
+    Errors are one fixed code; the value is never logged or returned in one.
+    """
+    try:
+        value = secrets.access(PAGESPEED_SECRET).decode("ascii").strip()
+        if not re.fullmatch(r"AIza[0-9A-Za-z_\-]{35}", value):
+            raise ValueError()
+        return value
+    except Exception:
+        raise ProviderError("pagespeed_credential_unavailable") from None
 
 
 ATTACHMENT_RESPONSE_LIMIT = 28_000_000  # base64 JSON of a 20 MB attachment

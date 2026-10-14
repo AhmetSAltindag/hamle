@@ -240,10 +240,13 @@ def strict_json_text(text):
     return base._loads(t)
 
 
-def anthropic_research(route, prompt_path, request_input, out_schema, *, api_key, client=None, code="invalid_trend_schema"):
+def anthropic_research(route, prompt_path, request_input, out_schema, *, api_key, client=None, code="invalid_trend_schema",
+                       reader=None):
     """One Claude call with the web_search server tool; JSON returned in text (citations on).
 
     Returns {'output': {...validated value..., 'evidence': [normalized https URLs]}, 'receipt'}.
+    reader(text) -> value replaces the strict whole-text JSON + schema check for a role that sorts out
+    the model's answer itself (the monthly karne: one bad finding must not empty the whole report).
     """
     _need(route.provider == "anthropic" and route.web_search, "research_route_invalid")
     source = base._encoded(request_input)
@@ -257,8 +260,11 @@ def anthropic_research(route, prompt_path, request_input, out_schema, *, api_key
     data = base.anthropic_send(api_key, route, kwargs, client=client)
     result = base.anthropic_extract(route, data, structured=False)
     try:
-        value = strict_json_text(result["text"])
-        validate(value, out_schema)
+        if reader is None:
+            value = strict_json_text(result["text"])
+            validate(value, out_schema)
+        else:
+            value = reader(result["text"])
     except Exception:
         raise base._anthropic_error(code, data, route) from None
     evidence = {normalize_url(u) for u in result["evidence"]}
