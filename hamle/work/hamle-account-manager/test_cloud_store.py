@@ -317,6 +317,24 @@ class StoreTests(unittest.TestCase):
         self.backend.data["budget"]["expires_at"] = "2026-11-01T00:00:00+03:00"
         self.fails("budget_expiry_unexpected", lambda: self.store.extend_budget_expiry("test-evidence"))
 
+    def test_raised_monthly_limit_reads_the_old_doc_and_records_the_raise_once(self):
+        # Ahmet 2026-10-14: 50 -> 75 USD. The live doc says 50 until the next roll writes it.
+        self.assertEqual(LIMIT, 75_000_000)
+        self.store.roll_budget_period()  # stamp the period first
+        self.backend.data["budget"]["limit_microdollars"] = 50_000_000
+        self.assertEqual(self.store.budget_status()["limit_microdollars"], LIMIT)
+        self.assertEqual(self.store.roll_budget_period()["status"], "budget_period_updated")
+        b = self.backend.data["budget"]
+        self.assertEqual((b["limit_microdollars"], [(h["from"], h["to"]) for h in b["limit_history"]]),
+                         (LIMIT, [(50_000_000, LIMIT)]))
+        self.assertEqual(self.store.roll_budget_period()["status"], "budget_period_current")
+        self.assertEqual(len(self.backend.data["budget"]["limit_history"]), 1)
+        self.store.budget_reserve("past-fifty", "openai", 45_000_000)  # commits ~53 USD: over the old limit
+        self.assertGreater(self.store.budget_status()["total_committed_microdollars"], 50_000_000)
+        self.fails("aggregate_budget_exhausted", lambda: self.store.budget_reserve("past-75", "openai", 25_000_000))
+        self.backend.data["budget"]["limit_microdollars"] = 60_000_000  # any other limit is not ours
+        self.fails("budget_not_imported", self.store.budget_status)
+
     def test_deadline_blocks_new_work_but_not_stop_or_evidence(self):
         _, _, lease = self.claimed(); self.store.begin_dispatch(lease, self.source)
         self.now = datetime.fromisoformat("2028-01-04T00:00:00+03:00")
@@ -336,7 +354,7 @@ class StoreTests(unittest.TestCase):
         self.assertEqual(b["accounted_spend_microdollars"], 215_710)
         self.assertEqual(b["held_microdollars"], 8_000_000)
         self.assertEqual(b["total_committed_microdollars"], 18_000_000)
-        self.assertEqual(b["remaining_microdollars"], 32_000_000)
+        self.assertEqual(b["remaining_microdollars"], LIMIT - 18_000_000)
 
     def test_budget_cannot_be_reset_and_same_import_does_not_erase_new_reservations(self):
         self.store.budget_reserve("another", "openai", 1_000_000)
@@ -362,7 +380,7 @@ class StoreTests(unittest.TestCase):
     def test_budget_racing_reservations_cannot_overrun(self):
         def reserve(i):
             try:
-                self.store.budget_reserve("cloud-" + str(i), "google_cloud", 20_000_000)
+                self.store.budget_reserve("cloud-" + str(i), "google_cloud", 30_000_000)  # 18 + 30 fits, + 30 more does not
                 return "ok"
             except StoreError as e:
                 return e.code

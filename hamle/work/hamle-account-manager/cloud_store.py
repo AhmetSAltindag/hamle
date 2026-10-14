@@ -32,7 +32,11 @@ ANTHROPIC_EFFORTS = ("low", "medium", "high", "xhigh", "max")
 ANTHROPIC_USAGE_FIELDS = ("input_tokens", "output_tokens", "cache_read_input_tokens",
                           "cache_creation_input_tokens", "web_search_requests")
 KINDS = ("gmail_reply", "basecamp_todo", "basecamp_comment")
-LIMIT = 50_000_000  # per Istanbul calendar month (budget["period"]); renews by itself
+LIMIT = 75_000_000  # per Istanbul calendar month (budget["period"]); renews by itself
+# Ahmet 2026-10-14 (decision card): 50 -> 75 USD. A budget doc still on an older limit keeps working
+# and is moved to LIMIT (with limit_history) by the next roll, i.e. the next run's first budget write.
+PREVIOUS_LIMITS = (50_000_000,)
+LIMIT_EVIDENCE = "ahmet-2026-10-14-decision-card-75-usd"
 ISTANBUL = ZoneInfo("Europe/Istanbul")
 # Ledger compaction: the budget doc must stay under _json's 60 KB record limit (~170 rows).
 BUDGET_COMPACT_AT = 100        # current-month settled rows are archived from this many rows on
@@ -724,7 +728,8 @@ class OperationsStore:
     @staticmethod
     def _budget(tx):
         b = tx.get("budget")
-        _require(isinstance(b, dict) and b.get("policy_id") == POLICY and b.get("limit_microdollars") == LIMIT, "budget_not_imported")
+        _require(isinstance(b, dict) and b.get("policy_id") == POLICY
+                 and b.get("limit_microdollars") in (LIMIT,) + PREVIOUS_LIMITS, "budget_not_imported")
         return b
 
     PREVIOUS_DEADLINE = "2026-10-12T23:59:59+03:00"
@@ -784,6 +789,10 @@ class OperationsStore:
         BUDGET_COMPACT_MIN_AGE are moved to budget-archive-* docs: always for past months, and for
         the current month once the list reaches BUDGET_COMPACT_AT (their sums stay in the totals).
         """
+        if b.get("limit_microdollars") in PREVIOUS_LIMITS:  # a raised monthly limit, recorded once
+            b.setdefault("limit_history", []).append({"from": b["limit_microdollars"], "to": LIMIT, "at": now,
+                                                     "evidence_ref": LIMIT_EVIDENCE})
+            b["limit_microdollars"] = LIMIT
         period = budget_period(now)
         if b.get("period") is None:  # first sight: stamp, no renewal (existing rows are this month's)
             b["period"] = period
@@ -826,9 +835,9 @@ class OperationsStore:
         """Idempotent start-of-run step: monthly renewal + compaction (writes only when something changed)."""
         def op(tx, now):
             b = self._budget(tx)
-            before = b.get("period")
+            before, limit = b.get("period"), b.get("limit_microdollars")
             r = self._roll(b, now)
-            if before == b["period"] and not r["archived_rows"]:
+            if before == b["period"] and not r["archived_rows"] and limit == b["limit_microdollars"]:
                 return {"status": "budget_period_current", "period": b["period"], "archived_rows": 0}
             for key, doc in r["archives"]:
                 _json(doc); tx.put(key, doc)
