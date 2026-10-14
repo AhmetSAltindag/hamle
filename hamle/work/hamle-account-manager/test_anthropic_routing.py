@@ -318,6 +318,31 @@ class Ledger(NoNetwork):
                            {"brand_id": "gamechangers", "subject": "Afiş"})
         self.assertEqual((len(client.calls), self.keys), (1, 1))  # cached, one paid chance
 
+    def test_interpreter_sees_the_request_mail_files_on_claude(self):
+        said = [{"name": "brief.docx", "what": "Afiş metni: YENİ OFİS"}]
+        client = FakeClient(message(interpretation()), message(interpretation(attachments_read=said)))
+        models = self.models(client)
+        text = "Ofis afişi lazım. Detaylar ekte."
+        plain = models.interpreter(text, {"brand_id": "gamechangers", "subject": "Afiş"})
+        self.assertNotIn("attachments_read", plain)
+        self.assertNotIn("deadline", plain["requirements"])  # not in the mail: asked, never guessed
+        self.assertIsInstance(client.calls[0]["messages"][0]["content"], str)  # no files: request unchanged
+        self.assertNotIn("attachments_read", client.calls[0]["output_config"]["format"]["schema"]["properties"])
+        status = [{"name": "brief.docx", "type": "text/plain", "read": True},
+                  {"name": "video.mp4", "type": "video/mp4", "read": False, "reason": "bu dosya türünü okuyamıyorum"}]
+        blocks = [{"type": "text", "text": "Ek 1: brief.docx\nYENİ OFİS, teslim 14 Ekim 17:00"}]
+        out = models.interpreter(text, {"brand_id": "gamechangers", "subject": "Afiş", "attachments": status,
+                                        "blocks": blocks})
+        call = client.calls[1]
+        content = call["messages"][0]["content"]
+        self.assertEqual(content[:-1], blocks)
+        sent = json.loads(content[-1]["text"])
+        self.assertEqual(sent["attachments"], status)
+        self.assertIn("attachments_read", call["output_config"]["format"]["schema"]["properties"])
+        self.assertEqual((out["attachments_read"], out["attachment_status"]), (said, status))
+        self.assertEqual(out["requirements"]["deadline"], "14 Ekim 17:00")  # grounded in the file's text
+        self.assertEqual(len(self.reservations()), 2)  # same text with files is its own paid chance
+
     def test_bad_stored_key_settles_zero_and_names_the_cause(self):
         def bad():
             raise cloud_providers.ProviderError("anthropic_credential_unavailable")

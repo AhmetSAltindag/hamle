@@ -647,6 +647,103 @@ class EndToEnd(unittest.TestCase):
         self.assertEqual(len(h.world.posts("/todos.json")), 1)
 
 
+DOCX = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+FILES = [{"filename": "brief.docx", "mime_type": DOCX, "size_bytes": 900, "attachment_id": "x1"},
+         {"filename": "video.mp4", "mime_type": "video/mp4", "size_bytes": 10, "attachment_id": "x2"}]
+READ = [{"name": "brief.docx", "type": DOCX, "read": True},
+        {"name": "video.mp4", "type": "video/mp4", "read": False, "reason": "bu dosya türünü okuyamıyorum"}]
+
+
+class RequestMailFiles(unittest.TestCase):
+    """Ahmet 2026-10-14: Hamle reads every file of a request mail, no exceptions."""
+
+    def harness(self, ack=False):
+        catalog = live_catalog()
+        catalog["chain"]["task_ack"]["enabled"] = ack
+        h = Harness(catalog)
+        h.read_files = []
+
+        def attachments(source):
+            h.read_files.append(source["message_id"])
+            return {"status": copy.deepcopy(READ), "blocks": [{"type": "text", "text": "Ek 1: brief.docx\nYENİ OFİS"}]}
+        plain = h.deps.interpreter
+
+        def interpreter(text, context):
+            out = plain(text, context)
+            if context.get("attachments"):
+                out.update(attachment_status=context["attachments"],
+                           attachments_read=[{"name": "brief.docx", "what": "Afiş metni: YENİ OFİS, Kat 3"}])
+            return out
+        h.deps.attachments, h.deps.interpreter = attachments, interpreter
+        return h
+
+    def with_files(self, h, thread, text, complete=True):
+        mid = h.mail_in(thread, text, complete=complete)
+        h.inbox[-1].update(has_attachments=True, attachments=copy.deepcopy(FILES))
+        return mid
+
+    def test_files_go_to_the_interpreter_and_every_file_is_in_the_team_note_and_the_ack(self):
+        h = self.harness(ack=True)
+        mid = self.with_files(h, "t-f", "Afiş lazım, detaylar ekte.")
+        h.tick()
+        self.assertEqual(h.read_files, [mid])
+        self.assertEqual(h.last_context["blocks"], [{"type": "text", "text": "Ek 1: brief.docx\nYENİ OFİS"}])
+        self.assertEqual(h.last_context["attachments"], READ)
+        rec, _ = h.record("t-f")
+        self.assertEqual(rec["attachments"], [
+            {"name": "brief.docx", "read": True, "what": "Afiş metni: YENİ OFİS, Kat 3"},
+            {"name": "video.mp4", "read": False, "reason": "bu dosya türünü okuyamıyorum"}])
+        note = h.hamle_comments("t-f")[0]["content"]
+        self.assertIn("brief.docx: Afiş metni: YENİ OFİS, Kat 3", note)
+        self.assertIn("video.mp4: OKUNAMADI (bu dosya türünü okuyamıyorum)", note)
+        self.assertIn("lütfen açıp brief", note)
+        ack, = h.mail.sent
+        self.assertIn("Eklerin:\n- brief.docx: Afiş metni: YENİ OFİS, Kat 3\n- video.mp4: okuyamadım "
+                      "(bu dosya türünü okuyamıyorum); ekip dosyayı mailden açıp kontrol edecek", ack["body"])
+
+    def test_files_of_the_first_mail_are_remembered_through_the_question_round(self):
+        h = self.harness()
+        self.with_files(h, "t-q", "eksik talep, brief ekte", complete=False)
+        h.tick()
+        rec, work = h.record("t-q")
+        self.assertEqual((rec["status"], len(rec["attachments"])), ("awaiting_clarification", 2))
+        h.mail_in("t-q", "tamamlanmış talep")
+        h.tick()
+        self.assertEqual(h.last_context["earlier_attachments"],
+                         [{"name": "brief.docx", "read": True, "what": "Afiş metni: YENİ OFİS, Kat 3"}])
+        self.assertNotIn("blocks", h.last_context)  # the answer had no files of its own
+        rec, work = h.record("t-q")
+        self.assertIsNotNone(work["task_id"])
+        self.assertIn("brief.docx: Afiş metni: YENİ OFİS, Kat 3", h.hamle_comments("t-q")[0]["content"])
+
+    def test_a_reader_failure_or_no_reader_names_each_file_unread(self):
+        h = self.harness()
+        h.deps.attachments = lambda source: (_ for _ in ()).throw(TimeoutError("synthetic"))
+        self.with_files(h, "t-x", "talep")
+        h.tick()
+        rec, _ = h.record("t-x")
+        self.assertEqual([(a["name"], a["read"], a["reason"]) for a in rec["attachments"]],
+                         [("brief.docx", False, "ekleri okuyamadım (TimeoutError)"),
+                          ("video.mp4", False, "ekleri okuyamadım (TimeoutError)")])
+        self.assertIn("brief.docx, video.mp4", h.hamle_comments("t-x")[0]["content"])
+        h2 = self.harness()
+        h2.deps.attachments = None
+        h2.mail_in("t-y", "talep")
+        h2.inbox[-1]["has_attachments"] = True  # a reader that did not list the files
+        h2.tick()
+        rec, _ = h2.record("t-y")
+        self.assertEqual(rec["attachments"], [{"name": "(mailin ekleri)", "read": False,
+                                               "reason": "ekleri listeleyemedim"}])
+
+    def test_a_new_mail_on_running_work_names_its_files_for_the_managers(self):
+        h = self.harness()
+        h.mail_in("t-r", "talep")
+        h.tick()
+        self.with_files(h, "t-r", "revize notları ekte")
+        h.tick()
+        self.assertIn("Yeni mailde ek var: brief.docx, video.mp4.", h.hamle_comments("t-r")[-1]["content"])
+
+
 class CommentWriter(unittest.TestCase):
     def payload(self):
         return {"target": {"account_id": ACC, "project_id": PROJ, "list_id": LIST, "task_id": 55},

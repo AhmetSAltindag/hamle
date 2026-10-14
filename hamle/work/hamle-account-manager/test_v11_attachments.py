@@ -105,6 +105,29 @@ class Read(unittest.TestCase):
         self.assertIn("sıra gelmedi", out["status"][2]["reason"])
 
 
+class MailFiles(unittest.TestCase):
+    def test_every_listed_file_is_fetched_or_named_with_why(self):
+        listed = [{"filename": "not.txt", "mime_type": "text/plain", "size_bytes": 20, "attachment_id": "a1"},
+                  {"filename": "kopuk.pdf", "mime_type": "application/pdf", "size_bytes": 20, "attachment_id": None},
+                  {"filename": "dev.mov", "mime_type": "video/quicktime", "size_bytes": at.MAX_FILE_BYTES + 1,
+                   "attachment_id": "a3"},
+                  {"filename": "hata.png", "mime_type": "image/png", "size_bytes": 20, "attachment_id": "a4"}]
+        asked = []
+
+        def fetch(message_id, attachment_id):
+            asked.append((message_id, attachment_id))
+            if attachment_id == "a4":
+                raise TimeoutError("synthetic")
+            return "Logo sağ üstte".encode()
+        out = at.mail_files({"message_id": "m1", "attachments": listed}, fetch)
+        self.assertEqual(asked, [("m1", "a1"), ("m1", "a4")])  # nothing fetched for a missing id or a huge file
+        why = {r["name"]: r.get("reason") for r in out["status"]}
+        self.assertEqual(why, {"not.txt": None, "kopuk.pdf": "ek mailin içinden alınamadı",
+                               "dev.mov": "dosya çok büyük (20.0 MB)", "hata.png": "indirilemedi (TimeoutError)"})
+        self.assertIn("Logo sağ üstte", out["blocks"][0]["text"])
+        self.assertEqual(at.mail_files({"message_id": "m1"}, fetch), {"blocks": [], "status": []})
+
+
 class Rule(unittest.TestCase):
     STATUS = [{"name": "App Banner.png", "read": True}, {"name": "brief.docx", "read": True},
               {"name": "video.mp4", "read": False, "reason": at.UNSUPPORTED_TR}]

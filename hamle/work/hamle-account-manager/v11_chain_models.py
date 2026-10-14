@@ -32,6 +32,7 @@ from model import ModelError
 
 HERE = Path(__file__).resolve().parent
 PROMPTS = {"interpreter": HERE / "chain_interpreter_prompt.txt",
+           "interpreter_files": HERE / "chain_interpreter_prompt.txt",
            "classifier": HERE / "chain_classifier_prompt.txt",
            "answerer": HERE / "chain_answerer_prompt.txt",
            "digest": HERE / "chain_digest_prompt.txt"}
@@ -46,7 +47,8 @@ PROFILE_REFS = ("terms", "brand_id", "verification_scope")
 WORK_REFS = ("status", "next_step", "assignees", "due_on")
 ANSWER_REFS = (tuple("brief." + k for k in BRIEF_REFS) + tuple("profile." + k for k in PROFILE_REFS)
                + tuple("work." + k for k in WORK_REFS))
-ROUTING_ROLES = {"interpreter": "chain_interpreter", "classifier": "chain_classifier",
+ROUTING_ROLES = {"interpreter": "chain_interpreter", "interpreter_files": "chain_interpreter",
+                 "classifier": "chain_classifier",
                  "answerer": "chain_answerer", "digest": "digest_classifier"}
 # Fixed codes after which nothing can have been billed: the hold is settled at 0.
 # Failures proven to happen before any request reaches the provider (or refused for credit): settle 0.
@@ -112,8 +114,12 @@ DIGEST_STATUSES = ("action_on_us", "waiting_client", "looks_done")
 DIGEST_SCHEMA = _obj({"items": _arr(_obj({"ref": _str(12),
                                           "status": {"type": "string", "enum": list(DIGEST_STATUSES)},
                                           "reason": _str(200), "action": _str(200)}), 40)})
-SCHEMAS = {"interpreter": INTERPRETER_SCHEMA, "classifier": CLASSIFIER_SCHEMA, "answerer": ANSWERER_SCHEMA,
-           "digest": DIGEST_SCHEMA}
+# A request mail with files: the interpreter also says what each attachment is (v11_attachments rule).
+INTERPRETER_FILES_SCHEMA = copy.deepcopy(INTERPRETER_SCHEMA)
+INTERPRETER_FILES_SCHEMA["properties"]["attachments_read"] = _arr(_obj({"name": _str(255), "what": _str(500)}), 12)
+INTERPRETER_FILES_SCHEMA["required"] = list(INTERPRETER_FILES_SCHEMA["properties"])
+SCHEMAS = {"interpreter": INTERPRETER_SCHEMA, "interpreter_files": INTERPRETER_FILES_SCHEMA,
+           "classifier": CLASSIFIER_SCHEMA, "answerer": ANSWERER_SCHEMA, "digest": DIGEST_SCHEMA}
 
 
 def validate(value, schema, code="invalid_model_output"):
@@ -283,9 +289,11 @@ def key_for(load_key, provider):
         raise ModelError(code if code in NO_CHARGE_CODES else "model_credential_unavailable") from None
 
 
-def call_routed(route, role, request_input, *, load_key, transport=None, client=None, profile=None):
-    """One call for a chain role on the routed provider. No cross-provider fallback."""
+def call_routed(route, role, request_input, *, load_key, transport=None, client=None, profile=None, blocks=()):
+    """One call for a chain role on the routed provider. No cross-provider fallback.
+    blocks (a mail's attachments) go only to Claude."""
     _need(role in SCHEMAS, "model_role_unknown")
+    _need(not blocks or route.provider == "anthropic", "attachments_need_claude")
     if route.provider == "openai":
         key = key_for(load_key, "openai")
         try:
@@ -302,7 +310,7 @@ def call_routed(route, role, request_input, *, load_key, transport=None, client=
     key = key_for(load_key, "anthropic")
     try:
         return base.anthropic_json(route, system, request_input, SCHEMAS[role], api_key=key, client=client,
-                                   validator=check)
+                                   validator=check, blocks=blocks)
     finally:
         del key
 
@@ -478,8 +486,9 @@ class ChainModels:
         self.routing = routing if routing is not None else model_routing.load()
         self.load_key, self.gate, self.transport, self.profile, self.client = load_key, gate, transport, profile, client
 
-    def _call(self, role, request_input, digest):
+    def _call(self, role, request_input, digest, blocks=()):
         route = self.routing.route(ROUTING_ROLES[role])
+        _need(not blocks or route.provider == "anthropic", "attachments_need_claude")
         if route.provider == "openai":
             base._selected_profile(self.profile or route.profile_id)  # profile errors before any ledger write
             build_request(role, request_input, profile=self.profile or route.profile_id)
@@ -488,21 +497,48 @@ class ChainModels:
             _need(len(base._encoded(request_input)) <= base.MAX_INPUT_BYTES, "input_byte_limit")
         def call():
             return call_routed(route, role, request_input, load_key=self.load_key, transport=self.transport,
-                               client=self.client, profile=self.profile)
+                               client=self.client, profile=self.profile, blocks=blocks)
         return self.gate.once(role, digest, call, provider=route.provider, hold=reservation_for(route))
 
     def interpreter(self, text, context):
+        """context may carry the mail's files (Ahmet 14 Oct, no exceptions): 'attachments' is the
+        v11_attachments status of every file, 'blocks' what was read, 'earlier_attachments' what Hamle
+        understood from the files of the earlier mails in this request."""
         _need(isinstance(text, str) and text.strip(), "mail_text_missing")
         subject = str(context.get("subject") or "")[:300]
         past = [{"title": str(p.get("title"))[:200], "status": str(p.get("status"))[:60]}
                 for p in (context.get("past_works") or [])[:20] if isinstance(p, dict)]
         request_input = {"brand_id": str(context.get("brand_id")), "subject": subject,
                          "mail_text": text[:12000], "past_works": past}
-        output = self._call("interpreter", request_input, source_digest("interpreter", context.get("brand_id"),
-                                                                        subject, text))
-        return {"requirements": requirements_from_output(output, subject + "\n" + text),
-                "missing_questions": list(output["missing_questions"]),
-                "context_notes": list(output["context_notes"]), "follow_ups": list(output["follow_ups"])}
+        status = [dict(r) for r in context.get("attachments") or [] if isinstance(r, dict)][:30]
+        blocks = list(context.get("blocks") or ())
+        if blocks and self.routing.route(ROUTING_ROLES["interpreter_files"]).provider != "anthropic":
+            blocks = []  # the routed model cannot see files: each one is named as unread, never guessed
+            status = [dict(r, read=False, reason="seçili model dosya okuyamıyor") if r.get("read") else r
+                      for r in status]
+        earlier = [{"name": str(a.get("name"))[:255], "what": str(a.get("what"))[:500]}
+                   for a in context.get("earlier_attachments") or [] if isinstance(a, dict) and a.get("what")][:12]
+        parts = [context.get("brand_id"), subject, text]
+        if status:
+            request_input["attachments"] = [
+                {k: r[k] for k in ("name", "type", "read", "reason", "pages", "width", "height", "ratio", "note")
+                 if r.get(k) not in (None, "")} for r in status]
+            parts += ["files"] + sorted(r["name"] for r in status if r.get("read"))
+        if earlier:
+            request_input["earlier_attachments"] = earlier
+            parts += ["earlier", earlier]
+        role = "interpreter_files" if blocks else "interpreter"
+        output = self._call(role, request_input, source_digest("interpreter", *parts), blocks=blocks)
+        # a deadline or a required text may come from a file's text (Word/Excel/PowerPoint/txt); a fact seen
+        # only in an image or a PDF is not grounded here, so plan_intake still asks instead of guessing
+        ground = "\n".join([subject, text] + [b["text"] for b in blocks if b.get("type") == "text"])
+        out = {"requirements": requirements_from_output(output, ground),
+               "missing_questions": list(output["missing_questions"]),
+               "context_notes": list(output["context_notes"]), "follow_ups": list(output["follow_ups"])}
+        if status:
+            out["attachment_status"] = status
+            out["attachments_read"] = list(output.get("attachments_read") or [])
+        return out
 
     def classifier(self, text, context):
         flags = {k: context.get(k) for k in ("status", "producer", "manager")}

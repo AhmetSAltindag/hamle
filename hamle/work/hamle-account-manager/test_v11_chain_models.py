@@ -180,6 +180,16 @@ class Interpreter(Base):
         self.assertEqual(got.exception.code, "model_outcome_unknown_no_retry")
         self.assertEqual((len(transport.calls), self.keys), (1, 1))
 
+    def test_files_on_a_model_that_cannot_see_them_are_named_unread(self):
+        transport = Transport(envelope(interpretation()))
+        models, _ = self.models(transport)
+        out = models.interpreter(self.TEXT, {"subject": "Afiş", "attachments": [{"name": "brief.docx", "read": True}],
+                                             "blocks": [{"type": "text", "text": "GIZLI-EK-METNI"}]})
+        self.assertEqual(out["attachment_status"], [{"name": "brief.docx", "read": False,
+                                                     "reason": "seçili model dosya okuyamıyor"}])
+        self.assertEqual(out["attachments_read"], [])
+        self.assertNotIn("GIZLI-EK-METNI", json.dumps(transport.calls))
+
     def test_oversize_input_fails_before_ledger_or_key(self):
         models, gate = self.models(Transport())
         with self.assertRaises(Exception):

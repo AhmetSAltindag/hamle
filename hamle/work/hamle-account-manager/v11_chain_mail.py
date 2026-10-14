@@ -460,7 +460,7 @@ class GmailThreadReplyWriter:
 
 
 def mail_attachments(inventory):
-    """The attachment parts of one mail: [{'filename','mime_type','size_bytes','attachment_id'}] (at most 12)."""
+    """The attachment parts of one mail: [{'filename','mime_type','size_bytes','attachment_id'}] (at most 30)."""
     out = []
     for item in inventory or []:
         if not item.get("is_attachment") or item.get("mime_type", "").startswith("multipart/"):
@@ -469,7 +469,34 @@ def mail_attachments(inventory):
                     "mime_type": str(item.get("mime_type") or "application/octet-stream")[:120],
                     "size_bytes": item.get("size_bytes") if type(item.get("size_bytes")) is int else None,
                     "attachment_id": item.get("attachment_id") if isinstance(item.get("attachment_id"), str) else None})
-    return out[:12]
+    return out[:30]
+
+
+def gmail_attachment_fetcher(gmail_store, *, _service_factory=None, _credentials_factory=None, _request_factory=None):
+    """fetch(message_id, attachment_id) -> bytes over the verified read-only hamle@ Gmail path
+    (client mails and the team's request mails; v11_attachments reads the bytes)."""
+    def fetch(message_id, attachment_id):
+        _need(isinstance(message_id, str) and HEX.fullmatch(message_id) and isinstance(attachment_id, str)
+              and re.fullmatch(r"[A-Za-z0-9_-]{1,4096}", attachment_id), "attachment_id_invalid")
+        helper, reader, _, _ = provider._modules()
+        service_factory, request_factory = _service_factory or provider._gmail_service, _request_factory
+        auth_session = None
+        with reader._quiet_call():
+            try:
+                if request_factory is None:
+                    auth_session = provider._session()
+                    request_factory = lambda: provider._GoogleRequest(auth_session, gmail=True)
+                with helper.verified_gmail(gmail_store, service_factory, _credentials_factory,
+                                           request_factory) as (service, _):
+                    row = service.users().messages().attachments().get(
+                        userId="me", messageId=message_id, id=attachment_id).execute(num_retries=0)
+            finally:
+                if auth_session is not None:
+                    auth_session.close()
+        data = row.get("data") if isinstance(row, dict) else None
+        _need(isinstance(data, str) and re.fullmatch(r"[A-Za-z0-9_-]*={0,2}", data), "attachment_data_invalid")
+        return base64.urlsafe_b64decode(data + "=" * (-len(data) % 4))
+    return fetch
 
 
 class ChainMailReader:

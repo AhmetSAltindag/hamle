@@ -1024,21 +1024,8 @@ class ClientWatch:
 
     def _attachments(self, source):
         """Every attachment of the client's mail, fetched and turned into model input (v11_attachments)."""
-        from v11_attachments import read_files
-        files = []
-        for a in source.get("attachments") or []:
-            meta = {"filename": a.get("filename"), "content_type": a.get("mime_type")}
-            if self.fetch_attachment is None or not a.get("attachment_id"):
-                files.append((dict(meta, reason="ek mailin içinden alınamadı"), None))
-                continue
-            if isinstance(a.get("size_bytes"), int) and a["size_bytes"] > 20 * 1024 * 1024:
-                files.append((dict(meta, reason=f"dosya çok büyük ({a['size_bytes'] / 1048576:.1f} MB)"), None))
-                continue
-            try:
-                files.append((meta, self.fetch_attachment(source["message_id"], a["attachment_id"])))
-            except Exception as exc:
-                files.append((dict(meta, reason="indirilemedi (" + _code(exc) + ")"), None))
-        out = read_files(files)
+        from v11_attachments import mail_files
+        out = mail_files(source, self.fetch_attachment)
         return dict(source, attachment_status=out["status"]), out["blocks"]
 
     def _plan(self, draft, source, sender):
@@ -1443,36 +1430,6 @@ def client_mail_reader(gmail_store, book, cfg, **factories):
                             newer_than_days=cfg["newer_than_days"], **factories)
 
 
-def mail_attachment_fetcher(gmail_store, *, _service_factory=None, _credentials_factory=None, _request_factory=None):
-    """fetch(message_id, attachment_id) -> bytes over the verified read-only hamle@ Gmail path."""
-    import cloud_providers as provider
-    from v11_chain_mail import HEX
-
-    def fetch(message_id, attachment_id):
-        _need(isinstance(message_id, str) and HEX.fullmatch(message_id) and isinstance(attachment_id, str)
-              and re.fullmatch(r"[A-Za-z0-9_-]{1,4096}", attachment_id), "attachment_id_invalid")
-        helper, reader, _, _ = provider._modules()
-        service_factory, request_factory = _service_factory or provider._gmail_service, _request_factory
-        auth_session = None
-        with reader._quiet_call():
-            try:
-                if request_factory is None:
-                    auth_session = provider._session()
-                    request_factory = lambda: provider._GoogleRequest(auth_session, gmail=True)
-                with helper.verified_gmail(gmail_store, service_factory, _credentials_factory,
-                                           request_factory) as (service, _):
-                    row = service.users().messages().attachments().get(
-                        userId="me", messageId=message_id, id=attachment_id).execute(num_retries=0)
-            finally:
-                if auth_session is not None:
-                    auth_session.close()
-        data = row.get("data") if isinstance(row, dict) else None
-        _need(isinstance(data, str) and re.fullmatch(r"[A-Za-z0-9_-]*={0,2}", data), "attachment_data_invalid")
-        import base64
-        return base64.urlsafe_b64decode(data + "=" * (-len(data) % 4))
-    return fetch
-
-
 def shadow_mail_reader(gmail_store, cfg, **factories):
     """'Gölge:' forwards from the people in cfg['shadow_from'] (same verified Gmail read path)."""
     from v11_chain_mail import ChainMailReader
@@ -1497,7 +1454,7 @@ def run_worker_client_watch(ops, secrets, *, clock=None, config=None, started_at
     import cloud_providers as provider
     from v11_chain import BasecampCommentWriter
     from v11_chain_live import ChainCommentWriter, _memo, load_catalog
-    from v11_chain_mail import gmail_token_context
+    from v11_chain_mail import gmail_attachment_fetcher, gmail_token_context
     from v11_daily_digest import DigestMailWriter, load_brand_cards
     clock = clock or (lambda: datetime.now(timezone.utc))
     try:
@@ -1549,7 +1506,7 @@ def run_worker_client_watch(ops, secrets, *, clock=None, config=None, started_at
             mail_writer=DigestMailWriter(token_context=gmail_token_context(secrets), session_factory=provider._session),
             started_at=started_at, reply_writer=reply_writer, basecamp_get=basecamp_get, jobs_factory=jobs_factory,
             mentions_factory=mentions_factory, brands=brand_index(catalog, load_brand_cards()),
-            attachments=mail_attachment_fetcher(provider.GmailSecretStore(secrets)),
+            attachments=gmail_attachment_fetcher(provider.GmailSecretStore(secrets)),
             shadow_reader=(shadow_mail_reader(provider.GmailSecretStore(secrets), cfg) if cfg.get("shadow_from")
                            else None))
         try:

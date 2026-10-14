@@ -206,7 +206,8 @@ def build_live_deps(*, ops, ops_generation, queue, queue_generation, secrets, ca
     import basecamp_cloud_auth
     from v11_basecamp_reader import SessionGet
     from v11_brand_task import BrandTaskWriter
-    from v11_chain_mail import ChainMailReader, GmailThreadReplyWriter, gmail_token_context
+    from v11_attachments import mail_files
+    from v11_chain_mail import ChainMailReader, GmailThreadReplyWriter, gmail_attachment_fetcher, gmail_token_context
     from v11_chain_models import MODEL_RESERVATION, ChainModels, ModelGate, internal_cap_microdollars
     from v11_chain_quality import BasecampAttachmentFetcher, ChainQualityBridge
     from v11_chain_authority import ChainWorkAuthority, enabled_policy
@@ -230,9 +231,12 @@ def build_live_deps(*, ops, ops_generation, queue, queue_generation, secrets, ca
                          gate=ModelGate(ledger=ops, cache=queue, generation=ops_generation,
                                         cap_microdollars=internal_cap_microdollars(catalog)))
     session = provider._session()
+    reader = ChainMailReader(gmail_store, catalog)
+    reader.keep_attachments = True  # Ahmet 14 Oct: a request mail is read with every file in it
+    fetch = gmail_attachment_fetcher(gmail_store)
     return ChainDeps(
         queue=queue, catalog=catalog, clock=clock,
-        mail_reader=ChainMailReader(gmail_store, catalog),
+        mail_reader=reader, attachments=lambda source: mail_files(source, fetch),
         interpreter=models.interpreter, classifier=models.classifier, answerer=models.answerer,
         assessor=quality.assess, approval_reader=quality.approval_reader, delivery_bridge=quality.bridge,
         task_writer_factory=lambda cat, st: BrandTaskWriter(cat, st, token_provider=token),

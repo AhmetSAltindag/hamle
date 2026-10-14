@@ -201,6 +201,26 @@ def read_files(files):
     return {"blocks": blocks, "status": status}
 
 
+def mail_files(source, fetch):
+    """Every attachment the mail reader listed for this mail (source['attachments']), fetched with
+    fetch(message_id, attachment_id) -> bytes and read. Client mails and the team's request mails share it."""
+    files = []
+    for a in source.get("attachments") or []:
+        meta = {"filename": a.get("filename"), "content_type": a.get("mime_type")}
+        if fetch is None or not a.get("attachment_id"):
+            files.append((dict(meta, reason="ek mailin içinden alınamadı"), None))
+            continue
+        if isinstance(a.get("size_bytes"), int) and a["size_bytes"] > MAX_FILE_BYTES:
+            files.append((dict(meta, reason=f"dosya çok büyük ({a['size_bytes'] / 1048576:.1f} MB)"), None))
+            continue
+        try:
+            files.append((meta, fetch(source["message_id"], a["attachment_id"])))
+        except Exception as exc:
+            code = re.sub(r"[^A-Za-z0-9_.:@-]", "_", str(getattr(exc, "code", None) or type(exc).__name__))[:120]
+            files.append((dict(meta, reason="indirilemedi (" + code + ")"), None))
+    return read_files(files)
+
+
 def unread(status, described):
     """Names the rule stops on: files not read, plus read files the model did not describe."""
     said = {str(d.get("name") or "").strip().casefold() for d in described or [] if isinstance(d, dict)

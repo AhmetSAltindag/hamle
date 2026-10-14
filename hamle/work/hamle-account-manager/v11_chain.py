@@ -135,6 +135,16 @@ def interpreter_text(source, rec):
     return "\n\n".join(parts)
 
 
+def file_line(f, team=True):
+    """One attachment as the team note (team) or the requester's confirmation mail says it."""
+    if not f.get("read"):
+        why = f.get("reason") or "bilinmiyor"
+        return f"OKUNAMADI ({why})" if team else f"okuyamadım ({why}); ekip dosyayı mailden açıp kontrol edecek"
+    if f.get("what"):
+        return f["what"]
+    return "okundu ama Hamle ne olduğunu yazmadı" if team else "okundu"
+
+
 DEFAULT_FORMATS = {"graphic": ["image/jpeg"], "animation": ["video/mp4"], "video": ["video/mp4"], "text": ["text/plain"]}
 FORMAT_LABELS = {"image/jpeg": "JPG", "image/png": "PNG", "application/pdf": "PDF", "video/mp4": "MP4",
                  "text/plain": "metin"}
@@ -266,6 +276,7 @@ class ChainDeps:
     authorize(action_kind, payload) -> True only after fresh stop/To-CC/budget checks
     budget_ok() -> False skips every model call for this tick
     intake_authority(view, context) -> optional; derives send authority right after the task exists
+    attachments(source) -> optional {'status', 'blocks'} (v11_attachments.mail_files): the request mail's files
     clock() -> timezone-aware datetime
     """
     REQUIRED = ("queue", "catalog", "clock", "mail_reader", "interpreter", "classifier", "answerer",
@@ -280,6 +291,7 @@ class ChainDeps:
         kw.setdefault("worker_id", "hamle-chain")
         kw.setdefault("stage_event_actor_id", None)
         kw.setdefault("intake_authority", None)
+        kw.setdefault("attachments", None)
         self.__dict__.update(kw)
 
 
@@ -547,19 +559,70 @@ class Chain:
                  "same_thread": r.get("thread_id") == work["thread_id"]}
                 for r in rows if r["work_id"] != work["work_id"] and r.get("title")][:20]
 
+    def _files(self, source):
+        """The request mail's attachments (Ahmet 14 Oct: Hamle reads every file, no exceptions):
+        (status, blocks); a file that cannot be read is named with why, never skipped."""
+        listed = source.get("attachments")
+        if listed is None:
+            return ([{"name": "(mailin ekleri)", "read": False, "reason": "ekleri listeleyemedim"}]
+                    if source.get("has_attachments") else []), []
+        if not listed:
+            return [], []
+        names = [{"name": str(a.get("filename") or "(adsız ek)")[:255], "type": str(a.get("mime_type") or "")[:120],
+                  "read": False} for a in listed if isinstance(a, dict)]
+        if self.d.attachments is None:
+            return [dict(r, reason="ek okuyucu bağlı değil") for r in names], []
+        try:
+            out = self.d.attachments(source)
+            _need(isinstance(out, dict) and isinstance(out.get("status"), list), "attachments_result_invalid")
+        except Exception as exc:
+            code = re.sub(r"[^A-Za-z0-9_.:-]", "_", str(getattr(exc, "code", None) or type(exc).__name__))[:80]
+            return [dict(r, reason=f"ekleri okuyamadım ({code})") for r in names], []
+        return out["status"], list(out.get("blocks") or [])
+
+    @staticmethod
+    def _file_notes(status, described):
+        """What Hamle keeps per file on the record: read with what it is, or not read with why."""
+        what = {str(d.get("name") or "").strip().casefold(): str(d.get("what") or "").strip()[:300]
+                for d in described or [] if isinstance(d, dict)}
+        out = []
+        for row in status[:30]:
+            name = str(row.get("name") or "(adsız ek)")[:255]
+            if not row.get("read"):
+                out.append({"name": name, "read": False, "reason": str(row.get("reason") or "bilinmiyor")[:200]})
+            else:
+                out.append({"name": name, "read": True, "what": what.get(name.strip().casefold()) or None})
+        return out
+
     def _on_mail(self, claim, work, rec, source):
         if rec["status"] not in ("new", "awaiting_clarification"):
             # Follow-up mail on a running work: brief changes need amend_brief + human review.
             if rec.get("task_id"):
-                body = self._tag(self.managers, "Bu iş zincirine yeni bir mail geldi. Brief değişikliği olabilir; "
-                                 "lütfen inceleyin (Hamle brief'i kendiliğinden değiştirmez).")
+                text = ("Bu iş zincirine yeni bir mail geldi. Brief değişikliği olabilir; "
+                        "lütfen inceleyin (Hamle brief'i kendiliğinden değiştirmez).")
+                files = [str(a.get("filename") or "(adsız ek)")[:120] for a in source.get("attachments") or []
+                         if isinstance(a, dict)]
+                if files:
+                    text += " Yeni mailde ek var: " + ", ".join(files[:12]) + "."
+                body = self._tag(self.managers, text)
                 if self._comment(claim, work, rec, "followup-mail", body, self.managers) is None:
                     return None
             return "no_action", "followup-mail-flagged"
         past = self._past_works(work)
-        result = self._model(self.d.interpreter, interpreter_text(source, rec),
-                             {"subject": source.get("subject"), "brand_id": work["brand_id"], "past_works": past,
-                              "status": rec["status"]}) or {}
+        status, blocks = self._files(source)
+        context = {"subject": source.get("subject"), "brand_id": work["brand_id"], "past_works": past,
+                   "status": rec["status"]}
+        if status:
+            context.update(attachments=status, blocks=blocks)
+        earlier = [a for a in rec.get("attachments") or [] if a.get("what")]
+        if earlier:
+            context["earlier_attachments"] = earlier
+        result = self._model(self.d.interpreter, interpreter_text(source, rec), context) or {}
+        if status:
+            fresh = self._file_notes(result.get("attachment_status") or status, result.get("attachments_read"))
+            kept = {a["name"]: a for a in rec.get("attachments") or []}
+            kept.update({a["name"]: a for a in fresh})
+            rec["attachments"] = list(kept.values())[:30]
         requirements = copy.deepcopy(result.get("requirements") or {})
         chain = self.catalog.get("chain", {})
         requirements.setdefault("brand_id", self.catalog["brand_id"])
@@ -650,7 +713,7 @@ class Chain:
             self._save("chain-", rec)
         work = self.q.get_work(work["work_id"])
         note = self._context_note(rec, past, result.get("follow_ups"), result.get("context_notes"),
-                                  rec.get("open_points"))
+                                  rec.get("open_points"), rec.get("attachments"))
         if routing_note:
             note = (self._tag([mention], routing_note) if mention else routing_note) + "\n\n" + note
         if self._comment(claim, work, rec, "context-note", note, [mention] if mention else []) is None:
@@ -725,6 +788,10 @@ class Chain:
         if brief.get("deadline"):
             lines.append("Teslim: " + line(brief["deadline"], 120))
         lines += ["Görev: " + link]
+        files = rec.get("attachments") or []
+        if files:
+            lines += ["", "Eklerin:"]
+            lines += ["- " + line(f["name"], 120) + ": " + line(file_line(f, team=False), 300) for f in files[:12]]
         notes = list(rec.get("assumptions") or [])  # model questions go to the team note, not the requester
         if notes:
             lines += ["", "Netleşecekler (ekip tamamlayacak, farklıysa bu maile yazman yeterli):"]
@@ -775,8 +842,15 @@ class Chain:
         return work, (f"Hamle marka yönlendirmesi: talep {name} markası için; {reason}. "
                       "İş iç 'Hamle İşleri' listesinde açıldı."), mention
 
-    def _context_note(self, rec, past, follow_ups, context_notes=None, open_points=None):
+    def _context_note(self, rec, past, follow_ups, context_notes=None, open_points=None, files=None):
         lines = ["Hamle iç bağlam notu — yalnız ekip içi, müşteriye/requester'a gönderilmez."]
+        if files:
+            lines.append("Talep mailindeki ekler (Hamle hepsini açtı):")
+            lines += ["- " + f["name"] + ": " + file_line(f) for f in files]
+            missed = [f["name"] for f in files if not f.get("read") or not f.get("what")]
+            if missed:
+                lines.append("⚠️ Hamle bu ekleri anlayamadı, lütfen açıp brief'le birlikte kontrol edin: "
+                             + ", ".join(missed[:12]))
         notes = [str(n)[:300] for n in (context_notes or []) if isinstance(n, str) and n.strip()][:5]
         if notes:
             lines.append("Talepten çıkan iç notlar (model önerisi):")
