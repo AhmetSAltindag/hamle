@@ -316,7 +316,7 @@ class Core(TeamsBase):
         self.assertEqual({i["title"] for i in bc["items"]}, {"WAT story", "Rabam reels", "WAT kampanya"})
         self.assertEqual([j["title"] for j in request["core"]["jobs"]], ["Standartlar Günü postu"])
         self.assertEqual(request["core"]["digest"]["ozu"]["risk"]["title"], "Rabam reels")
-        self.assertEqual([m["text"] for m in request["teams_elsewhere"]], ["Akşam toplantısı 5'te."])
+        self.assertEqual(request["teams_elsewhere"], [])  # other chats never leak into this one (Heads -> ALL TEAM)
         self.post(desk, self.activity("Bir daha?", mention=True))
         self.assertEqual(reader.calls, 1)  # cached for 15 minutes
 
