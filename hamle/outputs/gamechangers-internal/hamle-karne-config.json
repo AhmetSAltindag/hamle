@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "kind": "hamle_karne_config",
+  "enabled": true,
+  "decision_ref": "Ahmet in the project thread 2026-10-15 20:53Z: Hamle's own monthly karne approved ('patronlar Hamle'ye bayılacak'); first-reply time, first-pass approval, promises, team hours saved and Hamle's own cost.",
+  "recipients": [
+    "ahmet@gamechangers.com.tr",
+    "cansu@gamechangers.com.tr"
+  ],
+  "timezone": "Europe/Istanbul",
+  "window": {
+    "start": "10:30",
+    "end": "12:30"
+  },
+  "minutes_saved": {
+    "client_reply_auto": 15,
+    "client_reply_approved": 10,
+    "client_job_opened": 15,
+    "delivery_checked": 20,
+    "daily_digest": 30,
+    "weekly_summary": 60,
+    "monthly_report": 90,
+    "digital_karne": 90,
+    "client_summary": 10,
+    "teams_answer": 5
+  },
+  "rules": "recipients: agency addresses only (the daily digest's rule; any other domain refuses the karne). minutes_saved: the assumed team minutes one Hamle action replaces; the mail labels the total 'tahmini' and shows this table. Numbers are computed in code from the operations store; no model call. The image reads work/hamle-account-manager/chain-profile/hamle-karne-config.json, so a rebuild (package_chain_source.py) is needed after editing."
+}

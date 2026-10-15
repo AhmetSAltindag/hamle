@@ -1174,7 +1174,10 @@ class JobDesk:
             out["asked"] += 1
             return "asked"
         score = result["score"]
-        self._set(job["key"], score=score, review=result)
+        # Hamle karnesi: every scoring is kept (first-pass rate); `revisions` resets when the client reopens
+        scores = (list(job.get("scores") or []) + [{"at": self.watch.clock().timestamp(), "score": score,
+                                                    "round": int(job.get("revisions") or 0)}])[-20:]
+        self._set(job["key"], score=score, review=result, scores=scores)
         job = self._get(job["key"])
         if score >= self.s["send_min_score"]:
             self._set(job["key"], deliver_pending="auto")
@@ -1186,7 +1189,8 @@ class JobDesk:
             return "asked"
         if int(job.get("revisions") or 0) < self.s["max_revisions"]:
             n = int(job.get("revisions") or 0) + 1
-            self._set(job["key"], state="open", revisions=n)
+            self._set(job["key"], state="open", revisions=n,
+                      revision_rounds=int(job.get("revision_rounds") or 0) + 1)  # lifetime, never reset
             lines = [f"🔴 Puan: {score}/100 (revize {n}/{self.s['max_revisions']}). Briefle karşılaştırdım:",
                      result["designer_note"]]
             if result["missing"]:
