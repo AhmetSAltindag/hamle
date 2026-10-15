@@ -75,12 +75,13 @@ Cloud Run servisi (taslak; deploy Ahmet'in GO'su ile, bu dosya hiçbir şeyi ça
     ad hamle-teams · bölge europe-west1 · Hamle çalışma servis hesabı
     komut: gunicorn --bind :8080 --workers 1 --threads 4 'teams_service:create_app()'
     --min-instances 1 --max-instances 1 --no-cpu-throttling (cevaplar HTTP 200'den sonra arka planda)
-    --allow-unauthenticated (Bot Framework Google kimliği taşımaz; kimlik JWT ile uygulamada doğrulanır)
+    --no-invoker-iam-check (Bot Framework Google kimliği taşımaz; kimlik JWT ile uygulamada doğrulanır;
+    kuruluşun alan adı kısıtı allUsers vermeye izin vermediği için --allow-unauthenticated yerine bu)
     ortam: HAMLE_ALLOW_FIRESTORE_OPERATIONS=yes, HAMLE_PROJECT_ID=gamechangers-hamle,
            HAMLE_FIRESTORE_DATABASE=hamle-operations
 - Gizliler (yalnız adlar, Secret Manager'dan uygulama okur): hamle-teams-bot-secret (yeni),
   hamle-anthropic-api-key, hamle-basecamp-credential. Servis hesabının bu üçüne erişimi olmalı.
-- Sağlık: GET /healthz. Uç: POST /api/messages (Azure Bot messaging endpoint'i).
+- Sağlık: GET /health (Cloud Run /healthz yolunu kendine ayırır). Uç: POST /api/messages (Azure Bot messaging endpoint'i).
 - Açma sırası: servis -> Azure Bot endpoint -> client-watch-config.json teams: app_id, tenant_id,
   conversations doldurulur, enabled=true yalnız Ahmet'in sözüyle -> imaj yeniden paketlenir.
   enabled=false iken servis 503 teams_disabled döner ve hiçbir şey okumaz.

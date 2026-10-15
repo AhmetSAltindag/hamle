@@ -420,7 +420,7 @@ class Service(TeamsBase):
         import teams_service
         desk = self.desk()
         app = teams_service.create_app(lambda run_later: desk)
-        self.assertEqual(self.call(app, "GET", "/healthz")[0], "200 OK")
+        self.assertEqual(self.call(app, "GET", "/health")[0], "200 OK")
         self.assertEqual(self.call(app, "GET", "/api/messages")[0], "405 Method Not Allowed")
         status, body = self.call(app, "POST", "/api/messages", json.dumps(self.activity()).encode(),
                                  {"Authorization": jwt(self.now.timestamp())})
