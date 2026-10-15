@@ -147,6 +147,11 @@ def windows(days, size):
 
 
 # ------------------------------------------------------------------ Basecamp (GET only)
+def reader_limits(backfill_from):
+    """A backfill reaches 90 days back in a busy project (WAT): more pages than the daily run's 12."""
+    return {"max_pages": 40, "max_reads": 1000} if backfill_from else {}
+
+
 class BasecampMemoryReader(BasecampDigestReader):
     """One project's recently touched to-dos / comments from /projects/recordings.json, newest update first.
 
@@ -804,7 +809,7 @@ def run_worker_brand_memory(ops, secrets, *, clock=None, backfill_from=None):
         model = None  # windows with raw material stay open for a later run
     try:
         return run_brand_memory(ops, catalog=catalog, basecamp=BasecampMemoryReader(catalog["basecamp"]["account_id"],
-                                                                                   get=get),
+                                                                                   get=get, **reader_limits(backfill_from)),
                                 model=model, clock=clock, mail=mail, book=book, backfill_from=backfill_from)
     finally:
         session.close()
