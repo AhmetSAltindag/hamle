@@ -517,7 +517,8 @@ OK_STATUSES = ("stopped", "review_required", "already_recorded", "read_verified"
                "slot_already_claimed", "no_new_work", "work_status_read_verified", "chain_tick_completed", "digest_sent",
                "credential_review_ready", "reconciled_not_sent", "budget_expiry_extended", "already_current",
                "research_probe_ok", "model_actual_settled", "billed_total_settled", "nb_tracking_completed",
-               "digital_karne_completed", "digital_karne_partial", "digital_karne_preview")
+               "digital_karne_completed", "digital_karne_partial", "digital_karne_preview",
+               "brand_memory_completed", "brand_memory_partial")
 
 
 def main(argv=None):
@@ -528,7 +529,7 @@ def main(argv=None):
                                            "chain_tick", "daily_digest", "nb_open", "basecamp_credential_review",
                                            "reconcile_model_holds", "extend_authorization",
                                            "research_probe", "settle_model_actual", "settle_billed_total",
-                                           "digital_karne"), required=True)
+                                           "digital_karne", "brand_memory"), required=True)
     parser.add_argument("--proposal-id")
     parser.add_argument("--work-id")
     parser.add_argument("--failure-evidence-sha256")
@@ -555,6 +556,8 @@ def main(argv=None):
     # one-off karne of a brand we are going to meet (needs --karne-preview; no write)
     parser.add_argument("--karne-prospect")
     parser.add_argument("--karne-site")
+    # brand_memory backfill: the first Istanbul day to fill (at most 90 days back); resumable run by run
+    parser.add_argument("--memory-from")
     args = parser.parse_args(argv)
     backend = secrets = None
     try:
@@ -588,6 +591,9 @@ def main(argv=None):
                                                        and 2 <= len(args.karne_prospect.strip()) <= 80))
                   and (args.karne_site is None or (args.karne_prospect is not None and len(args.karne_site) <= 300))),
                  "karne_preview_arguments_invalid")
+        _require(args.memory_from is None or (args.mode == "brand_memory"
+                                              and re.fullmatch(r"\d{4}-\d{2}-\d{2}", args.memory_from) is not None),
+                 "memory_from_requires_brand_memory")
         _require(os.environ.get("HAMLE_ALLOW_FIRESTORE_OPERATIONS") == "yes", "cloud_opt_in_required")
         _require(os.environ.get("HAMLE_PROJECT_ID") == "gamechangers-hamle" and
                  os.environ.get("HAMLE_FIRESTORE_DATABASE") == "hamle-operations", "cloud_scope_invalid")
@@ -603,7 +609,7 @@ def main(argv=None):
             from basecamp_cloud_auth import access_token
             token = access_token(secrets, claim_refresh=store.claim_credential_refresh)
             return providers.verify_basecamp_internal(token)
-        if args.mode in ("chain_tick", "daily_digest", "research_probe", "digital_karne"):
+        if args.mode in ("chain_tick", "daily_digest", "research_probe", "digital_karne", "brand_memory"):
             # Monthly budget renewal + ledger compaction before any budget gate reads the totals.
             try:
                 roll = store.roll_budget_period()
@@ -681,6 +687,11 @@ def main(argv=None):
             from v11_digital_karne import run_worker_digital_karne
             result = run_worker_digital_karne(store, secrets, preview=args.karne_preview, only=args.karne_brand,
                                               prospect=args.karne_prospect, site=args.karne_site)
+        elif args.mode == "brand_memory":
+            # Marka hafızası (Ahmet 2026-10-15): per-brand events + profile in the operations store; Basecamp and
+            # Gmail read only, one Haiku call per brand-day with new material. --memory-from: backfill.
+            from v11_brand_memory import run_worker_brand_memory
+            result = run_worker_brand_memory(store, secrets, backfill_from=args.memory_from)
         elif args.mode == "daily_digest":
             # Non-default: one internal team digest per Istanbul weekday (v11_daily_digest).
             from v11_daily_digest import run_worker_daily_digest

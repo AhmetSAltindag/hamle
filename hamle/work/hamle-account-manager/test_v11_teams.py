@@ -534,5 +534,23 @@ class Service(TeamsBase):
         self.assertEqual((status, body["reason"]), ("503 Service Unavailable", "teams_disabled"))
 
 
+
+class NamedBrandTest(unittest.TestCase):
+    BRANDS = {"wat_mobilite": {"name": "WAT Mobilite"}, "rabam": {"name": "Rabam"}, "ya_da": {"name": "ya da Multicosmetics"},
+              "altinmarka": {"name": "Altınmarka"}, "gamechangers": {"name": "Gamechangers"}, "new_biz": {"name": "New Biz"}}
+
+    def test_one_brand(self):
+        from v11_teams import named_brand
+        self.assertEqual(named_brand("WAT'ta bu hafta ne oldu?", self.BRANDS), "wat_mobilite")
+        self.assertEqual(named_brand("ALTINMARKA için son durum", self.BRANDS), "altinmarka")
+        self.assertEqual(named_brand("Multicosmetics tarafı ne istedi?", self.BRANDS), "ya_da")
+
+    def test_none_or_ambiguous(self):
+        from v11_teams import named_brand
+        self.assertIsNone(named_brand("yarın ya da cuma bakalım", self.BRANDS))
+        self.assertIsNone(named_brand("Rabam ve WAT özetini ver", self.BRANDS))
+        self.assertIsNone(named_brand("Gamechangers sitesi ne durumda", self.BRANDS))
+        self.assertIsNone(named_brand("watch listesine bak", self.BRANDS))
+
 if __name__ == "__main__":
     unittest.main()
