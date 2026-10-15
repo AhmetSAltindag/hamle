@@ -67,7 +67,7 @@ def review(score, **kw):
     out = {"score": score, "summary": "4:5 post, Bornova mesajı ve logo var.",
            "missing": [] if score >= 90 else ["Story yok"],
            "designer_note": "Teşekkürler!" if score >= 90 else "Story eksik; briefte post ve story isteniyor.",
-           "client_mail": "Merhaba Ayşe,\n\nBornova postumuz ekte. Görüşlerinizi bekliyoruz.\n\nSevgiler,\nHamle\nGamechangers"}
+           "client_mail": "Merhaba Ayşe,\n\nBornova postumuz ekte. Görüşlerinizi bekliyoruz.\n\nSevgiler,\nHamle AI\nGamechangers"}
     out.update(kw)
     return out
 
@@ -595,11 +595,11 @@ class Parts(unittest.TestCase):
     def test_client_mail_falls_back_when_the_model_text_is_not_clean(self):
         job = {"client_name": "Ayşe Yılmaz", "title_core": "Bornova postu"}
         self.assertEqual(cj.client_mail(review(95), job), review(95)["client_mail"])
-        for bad in ("Selam,\nekte.", "Merhaba,\nBasecamp'e yükledik.\n\nSevgiler,\nHamle\nGamechangers",
-                    "Merhaba,\n94/100 puan aldı.\n\nSevgiler,\nHamle\nGamechangers"):
+        for bad in ("Selam,\nekte.", "Merhaba,\nBasecamp'e yükledik.\n\nSevgiler,\nHamle AI\nGamechangers",
+                    "Merhaba,\n94/100 puan aldı.\n\nSevgiler,\nHamle AI\nGamechangers"):
             self.assertEqual(cj.client_mail({"client_mail": bad}, job),
                              "Merhaba Ayşe,\n\nBornova postu için hazırladığımız çalışmayı ekte paylaşıyoruz. "
-                             "Görüşlerinizi bekliyoruz.\n\nSevgiler,\nHamle\nGamechangers")
+                             "Görüşlerinizi bekliyoruz.\n\nSevgiler,\nHamle AI\nGamechangers")
 
     def test_files_for_the_model(self):
         from PIL import Image

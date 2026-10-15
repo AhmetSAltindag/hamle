@@ -40,7 +40,7 @@ from v11_work_queue import digest
 ROOT = Path(__file__).resolve().parents[2]
 RUBRIC_NAME = "gamechangers-internal-quality-rubric.json"
 CUSTOMER_BODY = ("Merhaba,\n\nİstediğiniz çalışma ektedir. Hamle iç teknik kalite kontrolünden geçmiştir.\n\n"
-                 "Teşekkürler,\nHamle")
+                 "Teşekkürler,\nHamle AI")
 IMAGE = ("image/png", "image/jpeg")
 KIND_MIMES = {"graphic": IMAGE, "text": ("application/pdf", "text/plain")}
 CRITERIA = ("file_format", "dimensions", "required_text", "brief_items")

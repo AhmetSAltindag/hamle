@@ -32,7 +32,7 @@ from datetime import datetime
 from autonomy_policy import HAMLE
 
 AUTO_CATEGORIES = ("request", "feedback_or_approval", "question", "information", "meeting")
-SIGNATURES = ("Sevgiler,\nHamle\nGamechangers", "Best,\nHamle\nGamechangers")
+SIGNATURES = ("Sevgiler,\nHamle AI\nGamechangers", "Best,\nHamle AI\nGamechangers")
 APPROVAL_WINDOW_SECONDS = 3 * 24 * 3600
 REPLY_FIELDS = {"brands", "auto_min_confidence", "auto_categories", "since", "max_sends_per_day", "approvers",
                 "owners", "sensitive_cc", "allow_questions", "new_threads_only"}
