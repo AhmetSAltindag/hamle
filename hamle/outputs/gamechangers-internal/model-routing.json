@@ -13,6 +13,7 @@
     "brand_memory": {"provider": "anthropic", "model": "claude-haiku-5-5", "effort": "low", "max_tokens": 8192, "timeout_seconds": 120},
     "teams_answer": {"provider": "anthropic", "model": "claude-haiku-5-5", "effort": "medium", "max_tokens": 8192, "timeout_seconds": 120},
     "weekly_summary": {"provider": "anthropic", "model": "claude-haiku-5-5", "effort": "low", "max_tokens": 4096, "timeout_seconds": 120},
+    "monthly_report": {"provider": "anthropic", "model": "claude-opus-5-5", "effort": "medium", "max_tokens": 6000, "timeout_seconds": 300},
     "trend_radar": {"provider": "anthropic", "model": "claude-opus-5-5", "effort": "medium", "max_tokens": 8000, "timeout_seconds": 480, "web_search": true},
     "monday_special_days": {"provider": "anthropic", "model": "claude-opus-5-5", "effort": "medium", "max_tokens": 8000, "timeout_seconds": 480, "web_search": true},
     "new_business_research": {"provider": "anthropic", "model": "claude-opus-5-5", "effort": "medium", "max_tokens": 8000, "timeout_seconds": 480, "web_search": true},
