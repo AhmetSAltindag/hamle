@@ -740,26 +740,9 @@ def run_worker_monthly_report(ops, secrets, *, clock=None, preview=False, only=N
     session = provider._session()
 
     def get(url):
-        r = None
-        try:
-            r = session.request("GET", url, headers={"Authorization": "Bearer " + provider._token(token()),
-                                                      "User-Agent": "Hamle Monthly Report (ahmet@gamechangers.com.tr)",
-                                                      "Accept": "application/json"},
-                                timeout=(5, 15), allow_redirects=False, stream=True)
-            _need(r.status_code == 200, "basecamp_read_rejected")
-            chunks, size = [], 0
-            for chunk in r.iter_content(chunk_size=16384):
-                size += len(chunk)
-                _need(size <= 1_048_576, "basecamp_page_too_large")
-                chunks.append(chunk)
-            return provider._json(b"".join(chunks)), dict(r.headers)
-        except (MonthlyReportError, dd.DigestError, bm.BrandMemoryError):
-            raise
-        except Exception:
-            raise MonthlyReportError("basecamp_read_failed") from None
-        finally:
-            if r is not None:
-                r.close()
+        from v11_brand_memory import basecamp_get
+        return basecamp_get(session, url, "Bearer " + provider._token(token()),
+                            "Hamle Monthly Report (ahmet@gamechangers.com.tr)", MonthlyReportError)
 
     def reader_factory():
         valid = dd.validate_config(config)
