@@ -83,6 +83,12 @@ CORE_TTL_SECONDS = 15 * 60
 CORE_MAX_ITEMS = 200               # the cached record must stay under the store's 60 KB record limit
 CORE_FOR_MODEL = 45
 CORE_JOBS_FOR_MODEL = 20
+CORE_MEMORY_EVENTS = 25            # v11_brand_memory: the brand's last 30 days, only in a brand's conversation
+CORE_MEMORY_MIN_EVENTS = 10        # kept before the open Basecamp items are trimmed
+# Brand memory in an agency chat: only when the message names exactly one brand. "ya da" alone is everyday Turkish.
+MEMORY_NAMES = {"wat_mobilite": ("wat mobilite", "wat"), "han_spaces": ("han spaces",),
+                "ya_da": ("ya da multicosmetics", "multicosmetics", "yada")}
+MEMORY_SKIP = ("gamechangers", "new_biz")
 ELSEWHERE_FOR_MODEL = 0  # off: a wide chat must not hear what was written in a narrower one (Heads -> ALL TEAM)
 MAX_REQUEST_BYTES = 30_000
 LEASE_SECONDS = 600
@@ -433,9 +439,24 @@ def teams_context(ops, brand_key=None, limit=30):
     return sorted(rows, key=lambda m: m.get("received_at") or 0)[-limit:]
 
 
+def named_brand(text, brands):
+    """The one brand a message names (whole words, Turkish-safe), else None; never Gamechangers or New Biz."""
+    from v11_brand_memory import _fold
+    folded = _fold(text)
+    hits = set()
+    for key, brand in brands.items():
+        if key in MEMORY_SKIP:
+            continue
+        for name in MEMORY_NAMES.get(key, (brand.get("name") or key,)):
+            if re.search(r"(?<!\w)" + re.escape(_fold(name)) + r"(?!\w)", folded):
+                hits.add(key)
+    return hits.pop() if len(hits) == 1 else None
+
+
 # ------------------------------------------------------------------ Hamle's core (read only)
 class CoreContext:
-    """What the rest of Hamle knows, for Teams answers: open Basecamp work, client mail jobs, the last digest özü.
+    """What the rest of Hamle knows, for Teams answers: open Basecamp work, client mail jobs, the last digest özü and,
+    in a brand's conversation, that brand's memory (v11_brand_memory: profile + the last 30 days' events).
 
     reader_factory() -> v11_daily_digest.BasecampDigestReader (GET-only, allowlisted paths). Its listing is cached
     in the operations store for CORE_TTL_SECONDS so a Teams answer usually costs no Basecamp reads. Nothing here
@@ -502,10 +523,16 @@ class CoreContext:
             return None
         return self.ops._run(read, allow_expired=True)
 
-    def __call__(self, today, project_id=None):
+    def brand_memory(self, today, brand_key):
+        from v11_brand_memory import brand_memory_context
+        return brand_memory_context(self.ops, brand_key, today, days=30, limit=CORE_MEMORY_EVENTS, detail=200)
+
+    def __call__(self, today, project_id=None, brand_key=None):
         out = {}
-        for name, fn in (("basecamp", lambda: self.basecamp(today)), ("jobs", self.jobs),
-                         ("digest", lambda: self.digest(today))):
+        parts = [("basecamp", lambda: self.basecamp(today)), ("jobs", self.jobs), ("digest", lambda: self.digest(today))]
+        if brand_key:
+            parts.append(("brand_memory", lambda: self.brand_memory(today, brand_key)))
+        for name, fn in parts:
             try:
                 out[name] = fn()
             except Exception as exc:
@@ -811,7 +838,8 @@ class TeamsDesk:
         if self.core is not None:
             pid = self.s["brands"][brand_key]["project_id"] if brand_key else None
             try:
-                request["core"] = self.core(local.date(), pid)
+                memory_key = brand_key or named_brand(msg["text"], self.s["brands"])
+                request["core"] = self.core(local.date(), pid, memory_key)
             except Exception as exc:
                 request["core"] = {"unavailable": _code(exc)}
             try:
@@ -829,9 +857,14 @@ class TeamsDesk:
             request["teams_elsewhere"].pop(0)
         while size() > MAX_REQUEST_BYTES and len(request["context"]) > 5:
             request["context"].pop(0)
+        memory = ((request.get("core") or {}).get("brand_memory") or {}).get("events")
+        while size() > MAX_REQUEST_BYTES and memory and len(memory) > CORE_MEMORY_MIN_EVENTS:
+            memory.pop(0)  # oldest first
         core_items = ((request.get("core") or {}).get("basecamp") or {}).get("items")
         while size() > MAX_REQUEST_BYTES and core_items:
             core_items.pop()
+        while size() > MAX_REQUEST_BYTES and memory:
+            memory.pop(0)
         while size() > MAX_REQUEST_BYTES and request["context"]:
             request["context"].pop(0)
         return request, {"link": link}
