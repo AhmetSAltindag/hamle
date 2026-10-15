@@ -701,6 +701,11 @@ def run_brand_memory(ops, *, catalog, basecamp, model, clock, mail=None, book=No
             report["windows"] += row["windows"]
         if stop:
             report["status"], report["reason"] = "brand_memory_partial", stop
+        else:
+            failed = sorted(b for b, r in report["brands"].items()
+                            if str(r.get("status") or "").startswith(("read_failed", "model_failed")))
+            if failed:  # their days stay open; say so instead of "completed"
+                report["status"], report["reason"] = "brand_memory_partial", "brands_failed:" + ",".join(failed)
         return report
     except Exception as exc:
         return dict(report, status="held", reason=_code(exc))
@@ -713,6 +718,48 @@ def run_brand_memory(ops, *, catalog, basecamp, model, clock, mail=None, book=No
 
 
 # ------------------------------------------------------------------ live wiring
+# ------------------------------------------------------------------ one Basecamp GET (shared by memory / weekly / monthly)
+RATE_LIMIT_TRIES = 4
+RATE_LIMIT_WAIT_MAX = 30
+
+
+def basecamp_get(session, url, authorization, agent, error, *, sleep=time.sleep):
+    """GET-only, no redirects, 1 MB page cap. 429: wait Retry-After (max 30 s) and try again, up to 4 tries.
+    Any other non-200 raises error('basecamp_http_<status>') so the reason shows which status it was."""
+    for attempt in range(RATE_LIMIT_TRIES):
+        r = None
+        try:
+            r = session.request("GET", url, headers={"Authorization": authorization, "User-Agent": agent,
+                                                      "Accept": "application/json"},
+                                timeout=(5, 15), allow_redirects=False, stream=True)
+            if r.status_code == 429 and attempt + 1 < RATE_LIMIT_TRIES:
+                try:
+                    wait = int(r.headers.get("Retry-After") or 10)
+                except (TypeError, ValueError):
+                    wait = 10
+                wait = min(max(wait, 1), RATE_LIMIT_WAIT_MAX)
+                r.close(); r = None
+                sleep(wait)
+                continue
+            if r.status_code != 200:
+                raise error("basecamp_rate_limited" if r.status_code == 429 else "basecamp_http_%d" % r.status_code)
+            chunks, size = [], 0
+            for chunk in r.iter_content(chunk_size=16384):
+                size += len(chunk)
+                if size > 1_048_576:
+                    raise error("basecamp_page_too_large")
+                chunks.append(chunk)
+            import cloud_providers as provider
+            return provider._json(b"".join(chunks)), dict(r.headers)
+        except error:
+            raise
+        except Exception:
+            raise error("basecamp_read_failed") from None
+        finally:
+            if r is not None:
+                r.close()
+
+
 def run_worker_brand_memory(ops, secrets, *, clock=None, backfill_from=None):
     """Entry for worker.py --mode brand_memory (existing credential loaders only; Basecamp and Gmail read only)."""
     import basecamp_cloud_auth
@@ -724,26 +771,8 @@ def run_worker_brand_memory(ops, secrets, *, clock=None, backfill_from=None):
     session = provider._session()
 
     def get(url):
-        r = None
-        try:
-            r = session.request("GET", url, headers={"Authorization": "Bearer " + provider._token(token()),
-                                                      "User-Agent": "Hamle Brand Memory (ahmet@gamechangers.com.tr)",
-                                                      "Accept": "application/json"},
-                                timeout=(5, 15), allow_redirects=False, stream=True)
-            _need(r.status_code == 200, "basecamp_read_rejected")
-            chunks, size = [], 0
-            for chunk in r.iter_content(chunk_size=16384):
-                size += len(chunk)
-                _need(size <= 1_048_576, "basecamp_page_too_large")
-                chunks.append(chunk)
-            return provider._json(b"".join(chunks)), dict(r.headers)
-        except BrandMemoryError:
-            raise
-        except Exception:
-            raise BrandMemoryError("basecamp_read_failed") from None
-        finally:
-            if r is not None:
-                r.close()
+        return basecamp_get(session, url, "Bearer " + provider._token(token()),
+                            "Hamle Brand Memory (ahmet@gamechangers.com.tr)", BrandMemoryError)
     book = mail = None
     try:
         from v11_client_watch import client_mail_reader, load_contacts, validate_contacts

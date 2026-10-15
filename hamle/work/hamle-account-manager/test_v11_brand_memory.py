@@ -1,4 +1,5 @@
 """Marka hafızası (Ahmet 2026-10-15): fakes only, no sockets, Basecamp, Gmail, Teams or models."""
+import unittest
 import copy
 import json
 from datetime import date, datetime, timedelta
@@ -374,3 +375,45 @@ class TeamsSeesMemory(TeamsBase):
                          (["Ekim takvimi onaylandı"], ["Kırmızı yok"]))
         self.post(desk, self.activity("Genel soru?", mention=True, conv=AGENCY_CHAT, kind="groupChat"))
         self.assertNotIn("brand_memory", json.loads(self.client.calls[1]["messages"][0]["content"])["core"])
+
+
+class BasecampGetTest(unittest.TestCase):
+    class Resp:
+        def __init__(self, status, body=b"[]", headers=None):
+            self.status_code, self.body, self.headers = status, body, headers or {}
+
+        def iter_content(self, chunk_size):
+            yield self.body
+
+        def close(self):
+            pass
+
+    class Session:
+        def __init__(self, *responses):
+            self.responses, self.calls = list(responses), 0
+
+        def request(self, *a, **k):
+            self.calls += 1
+            return self.responses.pop(0)
+
+    def test_rate_limit_waits_and_retries(self):
+        import v11_brand_memory as bm
+        waits = []
+        s = self.Session(self.Resp(429, headers={"Retry-After": "7"}), self.Resp(200, b"[1]"))
+        data, _ = bm.basecamp_get(s, "https://3.basecampapi.com/x", "Bearer t", "UA", bm.BrandMemoryError,
+                                  sleep=waits.append)
+        self.assertEqual((data, waits, s.calls), ([1], [7], 2))
+
+    def test_other_status_names_the_code(self):
+        import v11_brand_memory as bm
+        with self.assertRaises(bm.BrandMemoryError) as ctx:
+            bm.basecamp_get(self.Session(self.Resp(403)), "u", "Bearer t", "UA", bm.BrandMemoryError, sleep=lambda s: None)
+        self.assertIn("basecamp_http_403", str(ctx.exception.args) + str(getattr(ctx.exception, "code", "")))
+
+    def test_rate_limit_gives_up_after_four_tries(self):
+        import v11_brand_memory as bm
+        s = self.Session(*[self.Resp(429, headers={"Retry-After": "999"}) for _ in range(4)])
+        waits = []
+        with self.assertRaises(bm.BrandMemoryError):
+            bm.basecamp_get(s, "u", "Bearer t", "UA", bm.BrandMemoryError, sleep=waits.append)
+        self.assertEqual((s.calls, waits), (4, [30, 30, 30]))
