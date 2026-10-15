@@ -721,10 +721,17 @@ def run_brand_memory(ops, *, catalog, basecamp, model, clock, mail=None, book=No
 # ------------------------------------------------------------------ one Basecamp GET (shared by memory / weekly / monthly)
 RATE_LIMIT_TRIES = 4
 RATE_LIMIT_WAIT_MAX = 30
+MAX_PAGE_BYTES = 8 * 1_048_576  # WAT has pages over 1 MB (long HTML comments); paging still follows the Link header
+
+
+def url_kind(url):
+    """'recordings', 'todos', ... : which Basecamp endpoint a page came from (for the reason, never the full url)."""
+    path = urlsplit(url).path.rstrip("/")
+    return re.sub(r"[^a-z_]", "", path.rsplit("/", 1)[-1].split(".")[0].lower())[:30] or "page"
 
 
 def basecamp_get(session, url, authorization, agent, error, *, sleep=time.sleep):
-    """GET-only, no redirects, 1 MB page cap. 429: wait Retry-After (max 30 s) and try again, up to 4 tries.
+    """GET-only, no redirects, 8 MB page cap. 429: wait Retry-After (max 30 s) and try again, up to 4 tries.
     Any other non-200 raises error('basecamp_http_<status>') so the reason shows which status it was."""
     for attempt in range(RATE_LIMIT_TRIES):
         r = None
@@ -746,8 +753,8 @@ def basecamp_get(session, url, authorization, agent, error, *, sleep=time.sleep)
             chunks, size = [], 0
             for chunk in r.iter_content(chunk_size=16384):
                 size += len(chunk)
-                if size > 1_048_576:
-                    raise error("basecamp_page_too_large")
+                if size > MAX_PAGE_BYTES:
+                    raise error("basecamp_page_too_large:" + url_kind(url))
                 chunks.append(chunk)
             import cloud_providers as provider
             return provider._json(b"".join(chunks)), dict(r.headers)
