@@ -403,6 +403,14 @@ class TeamsSeesMemory(TeamsBase):
         self.assertNotIn("brand_memory", json.loads(self.client.calls[1]["messages"][0]["content"])["core"])
 
 
+class ReaderLimitsTest(unittest.TestCase):
+    def test_a_backfill_reads_further_back_than_the_daily_run(self):
+        self.assertEqual(bm.reader_limits(None), {})
+        self.assertEqual(bm.reader_limits("2026-07-18"), {"max_pages": 40, "max_reads": 1000})
+        r = bm.BasecampMemoryReader(1, get=None, **bm.reader_limits("2026-07-18"))
+        self.assertEqual((r.max_pages, r.max_reads), (40, 1000))
+
+
 class BasecampGetTest(unittest.TestCase):
     class Resp:
         def __init__(self, status, body=b"[]", headers=None):
