@@ -706,7 +706,7 @@ def main(argv=None):
             from v11_brand_memory import run_worker_brand_memory
             result = run_worker_brand_memory(store, secrets, backfill_from=args.memory_from)
         elif args.mode == "weekly_summary":
-            # Haftalık marka özeti (Ahmet 2026-10-15): Friday >= 17:30 Istanbul, one internal mail per ISO week to the
+            # Haftalık marka özeti (Ahmet 2026-10-15): Friday >= 14:00 Istanbul (Ahmet 15 Oct 19:19Z moved it from 17:30), one internal mail per ISO week to the
             # digest recipients; brand memory + Basecamp (GET) + client jobs, at most one Haiku call per brand.
             from v11_weekly_summary import run_worker_weekly_summary
             result = run_worker_weekly_summary(store, secrets, preview=args.summary_preview)

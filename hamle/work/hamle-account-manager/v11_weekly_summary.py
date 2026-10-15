@@ -1,7 +1,7 @@
 """Haftalık marka özeti (Ahmet 2026-10-15: "her hafta marka için kısa haftalık özet çıkartan").
 
 worker.py --mode weekly_summary (NON-default, no scheduler entry). Once per ISO week, at the first run on Friday
-at/after 17:30 Istanbul (WINDOW 17:30-18:30; any other day or time is a no-op), ONE internal plain-Turkish mail
+at/after 14:00 Istanbul (WINDOW 14:00-15:00; any other day or time is a no-op), ONE internal plain-Turkish mail
 (+ HTML twin) from Hamle to the daily digest's recipients (daily-digest-config.json: @gamechangers.com.tr only,
 never clients). Subject "Hamle AI: 16 Ekim Cuma Haftalık Marka Özeti". One section per catalog brand (brand_routes
 without 'gamechangers' and 'new_biz', the brand memory's 8 brands), 1-5 short lines: what happened, what was
@@ -44,7 +44,7 @@ ISTANBUL = ZoneInfo("Europe/Istanbul")
 PROMPT = Path(__file__).with_name("weekly_summary_prompt.txt")
 ROLE = "weekly_summary"
 WEEKDAY = 4                     # Friday
-WINDOW = ("17:30", "18:30")     # first run at/after 17:30 Istanbul; later is "too late" (no-op)
+WINDOW = ("14:00", "15:00")     # first run at/after 14:00 Istanbul; later is "too late" (no-op)
 KINDS = ("oldu", "teslim", "risk", "gelecek")
 ICONS = {"oldu": "📌", "teslim": "✅", "risk": "⚠️", "gelecek": "📅"}
 MAX_LINES = 5
@@ -52,7 +52,7 @@ MAX_INPUT_BYTES = 15_000        # model.MAX_INPUT_BYTES is 16 000
 CAPS = {"events": 12, "overdue": 6, "due_today": 4, "next_week": 6, "jobs": 5}
 REF = {"events": "e", "overdue": "g", "due_today": "b", "next_week": "h", "jobs": "i"}
 NOTHING_THIS_WEEK = "Bu hafta kayda geçen bir gelişme yok."
-FOOTER = ("Hamle AI Müşteri Temsilcisi · Gamechangers haftalık marka özeti · Her cuma 17:30 · "
+FOOTER = ("Hamle AI Müşteri Temsilcisi · Gamechangers haftalık marka özeti · Her cuma 14:00 · "
           "Hamle'nin gelişimi ve eğitimi için Basecamp ve Google Docs kullanımlarınız çok önemlidir.")
 URL_IN_TEXT = re.compile(r"\s*\(?https?://[^\s()]+\)?")
 OPEN_JOB_STATES = ("open", "delivered", "binding", "creating", "held")
@@ -426,7 +426,7 @@ def build_summary(ops, *, catalog, reader, model, day):
 
 # ------------------------------------------------------------------ run
 def run_weekly_summary(ops, *, config, catalog, reader_factory, writer, model, clock, preview=False):
-    """One team mail per ISO week (Friday >= 17:30 Istanbul), or a preview (no send, no summary record)."""
+    """One team mail per ISO week (Friday >= 14:00 Istanbul), or a preview (no send, no summary record)."""
     from runtime_authority import deadline_timestamp, start_timestamp
     claim = None
     try:

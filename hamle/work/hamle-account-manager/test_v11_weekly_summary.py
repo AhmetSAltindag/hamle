@@ -22,7 +22,7 @@ from v11_chain_live import load_catalog
 ACC, WAT, RABAM = 5898865, 40694338, 48639990
 API = f"https://3.basecampapi.com/{ACC}"
 APP = f"https://3.basecamp.com/{ACC}"
-FRI_1735 = datetime.fromisoformat("2026-10-16T17:35:00+03:00")
+FRI_1405 = datetime.fromisoformat("2026-10-16T14:05:00+03:00")
 TOKEN = "synthetic-placeholder-token-never-live"
 
 
@@ -79,7 +79,7 @@ class Base(unittest.TestCase):
         self.ops = OperationsStore(MemoryBackend(), clock=lambda: self.now)
         self.ops.initialize_control(); self.ops.initialize_budget(budget_snapshot())
         self.ops.resume_review_only("offline-test")
-        self.now = FRI_1735
+        self.now = FRI_1405
         self.catalog = load_catalog()
         self.bc, self.gmail, self.client = Basecamp(), Gmail(), FakeClient()
 
@@ -125,16 +125,16 @@ class Base(unittest.TestCase):
 
 
 class Window(Base):
-    def test_only_friday_from_1730_to_1830_istanbul_else_a_no_op(self):
-        for when in ("2026-10-15T17:35:00+03:00", "2026-10-16T17:29:00+03:00", "2026-10-16T18:31:00+03:00",
-                     "2026-10-17T17:35:00+03:00", "2026-10-16T15:35:00+00:00"):
+    def test_only_friday_from_1400_to_1500_istanbul_else_a_no_op(self):
+        for when in ("2026-10-15T14:05:00+03:00", "2026-10-16T13:59:00+03:00", "2026-10-16T15:01:00+03:00",
+                     "2026-10-17T14:05:00+03:00", "2026-10-16T12:05:00+00:00"):
             self.now = datetime.fromisoformat(when)
             r = self.go()
             self.assertEqual((r["status"], r["reason"], r["business_writes"]),
                              ("no_new_work", "outside_weekly_summary_window", 0), when)
         self.assertEqual((self.gmail.calls, self.bc.calls, self.client.calls), ([], [], []))
         self.assertFalse([k for k in self.ops.backend.data if k.startswith("weekly-summary-")])
-        self.assertTrue(ws.in_window(datetime.fromisoformat("2026-10-16T18:30:00+03:00")))
+        self.assertTrue(ws.in_window(datetime.fromisoformat("2026-10-16T15:00:00+03:00")))
         self.assertEqual(ws.week_key(date(2026, 10, 16)), "weekly-summary-202642")
         self.assertEqual(ws.week_key(date(2027, 1, 1)), "weekly-summary-202653")  # ISO year of the week
 
@@ -160,7 +160,7 @@ class Send(Base):
         self.assertTrue(text.split("\n")[3].startswith("WAT"))  # catalog order, digest label
         self.assertIn(f"⚠️ “Ekim post takvimi” 3 gündür gecikmiş @Berkay. · {APP}/buckets/{WAT}/todos/1", text)
         self.assertTrue(text.rstrip().endswith(ws.FOOTER))
-        self.assertIn("Her cuma 17:30", ws.FOOTER)
+        self.assertIn("Her cuma 14:00", ws.FOOTER)
         for name in ("Rabam", "BWI", "HAN Spaces", "ya da", "Altınmarka", "Bikaldi", "Fenerium"):
             self.assertIn(dd._upper_tr(name) + "\n- " + ws.NOTHING_THIS_WEEK, text, name)
         self.assertNotIn("GAMECHANGERS", text)
@@ -182,7 +182,7 @@ class Send(Base):
         self.assertEqual((row["state"], row["kind"], row["recipients"]), ("sent", "weekly_summary", digest_to))
         self.assertEqual(row["stats"]["brands"]["wat_mobilite"], {"lines": 4, "source": "model"})
         # a second run in the same ISO week never sends again (and makes no model call)
-        self.now = datetime.fromisoformat("2026-10-16T18:10:00+03:00")
+        self.now = datetime.fromisoformat("2026-10-16T14:40:00+03:00")
         again = self.go()
         self.assertEqual((again["status"], again["key"]), ("already_recorded", "weekly-summary-202642"))
         self.assertEqual((len(self.gmail.posts()), len(self.client.calls)), (1, 1))
@@ -221,7 +221,7 @@ class Send(Base):
 
 class Preview(Base):
     def test_preview_builds_the_text_without_sending_or_recording_and_the_friday_run_reuses_the_answer(self):
-        self.now = datetime.fromisoformat("2026-10-16T17:00:00+03:00")  # before the window: preview still builds
+        self.now = datetime.fromisoformat("2026-10-16T13:00:00+03:00")  # before the window: preview still builds
         self.answer(self.good())
         r = self.go(preview=True, writer=None)
         self.assertEqual((r["status"], r["business_writes"]), ("weekly_summary_preview", 0))
@@ -234,7 +234,7 @@ class Preview(Base):
         self.client.calls.pop()
         self.assertEqual(self.gmail.calls, [])
         self.assertNotIn("weekly-summary-202642", self.ops.backend.data)
-        self.now = FRI_1735
+        self.now = FRI_1405
         sent = self.go()
         self.assertEqual(sent["status"], "weekly_summary_sent")
         self.assertEqual(len(self.client.calls), 1)  # byte-identical request: the ModelGate answer is reused
