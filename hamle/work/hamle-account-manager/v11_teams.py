@@ -46,7 +46,7 @@ from autonomy_policy import scope_digest
 
 ISTANBUL = ZoneInfo("Europe/Istanbul")
 PROMPT = Path(__file__).with_name("teams_mention_prompt.txt")
-ROLE = "customer_text"
+ROLE = "teams_answer"  # Haiku: internal answers; Ahmet 2026-10-15 keep Hamle under ~68 USD/month
 OPENID_URL = "https://login.botframework.com/v1/.well-known/openidconfiguration"
 ISSUER = "https://api.botframework.com"
 METADATA_HOST = "login.botframework.com"
