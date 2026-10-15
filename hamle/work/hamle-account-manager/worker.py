@@ -519,7 +519,8 @@ OK_STATUSES = ("stopped", "review_required", "already_recorded", "read_verified"
                "research_probe_ok", "model_actual_settled", "billed_total_settled", "nb_tracking_completed",
                "digital_karne_completed", "digital_karne_partial", "digital_karne_preview",
                "brand_memory_completed", "brand_memory_partial", "weekly_summary_sent", "weekly_summary_preview",
-               "monthly_report_completed", "monthly_report_partial", "monthly_report_preview")
+               "monthly_report_completed", "monthly_report_partial", "monthly_report_preview",
+               "hamle_karne_sent", "hamle_karne_preview")
 
 
 def main(argv=None):
@@ -530,7 +531,8 @@ def main(argv=None):
                                            "chain_tick", "daily_digest", "nb_open", "basecamp_credential_review",
                                            "reconcile_model_holds", "extend_authorization",
                                            "research_probe", "settle_model_actual", "settle_billed_total",
-                                           "digital_karne", "brand_memory", "weekly_summary", "monthly_report"),
+                                           "digital_karne", "brand_memory", "weekly_summary", "monthly_report",
+                                           "hamle_karne"),
                         required=True)
     parser.add_argument("--proposal-id")
     parser.add_argument("--work-id")
@@ -566,6 +568,8 @@ def main(argv=None):
     # brand or only --report-brand; no mail, no report record
     parser.add_argument("--report-preview", action="store_true")
     parser.add_argument("--report-brand")
+    # hamle_karne operator preview: Hamle's own karne of the previous month on any day; no mail, no record
+    parser.add_argument("--hamle-karne-preview", action="store_true")
     args = parser.parse_args(argv)
     backend = secrets = None
     try:
@@ -606,6 +610,8 @@ def main(argv=None):
         _require(not args.report_preview or args.mode == "monthly_report", "report_preview_requires_monthly_report")
         _require(args.report_brand is None or (args.report_preview and re.fullmatch(r"[a-z_]{2,40}", args.report_brand)),
                  "report_brand_requires_report_preview")
+        _require(args.mode != "hamle_karne" or args.hamle_karne_preview, "hamle_karne_runs_inside_monthly_report")
+        _require(not args.hamle_karne_preview or args.mode == "hamle_karne", "hamle_karne_preview_requires_hamle_karne")
         _require(os.environ.get("HAMLE_ALLOW_FIRESTORE_OPERATIONS") == "yes", "cloud_opt_in_required")
         _require(os.environ.get("HAMLE_PROJECT_ID") == "gamechangers-hamle" and
                  os.environ.get("HAMLE_FIRESTORE_DATABASE") == "hamle-operations", "cloud_scope_invalid")
@@ -622,7 +628,7 @@ def main(argv=None):
             token = access_token(secrets, claim_refresh=store.claim_credential_refresh)
             return providers.verify_basecamp_internal(token)
         if args.mode in ("chain_tick", "daily_digest", "research_probe", "digital_karne", "brand_memory",
-                         "weekly_summary", "monthly_report"):
+                         "weekly_summary", "monthly_report", "hamle_karne"):
             # Monthly budget renewal + ledger compaction before any budget gate reads the totals.
             try:
                 roll = store.roll_budget_period()
@@ -715,7 +721,22 @@ def main(argv=None):
             # per brand about the previous month to the digest recipients; one Opus call per brand with material,
             # resumable brand by brand (monthly-report-<brand>-<YYYYMM>).
             from v11_monthly_report import run_worker_monthly_report
+            karne = None
+            if not args.report_preview:
+                # Hamle'nin kendi karnesi (Ahmet 2026-10-15 20:53Z): same day and window, code-only numbers, one
+                # mail per month to the owners (hamle-karne-config.json); first, because it takes seconds.
+                from v11_hamle_karne import run_worker_hamle_karne
+                try:
+                    karne = run_worker_hamle_karne(store, secrets)
+                except Exception as exc:
+                    karne = {"status": "held", "reason": _safe_error(exc)}
             result = run_worker_monthly_report(store, secrets, preview=args.report_preview, only=args.report_brand)
+            if karne is not None:
+                result["hamle_karne"] = karne
+        elif args.mode == "hamle_karne":
+            # Operator preview of Hamle's own karne (the live mail goes out from --mode monthly_report).
+            from v11_hamle_karne import run_worker_hamle_karne
+            result = run_worker_hamle_karne(store, secrets, preview=True)
         elif args.mode == "daily_digest":
             # Non-default: one internal team digest per Istanbul weekday (v11_daily_digest).
             from v11_daily_digest import run_worker_daily_digest
