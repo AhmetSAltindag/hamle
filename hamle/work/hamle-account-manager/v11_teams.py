@@ -67,6 +67,9 @@ SKEW_SECONDS = 300
 KEYS_TTL_SECONDS = 24 * 3600
 KEYS_REFRESH_MIN_SECONDS = 300
 MAX_BODY_BYTES = 256 * 1024
+MAX_KEYS_DOC_BYTES = 4 * 1024 * 1024  # Bot Framework's key list carries x5c certificates: ~1 MB, 270 keys (Oct 2026)
+MAX_KEYS = 1000
+KEY_FIELDS = ("kid", "kty", "use", "n", "e", "endorsements")
 MAX_TOKEN_CHARS = 8192
 MAX_TEXT = 4000
 MAX_STORED_TEXT = 1500
@@ -198,8 +201,9 @@ class BotAuth:
         _need(p.scheme == "https" and p.hostname == METADATA_HOST, "auth_metadata_invalid")
         doc = self.fetch_json(uri)
         rows = doc.get("keys") if isinstance(doc, dict) else None
-        _need(isinstance(rows, list) and 0 < len(rows) <= 50, "auth_keys_invalid")
-        self.keys = {k["kid"]: k for k in rows if isinstance(k, dict) and isinstance(k.get("kid"), str)}
+        _need(isinstance(rows, list) and 0 < len(rows) <= MAX_KEYS, "auth_keys_invalid")
+        self.keys = {k["kid"]: {f: k[f] for f in KEY_FIELDS if f in k}  # certificates are not kept in memory
+                     for k in rows if isinstance(k, dict) and isinstance(k.get("kid"), str)}
         self.fetched_at = self.clock()
 
     def _key(self, kid):
@@ -258,7 +262,7 @@ class BotAuth:
         return claims
 
 
-def https_json(session_factory=None, *, limit=262144):
+def https_json(session_factory=None, *, limit=MAX_KEYS_DOC_BYTES):
     """fetch_json for BotAuth: one GET to login.botframework.com, no redirects, bounded body."""
     def fetch(url):
         import cloud_providers as provider
@@ -268,9 +272,11 @@ def https_json(session_factory=None, *, limit=262144):
         try:
             response = session.request("GET", url, timeout=(10, 20), allow_redirects=False, stream=True)
             _need(response.status_code == 200, "auth_metadata_unavailable")
-            raw = b"".join(response.iter_content(chunk_size=16384))
-            _need(len(raw) <= limit, "auth_metadata_too_large")
-            return json.loads(raw)
+            raw = bytearray()
+            for chunk in response.iter_content(chunk_size=65536):
+                raw += chunk
+                _need(len(raw) <= limit, "auth_metadata_too_large")
+            return json.loads(bytes(raw))
         finally:
             if response is not None:
                 response.close()

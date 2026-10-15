@@ -234,6 +234,33 @@ class Auth(TeamsBase):
         self.assertEqual((status, body["reason"]), (401, "auth_service_url_forbidden"))
         self.assertEqual(self.stored(), {})
 
+    def test_a_real_sized_key_list_is_accepted_and_certificates_are_not_kept(self):
+        # Oct 2026: login.botframework.com lists ~270 keys with x5c certificates (~950 KB)
+        filler = [dict(jwk(KEY_B, f"f{i}"), x5c=["A" * 3000]) for i in range(269)]
+        self.meta.keys = filler + [dict(jwk(KEY_A, "k1"), x5c=["B" * 3000])]
+        desk = self.desk()
+        status, body = self.post(desk, self.activity(mention=True))
+        self.assertEqual(status, 200, body)
+        self.assertNotIn("x5c", desk.auth.keys["k1"])
+        self.meta.keys = filler * 4
+        with self.assertRaises(teams.TeamsError):
+            teams.BotAuth(APP, fetch_json=self.meta, clock=lambda: self.now.timestamp())._refresh()
+
+    def test_https_json_reads_a_megabyte_and_stops_past_the_limit(self):
+        class Resp:
+            status_code = 200
+            def __init__(self, raw): self.raw = raw
+            def iter_content(self, chunk_size): return (self.raw[i:i + chunk_size] for i in range(0, len(self.raw), chunk_size))
+            def close(self): pass
+        class Session:
+            def __init__(self, raw): self.raw = raw
+            def request(self, *a, **kw): return Resp(self.raw)
+            def close(self): pass
+        doc = json.dumps({"keys": [{"kid": "x", "x5c": ["A" * 950_000]}]}).encode()
+        self.assertEqual(teams.https_json(lambda: Session(doc))(teams.OPENID_URL)["keys"][0]["kid"], "x")
+        with self.assertRaises(teams.TeamsError):
+            teams.https_json(lambda: Session(b" " * (teams.MAX_KEYS_DOC_BYTES + 1)))(teams.OPENID_URL)
+
 
 class Context(TeamsBase):
     def test_a_message_without_mention_is_stored_not_answered(self):

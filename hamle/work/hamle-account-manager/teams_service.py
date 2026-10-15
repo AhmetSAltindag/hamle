@@ -138,6 +138,9 @@ def create_app(desk_factory=None):
             reason = str(getattr(exc, "code", None) or type(exc).__name__)[:80]
             return respond(start, 503, {"status": "held", "reason": reason})
         status, payload = current.handle(headers, body)
+        if status >= 400:  # reason codes only (auth_..., body_...): no message text, no token
+            print(json.dumps({"event": "teams_request_refused", "status": status,
+                              "reason": str(payload.get("reason") or payload.get("status"))[:80]}), file=sys.stderr)
         return respond(start, status, payload)
     return app
 
