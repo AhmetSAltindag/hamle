@@ -417,3 +417,20 @@ class BasecampGetTest(unittest.TestCase):
         with self.assertRaises(bm.BrandMemoryError):
             bm.basecamp_get(s, "u", "Bearer t", "UA", bm.BrandMemoryError, sleep=waits.append)
         self.assertEqual((s.calls, waits), (4, [30, 30, 30]))
+
+
+class BasecampPageSizeTest(BasecampGetTest):
+    def test_two_megabyte_page_is_read(self):
+        import v11_brand_memory as bm
+        body = b"[" + b'"' + b"x" * (2 * 1_048_576) + b'"]'
+        data, _ = bm.basecamp_get(self.Session(self.Resp(200, body)), "u", "Bearer t", "UA", bm.BrandMemoryError)
+        self.assertEqual(len(data[0]), 2 * 1_048_576)
+
+    def test_too_large_names_the_endpoint(self):
+        import v11_brand_memory as bm
+        body = b"x" * (bm.MAX_PAGE_BYTES + 1)
+        with self.assertRaises(bm.BrandMemoryError) as ctx:
+            bm.basecamp_get(self.Session(self.Resp(200, body)),
+                            "https://3.basecampapi.com/1/projects/recordings.json?type=Comment", "Bearer t", "UA",
+                            bm.BrandMemoryError)
+        self.assertIn("basecamp_page_too_large:recordings", str(ctx.exception.args) + str(getattr(ctx.exception, "code", "")))
