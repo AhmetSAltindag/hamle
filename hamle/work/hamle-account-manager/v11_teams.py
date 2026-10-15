@@ -36,7 +36,7 @@ import json
 import re
 import time
 import uuid
-from datetime import date, datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from html import unescape
 from pathlib import Path
 from urllib.parse import quote, urlencode, urlsplit
@@ -78,6 +78,13 @@ MAX_FILES = 10
 MAX_RECORD_BYTES = 48_000
 MAX_INDEX = 80
 CONTEXT_FOR_MODEL = 20
+CORE_KEY = "teams-core-basecamp"   # cached read-only snapshot of open Basecamp work (all brand projects)
+CORE_TTL_SECONDS = 15 * 60
+CORE_MAX_ITEMS = 200               # the cached record must stay under the store's 60 KB record limit
+CORE_FOR_MODEL = 45
+CORE_JOBS_FOR_MODEL = 20
+ELSEWHERE_FOR_MODEL = 12
+MAX_REQUEST_BYTES = 30_000
 LEASE_SECONDS = 600
 AGENCY_INDEX = "teams-agency"
 
@@ -420,10 +427,103 @@ def teams_context(ops, brand_key=None, limit=30):
         rows = []
         for key in index.get("keys") or []:
             conv = tx.get(key) or {}
-            rows += [dict(m, conversation=conv.get("name")) for m in conv.get("messages") or []]
+            rows += [dict(m, conversation=conv.get("name"), conversation_key=key) for m in conv.get("messages") or []]
         return rows
     rows = ops._run(read, allow_expired=True)
     return sorted(rows, key=lambda m: m.get("received_at") or 0)[-limit:]
+
+
+# ------------------------------------------------------------------ Hamle's core (read only)
+class CoreContext:
+    """What the rest of Hamle knows, for Teams answers: open Basecamp work, client mail jobs, the last digest özü.
+
+    reader_factory() -> v11_daily_digest.BasecampDigestReader (GET-only, allowlisted paths). Its listing is cached
+    in the operations store for CORE_TTL_SECONDS so a Teams answer usually costs no Basecamp reads. Nothing here
+    writes to Basecamp or mail. __call__ never raises: a missing part is reported as {"unavailable": code}.
+    """
+    def __init__(self, ops, *, reader_factory, clock, ttl=CORE_TTL_SECONDS):
+        self.ops, self.reader_factory, self.clock, self.ttl = ops, reader_factory, clock, ttl
+
+    @staticmethod
+    def _compact(items, today):
+        rows = []
+        for it in items:
+            due = it.get("due_on")
+            rows.append({"title": _line(it.get("title"), 110), "project": _line(it.get("project"), 60),
+                         "project_id": it.get("project_id"), "due_on": due,
+                         "who": [_line(n, 40) for n in (it.get("assignees") or [])][:3],
+                         "url": it.get("app_url")})
+        rows.sort(key=lambda r: (r["due_on"] is None, r["due_on"] or "", r["project"]))
+        while rows and (len(rows) > CORE_MAX_ITEMS
+                        or len(json.dumps(rows, ensure_ascii=False).encode("utf-8")) > MAX_RECORD_BYTES):
+            rows.pop()  # undated / furthest first
+        return rows
+
+    def basecamp(self, today):
+        row = self.ops._run(lambda tx, _: tx.get(CORE_KEY), allow_expired=True)
+        now = self.clock().timestamp()
+        if isinstance(row, dict) and now - float(row.get("at") or 0) <= self.ttl:
+            return row
+        try:
+            listing = self.reader_factory().collect()
+            fresh = {"key": CORE_KEY, "kind": "teams_core_basecamp", "at": now, "projects": listing.get("projects"),
+                     "open_items": len(listing.get("items") or []),
+                     "items": self._compact(listing.get("items") or [], today)}
+            self.ops._run(lambda tx, _: tx.put(CORE_KEY, fresh), allow_expired=True)
+            return fresh
+        except Exception as exc:
+            if isinstance(row, dict):
+                return dict(row, stale=True)
+            return {"unavailable": _code(exc)}
+
+    def jobs(self):
+        def read(tx, _):
+            out = []
+            for key in list((tx.get("client-jobs") or {}).get("keys") or [])[-60:]:
+                j = tx.get(key) or {}
+                if j.get("kind") != "client_job" or j.get("test") or j.get("state") in ("creating", "binding"):
+                    continue
+                out.append({"brand": j.get("brand_key"), "title": _line(j.get("title_core") or j.get("title"), 100),
+                            "state": j.get("state"), "due_on": j.get("due_on"), "who": j.get("assignee_name"),
+                            "client": j.get("client_name"), "origin": j.get("origin") or "mail",
+                            "revisions": j.get("revisions"), "url": j.get("app_url")})
+            return out
+        return self.ops._run(read, allow_expired=True)[-CORE_JOBS_FOR_MODEL:]
+
+    def digest(self, today):
+        def read(tx, _):
+            for back in range(0, 5):
+                day = today - timedelta(days=back)
+                row = tx.get("daily-digest-" + day.strftime("%Y%m%d"))
+                if isinstance(row, dict) and row.get("state") == "sent" and isinstance(row.get("stats"), dict):
+                    st = row["stats"]
+                    return {"day": day.isoformat(), "open_items": st.get("open_items"), "overdue": st.get("overdue"),
+                            "ozu": st.get("ozu")}
+            return None
+        return self.ops._run(read, allow_expired=True)
+
+    def __call__(self, today, project_id=None):
+        out = {}
+        for name, fn in (("basecamp", lambda: self.basecamp(today)), ("jobs", self.jobs),
+                         ("digest", lambda: self.digest(today))):
+            try:
+                out[name] = fn()
+            except Exception as exc:
+                out[name] = {"unavailable": _code(exc)}
+        bc = out.get("basecamp")
+        if isinstance(bc, dict) and isinstance(bc.get("items"), list):
+            day = today.isoformat()
+            week = (today + timedelta(days=7)).isoformat()
+            items = bc["items"]
+            overdue = [r for r in items if r["due_on"] and r["due_on"] < day]
+            soon = [r for r in items if r["due_on"] and day <= r["due_on"] <= week]
+            brand = [r for r in items if project_id is not None and r["project_id"] == project_id]
+            picked = list({r["url"] or id(r): r for r in brand[:20] + overdue + soon}.values())[:CORE_FOR_MODEL]
+            out["basecamp"] = {"as_of": datetime.fromtimestamp(float(bc.get("at") or 0), ISTANBUL)
+                               .strftime("%d.%m.%Y %H:%M"), "stale": bool(bc.get("stale")),
+                               "open_items_total": bc.get("open_items"), "overdue_total": len(overdue),
+                               "due_this_week_total": len(soon), "items": picked}
+        return out
 
 
 # ------------------------------------------------------------------ model
@@ -495,8 +595,9 @@ class TeamsDesk:
     inline (tests). todo_writer / comment_writer / basecamp_get / jobs are the existing Basecamp adapters.
     """
     def __init__(self, ops, settings, *, auth, model, sender, clock, jobs=None, todo_writer=None,
-                 comment_writer=None, basecamp_get=None, brands=None, run_later=None):
+                 comment_writer=None, basecamp_get=None, brands=None, run_later=None, core=None):
         self.ops, self.s, self.auth, self.model, self.sender, self.clock = ops, settings, auth, model, sender, clock
+        self.core = core
         self.jobs, self.todos, self.comments, self.get = jobs, todo_writer, comment_writer, basecamp_get
         self.brands = brands or {}
         self.run_later = run_later
@@ -707,7 +808,31 @@ class TeamsDesk:
                    "brands": [{"key": k, "name": b["name"], "task_possible": self._can_create(k)}
                               for k, b in sorted(self.s["brands"].items())],
                    "task": task}
-        while len(json.dumps(request, ensure_ascii=False).encode("utf-8")) > 14_000 and request["context"]:
+        if self.core is not None:
+            pid = self.s["brands"][brand_key]["project_id"] if brand_key else None
+            try:
+                request["core"] = self.core(local.date(), pid)
+            except Exception as exc:
+                request["core"] = {"unavailable": _code(exc)}
+            try:
+                request["teams_elsewhere"] = [
+                    {"conversation": m.get("conversation"), "author": m.get("author"), "at": m.get("at"),
+                     "text": str(m.get("text") or "")[:300]}
+                    for m in teams_context(self.ops, None) + (teams_context(self.ops, brand_key) if brand_key else [])
+                    if m.get("conversation_key") != conv.get("key")][-ELSEWHERE_FOR_MODEL:]
+            except Exception:
+                request["teams_elsewhere"] = []
+
+        def size():
+            return len(json.dumps(request, ensure_ascii=False).encode("utf-8"))
+        while size() > MAX_REQUEST_BYTES and request.get("teams_elsewhere"):
+            request["teams_elsewhere"].pop(0)
+        while size() > MAX_REQUEST_BYTES and len(request["context"]) > 5:
+            request["context"].pop(0)
+        core_items = ((request.get("core") or {}).get("basecamp") or {}).get("items")
+        while size() > MAX_REQUEST_BYTES and core_items:
+            core_items.pop()
+        while size() > MAX_REQUEST_BYTES and request["context"]:
             request["context"].pop(0)
         return request, {"link": link}
 

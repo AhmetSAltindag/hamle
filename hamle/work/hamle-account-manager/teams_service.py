@@ -81,6 +81,37 @@ def build_live_desk(run_later):
         if jobs is not None:
             todo_writer = cj.JobTodoWriter(catalog, jobs, token_provider=token)
 
+    def core_reader():
+        """Read-only Basecamp listing for Hamle's core context (the daily digest's GET-only reader)."""
+        import v11_daily_digest as dd
+        valid = dd.validate_config(dd.load_config())
+
+        def get(url):
+            session, r = provider._session(), None
+            try:
+                r = session.request("GET", url, headers={"Authorization": "Bearer " + provider._token(token()),
+                                                         "User-Agent": "Hamle Teams (ahmet@gamechangers.com.tr)",
+                                                         "Accept": "application/json"},
+                                    timeout=(5, 15), allow_redirects=False, stream=True)
+                if r.status_code != 200:
+                    raise dd.DigestError("basecamp_read_rejected")
+                chunks, size = [], 0
+                for chunk in r.iter_content(chunk_size=16384):
+                    size += len(chunk)
+                    if size > 1_048_576:
+                        raise dd.DigestError("basecamp_page_too_large")
+                    chunks.append(chunk)
+                return provider._json(b"".join(chunks)), dict(r.headers)
+            except dd.DigestError:
+                raise
+            except Exception:
+                raise dd.DigestError("basecamp_read_failed") from None
+            finally:
+                if r is not None:
+                    r.close()
+                session.close()
+        return dd.BasecampDigestReader(valid["account_id"], get=get, excluded=valid["excluded"])
+
     def basecamp_get(url, conditional):
         session = provider._session()
         try:
@@ -93,7 +124,8 @@ def build_live_desk(run_later):
         model=teams.teams_source(ops, {"anthropic": lambda: provider.anthropic_key(secrets)}, catalog),
         sender=teams.ConnectorSender(settings, secret_loader=lambda: provider.teams_bot_secret(secrets)),
         jobs=jobs, todo_writer=todo_writer, comment_writer=BasecampCommentWriter(catalog, token_provider=token),
-        basecamp_get=basecamp_get, brands=cw.brand_index(catalog, load_brand_cards()), run_later=run_later)
+        basecamp_get=basecamp_get, brands=cw.brand_index(catalog, load_brand_cards()), run_later=run_later,
+        core=teams.CoreContext(ops, reader_factory=core_reader, clock=lambda: datetime.now(timezone.utc)))
 
 
 def create_app(desk_factory=None):
