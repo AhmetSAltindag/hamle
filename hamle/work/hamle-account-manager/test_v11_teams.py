@@ -173,14 +173,16 @@ class TeamsBase(Base):
 
 
 class Config(TeamsBase):
-    def test_shipped_config_is_off_with_placeholders_and_the_manifest_asks_rsc(self):
+    def test_shipped_config_is_on_with_the_real_app_and_the_manifest_asks_rsc(self):
         cfg = cw.load_config()
         block = cfg["teams"]
-        self.assertIs(block["enabled"], False)
-        self.assertEqual((block["app_id"], block["conversations"]), (teams.PLACEHOLDER, {}))
-        self.assertIsNone(teams.validate_teams(block, self.catalog))
+        self.assertIs(block["enabled"], True)
+        self.assertEqual((block["app_id"], block["tenant_id"], block["conversations"]),
+                         ("941790d6-7b97-4a39-bbd6-1aa62f966ad0", "d16bebb8-e3c6-49f2-912b-97ebb4c311f4", {}))
+        self.assertIsNotNone(teams.validate_teams(block, self.catalog))
         with self.assertRaises(teams.TeamsError):  # turned on with placeholders it refuses
-            teams.validate_teams(dict(block, enabled=True), self.catalog)
+            teams.validate_teams(dict(block, app_id=teams.PLACEHOLDER), self.catalog)
+        self.assertIsNone(teams.validate_teams(dict(block, enabled=False), self.catalog))
         from pathlib import Path
         manifest = json.loads((Path(teams.__file__).with_name("teams-app") / "manifest.json").read_text("utf-8"))
         self.assertEqual(manifest["bots"][0]["scopes"], ["team", "groupChat", "personal"])
