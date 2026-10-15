@@ -83,7 +83,7 @@ CORE_TTL_SECONDS = 15 * 60
 CORE_MAX_ITEMS = 200               # the cached record must stay under the store's 60 KB record limit
 CORE_FOR_MODEL = 45
 CORE_JOBS_FOR_MODEL = 20
-ELSEWHERE_FOR_MODEL = 12
+ELSEWHERE_FOR_MODEL = 0  # off: a wide chat must not hear what was written in a narrower one (Heads -> ALL TEAM)
 MAX_REQUEST_BYTES = 30_000
 LEASE_SECONDS = 600
 AGENCY_INDEX = "teams-agency"
@@ -815,7 +815,7 @@ class TeamsDesk:
             except Exception as exc:
                 request["core"] = {"unavailable": _code(exc)}
             try:
-                request["teams_elsewhere"] = [
+                request["teams_elsewhere"] = [] if not ELSEWHERE_FOR_MODEL else [
                     {"conversation": m.get("conversation"), "author": m.get("author"), "at": m.get("at"),
                      "text": str(m.get("text") or "")[:300]}
                     for m in teams_context(self.ops, None) + (teams_context(self.ops, brand_key) if brand_key else [])
