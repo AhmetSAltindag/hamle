@@ -1227,23 +1227,14 @@ def run_daily_digest(ops, *, config, reader_factory, writer, clock, window=DAILY
             digest_rows, karne_key = None, "digital-karne-unavailable"
         previous, nb, ideas, karne = {}, {}, {}, {}
 
-        def claim_op(tx, ts):
-            c = ops._control(tx); b = ops._budget(tx); row = tx.get(key)
-            ops._open(c, c["generation"], ts)
-            _need(not b["overrun_hold"], "budget_overrun_hold")
-            if row is not None and not (row["state"] == "claimed" and ts >= row["lease_until"]):
-                return None  # claimed/sending/sent/unknown: never a second mail under this key
+        def read(tx):
             previous["value"] = _previous(tx.get("daily-digest-" + prev_day.strftime("%Y%m%d")), prev_day)
             nb["value"] = tx.get("nb-tracking")  # v11_nb_tracking.STATE_KEY (read-only here)
             ideas["value"] = tx.get("idea-tracking")  # v11_idea_tracking.STATE_KEY (read-only here)
             if target.weekday() == 1:  # Tuesday: this week's monthly karne to-dos (v11_digital_karne, read-only here)
                 karne["value"] = tx.get(karne_key)
-            new = {"key": key, "kind": "daily_digest_preview" if preview_to else "daily_digest", "state": "claimed",
-                   "token": token, "generation": c["generation"], "claimed_at": ts,
-                   "lease_until": ts + LEASE_SECONDS, "date": target.isoformat(), "run_date": local.date().isoformat()}
-            tx.put(key, new)
-            return new
-        claim = ops._run(claim_op)
+        claim = claim_mail(ops, key, {"kind": "daily_digest_preview" if preview_to else "daily_digest", "token": token,
+                                      "date": target.isoformat(), "run_date": local.date().isoformat()}, read=read)
         if claim is None:
             return {"status": "already_recorded", "reason": "digest_already_claimed_or_sent", "key": key,
                     "business_writes": 0}
@@ -1264,54 +1255,91 @@ def run_daily_digest(ops, *, config, reader_factory, writer, clock, window=DAILY
         payload = {"from": HAMLE, "to": list(recipients), "cc": [],
                    "subject": subject_prefix + digest_title(target), "body": body,
                    "html": stats.pop("html")}
-        sha = scope_digest(payload)
-
-        def begin_op(tx, ts):
-            c = ops._control(tx); b = ops._budget(tx); row = tx.get(key)
-            _need(row is not None and row["token"] == token and row["state"] == "claimed", "digest_claim_lost")
-            ops._open(c, claim["generation"], ts)  # stop/generation change after claim -> no send
-            _need(not b["overrun_hold"], "budget_overrun_hold")
-            row.update(state="sending", payload_sha256=sha, recipients=list(payload["to"]),
-                       subject=payload["subject"], stats=stats, sending_at=ts)
-            tx.put(key, row)
-            return row
-        ops._run(begin_op)
-
-        def mark(state, **extra):
-            def op(tx, ts):
-                row = tx.get(key)
-                _need(row is not None and row["token"] == token, "digest_claim_lost")
-                row.update(state=state, updated_at=ts, **extra)
-                tx.put(key, row)
-                return row
-            return ops._run(op, allow_expired=True)
-        try:
-            remote = writer.write(payload)["remote_id"]
-            back = writer.readback(remote, payload)
-            _need(back.get("readback_sha256") == sha, "digest_readback_mismatch")
-        except Exception as exc:
-            try:
-                mark("unknown", reason=str(getattr(exc, "code", None) or type(exc).__name__)[:120])
-            except Exception:
-                pass
+        if send_claimed(ops, claim, payload, stats, writer) is None:
             return {"status": "held", "reason": "digest_outcome_unknown_no_retry", "business_writes": None,
                     "automatic_retry_allowed": False}
-        mark("sent", remote_id=remote)
         return {"status": "digest_sent", "key": key, "recipients": len(payload["to"]), "stats": stats,
                 "day": target.isoformat(), "business_writes": 1}
     except Exception as exc:
         reason = re.sub(r"[^A-Za-z0-9_.:@-]", "_", str(getattr(exc, "code", None) or type(exc).__name__))[:120]
-        if claim is not None:
-            try:  # nothing was sent (send failures return above): release so a later run may retry
-                def release(tx, ts):
-                    row = tx.get(claim["key"])
-                    if row is not None and row["token"] == claim["token"] and row["state"] == "claimed":
-                        row.update(lease_until=ts, last_failure=reason)
-                        tx.put(claim["key"], row)
-                ops._run(release, allow_expired=True)
-            except Exception:
-                pass
+        release_claim(ops, claim, reason)
         return {"status": "held", "reason": reason, "business_writes": 0, "automatic_retry_allowed": False}
+
+
+# ------------------------------------------------------------------ one recorded mail (shared with v11_weekly_summary)
+def claim_mail(ops, key, fields, *, read=None):
+    """Lease `key` (hamle_internal_v1) for ONE mail -> the claimed row, or None when the key is already claimed
+    (live lease), sending, sent or unknown: never a second mail under this key. read(tx) runs in the same
+    transaction (read-only inputs of the mail). Stop ('dur'), a stale generation or the budget overrun hold
+    refuse the claim."""
+    def op(tx, ts):
+        c = ops._control(tx); b = ops._budget(tx); row = tx.get(key)
+        ops._open(c, c["generation"], ts)
+        _need(not b["overrun_hold"], "budget_overrun_hold")
+        if row is not None and not (row["state"] == "claimed" and ts >= row["lease_until"]):
+            return None
+        if read is not None:
+            read(tx)
+        new = dict(fields, key=key, state="claimed", generation=c["generation"], claimed_at=ts,
+                   lease_until=ts + LEASE_SECONDS)
+        tx.put(key, new)
+        return new
+    return ops._run(op)
+
+
+def send_claimed(ops, claim, payload, stats, writer):
+    """claimed -> sending (intent, payload sha, recipients) -> ONE writer.write -> Sent-copy readback -> sent.
+    Returns the remote id, or None when the outcome is unknown (row 'unknown', never resent). A lost claim,
+    stop or new generation before the POST raises (nothing sent; the caller releases the claim)."""
+    key, token = claim["key"], claim["token"]
+    sha = scope_digest(payload)
+
+    def begin_op(tx, ts):
+        c = ops._control(tx); b = ops._budget(tx); row = tx.get(key)
+        _need(row is not None and row["token"] == token and row["state"] == "claimed", "digest_claim_lost")
+        ops._open(c, claim["generation"], ts)  # stop/generation change after claim -> no send
+        _need(not b["overrun_hold"], "budget_overrun_hold")
+        row.update(state="sending", payload_sha256=sha, recipients=list(payload["to"]),
+                   subject=payload["subject"], stats=stats, sending_at=ts)
+        tx.put(key, row)
+        return row
+    ops._run(begin_op)
+
+    def mark(state, **extra):
+        def op(tx, ts):
+            row = tx.get(key)
+            _need(row is not None and row["token"] == token, "digest_claim_lost")
+            row.update(state=state, updated_at=ts, **extra)
+            tx.put(key, row)
+            return row
+        return ops._run(op, allow_expired=True)
+    try:
+        remote = writer.write(payload)["remote_id"]
+        back = writer.readback(remote, payload)
+        _need(back.get("readback_sha256") == sha, "digest_readback_mismatch")
+    except Exception as exc:
+        try:
+            mark("unknown", reason=str(getattr(exc, "code", None) or type(exc).__name__)[:120])
+        except Exception:
+            pass
+        return None
+    mark("sent", remote_id=remote)
+    return remote
+
+
+def release_claim(ops, claim, reason):
+    """Nothing was sent: give the lease back so a later run may retry (only a still-'claimed' row of this token)."""
+    if claim is None:
+        return
+    try:
+        def release(tx, ts):
+            row = tx.get(claim["key"])
+            if row is not None and row["token"] == claim["token"] and row["state"] == "claimed":
+                row.update(lease_until=ts, last_failure=reason)
+                tx.put(claim["key"], row)
+        ops._run(release, allow_expired=True)
+    except Exception:
+        pass
 
 
 def model_classifier(ops, load_key, catalog, *, transport=None, routing=None, client=None):
