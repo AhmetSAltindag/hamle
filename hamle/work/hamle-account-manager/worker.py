@@ -518,7 +518,8 @@ OK_STATUSES = ("stopped", "review_required", "already_recorded", "read_verified"
                "credential_review_ready", "reconciled_not_sent", "budget_expiry_extended", "already_current",
                "research_probe_ok", "model_actual_settled", "billed_total_settled", "nb_tracking_completed",
                "digital_karne_completed", "digital_karne_partial", "digital_karne_preview",
-               "brand_memory_completed", "brand_memory_partial", "weekly_summary_sent", "weekly_summary_preview")
+               "brand_memory_completed", "brand_memory_partial", "weekly_summary_sent", "weekly_summary_preview",
+               "monthly_report_completed", "monthly_report_partial", "monthly_report_preview")
 
 
 def main(argv=None):
@@ -529,7 +530,8 @@ def main(argv=None):
                                            "chain_tick", "daily_digest", "nb_open", "basecamp_credential_review",
                                            "reconcile_model_holds", "extend_authorization",
                                            "research_probe", "settle_model_actual", "settle_billed_total",
-                                           "digital_karne", "brand_memory", "weekly_summary"), required=True)
+                                           "digital_karne", "brand_memory", "weekly_summary", "monthly_report"),
+                        required=True)
     parser.add_argument("--proposal-id")
     parser.add_argument("--work-id")
     parser.add_argument("--failure-evidence-sha256")
@@ -560,6 +562,10 @@ def main(argv=None):
     parser.add_argument("--memory-from")
     # weekly_summary operator preview: builds the text (model included) on any day; no mail, no summary record
     parser.add_argument("--summary-preview", action="store_true")
+    # monthly_report operator preview: builds the previous month's report text (model included) on any day, for every
+    # brand or only --report-brand; no mail, no report record
+    parser.add_argument("--report-preview", action="store_true")
+    parser.add_argument("--report-brand")
     args = parser.parse_args(argv)
     backend = secrets = None
     try:
@@ -597,6 +603,9 @@ def main(argv=None):
                                               and re.fullmatch(r"\d{4}-\d{2}-\d{2}", args.memory_from) is not None),
                  "memory_from_requires_brand_memory")
         _require(not args.summary_preview or args.mode == "weekly_summary", "summary_preview_requires_weekly_summary")
+        _require(not args.report_preview or args.mode == "monthly_report", "report_preview_requires_monthly_report")
+        _require(args.report_brand is None or (args.report_preview and re.fullmatch(r"[a-z_]{2,40}", args.report_brand)),
+                 "report_brand_requires_report_preview")
         _require(os.environ.get("HAMLE_ALLOW_FIRESTORE_OPERATIONS") == "yes", "cloud_opt_in_required")
         _require(os.environ.get("HAMLE_PROJECT_ID") == "gamechangers-hamle" and
                  os.environ.get("HAMLE_FIRESTORE_DATABASE") == "hamle-operations", "cloud_scope_invalid")
@@ -613,7 +622,7 @@ def main(argv=None):
             token = access_token(secrets, claim_refresh=store.claim_credential_refresh)
             return providers.verify_basecamp_internal(token)
         if args.mode in ("chain_tick", "daily_digest", "research_probe", "digital_karne", "brand_memory",
-                         "weekly_summary"):
+                         "weekly_summary", "monthly_report"):
             # Monthly budget renewal + ledger compaction before any budget gate reads the totals.
             try:
                 roll = store.roll_budget_period()
@@ -701,6 +710,12 @@ def main(argv=None):
             # digest recipients; brand memory + Basecamp (GET) + client jobs, at most one Haiku call per brand.
             from v11_weekly_summary import run_worker_weekly_summary
             result = run_worker_weekly_summary(store, secrets, preview=args.summary_preview)
+        elif args.mode == "monthly_report":
+            # Aylık marka raporu (Ahmet 2026-10-15): first Istanbul weekday of the month 10:30-12:30, one internal mail
+            # per brand about the previous month to the digest recipients; one Opus call per brand with material,
+            # resumable brand by brand (monthly-report-<brand>-<YYYYMM>).
+            from v11_monthly_report import run_worker_monthly_report
+            result = run_worker_monthly_report(store, secrets, preview=args.report_preview, only=args.report_brand)
         elif args.mode == "daily_digest":
             # Non-default: one internal team digest per Istanbul weekday (v11_daily_digest).
             from v11_daily_digest import run_worker_daily_digest
