@@ -113,9 +113,9 @@
     "newer_than_days": 2
   },
   "teams": {
-    "enabled": false,
-    "app_id": "00000000-0000-0000-0000-000000000000",
-    "tenant_id": "00000000-0000-0000-0000-000000000000",
+    "enabled": true,
+    "app_id": "941790d6-7b97-4a39-bbd6-1aa62f966ad0",
+    "tenant_id": "d16bebb8-e3c6-49f2-912b-97ebb4c311f4",
     "service_hosts": [
       "smba.trafficmanager.net"
     ],
