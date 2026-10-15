@@ -791,8 +791,17 @@ def counts(findings):
     return {lvl: sum(1 for f in findings if f["level"] == lvl) for lvl in LEVELS}
 
 
+def severity(c):
+    """The first line of every karne: how urgent it is for the person it goes to (Ahmet, 15 Oct)."""
+    if c.get("kirmizi"):
+        return f"🔴 KIRMIZI ALARM: {c['kirmizi']} acil konu var, bugün ele alınmalı."
+    if c.get("sari"):
+        return f"🟡 SARI ALARM: {c['sari']} konu dikkat istiyor, bu hafta bakılmalı."
+    return "🔵 BİLGİ: acil ya da dikkat isteyen bir konu yok, bilgin olsun."
+
+
 def description(brand, day, findings, kind="full", summary=None):
-    """-> (html, visible text). Basecamp rich text: div, strong, a, br only."""
+    """-> (html, visible text). Basecamp rich text: div, strong, a, br only. Opens with the severity line."""
     c = counts(findings)
     if kind == "prospect":
         lines = [f"<strong>{escape(f'Ön Dijital Karne · {brand} · {month_name(day)} ({_when(day)})')}</strong>",
@@ -825,6 +834,7 @@ def description(brand, day, findings, kind="full", summary=None):
                 line += f' <a href="{escape(f["url"], quote=True)}">kaynak</a>'
             lines.append(line)
     lines += ["<br>", escape({"alarm": ALARM_FOOTER, "prospect": PROSPECT_FOOTER}.get(kind, FOOTER))]
+    lines = [f"<strong>{escape(severity(c))}</strong>"] + lines
     html = "".join(f"<div>{line}</div>" for line in lines)
     p = _Text()
     p.feed(html)
@@ -1207,6 +1217,34 @@ def _visible(html):
     return "".join(p.parts)
 
 
+_MENTION = re.compile(r"<bc-attachment\b[^>]*>.*?</bc-attachment>|<bc-attachment\b[^>]*/>", re.S | re.I)
+_SGID = re.compile(r"[A-Za-z0-9+/=_.:-]{8,400}")
+
+
+def people_to_tag(todo, requested_by):
+    """The people a prospect karne is for (Ahmet, 15 Oct: 'markanın ilgili kişisine yaz'): the to-do's assignees,
+    plus the person who asked; never Hamle; at most 3. -> [(name, sgid)]."""
+    if not isinstance(todo, dict):
+        return []
+    email = str((requested_by or {}).get("email") or "").lower()
+    rows = [p for p in todo.get("assignees") or [] if isinstance(p, dict)]
+    creator = todo.get("creator")
+    if isinstance(creator, dict) and (not rows or str(creator.get("email_address") or "").lower() == email):
+        rows.append(creator)
+    out, seen = [], set()
+    for p in rows:
+        sgid = p.get("attachable_sgid")
+        if p.get("id") == HAMLE_PERSON or p.get("id") in seen or not isinstance(sgid, str) or not _SGID.fullmatch(sgid):
+            continue
+        seen.add(p.get("id"))
+        out.append((_line(p.get("name") or "", 80), sgid))
+    return out[:3]
+
+
+def mentions_html(people):
+    return "".join(f'<bc-attachment sgid="{escape(sgid, quote=True)}"></bc-attachment> ' for _, sgid in people)
+
+
 def run_prospect_requests(ops, *, http, web, research, clock, monotonic=time.monotonic, psi_key=None,
                           budget_seconds=1500):
     """Prepare the queued prospect karnes (at most PROSPECT_PER_RUN per run) and write each as one comment on the
@@ -1273,8 +1311,14 @@ def run_prospect_requests(ops, *, http, web, research, clock, monotonic=time.mon
                                psi_key=psi_key)
         report["model_calls"] += r.get("model_calls", 0)
         first = (row.get("requested_by") or {}).get("name", "").split(" ")[0] or "Merhaba"
+        base = f"{API}/{http.account}/buckets/{row['project_id']}"
+        try:  # tag the people the brand is with; a failed read only drops the tags
+            tags = mentions_html(people_to_tag(http.one(f"{base}/todos/{row['todo_id']}.json"),
+                                               row.get("requested_by")))
+        except Exception:
+            tags = ""
         if r["status"] == "prospect_karne_ready":
-            html = (f"<div>{escape(first)}, {escape(row['brand'])} için ön karne hazır.</div><div><br></div>"
+            html = (f"<div>{tags}{escape(first)}, {escape(row['brand'])} için ön karne hazır.</div><div><br></div>"
                     + r["html"])
         else:
             why = PROSPECT_REASONS.get(r.get("reason"), "teknik bir hata oldu")
@@ -1290,7 +1334,6 @@ def run_prospect_requests(ops, *, http, web, research, clock, monotonic=time.mon
             report.setdefault("reasons", []).append(_code(exc))
             break
         report["business_writes"] += 1
-        base = f"{API}/{http.account}/buckets/{row['project_id']}"
         try:
             back, _ = http.call("POST", f"{base}/recordings/{row['todo_id']}/comments.json", {"content": html}, 201)
             cid = back.get("id") if isinstance(back, dict) else None
@@ -1299,7 +1342,7 @@ def run_prospect_requests(ops, *, http, web, research, clock, monotonic=time.mon
             _need(got.get("id") == cid and (got.get("parent") or {}).get("id") == row["todo_id"]
                   and (got.get("bucket") or {}).get("id") == row["project_id"]
                   and (got.get("creator") or {}).get("id") == HAMLE_PERSON and got.get("visible_to_clients") is False
-                  and text_matches(got.get("content"), text), "prospect_comment_readback_mismatch")
+                  and text_matches(_MENTION.sub("", got.get("content") or ""), text), "prospect_comment_readback_mismatch")
         except Exception as exc:
             update(key, token, False, state="unknown", reason=_code(exc))
             report["unknown"] += 1
