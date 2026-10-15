@@ -5,6 +5,7 @@ import io
 import json
 import time
 import unittest
+from datetime import date, timedelta
 
 from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.asymmetric import padding, rsa
@@ -130,7 +131,7 @@ class TeamsBase(Base):
     def settings(self, **kw):
         return teams.validate_teams(teams_block(**kw), self.catalog)
 
-    def desk(self, run_later=None, catalog=None, **kw):
+    def desk(self, run_later=None, catalog=None, core=None, **kw):
         catalog = catalog or self.catalog
         cfg = cw.load_config()
         jobs = cj.validate_jobs(cfg["jobs"], catalog, validate_reply(cfg["reply"], catalog))
@@ -139,7 +140,7 @@ class TeamsBase(Base):
             auth=teams.BotAuth(APP, fetch_json=self.meta, clock=lambda: self.now.timestamp()),
             model=teams.teams_source(self.ops, lambda: KEY, catalog, routing=model_routing.load(), client=self.client),
             sender=self.sender, jobs=jobs, todo_writer=self.todos_bc, comment_writer=self.comments_bc,
-            basecamp_get=basecamp_get, brands=cw.brand_index(catalog, self.cards), run_later=run_later)
+            basecamp_get=basecamp_get, brands=cw.brand_index(catalog, self.cards), run_later=run_later, core=core)
 
     def activity(self, text="Bugün WAT için yeni istasyon açıldı.", *, mention=False, conv=WAT_CHANNEL, kind="channel",
                  aid=None, files=(), tenant=TENANT, author="Özge Yağmur"):
@@ -260,6 +261,73 @@ class Auth(TeamsBase):
         self.assertEqual(teams.https_json(lambda: Session(doc))(teams.OPENID_URL)["keys"][0]["kid"], "x")
         with self.assertRaises(teams.TeamsError):
             teams.https_json(lambda: Session(b" " * (teams.MAX_KEYS_DOC_BYTES + 1)))(teams.OPENID_URL)
+
+
+class CoreReader:
+    """BasecampDigestReader stand-in: collect() -> listing; counts calls."""
+    def __init__(self, items, fail=False):
+        self.items, self.fail, self.calls = items, fail, 0
+
+    def __call__(self):
+        return self
+
+    def collect(self):
+        self.calls += 1
+        if self.fail:
+            raise RuntimeError("basecamp down")
+        return {"projects": 3, "items": self.items}
+
+
+def core_item(title, due, pid, who="Berkay"):
+    return {"title": title, "project": {WAT: "WAT Mobilite"}.get(pid, "Rabam"), "project_id": pid, "due_on": due,
+            "assignees": [who], "app_url": f"https://3.basecamp.com/1/buckets/{pid}/todos/{abs(hash(title)) % 10**6}"}
+
+
+class Core(TeamsBase):
+    def core(self, reader):
+        return teams.CoreContext(self.ops, reader_factory=reader, clock=lambda: self.now)
+
+    def seed_jobs_and_digest(self):
+        def op(tx, _):
+            tx.put("client-job-x", {"kind": "client_job", "state": "open", "brand_key": "wat_mobilite", "test": False,
+                                    "title_core": "Standartlar Günü postu", "due_on": "2026-10-14",
+                                    "assignee_name": "Özge", "client_name": "Selina", "revisions": 1,
+                                    "app_url": "https://3.basecamp.com/1/buckets/1/todos/9"})
+            tx.put("client-job-t", {"kind": "client_job", "state": "open", "test": True, "title_core": "test"})
+            tx.put("client-jobs", {"kind": "client_jobs", "keys": ["client-job-x", "client-job-t"]})
+            tx.put("daily-digest-20261013", {"state": "sent", "stats": {"open_items": 40, "overdue": 3,
+                                                                       "ozu": {"risk": {"title": "Rabam reels"}}}})
+        self.ops._run(op, allow_expired=True)
+
+    def test_answer_sees_basecamp_jobs_digest_and_other_chats(self):
+        today = self.now.astimezone(teams.ISTANBUL).date()
+        reader = CoreReader([core_item("WAT story", (today + timedelta(days=1)).isoformat(), WAT),
+                             core_item("Rabam reels", (today - timedelta(days=2)).isoformat(), 777),
+                             core_item("Rabam yıllık plan", None, 777),
+                             core_item("WAT kampanya", "2026-12-30", WAT)])
+        self.seed_jobs_and_digest()
+        desk = self.desk(core=self.core(reader))
+        self.post(desk, self.activity("Akşam toplantısı 5'te.", conv="19:genel@thread.v2", kind="groupChat"))
+        self.client.outputs = [message(out()), message(out())]
+        self.post(desk, self.activity("Yarın için kısa iş özeti?", mention=True))
+        request = json.loads(self.client.calls[0]["messages"][0]["content"])
+        bc = request["core"]["basecamp"]
+        self.assertEqual((bc["open_items_total"], bc["overdue_total"], bc["due_this_week_total"]), (4, 1, 1))
+        self.assertEqual({i["title"] for i in bc["items"]}, {"WAT story", "Rabam reels", "WAT kampanya"})
+        self.assertEqual([j["title"] for j in request["core"]["jobs"]], ["Standartlar Günü postu"])
+        self.assertEqual(request["core"]["digest"]["ozu"]["risk"]["title"], "Rabam reels")
+        self.assertEqual([m["text"] for m in request["teams_elsewhere"]], ["Akşam toplantısı 5'te."])
+        self.post(desk, self.activity("Bir daha?", mention=True))
+        self.assertEqual(reader.calls, 1)  # cached for 15 minutes
+
+    def test_basecamp_failure_is_reported_not_invented_and_a_stale_copy_is_used(self):
+        self.assertEqual(self.core(CoreReader([], fail=True))(date(2026, 10, 13))["basecamp"],
+                         {"unavailable": "RuntimeError"})
+        ok = self.core(CoreReader([core_item("WAT story", "2026-10-14", WAT)]))
+        ok(date(2026, 10, 13))
+        self.now += timedelta(hours=1)
+        stale = self.core(CoreReader([], fail=True))(date(2026, 10, 13))["basecamp"]
+        self.assertEqual((stale["stale"], [i["title"] for i in stale["items"]]), (True, ["WAT story"]))
 
 
 class Context(TeamsBase):
