@@ -52,6 +52,10 @@ MAX_INPUT_BYTES = 15_000        # model.MAX_INPUT_BYTES is 16 000
 CAPS = {"events": 12, "overdue": 6, "due_today": 4, "next_week": 6, "jobs": 5}
 REF = {"events": "e", "overdue": "g", "due_today": "b", "next_week": "h", "jobs": "i"}
 NOTHING_THIS_WEEK = "Bu hafta kayda geçen bir gelişme yok."
+FORGOT_TITLE = "Bir şey unutuldu mu?"
+FORGOT_ASK = "Haftayı kapatmadan bakalım: bugün teslimi olup açık kalanlar, bu hafta verilen sözler, tarihi gelmiş müşteri işleri."
+FORGOT_NONE = "Açıkta kalan bir şey görünmüyor."
+FORGOT_MAX = 8
 FOOTER = ("Hamle AI Müşteri Temsilcisi · Gamechangers haftalık marka özeti · Her cuma 14:00 · "
           "Hamle'nin gelişimi ve eğitimi için Basecamp ve Google Docs kullanımlarınız çok önemlidir.")
 URL_IN_TEXT = re.compile(r"\s*\(?https?://[^\s()]+\)?")
@@ -305,6 +309,20 @@ def _at(names):
     return (" " + " ".join("@" + n for n in names)) if names else ""
 
 
+def forgotten(brands, day):
+    """Code-built 'Bir şey unutuldu mu?' rows across brands: open items due today, promises recorded this week,
+    open client jobs whose date has come. Only items from the material; nothing judged or invented."""
+    rows, iso = [], day.isoformat()
+    for b in brands:
+        tag = f" · {b['name']}"
+        rows += [(f"“{t['title']}” bugün teslim, hâlâ açık{_at(t['who'])}{tag}", t["url"]) for t in b["due_today"]]
+        rows += [(f"Söz: {e['title']} ({_date(e['date'])}){tag}", e.get("url")) for e in b["events"]
+                 if e.get("kind") == "soz"]
+        rows += [(f"Müşteri işi: “{j['title']}” tarihi {_date(j['due_on'])}, durum {j['state']}{_at(j['who'])}{tag}",
+                  j["url"]) for j in b["jobs"] if j.get("due_on") and j["due_on"] <= iso and j.get("state") in OPEN_JOB_STATES]
+    return rows[:FORGOT_MAX]
+
+
 def fallback_lines(b):
     """Deterministic lines straight from the items (no model): one per kind, each with its item's url."""
     lines = []
@@ -387,6 +405,8 @@ def render(day, brands, sections):
         rows = sections[b["key"]]["lines"]
         lines += [f"{ICONS[r['kind']]} {r['text']}" + (f" · {r['url']}" if r["url"] else "") for r in rows] \
             or ["- " + NOTHING_THIS_WEEK]
+    lines += ["", dd._upper_tr(FORGOT_TITLE), FORGOT_ASK]
+    lines += [f"🔎 {t}" + (f" · {u}" if u else "") for t, u in forgotten(brands, day)] or ["- " + FORGOT_NONE]
     lines += ["", FOOTER]
     return "\n".join(lines)
 
@@ -404,6 +424,11 @@ def render_html(day, brands, sections):
         out.append(dd._ul([dd._li(f"{ICONS[r['kind']]} " + (dd._a(r["url"], r["text"], False) if r["url"]
                                                             else dd._e(r["text"]))) for r in rows])
                    if rows else dd._p(dd._grey(NOTHING_THIS_WEEK)))
+    out.append(dd._h2(FORGOT_TITLE))
+    out.append(dd._p(dd._e(FORGOT_ASK), f"color:{dd.GREY};"))
+    forgot = forgotten(brands, day)
+    out.append(dd._ul([dd._li("🔎 " + (dd._a(u, t, False) if u else dd._e(t))) for t, u in forgot])
+               if forgot else dd._p(dd._grey(FORGOT_NONE)))
     out.append(f'<div style="margin-top:26px;padding-top:8px;border-top:1px solid #e5e7eb;font-size:12px;'
                f'color:{dd.GREY};">{dd._e(FOOTER)}</div>')
     return ('<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="margin:0;padding:0;">'

@@ -321,6 +321,29 @@ class Model(Base):
         self.assertEqual(len(calls), 1)
 
 
+class Forgotten(unittest.TestCase):
+    def test_open_today_promises_and_due_client_jobs_close_the_mail(self):
+        day = date(2026, 10, 16)
+        b = {"key": "wat_mobilite", "name": "WAT Mobilite", "overdue": [], "next_week": [],
+             "due_today": [{"title": "Reels seti", "due_on": "2026-10-16", "who": ["Özge"], "url": "https://3.basecamp.com/1/t/1"}],
+             "events": [{"date": "2026-10-14", "kind": "soz", "title": "Berkay KV'yi pazartesi iletecek", "url": None},
+                        {"date": "2026-10-14", "kind": "teslim", "title": "Banner teslim", "url": None}],
+             "jobs": [{"title": "Story revizesi", "state": "open", "due_on": "2026-10-15", "who": [], "url": None},
+                      {"title": "Eski iş", "state": "closed", "due_on": "2026-10-10", "who": [], "url": None},
+                      {"title": "Kasım işi", "state": "open", "due_on": "2026-11-02", "who": [], "url": None}]}
+        rows = ws.forgotten([b], day)
+        self.assertEqual([t for t, _ in rows], [
+            "“Reels seti” bugün teslim, hâlâ açık @Özge · WAT Mobilite",
+            "Söz: Berkay KV'yi pazartesi iletecek (14 Ekim) · WAT Mobilite",
+            "Müşteri işi: “Story revizesi” tarihi 15 Ekim, durum open · WAT Mobilite"])
+        sections = {"wat_mobilite": {"lines": []}}
+        text = ws.render(day, [b], sections)
+        self.assertIn("\nBİR ŞEY UNUTULDU MU?\n" + ws.FORGOT_ASK + "\n🔎 “Reels seti”", text)
+        self.assertIn("Bir şey unutuldu mu?", ws.render_html(day, [b], sections))
+        empty = dict(b, due_today=[], events=[], jobs=[])
+        self.assertIn("- " + ws.FORGOT_NONE, ws.render(day, [empty], sections))
+
+
 class Wiring(unittest.TestCase):
     def test_worker_flag_statuses_and_package(self):
         import package_chain_source as pkg
