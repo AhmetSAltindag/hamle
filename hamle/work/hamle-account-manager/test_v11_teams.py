@@ -15,7 +15,12 @@ import v11_client_job as cj
 import v11_client_watch as cw
 import v11_teams as teams
 from autonomy_policy import scope_digest
-from test_anthropic_routing import FakeClient, KEY, message
+from test_anthropic_routing import FakeClient, KEY, message as _message
+
+
+def message(output=None, **kw):  # Teams answers run on Haiku (role teams_answer)
+    kw.setdefault("model_id", "claude-haiku-5-5")
+    return _message(output, **kw)
 from test_v11_client_watch import Base
 from v11_client_reply import validate_reply
 
