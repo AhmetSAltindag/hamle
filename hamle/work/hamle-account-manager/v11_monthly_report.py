@@ -237,6 +237,15 @@ def job_rows(jobs, brand, first, last):
     return out
 
 
+LINE_ONLY = ("jobs_since", "month_first")  # for the code-written numbers line, not the model input
+
+
+def jobs_since(jobs):
+    """The local day Hamle's client-job record starts (its oldest job, any brand), or None without jobs."""
+    stamps = [t for j in jobs or [] for t in (bm._ts(j.get("created_at")), bm._ts(j.get("opened_at"))) if t is not None]
+    return _local_day(min(stamps)).isoformat() if stamps else None
+
+
 def _read_memory(ops, brand, first):
     def read(tx, _):
         return tx.get(bm.month_key(brand, first)), tx.get(bm.profile_key(brand))
@@ -304,8 +313,9 @@ def gather(ops, key, info, first, last, *, opened_items, recordings, account, jo
                "basecamp_complete": complete,
                "jobs_opened": sum(1 for j in jrows if j["_opened"]), "jobs_closed": sum(1 for j in jrows if j["_closed"]),
                "client_revisions": sum(j["client_notes"] for j in jrows),
+               "jobs_since": jobs_since(jobs),
                "events_by_kind": {k: kinds[k] for k in bm.KINDS if kinds[k]}, "events_total": len(events),
-               "memory_days": f"{len(days_done)}/{(last - first).days + 1}"}
+               "memory_days": f"{len(days_done)}/{(last - first).days + 1}", "month_first": first.isoformat()}
     b = {"key": key, "name": info["name"], "label": dd.BRAND_LABELS.get(pid, info["name"]), "numbers": numbers,
          "events": events, "completed": completed, "opened": opened, "overdue": overdue, "next_month_due": upcoming,
          "jobs": jrows, "promises": promises, "decisions": decisions, "omitted": 0}
@@ -361,7 +371,8 @@ def model_input(b, first, last):
     nxt_first, nxt_last = next_month(first)
     inp = {"month": {"from": first.isoformat(), "to": last.isoformat(), "name": month_name(first)},
            "next_month": {"from": nxt_first.isoformat(), "to": nxt_last.isoformat()},
-           "brand": {"key": b["key"], "name": b["name"]}, "numbers": dict(b["numbers"], ref=NUMBERS_REF)}
+           "brand": {"key": b["key"], "name": b["name"]}, "numbers": dict({k: v for k, v in b["numbers"].items() if k not in LINE_ONLY},
+                                                                    ref=NUMBERS_REF)}
     for part in CAPS:
         inp[part] = [{k: v for k, v in x.items() if v not in (None, [], "")} for x in b[part]]
     inp["omitted"] = b["omitted"]
@@ -526,6 +537,16 @@ def _date(iso):
     return f"{d.day} {dd.MONTHS[d.month - 1]}"
 
 
+def _jobs_note(n):
+    """Client mail jobs are recorded only since Hamle began keeping them; a month before that is not 'zero'."""
+    since = n.get("jobs_since")
+    if since is None:
+        return " (Hamle henüz müşteri mail işi kaydı tutmuyordu)"
+    if since > n["month_first"]:
+        return f" (Hamle bu kaydı {_date(since)} tarihinde tutmaya başladı)"
+    return ""
+
+
 def number_lines(n):
     """'Sayılarla ay', written by code from the computed numbers."""
     at_least = "" if n["basecamp_complete"] else "en az "
@@ -533,7 +554,7 @@ def number_lines(n):
     out = [f"Basecamp: {at_least}{n['todos_opened']} iş açıldı, {at_least}{n['todos_completed']} iş tamamlandı "
            f"({n['completed_late']} tanesi teslim tarihinden sonra), ay sonunda {n['overdue_at_month_end']} iş gecikmişti",
            f"Müşteri mail işleri: {n['jobs_opened']} açıldı, {n['jobs_closed']} kapandı · Müşteri revize / ek notu: "
-           f"{n['client_revisions']}",
+           f"{n['client_revisions']}{_jobs_note(n)}",
            f"Marka hafızası: {n['events_total']} olay ({kinds}) · işlenen gün {n['memory_days']}"]
     if not n["basecamp_complete"]:
         out.append("Basecamp sayfaları ayın başına kadar okunamadı; açılan / tamamlanan sayıları eksik olabilir.")

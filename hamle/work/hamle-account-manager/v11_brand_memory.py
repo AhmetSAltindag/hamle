@@ -18,7 +18,7 @@ worker.py --mode brand_memory (NON-default, no scheduler entry yet). For every c
    A day is done once (days_done); a failed model call leaves its days open for a later run.
 
 Live run: the last LIVE_DAYS completed Istanbul days. Backfill (backfill_from, at most BACKFILL_MAX_DAYS back):
-week windows that never cross a month, at most MAX_CALLS_PER_RUN model calls and run_seconds per run; the next run
+week windows that never cross a month (a window whose answer overflows max_tokens is halved and retried), at most MAX_CALLS_PER_RUN model calls and run_seconds per run; the next run
 continues. Same fences as every writer: global stop ('dur') or a new control generation and the budget overrun
 hold stop every write; the internal model cap and the monthly budget gate every model call. Nothing is ever
 written to Basecamp, Gmail or Teams. brand_memory_context() is the reader for prompts (Teams CoreContext).
@@ -664,7 +664,9 @@ def run_brand_memory(ops, *, catalog, basecamp, model, clock, mail=None, book=No
                 row["status"] = "read_failed:" + _code(exc)
                 store.note(brand, status=row["status"])
                 continue
-            for first, last in wins:
+            queue = list(wins)
+            while queue:
+                first, last = queue.pop(0)
                 if day_start(first) < covered:
                     row["status"] = "basecamp_truncated"  # older pages not reached: never marked done on a gap
                     continue
@@ -689,6 +691,11 @@ def run_brand_memory(ops, *, catalog, basecamp, model, clock, mail=None, book=No
                 try:
                     output = model(request)
                 except Exception as exc:
+                    if "response_max_tokens" in _code(exc) and last > first:
+                        mid = first + timedelta(days=(last - first).days // 2)  # a busy window: halve and retry
+                        queue[:0] = [(first, mid), (mid + timedelta(days=1), last)]
+                        report["split"] = report.get("split", 0) + 1
+                        continue
                     row["status"] = "model_failed:" + _code(exc)  # the days stay open; nothing invented
                     store.note(brand, status=row["status"])
                     continue
