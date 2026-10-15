@@ -149,12 +149,13 @@ class Numbers(Base):
                      "- Gönderilmeyen taslak: 1 (gönderilmemesi istendi 1, onay gelmedi 0, zincirde daha yeni mail "
                      "vardı 0)",
                      "- Ekibe bırakılan (Hamle yanıt yazmadı): 1",
-                     "- Hamle'nin kendi yanıtları: ortanca 10 dk, 10 yanıttan 9'u 20 dk içinde (2 yanıt)",
-                     "- Onayla giden yanıtlar: ortanca 1 sa (1 yanıt)",
+                     "- Hamle'nin kendi yanıtları (2 yanıt): ortanca 10 dk, en uzunu 20 dk",
+                     "- Onayla giden yanıtlar (1 yanıt): ortanca 1 sa",
                      "- Ekibin kendi yanıt süresi: henüz kaydedilmiyor.",
                      "- Açılan müşteri işi: 3",
-                     "- Müşteriye teslim edilen: 2 (Hamle 90+ puanla gönderdi 1, yönetici onayıyla 1; 1 tanesi "
-                     "WhatsApp işi, ekip iletti)",
+                     "- Müşteriye teslim edilen: 2 (Hamle 90+ puanla onayladı 1, yönetici onayladı 1). Bu 2 teslimin "
+                     "1 tanesi WhatsApp işiydi; dosyayı müşteriye ekip iletti",
+                     "Dönem: 1 – 31 Ekim 2026 (müşteri maili kayıtları 13 Ekim'de başladı)",
                      "- İlk kontrolde geçen teslim: 1/2 (%50, yaklaşık)",
                      "- Hamle'nin tasarıma istediği revize turu: 1",
                      "- Müşterinin ek notu ya da revize isteği: 1",
@@ -180,6 +181,19 @@ class Numbers(Base):
         text = self.text()
         self.assertIn("- Dijital karne: 2 × 60 dk = 2,0 saat", text)
         self.assertNotIn("Teams'te cevaplanan mesaj: 7 ×", text)
+
+    def test_p90_needs_ten_replies_and_no_start_note_when_older_records_exist(self):
+        data = self.ops.backend.data
+        keys = []
+        for n in range(10):
+            data[f"a{n}"] = mail("wat_mobilite", "sent", "2026-10-20T09:00:00+03:00", 60 * (n + 1))
+            keys.append(f"a{n}")
+        data["client-day-20261020"] = {"message_keys": keys}
+        data["client-day-20260925"] = {"message_keys": []}
+        self.go()
+        text = self.text()
+        self.assertIn("- Hamle'nin kendi yanıtları (12 yanıt): ortanca 6 dk, 10 yanıttan 9'u 10 dk içinde", text)
+        self.assertIn("Dönem: 1 – 31 Ekim 2026\n", text)
 
     def test_helpers(self):
         self.assertEqual([hk.duration(s) for s in (5, 600, 3660, 90000)], ["5 sn", "10 dk", "1 sa 1 dk", "1 gün 1 sa"])

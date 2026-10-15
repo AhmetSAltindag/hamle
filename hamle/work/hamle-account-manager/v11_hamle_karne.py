@@ -194,6 +194,18 @@ def _read(ops, keys):
     return ops._run(op, allow_expired=True)
 
 
+def records_start(ops, first, last):
+    """The first day of the month with a client-day record when none exists in the 31 days before the month (the
+    record started inside this month), else None."""
+    before = [first - timedelta(days=n) for n in range(1, 32)]
+    if any(_read(ops, [KEYS["client_day"](d) for d in before]).values()):
+        return None
+    days = days_of(first, last)
+    got = _read(ops, [KEYS["client_day"](d) for d in days])
+    start = next((d for d in days if got[KEYS["client_day"](d)]), None)
+    return start if start is not None and start > first else None
+
+
 def client_mails(ops, first, last):
     """The month's real client mail rows (test and shadow rows left out), day by day (one small read per day)."""
     rows = []
@@ -231,7 +243,7 @@ def mail_numbers(rows, brands):
             "unknown": by_state["send_unknown"] + by_state["sending"], "draft_only": by_state[None],
             "by_brand": [(brands.get(k, {}).get("name") or str(k), n) for k, n in per_brand.most_common()],
             "auto_median": percentile(auto_t, 50) if auto_t else None,
-            "auto_p90": percentile(auto_t, 90) if auto_t else None,
+            "auto_p90": percentile(auto_t, 90) if auto_t else None, "auto_max": max(auto_t) if auto_t else None,
             "approved_median": percentile(appr_t, 50) if appr_t else None,
             "timed_auto": len(auto_t), "timed_approved": len(appr_t)}
 
@@ -318,7 +330,7 @@ def saved_minutes(n, minutes):
 def gather(ops, brands, first, last, minutes, jobs):
     n = {"mails": mail_numbers(client_mails(ops, first, last), brands), "jobs": job_numbers(jobs, first, last),
          "promises": promise_numbers(ops, brands, first, last), "outputs": output_numbers(ops, brands, first, last),
-         "cost": cost_numbers(ops, first)}
+         "cost": cost_numbers(ops, first), "start": records_start(ops, first, last)}
     n["saved"] = saved_minutes(n, minutes)
     return n
 
@@ -363,16 +375,18 @@ def sections(n, minutes):
         mails.append(f"Gönderimi belirsiz kalan (tekrar denenmedi): {m['unknown']}")
     if m["draft_only"]:
         mails.append(f"Yanıt modu açık olmayan markalarda yalnız taslak: {m['draft_only']}")
-    timing = [("Hamle'nin kendi yanıtları: ortanca " + duration(m["auto_median"])
-               + f", 10 yanıttan 9'u {duration(m['auto_p90'])} içinde ({m['timed_auto']} yanıt)")
+    spread = (f"10 yanıttan 9'u {duration(m['auto_p90'])} içinde" if m["timed_auto"] >= 10
+              else f"en uzunu {duration(m['auto_max'] or 0)}")
+    timing = [(f"Hamle'nin kendi yanıtları ({m['timed_auto']} yanıt): ortanca " + duration(m["auto_median"])
+               + f", {spread}")
               if m["auto_median"] is not None else "Hamle'nin kendi yanıtı yok.",
-              ("Onayla giden yanıtlar: ortanca " + duration(m["approved_median"]) + f" ({m['timed_approved']} yanıt)")
+              (f"Onayla giden yanıtlar ({m['timed_approved']} yanıt): ortanca " + duration(m["approved_median"]))
               if m["approved_median"] is not None else "Onayla giden yanıt yok.",
               f"Ekibin kendi yanıt süresi: {NOT_RECORDED}."]
     jobs = [f"Açılan müşteri işi: {j['opened']}",
-            f"Müşteriye teslim edilen: {j['delivered']} (Hamle 90+ puanla gönderdi {j['auto']}, yönetici onayıyla "
-            f"{j['approved']}" + (f"; {j['team_ready']} tanesi WhatsApp işi, ekip iletti" if j["team_ready"] else "")
-            + ")",
+            f"Müşteriye teslim edilen: {j['delivered']} (Hamle 90+ puanla onayladı {j['auto']}, yönetici onayladı "
+            f"{j['approved']})" + (f". Bu {j['delivered']} teslimin {j['team_ready']} tanesi WhatsApp işiydi; dosyayı "
+                                   "müşteriye ekip iletti" if j["team_ready"] else ""),
             f"İlk kontrolde geçen teslim: {j['first_pass']}/{j['delivered']} ({pct(j['first_pass'], j['delivered'])}, "
             "yaklaşık)" if j["delivered"] else "İlk kontrolde geçen teslim: teslim yok.",
             f"Hamle'nin tasarıma istediği revize turu: {j['revision_rounds']}",
@@ -385,8 +399,7 @@ def sections(n, minutes):
                                                       "digital_karne", "client_summary")] \
         + [f"Teams'te cevaplanan mesaj (yaklaşık): {o['teams_answer']}"]
     cost = ([f"Kayıtlı harcama (model ve bulut): {usd(c['spent'])}"
-             + (f", aylık {usd(c['limit'])} sınırının {pct(c['spent'], c['limit'])}'i" if c["limit"] else ""),
-             f"Bunun iç ajans zincirine giden kısmı: {usd(c['chain'])}"]
+             + (f", aylık {usd(c['limit'])} sınırının {pct(c['spent'], c['limit'])}'i" if c["limit"] else "")]
             if c is not None else ["Bu ayın bütçe kaydı alınamadı."])
     saved = ([f"Toplam: yaklaşık {hours(s['total'])} (tahmini)"]
              + [f"{MINUTE_LABELS[k]}: {count} × {minutes[k]} dk = {hours(total)}" for k, count, total in s["rows"]]
@@ -397,12 +410,13 @@ def sections(n, minutes):
             ("Kazandırılan zaman (tahmini)", saved)]
 
 
-def _period(first, last):
-    return f"{first.day} – {last.day} {month_name(first)}"
+def _period(first, last, start=None):
+    note = f" (müşteri maili kayıtları {start.day} {dd.MONTHS[start.month - 1]}'de başladı)" if start else ""
+    return f"{first.day} – {last.day} {month_name(first)}" + note
 
 
 def render(n, first, last, minutes):
-    lines = [subject(first), f"Dönem: {_period(first, last)}", INTRO, "", dd._upper_tr("Ayın özeti"),
+    lines = [subject(first), f"Dönem: {_period(first, last, n.get('start'))}", INTRO, "", dd._upper_tr("Ayın özeti"),
              summary(n, first)]
     for title, rows in sections(n, minutes):
         lines += ["", dd._upper_tr(title)] + ["- " + r for r in rows]
@@ -411,7 +425,7 @@ def render(n, first, last, minutes):
 
 def render_html(n, first, last, minutes):
     out = [f'<div style="font-size:19px;font-weight:bold;margin:0 0 4px;">{dd._e(subject(first))}</div>',
-           dd._p(dd._e(f"Dönem {_period(first, last)}"), f"color:{dd.GREY};"), dd._p(dd._grey(INTRO)),
+           dd._p(dd._e(f"Dönem {_period(first, last, n.get('start'))}"), f"color:{dd.GREY};"), dd._p(dd._grey(INTRO)),
            dd._h2("Ayın özeti"), dd._p(dd._e(summary(n, first)))]
     for title, rows in sections(n, minutes):
         out += [dd._h2(title), dd._ul([dd._li(dd._e(r)) for r in rows])]
