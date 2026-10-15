@@ -225,6 +225,32 @@ class Backfill(Memory):
         self.assertEqual(self.month()["days_done"], ["2026-10-10", "2026-10-11"])
 
 
+    def test_a_window_whose_answer_overflows_is_halved_and_retried(self):
+        self.bc.rows = {(WAT, "Todo"): [todo(1, "Eylül kampanyası", "2026-09-22T09:00:00Z")]}
+        self.mails, seen = [], []
+        def model(request):
+            w = request["window"]
+            seen.append((w["from"], w["to"]))
+            if w["from"] != w["to"] and (w["from"], w["to"]) != ("2026-09-20", "2026-09-21"):
+                raise bm.BrandMemoryError("model_failed_no_retry:response_max_tokens")
+            return mem_out([event(w["from"], title="Eylül kampanyası açıldı", kind="talep")]
+                           if w["from"] <= "2026-09-22" <= w["to"] else [])
+        r = self.go(backfill_from="2026-09-20", model=model, max_calls=9)
+        self.assertEqual(seen[:4], [("2026-09-20", "2026-09-26"), ("2026-09-20", "2026-09-23"),
+                                    ("2026-09-22", "2026-09-23"), ("2026-09-22", "2026-09-22")])  # 20-21 Sep: no call
+        self.assertNotIn("status", r["brands"]["wat_mobilite"])
+        self.assertGreaterEqual(r["split"], 3)
+        self.assertEqual(self.month(m="202609")["days_done"][:7], [f"2026-09-{d}" for d in range(20, 27)])
+        self.assertEqual([e["title"] for e in self.month(m="202609")["events"]], ["Eylül kampanyası açıldı"])
+
+    def test_a_single_day_that_overflows_stays_open(self):
+        def model(request):
+            raise bm.BrandMemoryError("model_failed_no_retry:response_max_tokens")
+        r = self.go(model=model)
+        self.assertEqual(r["brands"]["wat_mobilite"]["status"], "model_failed:model_failed_no_retry:response_max_tokens")
+        self.assertNotIn("split", r)
+
+
 class Fences(Memory):
     def test_stop_before_the_run_reads_and_writes_nothing(self):
         self.ops.stop("ahmet@gamechangers.com.tr")

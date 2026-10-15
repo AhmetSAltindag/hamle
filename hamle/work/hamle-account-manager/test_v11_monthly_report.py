@@ -369,6 +369,19 @@ class Material(Base):
         self.assertFalse(b["numbers"]["basecamp_complete"])
         self.assertIn("en az 0 iş açıldı", mr.number_lines(b["numbers"])[0])
 
+    def test_a_month_before_the_client_job_record_says_so_instead_of_zero(self):
+        n = {"todos_opened": 1, "todos_completed": 1, "completed_late": 0, "overdue_at_month_end": 0,
+             "basecamp_complete": True, "jobs_opened": 0, "jobs_closed": 0, "client_revisions": 0,
+             "events_by_kind": {}, "events_total": 0, "memory_days": "30/30", "month_first": "2026-09-01"}
+        line = lambda since: mr.number_lines(dict(n, jobs_since=since))[1]
+        self.assertTrue(line("2026-10-13").endswith("(Hamle bu kaydı 13 Ekim tarihinde tutmaya başladı)"))
+        self.assertTrue(line("2026-09-10").endswith("(Hamle bu kaydı 10 Eylül tarihinde tutmaya başladı)"))
+        self.assertTrue(line(None).endswith("(Hamle henüz müşteri mail işi kaydı tutmuyordu)"))
+        self.assertTrue(line("2026-08-01").endswith("Müşteri revize / ek notu: 0"))
+        at = int(datetime(2026, 10, 13, 9, tzinfo=__import__('datetime').timezone.utc).timestamp())
+        self.assertEqual(mr.jobs_since([{"created_at": at}, {"opened_at": at + 86400}, {}]), "2026-10-13")
+        self.assertIsNone(mr.jobs_since([]))
+
     def test_input_is_bounded_and_the_oldest_least_important_go_first(self):
         data = self.ops.backend.data["brand-memory-wat_mobilite-202610"]
         data["events"] = [event(f"2026-10-{d % 28 + 1:02d}", "bilgi" if d % 2 else "teslim", f"Olay {d} " + "uzun " * 15,
