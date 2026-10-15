@@ -1,7 +1,7 @@
 """Hamle Teams service: a small always-on Cloud Run SERVICE for the Teams bot (separate from the 15-minute jobs).
 
   POST /api/messages   Bot Framework activities (v11_teams.TeamsDesk.handle)
-  GET  /healthz        200 'ok' (no store, no secret)
+  GET  /health         200 'ok' (no store, no secret; /healthz is reserved by Cloud Run)
 
 WSGI app for the gunicorn already in the image:
   gunicorn --bind :$PORT --workers 1 --threads 4 'teams_service:create_app()'
@@ -118,7 +118,7 @@ def create_app(desk_factory=None):
 
     def app(env, start):
         path, method = env.get("PATH_INFO") or "/", env.get("REQUEST_METHOD") or "GET"
-        if path == "/healthz":
+        if path in ("/health", "/healthz"):
             return respond(start, 200, {"status": "ok"})
         if path != "/api/messages":
             return respond(start, 404, {"status": "not_found"})

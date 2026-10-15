@@ -551,7 +551,8 @@ class Description(Karne):
         html, text = kw.description("Rabam", ALARM_MON, reds, "alarm")
         self.assertTrue(text_matches(html, text))
         flat = " ".join(text.split())
-        self.assertTrue(flat.startswith("Haftalık site alarmı · Rabam · 26 Ekim 2026 🔴 1 acil sorun buldum."), flat)
+        self.assertTrue(flat.startswith("🔴 KIRMIZI ALARM: 1 acil konu var, bugün ele alınmalı. "
+                                        "Haftalık site alarmı · Rabam · 26 Ekim 2026 🔴 1 acil sorun buldum."), flat)
         self.assertIn("🔴 Hemen ele alınmalı • Site: SSL sertifikasının süresi 10 gün içinde doluyor.", flat)
         self.assertIn("Ayrıntılı karne her ayın ilk pazartesi gelir.", flat)
         self.assertNotIn("Özet:", flat)
@@ -740,7 +741,8 @@ class Prospect(Karne):
         self.assertEqual((inp["purpose"], inp["website"], inp["period_from"], inp["socials"], inp["app_reviews"]),
                          ("prospect", "https://hanspaces.com", "2026-09-19", {}, []))
         flat = " ".join(r["text"].split())
-        self.assertTrue(flat.startswith("Ön Dijital Karne · HAN Spaces · Ekim 2026 (19 Ekim 2026)"), flat)
+        self.assertTrue(flat.startswith("🔴 KIRMIZI ALARM: 1 acil konu var, bugün ele alınmalı. "
+                                        "Ön Dijital Karne · HAN Spaces · Ekim 2026 (19 Ekim 2026)"), flat)
         self.assertIn("Hamle'nin özeti: Site yavaş, iletişimde fırsat var.", flat)
         self.assertIn("Mobil hız skoru düşük: 31/100 (PageSpeed).", flat)
         self.assertIn("💡 Fırsatlar • Fırsat: Kasım'daki ofis fuarı.", flat)
@@ -777,6 +779,11 @@ class NbFake:
     """The New Business project: comments POSTed on a to-do and read back."""
     def __init__(self):
         self.calls, self.comments, self.next_id, self.fail_post, self.mangle = [], {}, 9000, None, False
+        self.todo = {"id": NB_TODO, "creator": {"id": 47470759, "name": "Ahmet Şükrü Altındağ",
+                                                "email_address": "ahmet@gamechangers.com.tr",
+                                                "attachable_sgid": "sgid-ahmet-123"},
+                     "assignees": [{"id": 48793256, "name": "Cansu Akiş Kabil", "attachable_sgid": "sgid-cansu-123"},
+                                   {"id": HAMLE_PERSON, "name": "Hamle AI", "attachable_sgid": "sgid-hamle-123"}]}
 
     def send(self, method, url, body, expected):
         self.calls.append((method, url, body))
@@ -787,13 +794,21 @@ class NbFake:
             if self.fail_post:
                 raise self.fail_post
             self.next_id += 1
+            saved = re.sub(r'<bc-attachment sgid="([^"]+)"></bc-attachment>',  # Basecamp renders a mention
+                           r'<bc-attachment sgid="\1" content-type="application/vnd.basecamp.mention">'
+                           r'<figure><figcaption>Kişi</figcaption></figure></bc-attachment>', body["content"])
             self.comments[self.next_id] = {"id": self.next_id, "parent": {"id": int(m[1])}, "bucket": {"id": NB},
                                            "creator": {"id": HAMLE_PERSON}, "visible_to_clients": False,
-                                           "content": body["content"] + ("<div>x</div>" if self.mangle else "")}
+                                           "content": saved + ("<div>x</div>" if self.mangle else "")}
             return {"id": self.next_id}, {}
         m = re.fullmatch(rf"/{ACC}/buckets/{NB}/comments/(\d+)\.json", path)
         if m and method == "GET":
             return dict(self.comments[int(m[1])]), {}
+        m = re.fullmatch(rf"/{ACC}/buckets/{NB}/todos/(\d+)\.json", path)
+        if m and method == "GET":
+            if self.todo is None:
+                raise ConnectionError("todo unreadable")
+            return dict(self.todo, id=int(m[1])), {}
         raise AssertionError(url)
 
     def posts(self):
@@ -840,17 +855,38 @@ class ProspectRequests(Karne):
         self.assertEqual((r["status"], r["done"], r["model_calls"], r["business_writes"]),
                          ("prospect_karne_completed", 1, 1, 1), r)
         [post] = self.nb.posts()
-        self.assertTrue(post.startswith("<div>Ahmet, HAN Spaces için ön karne hazır.</div>"), post)
+        # Ahmet 15 Oct: the brand's people are tagged (assignee Cansu + the asker Ahmet, never Hamle) and the
+        # karne opens with how urgent it is
+        self.assertTrue(post.startswith('<div><bc-attachment sgid="sgid-cansu-123"></bc-attachment> '
+                                        '<bc-attachment sgid="sgid-ahmet-123"></bc-attachment> '
+                                        'Ahmet, HAN Spaces için ön karne hazır.</div>'), post)
+        self.assertNotIn("sgid-hamle", post)
         flat = " ".join(kw._visible(post).split())
-        self.assertIn("Ön Dijital Karne · HAN Spaces · Ekim 2026", flat)
+        self.assertIn("hazır. 🔴 KIRMIZI ALARM: 1 acil konu var, bugün ele alınmalı. Ön Dijital Karne · HAN Spaces", flat)
         self.assertIn("Mobil hız skoru düşük: 31/100 (PageSpeed).", flat)
         self.assertIn("Fırsat: Kasım'daki ofis fuarı.", flat)
-        self.assertIn(f"/buckets/{NB}/recordings/{NB_TODO}/comments.json", self.nb.calls[0][1])
+        self.assertIn(f"/buckets/{NB}/todos/{NB_TODO}.json", self.nb.calls[0][1])
+        self.assertIn(f"/buckets/{NB}/recordings/{NB_TODO}/comments.json", self.nb.calls[1][1])
         row = self.row(key)
         self.assertEqual((row["state"], row["comment_id"], row["research"], row["attempts"]),
                          ("ready", 9001, "1_sourced", 1))
         self.assertEqual(self.run_requests()["done"], 0)  # never twice
         self.assertEqual(len(self.nb.posts()), 1)
+
+    def test_an_unreadable_todo_only_drops_the_tags(self):
+        self.queue()
+        self.nb.todo = None
+        r = self.run_requests()
+        self.assertEqual(r["done"], 1, r)
+        [post] = self.nb.posts()
+        self.assertTrue(post.startswith("<div>Ahmet, HAN Spaces için ön karne hazır.</div>"), post)
+
+    def test_severity_line_follows_the_worst_finding(self):
+        self.assertEqual(kw.severity({"kirmizi": 2, "sari": 1}), "🔴 KIRMIZI ALARM: 2 acil konu var, bugün ele alınmalı.")
+        self.assertEqual(kw.severity({"kirmizi": 0, "sari": 3}),
+                         "🟡 SARI ALARM: 3 konu dikkat istiyor, bu hafta bakılmalı.")
+        self.assertEqual(kw.severity({"kirmizi": 0, "sari": 0, "yesil": 4}),
+                         "🔵 BİLGİ: acil ya da dikkat isteyen bir konu yok, bilgin olsun.")
 
     def test_without_research_the_requests_wait(self):
         key = self.queue()
