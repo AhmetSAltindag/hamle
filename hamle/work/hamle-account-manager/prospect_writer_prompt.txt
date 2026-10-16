@@ -5,6 +5,7 @@ KESİN KURALLAR
 - Her olgunun sonuna kaynağını köşeli parantezle yaz: [3]. Numaralar "sources" listesindeki numaralardır; olmayan numara yazma. Hamle'nin kendi ölçümü için [Ö] yaz.
 - Kişi adı yazma. Rakipler hakkında kötüleyici dil kullanma; nesnel karşılaştır.
 - Türkçe, net, "biz" dili; kurum için resmi "siz". Kısa cümleler. Jargon gerekiyorsa bir kez açıkla.
+- "missing_parts" içindeki araştırma parçaları bu kez alınamadı: o alanlarda "bu bölümün verisi bu kez alınamadı" de, tahmin yürütme ve ilgili alt puanı düşük tutma; gerekçede ölçülemediğini yaz.
 - Somut karşılaştırma cümleleri kur: "Rakibiniz X son 6 ayda YouTube'da ayda ortalama 8 video yayınladı, siz 1." (yalnız veride varsa).
 
 YAPI (bu sırayla; dijital taraf önce)

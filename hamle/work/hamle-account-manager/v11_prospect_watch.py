@@ -80,6 +80,10 @@ SECTIONS = (("channels", "Kanal karnesi · son 6 ay"), ("balance", "Kanallar ara
             ("message", "Ana mesaj ve anahtar kelime uyumu"), ("algorithm", "Algoritmaya uygunluk"),
             ("web", "Web sitesi"), ("google", "Google görünürlüğü"), ("competitors", "Rakiplerle kıyas"),
             ("company", "Kurum künyesi ve son 12 ay"), ("risks", "Fırsatlar ve riskler"))
+# Owner 2026-10-16: the research runs part by part (small calls, 3 searches each), then one strategist merges them;
+# one big call with 10 searches outgrew the input limit (usage_limit_exceeded). A failed part leaves a gap, not a void.
+REPORT_PARTS = (("channels", ("channels", "message")), ("google", ("google",)), ("competitors", ("competitors",)),
+                ("company", ("company", "campaigns", "regulation")))
 PLATFORMS = ("instagram", "linkedin", "youtube", "tiktok", "x", "facebook")
 CATEGORIES = ("demo_or_first_contact", "research_request", "known_client_new_person", "vendor_or_job", "spam",
               "unsure")
@@ -615,7 +619,9 @@ def _schemas():
                    "moves": _arr(_obj({"title": _str(160), "why": _str(500), "what": _str(600),
                                        "measure": _str(300), "first_30_days": _str(400)}), 3),
                    "meeting_notes": _arr(_str(300), 6), "mail": _str(5000)})
-    return {"classify": classify, "research": research, "reply": reply, "report": report, "writer": writer}
+    parts = {name: _obj({k: report["properties"][k] for k in keys}) for name, keys in REPORT_PARTS}
+    return {"classify": classify, "research": research, "reply": reply, "report": report, "writer": writer,
+            "report_parts": parts}
 
 
 REPLY_INPUT_KEYS = ("today", "language", "category", "domain_kind", "first_name", "company", "known_brand",
@@ -670,9 +676,10 @@ def model_sources(ops, load_key, catalog, settings, *, routing=None, client=None
         return ModelGate(ledger=ops, cache=ops, generation=ops.control()["generation"], cap_microdollars=cap)
 
     def make(kind):
-        route, schema = routes[kind], schemas[kind]
+        route = routes[kind]
 
         def call(request):
+            schema = schemas["report_parts"][request["part"]] if kind == "report" else schemas[kind]
             _need(gates[kind](), "model_budget_unavailable")
             system = render_prompt(kind, settings)
             digest = source_digest("prospect_" + kind, request, route_fingerprint(route, PROMPTS[kind]), _sha(system))
@@ -1938,41 +1945,68 @@ class ProspectWatch:
             r = tx.get(key)
             if r is None or r.get("state") != state or r.get(field, 0) > now:
                 return None
-            r.update({field: now + 1800})
+            r.update({field: now + REPORT_HOLD_SECONDS})
             tx.put(key, r)
             return r
         return self.ops._run(claim)
 
     def _research(self, key, row, report):
         """Approved by the owner (run 1 of 2): Hamle's own measurements (site, sitemap, YouTube and Instagram official
-        APIs, the karne's site checks) + one deep web-search research call; the data is kept on the request."""
+        APIs, the karne's site checks), then the web research PART BY PART (REPORT_PARTS): each part is kept on the
+        request as soon as it is done, so a stopped run goes on where it left off and one failed part is only a gap."""
         from v11_footprint import collect
         if not self.models.budget_ok("report"):
             return "waiting_for_model_budget"
         if self._claim(key, "approved", "research_lease") is None:
             return "busy"
         today = self.clock().astimezone(ISTANBUL).date()
-        measured = collect(row["domain"], self.web, today, youtube_key=self.footprint.get("youtube"),
-                           instagram=self.footprint.get("instagram")) if self.web is not None else {"notes": ["web_off"]}
-        karne = self._karne(row.get("company"), row["domain"]) if self.web is not None else {"status": "skipped"}
-        measured["site_checks"] = karne.get("text") if karne.get("status") == "ok" else None
-        request = {"domain": row["domain"], "website": "https://" + row["domain"],
-                   "company": {k: (row.get("company") or {}).get(k) for k in ("name", "sector")},
-                   "request_text": _line(row.get("request_text"), 1500), "language": row.get("language") or "tr",
-                   "today": today.isoformat(), "measured": _compact(measured)}
         try:
-            report["model_calls"] += 1
-            output = self.models.report(request)
-            status = "ok"
-        except Exception as exc:
-            output, status = None, "failed:" + _code(exc)
-        if output is None:
-            return self._fail(key, row, ("approved",), status, report)
-        data = json.dumps({"measured": request["measured"], "research": output}, ensure_ascii=False)
+            measured = json.loads(row["measured_json"]) if row.get("measured_json") else None
+        except ValueError:
+            measured = None
+        if measured is None:
+            measured = collect(row["domain"], self.web, today, youtube_key=self.footprint.get("youtube"),
+                               instagram=self.footprint.get("instagram")) if self.web is not None else {"notes": ["web_off"]}
+            karne = self._karne(row.get("company"), row["domain"]) if self.web is not None else {"status": "skipped"}
+            measured["site_checks"] = karne.get("text") if karne.get("status") == "ok" else None
+            measured = _compact(measured)
+            self._set_request(key, ("approved",), measured_json=json.dumps(measured, ensure_ascii=False)[:200_000])
+        try:
+            parts = json.loads(row.get("research_parts") or "{}")
+        except ValueError:
+            parts = {}
+        base_request = {"domain": row["domain"], "website": "https://" + row["domain"],
+                        "company": {k: (row.get("company") or {}).get(k) for k in ("name", "sector")},
+                        "request_text": _line(row.get("request_text"), 1500), "language": row.get("language") or "tr",
+                        "today": today.isoformat(), "measured": measured}
+        for name, keys in REPORT_PARTS:
+            if name in parts:
+                continue
+            if self._elapsed() > REPORT_HOLD_SECONDS - 900:  # leave room for the strategist; the next run goes on
+                self._set_request(key, ("approved",), research_lease=0)
+                return "busy"
+            try:
+                report["model_calls"] += 1
+                parts[name] = self.models.report(dict(base_request, part=name, collect_only=list(keys)))
+            except Exception as exc:
+                parts[name] = {"failed": "failed:" + _code(exc)}
+                report.setdefault("report_failures", []).append(f"{name}:" + parts[name]["failed"])
+            self._set_request(key, ("approved",), research_parts=json.dumps(parts, ensure_ascii=False)[:300_000])
+        failed = [n for n, v in parts.items() if "failed" in v]
+        if len(failed) == len(REPORT_PARTS):
+            return self._fail(key, row, ("approved",), parts[REPORT_PARTS[0][0]]["failed"], report)
+        research = {"evidence": sorted({u for v in parts.values() for u in (v.get("evidence") or [])}),
+                    "missing_parts": failed}
+        for name, keys in REPORT_PARTS:
+            for k in keys:
+                research[k] = (parts.get(name) or {}).get(k)
+        data = json.dumps({"measured": measured, "research": research}, ensure_ascii=False)
         if len(data) > 400_000:
             return self._fail(key, row, ("approved",), "research_too_large", report)
         try:
-            self._set_request(key, ("approved",), state="researched", research_json=data, research_status=status)
+            self._set_request(key, ("approved",), state="researched", research_json=data,
+                              research_status="ok" if not failed else "partial:" + ",".join(failed),
+                              research_parts=None, measured_json=None)
         except Exception:
             return "changed"
         return "researched"
@@ -2009,7 +2043,8 @@ class ProspectWatch:
         request = {"company": label, "domain": row["domain"], "language": row.get("language") or "tr",
                    "first_name": row.get("first_name"), "today": self.clock().astimezone(ISTANBUL).date().isoformat(),
                    "request_text": _line(row.get("request_text"), 1500), "measured": data.get("measured"),
-                   "research": research, "sources": [{"n": i, "url": u} for i, u in enumerate(sources, 1)]}
+                   "research": research, "missing_parts": (data.get("research") or {}).get("missing_parts") or [],
+                   "sources": [{"n": i, "url": u} for i, u in enumerate(sources, 1)]}
         try:
             report["model_calls"] += 1
             written = self.models.writer(request)

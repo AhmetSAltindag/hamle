@@ -513,7 +513,7 @@ def run_track(store, *, read_task_status, verify_latest_sent_receipt=None, clock
 
 
 # Worker statuses that end the job with exit code 0; anything else exits 2.
-OK_STATUSES = ("stopped", "review_required", "already_recorded", "read_verified", "internal_actions_readback_verified",
+OK_STATUSES = ("budget_overrun_report", "overrun_hold_released", "overrun_hold_already_clear", "stopped", "review_required", "already_recorded", "read_verified", "internal_actions_readback_verified",
                "slot_already_claimed", "no_new_work", "work_status_read_verified", "chain_tick_completed", "digest_sent",
                "credential_review_ready", "reconciled_not_sent", "budget_expiry_extended", "already_current",
                "research_probe_ok", "model_actual_settled", "billed_total_settled", "nb_tracking_completed",
@@ -533,7 +533,8 @@ def main(argv=None):
                                            "reconcile_model_holds", "extend_authorization",
                                            "research_probe", "settle_model_actual", "settle_billed_total",
                                            "digital_karne", "brand_memory", "weekly_summary", "monthly_report",
-                                           "hamle_karne", "prospect_watch"),
+                                           "hamle_karne", "prospect_watch", "budget_overrun_report",
+                                           "release_overrun_hold"),
                         required=True)
     parser.add_argument("--proposal-id")
     parser.add_argument("--work-id")
@@ -688,6 +689,13 @@ def main(argv=None):
                           "titles": [t.get("title") for t in trends][:5], "business_writes": 0}
             except Exception as exc:
                 result = {"status": "held", "reason": _safe_error(exc), "day": day.isoformat(), "business_writes": 0}
+        elif args.mode == "budget_overrun_report":
+            # Operator read-only: budget totals + the calls that cost more than their hold.
+            result = store.overrun_report()
+        elif args.mode == "release_overrun_hold":
+            # Operator one-shot, only on the owner's own word: lift the overrun stop; money stays counted.
+            _require(args.evidence, "release_evidence_required")
+            result = store.release_overrun_hold(args.evidence)
         elif args.mode == "extend_authorization":
             # Operator one-shot: Firestore budget expiry -> runtime_authority.AUTHORIZATION_DEADLINE.
             result = store.extend_budget_expiry("ahmet-decision-3-2026-10-11-no-end-date")

@@ -904,7 +904,9 @@ class ResearchRequests(Base):
         self.bc.human(todo["id"], OWNER_ID, "  ONAYLIYORUM ")
         r = self.run_once()  # one run: measurements + research, then the strategist writes
         self.assertEqual((r["requests"]["approved"], r["requests"]["researched"], r["requests"]["reports"]), (1, 1, 1))
-        self.assertEqual([k for k in self.models.kinds() if k in ("report", "writer")], ["report", "writer"])
+        self.assertEqual([k for k in self.models.kinds() if k in ("report", "writer")], ["report"] * 4 + ["writer"])
+        self.assertEqual([r["part"] for k, r in self.models.calls if k == "report"],
+                         ["channels", "google", "competitors", "company"])  # part by part, digital first
         req = dict(self.models.calls)["report"]
         self.assertEqual(req["domain"], "acmeyapi.com.tr")
         self.assertIn("measured", req)
@@ -968,8 +970,29 @@ class ResearchRequests(Base):
         self.models.budget["writer"] = True
         r = self.run_once()
         self.assertEqual(r["requests"]["reports"], 1)
-        self.assertEqual(self.models.kinds().count("report"), 1)  # no second research
+        self.assertEqual(self.models.kinds().count("report"), 4)  # no second research
         self.assertEqual(self.get(pw.request_key("a1"))["state"], "report_ready")
+
+    def test_a_failed_part_is_a_gap_not_a_failed_report(self):
+        todo = self.opened()
+        self.bc.human(todo["id"], OWNER_ID, "OK GO")
+        self.models.out["report"] = [reported(), RuntimeError("usage_limit_exceeded"), reported(), reported()]
+        r = self.run_once()
+        self.assertEqual(r["requests"]["reports"], 1)
+        self.assertEqual(len(r["report_failures"]), 1)
+        self.assertTrue(r["report_failures"][0].startswith("google:failed:"))
+        self.assertEqual(dict(self.models.calls)["writer"]["missing_parts"], ["google"])
+        row = self.get(pw.request_key("a1"))
+        self.assertEqual((row["state"], row["research_status"], row["research_parts"]),
+                         ("report_ready", "partial:google", None))
+
+    def test_all_parts_failing_fails_the_request_once(self):
+        todo = self.opened()
+        self.bc.human(todo["id"], OWNER_ID, "OK GO")
+        self.models.out["report"] = [RuntimeError("boom")] * 5
+        self.run_once()
+        self.assertEqual(self.get(pw.request_key("a1"))["state"], "failed")
+        self.assertNotIn("writer", self.models.kinds())
 
     def test_writer_failure_is_said_once_on_the_todo(self):
         todo = self.opened()
@@ -1375,7 +1398,7 @@ class Wiring(unittest.TestCase):
         self.assertEqual(r.route("prospect_classifier").model, "claude-haiku-5-5")
         self.assertIsNone(r.route("prospect_classifier").web_search)
         self.assertEqual(r.route("prospect_research").web_search["max_uses"], 2)
-        self.assertEqual(r.route("prospect_report").web_search["max_uses"], 8)
+        self.assertEqual(r.route("prospect_report").web_search["max_uses"], 3)
         self.assertIsNone(r.route("prospect_writer").web_search)
 
     def test_scheduler_plan(self):
