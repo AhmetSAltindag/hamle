@@ -1,7 +1,8 @@
 """Haftalık marka özeti (Ahmet 2026-10-15: "her hafta marka için kısa haftalık özet çıkartan").
 
 worker.py --mode weekly_summary (NON-default, no scheduler entry). Once per ISO week, at the first run on Friday
-at/after 14:00 Istanbul (WINDOW 14:00-15:00; any other day or time is a no-op), ONE internal plain-Turkish mail
+at/after 14:00 Istanbul (WINDOW 14:00-18:00, so the 17:00 scheduler runs are a catch-up; any other day or time
+is a no-op), ONE internal plain-Turkish mail
 (+ HTML twin) from Hamle to the daily digest's recipients (daily-digest-config.json: @gamechangers.com.tr only,
 never clients). Subject "Hamle AI: 16 Ekim Cuma Haftalık Marka Özeti". One section per catalog brand (brand_routes
 without 'gamechangers' and 'new_biz', the brand memory's 8 brands), 1-5 short lines: what happened, what was
@@ -44,7 +45,7 @@ ISTANBUL = ZoneInfo("Europe/Istanbul")
 PROMPT = Path(__file__).with_name("weekly_summary_prompt.txt")
 ROLE = "weekly_summary"
 WEEKDAY = 4                     # Friday
-WINDOW = ("14:00", "15:00")     # first run at/after 14:00 Istanbul; later is "too late" (no-op)
+WINDOW = ("14:00", "18:00")     # first run at/after 14:00 Istanbul; 17:00/17:30 runs catch up a missed one
 KINDS = ("oldu", "teslim", "risk", "gelecek")
 ICONS = {"oldu": "📌", "teslim": "✅", "risk": "⚠️", "gelecek": "📅"}
 MAX_LINES = 5
