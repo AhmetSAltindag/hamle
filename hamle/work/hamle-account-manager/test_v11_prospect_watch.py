@@ -95,26 +95,47 @@ def researched(title="Pazarlama Direktörü", match="clear", person_url="https:/
             "evidence": ["https://acmeyapi.com.tr", "https://acmeyapi.com.tr/ekip"]}
 
 
-def reported(mail_text=None):
-    return {"summary": "Kurum yapı malzemesi üretiyor; dijitalde katalog ağırlıklı.",
-            "observations": [{"text": "Sitede ürün kataloğu öne çıkıyor.", "url": "https://acmeyapi.com.tr"},
-                             {"text": "Uydurma gözlem.", "url": "https://baska.example.com/x"}],
+def reported():
+    """The data step of the Dijital Ayak İzi Raporu (owner 2026-10-16): facts with URLs, no prose."""
+    return {"company": {"name": "Acme Yapı", "sector": "Yapı malzemeleri",
+                        "facts": [{"text": "Konut projeleri için yapı malzemesi üretir.", "url": "https://acmeyapi.com.tr"}]},
+            "channels": [{"platform": "linkedin", "url": "https://www.linkedin.com/company/acme", "status": "weak",
+                          "facts": [{"text": "Son gönderi 3 ay önce.", "url": "https://www.linkedin.com/company/acme"}]}],
+            "message": {"umbrella_message": "Sağlam yapı", "site_keywords": ["yapı", "katalog"],
+                        "facts": [{"text": "Uydurma gözlem.", "url": "https://baska.example.com/x"}]},
+            "google": [{"query": "yapı malzemesi", "result": "not_first_page", "url": None}],
+            "competitors": [{"name": "Rakip A", "domain": "rakipa.com.tr",
+                             "facts": [{"text": "YouTube'da ayda 8 video.", "url": "https://rakipa.com.tr/video"}]}],
             "campaigns": [{"text": "Bahar kataloğu kampanyası.", "url": "https://acmeyapi.com.tr/bahar",
                            "date": "2026-04-01"}],
-            "first_moves": [{"text": "Katalogu kısa videolara bölmek.", "basis_url": "https://acmeyapi.com.tr"},
-                            {"text": "Proje hikâyeleri.", "basis_url": "https://acmeyapi.com.tr/bahar"},
-                            {"text": "Arama görünürlüğü.", "basis_url": "https://acmeyapi.com.tr"}],
+            "regulation": [],
+            "evidence": ["https://acmeyapi.com.tr", "https://acmeyapi.com.tr/bahar",
+                         "https://www.linkedin.com/company/acme", "https://rakipa.com.tr/video"]}
+
+
+def written(mail_text=None):
+    """The strategist step: score, sections, comparison, 3 moves, mail draft."""
+    return {"score": {"total": 46, "parts": [{"name": n, "score": 40 + i, "note": "Gerekçe [1]."}
+                                             for i, n in enumerate(pw.SCORE_PARTS)]},
+            "headline": "Acme Yapı dijitalde katalog gibi duruyor [1].",
+            "summary": ["Instagram ölçülemedi [Ö].", "LinkedIn zayıf [2].", "Rakip A ayda 8 video yayınlıyor [3]."],
+            "sections": [{"key": "risks", "rag": "amber", "paragraphs": ["Fırsat büyük [9]."], "bullets": []},
+                         {"key": "channels", "rag": "red", "paragraphs": ["Sitede 1 sosyal kanal bağlantısı var [Ö]."],
+                          "bullets": ["YouTube: kanal yok."]}],
+            "competitor_rows": [{"metric": "YouTube video/ay", "us": "0 [Ö]", "them": ["Rakip A: 8 [3]"]}],
+            "moves": [{"title": f"Hamle {i}", "why": "Rakip A ayda 8 video [3].", "what": "Katalogu kısa videolara bölmek.",
+                       "measure": "Ayda 8 video.", "first_30_days": "İlk 8 video."} for i in (1, 2, 3)],
+            "meeting_notes": ["Video ekibi var mı?"],
             "mail": mail_text if mail_text is not None else
-            "Merhaba Deniz,\nİstediğiniz değerlendirmeyi hazırladık: https://acmeyapi.com.tr\nSevgiler,\nHamle AI\nGamechangers",
-            "evidence": ["https://acmeyapi.com.tr", "https://acmeyapi.com.tr/bahar"]}
+            "Merhaba Deniz,\nİstediğiniz değerlendirmeyi hazırladık: https://acmeyapi.com.tr\nSevgiler,\nHamle AI\nGamechangers"}
 
 
 class Models:
     def __init__(self):
         self.calls = []
         self.out = {"classify": [classified()], "research": [researched()], "reply": [{"reply": reply_text()}],
-                    "report": [reported()]}
-        self.budget = {"classify": True, "research": True, "reply": True, "report": True}
+                    "report": [reported()], "writer": [written()]}
+        self.budget = {"classify": True, "research": True, "reply": True, "report": True, "writer": True}
         self.models = {}
         for kind in self.out:
             setattr(self, kind, self._make(kind))
@@ -881,29 +902,78 @@ class ResearchRequests(Base):
         self.run_once()
         self.assertNotIn("report", self.models.kinds())
         self.bc.human(todo["id"], OWNER_ID, "  ONAYLIYORUM ")
-        r = self.run_once()
-        self.assertEqual(r["requests"]["approved"], 1)
-        self.assertEqual(r["requests"]["reports"], 1)
+        r = self.run_once()  # one run: measurements + research, then the strategist writes
+        self.assertEqual((r["requests"]["approved"], r["requests"]["researched"], r["requests"]["reports"]), (1, 1, 1))
+        self.assertEqual([k for k in self.models.kinds() if k in ("report", "writer")], ["report", "writer"])
         req = dict(self.models.calls)["report"]
         self.assertEqual(req["domain"], "acmeyapi.com.tr")
+        self.assertIn("measured", req)
         self.assertNotIn("Deniz Kaya", json.dumps(req, ensure_ascii=False))
+        wreq = dict(self.models.calls)["writer"]
+        self.assertEqual([x["url"] for x in wreq["sources"]],
+                         ["https://acmeyapi.com.tr", "https://www.linkedin.com/company/acme",
+                          "https://rakipa.com.tr/video", "https://acmeyapi.com.tr/bahar"])
+        self.assertNotIn("Uydurma gözlem", json.dumps(wreq, ensure_ascii=False))  # unverified URL: fact dropped
         comment = max(c["id"] for c in self.bc.comments.values() if c["creator"]["id"] == HAMLE_ID)
         text = self.bc.comment_text(comment)
-        for part in ("Araştırma raporu", "Sitede ürün kataloğu öne çıkıyor.", "Biz olsak ilk 3 hamlemiz",
-                     "Katalogu kısa videolara bölmek.", "Kaynağı doğrulanamayan 1 madde", "Hamle gönder"):
+        for part in ("Dijital Ayak İzi Raporu · Acme Yapı", "Dijital Ayak İzi Skoru: 46/100", "Öne çıkan 3 bulgu",
+                     "Biz olsak ilk 3 hamlemiz", "Katalogu kısa videolara bölmek.", "Kaynaklar", "Hamle gönder"):
             self.assertIn(part, text)
-        self.assertNotIn("Uydurma gözlem", text)
+        self.assertLess(text.index("Kanal karnesi"), text.index("Fırsatlar ve riskler"))  # fixed order, digital first
         html = self.bc.comments[comment]["content"]
-        for tag in ("<h1>Araştırma raporu", "<strong>Özet</strong>", "<ol><li>Katalogu", "<blockquote>Merhaba Deniz,",
-                    '<a href="https://acmeyapi.com.tr">(kaynak)</a>'):
+        for tag in ("<h1>Dijital Ayak İzi Raporu · Acme Yapı (acmeyapi.com.tr)</h1>", '<a href="https://rakipa.com.tr/video">[3]</a>',
+                    "<em>[Hamle ölçümü]</em>", "<blockquote>Merhaba Deniz,"):
             self.assertIn(tag, html)
+        self.assertNotIn("[9]", html)  # a number that is not a source is dropped
+        self.assertIn("Fırsat büyük.", html)
+        row = self.get(pw.request_key("a1"))
+        self.assertEqual((row["state"], row["research_json"], row["report_mail_ok"]), ("report_ready", None, True))
         self.assertEqual(len(self.writer.writes), 1)  # the report has NOT gone to the prospect
+        owner = self.copies.writes[-1]  # the designed report goes to the owner's mailbox
+        self.assertEqual((owner["to"], owner["subject"]), ([OWNER], "Hamle AI · Dijital Ayak İzi Raporu · Acme Yapı (acmeyapi.com.tr)"))
+        self.assertIn("DİJİTAL AYAK İZİ RAPORU", owner["html"])
+        self.assertIn(pw.ACCENT, owner["html"])
+        self.assertIn("Biz olsak ilk 3 hamlemiz", owner["body"])
         return todo
+
+    def test_ok_go_also_approves(self):
+        todo = self.opened()
+        self.bc.human(todo["id"], OWNER_ID, "Ok - go!")
+        r = self.run_once()
+        self.assertEqual((r["requests"]["approved"], r["requests"]["reports"]), (1, 1))
+        for text in ("go go", "OK, gidelim", "goo"):
+            self.assertFalse(pw.is_approval(_html(text)), text)
+        for text in ("OK GO", "ok go.", "GO", "Onaylıyorum!"):
+            self.assertTrue(pw.is_approval(_html(text)), text)
+
+    def test_research_is_kept_and_written_next_run_when_the_writer_waits(self):
+        todo = self.opened()
+        self.bc.human(todo["id"], OWNER_ID, "Onaylıyorum")
+        self.models.budget["writer"] = False
+        r = self.run_once()
+        self.assertEqual((r["requests"]["researched"], r["requests"]["reports"]), (1, 0))
+        self.assertEqual(self.get(pw.request_key("a1"))["state"], "researched")
+        self.models.budget["writer"] = True
+        r = self.run_once()
+        self.assertEqual(r["requests"]["reports"], 1)
+        self.assertEqual(self.models.kinds().count("report"), 1)  # no second research
+        self.assertEqual(self.get(pw.request_key("a1"))["state"], "report_ready")
+
+    def test_writer_failure_is_said_once_on_the_todo(self):
+        todo = self.opened()
+        self.bc.human(todo["id"], OWNER_ID, "Onaylıyorum")
+        self.models.out["writer"] = [RuntimeError("boom")]
+        self.run_once()
+        self.assertEqual(self.get(pw.request_key("a1"))["state"], "failed")
+        last = max(c["id"] for c in self.bc.comments.values() if c["creator"]["id"] == HAMLE_ID)
+        self.assertIn("tamamlayamadım", self.bc.comment_text(last))
+        self.run_once()
+        self.assertEqual(self.models.kinds().count("writer"), 1)
 
     def test_long_report_is_never_cut_in_the_middle_of_the_mail(self):
         long_mail = ("Merhaba Deniz,\n" + "\n".join(f"Gözlem paragrafı {i}: " + "x" * 300 for i in range(14))
                      + "\nSevgiler,\nHamle AI\nGamechangers")
-        self.models.out["report"] = [reported(mail_text=long_mail)]
+        self.models.out["writer"] = [written(mail_text=long_mail)]
         self.approved()
         comment = max(c["id"] for c in self.bc.comments.values() if c["creator"]["id"] == HAMLE_ID)
         text = self.bc.comment_text(comment)
@@ -1012,6 +1082,22 @@ class Retention(Base):
 
 # ------------------------------------------------------------------ real model plumbing (FakeClient)
 class Models_(Base):
+    def test_report_fixtures_match_the_strict_schemas(self):
+        from v11_chain_models import validate
+        schemas = pw._schemas()
+        validate({k: v for k, v in reported().items() if k != "evidence"}, schemas["report"])
+        validate(written(), schemas["writer"])
+        bad = written()
+        bad["score"]["total"] = 140
+        with self.assertRaises(Exception):
+            validate(bad, schemas["writer"])
+
+    def test_youtube_falls_back_to_the_projects_google_key(self):
+        class S:
+            def access(self, name):
+                raise KeyError(name)
+        self.assertEqual(pw._footprint(S(), "AIza-psi"), {"youtube": "AIza-psi", "instagram": None})
+
     def test_routes_and_isolation_through_the_model_gate(self):
         from test_anthropic_research import research_message
         cited = "https://acmeyapi.com.tr"
@@ -1022,7 +1108,8 @@ class Models_(Base):
         models = pw.model_sources(self.ops, lambda: KEY, CATALOG, self.settings, routing=model_routing.load(),
                                   client=client)
         self.assertEqual(models.models, {"classify": "claude-haiku-5-5", "research": "claude-opus-5-5",
-                                         "reply": "claude-opus-5-5", "report": "claude-opus-5-5"})
+                                         "reply": "claude-opus-5-5", "report": "claude-opus-5-5",
+                                         "writer": "claude-opus-5-5"})
         self.models = models
         self.mails = [mail(1)]
         r = self.run_once()
@@ -1182,8 +1269,9 @@ class TestRequests(Base):
         r = self.watch().run_test_requests()
         self.assertEqual(r["requests"]["sent"], 1)
         self.assertEqual(self.writer.writes, [])  # never the prospect
-        self.assertEqual(len(self.copies.writes), 1)
-        sent = self.copies.writes[0]
+        self.assertEqual(len(self.copies.writes), 2)  # the designed report, then the test 'send'
+        self.assertTrue(self.copies.writes[0]["subject"].startswith("Hamle AI · Dijital Ayak İzi Raporu"))
+        sent = self.copies.writes[1]
         self.assertEqual(sent["to"], [OWNER])
         self.assertTrue(sent["subject"].startswith("TEST · Hamle AI araştırma raporu"))
         self.assertIn("Kuruma hiçbir şey gönderilmedi", sent["body"])
@@ -1191,7 +1279,7 @@ class TestRequests(Base):
         last = max(c["id"] for c in self.bc.comments.values() if c["creator"]["id"] == HAMLE_ID)
         self.assertIn("yalnız sana", self.bc.comment_text(last))
         self.watch().run_test_requests()
-        self.assertEqual(len(self.copies.writes), 1)
+        self.assertEqual(len(self.copies.writes), 2)
 
     def test_test_run_leaves_real_requests_alone(self):
         self.mails = [mail(1, subject="Araştırma", text="Merhaba, kurumumuzu araştırır mısınız?\nDeniz")]
@@ -1252,7 +1340,8 @@ class Wiring(unittest.TestCase):
         self.assertEqual(r.route("prospect_classifier").model, "claude-haiku-5-5")
         self.assertIsNone(r.route("prospect_classifier").web_search)
         self.assertEqual(r.route("prospect_research").web_search["max_uses"], 2)
-        self.assertEqual(r.route("prospect_report").web_search["max_uses"], 8)
+        self.assertEqual(r.route("prospect_report").web_search["max_uses"], 10)
+        self.assertIsNone(r.route("prospect_writer").web_search)
 
     def test_scheduler_plan(self):
         from pathlib import Path

@@ -118,7 +118,7 @@ class RoutingConfig(NoNetwork):
             self.assertIn(r.route(role).effort, model_routing.EFFORTS)  # effort always explicit
         for role in model_routing.WEB_SEARCH_ROLES:  # the monthly karne searches more (Ahmet 2026-10-14)
             self.assertEqual(r.route(role).web_search, {"type": "web_search_20260209",
-                                                        "max_uses": {"digital_karne": 8, "prospect_report": 8,
+                                                        "max_uses": {"digital_karne": 8, "prospect_report": 10,
                                                                      "prospect_research": 2}.get(role, 4),
                                                         "fee_microdollars": 10_000}, role)
         self.assertIsNone(r.route("chain_interpreter").web_search)

@@ -70,9 +70,17 @@ REQUESTS_KEY = "prospect-watch-requests"
 PURGE_KEY = "prospect-watch-purge"
 HERE = Path(__file__).resolve().parent
 PROMPTS = {"classify": HERE / "prospect_classifier_prompt.txt", "research": HERE / "prospect_research_prompt.txt",
-           "reply": HERE / "prospect_reply_prompt.txt", "report": HERE / "prospect_report_prompt.txt"}
+           "reply": HERE / "prospect_reply_prompt.txt", "report": HERE / "prospect_report_prompt.txt",
+           "writer": HERE / "prospect_writer_prompt.txt"}
 ROLES = {"classify": "prospect_classifier", "research": "prospect_research", "reply": "customer_text",
-         "report": "prospect_report"}
+         "report": "prospect_report", "writer": "prospect_writer"}
+SCORE_PARTS = ("Kanal varlığı ve aktiflik", "Frekans ve süreklilik", "Kanallar arası denge",
+               "Mesaj ve anahtar kelime tutarlılığı", "Algoritmaya uygunluk ve etkileşim", "Web ve Google görünürlüğü")
+SECTIONS = (("channels", "Kanal karnesi · son 6 ay"), ("balance", "Kanallar arası denge"),
+            ("message", "Ana mesaj ve anahtar kelime uyumu"), ("algorithm", "Algoritmaya uygunluk"),
+            ("web", "Web sitesi"), ("google", "Google görünürlüğü"), ("competitors", "Rakiplerle kıyas"),
+            ("company", "Kurum künyesi ve son 12 ay"), ("risks", "Fırsatlar ve riskler"))
+PLATFORMS = ("instagram", "linkedin", "youtube", "tiktok", "x", "facebook")
 CATEGORIES = ("demo_or_first_contact", "research_request", "known_client_new_person", "vendor_or_job", "spam",
               "unsure")
 CATEGORY_TR = {"demo_or_first_contact": "demo / ilk temas", "research_request": "araştırma isteği",
@@ -580,12 +588,34 @@ def _schemas():
                                      "match": enum(("clear", "unclear", "not_found", "not_searched")),
                                      "url": _nstr(300)})})
     reply = _obj({"reply": _str(2500)})
-    report = _obj({"summary": _str(800),
-                   "observations": _arr(_obj({"text": _str(400), "url": _str(300)}), 10),
-                   "campaigns": _arr(_obj({"text": _str(300), "url": _str(300), "date": _nstr(10)}), 5),
-                   "first_moves": _arr(_obj({"text": _str(400), "basis_url": _str(300)}), 3),
-                   "mail": _str(5000)})
-    return {"classify": classify, "research": research, "reply": reply, "report": report}
+    fact = _obj({"text": _str(400), "url": _str(300)})
+    report = _obj({"company": _obj({"name": _nstr(120), "sector": _nstr(160), "facts": _arr(fact, 8)}),
+                   "channels": _arr(_obj({"platform": enum(PLATFORMS), "url": _nstr(300),
+                                          "status": enum(("active", "weak", "inactive", "none", "unknown")),
+                                          "facts": _arr(fact, 5)}), 6),
+                   "message": _obj({"umbrella_message": _nstr(400), "site_keywords": _arr(_str(60), 15),
+                                    "facts": _arr(fact, 6)}),
+                   "google": _arr(_obj({"query": _str(120),
+                                        "result": enum(("first_page", "not_first_page", "unknown")),
+                                        "url": _nstr(300)}), 6),
+                   "competitors": _arr(_obj({"name": _str(120), "domain": _nstr(120), "facts": _arr(fact, 6)}), 3),
+                   "campaigns": _arr(_obj({"text": _str(300), "url": _str(300), "date": _nstr(10)}), 6),
+                   "regulation": _arr(fact, 3)})
+    rag = enum(("green", "amber", "red"))
+    writer = _obj({"score": _obj({"total": {"type": "integer", "minimum": 0, "maximum": 100},
+                                  "parts": _arr(_obj({"name": enum(SCORE_PARTS),
+                                                      "score": {"type": "integer", "minimum": 0, "maximum": 100},
+                                                      "note": _str(300)}), 6)}),
+                   "headline": _str(300), "summary": _arr(_str(400), 3),
+                   "sections": _arr(_obj({"key": enum(k for k, _ in SECTIONS), "rag": rag,
+                                          "paragraphs": _arr(_str(900), 2), "bullets": _arr(_str(400), 6)}),
+                                    len(SECTIONS)),
+                   "competitor_rows": _arr(_obj({"metric": _str(120), "us": _str(200),
+                                                 "them": _arr(_str(200), 3)}), 6),
+                   "moves": _arr(_obj({"title": _str(160), "why": _str(500), "what": _str(600),
+                                       "measure": _str(300), "first_30_days": _str(400)}), 3),
+                   "meeting_notes": _arr(_str(300), 6), "mail": _str(5000)})
+    return {"classify": classify, "research": research, "reply": reply, "report": report, "writer": writer}
 
 
 REPLY_INPUT_KEYS = ("today", "language", "category", "domain_kind", "first_name", "company", "known_brand",
@@ -630,7 +660,7 @@ def model_sources(ops, load_key, catalog, settings, *, routing=None, client=None
     cap = internal_cap_microdollars(catalog)
     routes = {k: routing.route(r) for k, r in ROLES.items()}
     _need(all(r.provider == "anthropic" for r in routes.values()), "prospect_route_not_claude")
-    _need(routes["research"].web_search and routes["report"].web_search
+    _need(routes["research"].web_search and routes["report"].web_search and not routes["writer"].web_search
           and not routes["classify"].web_search and not routes["reply"].web_search, "prospect_route_tools_invalid")
     holds = {k: reservation_for(r) for k, r in routes.items()}
     gates = {k: budget_gate(ops, holds[k], cap) for k in routes}
@@ -662,7 +692,7 @@ def model_sources(ops, load_key, catalog, settings, *, routing=None, client=None
         call.timeout_seconds = route.timeout_seconds
         return call
     return SimpleNamespace(classify=make("classify"), research=make("research"), reply=make("reply"),
-                           report=make("report"), budget_ok=lambda kind: gates[kind](),
+                           report=make("report"), writer=make("writer"), budget_ok=lambda kind: gates[kind](),
                            models={k: r.model for k, r in routes.items()})
 
 
@@ -715,6 +745,209 @@ def _plain(html):
     return "".join(p.parts)
 
 
+# ------------------------------------------------------------------ Dijital Ayak İzi Raporu (owner 2026-10-16)
+RAG = {"green": "🟢", "amber": "🟡", "red": "🔴"}
+REF = re.compile(r"\[(\d{1,3}|Ö)\]")
+ACCENT, INK = "#EBE656", "#111111"
+
+
+def _compact(measured):
+    """The measured data a model sees: no raw page bodies, bounded lists."""
+    m = json.loads(json.dumps(measured, ensure_ascii=False, default=str))
+    for ch in (m.get("channels") or {}).values():
+        for k in ("recent_titles", "recent_captions", "top_tags", "top_hashtags"):
+            if isinstance(ch.get(k), list):
+                ch[k] = ch[k][:10]
+    if isinstance(m.get("site_checks"), str):
+        m["site_checks"] = m["site_checks"][:1500]
+    return m
+
+
+def number_sources(research, measured, domain):
+    """Every https URL the research cites (only those its searches really returned, or the brand's own site) plus
+    the measured channel links, numbered once; facts get 'source': n instead of 'url'."""
+    from v11_trend_search import normalize_url
+    evidence = set(research.get("evidence") or [])
+    urls = []
+
+    def num(url):
+        u = normalize_url(url) if url else None
+        host = (u or "").split("/")[2] if u else ""
+        if u is None or not (u in evidence or _aligned(host, domain)):
+            return None
+        if u not in urls:
+            urls.append(u)
+        return urls.index(u) + 1
+    for ch in (measured.get("channels") or {}).values():
+        num(ch.get("url"))
+
+    def facts(rows):
+        out = []
+        for f in rows or []:
+            n = num(f.get("url"))
+            if n:
+                out.append({"text": f.get("text"), "source": n})
+        return out
+    r = research
+    clean = {"company": {**{k: (r.get("company") or {}).get(k) for k in ("name", "sector")},
+                         "facts": facts((r.get("company") or {}).get("facts"))},
+             "channels": [{"platform": c.get("platform"), "status": c.get("status"),
+                           "source": num(c.get("url")), "facts": facts(c.get("facts"))} for c in r.get("channels") or []],
+             "message": {"umbrella_message": (r.get("message") or {}).get("umbrella_message"),
+                         "site_keywords": (r.get("message") or {}).get("site_keywords"),
+                         "facts": facts((r.get("message") or {}).get("facts"))},
+             "google": [{"query": g.get("query"), "result": g.get("result"), "source": num(g.get("url"))}
+                        for g in r.get("google") or []],
+             "competitors": [{"name": c.get("name"), "domain": c.get("domain"), "facts": facts(c.get("facts"))}
+                             for c in r.get("competitors") or []],
+             "campaigns": [{"text": c.get("text"), "date": c.get("date"), "source": num(c.get("url"))}
+                           for c in r.get("campaigns") or [] if num(c.get("url"))],
+             "regulation": facts(r.get("regulation"))}
+    return urls, clean
+
+
+def _refs(text, sources):
+    """Escaped text with [n] turned into small source links; unknown numbers are dropped."""
+    out, last = [], 0
+    t = str(text or "")
+    for m in REF.finditer(t):
+        out.append(escape(t[last:m.start()], quote=True))
+        n = m.group(1)
+        if n == "Ö":
+            out.append("<em>[Hamle ölçümü]</em>")
+        elif 1 <= int(n) <= len(sources):
+            out.append(f'<a href="{escape(sources[int(n) - 1], quote=True)}">[{n}]</a>')
+        elif out:  # an unknown number is dropped with the space before it
+            out[-1] = out[-1].rstrip()
+        last = m.end()
+    out.append(escape(t[last:], quote=True))
+    return "".join(out)
+
+
+def _sections(written):
+    by = {s["key"]: s for s in written.get("sections") or []}
+    return [(k, title, by[k]) for k, title in SECTIONS if k in by]
+
+
+def render_report(label, written, sources, measured, *, problems, test, today):
+    """Basecamp rich text (h1, strong, lists, links, quote): headings, spacing, never cut."""
+    e = lambda t: escape(str(t), quote=True)  # noqa: E731
+    r = lambda t: _refs(t, sources)  # noqa: E731
+    sc = written.get("score") or {}
+    parts = [f"<h1>Dijital Ayak İzi Raporu · {e(label)}</h1>",
+             f"<strong>Dijital Ayak İzi Skoru: {e(sc.get('total'))}/100</strong>",
+             "<ul>" + "".join(f"<li><strong>{e(p['name'])}: {e(p['score'])}</strong> · {r(p['note'])}</li>"
+                              for p in sc.get("parts") or []) + "</ul>",
+             f"<br><strong>{r(written.get('headline'))}</strong><br>",
+             "<br><strong>Öne çıkan 3 bulgu</strong><ul>" + "".join(f"<li>{r(x)}</li>" for x in written.get("summary") or [])
+             + "</ul>"]
+    for _, title, sec in _sections(written):
+        body = "".join(f"{r(p)}<br><br>" for p in sec.get("paragraphs") or [])
+        if sec.get("bullets"):
+            body += "<ul>" + "".join(f"<li>{r(b)}</li>" for b in sec["bullets"]) + "</ul>"
+        parts.append(f"<br><strong>{RAG.get(sec.get('rag'), '')} {e(title)}</strong><br>{body}")
+    rows = written.get("competitor_rows") or []
+    if rows:
+        parts.append("<br><strong>Yan yana</strong><ul>" + "".join(
+            f"<li><strong>{e(x['metric'])}</strong> · Siz: {r(x['us'])} · " + " · ".join(r(t) for t in x["them"]) + "</li>"
+            for x in rows) + "</ul>")
+    parts.append("<br><strong>Biz olsak ilk 3 hamlemiz</strong><ol>" + "".join(
+        f"<li><strong>{e(m['title'])}</strong><br>Neden: {r(m['why'])}<br>Ne yaparız: {r(m['what'])}<br>"
+        f"Nasıl ölçeriz: {r(m['measure'])}<br>İlk 30 gün: {r(m['first_30_days'])}</li>"
+        for m in written.get("moves") or []) + "</ol>")
+    if written.get("meeting_notes"):
+        parts.append("<br><strong>Görüşme notu (yalnız ekip içi)</strong><ul>"
+                     + "".join(f"<li>{r(x)}</li>" for x in written["meeting_notes"]) + "</ul>")
+    mail = str(written.get("mail") or "").strip()
+    parts.append("<br><strong>Kuruma gidecek mail taslağı</strong><br>"
+                 + (f"<blockquote>{'<br>'.join(e(x) for x in mail.split(chr(10)))}</blockquote>" if mail else "(yok)"))
+    if sources:
+        parts.append("<br><strong>Kaynaklar</strong><ol>" + "".join(
+            f'<li><a href="{e(u)}">{e(u)}</a></li>' for u in sources) + "</ol>")
+    unmeasured = [PLATFORM_LABEL.get(p, p) for p, c in (measured.get("channels") or {}).items() if not c.get("measured")]
+    note = f"Ölçüm tarihi {e(today)}; son 6 ay."
+    if unmeasured:
+        note += " Resmi arayüzle ölçülemeyen kanallar (kısmi): " + e(", ".join(unmeasured)) + "."
+    if problems:
+        todo = ("Mail taslağı kontrolden geçmedi (" + "; ".join(problems) + "). Göndermek istersen düzeltilmiş metni "
+                "\"Hamle gönder\" satırının altına yaz.")
+    elif test:
+        todo = ("Bu bir TEST isteği: \"Hamle gönder\" yazarsan rapor kuruma değil yalnız sana gelir. "
+                "Göndermeyeyim dersen \"Hamle gönderme\" yaz.")
+    else:
+        todo = ("Kuruma göndermem için bu to-do'ya \"Hamle gönder\" yaz (düzeltmek istersen metni bu satırın "
+                "altına yaz). Göndermeyeyim dersen \"Hamle gönderme\" yaz.")
+    parts.append(f"<br><strong>Sıradaki adım</strong><br>{e(todo)}<br><em>{note} Bu rapor yalnız ekip içindir; "
+                 "kuruma kendiliğinden gitmez.</em>")
+    return "<div>" + "".join(parts) + "</div>"
+
+
+PLATFORM_LABEL = {"instagram": "Instagram", "linkedin": "LinkedIn", "youtube": "YouTube", "tiktok": "TikTok",
+                  "x": "X", "facebook": "Facebook"}
+
+
+def render_report_mail(label, written, sources, measured, *, today, link):
+    """The same report as a designed e-mail (inline styles: dark band, yellow-underlined headings, score, table)."""
+    e = lambda t: escape(str(t), quote=True)  # noqa: E731
+    r = lambda t: _refs(t, sources)  # noqa: E731
+    h = lambda t: (f'<h2 style="font:700 18px Arial,sans-serif;color:{INK};margin:28px 0 10px;padding-bottom:6px;'  # noqa: E731
+                   f'border-bottom:3px solid {ACCENT}">{t}</h2>')
+    p = lambda t: f'<p style="font:15px/1.6 Arial,sans-serif;color:#222;margin:0 0 12px">{t}</p>'  # noqa: E731
+    ul = lambda items: ('<ul style="font:15px/1.6 Arial,sans-serif;color:#222;margin:0 0 12px;padding-left:20px">'  # noqa: E731
+                        + "".join(f"<li style=\"margin-bottom:6px\">{i}</li>" for i in items) + "</ul>")
+    sc = written.get("score") or {}
+    bar = "".join(
+        f'<tr><td style="font:14px Arial,sans-serif;color:#222;padding:4px 8px 4px 0">{e(x["name"])}</td>'
+        f'<td style="width:45%;padding:4px 0"><div style="background:#eee;height:10px;border-radius:5px">'
+        f'<div style="background:{ACCENT};height:10px;border-radius:5px;width:{int(x["score"])}%"></div></div></td>'
+        f'<td style="font:700 14px Arial,sans-serif;padding:4px 0 4px 8px">{int(x["score"])}</td></tr>'
+        for x in sc.get("parts") or [])
+    out = [f'<div style="max-width:720px;margin:0 auto;background:#fff">',
+           f'<div style="background:{INK};padding:28px 32px"><div style="font:700 13px Arial,sans-serif;'
+           f'letter-spacing:2px;color:{ACCENT}">HAMLE AI · DİJİTAL AYAK İZİ RAPORU</div>'
+           f'<div style="font:700 26px Arial,sans-serif;color:#fff;margin-top:8px">{e(label)}</div>'
+           f'<div style="font:13px Arial,sans-serif;color:#bbb;margin-top:6px">Ölçüm: {e(today)} · son 6 ay · '
+           f'yalnız ekip içi</div></div><div style="padding:8px 32px 32px">',
+           f'<table style="width:100%;margin-top:24px"><tr><td style="width:150px;vertical-align:top">'
+           f'<div style="font:700 56px Arial,sans-serif;color:{INK}">{e(sc.get("total"))}</div>'
+           f'<div style="font:13px Arial,sans-serif;color:#666">/100 Dijital Ayak İzi Skoru</div></td>'
+           f'<td><table style="width:100%">{bar}</table></td></tr></table>',
+           f'<p style="font:700 18px/1.5 Arial,sans-serif;color:{INK};margin:24px 0 8px;padding:14px 16px;'
+           f'background:#fafae6;border-left:5px solid {ACCENT}">{r(written.get("headline"))}</p>',
+           h("Öne çıkan 3 bulgu"), ul([r(x) for x in written.get("summary") or []])]
+    for _, title, sec in _sections(written):
+        out.append(h(f"{RAG.get(sec.get('rag'), '')} {e(title)}"))
+        out += [p(r(x)) for x in sec.get("paragraphs") or []]
+        if sec.get("bullets"):
+            out.append(ul([r(b) for b in sec["bullets"]]))
+    rows = written.get("competitor_rows") or []
+    if rows:
+        td = 'style="font:14px Arial,sans-serif;color:#222;padding:8px;border-bottom:1px solid #eee;vertical-align:top"'
+        out.append(h("Yan yana") + '<table style="width:100%;border-collapse:collapse">'
+                   + "".join(f"<tr><td {td}><strong>{e(x['metric'])}</strong></td><td {td}>Siz: {r(x['us'])}</td>"
+                             f"<td {td}>{'<br>'.join(r(t) for t in x['them'])}</td></tr>" for x in rows) + "</table>")
+    out.append(h("Biz olsak ilk 3 hamlemiz"))
+    for i, m in enumerate(written.get("moves") or [], 1):
+        out.append(f'<div style="margin:0 0 14px;padding:14px 16px;border:1px solid #eee;border-radius:8px">'
+                   f'<div style="font:700 16px Arial,sans-serif;color:{INK}">{i}. {e(m["title"])}</div>'
+                   + p(f"<strong>Neden:</strong> {r(m['why'])}") + p(f"<strong>Ne yaparız:</strong> {r(m['what'])}")
+                   + p(f"<strong>Nasıl ölçeriz:</strong> {r(m['measure'])}")
+                   + p(f"<strong>İlk 30 gün:</strong> {r(m['first_30_days'])}") + "</div>")
+    if written.get("meeting_notes"):
+        out += [h("Görüşme notu (yalnız ekip içi)"), ul([r(x) for x in written["meeting_notes"]])]
+    mail = str(written.get("mail") or "").strip()
+    if mail:
+        out += [h("Kuruma gidecek mail taslağı"),
+                f'<div style="font:14px/1.6 Arial,sans-serif;color:#333;background:#f6f6f6;padding:14px 16px;'
+                f'border-radius:8px">{"<br>".join(e(x) for x in mail.split(chr(10)))}</div>']
+    if sources:
+        out += [h("Kaynaklar"), '<ol style="font:12px/1.6 Arial,sans-serif;color:#555;padding-left:20px">'
+                + "".join(f'<li><a style="color:#555" href="{e(u)}">{e(u)}</a></li>' for u in sources) + "</ol>"]
+    out.append(p(f'<a href="{e(link)}">Basecamp\'teki to-do</a>: göndermek için orada "Hamle gönder" yazın.')
+               + "</div></div>")
+    return "".join(out)
+
+
 def _visible_matches(actual, expected):
     from v11_nb_tracking import text_matches
     return text_matches(actual, expected)
@@ -759,11 +992,15 @@ def in_window(local, window):
     return window["start"] <= _hm(local) <= last
 
 
+APPROVALS = ("onayliyorum", "ok go", "okgo", "go")
+
+
 def is_approval(content):
-    """Exactly 'Onaylıyorum' (any case, surrounding spaces, an optional final '.' or '!'; İ/ı aware)."""
+    """Exactly 'Onaylıyorum' or 'OK GO' / 'Ok - go' / 'GO' (owner 2026-10-16; any case, spaces, dashes and a final
+    '.' or '!'; İ/ı aware). The caller accepts it only from the owner's verified Basecamp person."""
     from v11_client_reply import comment_text
-    text = " ".join(fold(comment_text(content)).split()).rstrip(".!").strip()
-    return text == "onayliyorum"
+    text = " ".join(re.sub(r"[-–—,]", " ", fold(comment_text(content))).split()).rstrip(".!").strip()
+    return text in APPROVALS
 
 
 # ------------------------------------------------------------------ the watch
@@ -784,11 +1021,12 @@ def request_todo(owner_name, estimate, source, sender, label, facts):
 
 class ProspectWatch:
     def __init__(self, ops, *, settings, book, people, reader, models, http, reply_writer, copy_writer, clock,
-                 web=None, psi_key=None, monotonic=time.monotonic, started_at=None):
+                 web=None, psi_key=None, monotonic=time.monotonic, started_at=None, footprint=None):
         self.ops, self.s, self.cfg, self.book, self.people = ops, settings, settings["cfg"], book, people
         self.reader, self.models, self.http = reader, models, http
         self.reply_writer, self.copy_writer, self.clock = reply_writer, copy_writer, clock
         self.web, self.psi_key, self.monotonic, self.started_at = web, psi_key, monotonic, started_at
+        self.footprint = footprint or {}  # {'youtube': key, 'instagram': {...}} (v11_footprint secrets; optional)
         self.generation, self.lists, self.started = None, None, None
         self.base = f"{API}/{settings['account_id']}/buckets/{settings['project_id']}"
 
@@ -888,7 +1126,22 @@ class ProspectWatch:
         finally:
             self._release(token)
 
+    def _hold(self, seconds):
+        """A deep report runs far longer than one mail run: keep this run's lease for it (no parallel run)."""
+        token = getattr(self, "_token", None)
+
+        def op(tx, now):
+            row = tx.get(RUN_KEY) or {}
+            if token and row.get("token") == token:
+                tx.put(RUN_KEY, dict(row, until=max(row.get("until", 0), now + seconds)))
+        try:
+            self.ops._run(op, allow_expired=True)
+        except Exception:
+            pass
+
     def _lease(self, token):
+        self._token = token
+
         def op(tx, now):
             self._fence(tx, now)
             row = tx.get(RUN_KEY) or {}
@@ -1523,12 +1776,17 @@ class ProspectWatch:
                                   report)
                         out["reminded"] += 1
                     continue
-            if state == "approved":
+            if state in ("approved", "researched"):  # two runs: collect + research, then the strategist writes
                 if reports_left <= 0:
                     out["waiting"] += 1
                     continue
                 reports_left -= 1
-                done = self._research(key, row, report)
+                self._hold(REPORT_HOLD_SECONDS)
+                done = self._research(key, row, report) if state == "approved" else "researched"
+                if done == "researched":  # the strategist writes right away: one run, ~15-25 minutes in all
+                    out["researched"] = out.get("researched", 0) + (state == "approved")
+                    row = self._get(key) or {}
+                    done = self._write(key, row, report) if row.get("state") == "researched" else "changed"
                 out["reports"] += done == "report_ready"
                 continue
             if state == "report_ready":
@@ -1556,37 +1814,97 @@ class ProspectWatch:
                 out["sent"] += result == "sent"
         return out
 
-    def _research(self, key, row, report):
-        """Approved by the owner: karne checks on the site + one web-search report, written as a comment."""
-        if not self.models.budget_ok("report"):
-            return "waiting_for_model_budget"
+    def _claim(self, key, state, field):
         token = uuid.uuid4().hex
 
         def claim(tx, now):
             self._fence(tx, now)
             r = tx.get(key)
-            if r is None or r.get("state") != "approved" or r.get("research_lease", 0) > now:
+            if r is None or r.get("state") != state or r.get(field, 0) > now:
                 return None
-            r.update(research_token=token, research_lease=now + 1800)
+            r.update({field: now + 1800})
             tx.put(key, r)
             return r
-        if self.ops._run(claim) is None:
+        return self.ops._run(claim)
+
+    def _research(self, key, row, report):
+        """Approved by the owner (run 1 of 2): Hamle's own measurements (site, sitemap, YouTube and Instagram official
+        APIs, the karne's site checks) + one deep web-search research call; the data is kept on the request."""
+        from v11_footprint import collect
+        if not self.models.budget_ok("report"):
+            return "waiting_for_model_budget"
+        if self._claim(key, "approved", "research_lease") is None:
             return "busy"
+        today = self.clock().astimezone(ISTANBUL).date()
+        measured = collect(row["domain"], self.web, today, youtube_key=self.footprint.get("youtube"),
+                           instagram=self.footprint.get("instagram")) if self.web is not None else {"notes": ["web_off"]}
         karne = self._karne(row.get("company"), row["domain"]) if self.web is not None else {"status": "skipped"}
+        measured["site_checks"] = karne.get("text") if karne.get("status") == "ok" else None
         request = {"domain": row["domain"], "website": "https://" + row["domain"],
                    "company": {k: (row.get("company") or {}).get(k) for k in ("name", "sector")},
                    "request_text": _line(row.get("request_text"), 1500), "language": row.get("language") or "tr",
-                   "first_name": row.get("first_name"), "today": self.clock().astimezone(ISTANBUL).date().isoformat(),
-                   "site_checks": karne.get("text") if karne.get("status") == "ok" else None}
+                   "today": today.isoformat(), "measured": _compact(measured)}
         try:
             report["model_calls"] += 1
             output = self.models.report(request)
             status = "ok"
         except Exception as exc:
             output, status = None, "failed:" + _code(exc)
-        html, mail, mail_ok, problems = self._report_text(row, output, karne, status)
+        if output is None:
+            return self._fail(key, row, ("approved",), status, report)
+        data = json.dumps({"measured": request["measured"], "research": output}, ensure_ascii=False)
+        if len(data) > 400_000:
+            return self._fail(key, row, ("approved",), "research_too_large", report)
         try:
-            self._set_request(key, ("approved",), state="writing_report", report_status=status)
+            self._set_request(key, ("approved",), state="researched", research_json=data, research_status=status)
+        except Exception:
+            return "changed"
+        return "researched"
+
+    def _fail(self, key, row, expect, status, report):
+        try:
+            self._set_request(key, expect, state="writing_report", report_status=status)
+        except Exception:
+            return "changed"
+        try:
+            report["business_writes"] += 1
+            cid = self._comment(row["todo_id"], "Araştırmayı bu kez tamamlayamadım (" + status + "). Tekrar "
+                                "denemiyorum; istersen yeni bir istek açılabilir.")
+        except Exception as exc:
+            self._set_request(key, ("writing_report",), state="unknown", reason=_code(exc))
+            return "unknown"
+        self._set_request(key, ("writing_report",), state="failed", report_comment_id=cid)
+        return "failed"
+
+    def _write(self, key, row, report):
+        """Run 2 of 2: the strategist writes the Dijital Ayak İzi Raporu from the kept data; the rich report goes on
+        the to-do as one comment and, designed, to the owner's mailbox (team only; the prospect gets nothing)."""
+        if not self.models.budget_ok("writer"):
+            return "waiting_for_model_budget"
+        if self._claim(key, "researched", "write_lease") is None:
+            return "busy"
+        try:
+            data = json.loads(row.get("research_json") or "{}")
+        except ValueError:
+            data = {}
+        label = self._company_label({"kind": "corporate", "company": row.get("company")}, row["domain"])
+        sources, research = number_sources(data.get("research") or {}, data.get("measured") or {}, row["domain"])
+        request = {"company": label, "domain": row["domain"], "language": row.get("language") or "tr",
+                   "first_name": row.get("first_name"), "today": self.clock().astimezone(ISTANBUL).date().isoformat(),
+                   "request_text": _line(row.get("request_text"), 1500), "measured": data.get("measured"),
+                   "research": research, "sources": [{"n": i, "url": u} for i, u in enumerate(sources, 1)]}
+        try:
+            report["model_calls"] += 1
+            written = self.models.writer(request)
+        except Exception as exc:
+            return self._fail(key, row, ("researched",), "failed:" + _code(exc), report)
+        mail = str(written.get("mail") or "").replace("\r\n", "\n").strip()
+        problems = check_report_mail(mail, settings=self.s, language=row.get("language") or "tr",
+                                     first=row.get("first_name"))
+        html = render_report(label, written, sources, data.get("measured") or {}, problems=problems,
+                             test=bool(row.get("test")), today=request["today"])
+        try:
+            self._set_request(key, ("researched",), state="writing_report", report_status="ok")
         except Exception:
             return "changed"
         try:
@@ -1595,75 +1913,29 @@ class ProspectWatch:
         except Exception as exc:
             self._set_request(key, ("writing_report",), state="unknown", reason=_code(exc))
             return "unknown"
-        if status != "ok":
-            self._set_request(key, ("writing_report",), state="failed", report_comment_id=cid)
-            return "failed"
         self._set_request(key, ("writing_report",), state="report_ready", report_comment_id=cid, report_mail=mail,
-                          report_mail_ok=mail_ok, report_mail_problems=problems)
+                          report_mail_ok=bool(mail) and not problems, report_mail_problems=problems,
+                          research_json=None)
+        report["owner_mail"] = self._mail_owner(label, written, sources, data.get("measured") or {}, request["today"],
+                                                row, report)
         return "report_ready"
 
-    def _report_text(self, row, output, karne, status):
-        """The report comment as Basecamp rich text: title, short sections with headings, lists, the mail draft
-        as a quote, never cut in the middle (owner 2026-10-16: headings, paragraphs, spacing)."""
-        from v11_trend_search import normalize_url
-        if output is None:
-            return (_html("Araştırmayı bu kez alamadım (" + status + "). Tekrar denemiyorum; istersen yeni bir istek "
-                          "açılabilir."), None, False, [])
-        evidence = set(output.get("evidence") or [])
-
-        def ok(url):
-            u = normalize_url(url)
-            host = (u or "").split("/")[2] if u else ""
-            return u if u is not None and (u in evidence or _aligned(host, row["domain"])) else None
-        obs = [(o["text"], ok(o["url"])) for o in output.get("observations") or []]
-        camps = [(c["text"], ok(c["url"]), c.get("date")) for c in output.get("campaigns") or []]
-        moves = [(m["text"], ok(m["basis_url"])) for m in output.get("first_moves") or []]
-        dropped = sum(1 for x in obs + moves if x[1] is None) + sum(1 for x in camps if x[1] is None)
-        e = lambda t: escape(str(t), quote=True)  # noqa: E731
-
-        def src(u, word="kaynak"):
-            return f' <a href="{e(u)}">({word})</a>'
-
-        def section(title, body):
-            return f"<br><strong>{e(title)}</strong><br>{body}"
-
-        def bullets(items, ordered=False):
-            tag = "ol" if ordered else "ul"
-            return f"<{tag}>" + "".join(f"<li>{i}</li>" for i in items) + f"</{tag}>"
-
-        def lines_html(text):
-            return "<br>".join(e(x) for x in str(text).split("\n"))
-        label = self._company_label({"kind": "corporate", "company": row.get("company")}, row["domain"])
-        parts = [f"<h1>Araştırma raporu · {e(label)}</h1>",
-                 section("Özet", e(_line(output.get("summary"), 800)))]
-        if karne.get("status") == "ok":
-            parts.append(section("Sitede ön kontrol (Hamle'nin kendi ölçümü)", lines_html(karne["text"])))
-        parts.append(section("Gözlemler", bullets([e(_line(t, 400)) + src(u) for t, u in obs if u])
-                             if any(u for _, u in obs) else "Kaynaklı gözlem yok."))
-        good_camps = [e(_line(t, 300)) + (f" ({e(d)})" if d else "") + src(u) for t, u, d in camps if u]
-        parts.append(section("Son kampanyalar", bullets(good_camps) if good_camps else "Kaynaklı kampanya yok."))
-        good_moves = [e(_line(t, 400)) + src(u, "dayanak") for t, u in moves if u]
-        parts.append(section("Biz olsak ilk 3 hamlemiz", bullets(good_moves, ordered=True) if good_moves
-                             else "Kaynaklı öneri yok."))
-        if dropped:
-            parts.append(f"<br><em>Kaynağı doğrulanamayan {dropped} madde rapordan çıkarıldı.</em><br>")
-        mail = str(output.get("mail") or "").replace("\r\n", "\n").strip()
-        problems = check_report_mail(mail, settings=self.s, language=row.get("language") or "tr",
-                                     first=row.get("first_name"))
-        parts.append(section("Kuruma gidecek mail taslağı",
-                             f"<blockquote>{lines_html(mail)}</blockquote>" if mail else "(yok)"))
-        if problems:
-            todo = ("Bu taslak kontrolden geçmedi (" + "; ".join(problems) + "). Göndermek istersen düzeltilmiş metni "
-                    "\"Hamle gönder\" satırının altına yaz.")
-        elif row.get("test"):
-            todo = ("Bu bir TEST isteği: \"Hamle gönder\" yazarsan rapor kuruma değil yalnız sana gelir. "
-                    "Göndermeyeyim dersen \"Hamle gönderme\" yaz.")
-        else:
-            todo = ("Kuruma göndermem için bu to-do'ya \"Hamle gönder\" yaz (düzeltmek istersen metni bu satırın "
-                    "altına yaz). Göndermeyeyim dersen \"Hamle gönderme\" yaz.")
-        parts.append(section("Sıradaki adım", e(todo) + "<br><em>Bu rapor yalnız ekip içindir; kuruma kendiliğinden "
-                                                       "gitmez.</em>"))
-        return "<div>" + "".join(parts) + "</div>", mail or None, bool(mail) and not problems, problems
+    def _mail_owner(self, label, written, sources, measured, today, row, report):
+        """The designed HTML report to the owner (team only). A failure here never touches the request."""
+        owner = self.s["roles"]["owner"]["email"]
+        html = render_report_mail(label, written, sources, measured, today=today, link=self._app(row["todo_id"]))
+        body = _plain(render_report(label, written, sources, measured, problems=[], test=bool(row.get("test")),
+                                    today=today))
+        payload = {"to": [owner], "subject": _line(f"Hamle AI · Dijital Ayak İzi Raporu · {label}", 200),
+                   "body": body, "html": html}
+        try:
+            report["business_writes"] += 1
+            remote = self.copy_writer.write(copy.deepcopy(payload))["remote_id"]
+            back = self.copy_writer.readback(remote, copy.deepcopy(payload))
+            _need(back.get("readback_sha256") == scope_digest(payload), "prospect_owner_report_readback_mismatch")
+            return "sent"
+        except Exception as exc:
+            return "unknown:" + _code(exc)
 
     def _send_report(self, key, row, body, report):
         """The owner's 'Hamle gönder': the report to the prospect in the same thread, the owner in CC.
@@ -1874,7 +2146,8 @@ class ProspectWatch:
         return {"status": "purge_completed", "months": months, "records": purged}
 
 
-OPEN_REQUEST_STATES = ("awaiting_approval", "approved", "writing_report", "report_ready", "sending")
+REPORT_HOLD_SECONDS = 2700  # research (<= 15 min) + writer (<= 9 min) + measurements; job timeout 2700 s
+OPEN_REQUEST_STATES = ("awaiting_approval", "approved", "researched", "writing_report", "report_ready", "sending")
 CLOSED_REQUEST_STATES = ("sent", "send_unknown", "rejected", "expired", "stopped", "failed", "unknown")
 
 
@@ -2075,6 +2348,13 @@ def preview_mail(source, *, settings, people, models, clock):
     return out
 
 
+def _footprint(secrets, psi_key):
+    """Optional v11_footprint credentials; a missing one only marks that channel 'not measured'. The YouTube Data
+    API takes any Google API key of the project, so the PageSpeed key is the fallback (owner 2026-10-16)."""
+    from v11_footprint import load_instagram, load_youtube_key
+    return {"youtube": load_youtube_key(secrets) or psi_key, "instagram": load_instagram(secrets)}
+
+
 def _operator_watch(ops, secrets, settings, book, catalog, models, clock):
     """A watch for the operator runs: Basecamp + the owner-only mail writer; no mailbox reader, no prospect writer."""
     import basecamp_cloud_auth
@@ -2093,7 +2373,8 @@ def _operator_watch(ops, secrets, settings, book, catalog, models, clock):
         ops, settings=settings, book=book, people=[], reader=None, models=models,
         http=basecamp_http(settings, send=session_send(token, provider._session)), reply_writer=None,
         copy_writer=DigestMailWriter(token_context=gmail_token_context(secrets), session_factory=provider._session),
-        web=public_web() if settings["cfg"]["karne_checks"] else None, psi_key=psi_key, clock=clock)
+        web=public_web() if settings["cfg"]["karne_checks"] else None, psi_key=psi_key, clock=clock,
+        footprint=_footprint(secrets, psi_key))
 
 
 def run_worker_prospect_preview(ops, secrets, *, sender, sender_name, subject, text, clock=None, config=None,
@@ -2181,7 +2462,8 @@ def run_worker_prospect_watch(ops, secrets, *, clock=None, config=None, started_
             reply_writer=prospect_reply_writer(settings, book, token_context=gmail_token_context(secrets),
                                                session_factory=provider._session),
             copy_writer=DigestMailWriter(token_context=gmail_token_context(secrets), session_factory=provider._session),
-            web=public_web(), psi_key=psi_key, clock=clock, started_at=started_at)
+            web=public_web(), psi_key=psi_key, clock=clock, started_at=started_at,
+            footprint=_footprint(secrets, psi_key))
         return watch.run()
     except Exception as exc:
         return {"status": "held", "reason": _code(exc), "business_writes": None}
