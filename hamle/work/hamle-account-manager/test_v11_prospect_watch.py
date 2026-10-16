@@ -889,13 +889,26 @@ class ResearchRequests(Base):
         self.assertNotIn("Deniz Kaya", json.dumps(req, ensure_ascii=False))
         comment = max(c["id"] for c in self.bc.comments.values() if c["creator"]["id"] == HAMLE_ID)
         text = self.bc.comment_text(comment)
-        for part in ("Araştırma raporu", "Sitede ürün kataloğu öne çıkıyor.", "Biz olsak ilk 3 hamlemiz:",
-                     "1. Katalogu kısa videolara bölmek.", "Kaynağı doğrulanamayan 1 madde atıldı",
-                     "Hamle gönder"):
+        for part in ("Araştırma raporu", "Sitede ürün kataloğu öne çıkıyor.", "Biz olsak ilk 3 hamlemiz",
+                     "Katalogu kısa videolara bölmek.", "Kaynağı doğrulanamayan 1 madde", "Hamle gönder"):
             self.assertIn(part, text)
         self.assertNotIn("Uydurma gözlem", text)
+        html = self.bc.comments[comment]["content"]
+        for tag in ("<h1>Araştırma raporu", "<strong>Özet</strong>", "<ol><li>Katalogu", "<blockquote>Merhaba Deniz,",
+                    '<a href="https://acmeyapi.com.tr">(kaynak)</a>'):
+            self.assertIn(tag, html)
         self.assertEqual(len(self.writer.writes), 1)  # the report has NOT gone to the prospect
         return todo
+
+    def test_long_report_is_never_cut_in_the_middle_of_the_mail(self):
+        long_mail = ("Merhaba Deniz,\n" + "\n".join(f"Gözlem paragrafı {i}: " + "x" * 300 for i in range(14))
+                     + "\nSevgiler,\nHamle AI\nGamechangers")
+        self.models.out["report"] = [reported(mail_text=long_mail)]
+        self.approved()
+        comment = max(c["id"] for c in self.bc.comments.values() if c["creator"]["id"] == HAMLE_ID)
+        text = self.bc.comment_text(comment)
+        self.assertIn("Hamle AI\nGamechangers", text)
+        self.assertTrue(text.rstrip().endswith("kuruma kendiliğinden gitmez."))
 
     def test_report_goes_only_after_the_owners_hamle_gonder(self):
         todo = self.approved()
