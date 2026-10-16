@@ -701,11 +701,14 @@ def model_sources(ops, load_key, catalog, settings, *, routing=None, client=None
         route = routes[kind]
 
         def call(request):
+            request = dict(request)
+            attempt = request.pop("_attempt", 0)  # an operator re-run of a failed write is a new single chance
             schema = (schemas["report_parts"][request["part"]] if kind == "report" else
                       schemas["writer_steps"][request["step"]] if kind == "writer" else schemas[kind])
             _need(gates[kind](), "model_budget_unavailable")
             system = render_prompt(kind, settings)
-            digest = source_digest("prospect_" + kind, request, route_fingerprint(route, PROMPTS[kind]), _sha(system))
+            digest = source_digest("prospect_" + kind, request, route_fingerprint(route, PROMPTS[kind]), _sha(system),
+                                   *([MAX_INPUT[kind], attempt] if kind in MAX_INPUT else []))
             if route.web_search:
                 def once():
                     return _research_call(anthropic_research, route, system, request, schema,
@@ -718,7 +721,8 @@ def model_sources(ops, load_key, catalog, settings, *, routing=None, client=None
                         check = (lambda v: fit_checked(v, schema)) if kind in TOLERANT else \
                             (lambda v: validate(v, schema) or v)
                         return base.anthropic_json(route, system, request, schema, api_key=key, client=client,
-                                                   validator=check)
+                                                   validator=check, max_input_bytes=MAX_INPUT.get(kind,
+                                                                                                  base.MAX_INPUT_BYTES))
                     finally:
                         del key
             return gate().once("prospect_" + kind, digest, once, provider="anthropic", hold=holds[kind])
@@ -2047,14 +2051,15 @@ class ProspectWatch:
         sources, research = number_sources(data.get("research") or {}, data.get("measured") or {}, row["domain"])
         request = {"company": label, "domain": row["domain"], "language": row.get("language") or "tr",
                    "first_name": row.get("first_name"), "today": self.clock().astimezone(ISTANBUL).date().isoformat(),
-                   "request_text": _line(row.get("request_text"), 1500), "measured": data.get("measured"),
+                   "request_text": _line(row.get("request_text"), 1500), "measured": _compact(data.get("measured") or {}),
                    "research": research, "missing_parts": (data.get("research") or {}).get("missing_parts") or [],
                    "sources": [{"n": i, "url": u} for i, u in enumerate(sources, 1)]}
         written = {}
         for step, _ in WRITER_STEPS:  # the plan is written on top of the analysis
             try:
                 report["model_calls"] += 1
-                written.update(self.models.writer(dict(request, step=step, analysis=dict(written) or None)))
+                written.update(self.models.writer(dict(request, step=step, analysis=dict(written) or None,
+                                                       _attempt=int(row.get("write_retries") or 0))))
             except Exception as exc:
                 return self._fail(key, row, ("researched",), f"failed:{step}:" + _code(exc), report)
         # Owner 2026-10-16: the company mail is fixed approved text with the PDF attached (no model wording).
@@ -2288,10 +2293,27 @@ class ProspectWatch:
         except ProspectError as exc:
             return dict(report, status="held", reason=exc.code)
         try:
+            report["write_reopened"] = self._reopen_failed_writes()
             report["requests"] = self._requests(report, local, only_test=True)
             return report
         finally:
             self._release(token)
+
+    def _reopen_failed_writes(self):
+        """TEST requests whose research finished but whose writing failed go back to 'researched', so this run writes
+        the report from the kept research (at most WRITE_RETRIES times; the research is never paid twice)."""
+        n = 0
+        for key in list((self._get(REQUESTS_KEY) or {}).get("keys") or []):
+            row = self._get(key)
+            if not (isinstance(row, dict) and row.get("test") is True and row.get("state") == "failed"
+                    and row.get("research_json") and str(row.get("report_status") or "").startswith(
+                        tuple(f"failed:{s}:" for s, _ in WRITER_STEPS))
+                    and int(row.get("write_retries") or 0) < WRITE_RETRIES):
+                continue
+            self._set_request(key, ("failed",), state="researched", report_status=None, write_lease=0,
+                              write_retries=int(row.get("write_retries") or 0) + 1)
+            n += 1
+        return n
 
     # ----- KVKK retention
     def _purge(self, local):
@@ -2334,7 +2356,11 @@ class ProspectWatch:
         return {"status": "purge_completed", "months": months, "records": purged}
 
 
-REPORT_HOLD_SECONDS = 2700  # research (<= 15 min) + writer (<= 9 min) + measurements; job timeout 2700 s
+REPORT_HOLD_SECONDS = 2700
+# Owner 2026-10-16 ("başladıysa güzelce bitmeli"): the strategist reads ALL six research parts, nothing is cut.
+# 200 KB is ~60k input tokens (~0.25 USD on Opus 5.5), far inside the writer's 2 USD hold.
+MAX_INPUT = {"writer": 200_000}
+WRITE_RETRIES = 2  # operator test runs re-run a failed write from the kept research (no new research cost)  # research (<= 15 min) + writer (<= 9 min) + measurements; job timeout 2700 s
 OPEN_REQUEST_STATES = ("awaiting_approval", "approved", "researched", "writing_report", "report_ready", "sending")
 CLOSED_REQUEST_STATES = ("sent", "send_unknown", "rejected", "expired", "stopped", "failed", "unknown")
 

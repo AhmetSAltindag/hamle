@@ -662,13 +662,14 @@ def anthropic_send(api_key, route, kwargs, *, client=None):
     return data
 
 
-def anthropic_json(route, system, request_input, schema, *, api_key, client=None, validator=None, blocks=()):
+def anthropic_json(route, system, request_input, schema, *, api_key, client=None, validator=None, blocks=(),
+                   max_input_bytes=MAX_INPUT_BYTES):
     """One structured-output call: send -> extract -> strict local parse/validation.
 
     blocks: content blocks sent before the JSON input (a mail's attachments: images, PDFs, document text).
     """
     source = _encoded(request_input)
-    if len(source) > MAX_INPUT_BYTES:
+    if len(source) > max_input_bytes:
         raise ModelError("input_byte_limit")
     kwargs = anthropic_request(route, system, source.decode("utf-8"), schema=schema)
     if blocks:
