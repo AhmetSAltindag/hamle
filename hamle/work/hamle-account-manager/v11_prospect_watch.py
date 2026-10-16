@@ -44,6 +44,7 @@ Mac operator commands (ADC credentials, Firestore only, no cost):
 from __future__ import annotations
 
 import argparse
+from html import escape
 import copy
 import hashlib
 import json
@@ -705,6 +706,15 @@ def _html(text):
     return nb_html(text)
 
 
+def _plain(html):
+    """The visible words of rich HTML (what a readback compares)."""
+    from v11_nb_tracking import _Text
+    p = _Text()
+    p.feed(html)
+    p.close()
+    return "".join(p.parts)
+
+
 def _visible_matches(actual, expected):
     from v11_nb_tracking import text_matches
     return text_matches(actual, expected)
@@ -966,8 +976,12 @@ class ProspectWatch:
               and _visible_matches(back.get("description"), text), "prospect_todo_readback_mismatch")
         return tid
 
-    def _comment(self, todo_id, text):
-        row, _ = self.http.call("POST", f"{self.base}/recordings/{todo_id}/comments.json", {"content": _html(text)}, 201)
+    def _comment(self, todo_id, text, html=None):
+        """Plain text as <br> lines, or prepared rich HTML (the report); readback compares the visible words."""
+        if html is not None:
+            text = _plain(html)
+        row, _ = self.http.call("POST", f"{self.base}/recordings/{todo_id}/comments.json",
+                                {"content": html if html is not None else _html(text)}, 201)
         cid = row.get("id") if isinstance(row, dict) else None
         _need(type(cid) is int and cid > 0, "prospect_comment_receipt_invalid")
         got = self.http.one(f"{self.base}/comments/{cid}.json")
@@ -1570,14 +1584,14 @@ class ProspectWatch:
             status = "ok"
         except Exception as exc:
             output, status = None, "failed:" + _code(exc)
-        text, mail, mail_ok, problems = self._report_text(row, output, karne, status)
+        html, mail, mail_ok, problems = self._report_text(row, output, karne, status)
         try:
             self._set_request(key, ("approved",), state="writing_report", report_status=status)
         except Exception:
             return "changed"
         try:
             report["business_writes"] += 1
-            cid = self._comment(row["todo_id"], text)
+            cid = self._comment(row["todo_id"], None, html=html)
         except Exception as exc:
             self._set_request(key, ("writing_report",), state="unknown", reason=_code(exc))
             return "unknown"
@@ -1589,12 +1603,13 @@ class ProspectWatch:
         return "report_ready"
 
     def _report_text(self, row, output, karne, status):
+        """The report comment as Basecamp rich text: title, short sections with headings, lists, the mail draft
+        as a quote, never cut in the middle (owner 2026-10-16: headings, paragraphs, spacing)."""
         from v11_trend_search import normalize_url
         if output is None:
-            return ("Araştırmayı bu kez alamadım (" + status + "). Tekrar denemiyorum; istersen yeni bir istek açılabilir.",
-                    None, False, [])
+            return (_html("Araştırmayı bu kez alamadım (" + status + "). Tekrar denemiyorum; istersen yeni bir istek "
+                          "açılabilir."), None, False, [])
         evidence = set(output.get("evidence") or [])
-        site = "https://" + row["domain"]
 
         def ok(url):
             u = normalize_url(url)
@@ -1604,31 +1619,51 @@ class ProspectWatch:
         camps = [(c["text"], ok(c["url"]), c.get("date")) for c in output.get("campaigns") or []]
         moves = [(m["text"], ok(m["basis_url"])) for m in output.get("first_moves") or []]
         dropped = sum(1 for x in obs + moves if x[1] is None) + sum(1 for x in camps if x[1] is None)
-        lines = [f"Araştırma raporu · {self._company_label({'kind': 'corporate', 'company': row.get('company')}, row['domain'])}",
-                 "", "Özet: " + _line(output.get("summary"), 800), ""]
+        e = lambda t: escape(str(t), quote=True)  # noqa: E731
+
+        def src(u, word="kaynak"):
+            return f' <a href="{e(u)}">({word})</a>'
+
+        def section(title, body):
+            return f"<br><strong>{e(title)}</strong><br>{body}"
+
+        def bullets(items, ordered=False):
+            tag = "ol" if ordered else "ul"
+            return f"<{tag}>" + "".join(f"<li>{i}</li>" for i in items) + f"</{tag}>"
+
+        def lines_html(text):
+            return "<br>".join(e(x) for x in str(text).split("\n"))
+        label = self._company_label({"kind": "corporate", "company": row.get("company")}, row["domain"])
+        parts = [f"<h1>Araştırma raporu · {e(label)}</h1>",
+                 section("Özet", e(_line(output.get("summary"), 800)))]
         if karne.get("status") == "ok":
-            lines += ["Sitede ön kontrol (Hamle'nin kendi ölçümü):", karne["text"], ""]
-        lines.append("Gözlemler:")
-        lines += [f"- {_line(t, 400)} (kaynak: {u})" for t, u in obs if u] or ["- kaynaklı gözlem yok"]
-        lines += ["", "Son kampanyalar:"]
-        lines += [f"- {_line(t, 300)}" + (f" ({d})" if d else "") + f" (kaynak: {u})" for t, u, d in camps if u] or ["- yok"]
-        lines += ["", "Biz olsak ilk 3 hamlemiz:"]
-        lines += [f"{i}. {_line(t, 400)} (dayanak: {u})" for i, (t, u) in enumerate([m for m in moves if m[1]], 1)] \
-            or ["- kaynaklı öneri yok"]
+            parts.append(section("Sitede ön kontrol (Hamle'nin kendi ölçümü)", lines_html(karne["text"])))
+        parts.append(section("Gözlemler", bullets([e(_line(t, 400)) + src(u) for t, u in obs if u])
+                             if any(u for _, u in obs) else "Kaynaklı gözlem yok."))
+        good_camps = [e(_line(t, 300)) + (f" ({e(d)})" if d else "") + src(u) for t, u, d in camps if u]
+        parts.append(section("Son kampanyalar", bullets(good_camps) if good_camps else "Kaynaklı kampanya yok."))
+        good_moves = [e(_line(t, 400)) + src(u, "dayanak") for t, u in moves if u]
+        parts.append(section("Biz olsak ilk 3 hamlemiz", bullets(good_moves, ordered=True) if good_moves
+                             else "Kaynaklı öneri yok."))
         if dropped:
-            lines.append(f"(Kaynağı doğrulanamayan {dropped} madde atıldı.)")
+            parts.append(f"<br><em>Kaynağı doğrulanamayan {dropped} madde rapordan çıkarıldı.</em><br>")
         mail = str(output.get("mail") or "").replace("\r\n", "\n").strip()
         problems = check_report_mail(mail, settings=self.s, language=row.get("language") or "tr",
                                      first=row.get("first_name"))
-        lines += ["", "Kuruma gidecek mail taslağı:", mail or "(yok)"]
+        parts.append(section("Kuruma gidecek mail taslağı",
+                             f"<blockquote>{lines_html(mail)}</blockquote>" if mail else "(yok)"))
         if problems:
-            lines.append("Bu taslak kontrolden geçmedi (" + "; ".join(problems) + "). Göndermek istersen düzeltilmiş "
-                         "metni \"Hamle gönder\" satırının altına yaz.")
+            todo = ("Bu taslak kontrolden geçmedi (" + "; ".join(problems) + "). Göndermek istersen düzeltilmiş metni "
+                    "\"Hamle gönder\" satırının altına yaz.")
+        elif row.get("test"):
+            todo = ("Bu bir TEST isteği: \"Hamle gönder\" yazarsan rapor kuruma değil yalnız sana gelir. "
+                    "Göndermeyeyim dersen \"Hamle gönderme\" yaz.")
         else:
-            lines.append("Kuruma göndermem için bu to-do'ya \"Hamle gönder\" yaz (düzeltmek istersen metni bu satırın "
-                         "altına yaz). Göndermeyeyim dersen \"Hamle gönderme\" yaz.")
-        lines.append("Bu rapor yalnız ekip içindir; kuruma kendiliğinden gitmez.")
-        return "\n".join(lines)[:MAX_NOTE], mail or None, bool(mail) and not problems, problems
+            todo = ("Kuruma göndermem için bu to-do'ya \"Hamle gönder\" yaz (düzeltmek istersen metni bu satırın "
+                    "altına yaz). Göndermeyeyim dersen \"Hamle gönderme\" yaz.")
+        parts.append(section("Sıradaki adım", e(todo) + "<br><em>Bu rapor yalnız ekip içindir; kuruma kendiliğinden "
+                                                       "gitmez.</em>"))
+        return "<div>" + "".join(parts) + "</div>", mail or None, bool(mail) and not problems, problems
 
     def _send_report(self, key, row, body, report):
         """The owner's 'Hamle gönder': the report to the prospect in the same thread, the owner in CC.
