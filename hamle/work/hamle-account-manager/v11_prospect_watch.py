@@ -965,6 +965,19 @@ def _sections(written):
     return [(k, title, by[k]) for k, title in SECTIONS if k in by]
 
 
+def short_report(label, written, sources):
+    """When the full report cannot land on the to-do: the score, the headline and the 3 findings (the designed mail
+    and its PDF carry the whole report)."""
+    e = lambda t: escape(str(t), quote=True)  # noqa: E731
+    sc = written.get("score") or {}
+    return (f"<h1>Dijital Ayak İzi Raporu · {e(label)}</h1>"
+            f"<strong>Dijital Ayak İzi Skoru: {e(sc.get('total'))}/100</strong><br>"
+            f"<br><strong>{_refs(written.get('headline'), sources)}</strong><br>"
+            "<br><strong>Öne çıkan 3 bulgu</strong><ul>"
+            + "".join(f"<li>{_refs(x, sources)}</li>" for x in written.get("summary") or []) + "</ul>"
+            "<br>Raporun tamamı burada sığmadı; tasarımlı hali mailinizde, PDF eki ile birlikte.")
+
+
 def render_report(label, written, sources, measured, *, problems, test, today):
     """Basecamp rich text (h1, strong, lists, links, quote): headings, spacing, never cut."""
     e = lambda t: escape(str(t), quote=True)  # noqa: E731
@@ -1063,6 +1076,17 @@ def slim_measured(measured):
 def _visible_matches(actual, expected):
     from v11_nb_tracking import text_matches
     return text_matches(actual, expected)
+
+
+def _report_landed(actual, expected):
+    """The long rich report: Basecamp may re-wrap or re-format it (and it is far past the 32 KB note check), so the
+    readback proves its visible start and end landed on the comment."""
+    if not isinstance(actual, str) or len(actual) > 3_000_000:
+        return False
+    got, want = " ".join(_plain(actual).split()), expected.split()
+    if not want:
+        return False
+    return got == " ".join(want) or (" ".join(want[:40]) in got and " ".join(want[-20:]) in got)
 
 
 # ------------------------------------------------------------------ records
@@ -1368,7 +1392,8 @@ class ProspectWatch:
         _need(got.get("id") == cid and (got.get("parent") or {}).get("id") == todo_id
               and (got.get("bucket") or {}).get("id") == self.s["project_id"]
               and (got.get("creator") or {}).get("id") == self.s["hamle_person"]
-              and got.get("visible_to_clients") is False and _visible_matches(got.get("content"), text),
+              and got.get("visible_to_clients") is False
+              and (_report_landed if html is not None else _visible_matches)(got.get("content"), text),
               "prospect_comment_readback_mismatch")
         return cid
 
@@ -2077,9 +2102,15 @@ class ProspectWatch:
         try:
             report["business_writes"] += 1
             cid = self._comment(row["todo_id"], None, html=html)
-        except Exception as exc:
-            self._set_request(key, ("writing_report",), state="unknown", reason=_code(exc))
-            return "unknown"
+        except Exception as exc:  # the full report did not land (or could not be proven): a short note instead;
+            report.setdefault("report_failures", []).append("comment:" + _code(exc))  # the mail + PDF carry it all
+            try:
+                report["business_writes"] += 1
+                cid = self._comment(row["todo_id"], None, html=short_report(label, written, sources))
+            except Exception as exc2:
+                report["report_failures"].append("short_comment:" + _code(exc2))
+                self._set_request(key, ("writing_report",), state="unknown", reason=_code(exc2))
+                return "unknown"
         view = json.dumps({"label": label, "written": written, "sources": sources, "today": request["today"],
                            "measured": slim_measured(data.get("measured") or {})}, ensure_ascii=False)
         self._set_request(key, ("writing_report",), state="report_ready", report_comment_id=cid, report_mail=mail,
@@ -2301,10 +2332,19 @@ class ProspectWatch:
 
     def _reopen_failed_writes(self):
         """TEST requests whose research finished but whose writing failed go back to 'researched', so this run writes
-        the report from the kept research (at most WRITE_RETRIES times; the research is never paid twice)."""
+        the report from the kept research (at most WRITE_RETRIES times; the research is never paid twice). A report
+        that was written but could not be posted goes back with the SAME attempt: the writer's answers are kept by the
+        model gate, so it is rebuilt at no model cost (at most WRITE_RETRIES times)."""
         n = 0
         for key in list((self._get(REQUESTS_KEY) or {}).get("keys") or []):
             row = self._get(key)
+            if (isinstance(row, dict) and row.get("test") is True and row.get("state") == "unknown"
+                    and row.get("research_json") and row.get("report_status") == "ok"
+                    and int(row.get("post_retries") or 0) < WRITE_RETRIES):
+                self._set_request(key, ("unknown",), state="researched", write_lease=0,
+                                  post_retries=int(row.get("post_retries") or 0) + 1)
+                n += 1
+                continue
             if not (isinstance(row, dict) and row.get("test") is True and row.get("state") == "failed"
                     and row.get("research_json") and str(row.get("report_status") or "").startswith(
                         tuple(f"failed:{s}:" for s, _ in WRITER_STEPS))

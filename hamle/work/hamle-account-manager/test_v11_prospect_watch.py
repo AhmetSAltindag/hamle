@@ -176,6 +176,7 @@ class Basecamp:
         self.todos, self.comments, self.calls, self.next = {}, {}, [], 100
         self.fail_post = False
         self.clients_enabled = False
+        self.mangle = None  # Basecamp re-formatting saved comment content
 
     def human(self, todo_id, person, text):
         self.next += 1
@@ -218,7 +219,7 @@ class Basecamp:
         if m and method == "POST":
             self.next += 1
             self.comments[self.next] = {"id": self.next, "parent": {"id": int(m[1])}, "creator": {"id": HAMLE_ID},
-                                        "content": body["content"], "bucket": {"id": PROJECT},
+                                        "content": (self.mangle or str)(body["content"]), "bucket": {"id": PROJECT},
                                         "visible_to_clients": False}
             return {"id": self.next}, {}
         if m:
@@ -1380,6 +1381,47 @@ class TestRequests(Base):
         self.assertEqual(len(self.copies.writes), 1)  # the designed report to the owner
         r = self.watch().run_test_requests()
         self.assertEqual(r["write_reopened"], 0)
+
+    def test_report_that_does_not_land_whole_leaves_a_short_note_and_still_mails(self):
+        todo = self.opened()
+        self.bc.human(todo["id"], OWNER_ID, "Onaylıyorum")
+        self.bc.mangle = lambda c: c[:len(c) // 2] if "Hamle gönder" in c else c  # cut short
+        self.models.out["writer"] = [written()]
+        r = self.watch().run_test_requests()
+        self.assertEqual(r["requests"]["reports"], 1)
+        self.assertTrue(r["report_failures"][0].startswith("comment:"))
+        last = max(c["id"] for c in self.bc.comments.values() if c["creator"]["id"] == HAMLE_ID)
+        self.assertIn("Raporun tamamı burada sığmadı", self.bc.comment_text(last))
+        self.assertEqual(self.get(self.get(pw.REQUESTS_KEY)["keys"][0])["state"], "report_ready")
+        self.assertEqual(len(self.copies.writes), 1)  # the designed report + PDF still reach the owner
+
+    def test_written_report_that_could_not_be_posted_is_rebuilt_with_the_same_attempt(self):
+        todo = self.opened()
+        self.bc.human(todo["id"], OWNER_ID, "Onaylıyorum")
+        self.bc.mangle = lambda c: "<p>bos</p>" if "Dijital Ayak İzi Raporu" in c else c  # nothing proves it landed
+        self.models.out["writer"] = [written()]
+        r = self.watch().run_test_requests()
+        self.assertEqual((r["requests"]["reports"], self.get(self.get(pw.REQUESTS_KEY)["keys"][0])["state"]),
+                         (0, "unknown"))
+        self.assertEqual(self.copies.writes, [])
+        self.bc.mangle = None
+        self.models.out["writer"] = [written()]
+        reports = self.models.kinds().count("report")
+        r = self.watch().run_test_requests()
+        self.assertEqual((r["write_reopened"], r["requests"]["reports"]), (1, 1))
+        self.assertEqual(self.models.kinds().count("report"), reports)  # no new research
+        attempts = [req.get("_attempt") for kind, req in self.models.calls if kind == "writer"]
+        self.assertEqual(set(attempts), {0})  # same digests: the gate returns the kept answers (no model cost)
+        self.assertEqual(len(self.copies.writes), 1)
+
+    def test_report_readback_has_no_32_kb_cap_and_tolerates_reformatting(self):
+        words = " ".join(f"kelime{i}" for i in range(9000))
+        html = f"<h1>Rapor</h1><p>{words}</p>"
+        self.assertGreater(len(html), 32000)
+        self.assertTrue(pw._report_landed(html, pw._plain(html)))
+        self.assertTrue(pw._report_landed(html.replace("kelime4500 ", "<em>kelime4500</em> "), pw._plain(html)))
+        self.assertFalse(pw._report_landed(html[:20000], pw._plain(html)))
+        self.assertFalse(pw._report_landed(None, pw._plain(html)))
 
     def test_writer_reads_up_to_200_kb(self):
         self.assertEqual(pw.MAX_INPUT["writer"], 200_000)
