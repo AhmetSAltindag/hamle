@@ -1099,6 +1099,40 @@ class OperationsStore:
             return {"status": "billed_total_settled", "rows": len(rows), "total_microdollars": total_microdollars}
         return self._run(op, allow_expired=True)
 
+    def overrun_report(self):
+        """Read-only: the budget totals and every settled row whose actual exceeded its hold."""
+        b = self._run(lambda tx, now: self._budget(tx), allow_expired=True)
+        rows = [{"reservation_key": r["reservation_key"], "provider": r["provider"],
+                 "reserved_microdollars": r["reserved_microdollars"], "actual_microdollars": r["actual_microdollars"],
+                 "finished_at": r.get("finished_at")}
+                for r in b["reservations"] if r["state"] == "settled"
+                and r["actual_microdollars"] > r["reserved_microdollars"] and not r.get("overrun_released")]
+        return {"status": "budget_overrun_report", **self._totals(b), "overrun_rows": rows,
+                "unknown_rows": sum(1 for r in b["reservations"] if r["state"] == "unknown"), "business_writes": 0}
+
+    def release_overrun_hold(self, evidence):
+        """Operator one-shot, only on the owner's explicit word: an overrun (a call that cost more than its hold)
+        stops every paid call until a person looks. Releasing keeps the money counted, marks the rows seen and
+        records who released it; the monthly limit still holds (refused when the committed total is over it)."""
+        evidence = _label(evidence)
+        def op(tx, now):
+            b = self._budget(tx)
+            if not b["overrun_hold"]:
+                return {"status": "overrun_hold_already_clear", "business_writes": 0}
+            _require(self._totals(b)["total_committed_microdollars"] <= LIMIT, "budget_limit_reached_no_release")
+            seen = []
+            for r in b["reservations"]:
+                if r["state"] == "settled" and r["actual_microdollars"] > r["reserved_microdollars"] \
+                        and not r.get("overrun_released"):
+                    r["overrun_released"] = evidence
+                    seen.append({"reservation_key": r["reservation_key"], "reserved_microdollars": r["reserved_microdollars"],
+                                 "actual_microdollars": r["actual_microdollars"]})
+            b["overrun_hold"] = False
+            b.setdefault("overrun_releases", []).append({"at": now, "evidence_ref": evidence, "rows": seen})
+            tx.put("budget", b)
+            return {"status": "overrun_hold_released", "rows": seen, **self._totals(b), "business_writes": 1}
+        return self._run(op, allow_expired=True)
+
     def _budget_finish(self, key, actual, evidence):
         _label(key)
         def op(tx, now):

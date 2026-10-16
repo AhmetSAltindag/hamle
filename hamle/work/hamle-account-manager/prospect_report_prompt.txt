@@ -7,10 +7,15 @@ KAPSAM VE GÜVENLİK
 - Her olgu, web_search sonuçlarında GERÇEKTEN gördüğün bir https adrese dayansın. Sayı uydurma; bulamadığın değeri boş bırak.
 - Elinde ajansın müşterileri hakkında bilgi yok; başka markalara dair ajans içi bilgi yazma. Rakipler hakkında yalnız nesnel gözlem yaz.
 
-NE TOPLAYACAKSIN (öncelik sırasıyla; dijital taraf önce)
+PARÇA PARÇA ÇALIŞMA
+- Araştırma parçalara bölünmüştür. Bu çağrıda YALNIZ "part" parçasını yapıyorsun ve YALNIZ "collect_only" listesindeki alanları dolduruyorsun; şema da yalnız bu alanları içerir. Diğer parçaları başka çağrılar yapıyor.
+- En çok 3 arama yap; her arama bu parçanın sorusuna doğrudan hizmet etsin. Az ama sağlam olgu, çok ama zayıf olgudan iyidir.
+- Metinleri kısa tut: her olgu tek cümle, gereken sayıyla.
+
+NE TOPLAYACAKSIN (parçaya göre; dijital taraf önce)
 1. channels: Instagram, LinkedIn, YouTube, TikTok, X, Facebook için kurumun hesabı var mı, ne kadar aktif görünüyor. Ölçülmüş kanallar için yalnız ölçümün göremediği şeyleri ekle (ör. kampanya içerikleri). LinkedIn için takipçi sayısı, sayfa açıklaması, son gönderi konuları gibi herkese açık olguları kaynaklı yaz.
 2. message: kurumun çatı/ana mesajı (sitede ve kanallarda nasıl ifade ediliyor), sitede ve kanallarda öne çıkan anahtar kelimeler; tutarlılık için ham malzeme.
-3. google: kurumun Google görünürlüğü. Marka adı aramasını ve sektörün 5 ana kategori aramasını (ör. ürün/hizmet + "nedir", "en iyi ..." gibi kullanıcı aramaları) dene; kurumun kendi sitesinin ilk sayfada çıkıp çıkmadığını yaz (gördüğün sonuçlara göre: first_page / not_first_page / unknown).
+3. google: kurumun Google görünürlüğü. Marka adı aramasını ve sektörün en önemli 2 kategori aramasını (ör. ürün/hizmet + "nedir", "en iyi ..." gibi kullanıcı aramaları) dene; kurumun kendi sitesinin ilk sayfada çıkıp çıkmadığını yaz (gördüğün sonuçlara göre: first_page / not_first_page / unknown).
 4. competitors: sektördeki 3 ana rakip kurum. Her biri için aynı dijital ölçütlerde (kanallar, YouTube/Instagram ritmi, içerik ve eğitim, kampanya) somut ve kaynaklı olgular; karşılaştırmaya yarayacak SAYILARI tercih et (ör. "YouTube'da son 6 ayda 24 video").
 5. campaigns: kurumun son 12 aydaki kampanyaları, lansmanları, ödülleri, sponsorlukları (tarih ISO YYYY-MM-DD ya da null).
 6. company: kurum künyesi: ne yapar, pazar konumu, öne çıkan rakamlar (kurumun kendi açıklaması ise öyle belirt).

@@ -305,6 +305,22 @@ class StoreTests(unittest.TestCase):
         self.store.settle_unknown_actual("probe", 0, "gcp-billing-oct")  # google_cloud unknown holds settle too
         self.assertFalse(self.backend.data["budget"]["overrun_hold"])
 
+    def test_overrun_hold_is_released_only_by_the_operator_and_money_stays_counted(self):
+        self.store.budget_reserve("prospect-big", "anthropic", 2_080_000)
+        self.store.budget_settle("prospect-big", 2_600_000, "msg_big")
+        self.assertTrue(self.store.budget_status()["overrun_hold"])
+        self.fails("budget_not_ready", lambda: self.store.budget_reserve("next", "anthropic", 100_000))
+        rep = self.store.overrun_report()
+        self.assertEqual([r["reservation_key"] for r in rep["overrun_rows"]], ["prospect-big"])
+        spent = rep["accounted_spend_microdollars"]
+        r = self.store.release_overrun_hold("ahmet-2026-10-16-release")
+        self.assertEqual((r["status"], r["rows"][0]["actual_microdollars"]), ("overrun_hold_released", 2_600_000))
+        self.assertFalse(self.store.budget_status()["overrun_hold"])
+        self.assertEqual(self.store.budget_status()["accounted_spend_microdollars"], spent)  # still counted
+        self.assertEqual(self.store.overrun_report()["overrun_rows"], [])
+        self.store.budget_reserve("next", "anthropic", 100_000)  # paid calls run again
+        self.assertEqual(self.store.release_overrun_hold("again")["status"], "overrun_hold_already_clear")
+
     def test_extend_budget_expiry_moves_only_the_date_once(self):
         b = self.backend.data["budget"]
         b["expires_at"] = "2026-10-12T23:59:59+03:00"
