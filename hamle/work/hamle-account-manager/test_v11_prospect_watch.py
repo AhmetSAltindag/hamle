@@ -977,6 +977,7 @@ class ResearchRequests(Base):
         self.models.out["writer"] = [RuntimeError("boom")]
         self.run_once()
         self.assertEqual(self.get(pw.request_key("a1"))["state"], "failed")
+        self.assertTrue(self.get(pw.request_key("a1"))["report_status"].startswith("failed:"))
         last = max(c["id"] for c in self.bc.comments.values() if c["creator"]["id"] == HAMLE_ID)
         self.assertIn("tamamlayamadım", self.bc.comment_text(last))
         self.run_once()
@@ -1103,6 +1104,28 @@ class Models_(Base):
         bad["score"]["total"] = 140
         with self.assertRaises(Exception):
             validate(bad, schemas["writer"])
+
+    def test_long_answers_are_fitted_not_thrown_away(self):
+        schemas = pw._schemas()
+        raw = {k: v for k, v in reported().items() if k != "evidence"}
+        raw["company"]["facts"].append({"text": "x " * 400, "url": "https://acmeyapi.com.tr/uzun"})
+        raw["company"]["facts"].append({"text": "Linksiz olgu.", "url": None})  # dropped, not fatal
+        raw["channels"][0]["status"] = "belirsiz"
+        raw["google"] *= 9
+        out = pw._fit_reader(schemas["report"])("İşte veriler:\n" + json.dumps(raw, ensure_ascii=False) + "\nBitti.")
+        facts = out["company"]["facts"]
+        self.assertEqual(len(facts), 2)
+        self.assertLessEqual(len(facts[1]["text"]), 400)
+        self.assertTrue(facts[1]["text"].endswith("…"))
+        self.assertEqual((out["channels"][0]["status"], len(out["google"])), ("unknown", 6))
+        w = written()
+        w["sections"][0]["paragraphs"] = ["Uzun " * 400]
+        w["score"]["total"] = 140
+        fitted = pw.fit_checked(w, schemas["writer"])
+        self.assertEqual(fitted["score"]["total"], 100)
+        self.assertLessEqual(len(fitted["sections"][0]["paragraphs"][0]), 900)
+        with self.assertRaises(pw.ProspectError):
+            pw._fit_reader(schemas["report"])("JSON yok")
 
     def test_youtube_falls_back_to_the_projects_google_key(self):
         class S:
@@ -1352,7 +1375,7 @@ class Wiring(unittest.TestCase):
         self.assertEqual(r.route("prospect_classifier").model, "claude-haiku-5-5")
         self.assertIsNone(r.route("prospect_classifier").web_search)
         self.assertEqual(r.route("prospect_research").web_search["max_uses"], 2)
-        self.assertEqual(r.route("prospect_report").web_search["max_uses"], 10)
+        self.assertEqual(r.route("prospect_report").web_search["max_uses"], 8)
         self.assertIsNone(r.route("prospect_writer").web_search)
 
     def test_scheduler_plan(self):

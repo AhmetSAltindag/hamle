@@ -679,13 +679,16 @@ def model_sources(ops, load_key, catalog, settings, *, routing=None, client=None
             if route.web_search:
                 def once():
                     return _research_call(anthropic_research, route, system, request, schema,
-                                          key_for(load_key, "anthropic"), client, kind)
+                                          key_for(load_key, "anthropic"), client, kind,
+                                          reader=_fit_reader(schema) if kind in TOLERANT else None)
             else:
                 def once():
                     key = key_for(load_key, "anthropic")
                     try:
+                        check = (lambda v: fit_checked(v, schema)) if kind in TOLERANT else \
+                            (lambda v: validate(v, schema) or v)
                         return base.anthropic_json(route, system, request, schema, api_key=key, client=client,
-                                                   validator=lambda v: validate(v, schema) or v)
+                                                   validator=check)
                     finally:
                         del key
             return gate().once("prospect_" + kind, digest, once, provider="anthropic", hold=holds[kind])
@@ -705,12 +708,105 @@ class _PromptText:
         return self.text
 
 
-def _research_call(research, route, system, request, schema, key, client, kind):
+def _research_call(research, route, system, request, schema, key, client, kind, reader=None):
     try:
         return research(route, _PromptText(system), request, schema, api_key=key, client=client,
-                        code="invalid_prospect_" + kind + "_schema")
+                        code="invalid_prospect_" + kind + "_schema", reader=reader)
     finally:
         del key
+
+
+# The long report steps (owner 2026-10-16): one over-long sentence or one fact without a link must not throw away a
+# 15-minute research. Their answers are fitted to the schema (clip, drop bad items) and then strictly validated.
+TOLERANT = ("report", "writer")
+
+
+class _Drop(Exception):
+    pass
+
+
+def fit(value, schema):
+    """value fitted to a v11_chain_models schema: strings clipped, lists cut to maxItems with bad items dropped,
+    unknown enum values -> null/'unknown', missing optional values -> null/[]; a required value that cannot be
+    fitted drops the enclosing list item (or fails the whole answer at the top)."""
+    kinds = schema.get("type")
+    kinds = kinds if isinstance(kinds, list) else [kinds]
+    nullable = "null" in kinds
+    if value is None or value == "":
+        if nullable:
+            return None
+        if "array" in kinds:
+            return []
+        raise _Drop()
+    if "object" in kinds:
+        if not isinstance(value, dict):
+            raise _Drop()
+        return {k: fit(value.get(k), sub) for k, sub in schema["properties"].items()}
+    if "array" in kinds:
+        if not isinstance(value, list):
+            raise _Drop()
+        out = []
+        for item in value:
+            try:
+                out.append(fit(item, schema["items"]))
+            except _Drop:
+                continue
+        return out[:schema.get("maxItems", len(out))]
+    if "integer" in kinds:
+        if isinstance(value, bool) or not isinstance(value, (int, float, str)):
+            raise _Drop()
+        try:
+            n = int(round(float(value)))
+        except ValueError:
+            raise _Drop() from None
+        return max(schema.get("minimum", n), min(schema.get("maximum", n), n))
+    if not isinstance(value, (str, int, float)) or isinstance(value, bool):
+        raise _Drop()
+    text = " ".join(str(value).split()) if "enum" in schema else str(value).strip()
+    if "enum" in schema:
+        if text in schema["enum"]:
+            return text
+        if nullable:
+            return None
+        if "unknown" in schema["enum"]:
+            return "unknown"
+        raise _Drop()
+    if not text:
+        if nullable:
+            return None
+        raise _Drop()
+    limit = schema.get("maxLength")
+    if limit and len(text) > limit:
+        cut = text[:limit - 1]
+        cut = cut[:cut.rfind(" ")] if " " in cut[limit // 2:] else cut
+        text = cut.rstrip(" ,;:") + "…"
+    return text
+
+
+def fit_checked(value, schema):
+    from v11_chain_models import validate
+    try:
+        out = fit(value, schema)
+    except _Drop:
+        raise ProspectError("prospect_answer_unusable") from None
+    validate(out, schema)
+    return out
+
+
+def _fit_reader(schema):
+    """anthropic_research reader: the JSON object in the text (a sentence around it is tolerated), fitted."""
+    from v11_trend_search import strict_json_text
+
+    def read(text):
+        t = str(text or "").strip()
+        try:
+            value = strict_json_text(t)
+        except Exception:
+            start, end = t.find("{"), t.rfind("}")
+            _need(0 <= start < end, "prospect_answer_not_json")
+            value = json.loads(t[start:end + 1])
+        return fit_checked(value, schema)
+    return read
 
 
 # ------------------------------------------------------------------ Basecamp (the configured project only)
@@ -1882,6 +1978,7 @@ class ProspectWatch:
         return "researched"
 
     def _fail(self, key, row, expect, status, report):
+        report.setdefault("report_failures", []).append(status)  # the job log names the reason (owner's Mac)
         try:
             self._set_request(key, expect, state="writing_report", report_status=status)
         except Exception:
