@@ -992,15 +992,30 @@ def in_window(local, window):
     return window["start"] <= _hm(local) <= last
 
 
-APPROVALS = ("onayliyorum", "ok go", "okgo", "go")
+APPROVALS = ("onayliyorum", "onayladim", "onaylandi", "ok go", "okgo", "go")
 
 
 def is_approval(content):
-    """Exactly 'Onaylıyorum' or 'OK GO' / 'Ok - go' / 'GO' (owner 2026-10-16; any case, spaces, dashes and a final
-    '.' or '!'; İ/ı aware). The caller accepts it only from the owner's verified Basecamp person."""
+    """Exactly 'Onaylıyorum' / 'Onayladım' / 'Onaylandı' or 'OK GO' / 'Ok - go' / 'GO' (owner 2026-10-16; any case,
+    spaces, dashes, punctuation and emoji; a question is never one; İ/ı aware). The caller accepts it only from the
+    owner's verified Basecamp person."""
     from v11_client_reply import comment_text
-    text = " ".join(re.sub(r"[-–—,]", " ", fold(comment_text(content))).split()).rstrip(".!").strip()
-    return text in APPROVALS
+    return "?" not in str(comment_text(content)) and _approval_form(content) in APPROVALS
+
+
+def _approval_form(content):
+    """Folded comment text without dashes, commas, final punctuation or emoji (owner 2026-10-16: 'OK GO 🚀')."""
+    from v11_client_reply import comment_text
+    text = re.sub(r"[-–—,]", " ", fold(comment_text(content)))
+    text = re.sub(r"[^\w\s]+", " ", text)  # emoji, '!', '.', ':)' and the like never decide an approval
+    return " ".join(text.split())
+
+
+def near_approval(content):
+    """Short owner comments that look like an approval but are not one ('ok go canım', 'onay'): Hamle explains."""
+    words = _approval_form(content).split()
+    return 0 < len(words) <= 4 and any(w in ("go", "onay", "ok", "tamam", "basla") or w.startswith("onayl")
+                                       for w in words)
 
 
 # ------------------------------------------------------------------ the watch
@@ -1769,10 +1784,15 @@ class ProspectWatch:
                     if self.clock().timestamp() - created > self.cfg["research"]["expire_days"] * 86400:
                         self._set_request(key, ("awaiting_approval",), state="expired")
                         out["expired"] += 1
+                    elif any(near_approval(c.get("content")) for c in owners):
+                        self._ack(key, row["todo_id"], "Bu yorumu onay olarak okuyamadım, araştırmaya başlamadım. "
+                                  "Başlamam için yeni bir yorum olarak yalnız \"OK GO\" ya da \"Onaylıyorum\" yaz.",
+                                  report)
+                        out["unclear"] = out.get("unclear", 0) + 1
                     elif _hm(local) >= self.cfg["research"]["reminder_after"] and row.get("reminded_on") != today:
                         self._set_request(key, ("awaiting_approval",), reminded_on=today)
                         self._ack(key, row["todo_id"], "Hatırlatma: bu araştırma isteği senin onayını bekliyor. "
-                                  "Başlamam için yalnız \"Onaylıyorum\" yaz; istemiyorsan bu to-do'yu kapatabilirsin.",
+                                  "Başlamam için yalnız \"OK GO\" ya da \"Onaylıyorum\" yaz; istemiyorsan bu to-do'yu kapatabilirsin.",
                                   report)
                         out["reminded"] += 1
                     continue
