@@ -139,7 +139,7 @@ class Models:
 class Basecamp:
     """In-memory Basecamp for the project: lists, to-dos and comments (exact readback shapes)."""
     def __init__(self):
-        self.lists = [{"id": NOTES, "name": "Hamle İşleri", "visible_to_clients": False, "status": "active"},
+        self.lists = [{"id": NOTES, "name": "Hamle Yeni Temaslar", "visible_to_clients": False, "status": "active"},
                       {"id": RESEARCH, "name": "Hamle Araştırma İstekleri", "visible_to_clients": False,
                        "status": "active"},
                       {"id": 13, "name": "Başka", "visible_to_clients": True, "status": "active"}]
