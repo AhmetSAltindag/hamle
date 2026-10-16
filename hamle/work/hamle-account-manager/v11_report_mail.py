@@ -24,10 +24,10 @@ FORMATS = {"reels": "Reels", "carousel": "Karusel", "carousel_album": "Karusel",
            "video": "Video", "short": "Shorts", "story": "Hikâye", "other": "Diğer"}
 PLATFORM_ORDER = ("instagram", "linkedin", "youtube", "tiktok", "x", "facebook")
 LIMIT = 98_000  # bytes; Gmail clips a message body at ~102 KB
-GROUPS = (("KANAL PANOSU", ("channels", "balance")),
-          ("DİJİTAL VARLIK DEĞERLENDİRMESİ", ("message", "algorithm", "web", "google")),
-          ("HEDEF KİTLE TAHMİNİ", ("audience",)), ("RAKİP KIYASI", ("competitors",)),
-          ("SEKTÖR DİNAMİKLERİ", ("sector",)), ("KURUM, FIRSATLAR VE RİSKLER", ("company", "risks")))
+GROUPS = (("KONUMLANDIRMA VE MESAJ", ("positioning", "message")),
+          ("KANALLAR VE TOPLULUK", ("channels", "frequency", "community")),
+          ("WEB VE GOOGLE", ("web", "google")),
+          ("İTİBAR VE RAKİPLER", ("competitors",)))
 
 
 def e(t):
@@ -169,11 +169,17 @@ def block(title, sec, r):
             f'<tr><td width="18" valign="top" style="{FA}font-size:14px;line-height:21px;color:{PINK};'
             f'font-weight:bold">&rsaquo;</td><td style="{FA}font-size:13px;line-height:20px;color:{SOFT};'
             f'padding-bottom:4px">{r(b)}</td></tr>' for b in bullets) + "</table>"
+    if sec.get("recommendation"):
+        body += (f'<table {TB} width="100%" style="margin-top:10px"><tr><td bgcolor="{YELLOW}" style="background:{YELLOW};'
+                 f'padding:10px 12px"><div style="{FM}font-size:10px;letter-spacing:2px;font-weight:bold;color:{BG}">'
+                 f'ÖNERİ</div>{txt(r(sec["recommendation"]), 14, BG, "bold", 20, "padding-top:2px")}</td></tr></table>')
+    score = sec.get("score")
+    word = f"{int(score)}/100 · {word}" if isinstance(score, int) and word else word
     return (f'<table {TB} width="100%" style="margin-bottom:10px"><tr>'
             f'<td width="5" bgcolor="{color}" style="font-size:1px;line-height:1px">&nbsp;</td>'
             f'<td bgcolor="{tint}" style="background:{tint};padding:12px 14px">'
             f'<table {TB} width="100%"><tr><td>{txt(e(title), 15, WHITE, "bold")}</td>'
-            f'<td align="right" width="84">{label(word, color) if word else ""}</td></tr></table>{body}</td></tr></table>')
+            f'<td align="right" width="120">{label(word, color) if word else ""}</td></tr></table>{body}</td></tr></table>')
 
 
 def panel(n, title, body):
@@ -292,7 +298,7 @@ def _render(label_text, written, sources, measured, *, today, link, sections, re
         body = "".join(block(by[k][0], by[k][1], r) for k in keys if k in by)
         if keys[0] == "channels":
             body = tiles(measured, today, link_style) + body
-        elif keys[0] == "audience" and written.get("audience_segments"):
+        elif keys[0] == "positioning" and written.get("audience_segments"):
             segs = ""
             for i, s in enumerate(written["audience_segments"]):
                 width, word = SHARE_BAR.get(s.get("share"), (30, ""))

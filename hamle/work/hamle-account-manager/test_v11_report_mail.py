@@ -21,7 +21,8 @@ def big_written():
                                              for i, n in enumerate(pw.SCORE_PARTS)]},
             "headline": long(300), "summary": [long(400)] * 3,
             "sections": [{"key": k, "rag": ("green", "amber", "red")[i % 3], "paragraphs": [long(900)] * 2,
-                          "bullets": [long(400)] * 6} for i, (k, _) in enumerate(pw.SECTIONS)],
+                          "bullets": [long(400)] * 6, "score": 40 + i, "recommendation": long(400)}
+                         for i, (k, _) in enumerate(pw.SECTIONS)],
             "competitor_rows": [{"metric": long(120), "us": long(200), "them": [long(200)] * 3}] * 6,
             "moves": [{"title": long(160), "why": long(500), "what": long(600), "measure": long(300),
                        "first_30_days": long(400)}] * 3,
@@ -43,9 +44,13 @@ class ReportMail(unittest.TestCase):
         for bad in ("<script", "<svg", "@import", "fonts.googleapis", "position:absolute"):
             self.assertNotIn(bad, html)
         self.assertIn('style="max-width:680px;width:100%"', html)
-        for title in ("YÖNETİCİ ÖZETİ", "KANAL PANOSU", "DİJİTAL VARLIK DEĞERLENDİRMESİ", "HEDEF KİTLE TAHMİNİ",
-                      "RAKİP KIYASI", "SEKTÖR DİNAMİKLERİ", "BİZ YÖNETSEYDİK", "SON SÖZ", "KAYNAKLAR"):
+        for title in ("YÖNETİCİ ÖZETİ", "KONUMLANDIRMA VE MESAJ", "KANALLAR VE TOPLULUK", "WEB VE GOOGLE",
+                      "İTİBAR VE RAKİPLER", "BİZ YÖNETSEYDİK", "SON SÖZ", "KAYNAKLAR"):
             self.assertIn(title, html)
+        for _, area in pw.SECTIONS:  # the owner's 8 areas, each with its score and one recommendation
+            self.assertIn(area, html)
+        self.assertIn("ÖNERİ", html)
+        self.assertIn("47/100 · DİKKAT", html)
         self.assertIn("kısaltılmış özettir", html)  # the full text and the mail draft stay in Basecamp
 
     def test_typical_report_is_sent_whole(self):
@@ -72,7 +77,7 @@ class ReportMail(unittest.TestCase):
         self.assertIn("GÜÇLÜ", html)
         self.assertNotIn("bulunamadı", html)
         self.assertNotIn("BİZ YÖNETSEYDİK", html)
-        self.assertNotIn("RAKİP KIYASI", html)
+        self.assertNotIn("İTİBAR VE RAKİPLER", html)
         self.assertEqual(re.findall(r"// (\d\d)", html), ["01", "02"])  # no measured channel: no empty board
 
     def test_source_links_and_escaping(self):

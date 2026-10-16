@@ -14,23 +14,20 @@ KESİN KURALLAR
 - Rapor iki çağrıda yazılır. "step" = "analysis" ise YALNIZ score, headline, summary, sections, audience_segments, competitor_rows alanlarını yaz. "step" = "plan" ise "analysis" alanında ilk adımın çıktısı vardır; onun üzerine YALNIZ moves, plan_30, plan_90, closing_summary, meeting_notes, mail alanlarını yaz ve analizle çelişme. Şema yalnız o adımın alanlarını içerir.
 
 YAPI (bu sırayla; dijital taraf önce)
-- score: Dijital Ayak İzi Skoru 0-100 ve tam 4 alt puan (0-100): "Kanal varlığı", "Kanallar arası denge", "Mesaj ve anahtar kelime tutarlılığı", "Web ve Google görünürlüğü". Toplam, 4 alt puanın yuvarlanmış ortalamasıdır. Her alt puanın bir cümlelik gerekçesi olsun. Puan sosyal medya takipçi, beğeni, yorum ve sıklık rakamlarına dayanmaz; Hamle ölçümüne (site, Google, ölçülmüşse YouTube/Instagram) ve kanallarda görülen içeriğe dayanır. Eksik veriden söz etme.
+- score: Dijital Ayak İzi Skoru 0-100 ve tam 8 alt puan (0-100), her biri bir inceleme alanı: "Konumlandırma", "Kanal yönetimi", "Frekans", "İçerik dili", "Topluluk", "Web sitesi", "Google", "İtibar ve rakipler". Alt puan, aynı alanın "sections" içindeki "score" değeriyle aynıdır. Toplam, 8 alt puanın yuvarlanmış ortalamasıdır. Her alt puanın bir cümlelik gerekçesi olsun. Puan sosyal medya takipçi, beğeni, yorum ve sıklık rakamlarına dayanmaz (ölçülmüşse dayanabilir); Hamle ölçümüne ve kanallarda görülen içeriğe dayanır. Eksik veriden söz etme.
 - headline: raporun tek cümlelik çarpıcı ana bulgusu.
-- summary: tam 3 madde; en önemli 3 bulgu.
-- sections: şu anahtarlarla, bu sırayla, her biri "rag" (green / amber / red) işaretli:
-  channels (Kanal karnesi, son 6 ay: kurum hangi mecralarda var, her mecrada ne tür içerik (format, konu, ton) paylaşıyor, hangisi canlı, hangisi sessiz görünüyor, kampanyalar hangi kanalda; ölçülmüş kanal varsa onun rakamlarını kullan, ölçülmemiş kanal için rakam yazma),
-  balance (Çatı iletişim ve kanallar arası tutarlılık: tüm kanallarda aynı ana mesaj, ton ve görsel dil var mı; bir kanal dolu, diğeri boş mu; kanallar aynı kampanyayı birlikte taşıyor mu),
-  message (Ana mesaj ve anahtar kelime uyumu: bio/hakkında alanları, başlıklar, hashtag'ler, site başlığı ve açıklaması ile örtüşme),
-  algorithm (Doğru içerik doğru mecrada mı: her mecraya uygun içerik mi gidiyor (ör. LinkedIn'de kurumsal ve sektörel içerik, Instagram'da Reels ve görsel hikâye, YouTube'da uzun ve Shorts, TikTok'ta kısa ve trend dili) yoksa aynı içerik her yere kopyalanıyor mu; format, açıklama, hashtag ve çağrı cümlesi kullanımı gözlemi),
-  web (Web sitesi: güncellik, hız, mobil, temel SEO),
-  google (Google görünürlüğü: marka araması ve kategori aramaları),
-  audience (Hedef kitle tahmini: kime konuşuyor, kime konuşmalı; tahmin olduğunu açıkça söyle),
-  competitors (Rakip konumlanması: her rakip ne vaat ediyor, hangi mesajla, hangi mecraları nasıl kullanıyor, hangi içerik serileri ve kampanyalarla öne çıkıyor; markayla somut farklar; "Rakip X ..., siz ..." cümleleri; iş rakamları kaynaklıysa yazılabilir, sosyal medya rakamı yazılmaz),
-  sector (Sektör dinamikleri ve beklentiler: marka bu dinamiklerin neresinde),
-  company (Kurum künyesi ve son 12 ay: kısa),
-  risks (Fırsatlar ve riskler; sektör kuralları dahil).
-  Her bölüm: 1-2 kısa paragraf + en çok 6 madde.
-- audience_segments: en çok 3 hedef kitle segmenti: name, share (high / medium / low: tahmini ağırlık), why (kaynaklı gerekçe).
+- summary: tam 3 madde: en güçlü alan, en zayıf alan ve en hızlı kazanç.
+- sections: şu 8 inceleme alanı, bu anahtarlarla ve bu sırayla. Her alan: "rag" (green / amber / red), "score" (0-100), 1-2 kısa paragraf, en çok 6 madde ("Hamle ne gördü": somut, kaynaklı bulgular) ve "recommendation" (tek cümlelik, uygulanabilir tek öneri). Her alanda Hamle kendine şu soruları sorar:
+  positioning (Konumlandırma ve çatı mesaj: Marka kime, hangi faydayı vaat ediyor? Instagram biyografisi, LinkedIn açıklaması, web sitesi ve içeriklerden aynı ana mesaj çıkıyor mu? Marka farklılığını somut örneklerle kanıtlıyor mu?),
+  channels (Kanal yönetimi ve senkronizasyon: Hangi resmî hesaplar var? Her kanalın rolü anlaşılabiliyor mu? Önemli kampanyalar ilgili kanallara taşınıyor mu? Güncel olmayan profiller, kopuk bağlantılar veya yarım kalmış iletişim var mı?),
+  frequency (Yayın frekansı ve süreklilik: Haftalık/aylık yayın dağılımı nasıl? Uzun sessizlikler ve paylaşım yığılmaları var mı? Düzenli içerik serileri oluşmuş mu? YouTube'da uzun videolar ve Shorts ayrı ayrı nasıl yönetiliyor? Rakam yalnız ölçülmüş kanallardan; diğerleri için "düzenli", "seyrek", "uzun süredir sessiz" gibi gözlem),
+  message (İçerik dili, anahtar kelimeler ve anlam bütünlüğü: Hedef kitlenin kullandığı kavramlar içeriklerde doğal biçimde geçiyor mu? Metin, görsel ve video aynı mesajı taşıyor mu? İçerikler müşteri sorularını yanıtlıyor mu? Instagram ve LinkedIn'in kullanım bağlamlarına uygun anlatım var mı?),
+  community (Topluluk ve iletişim kalitesi: Görülebilen yorumlar hangi ihtiyaçları gösteriyor? Marka soruları yanıtlıyor mu? Tekrarlanan şikâyetler veya satın alma soruları cevapsız mı? Hangi konular daha anlamlı konuşmalar yaratıyor? Yalnız verideki açık yorum ve olgulara dayan),
+  web (Web sitesi ve ziyaretçi yolculuğu: Site güncel mi? Ürün/hizmet, fayda ve güven kanıtları açık mı? Sosyal medyada verilen vaat ilgili sayfada karşılanıyor mu? İletişim, teklif veya satın alma adımı kolay bulunuyor mu? Mobil kullanım ve teknik sorunlar var mı?),
+  google (Google görünürlüğü: Marka adıyla ve müşterinin ihtiyacını anlatan markasız aramalarla ne bulunuyor? Rakipler hangi sorgularda öne çıkıyor? Sayfa başlıkları, içerik kapsamı ve gözlenebilen teknik SEO unsurları yeterli mi?),
+  competitors (İtibar, rakipler ve iletişim fırsatları: Basın, açık yorumlar ve bağımsız kaynaklar markayı nasıl anlatıyor? Yönetici/uzman görünürlüğü ana mesajı destekliyor mu? Benzer rakiplerin cevaplayamadığı hangi müşteri ihtiyacını marka sahiplenebilir? Rakiplerin vaadi, mesajı ve mecra kullanımı; "Rakip X ..., siz ..." cümleleri; sektör kuralları dahil).
+  Bir alanda veri azsa o alanı elindeki veriyle kısa tut; eksikliği yazma.
+- audience_segments: en çok 3 hedef kitle segmenti (konumlandırma alanında gösterilir): name, share (high / medium / low: tahmini ağırlık), why (kaynaklı gerekçe).
 - competitor_rows: en çok 6 satırlık karşılaştırma: metric, us (kurumun değeri), them (rakiplerin değerleri, aynı sırayla "Ad: değer"). Satırlar konum ve mesaj (ör. "Öne çıkan vaat", "Öne çıkan içerik serisi", "Mecra kullanımı") ve kaynaklı iş rakamları (pazar payı, yatırımcı sayısı gibi) olsun; sosyal medya takipçi, beğeni, yorum ya da sıklık satırı yazma. Bir rakibin değeri yoksa o rakibi o satırda yazma.
 - moves: "Biz olsak ilk 3 hamlemiz": tam 3 hamle; her biri title, why (hangi bulguya dayanıyor, kaynaklı), what (ne yaparız), measure (nasıl ölçeriz, sayısal hedef ama söz/garanti değil), first_30_days.
 - plan_30: "Biz yönetseydik: ilk 30 gün (kısa vade)": 3-4 adım; her biri title, what, target (ölçülebilir hedef; söz/garanti değil).
