@@ -520,7 +520,8 @@ OK_STATUSES = ("stopped", "review_required", "already_recorded", "read_verified"
                "digital_karne_completed", "digital_karne_partial", "digital_karne_preview",
                "brand_memory_completed", "brand_memory_partial", "weekly_summary_sent", "weekly_summary_preview",
                "monthly_report_completed", "monthly_report_partial", "monthly_report_preview",
-               "hamle_karne_sent", "hamle_karne_preview", "prospect_watch_completed", "prospect_watch_preview")
+               "hamle_karne_sent", "hamle_karne_preview", "prospect_watch_completed", "prospect_watch_preview",
+               "prospect_test_requests_completed")
 
 
 def main(argv=None):
@@ -576,6 +577,10 @@ def main(argv=None):
     parser.add_argument("--preview-from")
     parser.add_argument("--preview-subject")
     parser.add_argument("--preview-text")
+    # with --prospect-preview: a research request ALSO opens a real TEST request + to-do for the owner (no mail out)
+    parser.add_argument("--preview-open-request", action="store_true")
+    # operator run (schedule off): only TEST research requests move on; their report goes only to the owner
+    parser.add_argument("--prospect-test-requests", action="store_true")
     args = parser.parse_args(argv)
     backend = secrets = None
     try:
@@ -625,6 +630,9 @@ def main(argv=None):
                                    args.preview_from or "") is not None
                   and 0 < len(args.preview_subject or "") <= 200 and 0 < len(args.preview_text or "") <= 3000),
                  "prospect_preview_arguments_invalid")
+        _require(not args.preview_open_request or args.prospect_preview, "preview_open_request_requires_prospect_preview")
+        _require(not args.prospect_test_requests or (args.mode == "prospect_watch" and not args.prospect_preview),
+                 "prospect_test_requests_arguments_invalid")
         _require(os.environ.get("HAMLE_ALLOW_FIRESTORE_OPERATIONS") == "yes", "cloud_opt_in_required")
         _require(os.environ.get("HAMLE_PROJECT_ID") == "gamechangers-hamle" and
                  os.environ.get("HAMLE_FIRESTORE_DATABASE") == "hamle-operations", "cloud_scope_invalid")
@@ -756,7 +764,11 @@ def main(argv=None):
                 name, _, addr = args.preview_from.rpartition("<")
                 result = run_worker_prospect_preview(store, secrets, sender=addr.rstrip(">").strip() or name.strip(),
                                                      sender_name=name.strip() if addr else None,
-                                                     subject=args.preview_subject, text=args.preview_text)
+                                                     subject=args.preview_subject, text=args.preview_text,
+                                                     open_request=args.preview_open_request)
+            elif args.prospect_test_requests:
+                from v11_prospect_watch import run_worker_prospect_test_requests
+                result = run_worker_prospect_test_requests(store, secrets)
             else:
                 from v11_prospect_watch import run_worker_prospect_watch
                 result = run_worker_prospect_watch(store, secrets, started_at=job_started)
