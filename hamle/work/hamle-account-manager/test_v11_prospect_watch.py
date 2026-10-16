@@ -1365,6 +1365,25 @@ class TestRequests(Base):
         self.watch().run_test_requests()
         self.assertEqual(len(self.copies.writes), 2)
 
+    def test_failed_write_is_rerun_from_the_kept_research(self):
+        todo = self.opened()
+        self.bc.human(todo["id"], OWNER_ID, "Onaylıyorum")
+        self.models.out["writer"] = [RuntimeError("input_byte_limit"), written()]
+        r = self.watch().run_test_requests()
+        self.assertEqual(r["requests"]["reports"], 0)
+        reports = self.models.kinds().count("report")
+        r = self.watch().run_test_requests()  # the operator's next run writes it; no new research
+        self.assertEqual((r["write_reopened"], r["requests"]["reports"]), (1, 1))
+        self.assertEqual(self.models.kinds().count("report"), reports)
+        attempts = [req.get("_attempt") for kind, req in self.models.calls if kind == "writer"]
+        self.assertEqual(attempts, [0, 1, 1])  # the re-run is a new single chance (new digest)
+        self.assertEqual(len(self.copies.writes), 1)  # the designed report to the owner
+        r = self.watch().run_test_requests()
+        self.assertEqual(r["write_reopened"], 0)
+
+    def test_writer_reads_up_to_200_kb(self):
+        self.assertEqual(pw.MAX_INPUT["writer"], 200_000)
+
     def test_test_run_leaves_real_requests_alone(self):
         self.mails = [mail(1, subject="Araştırma", text="Merhaba, kurumumuzu araştırır mısınız?\nDeniz")]
         self.models.out["classify"] = [classified("research_request", target="organisation")]
