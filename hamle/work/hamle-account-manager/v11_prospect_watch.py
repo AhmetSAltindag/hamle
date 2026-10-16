@@ -1025,77 +1025,10 @@ PLATFORM_LABEL = {"instagram": "Instagram", "linkedin": "LinkedIn", "youtube": "
 
 
 def render_report_mail(label, written, sources, measured, *, today, link):
-    """The same report as a designed e-mail (inline styles: dark band, yellow-underlined headings, score, table)."""
-    e = lambda t: escape(str(t), quote=True)  # noqa: E731
-    r = lambda t: _refs(t, sources)  # noqa: E731
-    h = lambda t: (f'<h2 style="font:700 18px Arial,sans-serif;color:{INK};margin:28px 0 10px;padding-bottom:6px;'  # noqa: E731
-                   f'border-bottom:3px solid {ACCENT}">{t}</h2>')
-    p = lambda t: f'<p style="font:15px/1.6 Arial,sans-serif;color:#222;margin:0 0 12px">{t}</p>'  # noqa: E731
-    ul = lambda items: ('<ul style="font:15px/1.6 Arial,sans-serif;color:#222;margin:0 0 12px;padding-left:20px">'  # noqa: E731
-                        + "".join(f"<li style=\"margin-bottom:6px\">{i}</li>" for i in items) + "</ul>")
-    sc = written.get("score") or {}
-    bar = "".join(
-        f'<tr><td style="font:14px Arial,sans-serif;color:#222;padding:4px 8px 4px 0">{e(x["name"])}</td>'
-        f'<td style="width:45%;padding:4px 0"><div style="background:#eee;height:10px;border-radius:5px">'
-        f'<div style="background:{ACCENT};height:10px;border-radius:5px;width:{int(x["score"])}%"></div></div></td>'
-        f'<td style="font:700 14px Arial,sans-serif;padding:4px 0 4px 8px">{int(x["score"])}</td></tr>'
-        for x in sc.get("parts") or [])
-    out = [f'<div style="max-width:720px;margin:0 auto;background:#fff">',
-           f'<div style="background:{INK};padding:28px 32px"><div style="font:700 13px Arial,sans-serif;'
-           f'letter-spacing:2px;color:{ACCENT}">HAMLE AI · DİJİTAL AYAK İZİ RAPORU</div>'
-           f'<div style="font:700 26px Arial,sans-serif;color:#fff;margin-top:8px">{e(label)}</div>'
-           f'<div style="font:13px Arial,sans-serif;color:#bbb;margin-top:6px">Ölçüm: {e(today)} · son 6 ay · '
-           f'yalnız ekip içi</div></div><div style="padding:8px 32px 32px">',
-           f'<table style="width:100%;margin-top:24px"><tr><td style="width:150px;vertical-align:top">'
-           f'<div style="font:700 56px Arial,sans-serif;color:{INK}">{e(sc.get("total"))}</div>'
-           f'<div style="font:13px Arial,sans-serif;color:#666">/100 Dijital Ayak İzi Skoru</div></td>'
-           f'<td><table style="width:100%">{bar}</table></td></tr></table>',
-           f'<p style="font:700 18px/1.5 Arial,sans-serif;color:{INK};margin:24px 0 8px;padding:14px 16px;'
-           f'background:#fafae6;border-left:5px solid {ACCENT}">{r(written.get("headline"))}</p>',
-           h("Öne çıkan 3 bulgu"), ul([r(x) for x in written.get("summary") or []])]
-    for _, title, sec in _sections(written):
-        out.append(h(f"{RAG.get(sec.get('rag'), '')} {e(title)}"))
-        out += [p(r(x)) for x in sec.get("paragraphs") or []]
-        if sec.get("bullets"):
-            out.append(ul([r(b) for b in sec["bullets"]]))
-    if written.get("audience_segments"):
-        out += [h("Hedef kitle segmentleri (tahmin)"),
-                ul([f"<strong>{e(x['name'])}</strong> ({SHARE.get(x['share'], '')}) · {r(x['why'])}"
-                    for x in written["audience_segments"]])]
-    rows = written.get("competitor_rows") or []
-    if rows:
-        td = 'style="font:14px Arial,sans-serif;color:#222;padding:8px;border-bottom:1px solid #eee;vertical-align:top"'
-        out.append(h("Yan yana") + '<table style="width:100%;border-collapse:collapse">'
-                   + "".join(f"<tr><td {td}><strong>{e(x['metric'])}</strong></td><td {td}>Siz: {r(x['us'])}</td>"
-                             f"<td {td}>{'<br>'.join(r(t) for t in x['them'])}</td></tr>" for x in rows) + "</table>")
-    out.append(h("Biz olsak ilk 3 hamlemiz"))
-    for i, m in enumerate(written.get("moves") or [], 1):
-        out.append(f'<div style="margin:0 0 14px;padding:14px 16px;border:1px solid #eee;border-radius:8px">'
-                   f'<div style="font:700 16px Arial,sans-serif;color:{INK}">{i}. {e(m["title"])}</div>'
-                   + p(f"<strong>Neden:</strong> {r(m['why'])}") + p(f"<strong>Ne yaparız:</strong> {r(m['what'])}")
-                   + p(f"<strong>Nasıl ölçeriz:</strong> {r(m['measure'])}")
-                   + p(f"<strong>İlk 30 gün:</strong> {r(m['first_30_days'])}") + "</div>")
-    for key, title in (("plan_30", "Biz yönetseydik · ilk 30 gün"), ("plan_90", "Biz yönetseydik · 90 gün")):
-        if written.get(key):
-            out += [h(title), ul([f"<strong>{e(x['title'])}</strong> · {r(x['what'])} "
-                                  f"<em>Hedef: {r(x['target'])}</em>" for x in written[key]])]
-    if written.get("closing_summary"):
-        out += [h("Son söz · yönetici özeti"),
-                f'<p style="font:700 16px/1.6 Arial,sans-serif;color:{INK};margin:0 0 12px;padding:14px 16px;'
-                f'background:#fafae6;border-left:5px solid {ACCENT}">{r(written["closing_summary"])}</p>']
-    if written.get("meeting_notes"):
-        out += [h("Görüşme notu (yalnız ekip içi)"), ul([r(x) for x in written["meeting_notes"]])]
-    mail = str(written.get("mail") or "").strip()
-    if mail:
-        out += [h("Kuruma gidecek mail taslağı"),
-                f'<div style="font:14px/1.6 Arial,sans-serif;color:#333;background:#f6f6f6;padding:14px 16px;'
-                f'border-radius:8px">{"<br>".join(e(x) for x in mail.split(chr(10)))}</div>']
-    if sources:
-        out += [h("Kaynaklar"), '<ol style="font:12px/1.6 Arial,sans-serif;color:#555;padding-left:20px">'
-                + "".join(f'<li><a style="color:#555" href="{e(u)}">{e(u)}</a></li>' for u in sources) + "</ol>"]
-    out.append(p(f'<a href="{e(link)}">Basecamp\'teki to-do</a>: göndermek için orada "Hamle gönder" yazın.')
-               + "</div></div>")
-    return "".join(out)
+    """The same report as the designed e-mail the owner picked (2026-10-16, "Neon Kontrol Odası")."""
+    import v11_report_mail
+    return v11_report_mail.render(label, written, sources, measured, today=today, link=link,
+                                  sections=_sections(written), refs=lambda t: _refs(t, sources))
 
 
 def _visible_matches(actual, expected):
