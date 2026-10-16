@@ -20,7 +20,7 @@ SCHEMA_VERSION = 1
 ROLES = ("chain_interpreter", "chain_answerer", "customer_text", "chain_classifier", "digest_classifier",
          "trend_radar", "monday_special_days", "new_business_research", "daily_spark", "digital_karne",
          "brand_memory", "teams_answer", "weekly_summary", "monthly_report", "prospect_classifier",
-         "prospect_research", "prospect_report")
+         "prospect_research", "prospect_report", "prospect_writer")
 WEB_SEARCH_ROLES = ("trend_radar", "monday_special_days", "new_business_research", "daily_spark", "digital_karne",
                     "prospect_research", "prospect_report")
 PROVIDERS = ("anthropic", "openai")
