@@ -79,11 +79,16 @@ SCORE_PARTS = ("Kanal varlığı ve aktiflik", "Frekans ve süreklilik", "Kanall
 SECTIONS = (("channels", "Kanal karnesi · son 6 ay"), ("balance", "Kanallar arası denge"),
             ("message", "Ana mesaj ve anahtar kelime uyumu"), ("algorithm", "Algoritmaya uygunluk"),
             ("web", "Web sitesi"), ("google", "Google görünürlüğü"), ("competitors", "Rakiplerle kıyas"),
+            ("audience", "Hedef kitle tahmini"), ("sector", "Sektör dinamikleri ve beklentiler"),
             ("company", "Kurum künyesi ve son 12 ay"), ("risks", "Fırsatlar ve riskler"))
 # Owner 2026-10-16: the research runs part by part (small calls, 3 searches each), then one strategist merges them;
 # one big call with 10 searches outgrew the input limit (usage_limit_exceeded). A failed part leaves a gap, not a void.
-REPORT_PARTS = (("channels", ("channels", "message")), ("google", ("google",)), ("competitors", ("competitors",)),
+REPORT_PARTS = (("channels", ("channels", "message")), ("google", ("google",)), ("audience", ("audience",)),
+                ("competitors", ("competitors",)), ("sector", ("sector",)),
                 ("company", ("company", "campaigns", "regulation")))
+# The strategist writes in two steps (one answer would outgrow a single call): the analysis, then the plan on top of it.
+WRITER_STEPS = (("analysis", ("score", "headline", "summary", "sections", "audience_segments", "competitor_rows")),
+                ("plan", ("moves", "plan_30", "plan_90", "closing_summary", "meeting_notes", "mail")))
 PLATFORMS = ("instagram", "linkedin", "youtube", "tiktok", "x", "facebook")
 CATEGORIES = ("demo_or_first_contact", "research_request", "known_client_new_person", "vendor_or_job", "spam",
               "unsure")
@@ -604,7 +609,11 @@ def _schemas():
                                         "url": _nstr(300)}), 6),
                    "competitors": _arr(_obj({"name": _str(120), "domain": _nstr(120), "facts": _arr(fact, 6)}), 3),
                    "campaigns": _arr(_obj({"text": _str(300), "url": _str(300), "date": _nstr(10)}), 6),
-                   "regulation": _arr(fact, 3)})
+                   "regulation": _arr(fact, 3),
+                   "audience": _obj({"segments": _arr(_obj({"name": _str(80), "description": _str(300),
+                                                            "signals": _arr(fact, 3)}), 3),
+                                     "facts": _arr(fact, 5)}),
+                   "sector": _obj({"trends": _arr(fact, 5), "expectations": _arr(fact, 4)})})
     rag = enum(("green", "amber", "red"))
     writer = _obj({"score": _obj({"total": {"type": "integer", "minimum": 0, "maximum": 100},
                                   "parts": _arr(_obj({"name": enum(SCORE_PARTS),
@@ -618,10 +627,16 @@ def _schemas():
                                                  "them": _arr(_str(200), 3)}), 6),
                    "moves": _arr(_obj({"title": _str(160), "why": _str(500), "what": _str(600),
                                        "measure": _str(300), "first_30_days": _str(400)}), 3),
+                   "audience_segments": _arr(_obj({"name": _str(80), "share": enum(("high", "medium", "low")),
+                                                   "why": _str(300)}), 3),
+                   "plan_30": _arr(_obj({"title": _str(120), "what": _str(400), "target": _str(200)}), 4),
+                   "plan_90": _arr(_obj({"title": _str(120), "what": _str(400), "target": _str(200)}), 4),
+                   "closing_summary": _str(900),
                    "meeting_notes": _arr(_str(300), 6), "mail": _str(5000)})
     parts = {name: _obj({k: report["properties"][k] for k in keys}) for name, keys in REPORT_PARTS}
+    steps = {name: _obj({k: writer["properties"][k] for k in keys}) for name, keys in WRITER_STEPS}
     return {"classify": classify, "research": research, "reply": reply, "report": report, "writer": writer,
-            "report_parts": parts}
+            "report_parts": parts, "writer_steps": steps}
 
 
 REPLY_INPUT_KEYS = ("today", "language", "category", "domain_kind", "first_name", "company", "known_brand",
@@ -679,7 +694,8 @@ def model_sources(ops, load_key, catalog, settings, *, routing=None, client=None
         route = routes[kind]
 
         def call(request):
-            schema = schemas["report_parts"][request["part"]] if kind == "report" else schemas[kind]
+            schema = (schemas["report_parts"][request["part"]] if kind == "report" else
+                      schemas["writer_steps"][request["step"]] if kind == "writer" else schemas[kind])
             _need(gates[kind](), "model_budget_unavailable")
             system = render_prompt(kind, settings)
             digest = source_digest("prospect_" + kind, request, route_fingerprint(route, PROMPTS[kind]), _sha(system))
@@ -905,7 +921,13 @@ def number_sources(research, measured, domain):
                              for c in r.get("competitors") or []],
              "campaigns": [{"text": c.get("text"), "date": c.get("date"), "source": num(c.get("url"))}
                            for c in r.get("campaigns") or [] if num(c.get("url"))],
-             "regulation": facts(r.get("regulation"))}
+             "regulation": facts(r.get("regulation")),
+             "audience": {"segments": [{"name": g.get("name"), "description": g.get("description"),
+                                        "signals": facts(g.get("signals"))}
+                                       for g in (r.get("audience") or {}).get("segments") or []],
+                          "facts": facts((r.get("audience") or {}).get("facts"))},
+             "sector": {"trends": facts((r.get("sector") or {}).get("trends")),
+                        "expectations": facts((r.get("sector") or {}).get("expectations"))}}
     return urls, clean
 
 
@@ -949,6 +971,10 @@ def render_report(label, written, sources, measured, *, problems, test, today):
         if sec.get("bullets"):
             body += "<ul>" + "".join(f"<li>{r(b)}</li>" for b in sec["bullets"]) + "</ul>"
         parts.append(f"<br><strong>{RAG.get(sec.get('rag'), '')} {e(title)}</strong><br>{body}")
+    if written.get("audience_segments"):
+        parts.append("<br><strong>Hedef kitle segmentleri (tahmin)</strong><ul>" + "".join(
+            f"<li><strong>{e(x['name'])}</strong> ({SHARE.get(x['share'], '')}) · {r(x['why'])}</li>"
+            for x in written["audience_segments"]) + "</ul>")
     rows = written.get("competitor_rows") or []
     if rows:
         parts.append("<br><strong>Yan yana</strong><ul>" + "".join(
@@ -958,6 +984,14 @@ def render_report(label, written, sources, measured, *, problems, test, today):
         f"<li><strong>{e(m['title'])}</strong><br>Neden: {r(m['why'])}<br>Ne yaparız: {r(m['what'])}<br>"
         f"Nasıl ölçeriz: {r(m['measure'])}<br>İlk 30 gün: {r(m['first_30_days'])}</li>"
         for m in written.get("moves") or []) + "</ol>")
+    for key, title in (("plan_30", "Biz yönetseydik · ilk 30 gün (kısa vade)"),
+                       ("plan_90", "Biz yönetseydik · 90 gün (orta vade)")):
+        if written.get(key):
+            parts.append(f"<br><strong>{title}</strong><ul>" + "".join(
+                f"<li><strong>{e(x['title'])}</strong> · {r(x['what'])} <em>Hedef: {r(x['target'])}</em></li>"
+                for x in written[key]) + "</ul>")
+    if written.get("closing_summary"):
+        parts.append(f"<br><strong>Son söz · yönetici özeti</strong><br>{r(written['closing_summary'])}<br>")
     if written.get("meeting_notes"):
         parts.append("<br><strong>Görüşme notu (yalnız ekip içi)</strong><ul>"
                      + "".join(f"<li>{r(x)}</li>" for x in written["meeting_notes"]) + "</ul>")
@@ -985,6 +1019,7 @@ def render_report(label, written, sources, measured, *, problems, test, today):
     return "<div>" + "".join(parts) + "</div>"
 
 
+SHARE = {"high": "yüksek pay", "medium": "orta pay", "low": "düşük pay"}
 PLATFORM_LABEL = {"instagram": "Instagram", "linkedin": "LinkedIn", "youtube": "YouTube", "tiktok": "TikTok",
                   "x": "X", "facebook": "Facebook"}
 
@@ -1023,6 +1058,10 @@ def render_report_mail(label, written, sources, measured, *, today, link):
         out += [p(r(x)) for x in sec.get("paragraphs") or []]
         if sec.get("bullets"):
             out.append(ul([r(b) for b in sec["bullets"]]))
+    if written.get("audience_segments"):
+        out += [h("Hedef kitle segmentleri (tahmin)"),
+                ul([f"<strong>{e(x['name'])}</strong> ({SHARE.get(x['share'], '')}) · {r(x['why'])}"
+                    for x in written["audience_segments"]])]
     rows = written.get("competitor_rows") or []
     if rows:
         td = 'style="font:14px Arial,sans-serif;color:#222;padding:8px;border-bottom:1px solid #eee;vertical-align:top"'
@@ -1036,6 +1075,14 @@ def render_report_mail(label, written, sources, measured, *, today, link):
                    + p(f"<strong>Neden:</strong> {r(m['why'])}") + p(f"<strong>Ne yaparız:</strong> {r(m['what'])}")
                    + p(f"<strong>Nasıl ölçeriz:</strong> {r(m['measure'])}")
                    + p(f"<strong>İlk 30 gün:</strong> {r(m['first_30_days'])}") + "</div>")
+    for key, title in (("plan_30", "Biz yönetseydik · ilk 30 gün"), ("plan_90", "Biz yönetseydik · 90 gün")):
+        if written.get(key):
+            out += [h(title), ul([f"<strong>{e(x['title'])}</strong> · {r(x['what'])} "
+                                  f"<em>Hedef: {r(x['target'])}</em>" for x in written[key]])]
+    if written.get("closing_summary"):
+        out += [h("Son söz · yönetici özeti"),
+                f'<p style="font:700 16px/1.6 Arial,sans-serif;color:{INK};margin:0 0 12px;padding:14px 16px;'
+                f'background:#fafae6;border-left:5px solid {ACCENT}">{r(written["closing_summary"])}</p>']
     if written.get("meeting_notes"):
         out += [h("Görüşme notu (yalnız ekip içi)"), ul([r(x) for x in written["meeting_notes"]])]
     mail = str(written.get("mail") or "").strip()
@@ -2045,11 +2092,13 @@ class ProspectWatch:
                    "request_text": _line(row.get("request_text"), 1500), "measured": data.get("measured"),
                    "research": research, "missing_parts": (data.get("research") or {}).get("missing_parts") or [],
                    "sources": [{"n": i, "url": u} for i, u in enumerate(sources, 1)]}
-        try:
-            report["model_calls"] += 1
-            written = self.models.writer(request)
-        except Exception as exc:
-            return self._fail(key, row, ("researched",), "failed:" + _code(exc), report)
+        written = {}
+        for step, _ in WRITER_STEPS:  # the plan is written on top of the analysis
+            try:
+                report["model_calls"] += 1
+                written.update(self.models.writer(dict(request, step=step, analysis=dict(written) or None)))
+            except Exception as exc:
+                return self._fail(key, row, ("researched",), f"failed:{step}:" + _code(exc), report)
         mail = str(written.get("mail") or "").replace("\r\n", "\n").strip()
         problems = check_report_mail(mail, settings=self.s, language=row.get("language") or "tr",
                                      first=row.get("first_name"))

@@ -8,6 +8,9 @@ KESİN KURALLAR
 - "missing_parts" içindeki araştırma parçaları bu kez alınamadı: o alanlarda "bu bölümün verisi bu kez alınamadı" de, tahmin yürütme ve ilgili alt puanı düşük tutma; gerekçede ölçülemediğini yaz.
 - Somut karşılaştırma cümleleri kur: "Rakibiniz X son 6 ayda YouTube'da ayda ortalama 8 video yayınladı, siz 1." (yalnız veride varsa).
 
+İKİ ADIM
+- Rapor iki çağrıda yazılır. "step" = "analysis" ise YALNIZ score, headline, summary, sections, audience_segments, competitor_rows alanlarını yaz. "step" = "plan" ise "analysis" alanında ilk adımın çıktısı vardır; onun üzerine YALNIZ moves, plan_30, plan_90, closing_summary, meeting_notes, mail alanlarını yaz ve analizle çelişme. Şema yalnız o adımın alanlarını içerir.
+
 YAPI (bu sırayla; dijital taraf önce)
 - score: Dijital Ayak İzi Skoru 0-100 ve tam 6 alt puan (0-100): "Kanal varlığı ve aktiflik", "Frekans ve süreklilik", "Kanallar arası denge", "Mesaj ve anahtar kelime tutarlılığı", "Algoritmaya uygunluk ve etkileşim", "Web ve Google görünürlüğü". Her alt puanın bir cümlelik gerekçesi olsun. Ölçülemeyen alanda puanı düşük tut ve gerekçede söyle.
 - headline: raporun tek cümlelik çarpıcı ana bulgusu.
@@ -19,12 +22,18 @@ YAPI (bu sırayla; dijital taraf önce)
   algorithm (Algoritmaya uygunluk: video/Reels/Shorts oranı, açıklama uzunluğu, hashtag sayısı, paylaşım saatleri, çağrı cümlesi),
   web (Web sitesi: güncellik, hız, mobil, temel SEO),
   google (Google görünürlüğü: marka araması ve kategori aramaları),
-  competitors (Rakiplerle kıyas: aynı ölçütler, somut farklar),
+  audience (Hedef kitle tahmini: kime konuşuyor, kime konuşmalı; tahmin olduğunu açıkça söyle),
+  competitors (Rakiplerle kıyas: aynı ölçütler, markayla somut farklar; "Rakip X ..., siz ..." cümleleri),
+  sector (Sektör dinamikleri ve beklentiler: marka bu dinamiklerin neresinde),
   company (Kurum künyesi ve son 12 ay: kısa),
   risks (Fırsatlar ve riskler; sektör kuralları dahil).
   Her bölüm: 1-2 kısa paragraf + en çok 6 madde.
+- audience_segments: en çok 3 hedef kitle segmenti: name, share (high / medium / low: tahmini ağırlık), why (kaynaklı gerekçe).
 - competitor_rows: en çok 6 satırlık karşılaştırma: metric, us (kurumun değeri), them (rakiplerin değerleri, aynı sırayla "Ad: değer").
 - moves: "Biz olsak ilk 3 hamlemiz": tam 3 hamle; her biri title, why (hangi bulguya dayanıyor, kaynaklı), what (ne yaparız), measure (nasıl ölçeriz, sayısal hedef ama söz/garanti değil), first_30_days.
+- plan_30: "Biz yönetseydik: ilk 30 gün (kısa vade)": 3-4 adım; her biri title, what, target (ölçülebilir hedef; söz/garanti değil).
+- plan_90: "Biz yönetseydik: 90 gün (orta vade)": 3-4 adım; aynı yapı; 30 günün üzerine kurulsun.
+- closing_summary: son yönetici özeti: 4-6 cümle. Bütün bulguları (kanallar, kitle, rakip farkı, sektör) bağla ve "biz yönetseydik 30 ve 90 günde ne değişir" sorusunu net, kendinden emin ama söz vermeden yanıtla.
 - meeting_notes: ajans içi görüşme notu: ilk toplantıda açılacak/sorulacak en çok 6 madde.
 - mail: kuruma gidecek kısa mail taslağı ("language" dilinde). "Merhaba <first_name>," ile başla ("first_name" null ise "Merhaba,"); "Hanım/Bey" yazma. Raporun en çarpıcı 3 bulgusunu ve 3 hamleyi kısaca anlat, tam raporu görüşmede detaylı paylaşmayı öner. Fiyat, ücret, bütçe, tarih, söz, garanti yazma. Ajans içi terim (Basecamp, to-do, görev) kullanma. Kaynak numarası kullanma; gerekiyorsa tam https adres yaz. TAM OLARAK şu imzayla bitir:
 Türkçe:
