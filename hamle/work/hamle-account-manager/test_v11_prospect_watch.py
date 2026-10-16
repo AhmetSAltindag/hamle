@@ -1079,6 +1079,50 @@ class Adapters(Base):
         w._verify("client_reply", good, {"sender": "deniz@acmeyapi.com.tr", "subject": "x"})
 
 
+
+class Preview(Base):
+    """Operator preview: real decisions, no mail, Basecamp or prospect records."""
+    def preview(self, **kw):
+        source = {"sender": kw.pop("sender", "deniz@acmeyapi.com.tr"), "sender_name": kw.pop("name", "Deniz Kaya"),
+                  "subject": "Tanışalım", "text": kw.pop("text", "Merhaba, Hamle'yi gördüm, tanışalım mı?")}
+        return pw.preview_mail(source, settings=self.settings, people=self.people, models=self.models,
+                               clock=lambda: self.now)
+
+    def test_first_contact_runs_classify_research_reply_and_writes_nothing(self):
+        out = self.preview()
+        self.assertEqual(out["status"], "prospect_watch_preview")
+        self.assertEqual(self.models.kinds(), ["classify", "research", "reply"])
+        self.assertEqual((out["decision"], out["reply_problems"], out["writes"]), ("would_send", [], 0))
+        self.assertEqual(out["company"]["name"], "Acme Yapı")
+        self.assertNotIn("research_todo", out)
+        self.assertEqual((self.bc.posted(NOTES), self.writer.writes, self.copies.writes), ([], [], []))
+        self.assertIsNone(self.get(pw.addr_key("deniz@acmeyapi.com.tr")))
+
+    def test_research_request_shows_the_owner_todo_without_a_report(self):
+        self.models.out["classify"] = [classified("research_request", target="organisation")]
+        self.models.out["reply"] = [{"reply": reply_text(extra=" " + SENTENCE)}]
+        out = self.preview(text="Kurumumuz hakkında ne düşünüyorsunuz, bir araştırma yapar mısınız?")
+        self.assertEqual(out["decision"], "would_send", out["reply_problems"])
+        self.assertIn("Onaylıyorum", out["research_todo"]["text"])
+        self.assertIn("Acme Yapı", out["research_todo"]["title"])
+        self.assertNotIn("report", self.models.kinds())
+        self.assertEqual(self.bc.posted(RESEARCH), [])
+
+    def test_free_mail_skips_research_and_spam_gets_no_reply(self):
+        out = self.preview(sender="deniz.kaya@gmail.com")
+        self.assertEqual(self.models.kinds(), ["classify", "reply"])
+        self.assertEqual(out["domain_kind"], "individual")
+        self.models.calls.clear()
+        self.models.out["classify"] = [classified("spam")]
+        out = self.preview()
+        self.assertEqual((out["decision"], self.models.kinds()), ("no_reply", ["classify"]))
+
+    def test_a_bad_reply_is_shown_as_held(self):
+        self.models.out["reply"] = [{"reply": "Merhaba Deniz,\nFiyatımız 500 TL.\nSevgiler,\nHamle AI\nGamechangers"}]
+        out = self.preview()
+        self.assertEqual(out["decision"], "would_hold_for_a_human")
+        self.assertTrue(out["reply_problems"])
+
 class Wiring(unittest.TestCase):
     def test_package_worker_and_routing(self):
         import package_chain_source as pkg

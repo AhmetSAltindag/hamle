@@ -755,6 +755,21 @@ def is_approval(content):
 
 
 # ------------------------------------------------------------------ the watch
+def request_todo(owner_name, estimate, source, sender, label, facts):
+    """Title and body of the owner's research-request to-do (also shown by the preview)."""
+    who = _line(source.get("sender_name"), 120)
+    text = "\n".join([
+        f"{owner_name}, bu kurum bir araştırma istedi. Hamle senin onayın olmadan hiçbir araştırma yapmaz.",
+        f"Başlamam için bu to-do'ya yalnız \"Onaylıyorum\" yaz (yalnız senin yorumun geçerli). Rapor hazır olunca "
+        "burada yorum olarak paylaşırım; kuruma ancak sen \"Hamle gönder\" yazarsan gider.", "",
+        "İsteyen: " + (f"{who} <{sender}>" if who else sender),
+        "Kurum (alan adından): " + label,
+        "İstek: " + _line(facts.get("request_summary"), 300),
+        "Tahmini maliyet ve süre: " + estimate, "",
+        "Mailin kendisi:", _quote(_mail_text(source))])
+    return _line("Araştırma isteği · " + label, 200), text
+
+
 class ProspectWatch:
     def __init__(self, ops, *, settings, book, people, reader, models, http, reply_writer, copy_writer, clock,
                  web=None, psi_key=None, monotonic=time.monotonic, started_at=None):
@@ -1370,17 +1385,7 @@ class ProspectWatch:
         if row.get("existing"):
             return {"existing": True, "todo_id": row.get("todo_id")}
         label = self._company_label(facts, domain)
-        who = _line(source.get("sender_name"), 120)
-        text = "\n".join([
-            f"{owner['name']}, bu kurum bir araştırma istedi. Hamle senin onayın olmadan hiçbir araştırma yapmaz.",
-            f"Başlamam için bu to-do'ya yalnız \"Onaylıyorum\" yaz (yalnız senin yorumun geçerli). Rapor hazır olunca "
-            "burada yorum olarak paylaşırım; kuruma ancak sen \"Hamle gönder\" yazarsan gider.", "",
-            "İsteyen: " + (f"{who} <{sender}>" if who else sender),
-            "Kurum (alan adından): " + label,
-            "İstek: " + _line(facts.get("request_summary"), 300),
-            "Tahmini maliyet ve süre: " + self.cfg["research"]["estimate"], "",
-            "Mailin kendisi:", _quote(_mail_text(source))])
-        title = _line("Araştırma isteği · " + label, 200)
+        title, text = request_todo(owner["name"], self.cfg["research"]["estimate"], source, sender, label, facts)
         try:
             report["business_writes"] += 1
             tid = self._todo(self.lists["research"], title, text, [owner["basecamp_id"]], due=local.date())
@@ -1829,6 +1834,84 @@ def prospect_reply_writer(settings, book, *, token_context, session_factory):
 
     return ProspectReplyWriter({"contacts": []}, token_context=token_context, anchor_lookup=lambda tid: None,
                                session_factory=session_factory)
+
+
+def preview_mail(source, *, settings, people, models, clock):
+    """Operator preview (owner 2026-10-16): the real decisions and model calls for ONE imagined mail, with no mail
+    read or sent, no Basecamp, no copy mail and no prospect records. Prints what the live run would do."""
+    sender = str(source.get("sender") or "").strip().lower()
+    _need(EMAIL.fullmatch(sender) is not None, "preview_sender_invalid")
+    domain = sender.rsplit("@", 1)[1]
+    local = clock().astimezone(ISTANBUL)
+    kind, brand_key = domain_kind(domain, settings)
+    out = {"status": "prospect_watch_preview", "sender": sender, "domain": domain, "domain_kind": kind,
+           "model_calls": 0, "writes": 0}
+    cls = models.classify({"subject": _line(source.get("subject"), 200), "new_text": _mail_text(source),
+                           "domain": domain, "domain_kind": kind, "has_attachments": False})
+    out["model_calls"] += 1
+    category, language = cls["category"], cls["language"]
+    if kind == "client" and category not in ("spam", "vendor_or_job"):
+        category = "known_client_new_person"
+    elif kind != "client" and category == "known_client_new_person":
+        category = "demo_or_first_contact"
+    research_target = cls.get("research_target") or "none"
+    include_research = category == "research_request" and research_target == "organisation" and kind != "individual"
+    out.update(category=category, category_tr=CATEGORY_TR.get(category, category), language=language,
+               request_summary=cls.get("request_summary"), research_target=research_target)
+    if category not in REPLY_CATEGORIES:
+        out["reply_text"] = None
+        out["decision"] = "no_reply"
+        return out
+    known = match_person(people, sender, source.get("sender_name"), domain)
+    first = first_name(source.get("sender_name"), known)
+    company = person = None
+    if kind == "corporate":
+        research = models.research({"domain": domain, "website": "https://" + domain,
+                                    "sender_name": None if known else (first and _line(source.get("sender_name"), 120)),
+                                    "search_person": bool(first) and known is None})
+        out["model_calls"] += 1
+        company, person = company_facts(research, domain), person_facts(research)
+    brand = settings["brands"].get(brand_key) if brand_key else None
+    request = reply_input(today=local.date(), language=language, category=category, kind=kind, first=first,
+                          company=company, brand_name=(brand or {}).get("name"), known=known,
+                          include_research=include_research, source=source)
+    text = str(models.reply(request)["reply"]).replace("\r\n", "\n").strip()
+    out["model_calls"] += 1
+    problems = check_reply(text, settings=settings, language=language, first=first, category=category, kind=kind,
+                           brand_key=brand_key, include_research=include_research)
+    out.update(first_name=first, known_person=(known or {}).get("name"), company=company,
+               person_internal_only=person, reply_text=text, reply_problems=problems,
+               decision="would_send" if not problems else "would_hold_for_a_human")
+    if include_research:
+        label = (company or {}).get("name") or domain
+        title, body = request_todo(settings["roles"]["owner"]["name"], settings["cfg"]["research"]["estimate"],
+                                   source, sender, f"{label} ({domain})" if (company or {}).get("name") else domain,
+                                   {"request_summary": cls.get("request_summary")})
+        out["research_todo"] = {"title": title, "text": body, "report": "not built in a preview"}
+    elif category == "research_request" and research_target == "person":
+        out["person_research_refused"] = True
+    return out
+
+
+def run_worker_prospect_preview(ops, secrets, *, sender, sender_name, subject, text, clock=None, config=None):
+    """Entry for worker.py --mode prospect_watch --prospect-preview: model calls only, nothing written or sent."""
+    import cloud_providers as provider
+    from v11_chain_live import load_catalog
+    from v11_client_watch import load_contacts, validate_contacts
+    from v11_daily_digest import load_brand_cards
+    clock = clock or (lambda: datetime.now(timezone.utc))
+    try:
+        cfg = validate_config(config if config is not None else load_config())
+        catalog = load_catalog()
+        book = validate_contacts(load_contacts(ops), catalog, load_brand_cards())
+        settings = resolve(cfg, catalog, book)
+        _need(not excluded(str(sender or "").strip().lower(), settings, book), "preview_sender_is_agency_or_client")
+        keys = {"anthropic": lambda: provider.anthropic_key(secrets)}
+        source = {"sender": sender, "sender_name": sender_name, "subject": subject, "text": text}
+        return preview_mail(source, settings=settings, people=load_people(ops),
+                            models=model_sources(ops, keys, catalog, settings), clock=clock)
+    except Exception as exc:
+        return {"status": "held", "reason": _code(exc), "business_writes": 0}
 
 
 def run_worker_prospect_watch(ops, secrets, *, clock=None, config=None, started_at=None):
