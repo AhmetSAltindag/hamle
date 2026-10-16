@@ -215,6 +215,13 @@ def validate_config(cfg):
     sent = (cfg.get("approved_sentences") or {}).get("research_request")
     _need(isinstance(sent, dict) and set(sent) == set(LANGUAGES) and all(
         isinstance(v, str) and 10 <= len(v) <= 300 and "\n" not in v for v in sent.values()), "prospect_sentences_invalid")
+    rm = (cfg.get("approved_sentences") or {}).get("report_mail")
+    parts = {"greeting", "greeting_no_name", "intro", "low", "high", "close"}
+    _need(isinstance(rm, dict) and set(rm) == {"high_from"} | set(LANGUAGES) and type(rm["high_from"]) is int
+          and 1 <= rm["high_from"] <= 100 and all(
+              isinstance(rm[lang], dict) and set(rm[lang]) == parts and all(
+                  isinstance(v, str) and 5 <= len(v) <= 400 and "\n" not in v for v in rm[lang].values())
+              and "{score}" in rm[lang]["low"] for lang in LANGUAGES), "prospect_report_mail_invalid")
     r = cfg.get("research")
     _need(isinstance(r, dict) and set(r) == {"enabled", "estimate", "reminder_after", "expire_days",
                                              "max_reports_per_run"}
@@ -1024,11 +1031,29 @@ PLATFORM_LABEL = {"instagram": "Instagram", "linkedin": "LinkedIn", "youtube": "
                   "x": "X", "facebook": "Facebook"}
 
 
-def render_report_mail(label, written, sources, measured, *, today, link):
+def render_report_mail(label, written, sources, measured, *, today, link, client=False, full=False, attached=False):
     """The same report as the designed e-mail the owner picked (2026-10-16, "Neon Kontrol Odası")."""
     import v11_report_mail
     return v11_report_mail.render(label, written, sources, measured, today=today, link=link,
-                                  sections=_sections(written), refs=lambda t: _refs(t, sources))
+                                  sections=_sections(written), refs=lambda t: _refs(t, sources), client=client,
+                                  full=full, attached=attached)
+
+
+def report_attachment(label, written, sources, measured, today):
+    """The company's version of the report (no team notes), whole, as an A4 PDF mail attachment."""
+    import v11_report_pdf
+    html = render_report_mail(label, written, sources, measured, today=today, link="", client=True, full=True)
+    return v11_report_pdf.attachment(label, today, v11_report_pdf.report_pdf(html))
+
+
+SLIM_CHANNEL = ("measured", "url", "handle", "followers", "avg_per_month", "per_month", "last_post",
+                "longest_gap_days", "formats", "engagement_rate_pct")
+
+
+def slim_measured(measured):
+    """Only what the report design draws (kept on the request until the report is sent)."""
+    return {"channels": {p: {k: c.get(k) for k in SLIM_CHANNEL if k in c}
+                         for p, c in (measured.get("channels") or {}).items() if isinstance(c, dict)}}
 
 
 def _visible_matches(actual, expected):
@@ -2032,7 +2057,10 @@ class ProspectWatch:
                 written.update(self.models.writer(dict(request, step=step, analysis=dict(written) or None)))
             except Exception as exc:
                 return self._fail(key, row, ("researched",), f"failed:{step}:" + _code(exc), report)
-        mail = str(written.get("mail") or "").replace("\r\n", "\n").strip()
+        # Owner 2026-10-16: the company mail is fixed approved text with the PDF attached (no model wording).
+        written["mail"] = report_mail_text(self.cfg, language=row.get("language") or "tr", first=row.get("first_name"),
+                                           company=label, score=(written.get("score") or {}).get("total") or 0)
+        mail = written["mail"]
         problems = check_report_mail(mail, settings=self.s, language=row.get("language") or "tr",
                                      first=row.get("first_name"))
         html = render_report(label, written, sources, data.get("measured") or {}, problems=problems,
@@ -2047,9 +2075,11 @@ class ProspectWatch:
         except Exception as exc:
             self._set_request(key, ("writing_report",), state="unknown", reason=_code(exc))
             return "unknown"
+        view = json.dumps({"label": label, "written": written, "sources": sources, "today": request["today"],
+                           "measured": slim_measured(data.get("measured") or {})}, ensure_ascii=False)
         self._set_request(key, ("writing_report",), state="report_ready", report_comment_id=cid, report_mail=mail,
                           report_mail_ok=bool(mail) and not problems, report_mail_problems=problems,
-                          research_json=None)
+                          research_json=None, report_view_json=view if len(view) <= 400_000 else None)
         report["owner_mail"] = self._mail_owner(label, written, sources, data.get("measured") or {}, request["today"],
                                                 row, report)
         return "report_ready"
@@ -2057,11 +2087,19 @@ class ProspectWatch:
     def _mail_owner(self, label, written, sources, measured, today, row, report):
         """The designed HTML report to the owner (team only). A failure here never touches the request."""
         owner = self.s["roles"]["owner"]["email"]
-        html = render_report_mail(label, written, sources, measured, today=today, link=self._app(row["todo_id"]))
+        try:
+            att = report_attachment(label, written, sources, measured, today)
+            report["owner_mail_pdf"] = "ok"
+        except Exception as exc:  # the HTML mail still goes; the PDF is retried when the report is sent
+            att, report["owner_mail_pdf"] = None, "failed:" + _code(exc)
+        html = render_report_mail(label, written, sources, measured, today=today, link=self._app(row["todo_id"]),
+                                  attached=att is not None)
         body = _plain(render_report(label, written, sources, measured, problems=[], test=bool(row.get("test")),
                                     today=today))
         payload = {"to": [owner], "subject": _line(f"Hamle AI · Dijital Ayak İzi Raporu · {label}", 200),
                    "body": body, "html": html}
+        if att:
+            payload["attachment"] = att
         try:
             report["business_writes"] += 1
             remote = self.copy_writer.write(copy.deepcopy(payload))["remote_id"]
@@ -2077,6 +2115,11 @@ class ProspectWatch:
         from v11_chain_mail import reply_subject
         if row.get("test"):
             return self._send_test_report(key, row, body, report)
+        try:  # owner 2026-10-16: the company gets the short mail WITH the PDF, never the mail without it
+            att = self._view_attachment(row)
+        except Exception as exc:
+            self._ack(key, row["todo_id"], f"Göndermedim: rapor PDF'ini üretemedim ({_code(exc)}).", report)
+            return "blocked"
         try:
             anchor = self.reply_writer.latest_anchor(row["thread_id"])
         except Exception as exc:
@@ -2090,7 +2133,7 @@ class ProspectWatch:
         payload = {"from": HAMLE, "to": [row["sender"]], "cc": [self.s["roles"]["owner"]["email"]],
                    "thread_id": row["thread_id"],
                    "in_reply_to_message_id": anchor["message_id"], "subject": reply_subject(anchor.get("subject")),
-                   "body": body}
+                   "body": body, "attachment": att}
         sha = scope_digest(payload)
         try:
             self.reply_writer.preflight("client_reply", copy.deepcopy(payload))
@@ -2122,6 +2165,12 @@ class ProspectWatch:
         self._ack(key, row["todo_id"], "Rapor kuruma aynı mail zincirinde gönderildi.", report)
         return "sent"
 
+    @staticmethod
+    def _view_attachment(row):
+        view = json.loads(row.get("report_view_json") or "null")
+        _need(isinstance(view, dict), "report_view_missing")
+        return report_attachment(view["label"], view["written"], view["sources"], view["measured"], view["today"])
+
     def _send_test_report(self, key, row, body, report):
         """Test request: 'Hamle gönder' mails the report ONLY to the owner, as a new mail (never the prospect)."""
         owner = self.s["roles"]["owner"]["email"]
@@ -2129,6 +2178,11 @@ class ProspectWatch:
         text = "\n".join([f"Bu bir denemedir. Gerçek akışta bu mail {row['sender']} adresine, {owner} CC'de olarak "
                           "aynı mail zincirinde giderdi. Kuruma hiçbir şey gönderilmedi.", "", "-----", "", body])
         payload = {"to": [owner], "subject": _line(f"TEST · Hamle AI araştırma raporu · {label}", 200), "body": text}
+        try:
+            payload["attachment"] = self._view_attachment(row)
+        except Exception as exc:
+            self._ack(key, row["todo_id"], f"Göndermedim: rapor PDF'ini üretemedim ({_code(exc)}).", report)
+            return "blocked"
 
         def begin(tx, now):
             self._fence(tx, now)
@@ -2285,6 +2339,17 @@ OPEN_REQUEST_STATES = ("awaiting_approval", "approved", "researched", "writing_r
 CLOSED_REQUEST_STATES = ("sent", "send_unknown", "rejected", "expired", "stopped", "failed", "unknown")
 
 
+def report_mail_text(cfg, *, language, first, company, score):
+    """The company mail that carries the PDF (owner 2026-10-16): fixed approved text; only the middle paragraph
+    depends on the score (below 'high_from' it names the score, from it on it praises and invites a deeper look)."""
+    rm = cfg["approved_sentences"]["report_mail"]
+    t = rm[language if language in rm else "tr"]
+    greet = t["greeting"].format(first=first) if first else t["greeting_no_name"]
+    middle = t["high"] if int(score) >= rm["high_from"] else t["low"].format(score=int(score))
+    sig = cfg["signatures"][language if language in cfg["signatures"] else "tr"]
+    return "\n\n".join([greet, t["intro"].format(company=company), middle, t["close"], sig])
+
+
 def check_report_mail(text, *, settings, language, first):
     """The report mail is longer and carries its sources; the other reply rules stay."""
     from v11_client_watch import internal_terms
@@ -2392,8 +2457,11 @@ def prospect_reply_writer(settings, book, *, token_context, session_factory):
 
     class ProspectReplyWriter(GmailThreadReplyWriter):
         def _shape(self, payload):
-            _need(isinstance(payload, dict) and payload.get("from") == HAMLE and set(payload) == CLARIFY_FIELDS,
-                  "prospect_reply_payload_invalid")
+            _need(isinstance(payload, dict) and payload.get("from") == HAMLE
+                  and set(payload) in (CLARIFY_FIELDS, CLARIFY_FIELDS | {"attachment"}), "prospect_reply_payload_invalid")
+            if "attachment" in payload:
+                from v11_daily_digest import DigestMailWriter
+                DigestMailWriter._attachment_bytes(payload["attachment"])
             _need(isinstance(payload["thread_id"], str) and HEX.fullmatch(payload["thread_id"])
                   and payload["thread_id"] not in provider.FORBIDDEN_THREADS
                   and isinstance(payload["in_reply_to_message_id"], str)

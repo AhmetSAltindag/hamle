@@ -84,5 +84,78 @@ class ReportMail(unittest.TestCase):
         self.assertNotIn("[99]", html)
 
 
+try:
+    import weasyprint  # noqa: F401  (in the cloud image; optional on a laptop)
+    HAVE_PDF = True
+except Exception:
+    HAVE_PDF = False
+
+
+class ClientVersionAndMailText(unittest.TestCase):
+    def test_client_version_has_no_team_parts(self):
+        html = pw.render_report_mail("Acme Yapı", big_written(), ["https://acmeyapi.com.tr/x"], MEASURED,
+                                     today="2026-10-16", link="https://3.basecamp.com/1", client=True, full=True)
+        for team in ("YALNIZ EKİP İÇİ", "Görüşme notu", "Kuruma gidecek mail taslağı", "Basecamp", "Hamle gönder",
+                     "kısaltılmış", "EKİP İÇİ"):
+            self.assertNotIn(team, html)
+        self.assertIn("ÖZEL RAPOR", html)
+        self.assertIn("Bu rapor Acme Yapı için hazırlanmıştır.", html)
+        self.assertGreater(len(html.encode()), rm.LIMIT)  # full: never shortened
+
+    def test_mail_text_has_two_versions_by_score(self):
+        cfg = pw.load_config()
+        low = pw.report_mail_text(cfg, language="tr", first="Deniz", company="Acme Yapı", score=58)
+        high = pw.report_mail_text(cfg, language="tr", first="Deniz", company="Acme Yapı", score=75)
+        self.assertTrue(low.startswith("Merhaba Deniz,\n\nAcme Yapı için dijital ayak izi raporunu hazırladık"))
+        self.assertIn("dışarıdan görünen puanınız 58/100.", low)
+        self.assertNotIn("/100", high)
+        self.assertIn("Bizce dijital varlıklarınız gayet güzel görünüyor.", high)
+        self.assertEqual(low.split("\n\n")[3:], high.split("\n\n")[3:])  # only the middle paragraph differs
+        self.assertTrue(low.endswith("Raporun tamamı ekte. Biz yönetseydik ilk 30 ve 90 günde neler yapacağımızı "
+                                     "da yazdık. 20 dakikalık bir görüşmede birlikte üzerinden geçelim mi?\n\n"
+                                     + cfg["signatures"]["tr"]))
+        en = pw.report_mail_text(cfg, language="en", first=None, company="Acme", score=40)
+        self.assertTrue(en.startswith("Hello,\n\nWe have prepared a digital footprint report for Acme"))
+        self.assertIn("40/100", en)
+        self.assertEqual(pw.check_report_mail(low, settings={"cfg": cfg}, language="tr", first="Deniz"), [])
+        self.assertEqual(pw.check_report_mail(high, settings={"cfg": cfg}, language="tr", first="Deniz"), [])
+        self.assertEqual(pw.check_report_mail(en, settings={"cfg": cfg}, language="en", first=None), [])
+
+    def test_pdf_name_is_ascii(self):
+        import v11_report_pdf
+        self.assertEqual(v11_report_pdf.pdf_name("Ak Portföy İşletme", "2026-10-16"),
+                         "Hamle-AI-Dijital-Ayak-Izi-Raporu-Ak-Portfoy-Isletme-2026-10-16.pdf")
+
+    def test_plain_mail_writer_carries_one_pdf(self):
+        import base64
+        import hashlib
+        from email import policy
+        from email.parser import BytesParser
+        from v11_daily_digest import DigestMailWriter
+        data = b"%PDF-1.7 fixture"
+        att = {"filename": "Hamle-AI-Dijital-Ayak-Izi-Raporu-Acme-2026-10-16.pdf", "content_type": "application/pdf",
+               "data_b64": base64.b64encode(data).decode(), "sha256": hashlib.sha256(data).hexdigest()}
+        w = DigestMailWriter(token_context=None, session_factory=None)
+        raw = w._raw({"to": ["x@example.com"], "subject": "s", "body": "b", "html": "<p>b</p>", "attachment": att})
+        msg = BytesParser(policy=policy.default).parsebytes(raw)
+        self.assertEqual(msg.get_content_type(), "multipart/mixed")
+        files = list(msg.iter_attachments())
+        self.assertEqual([f.get_filename() for f in files], [att["filename"]])
+        self.assertEqual(files[0].get_payload(decode=True), data)
+        with self.assertRaises(Exception):
+            w._raw({"to": ["x@example.com"], "subject": "s", "body": "b", "attachment": dict(att, sha256="0" * 64)})
+
+    @unittest.skipUnless(HAVE_PDF, "WeasyPrint is installed in the cloud image")
+    def test_pdf_attachment_round_trip(self):
+        import base64
+        import hashlib
+        att = pw.report_attachment("Acme Yapı", big_written(), ["https://acmeyapi.com.tr/x"], MEASURED,
+                                   "2026-10-16")
+        data = base64.b64decode(att["data_b64"])
+        self.assertTrue(data.startswith(b"%PDF-"))
+        self.assertEqual(hashlib.sha256(data).hexdigest(), att["sha256"])
+        self.assertEqual(att["content_type"], "application/pdf")
+
+
 if __name__ == "__main__":
     unittest.main()

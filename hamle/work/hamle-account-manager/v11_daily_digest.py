@@ -977,7 +977,25 @@ class DigestMailWriter:
         m.set_content(payload["body"], subtype="plain", charset="utf-8")
         if payload.get("html"):
             m.add_alternative(payload["html"], subtype="html", charset="utf-8")
+        att = payload.get("attachment")
+        if att:  # one file (the prospect report PDF): its bytes are checked against its digest before and after
+            data = self._attachment_bytes(att)
+            main, sub = att["content_type"].split("/", 1)
+            m.add_attachment(data, maintype=main, subtype=sub, filename=att["filename"])
         return m.as_bytes()
+
+    @staticmethod
+    def _attachment_bytes(att):
+        import hashlib
+        import re
+        _need(isinstance(att, dict) and att.get("content_type") == "application/pdf"
+              and isinstance(att.get("filename"), str) and re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]{0,150}\.pdf",
+                                                                        att["filename"])
+              and isinstance(att.get("data_b64"), str), "digest_attachment_invalid")
+        data = base64.b64decode(att["data_b64"], validate=True)
+        _need(0 < len(data) <= 3 * 1024 * 1024 and hashlib.sha256(data).hexdigest() == att.get("sha256"),
+              "digest_attachment_invalid")
+        return data
 
     def write(self, payload):
         from v11_chain_mail import GMAIL, HEX, _call
@@ -1009,12 +1027,21 @@ class DigestMailWriter:
         to = [a.lower() for _, a in getaddresses([str(msg["To"] or "")])]
         _need(getaddresses([str(msg["From"])]) == [("", HAMLE)] and to == payload["to"] and not msg.get_all("Cc")
               and not msg.get_all("Bcc") and str(msg["Subject"]) == payload["subject"]
-              and msg.get_content_type() == ("multipart/alternative" if payload.get("html") else "text/plain")
+              and msg.get_content_type() == ("multipart/mixed" if payload.get("attachment") else
+                                             "multipart/alternative" if payload.get("html") else "text/plain")
               and (not payload.get("html") or msg.get_body(preferencelist=("html",)) is not None)
               and msg.get_body(preferencelist=("plain",)) is not None
               and msg.get_body(preferencelist=("plain",)).get_content().replace("\r\n", "\n").rstrip("\n")
               == payload["body"].rstrip("\n"),
               "digest_readback_mismatch")
+        if payload.get("attachment"):
+            import hashlib
+            files = list(msg.iter_attachments())
+            data = files[0].get_payload(decode=True) if len(files) == 1 else None
+            _need(type(data) is bytes and files[0].get_content_type() == "application/pdf"
+                  and files[0].get_filename() == payload["attachment"]["filename"]
+                  and hashlib.sha256(data).hexdigest() == payload["attachment"]["sha256"],
+                  "digest_readback_attachment_mismatch")
         return {"readback_sha256": scope_digest(payload)}
 
 

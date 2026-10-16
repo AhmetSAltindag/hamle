@@ -47,3 +47,15 @@ pydantic_core==2.50.1
 sniffio==1.3.1
 truststore==0.10.4
 typing-inspection==0.4.4
+# Dijital Ayak İzi Raporu PDF (owner 2026-10-16): WeasyPrint 70.0 (2026-09-08) and its closure, all >= 2 weeks old
+# on 2026-10-16; needs libpango from the Dockerfile. Pillow and cffi are pinned above.
+weasyprint==70.0
+pydyf==0.12.1
+cssselect2==0.10.1
+tinycss2==1.5.1
+tinyhtml5==2.1.0
+pyphen==0.18.1
+fonttools==4.66.1
+brotli==1.2.0
+zopfli==0.4.3
+webencodings==0.6.1

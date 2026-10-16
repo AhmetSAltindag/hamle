@@ -280,6 +280,12 @@ class Base(unittest.TestCase):
             p = patch.object(socket, name, side_effect=AssertionError("Network forbidden"))
             p.start()
             self.addCleanup(p.stop)
+        # The PDF itself is tested in test_v11_report_mail (WeasyPrint lives in the cloud image, not every laptop).
+        p = patch.object(pw, "report_attachment", side_effect=lambda label, *a: {
+            "filename": "Hamle-AI-Dijital-Ayak-Izi-Raporu-Test.pdf", "content_type": "application/pdf",
+            "data_b64": "JVBERi0xLjc=", "sha256": "4c5a4f2bcd1a31b6e1b7fe5c4fe8d0b5d8f1c0f1b4f7b8fa3a2e0b1e2d0a1b2c"})
+        p.start()
+        self.addCleanup(p.stop)
         self.now = SAT_1000
         self.ops = OperationsStore(MemoryBackend(), clock=lambda: self.now)
         self.ops.initialize_control()
@@ -1042,6 +1048,8 @@ class ResearchRequests(Base):
         sent = self.writer.writes[-1]
         self.assertEqual((sent["to"], sent["cc"], sent["thread_id"]), (["deniz@acmeyapi.com.tr"], [OWNER], "b1"))
         self.assertTrue(sent["body"].startswith("Merhaba Deniz,"))
+        self.assertIn("Raporun tamamı ekte.", sent["body"])
+        self.assertEqual(sent["attachment"]["content_type"], "application/pdf")  # never the mail without its PDF
         self.run_once()
         self.assertEqual(len(self.writer.writes), 2)
 
