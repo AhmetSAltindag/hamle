@@ -125,16 +125,16 @@ class Base(unittest.TestCase):
 
 
 class Window(Base):
-    def test_only_friday_from_1400_to_1500_istanbul_else_a_no_op(self):
-        for when in ("2026-10-15T14:05:00+03:00", "2026-10-16T13:59:00+03:00", "2026-10-16T15:01:00+03:00",
-                     "2026-10-17T14:05:00+03:00", "2026-10-16T12:05:00+00:00"):
+    def test_only_friday_from_1400_to_1800_istanbul_else_a_no_op(self):
+        for when in ("2026-10-15T14:05:00+03:00", "2026-10-16T13:59:00+03:00", "2026-10-16T18:01:00+03:00",
+                     "2026-10-17T14:05:00+03:00", "2026-10-16T15:05:00+00:00"):
             self.now = datetime.fromisoformat(when)
             r = self.go()
             self.assertEqual((r["status"], r["reason"], r["business_writes"]),
                              ("no_new_work", "outside_weekly_summary_window", 0), when)
         self.assertEqual((self.gmail.calls, self.bc.calls, self.client.calls), ([], [], []))
         self.assertFalse([k for k in self.ops.backend.data if k.startswith("weekly-summary-")])
-        self.assertTrue(ws.in_window(datetime.fromisoformat("2026-10-16T15:00:00+03:00")))
+        self.assertTrue(ws.in_window(datetime.fromisoformat("2026-10-16T17:00:00+03:00")))
         self.assertEqual(ws.week_key(date(2026, 10, 16)), "weekly-summary-202642")
         self.assertEqual(ws.week_key(date(2027, 1, 1)), "weekly-summary-202653")  # ISO year of the week
 
