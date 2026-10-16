@@ -513,8 +513,9 @@ def add_events(month, events, days):
     return m
 
 
-def brand_memory_context(ops, brand_key, today, days=30, limit=CONTEXT_EVENTS, detail=400):
-    """{'profile', 'events'} for prompts: the merged profile and the last `limit` events of the last `days` days."""
+def brand_memory_context(ops, brand_key, today, days=30, limit=CONTEXT_EVENTS, detail=400, coverage=False):
+    """{'profile', 'events'} for prompts: the merged profile and the last `limit` events of the last `days` days.
+    coverage=True adds 'memory_through': the newest day (<= today) the memory has done, None if none."""
     since = today - timedelta(days=days)
     months, d = [], date(since.year, since.month, 1)
     while d <= today:
@@ -530,7 +531,12 @@ def brand_memory_context(ops, brand_key, today, days=30, limit=CONTEXT_EVENTS, d
     p = None
     if isinstance(profile, dict):
         p = dict(compact_profile(profile), updated=_local(_ts(profile.get("updated_at"))))
-    return {"profile": p, "events": events[-limit:]}
+    out = {"profile": p, "events": events[-limit:]}
+    if coverage:
+        done = [d for r in rows if isinstance(r, dict) for d in r.get("days_done") or []
+                if isinstance(d, str) and DAY.match(d) and d <= today.isoformat()]
+        out["memory_through"] = max(done) if done else None
+    return out
 
 
 # ------------------------------------------------------------------ the run
