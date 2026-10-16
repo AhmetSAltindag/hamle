@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "kind": "health_check_config",
+  "enabled": true,
+  "decision_ref": "Owner in the project thread 2026-10-16 15:52-15:56Z: nightly health check (İyileşme) at 00:05, code-only, findings in the morning digest, urgent ones by mail; Hamle never deploys its own changes.",
+  "alert_recipients": [
+    "ahmet@gamechangers.com.tr"
+  ],
+  "timezone": "Europe/Istanbul",
+  "run_window": {
+    "start": "00:00",
+    "end": "03:00"
+  },
+  "chain_tick": {
+    "first": "09:15",
+    "last": "18:30",
+    "interval_minutes": 15,
+    "missing_amber": 2,
+    "missing_red": 6
+  },
+  "budget": {
+    "warn_usd": 68
+  },
+  "lookback_days": 3,
+  "rules": "Runs from worker.py --mode health_check (job hamle-health-check, scheduler '5 0 * * *' Europe/Istanbul). No model call. Writes only health-check-YYYYMMDD and, for red findings, ONE mail health-alert-YYYYMMDD to alert_recipients (agency addresses only). The image reads work/hamle-account-manager/chain-profile/health-check-config.json, so a rebuild (package_chain_source.py) is needed after editing."
+}

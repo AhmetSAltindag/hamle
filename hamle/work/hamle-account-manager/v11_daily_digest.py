@@ -646,7 +646,7 @@ def _plain_link(url, text):
 
 
 def render(listing, *, day, day_note, overdue, trends, specials, classified, new_business=None, ozu=None,
-           followups=None, idea_tracking=False, karne=None):
+           followups=None, idea_tracking=False, karne=None, health=None):
     items = listing["items"]
     today_iso = day.isoformat()
     due = [t for t in items if t["due_on"] == today_iso]
@@ -693,6 +693,9 @@ def render(listing, *, day, day_note, overdue, trends, specials, classified, new
     elif len(overdue) > len(shown):
         lines.append(f"- … +{len(overdue) - len(shown)} geciken iş daha · tüm liste: "
                      f"{APP}/{listing.get('account')}/reports/todos/overdue")
+
+    if health:
+        lines += ["", _upper_tr(health["title"]), health["line"]] + ["- " + r for r in health["rows"]]
 
     if karne:
         from v11_digital_karne import DIGEST_HINT, digest_counts
@@ -838,7 +841,7 @@ def _ozu_html(ozu):
 
 
 def render_html(listing, *, day, day_note, overdue, trends, specials, classified, new_business=None, ozu=None,
-                followups=None, idea_tracking=False, karne=None):
+                followups=None, idea_tracking=False, karne=None, health=None):
     """HTML twin of render(): same facts, full width, Tahoma, Basecamp/source titles as links, no raw URLs."""
     items = listing["items"]
     today_iso = day.isoformat()
@@ -888,6 +891,12 @@ def render_html(listing, *, day, day_note, overdue, trends, specials, classified
             lis.append(_li(_e(f"+{len(group) - HTML_GROUP_LIMIT} iş daha · ")
                            + _a(f"{APP}/{listing.get('account')}/reports/todos/overdue", "tüm gecikenler", False)))
         out.append(_ul(lis))
+
+    if health:
+        out.append(_h2("🛠️ " + health["title"]))
+        out.append(_p(_e(health["line"])))
+        if health["rows"]:
+            out.append(_ul([_li(_e(r)) for r in health["rows"]]))
 
     if karne:
         from v11_digital_karne import DIGEST_HINT, digest_counts
@@ -1048,7 +1057,7 @@ class DigestMailWriter:
 # ------------------------------------------------------------------ assembly
 def build_digest(reader, *, day, day_note, classifier=None, trend_source=None, cards=None, calendar=None,
                  special_source=None, new_business_source=None, spark_source=None, previous=None, nb_state=None,
-                 idea_state=None, idea_tracking=False, karne=None):
+                 idea_state=None, idea_tracking=False, karne=None, health=None):
     """Read-only listing + optional batched classification -> (body, stats).
 
     previous: the last weekday's sent team digest ({'day', 'ozu', 'new_business_brands'}) for
@@ -1153,7 +1162,7 @@ def build_digest(reader, *, day, day_note, classifier=None, trend_source=None, c
         followups = None
     parts = dict(day=day, day_note=day_note, overdue=overdue, trends=trends, specials=specials,
                  classified=classified > 0, new_business=new_business, ozu=ozu, followups=followups,
-                 idea_tracking=idea_tracking, karne=karne or None)
+                 idea_tracking=idea_tracking, karne=karne or None, health=health or None)
     body = render(listing, **parts)
     stats_html = render_html(listing, **parts)
     return body, {"html": stats_html, "open_items": len(listing["items"]), "overdue": len(overdue), "classified": classified,
@@ -1162,10 +1171,26 @@ def build_digest(reader, *, day, day_note, classifier=None, trend_source=None, c
                   "new_business_brands": new_business or [], "spark": spark_status, "ozu": ozu_record(ozu),
                   "follow_ups": len((followups or {}).get("rows") or []) + len((followups or {}).get("nb_rows") or []),
                   "nb": (followups or {}).get("nb_effects"), "ideas": (followups or {}).get("idea_effects"),
-                  "karne": len((karne or {}).get("rows") or [])}
+                  "karne": len((karne or {}).get("rows") or []), "health": (health or {}).get("line")}
 
 
 # ------------------------------------------------------------------ run
+def _health_rows(nights):
+    """The nights' health checks merged for the digest: one line + up to 5 findings; None when no night ran (the
+    section is a hint and never blocks the digest)."""
+    try:
+        from v11_health_check import digest_rows as health_rows
+        parts = [p for p in (health_rows(row, d) for d, row in nights or []) if p]
+        if not parts:
+            return None
+        rows = list(dict.fromkeys(r for p in parts for r in p["rows"]))[:5]
+        line = parts[-1]["line"] if len(parts) == 1 else (
+            f"{len(parts)} gece kontrolü: " + ("sorun yok." if not rows else f"{len(rows)} konu."))
+        return {"title": parts[-1]["title"], "line": line, "rows": rows}
+    except Exception:
+        return None
+
+
 def _karne_rows(digest_rows, state, day):
     try:  # a karne line is a hint; never block the digest
         return digest_rows(state, day) if digest_rows is not None and state else None
@@ -1252,7 +1277,8 @@ def run_daily_digest(ops, *, config, reader_factory, writer, clock, window=DAILY
             karne_key = state_key(target)
         except Exception:
             digest_rows, karne_key = None, "digital-karne-unavailable"
-        previous, nb, ideas, karne = {}, {}, {}, {}
+        previous, nb, ideas, karne, health = {}, {}, {}, {}, {}
+        nights = [prev_day + timedelta(days=n) for n in range(1, (target - prev_day).days + 1)]
 
         def read(tx):
             previous["value"] = _previous(tx.get("daily-digest-" + prev_day.strftime("%Y%m%d")), prev_day)
@@ -1260,6 +1286,8 @@ def run_daily_digest(ops, *, config, reader_factory, writer, clock, window=DAILY
             ideas["value"] = tx.get("idea-tracking")  # v11_idea_tracking.STATE_KEY (read-only here)
             if target.weekday() == 1:  # Tuesday: this week's monthly karne to-dos (v11_digital_karne, read-only here)
                 karne["value"] = tx.get(karne_key)
+            # Gece sağlık kontrolü (v11_health_check, read-only here): every night since the previous digest
+            health["value"] = [(d, tx.get("health-check-" + d.strftime("%Y%m%d"))) for d in nights]
         claim = claim_mail(ops, key, {"kind": "daily_digest_preview" if preview_to else "daily_digest", "token": token,
                                       "date": target.isoformat(), "run_date": local.date().isoformat()}, read=read)
         if claim is None:
@@ -1272,7 +1300,8 @@ def run_daily_digest(ops, *, config, reader_factory, writer, clock, window=DAILY
                                    new_business_source=new_business_source, spark_source=spark_source,
                                    previous=previous.get("value"), nb_state=nb.get("value"),
                                    idea_state=ideas.get("value"), idea_tracking=cfg["idea_tracking"],
-                                   karne=_karne_rows(digest_rows, karne.get("value"), target))
+                                   karne=_karne_rows(digest_rows, karne.get("value"), target),
+                                   health=_health_rows(health.get("value")))
         if preview_to is None:  # team mail: prepared from 09:00, never sent before 09:15 Istanbul
             h, mnt = (int(v) for v in DAILY_DIGEST_SEND_AT.split(":"))
             send_at = local.replace(hour=h, minute=mnt, second=0, microsecond=0)
