@@ -76,8 +76,9 @@ ROLES = {"classify": "prospect_classifier", "research": "prospect_research", "re
          "report": "prospect_report", "writer": "prospect_writer"}
 SCORE_PARTS = ("Kanal varlığı ve aktiflik", "Frekans ve süreklilik", "Kanallar arası denge",
                "Mesaj ve anahtar kelime tutarlılığı", "Algoritmaya uygunluk ve etkileşim", "Web ve Google görünürlüğü")
-SECTIONS = (("channels", "Kanal karnesi · son 6 ay"), ("balance", "Kanallar arası denge"),
-            ("message", "Ana mesaj ve anahtar kelime uyumu"), ("algorithm", "Algoritmaya uygunluk"),
+SECTIONS = (("channels", "Kanal karnesi ve frekans trendi · son 6 ay"),
+            ("balance", "Çatı iletişim ve kanallar arası tutarlılık"),
+            ("message", "Ana mesaj ve anahtar kelime uyumu"), ("algorithm", "Doğru içerik doğru mecrada mı"),
             ("web", "Web sitesi"), ("google", "Google görünürlüğü"), ("competitors", "Rakiplerle kıyas"),
             ("audience", "Hedef kitle tahmini"), ("sector", "Sektör dinamikleri ve beklentiler"),
             ("company", "Kurum künyesi ve son 12 ay"), ("risks", "Fırsatlar ve riskler"))
@@ -1025,10 +1026,7 @@ def render_report(label, written, sources, measured, *, problems, test, today):
     if sources:
         parts.append("<br><strong>Kaynaklar</strong><ol>" + "".join(
             f'<li><a href="{e(u)}">{e(u)}</a></li>' for u in sources) + "</ol>")
-    unmeasured = [PLATFORM_LABEL.get(p, p) for p, c in (measured.get("channels") or {}).items() if not c.get("measured")]
-    note = f"Ölçüm tarihi {e(today)}; son 6 ay."
-    if unmeasured:
-        note += " Resmi arayüzle ölçülemeyen kanallar (kısmi): " + e(", ".join(unmeasured)) + "."
+    note = f"Ölçüm tarihi {e(today)}; son 6 ay."  # owner 2026-10-16: what we could not read is never mentioned
     if problems:
         todo = ("Mail taslağı kontrolden geçmedi (" + "; ".join(problems) + "). Göndermek istersen düzeltilmiş metni "
                 "\"Hamle gönder\" satırının altına yaz.")
