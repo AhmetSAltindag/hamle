@@ -229,19 +229,21 @@ def shrink(written, sections, level):
     return w, secs
 
 
-def render(label_text, written, sources, measured, *, today, link, sections, refs):
+def render(label_text, written, sources, measured, *, today, link, sections, refs, client=False, full=False,
+           attached=False):
     """sections: [(key, title, section)] in report order; refs(text) -> escaped text with [n] source links.
-    A long report is shortened step by step until it fits the mail limit (the full text is in Basecamp)."""
-    for level in range(5):
+    client: the company's version (no team notes, no Basecamp); full: never shortened (the PDF);
+    attached: the mail carries the PDF. A mail body is shortened step by step until it fits the mail limit."""
+    for level in range(1 if full else 5):
         w, secs = shrink(written, sections, level) if level else (written, sections)
         html = _render(label_text, w, sources, measured, today=today, link=link, sections=secs, refs=refs,
-                       short=bool(level))
+                       short=bool(level), client=client, attached=attached)
         if len(html.encode("utf-8")) <= LIMIT:
             break
     return html
 
 
-def _render(label_text, written, sources, measured, *, today, link, sections, refs, short):
+def _render(label_text, written, sources, measured, *, today, link, sections, refs, short, client, attached):
     link_style = f'style="color:{CYAN}"'
     r = lambda t: refs(t).replace("<a href=", f"<a {link_style} href=")  # noqa: E731
     by = {k: (title, sec) for k, title, sec in sections}
@@ -264,7 +266,7 @@ def _render(label_text, written, sources, measured, *, today, link, sections, re
             f'<td bgcolor="{YELLOW}" style="background:{YELLOW};padding:10px 16px;{FA}font-size:12px;line-height:16px;'
             f'font-weight:bold;letter-spacing:2.5px;color:{BG}">HAMLE AI · DİJİTAL AYAK İZİ RAPORU</td>'
             f'<td width="96" align="center" bgcolor="{PINK}" style="background:{PINK};padding:10px 8px;{FA}font-size:11px;'
-            f'line-height:16px;font-weight:bold;letter-spacing:2px;color:{BG}">EKİP İÇİ</td></tr></table></td></tr>',
+            f'line-height:16px;font-weight:bold;letter-spacing:2px;color:{BG}">{"ÖZEL RAPOR" if client else "EKİP İÇİ"}</td></tr></table></td></tr>',
             f'<tr><td style="padding-top:10px"><table {TB} width="100%"><tr>'
             f'<td class="px" bgcolor="{BG}" style="background:{BG};border:1px solid {LINE};border-top:3px solid {PINK};'
             f'padding:24px">'
@@ -370,7 +372,7 @@ def _render(label_text, written, sources, measured, *, today, link, sections, re
                  + f'<table {TB} width="100%"><tr><td bgcolor="{TILE}" style="background:{TILE};border:1px dashed {LINE};'
                  f'padding:14px 16px;{FA}font-size:13px;line-height:20px;color:{SOFT}">'
                  + "<br>".join(e(x) for x in mail.split("\n")) + "</td></tr></table>")
-    if team:
+    if team and not client:
         panels.append(("YALNIZ EKİP İÇİ", team))
     src = "".join(f'<tr><td width="28" valign="top" style="{FA}font-size:11px;line-height:17px;color:{PINK};'
                   f'font-weight:bold">[{i}]</td><td style="{FA}font-size:11px;line-height:17px;word-break:break-all">'
@@ -382,8 +384,11 @@ def _render(label_text, written, sources, measured, *, today, link, sections, re
               f'Basecamp&#x27;te aç &rarr;</a></td></tr></table>'
               + txt("Kuruma göndermek için to-do'ya \"Hamle gönder\" yazın.", 12, MUTED, extra="text-align:center;padding-top:8px"))
     if short:
-        button += txt("Bu mail kısaltılmış özettir; raporun tamamı ve kuruma gidecek mail taslağı Basecamp'teki "
-                      "to-do'da.", 12, YELLOW, extra="text-align:center;padding-top:8px")
+        button += txt("Bu mail kısaltılmış özettir; raporun tamamı " + ("ekteki PDF'te, " if attached else "")
+                      + "kuruma gidecek mail taslağı Basecamp'teki to-do'da.", 12, YELLOW,
+                      extra="text-align:center;padding-top:8px")
+    if client:
+        button = ""
     unmeasured = [p for p, c in (measured.get("channels") or {}).items() if not c.get("measured")]
     note = txt("[Ö] Hamle ölçümü. Resmi arayüzle ölçülemeyen kanallar kısmi değerlendirilmiştir." if unmeasured
                else "[Ö] Hamle ölçümü.", 11, MUTED, extra="padding-top:10px")
@@ -392,8 +397,9 @@ def _render(label_text, written, sources, measured, *, today, link, sections, re
     rows.append(f'<tr><td style="padding:22px 16px 6px" align="center">'
                 f'<div style="{FA}font-size:12px;line-height:18px;font-weight:bold;letter-spacing:2px;color:{YELLOW}">'
                 f'HAMLE AI <span style="color:{PINK}">by</span> GAMECHANGERS</div>'
-                f'<div style="{FM}font-size:11px;line-height:18px;color:{MUTED}">Bu rapor yalnız ekip içindir; '
-                f'kuruma kendiliğinden gitmez.</div></td></tr>')
+                f'<div style="{FM}font-size:11px;line-height:18px;color:{MUTED}">'
+                + (f"Bu rapor {e(label_text)} için hazırlanmıştır." if client
+                   else "Bu rapor yalnız ekip içindir; kuruma kendiliğinden gitmez.") + '</div></td></tr>')
     pre = e(f"{label_text} · Dijital Ayak İzi Skoru {total}/100")
     return (f'<!DOCTYPE html><html lang="tr"><head><meta charset="utf-8">'
             f'<meta name="viewport" content="width=device-width,initial-scale=1">'

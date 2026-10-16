@@ -49,6 +49,7 @@ ALLOWLIST = {
     APP + "v11_wat_vision.py": APP + "v11_wat_vision.py",
     APP + "v11_wat_shadow_worker.py": APP + "v11_wat_shadow_worker.py",
     APP + "wat_media_smoke.py": APP + "wat_media_smoke.py",
+    APP + "report_pdf_smoke.py": APP + "report_pdf_smoke.py",
     APP + "v11_wat_video_shadow.py": APP + "v11_wat_video_shadow.py",
     APP + "v11_wat_timed_frame.py": APP + "v11_wat_timed_frame.py",
     APP + "wat-video-shadow-cases.json": APP + "wat-video-shadow-cases.json",

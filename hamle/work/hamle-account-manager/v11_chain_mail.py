@@ -375,6 +375,12 @@ class GmailThreadReplyWriter:
         message.set_content(payload["body"], subtype="plain", charset="utf-8")
         if file is None:
             message.add_alternative(mail_html(payload["body"]), subtype="html", charset="utf-8")
+            if payload.get("attachment"):  # only writers whose _shape admits it (the prospect report PDF)
+                from v11_daily_digest import DigestMailWriter
+                att = payload["attachment"]
+                main, sub = att["content_type"].split("/", 1)
+                message.add_attachment(DigestMailWriter._attachment_bytes(att), maintype=main, subtype=sub,
+                                       filename=att["filename"])
         else:
             main, sub = file["content_type"].split("/", 1)
             message.add_attachment(file["data"], maintype=main, subtype=sub, filename=file["filename"])
@@ -443,9 +449,17 @@ class GmailThreadReplyWriter:
         expected_body = payload["body"] + ("" if payload["body"].endswith("\n") else "\n")
         if kind in THREAD_REPLY_KINDS:
             plain = message.get_body(preferencelist=("plain",)) if message.is_multipart() else None
-            _need(message.get_content_type() == "multipart/alternative" and plain is not None
+            att = payload.get("attachment")
+            _need(message.get_content_type() == ("multipart/mixed" if att else "multipart/alternative")
+                  and plain is not None
                   and message.get_body(preferencelist=("html",)) is not None
                   and plain.get_content().replace("\r\n", "\n") == expected_body, "mail_readback_body_mismatch")
+            if att:
+                files = list(message.iter_attachments())
+                data = files[0].get_payload(decode=True) if len(files) == 1 else None
+                _need(type(data) is bytes and files[0].get_content_type() == att["content_type"]
+                      and files[0].get_filename() == att["filename"]
+                      and hashlib.sha256(data).hexdigest() == att["sha256"], "mail_readback_attachment_mismatch")
         else:
             parts = list(message.iter_parts()) if message.is_multipart() else []
             _need(message.get_content_type() == "multipart/mixed" and len(parts) == 2

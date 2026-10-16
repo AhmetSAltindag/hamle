@@ -35,6 +35,25 @@
     "research_request": {
       "tr": "Kurumunuz için istediğiniz araştırmayı da not aldık; ekibimiz değerlendirip size ayrıca dönecek.",
       "en": "We have also noted the research you asked for about your organisation; our team will review it and get back to you separately."
+    },
+    "report_mail": {
+      "high_from": 75,
+      "tr": {
+        "greeting": "Merhaba {first},",
+        "greeting_no_name": "Merhaba,",
+        "intro": "{company} için dijital ayak izi raporunu hazırladık: son 6 ay, tüm kanallar, rakipler ve sektörün nabzı tek raporda.",
+        "low": "Elbette kapsamınızı, iş yapınızı, hedeflerinizi ve önceliklerinizi bilemiyoruz; ama kendi araştırmamıza göre dışarıdan görünen puanınız {score}/100. Bu tablo 90 günde çok değişebilir.",
+        "high": "Bizce dijital varlıklarınız gayet güzel görünüyor. Ama gelin, biraz daha derinlere inelim.",
+        "close": "Raporun tamamı ekte. Biz yönetseydik ilk 30 ve 90 günde neler yapacağımızı da yazdık. 20 dakikalık bir görüşmede birlikte üzerinden geçelim mi?"
+      },
+      "en": {
+        "greeting": "Hi {first},",
+        "greeting_no_name": "Hello,",
+        "intro": "We have prepared a digital footprint report for {company}: the last 6 months, every channel, your competitors and the pulse of your sector in one report.",
+        "low": "Of course we do not know your scope, your structure, your goals or your priorities; but by our own research, your score as it looks from the outside is {score}/100. This picture can change a lot in 90 days.",
+        "high": "In our view your digital assets look really good. But let us go a little deeper.",
+        "close": "The full report is attached. We have also written what we would do in the first 30 and 90 days if we managed it. Shall we go through it together in a 20-minute call?"
+      }
     }
   },
   "research": {

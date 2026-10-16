@@ -33,7 +33,8 @@ CHAIN_FILES = ("v11_chain.py", "v11_brand_task.py", "v11_intake_plan.py", "v11_b
                "v11_monthly_report.py", "monthly_report_prompt.txt", "v11_hamle_karne.py",
                "v11_prospect_watch.py", "prospect_classifier_prompt.txt", "prospect_research_prompt.txt",
                "prospect_reply_prompt.txt", "prospect_report_prompt.txt",
-               "prospect_writer_prompt.txt", "v11_footprint.py", "v11_report_mail.py")
+               "prospect_writer_prompt.txt", "v11_footprint.py", "v11_report_mail.py",
+               "v11_report_pdf.py")
 ALLOWLIST = dict(base.ALLOWLIST)
 ALLOWLIST["cloudbuild.yaml"] = APP + "cloudbuild-v11-chain.yaml"
 ALLOWLIST.update({APP + name: APP + name for name in CHAIN_FILES})

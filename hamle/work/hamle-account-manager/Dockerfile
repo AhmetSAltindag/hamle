@@ -7,7 +7,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 WORKDIR /app
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends tesseract-ocr tesseract-ocr-tur fonts-dejavu-core ffmpeg \
+    && apt-get install -y --no-install-recommends tesseract-ocr tesseract-ocr-tur fonts-dejavu-core fonts-liberation ffmpeg libpango-1.0-0 libpangoft2-1.0-0 \
     && rm -rf /var/lib/apt/lists/*
 COPY requirements-cloud.txt /app/requirements-cloud.txt
 RUN python -m pip install --no-cache-dir --only-binary=:all: -r /app/requirements-cloud.txt \
@@ -19,6 +19,7 @@ COPY work/ /app/work/
 COPY SOURCE_MANIFEST.json /app/SOURCE_MANIFEST.json
 RUN cd /app/work/hamle-account-manager && python internal_ocr_smoke.py
 RUN cd /app/work/hamle-account-manager && python wat_media_smoke.py
+RUN cd /app/work/hamle-account-manager && python report_pdf_smoke.py
 RUN chmod -R a-w /app
 USER 65532:65532
 WORKDIR /app/work/hamle-account-manager
