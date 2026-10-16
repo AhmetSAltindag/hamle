@@ -520,7 +520,7 @@ OK_STATUSES = ("stopped", "review_required", "already_recorded", "read_verified"
                "digital_karne_completed", "digital_karne_partial", "digital_karne_preview",
                "brand_memory_completed", "brand_memory_partial", "weekly_summary_sent", "weekly_summary_preview",
                "monthly_report_completed", "monthly_report_partial", "monthly_report_preview",
-               "hamle_karne_sent", "hamle_karne_preview")
+               "hamle_karne_sent", "hamle_karne_preview", "prospect_watch_completed")
 
 
 def main(argv=None):
@@ -532,7 +532,7 @@ def main(argv=None):
                                            "reconcile_model_holds", "extend_authorization",
                                            "research_probe", "settle_model_actual", "settle_billed_total",
                                            "digital_karne", "brand_memory", "weekly_summary", "monthly_report",
-                                           "hamle_karne"),
+                                           "hamle_karne", "prospect_watch"),
                         required=True)
     parser.add_argument("--proposal-id")
     parser.add_argument("--work-id")
@@ -627,7 +627,8 @@ def main(argv=None):
             from basecamp_cloud_auth import access_token
             token = access_token(secrets, claim_refresh=store.claim_credential_refresh)
             return providers.verify_basecamp_internal(token)
-        if args.mode in ("chain_tick", "daily_digest", "research_probe", "digital_karne", "brand_memory",
+        if args.mode in ("chain_tick", "prospect_watch", "daily_digest", "research_probe", "digital_karne",
+                         "brand_memory",
                          "weekly_summary", "monthly_report", "hamle_karne"):
             # Monthly budget renewal + ledger compaction before any budget gate reads the totals.
             try:
@@ -733,6 +734,12 @@ def main(argv=None):
             result = run_worker_monthly_report(store, secrets, preview=args.report_preview, only=args.report_brand)
             if karne is not None:
                 result["hamle_karne"] = karne
+        elif args.mode == "prospect_watch":
+            # Yeni temas (owner 2026-10-15): job hamle-prospect-watch, every 15 minutes 08:00-22:00 Istanbul, every
+            # day; one warm first reply to unknown senders + a New Business note (prospect-watch-config.json, OFF by
+            # default). Research requests only after the owner's "Onaylıyorum".
+            from v11_prospect_watch import run_worker_prospect_watch
+            result = run_worker_prospect_watch(store, secrets, started_at=job_started)
         elif args.mode == "hamle_karne":
             # Operator preview of Hamle's own karne (the live mail goes out from --mode monthly_report).
             from v11_hamle_karne import run_worker_hamle_karne

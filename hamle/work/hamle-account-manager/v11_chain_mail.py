@@ -511,6 +511,7 @@ class ChainMailReader:
     shadow = False  # False: skip 'Gölge:' forwards; True: only them (client watch); None: no filter
     max_body_bytes = None  # None: provider.MAX_BODY_BYTES
     keep_attachments = False  # True: the source lists the latest mail's attachments (client watch reads them)
+    meta_headers = ("Subject", "Message-ID", "References")  # thread metadata headers read per listed thread
 
     def __init__(self, store, catalog, *, clock=time.time, max_threads=10, newer_than_days=3,
                  _service_factory=None, _credentials_factory=None, _request_factory=None):
@@ -528,6 +529,10 @@ class ChainMailReader:
     def _skip(self, reason):
         self.skipped[reason] = self.skipped.get(reason, 0) + 1
 
+    def _query(self, requesters):
+        senders = " ".join("from:" + s for s in requesters)
+        return f"{{to:{HAMLE} cc:{HAMLE}}} {{{senders}}} newer_than:{int(self.days)}d"
+
     def __call__(self):
         helper, reader, normalizer, intake = provider._modules()
         service_factory, credentials_factory, request_factory = self.factories
@@ -542,8 +547,7 @@ class ChainMailReader:
                 if request_factory is None:
                     auth_session = provider._session()
                     request_factory = lambda: provider._GoogleRequest(auth_session, gmail=True)
-                senders = " ".join("from:" + s for s in requesters)
-                query = f"{{to:{HAMLE} cc:{HAMLE}}} {{{senders}}} newer_than:{int(self.days)}d"
+                query = self._query(requesters)
                 with helper.verified_gmail(self.store, service_factory, credentials_factory,
                                            request_factory) as (service, _):
                     found = service.users().threads().list(
@@ -561,7 +565,7 @@ class ChainMailReader:
                                 raise ChainMailError("historical_thread_forbidden")
                             meta = service.users().threads().get(
                                 userId="me", id=tid, format="metadata",
-                                metadataHeaders=["Subject", "Message-ID", "References"],
+                                metadataHeaders=list(self.meta_headers),
                                 fields="id,messages(id,threadId,internalDate,payload/headers)").execute(num_retries=0)
                             threads.append((tid, meta))
                         except Exception as exc:

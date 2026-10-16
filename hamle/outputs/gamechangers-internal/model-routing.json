@@ -2,7 +2,7 @@
   "schema_version": 1,
   "config_id": "model-routing-20261014-claude-v4",
   "default_provider": "anthropic",
-  "decision_ref": "Ahmet in project thread 2026-10-11: all paid model calls move to Claude tonight; customer relations and important work on Claude Opus 5.5; daily digest and internal work on Claude Haiku 5.5; Trend Radarı, Monday special days, New Business research the daily Günün özü research (daily_spark, Ahmet 2026-10-12 23:36Z) and the monthly Dijital Karne (digital_karne, Ahmet 2026-10-14: WAT, Rabam, ya da; once a month, more searches) quality-first on Claude Opus 5.5 with web search; OpenAI stays as a closed standby for one week.",
+  "decision_ref": "Ahmet in project thread 2026-10-11: all paid model calls move to Claude tonight; customer relations and important work on Claude Opus 5.5; daily digest and internal work on Claude Haiku 5.5; Trend Radarı, Monday special days, New Business research the daily Günün özü research (daily_spark, Ahmet 2026-10-12 23:36Z) and the monthly Dijital Karne (digital_karne, Ahmet 2026-10-14: WAT, Rabam, ya da; once a month, more searches) quality-first on Claude Opus 5.5 with web search; OpenAI stays as a closed standby for one week. Prospect watch (owner 2026-10-15): prospect_classifier on Haiku; prospect_research (company and person, at most 2 searches) and the owner-approved prospect_report (8 searches) on Opus with web search; first replies use customer_text.",
   "openai_standby": "provider \"openai\" with {\"profile\": \"astra-max-v1\"} is still accepted per role (except monday_special_days/new_business_research/daily_spark/digital_karne) but nothing selects it automatically; there is no cross-provider fallback. Standby review date: 2026-10-18.",
   "roles": {
     "chain_interpreter": {"provider": "anthropic", "model": "claude-opus-5-5", "effort": "high", "max_tokens": 16000, "timeout_seconds": 300},
@@ -18,7 +18,10 @@
     "monday_special_days": {"provider": "anthropic", "model": "claude-opus-5-5", "effort": "medium", "max_tokens": 8000, "timeout_seconds": 480, "web_search": true},
     "new_business_research": {"provider": "anthropic", "model": "claude-opus-5-5", "effort": "medium", "max_tokens": 8000, "timeout_seconds": 480, "web_search": true},
     "daily_spark": {"provider": "anthropic", "model": "claude-opus-5-5", "effort": "medium", "max_tokens": 8000, "timeout_seconds": 480, "web_search": true},
-    "digital_karne": {"provider": "anthropic", "model": "claude-opus-5-5", "effort": "medium", "max_tokens": 12000, "timeout_seconds": 600, "web_search": true, "web_search_max_uses": 8}
+    "digital_karne": {"provider": "anthropic", "model": "claude-opus-5-5", "effort": "medium", "max_tokens": 12000, "timeout_seconds": 600, "web_search": true, "web_search_max_uses": 8},
+    "prospect_classifier": {"provider": "anthropic", "model": "claude-haiku-5-5", "effort": "low", "max_tokens": 2048, "timeout_seconds": 120},
+    "prospect_research": {"provider": "anthropic", "model": "claude-opus-5-5", "effort": "medium", "max_tokens": 4096, "timeout_seconds": 300, "web_search": true, "web_search_max_uses": 2},
+    "prospect_report": {"provider": "anthropic", "model": "claude-opus-5-5", "effort": "medium", "max_tokens": 12000, "timeout_seconds": 600, "web_search": true, "web_search_max_uses": 8}
   },
   "web_search": {"tool_type": "web_search_20260209", "max_uses": 4, "fee_microdollars_per_search": 10000},
   "flags": {"monday_special_days_research_enabled": true, "new_business_research_enabled": true, "daily_spark_research_enabled": true},
