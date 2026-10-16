@@ -561,11 +561,11 @@ class FirstContact(Base):
         self.assertEqual(research, {"domain": "acmeyapi.com.tr", "website": "https://acmeyapi.com.tr",
                                     "sender_name": "Deniz Kaya", "search_person": True})
         self.assertNotIn("Deniz", json.dumps(dict(self.models.calls)["classify"]["domain"]))
-        # the reply: same thread, ONLY to the sender, no CC, approved signature
+        # the reply: same thread, to the sender, the owner always in CC (owner 2026-10-16), approved signature
         self.assertEqual(len(self.writer.writes), 1)
         sent = self.writer.writes[0]
         self.assertEqual((sent["to"], sent["cc"], sent["thread_id"], sent["in_reply_to_message_id"]),
-                         (["deniz@acmeyapi.com.tr"], [], "b1", "a1"))
+                         (["deniz@acmeyapi.com.tr"], [OWNER], "b1", "a1"))
         self.assertEqual(sent["subject"], "Re: Hamle AI demo talebi")
         self.assertTrue(sent["body"].endswith("Sevgiler,\nHamle AI\nGamechangers"))
         self.assertEqual(self.writer.preflights[0][0], "client_reply")
@@ -584,7 +584,7 @@ class FirstContact(Base):
         for part in ("GÖNDERİLDİ", "Gönderen: Deniz Kaya <deniz@acmeyapi.com.tr>", "Tür: demo / ilk temas",
                      "Ne istiyor: Hamle AI için demo istiyor.", "unvan Pazarlama Direktörü",
                      "Şirket hakkında: Yapı malzemeleri", sent["body"].split("\n")[1], "> Merhaba,",
-                     f"Kopyası {OWNER} adresine gitti."):
+                     f"CC'de {OWNER}. Ayrı kopyası da gitti."):
             self.assertIn(part, text)
         row = self.get(pw.mail_key("a1"))
         self.assertEqual((row["state"], row["reply_state"], row["kind"]), ("noted", "sent", "prospect_mail"))
@@ -896,7 +896,7 @@ class ResearchRequests(Base):
         r = self.run_once()
         self.assertEqual(r["requests"]["sent"], 1)
         sent = self.writer.writes[-1]
-        self.assertEqual((sent["to"], sent["cc"], sent["thread_id"]), (["deniz@acmeyapi.com.tr"], [], "b1"))
+        self.assertEqual((sent["to"], sent["cc"], sent["thread_id"]), (["deniz@acmeyapi.com.tr"], [OWNER], "b1"))
         self.assertTrue(sent["body"].startswith("Merhaba Deniz,"))
         self.run_once()
         self.assertEqual(len(self.writer.writes), 2)
@@ -1065,12 +1065,13 @@ class Adapters(Base):
                          "newer_than:3d")
         self.assertEqual(r.meta_headers, ("Subject", "Message-ID", "References"))
 
-    def test_reply_writer_shape_only_the_prospect(self):
+    def test_reply_writer_shape_the_prospect_and_the_owner_in_cc(self):
         w = pw.prospect_reply_writer(self.settings, self.book, token_context=None, session_factory=None)
-        good = {"from": HAMLE, "to": ["deniz@acmeyapi.com.tr"], "cc": [], "thread_id": "abc",
+        good = {"from": HAMLE, "to": ["deniz@acmeyapi.com.tr"], "cc": [OWNER], "thread_id": "abc",
                 "in_reply_to_message_id": "def", "subject": "Re: x", "body": "Merhaba"}
         self.assertEqual(w._shape(good), "client_reply")
-        for bad in (dict(good, cc=[OWNER]), dict(good, to=["deniz@acmeyapi.com.tr", "ece@acmeyapi.com.tr"]),
+        for bad in (dict(good, cc=[]), dict(good, cc=[OWNER, LEAD]), dict(good, cc=[LEAD]),
+                    dict(good, to=["deniz@acmeyapi.com.tr", "ece@acmeyapi.com.tr"]),
                     dict(good, to=[OWNER]), dict(good, to=["ali@musteri-marka.com.tr"]), dict(good, thread_id="XYZ")):
             with self.assertRaises(Exception):
                 w._shape(bad)
@@ -1122,6 +1123,68 @@ class Preview(Base):
         out = self.preview()
         self.assertEqual(out["decision"], "would_hold_for_a_human")
         self.assertTrue(out["reply_problems"])
+
+class TestRequests(Base):
+    """Operator test (owner 2026-10-16): a real test request + to-do; the report only ever reaches the owner."""
+    SOURCE = {"sender": "deniz@acmeyapi.com.tr", "sender_name": "Deniz Kaya", "subject": "Bizi araştırır mısınız?",
+              "text": "Merhaba, kurumumuz için kısa bir dijital araştırma rica ediyoruz.\nDeniz"}
+    FACTS = {"first_name": "Deniz", "language": "tr", "request_summary": "Kurum için dijital araştırma istiyor.",
+             "company": {"name": "Acme Yapı", "sector": "Yapı malzemeleri"}}
+
+    def opened(self):
+        out = self.watch().open_test_request(self.SOURCE, self.FACTS)
+        self.assertEqual((out["status"], out["business_writes"]), ("prospect_test_request_opened", 1))
+        todos = self.bc.posted(RESEARCH)
+        self.assertEqual(len(todos), 1)
+        todo = todos[0]
+        self.assertTrue(todo["content"].startswith("TEST · Araştırma isteği · Acme Yapı"))
+        self.assertEqual(([a["id"] for a in todo["assignees"]], todo["due_on"]), ([OWNER_ID], "2026-10-17"))
+        self.assertIn("yalnız sana (" + OWNER + ")", self.bc.todo_text(todo["id"]))
+        self.assertEqual((self.writer.writes, self.copies.writes, self.bc.posted(NOTES)), ([], [], []))
+        self.assertIsNone(self.get(pw.domain_key("acmeyapi.com.tr")))  # a real request later is not blocked
+        self.assertIsNone(self.get(pw.addr_key("deniz@acmeyapi.com.tr")))
+        return todo
+
+    def test_full_test_flow_report_goes_only_to_the_owner(self):
+        todo = self.opened()
+        r = self.watch().run_test_requests()
+        self.assertEqual((r["status"], r["requests"]["checked"], r["requests"]["approved"]),
+                         ("prospect_test_requests_completed", 1, 0))
+        self.assertNotIn("report", self.models.kinds())
+        self.bc.human(todo["id"], OWNER_ID, "Onaylıyorum")
+        r = self.watch().run_test_requests()
+        self.assertEqual((r["requests"]["approved"], r["requests"]["reports"]), (1, 1))
+        self.bc.human(todo["id"], OWNER_ID, "Hamle gönder")
+        r = self.watch().run_test_requests()
+        self.assertEqual(r["requests"]["sent"], 1)
+        self.assertEqual(self.writer.writes, [])  # never the prospect
+        self.assertEqual(len(self.copies.writes), 1)
+        sent = self.copies.writes[0]
+        self.assertEqual(sent["to"], [OWNER])
+        self.assertTrue(sent["subject"].startswith("TEST · Hamle AI araştırma raporu"))
+        self.assertIn("Kuruma hiçbir şey gönderilmedi", sent["body"])
+        self.assertIn("Merhaba Deniz,", sent["body"])
+        last = max(c["id"] for c in self.bc.comments.values() if c["creator"]["id"] == HAMLE_ID)
+        self.assertIn("yalnız sana", self.bc.comment_text(last))
+        self.watch().run_test_requests()
+        self.assertEqual(len(self.copies.writes), 1)
+
+    def test_test_run_leaves_real_requests_alone(self):
+        self.mails = [mail(1, subject="Araştırma", text="Merhaba, kurumumuzu araştırır mısınız?\nDeniz")]
+        self.models.out["classify"] = [classified("research_request", target="organisation")]
+        self.models.out["reply"] = [{"reply": reply_text(extra=" " + SENTENCE)}]
+        self.run_once()
+        real = self.bc.posted(RESEARCH)[0]
+        self.bc.human(real["id"], OWNER_ID, "Onaylıyorum")
+        r = self.watch().run_test_requests()
+        self.assertEqual((r["requests"]["checked"], r["requests"]["approved"]), (0, 0))
+
+    def test_stopped_control_opens_nothing(self):
+        self.ops.stop("offline-test")
+        with self.assertRaises(pw.ProspectError):
+            self.watch().open_test_request(self.SOURCE, self.FACTS)
+        self.assertEqual(self.bc.posted(RESEARCH), [])
+
 
 class Wiring(unittest.TestCase):
     def test_package_worker_and_routing(self):

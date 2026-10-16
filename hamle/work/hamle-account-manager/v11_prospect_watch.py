@@ -22,12 +22,13 @@ Per mail, in this order:
    known-person "where we met" line. No brand memory, no client data, no internal data. The reply is validated in
    code (greeting, signature, internal words, prices, dates/promises, links, other brands, length, research words);
    a failed check sends nothing and opens the note for a human.
-6. The reply goes in the same thread, only to the sender; a separate copy mail goes to the owner; a to-do opens
+6. The reply goes in the same thread to the sender with the owner always in CC (owner 2026-10-16; no one else);
+   a separate copy mail goes to the owner; a to-do opens
    in the New Business project's notes list (found by name), assigned to the new business lead and the owner.
 7. research_request (organisations only): a to-do in the research list assigned to the owner, due that day.
    Nothing is researched until the owner's verified Basecamp person writes exactly "Onaylıyorum" on it. Then one
    web-search report (role prospect_report) is written as a comment; it reaches the prospect (same thread) only
-   after the owner writes "Hamle gönder" there. One open request per company domain; one reminder a day after
+   after the owner writes "Hamle gönder" there (owner in CC). One open request per company domain; one reminder a day after
    research.reminder_after. An agency member's "Hamle dur" on the request stops it.
 
 Same rules as the other modules: global stop ('dur') or a new control generation fences every write and stops
@@ -1099,10 +1100,11 @@ class ProspectWatch:
             facts["person_research_refused"] = True
         return self._note(mkey, token, source, sender, facts, report, request_row)
 
-    # ----- send (same thread, only the sender) + owner copy
+    # ----- send (same thread, to the sender, the owner always in CC) + owner copy
     def _send(self, mkey, akey, dkey, token, source, sender, text, report):
         from v11_chain_mail import reply_subject
-        payload = {"from": HAMLE, "to": [sender], "cc": [], "thread_id": source["thread_id"],
+        payload = {"from": HAMLE, "to": [sender], "cc": [self.s["roles"]["owner"]["email"]],
+                   "thread_id": source["thread_id"],
                    "in_reply_to_message_id": source["message_id"], "subject": reply_subject(source.get("subject")),
                    "body": text}
         sha = scope_digest(payload)
@@ -1243,7 +1245,7 @@ class ProspectWatch:
             lines.append("Gönderilmedi çünkü: " + "; ".join(facts["reply_problems"]))
         if facts.get("reply_state") in ("sent", "send_unknown"):
             copy_state = facts.get("copy_state") or "-"
-            lines.append(f"Alıcı yalnız {sender}. Kopyası {self.s['roles']['owner']['email']} adresine "
+            lines.append(f"Alıcı {sender}, CC'de {self.s['roles']['owner']['email']}. Ayrı kopyası da "
                          + ("gitti." if copy_state == "sent" else f"gönderilemedi ({copy_state})."))
         if request_row:
             if request_row.get("existing"):
@@ -1297,7 +1299,8 @@ class ProspectWatch:
     def _note(self, mkey, token, source, sender, facts, report, request_row):
         state = facts.get("reply_state")
         if state == "sent":
-            header = "GÖNDERİLDİ · Hamle bu kişiye aynı zincirde, yalnız gönderene kısa bir ilk cevap verdi."
+            header = ("GÖNDERİLDİ · Hamle bu kişiye aynı zincirde kısa bir ilk cevap verdi "
+                      f"({self.s['roles']['owner']['first_name']} CC'de).")
         elif state == "send_unknown":
             header = ("GÖNDERİM BELİRSİZ · Hamle cevabı gönderdi ama teyit edemedi ve tekrar denemedi. Gmail'de "
                       "Gönderilmiş kutusuna bakın.")
@@ -1437,7 +1440,7 @@ class ProspectWatch:
             return "ack_unknown"
         return "ack_written"
 
-    def _requests(self, report, local):
+    def _requests(self, report, local, only_test=False):
         from v11_client_reply import command, comment_text
         from v11_stop_intake import stop_intent
         keys = list((self._get(REQUESTS_KEY) or {}).get("keys") or [])
@@ -1449,6 +1452,8 @@ class ProspectWatch:
         for key in keys:
             row = self._get(key)
             if not isinstance(row, dict) or row.get("state") not in OPEN_REQUEST_STATES or type(row.get("todo_id")) is not int:
+                continue
+            if only_test and not row.get("test"):
                 continue
             if self._elapsed() > self.cfg["limits"]["run_seconds"]:
                 break
@@ -1607,8 +1612,11 @@ class ProspectWatch:
         return "\n".join(lines)[:MAX_NOTE], mail or None, bool(mail) and not problems, problems
 
     def _send_report(self, key, row, body, report):
-        """The owner's 'Hamle gönder': the report to the prospect in the same thread, only to that address."""
+        """The owner's 'Hamle gönder': the report to the prospect in the same thread, the owner in CC.
+        A test request (operator preview) never reaches the prospect: the report goes only to the owner."""
         from v11_chain_mail import reply_subject
+        if row.get("test"):
+            return self._send_test_report(key, row, body, report)
         try:
             anchor = self.reply_writer.latest_anchor(row["thread_id"])
         except Exception as exc:
@@ -1619,7 +1627,8 @@ class ProspectWatch:
             self._ack(key, row["todo_id"], "Göndermedim: zincirdeki son mail bu kişiden değil ya da zincir okunamadı"
                       + (f" ({why})" if why else "") + ". Ekip kendisi göndersin.", report)
             return "blocked"
-        payload = {"from": HAMLE, "to": [row["sender"]], "cc": [], "thread_id": row["thread_id"],
+        payload = {"from": HAMLE, "to": [row["sender"]], "cc": [self.s["roles"]["owner"]["email"]],
+                   "thread_id": row["thread_id"],
                    "in_reply_to_message_id": anchor["message_id"], "subject": reply_subject(anchor.get("subject")),
                    "body": body}
         sha = scope_digest(payload)
@@ -1652,6 +1661,123 @@ class ProspectWatch:
         self._set_request(key, ("sending",), state="sent", sent_remote_id=remote)
         self._ack(key, row["todo_id"], "Rapor kuruma aynı mail zincirinde gönderildi.", report)
         return "sent"
+
+    def _send_test_report(self, key, row, body, report):
+        """Test request: 'Hamle gönder' mails the report ONLY to the owner, as a new mail (never the prospect)."""
+        owner = self.s["roles"]["owner"]["email"]
+        label = self._company_label({"kind": "corporate", "company": row.get("company")}, row["domain"])
+        text = "\n".join([f"Bu bir denemedir. Gerçek akışta bu mail {row['sender']} adresine, {owner} CC'de olarak "
+                          "aynı mail zincirinde giderdi. Kuruma hiçbir şey gönderilmedi.", "", "-----", "", body])
+        payload = {"to": [owner], "subject": _line(f"TEST · Hamle AI araştırma raporu · {label}", 200), "body": text}
+
+        def begin(tx, now):
+            self._fence(tx, now)
+            r = tx.get(key)
+            _need(r is not None and r.get("state") == "report_ready" and r.get("test") is True,
+                  "prospect_request_changed")
+            r.update(state="sending", sending_at=now)
+            tx.put(key, r)
+        try:
+            self.ops._run(begin)
+        except Exception:
+            return "released"
+        try:
+            report["business_writes"] += 1
+            remote = self.copy_writer.write(copy.deepcopy(payload))["remote_id"]
+            back = self.copy_writer.readback(remote, copy.deepcopy(payload))
+            _need(back.get("readback_sha256") == scope_digest(payload), "prospect_test_report_readback_mismatch")
+        except Exception as exc:
+            self._set_request(key, ("sending",), state="send_unknown", reason=_code(exc))
+            self._ack(key, row["todo_id"], "Sana göndermeyi denedim ama teyit edemedim; tekrar denemiyorum.", report)
+            return "send_unknown"
+        self._set_request(key, ("sending",), state="sent", sent_remote_id=remote)
+        self._ack(key, row["todo_id"], f"Bu bir deneme olduğu için rapor kuruma değil yalnız sana ({owner}) "
+                  "gönderildi.", report)
+        return "sent"
+
+    def _operator_start(self):
+        """Common start of the operator runs (test request, requests-only): control open, lease, lists."""
+        now = self.clock()
+        _need(isinstance(now, datetime) and now.tzinfo is not None, "aware_clock_required")
+        self.started = self.monotonic()
+        c = self.ops.control()
+        if c["mode"] != "review_open":
+            raise ProspectError("human_control_stopped")
+        self.generation = c["generation"]
+        token = uuid.uuid4().hex
+        if not self._lease(token):
+            raise ProspectError("prospect_run_in_progress")
+        try:
+            self.lists = self._lists(now.astimezone(ISTANBUL).date())
+        except Exception:
+            self._release(token)
+            raise
+        return token, now.astimezone(ISTANBUL)
+
+    def open_test_request(self, source, facts):
+        """Operator test (owner 2026-10-16): one imagined research request becomes a REAL request record and a real
+        to-do in the research list (assigned to the owner, due today, marked TEST). No mail to the sender, no
+        address/domain record: 'Hamle gönder' on it mails the report only to the owner."""
+        sender = str(source.get("sender") or "").strip().lower()
+        _need(EMAIL.fullmatch(sender) is not None, "preview_sender_invalid")
+        domain = sender.rsplit("@", 1)[1]
+        owner = self.s["roles"]["owner"]
+        test_id = "test-" + uuid.uuid4().hex
+        rkey = request_key(test_id)
+        token, local = self._operator_start()
+        try:
+            def begin(tx, now):
+                self._fence(tx, now)
+                month = _month(now)
+                idx = tx.get(index_key(month)) or {"kind": "prospect_index", "month": month, "keys": [],
+                                                   "purged": False}
+                if rkey not in idx["keys"]:
+                    idx["keys"].append(rkey)
+                reqs = tx.get(REQUESTS_KEY)
+                row = {"key": rkey, "kind": "prospect_request", "test": True, "state": "creating", "domain": domain,
+                       "sender": sender, "sender_name": _line(source.get("sender_name"), 120),
+                       "first_name": facts.get("first_name"), "language": facts.get("language"), "thread_id": None,
+                       "message_id": test_id, "subject": _line(source.get("subject"), 200),
+                       "request_summary": facts.get("request_summary"), "request_text": _mail_text(source)[:1500],
+                       "company": facts.get("company"), "day": local.date().isoformat(), "created_at": now}
+                tx.put(index_key(month), idx)
+                tx.put(rkey, row)
+                tx.put(REQUESTS_KEY, {"kind": "prospect_requests", "keys": list(dict.fromkeys(
+                    list((reqs or {}).get("keys") or []) + [rkey]))[-60:]})
+            self.ops._run(begin)
+            label = self._company_label({"kind": "corporate", "company": facts.get("company")}, domain)
+            title, text = request_todo(owner["name"], self.cfg["research"]["estimate"], source, sender, label, facts)
+            title = _line("TEST · " + title, 200)
+            text = ("TEST: Bu bir denemedir; bu mail gerçekte gelmedi ve kuruma hiçbir şey gönderilmedi. Rapor hazır "
+                    f"olunca \"Hamle gönder\" yazarsan rapor kuruma değil yalnız sana ({owner['email']}) gelir.\n\n"
+                    + text)
+            try:
+                tid = self._todo(self.lists["research"], title, text, [owner["basecamp_id"]], due=local.date())
+            except Exception as exc:
+                reason = _code(exc)
+                self.ops._run(lambda tx, now: tx.put(rkey, dict(tx.get(rkey), state="unknown", reason=reason)),
+                              allow_expired=True)
+                return {"status": "held", "reason": reason, "business_writes": 1}
+            self.ops._run(lambda tx, now: tx.put(rkey, dict(tx.get(rkey), state="awaiting_approval", todo_id=tid,
+                                                            todo_at=now)), allow_expired=True)
+            return {"status": "prospect_test_request_opened", "todo_url": self._app(tid), "title": title,
+                    "business_writes": 1}
+        finally:
+            self._release(token)
+
+    def run_test_requests(self):
+        """Operator run (schedule stays off): only TEST requests: 'Onaylıyorum' -> report comment,
+        'Hamle gönder' -> report to the owner only. Real requests are left to the scheduled run."""
+        report = {"status": "prospect_test_requests_completed", "model_calls": 0, "business_writes": 0}
+        try:
+            token, local = self._operator_start()
+        except ProspectError as exc:
+            return dict(report, status="held", reason=exc.code)
+        try:
+            report["requests"] = self._requests(report, local, only_test=True)
+            return report
+        finally:
+            self._release(token)
 
     # ----- KVKK retention
     def _purge(self, local):
@@ -1797,7 +1923,8 @@ def prospect_mail_reader(gmail_store, settings, book, **factories):
 
 
 def prospect_reply_writer(settings, book, *, token_context, session_factory):
-    """Same-thread Gmail reply only to the prospect (exact sender of the anchor, no CC)."""
+    """Same-thread Gmail reply to the prospect (exact sender of the anchor), CC exactly the owner (owner 2026-10-16)."""
+    owner_cc = [settings["roles"]["owner"]["email"]]
     import business_writers as bw
     import cloud_providers as provider
     from v11_chain_mail import CLARIFY_FIELDS, HEX, GmailThreadReplyWriter, reply_subject
@@ -1813,12 +1940,13 @@ def prospect_reply_writer(settings, book, *, token_context, session_factory):
             bw._text(payload["subject"], 300, header=True)
             bw._text(payload["body"], 16000)
             to = payload["to"]
-            _need(isinstance(to, list) and len(to) == 1 and payload["cc"] == [] and isinstance(to[0], str)
+            _need(isinstance(to, list) and len(to) == 1 and payload["cc"] == owner_cc and isinstance(to[0], str)
+                  and to[0] != owner_cc[0]
                   and EMAIL.fullmatch(to[0]) and not excluded(to[0], settings, book), "prospect_reply_recipient_invalid")
             return "client_reply"
 
         def _verify(self, kind, payload, src):
-            _need(payload["to"] == [src["sender"]] and payload["cc"] == [], "reply_recipients_changed")
+            _need(payload["to"] == [src["sender"]] and payload["cc"] == owner_cc, "reply_recipients_changed")
             _need(payload["subject"] == reply_subject(src["subject"]), "reply_subject_mismatch")
 
         def latest_anchor(self, thread_id):
@@ -1893,8 +2021,32 @@ def preview_mail(source, *, settings, people, models, clock):
     return out
 
 
-def run_worker_prospect_preview(ops, secrets, *, sender, sender_name, subject, text, clock=None, config=None):
-    """Entry for worker.py --mode prospect_watch --prospect-preview: model calls only, nothing written or sent."""
+def _operator_watch(ops, secrets, settings, book, catalog, models, clock):
+    """A watch for the operator runs: Basecamp + the owner-only mail writer; no mailbox reader, no prospect writer."""
+    import basecamp_cloud_auth
+    import cloud_providers as provider
+    from v11_chain_live import _memo
+    from v11_chain_mail import gmail_token_context
+    from v11_daily_digest import DigestMailWriter
+    from v11_digital_karne import public_web
+    from v11_nb_tracking import session_send
+    token = _memo(lambda: basecamp_cloud_auth.access_token(secrets, claim_refresh=ops.claim_credential_refresh))
+    try:
+        psi_key = provider.pagespeed_key(secrets)
+    except Exception:
+        psi_key = None
+    return ProspectWatch(
+        ops, settings=settings, book=book, people=[], reader=None, models=models,
+        http=basecamp_http(settings, send=session_send(token, provider._session)), reply_writer=None,
+        copy_writer=DigestMailWriter(token_context=gmail_token_context(secrets), session_factory=provider._session),
+        web=public_web() if settings["cfg"]["karne_checks"] else None, psi_key=psi_key, clock=clock)
+
+
+def run_worker_prospect_preview(ops, secrets, *, sender, sender_name, subject, text, clock=None, config=None,
+                                open_request=False):
+    """Entry for worker.py --mode prospect_watch --prospect-preview: model calls only, nothing written or sent.
+    With open_request (--preview-open-request, owner 2026-10-16): a research request also opens a REAL test
+    request + to-do for the owner; still no mail to the sender."""
     import cloud_providers as provider
     from v11_chain_live import load_catalog
     from v11_client_watch import load_contacts, validate_contacts
@@ -1908,10 +2060,39 @@ def run_worker_prospect_preview(ops, secrets, *, sender, sender_name, subject, t
         _need(not excluded(str(sender or "").strip().lower(), settings, book), "preview_sender_is_agency_or_client")
         keys = {"anthropic": lambda: provider.anthropic_key(secrets)}
         source = {"sender": sender, "sender_name": sender_name, "subject": subject, "text": text}
-        return preview_mail(source, settings=settings, people=load_people(ops),
-                            models=model_sources(ops, keys, catalog, settings), clock=clock)
+        models = model_sources(ops, keys, catalog, settings)
+        out = preview_mail(source, settings=settings, people=load_people(ops), models=models, clock=clock)
+        if not open_request:
+            return out
+        if "research_todo" not in out:
+            return dict(out, status="held", reason="preview_not_an_organisation_research_request")
+        facts = {k: out.get(k) for k in ("first_name", "language", "request_summary", "company")}
+        watch = _operator_watch(ops, secrets, settings, book, catalog, models, clock)
+        opened = watch.open_test_request(source, facts)
+        return dict(out, writes=opened.get("business_writes", 0), test_request=opened)
     except Exception as exc:
         return {"status": "held", "reason": _code(exc), "business_writes": 0}
+
+
+def run_worker_prospect_test_requests(ops, secrets, *, clock=None, config=None):
+    """Entry for worker.py --mode prospect_watch --prospect-test-requests: only TEST requests move on."""
+    import cloud_providers as provider
+    from v11_chain_live import load_catalog
+    from v11_client_watch import load_contacts, validate_contacts
+    from v11_daily_digest import load_brand_cards
+    clock = clock or (lambda: datetime.now(timezone.utc))
+    try:
+        cfg = validate_config(config if config is not None else load_config())
+        _need(cfg["research"]["enabled"], "prospect_research_disabled")
+        catalog = load_catalog()
+        book = validate_contacts(load_contacts(ops), catalog, load_brand_cards())
+        settings = resolve(cfg, catalog, book)
+        keys = {"anthropic": lambda: provider.anthropic_key(secrets)}
+        watch = _operator_watch(ops, secrets, settings, book, catalog, model_sources(ops, keys, catalog, settings),
+                                clock)
+        return watch.run_test_requests()
+    except Exception as exc:
+        return {"status": "held", "reason": _code(exc), "business_writes": None}
 
 
 def run_worker_prospect_watch(ops, secrets, *, clock=None, config=None, started_at=None):
