@@ -1067,6 +1067,21 @@ def report_attachment(label, written, sources, measured, today):
     return v11_report_pdf.attachment(label, today, v11_report_pdf.report_pdf(html))
 
 
+def owner_cover(label, written, sources, *, link, test):
+    """The short note above the attached PDF in the owner's mail: score, the headline and what to do next."""
+    e = lambda t: escape(str(t), quote=True)  # noqa: E731
+    sc = written.get("score") or {}
+    send = ("Bu bir TEST isteği: \"Hamle gönder\" yazarsan rapor kuruma değil yalnız sana gelir." if test else
+            "Kuruma göndermem için to-do'ya \"Hamle gönder\" yaz; göndermeyeyim dersen \"Hamle gönderme\" yaz.")
+    return ("<div>Merhaba,<br><br>"
+            f"<strong>{e(label)}</strong> için Hamle Dijital Ayak İzi Raporu hazır; raporun tamamı ekteki PDF'te.<br><br>"
+            f"<strong>Dijital Ayak İzi Skoru: {e(sc.get('total'))}/100</strong><br>"
+            + (f"Ana bulgu: {_refs(written.get('headline'), sources)}<br>" if written.get("headline") else "")
+            + f"<br>{e(send)}<br>"
+            + (f'<a href="{e(link)}">Basecamp\'te aç</a><br>' if link else "")
+            + "<br>Sevgiler,<br>Hamle AI</div>")
+
+
 SLIM_CHANNEL = ("measured", "url", "handle", "followers", "avg_per_month", "per_month", "last_post",
                 "longest_gap_days", "formats", "engagement_rate_pct")
 
@@ -2130,16 +2145,14 @@ class ProspectWatch:
         try:
             att = report_attachment(label, written, sources, measured, today)
             report["owner_mail_pdf"] = "ok"
-        except Exception as exc:  # the HTML mail still goes; the PDF is retried when the report is sent
-            att, report["owner_mail_pdf"] = None, "failed:" + _code(exc)
-        html = render_report_mail(label, written, sources, measured, today=today, link=self._app(row["todo_id"]),
-                                  attached=att is not None)
-        body = _plain(render_report(label, written, sources, measured, problems=[], test=bool(row.get("test")),
-                                    today=today))
+        except Exception as exc:  # owner 2026-10-16: this report only ever travels as a PDF; without it no mail
+            report["owner_mail_pdf"] = "failed:" + _code(exc)  # goes (the full report stays on the to-do)
+            return "held:no_pdf"
+        # owner 2026-10-16: a serious, complex report travels as the PDF with a short cover note, never in the body
+        html = owner_cover(label, written, sources, link=self._app(row["todo_id"]), test=bool(row.get("test")))
+        body = _plain(html)
         payload = {"to": [owner], "subject": _line(f"Hamle AI · Dijital Ayak İzi Raporu · {label}", 200),
-                   "body": body, "html": html}
-        if att:
-            payload["attachment"] = att
+                   "body": body, "html": html, "attachment": att}
         try:
             report["business_writes"] += 1
             remote = self.copy_writer.write(copy.deepcopy(payload))["remote_id"]
