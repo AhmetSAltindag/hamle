@@ -913,6 +913,16 @@ class ResearchRequests(Base):
     def test_only_the_owners_exact_approval_starts_the_research(self):
         self.approved()
 
+    def test_without_its_pdf_the_report_mail_is_held(self):
+        # owner 2026-10-16: the Dijital Ayak İzi Raporu only travels as an attached PDF, never in a mail body
+        todo = self.opened()
+        with patch.object(pw, "report_attachment", side_effect=RuntimeError("weasyprint")):
+            self.bc.human(todo["id"], OWNER_ID, "Onaylıyorum")
+            r = self.run_once()
+        self.assertEqual(r["requests"]["reports"], 1)
+        self.assertEqual(self.get(pw.request_key("a1"))["state"], "report_ready")  # the full report is on the to-do
+        self.assertFalse([w for w in self.copies.writes if "Dijital Ayak İzi" in w.get("subject", "")])
+
     def approved(self):
         todo = self.opened()
         self.bc.human(todo["id"], LEAD_ID, "Onaylıyorum")
@@ -956,9 +966,12 @@ class ResearchRequests(Base):
         self.assertEqual(len(self.writer.writes), 1)  # the report has NOT gone to the prospect
         owner = self.copies.writes[-1]  # the designed report goes to the owner's mailbox
         self.assertEqual((owner["to"], owner["subject"]), ([OWNER], "Hamle AI · Dijital Ayak İzi Raporu · Acme Yapı (acmeyapi.com.tr)"))
-        self.assertIn("DİJİTAL AYAK İZİ RAPORU", owner["html"])
-        self.assertIn(pw.ACCENT, owner["html"])
-        self.assertIn("Biz olsak ilk 3 hamlemiz", owner["body"])
+        # owner 2026-10-16: the report travels as the attached PDF under a short cover note
+        self.assertEqual(owner["attachment"]["content_type"], "application/pdf")
+        self.assertIn("raporun tamamı ekteki PDF'te", owner["html"])
+        self.assertIn("Dijital Ayak İzi Skoru: 46/100", owner["body"])
+        self.assertNotIn("Biz olsak ilk 3 hamlemiz", owner["body"])
+        self.assertLess(len(owner["html"]), 3000)
         return todo
 
     def test_ok_go_also_approves(self):
