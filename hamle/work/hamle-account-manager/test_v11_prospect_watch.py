@@ -109,6 +109,11 @@ def reported():
             "campaigns": [{"text": "Bahar kataloğu kampanyası.", "url": "https://acmeyapi.com.tr/bahar",
                            "date": "2026-04-01"}],
             "regulation": [],
+            "audience": {"segments": [{"name": "Yeni ev sahipleri", "description": "Konut projesi alanlar.",
+                                       "signals": [{"text": "Sitede konut projeleri öne çıkıyor.",
+                                                    "url": "https://acmeyapi.com.tr"}]}], "facts": []},
+            "sector": {"trends": [{"text": "Yapı malzemesinde dijital katalog yaygınlaşıyor.",
+                                   "url": "https://rakipa.com.tr/video"}], "expectations": []},
             "evidence": ["https://acmeyapi.com.tr", "https://acmeyapi.com.tr/bahar",
                          "https://www.linkedin.com/company/acme", "https://rakipa.com.tr/video"]}
 
@@ -125,6 +130,10 @@ def written(mail_text=None):
             "competitor_rows": [{"metric": "YouTube video/ay", "us": "0 [Ö]", "them": ["Rakip A: 8 [3]"]}],
             "moves": [{"title": f"Hamle {i}", "why": "Rakip A ayda 8 video [3].", "what": "Katalogu kısa videolara bölmek.",
                        "measure": "Ayda 8 video.", "first_30_days": "İlk 8 video."} for i in (1, 2, 3)],
+            "audience_segments": [{"name": "Yeni ev sahipleri", "share": "high", "why": "Konut odağı [1]."}],
+            "plan_30": [{"title": "Kanal düzeni", "what": "Haftada 2 Shorts.", "target": "Ayda 8 video."}],
+            "plan_90": [{"title": "Rakibi yakala", "what": "YouTube serisi.", "target": "Ayda 8 video [3]."}],
+            "closing_summary": "Acme Yapı dijitalde sessiz; 90 günde ritim kurulabilir [Ö].",
             "meeting_notes": ["Video ekibi var mı?"],
             "mail": mail_text if mail_text is not None else
             "Merhaba Deniz,\nİstediğiniz değerlendirmeyi hazırladık: https://acmeyapi.com.tr\nSevgiler,\nHamle AI\nGamechangers"}
@@ -904,9 +913,12 @@ class ResearchRequests(Base):
         self.bc.human(todo["id"], OWNER_ID, "  ONAYLIYORUM ")
         r = self.run_once()  # one run: measurements + research, then the strategist writes
         self.assertEqual((r["requests"]["approved"], r["requests"]["researched"], r["requests"]["reports"]), (1, 1, 1))
-        self.assertEqual([k for k in self.models.kinds() if k in ("report", "writer")], ["report"] * 4 + ["writer"])
+        self.assertEqual([k for k in self.models.kinds() if k in ("report", "writer")], ["report"] * 6 + ["writer"] * 2)
         self.assertEqual([r["part"] for k, r in self.models.calls if k == "report"],
-                         ["channels", "google", "competitors", "company"])  # part by part, digital first
+                         ["channels", "google", "audience", "competitors", "sector", "company"])  # digital first
+        self.assertEqual([r["step"] for k, r in self.models.calls if k == "writer"], ["analysis", "plan"])
+        self.assertEqual([k for k, r in self.models.calls if k == "writer"][-1:], ["writer"])
+        self.assertEqual(self.models.calls[-1][1]["analysis"]["headline"], written()["headline"])
         req = dict(self.models.calls)["report"]
         self.assertEqual(req["domain"], "acmeyapi.com.tr")
         self.assertIn("measured", req)
@@ -919,6 +931,8 @@ class ResearchRequests(Base):
         comment = max(c["id"] for c in self.bc.comments.values() if c["creator"]["id"] == HAMLE_ID)
         text = self.bc.comment_text(comment)
         for part in ("Dijital Ayak İzi Raporu · Acme Yapı", "Dijital Ayak İzi Skoru: 46/100", "Öne çıkan 3 bulgu",
+                     "Hedef kitle segmentleri (tahmin)", "ilk 30 gün (kısa vade)", "90 gün (orta vade)",
+                     "Son söz · yönetici özeti",
                      "Biz olsak ilk 3 hamlemiz", "Katalogu kısa videolara bölmek.", "Kaynaklar", "Hamle gönder"):
             self.assertIn(part, text)
         self.assertLess(text.index("Kanal karnesi"), text.index("Fırsatlar ve riskler"))  # fixed order, digital first
@@ -970,7 +984,7 @@ class ResearchRequests(Base):
         self.models.budget["writer"] = True
         r = self.run_once()
         self.assertEqual(r["requests"]["reports"], 1)
-        self.assertEqual(self.models.kinds().count("report"), 4)  # no second research
+        self.assertEqual(self.models.kinds().count("report"), 6)  # no second research
         self.assertEqual(self.get(pw.request_key("a1"))["state"], "report_ready")
 
     def test_a_failed_part_is_a_gap_not_a_failed_report(self):
@@ -1123,6 +1137,10 @@ class Models_(Base):
         schemas = pw._schemas()
         validate({k: v for k, v in reported().items() if k != "evidence"}, schemas["report"])
         validate(written(), schemas["writer"])
+        for name, keys in pw.WRITER_STEPS:
+            validate({k: written()[k] for k in keys}, schemas["writer_steps"][name])
+        self.assertEqual(sorted(k for _, keys in pw.WRITER_STEPS for k in keys), sorted(schemas["writer"]["properties"]))
+        self.assertEqual(sorted(k for _, keys in pw.REPORT_PARTS for k in keys), sorted(schemas["report"]["properties"]))
         bad = written()
         bad["score"]["total"] = 140
         with self.assertRaises(Exception):

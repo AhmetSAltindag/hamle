@@ -16,9 +16,11 @@ NE TOPLAYACAKSIN (parçaya göre; dijital taraf önce)
 1. channels: Instagram, LinkedIn, YouTube, TikTok, X, Facebook için kurumun hesabı var mı, ne kadar aktif görünüyor. Ölçülmüş kanallar için yalnız ölçümün göremediği şeyleri ekle (ör. kampanya içerikleri). LinkedIn için takipçi sayısı, sayfa açıklaması, son gönderi konuları gibi herkese açık olguları kaynaklı yaz.
 2. message: kurumun çatı/ana mesajı (sitede ve kanallarda nasıl ifade ediliyor), sitede ve kanallarda öne çıkan anahtar kelimeler; tutarlılık için ham malzeme.
 3. google: kurumun Google görünürlüğü. Marka adı aramasını ve sektörün en önemli 2 kategori aramasını (ör. ürün/hizmet + "nedir", "en iyi ..." gibi kullanıcı aramaları) dene; kurumun kendi sitesinin ilk sayfada çıkıp çıkmadığını yaz (gördüğün sonuçlara göre: first_page / not_first_page / unknown).
-4. competitors: sektördeki 3 ana rakip kurum. Her biri için aynı dijital ölçütlerde (kanallar, YouTube/Instagram ritmi, içerik ve eğitim, kampanya) somut ve kaynaklı olgular; karşılaştırmaya yarayacak SAYILARI tercih et (ör. "YouTube'da son 6 ayda 24 video").
-5. campaigns: kurumun son 12 aydaki kampanyaları, lansmanları, ödülleri, sponsorlukları (tarih ISO YYYY-MM-DD ya da null).
-6. company: kurum künyesi: ne yapar, pazar konumu, öne çıkan rakamlar (kurumun kendi açıklaması ise öyle belirt).
-7. regulation: sektörün reklam ve iletişim kuralları (varsa; ör. SPK, BDDK, RTÜK, Ticaret Bakanlığı), kaynaklı.
+4. audience (parça "audience"): kurumun hedef kitlesini TAHMİN etmek için kanıt topla: ürün/hizmetin kime hitap ettiği, sitede ve kanallarda kime konuşulduğu (dil, görseller, kampanya hedefleri), yaş/meslek/ilgi sinyalleri, sektör raporlarındaki müşteri profili. En çok 3 segment; her segmentin kanıtını kaynaklı yaz. Kişi araştırma; yalnız segment.
+5. competitors (parça "competitors"): sektördeki 3 ana rakip kurum. Her biri için kurumla AYNI ölçütlerde somut ve kaynaklı olgular: kanallar, aylık paylaşım ritmi, YouTube/Instagram/LinkedIn takipçi ve içerik sayıları, içerik türleri, kampanyalar, Google görünürlüğü. Kıyaslama tablosu çizilecek: SAYI öncelikli (ör. "YouTube'da son 6 ayda 24 video", "LinkedIn'de 12 bin takipçi").
+6. sector (parça "sector"): sektörün genel beklentileri ve dinamikleri: büyüme, tüketici davranışı değişimi, dijitalleşme, öne çıkan içerik/kanal trendleri, son 12 ayın önemli gelişmeleri; kaynaklı ve mümkünse sayılı.
+7. campaigns: kurumun son 12 aydaki kampanyaları, lansmanları, ödülleri, sponsorlukları (tarih ISO YYYY-MM-DD ya da null).
+8. company: kurum künyesi: ne yapar, pazar konumu, öne çıkan rakamlar (kurumun kendi açıklaması ise öyle belirt).
+9. regulation: sektörün reklam ve iletişim kuralları (varsa; ör. SPK, BDDK, RTÜK, Ticaret Bakanlığı), kaynaklı.
 
 ÇIKTI: yalnız istenen şemaya uyan tek bir JSON nesnesi. Her "url" bir https adres olsun.
