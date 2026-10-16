@@ -105,12 +105,6 @@ def channel_tile(platform, ch, today, link_style):
     name = {"instagram": "Instagram", "linkedin": "LinkedIn", "youtube": "YouTube", "tiktok": "TikTok", "x": "X",
             "facebook": "Facebook"}.get(platform, platform)
     url = ch.get("url")
-    if not ch.get("measured"):
-        body = (f'<table {TB} width="100%"><tr><td>{txt(e(name), 16, WHITE, "bold")}</td>'
-                f'<td align="right">{label("ÖLÇÜLEMEDİ", MUTED)}</td></tr></table>'
-                + txt("Resmi okuma yolu yok; değerlendirmesi araştırma notlarında.", 12, MUTED, extra="padding:8px 0")
-                + (txt(f'<a {link_style} href="{e(url)}">Profili aç &rarr;</a>', 12) if url else ""))
-        return body
     rag = channel_rag(ch, today)
     color = RAG[rag][0]
     chart, span = spark(ch.get("per_month") or {})
@@ -148,12 +142,12 @@ def channel_tile(platform, ch, today, link_style):
 def tiles(measured, today, link_style):
     chans = measured.get("channels") or {}
     names = [p for p in PLATFORM_ORDER if p in chans] + [p for p in chans if p not in PLATFORM_ORDER]
-    names.sort(key=lambda p: not chans[p].get("measured"))  # measured channels first, then the rest
+    names = [p for p in names if chans[p].get("measured")]  # owner 2026-10-16: only what we measured is shown
     wrap = lambda s: (f'<table {TB} width="100%"><tr><td bgcolor="{TILE}" style="background:{TILE};'  # noqa: E731
                       f'border:1px solid {LINE};border-top:2px solid {CYAN};padding:14px">{s}</td></tr></table>')
     cells = [wrap(channel_tile(p, chans[p], today, link_style)) for p in names]
     if not cells:
-        return txt("Sitede sosyal kanal bağlantısı bulunamadı.", 13, MUTED, extra="padding-bottom:12px")
+        return ""
     rows = []
     for i in range(0, len(cells), 2):
         a = f'<td class="col gap" width="50%" valign="top" style="padding:0 6px 12px 0">{cells[i]}</td>'
@@ -389,9 +383,7 @@ def _render(label_text, written, sources, measured, *, today, link, sections, re
                       extra="text-align:center;padding-top:8px")
     if client:
         button = ""
-    unmeasured = [p for p, c in (measured.get("channels") or {}).items() if not c.get("measured")]
-    note = txt("[Ö] Hamle ölçümü. Resmi arayüzle ölçülemeyen kanallar kısmi değerlendirilmiştir." if unmeasured
-               else "[Ö] Hamle ölçümü.", 11, MUTED, extra="padding-top:10px")
+    note = txt("[Ö] Hamle ölçümü.", 11, MUTED, extra="padding-top:10px")
     panels.append(("KAYNAKLAR", (f'<table {TB} width="100%">{src}</table>' if src else "") + note + button))
     rows += [panel(i, t, b) for i, (t, b) in enumerate(panels, 1)]
     rows.append(f'<tr><td style="padding:22px 16px 6px" align="center">'

@@ -63,17 +63,17 @@ class ReportMail(unittest.TestCase):
         self.assertIn("52 gün", html)  # longest silence (amber/red colour)
         self.assertIn("Shorts %67", html)
         self.assertIn("%2,31", html)
-        self.assertIn("ÖLÇÜLEMEDİ", html)  # LinkedIn has no official read: no invented numbers
-        self.assertIn("https://www.linkedin.com/company/acme", html)
+        for gap in ("ÖLÇÜLEMEDİ", "Resmi okuma", "ölçülemeyen"):  # owner 2026-10-16: what we lack is never shown
+            self.assertNotIn(gap, html)
 
     def test_sparse_report_skips_empty_panels(self):
         html = self.render({"score": {"total": 80, "parts": []}, "headline": "Kısa [Ö].", "summary": ["Bir [1]."]},
                            measured={})
         self.assertIn("GÜÇLÜ", html)
-        self.assertIn("Sitede sosyal kanal bağlantısı bulunamadı.", html)
+        self.assertNotIn("bulunamadı", html)
         self.assertNotIn("BİZ YÖNETSEYDİK", html)
         self.assertNotIn("RAKİP KIYASI", html)
-        self.assertEqual(re.findall(r"// (\d\d)", html), ["01", "02", "03"])
+        self.assertEqual(re.findall(r"// (\d\d)", html), ["01", "02"])  # no measured channel: no empty board
 
     def test_source_links_and_escaping(self):
         w = big_written()
