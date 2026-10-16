@@ -145,6 +145,7 @@ class Basecamp:
                       {"id": 13, "name": "Başka", "visible_to_clients": True, "status": "active"}]
         self.todos, self.comments, self.calls, self.next = {}, {}, [], 100
         self.fail_post = False
+        self.clients_enabled = False
 
     def human(self, todo_id, person, text):
         self.next += 1
@@ -159,9 +160,18 @@ class Basecamp:
         if method == "POST" and self.fail_post:
             raise RuntimeError("basecamp_down")
         if path == f"/{ACCOUNT}/projects/{PROJECT}.json":
-            return {"id": PROJECT, "dock": [{"name": "todoset", "id": TODOSET, "enabled": True}]}, {}
+            return {"id": PROJECT, "clients_enabled": self.clients_enabled,
+                    "dock": [{"name": "todoset", "id": TODOSET, "enabled": True}]}, {}
+        if path == f"{b}/todosets/{TODOSET}/todolists.json" and method == "POST":
+            self.next += 1
+            self.lists.append({"id": self.next, "name": body["name"], "visible_to_clients": False,
+                               "status": "active", "bucket": {"id": PROJECT}})
+            return {"id": self.next}, {}
         if path == f"{b}/todosets/{TODOSET}/todolists.json":
             return copy.deepcopy(self.lists), {}
+        m = re.fullmatch(rf"{b}/todolists/(\d+)\.json", path)
+        if m and method == "GET":
+            return copy.deepcopy(next(x for x in self.lists if x["id"] == int(m[1]))), {}
         m = re.fullmatch(rf"{b}/todolists/(\d+)/todos\.json", path)
         if m and method == "POST":
             self.next += 1
@@ -810,6 +820,7 @@ class Gates(Base):
     def test_missing_or_client_visible_list_holds_the_run_before_any_reply(self):
         self.mails = [mail(1)]
         self.bc.lists = self.bc.lists[1:]
+        self.bc.clients_enabled = None  # cannot tell whether clients would see a new list: never opened
         r = self.run_once()
         self.assertEqual((r["status"], r["reason"]), ("held", "prospect_list_missing:notes"))
         self.bc.lists = [dict(x, visible_to_clients=True) if x["id"] == NOTES else x for x in Basecamp().lists]
@@ -1182,6 +1193,26 @@ class TestRequests(Base):
     def test_test_request_needs_only_the_research_list(self):
         self.bc.lists = [l for l in self.bc.lists if l["id"] != NOTES]
         self.opened()
+
+    def test_missing_notes_list_is_opened_once_hidden_from_clients(self):
+        self.bc.lists = [l for l in self.bc.lists if l["id"] != NOTES]
+        self.mails = [mail(1)]
+        r = self.run_once()
+        self.assertEqual(r["replied"], 1)
+        made = [l for l in self.bc.lists if l["name"] == "Hamle Yeni Temaslar"]
+        self.assertEqual(len(made), 1)
+        self.assertEqual(len(self.bc.posted(made[0]["id"])), 1)
+        self.mails = [mail(2, sender="ece@baskafirma.com.tr")]
+        self.run_once()
+        self.assertEqual(len([l for l in self.bc.lists if l["name"] == "Hamle Yeni Temaslar"]), 1)
+
+    def test_missing_list_in_a_client_project_holds(self):
+        self.bc.lists = [l for l in self.bc.lists if l["id"] != NOTES]
+        self.bc.clients_enabled = True
+        self.mails = [mail(1)]
+        r = self.run_once()
+        self.assertEqual((r["status"], r["reason"]), ("held", "prospect_list_missing:notes"))
+        self.assertEqual(self.writer.writes, [])
 
     def test_stopped_control_opens_nothing(self):
         self.ops.stop("offline-test")

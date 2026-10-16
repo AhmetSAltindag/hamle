@@ -695,7 +695,8 @@ def basecamp_http(settings, *, send):
             self.allowed = {"GET": (rf"/{a}/projects/{p}", rf"{b}/todosets/[1-9][0-9]*/todolists",
                                     rf"{b}/todolists/[1-9][0-9]*", rf"{b}/todos/[1-9][0-9]*",
                                     rf"{b}/recordings/[1-9][0-9]*/comments", rf"{b}/comments/[1-9][0-9]*"),
-                            "POST": (rf"{b}/todolists/[1-9][0-9]*/todos", rf"{b}/recordings/[1-9][0-9]*/comments")}
+                            "POST": (rf"{b}/todolists/[1-9][0-9]*/todos", rf"{b}/recordings/[1-9][0-9]*/comments",
+                                     rf"{b}/todosets/[1-9][0-9]*/todolists")}
     return ProspectBasecamp()
 
 
@@ -919,6 +920,9 @@ class ProspectWatch:
         for role, name in names.items():
             found = [r for r in rows if isinstance(r, dict) and fold(r.get("name") or r.get("title")).strip()
                      == fold(name).strip()]
+            if not found:  # owner 2026-10-16: Hamle opens its own missing list, only where clients cannot see it
+                _need(project.get("clients_enabled") is False, "prospect_list_missing:" + role)
+                found = [self._new_list(todoset["id"], name)]
             _need(len(found) == 1, "prospect_list_missing:" + role)
             row = found[0]
             _need(type(row.get("id")) is int and row.get("visible_to_clients") is False
@@ -930,6 +934,16 @@ class ProspectWatch:
                                                          "ids": ids, "checked_on": today.isoformat(),
                                                          "checked_at": now}), allow_expired=True)
         return ids
+
+    def _new_list(self, todoset_id, name):
+        row, _ = self.http.call("POST", f"{self.base}/todosets/{todoset_id}/todolists.json",
+                                {"name": name, "description": "Hamle tarafından açıldı (müşteriye görünmez)."}, 201)
+        lid = row.get("id") if isinstance(row, dict) else None
+        _need(type(lid) is int and lid > 0, "prospect_list_receipt_invalid")
+        back = self.http.one(f"{self.base}/todolists/{lid}.json")
+        _need(back.get("id") == lid and fold(back.get("name") or back.get("title")).strip() == fold(name).strip()
+              and (back.get("bucket") or {}).get("id") == self.s["project_id"], "prospect_list_readback_mismatch")
+        return back
 
     # ----- Basecamp writes (one POST, exact readback; the caller records the outcome)
     def _todo(self, list_id, title, text, assignees, due=None):

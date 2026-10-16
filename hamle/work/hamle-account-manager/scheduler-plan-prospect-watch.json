@@ -77,7 +77,7 @@
     "create the hamle-prospect-watch job; describe and compare",
     "grant invoker IAM for hamle-scheduler@ on the new job",
     "create both scheduler jobs with inert schedule '0 0 1 1 *', pause, patch the final schedule, describe PAUSED",
-    "Basecamp: lists 'Hamle Yeni Temaslar' and 'Hamle Araştırma İstekleri' exist in project 40704547 and are hidden from clients",
+    "Basecamp: 'Hamle Araştırma İstekleri' exists in project 40704547; Hamle opens 'Hamle Yeni Temaslar' itself on the first run if missing (only when the project has clients_enabled false)",
     "import the owner's known-people list (python3 v11_prospect_watch.py people import ...), optional",
     "set enabled=true in prospect-watch-config.json, rebuild, and resume only after the owner's word"
   ],
