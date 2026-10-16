@@ -19,8 +19,10 @@ NAME = "model-routing.json"
 SCHEMA_VERSION = 1
 ROLES = ("chain_interpreter", "chain_answerer", "customer_text", "chain_classifier", "digest_classifier",
          "trend_radar", "monday_special_days", "new_business_research", "daily_spark", "digital_karne",
-         "brand_memory", "teams_answer", "weekly_summary", "monthly_report")
-WEB_SEARCH_ROLES = ("trend_radar", "monday_special_days", "new_business_research", "daily_spark", "digital_karne")
+         "brand_memory", "teams_answer", "weekly_summary", "monthly_report", "prospect_classifier",
+         "prospect_research", "prospect_report")
+WEB_SEARCH_ROLES = ("trend_radar", "monday_special_days", "new_business_research", "daily_spark", "digital_karne",
+                    "prospect_research", "prospect_report")
 PROVIDERS = ("anthropic", "openai")
 ANTHROPIC_MODELS = ("claude-opus-5-5", "claude-haiku-5-5")
 EFFORTS = ("low", "medium", "high", "xhigh", "max")

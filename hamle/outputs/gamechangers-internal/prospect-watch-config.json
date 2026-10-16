@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "kind": "prospect_watch_config",
+  "enabled": false,
+  "decision_ref": "Owner 2026-10-15: the public site's button opens a mail to hamle@ with subject 'Hamle AI demo talebi'; mail from UNKNOWN senders (not agency staff, not known client contacts) gets one warm automatic first reply (approved tone and two approved examples), a Basecamp note in New Business, a copy to the owner; research requests only after the owner's 'Onaylıyorum' on the to-do and the report goes out only after 'Hamle gönder'.",
+  "mailbox": "hamle@gamechangers.com.tr",
+  "agency_domain": "gamechangers.com.tr",
+  "agency_name": "Gamechangers",
+  "auth_serv_id": "mx.google.com",
+  "since": "2026-10-16T08:00:00+03:00",
+  "timezone": "Europe/Istanbul",
+  "window": {"start": "08:00", "end": "22:00"},
+  "roles": {
+    "owner": "ahmet@gamechangers.com.tr",
+    "new_business_lead": "cansu@gamechangers.com.tr"
+  },
+  "basecamp": {
+    "project_id": 40704547,
+    "notes_list": "Hamle İşleri",
+    "research_list": "Hamle Araştırma İstekleri"
+  },
+  "limits": {
+    "max_auto_replies_per_day": 10,
+    "max_mails_per_run": 4,
+    "max_threads": 15,
+    "newer_than_days": 2,
+    "run_seconds": 600,
+    "reply_max_chars": 1200
+  },
+  "signatures": {
+    "tr": "Sevgiler,\nHamle AI\nGamechangers",
+    "en": "Best,\nHamle AI\nGamechangers"
+  },
+  "approved_sentences": {
+    "research_request": {
+      "tr": "Kurumunuz için istediğiniz araştırmayı da not aldık; ekibimiz değerlendirip size ayrıca dönecek.",
+      "en": "We have also noted the research you asked for about your organisation; our team will review it and get back to you separately."
+    }
+  },
+  "research": {
+    "enabled": true,
+    "estimate": "yaklaşık 1-3 USD, ~20 dakika",
+    "reminder_after": "21:30",
+    "expire_days": 7,
+    "max_reports_per_run": 1
+  },
+  "karne_checks": true,
+  "client_domains": {
+    "watmobilite.com": "wat_mobilite",
+    "rabam.com": "rabam",
+    "yadacosmetics.com": "ya_da"
+  },
+  "own_brand_keys": ["gamechangers", "new_biz"],
+  "ignore_domains": ["basecamp.com", "app.basecamp.com", "google.com", "accounts.google.com", "microsoft.com", "linkedin.com"],
+  "ignore_locals": ["notifications", "notification", "bounce", "bounces", "newsletter", "info-noreply"],
+  "free_mail_domains": [],
+  "retention_days": 365,
+  "rules": "enabled=true only with the owner's word (the job hamle-prospect-watch must also be deployed). Roles are agency addresses that must be verified Basecamp members in the catalog; nothing in code names a person. Known people (name, company, title, where_met, note, emails/domains) live in the Firestore doc 'prospect-watch-known-people' (python3 v11_prospect_watch.py people import --file known-people.json --actor <owner>), never in git. client_domains: company domains of client brands that are not in the client contact table (a mail from a client-table address or domain stays with the client watch). Lists are found by name in basecamp.project_id and must be hidden from clients; a missing list holds the run before any reply. The image reads work/hamle-account-manager/chain-profile/prospect-watch-config.json, so a rebuild (package_chain_source.py) is needed after editing."
+}

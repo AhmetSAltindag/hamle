@@ -17,9 +17,9 @@ AYSE, OZGE, AHMET, CANSU = ("ayse@watmobilite.com.tr", "ozge@gamechangers.com.tr
                             "cansu@gamechangers.com.tr")
 CANSU_BC, AHMET_BC, OZGE_BC = 48793256, 47470759, 52096503
 CLEAR = ("Merhaba Ayşe,\n\nNotlarınızı aldık, teşekkür ederiz! Yorumlar çok net, hızlıca iş listemize alıyoruz; "
-         "işimiz tamamlandığında size ileteceğiz.\n\nSevgiler,\nHamle\nGamechangers")
+         "işimiz tamamlandığında size ileteceğiz.\n\nSevgiler,\nHamle AI\nGamechangers")
 ASKING = ("Merhaba Ayşe,\n\nMail'inizi aldık. Görselde dış ses olsun mu? Dönüşünüze göre hızlıca iş listemize "
-          "alacağız.\n\nSevgiler,\nHamle\nGamechangers")
+          "alacağız.\n\nSevgiler,\nHamle AI\nGamechangers")
 
 
 def reply_block(**kw):
@@ -192,7 +192,7 @@ class AutoSend(ReplyBase):
         self.client.outputs = [message(clear())]
         self.watch().run()
         sent = self.replies.sent[0]
-        self.assertEqual(sent["body"], "Merhaba,\n\n" + cw.FIXED_SENSITIVE_REPLY + "\n\nSevgiler,\nHamle\nGamechangers")
+        self.assertEqual(sent["body"], "Merhaba,\n\n" + cw.FIXED_SENSITIVE_REPLY + "\n\nSevgiler,\nHamle AI\nGamechangers")
         self.assertEqual((sent["to"], sent["cc"]), ([AYSE, OZGE], [AHMET, CANSU]))
 
     def test_unknown_recipient_is_left_to_the_team(self):
@@ -423,10 +423,10 @@ class Approval(ReplyBase):
     def test_corrected_text_under_the_command_is_what_goes_out(self):
         todo = self.waiting()
         self.bc.add(todo, AHMET_BC, "<div>Hamle gönder<br>Merhaba Ayşe,<br><br>Mail'inizi aldık, dış sesli "
-                                    "hazırlıyoruz.<br><br>Sevgiler,<br>Hamle<br>Gamechangers</div>", self.later(10))
+                                    "hazırlıyoruz.<br><br>Sevgiler,<br>Hamle AI<br>Gamechangers</div>", self.later(10))
         self.watch().run()
         self.assertEqual(self.replies.sent[0]["body"], "Merhaba Ayşe,\n\nMail'inizi aldık, dış sesli hazırlıyoruz."
-                                                       "\n\nSevgiler,\nHamle\nGamechangers")
+                                                       "\n\nSevgiler,\nHamle AI\nGamechangers")
         self.assertTrue(self.row("m1")["edited"])
         self.assertIn("düzeltilmiş metinle", self.comments.calls[-1]["body"])
 

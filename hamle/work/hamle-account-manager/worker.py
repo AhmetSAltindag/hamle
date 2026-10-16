@@ -520,7 +520,7 @@ OK_STATUSES = ("stopped", "review_required", "already_recorded", "read_verified"
                "digital_karne_completed", "digital_karne_partial", "digital_karne_preview",
                "brand_memory_completed", "brand_memory_partial", "weekly_summary_sent", "weekly_summary_preview",
                "monthly_report_completed", "monthly_report_partial", "monthly_report_preview",
-               "hamle_karne_sent", "hamle_karne_preview")
+               "hamle_karne_sent", "hamle_karne_preview", "prospect_watch_completed", "prospect_watch_preview")
 
 
 def main(argv=None):
@@ -532,7 +532,7 @@ def main(argv=None):
                                            "reconcile_model_holds", "extend_authorization",
                                            "research_probe", "settle_model_actual", "settle_billed_total",
                                            "digital_karne", "brand_memory", "weekly_summary", "monthly_report",
-                                           "hamle_karne"),
+                                           "hamle_karne", "prospect_watch"),
                         required=True)
     parser.add_argument("--proposal-id")
     parser.add_argument("--work-id")
@@ -570,6 +570,12 @@ def main(argv=None):
     parser.add_argument("--report-brand")
     # hamle_karne operator preview: Hamle's own karne of the previous month on any day; no mail, no record
     parser.add_argument("--hamle-karne-preview", action="store_true")
+    # prospect_watch operator preview: one imagined mail through the real classify / research / reply / check steps;
+    # no mail read or sent, no Basecamp, no prospect record
+    parser.add_argument("--prospect-preview", action="store_true")
+    parser.add_argument("--preview-from")
+    parser.add_argument("--preview-subject")
+    parser.add_argument("--preview-text")
     args = parser.parse_args(argv)
     backend = secrets = None
     try:
@@ -612,6 +618,13 @@ def main(argv=None):
                  "report_brand_requires_report_preview")
         _require(args.mode != "hamle_karne" or args.hamle_karne_preview, "hamle_karne_runs_inside_monthly_report")
         _require(not args.hamle_karne_preview or args.mode == "hamle_karne", "hamle_karne_preview_requires_hamle_karne")
+        preview_fields = (args.preview_from, args.preview_subject, args.preview_text)
+        _require((not args.prospect_preview and all(v is None for v in preview_fields)) or
+                 (args.prospect_preview and args.mode == "prospect_watch"
+                  and re.fullmatch(r"[^<>]{0,120}<[^<>@\s]{1,64}@[a-z0-9.-]{3,120}>|[^<>@\s]{1,64}@[a-z0-9.-]{3,120}",
+                                   args.preview_from or "") is not None
+                  and 0 < len(args.preview_subject or "") <= 200 and 0 < len(args.preview_text or "") <= 3000),
+                 "prospect_preview_arguments_invalid")
         _require(os.environ.get("HAMLE_ALLOW_FIRESTORE_OPERATIONS") == "yes", "cloud_opt_in_required")
         _require(os.environ.get("HAMLE_PROJECT_ID") == "gamechangers-hamle" and
                  os.environ.get("HAMLE_FIRESTORE_DATABASE") == "hamle-operations", "cloud_scope_invalid")
@@ -627,7 +640,8 @@ def main(argv=None):
             from basecamp_cloud_auth import access_token
             token = access_token(secrets, claim_refresh=store.claim_credential_refresh)
             return providers.verify_basecamp_internal(token)
-        if args.mode in ("chain_tick", "daily_digest", "research_probe", "digital_karne", "brand_memory",
+        if args.mode in ("chain_tick", "prospect_watch", "daily_digest", "research_probe", "digital_karne",
+                         "brand_memory",
                          "weekly_summary", "monthly_report", "hamle_karne"):
             # Monthly budget renewal + ledger compaction before any budget gate reads the totals.
             try:
@@ -733,6 +747,19 @@ def main(argv=None):
             result = run_worker_monthly_report(store, secrets, preview=args.report_preview, only=args.report_brand)
             if karne is not None:
                 result["hamle_karne"] = karne
+        elif args.mode == "prospect_watch":
+            # Yeni temas (owner 2026-10-15): job hamle-prospect-watch, every 15 minutes 08:00-22:00 Istanbul, every
+            # day; one warm first reply to unknown senders + a New Business note (prospect-watch-config.json, OFF by
+            # default). Research requests only after the owner's "Onaylıyorum".
+            if args.prospect_preview:
+                from v11_prospect_watch import run_worker_prospect_preview
+                name, _, addr = args.preview_from.rpartition("<")
+                result = run_worker_prospect_preview(store, secrets, sender=addr.rstrip(">").strip() or name.strip(),
+                                                     sender_name=name.strip() if addr else None,
+                                                     subject=args.preview_subject, text=args.preview_text)
+            else:
+                from v11_prospect_watch import run_worker_prospect_watch
+                result = run_worker_prospect_watch(store, secrets, started_at=job_started)
         elif args.mode == "hamle_karne":
             # Operator preview of Hamle's own karne (the live mail goes out from --mode monthly_report).
             from v11_hamle_karne import run_worker_hamle_karne

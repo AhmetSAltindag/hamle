@@ -28,7 +28,7 @@ MENTION = ('<div>Bence iyi fikir, bi story yaptırabiliriz hızlıca? <bc-attach
            'content-type="application/vnd.basecamp.mention"><figure><figcaption>Hamle</figcaption></figure>'
            '</bc-attachment> bunu müşteriye mail atarak sorabilir misin lütfen?</div>')
 BODY = ("Merhaba Ayşe Hanım,\n\nBugün Dünya Standartlar Günü. WAT için hızlıca bir story hazırlamayı öneriyoruz. "
-        "Uygun görürseniz ekibimiz hemen başlasın.\n\nSevgiler,\nHamle\nGamechangers")
+        "Uygun görürseniz ekibimiz hemen başlasın.\n\nSevgiler,\nHamle AI\nGamechangers")
 SUBJECT = "WAT Mobilite × Gamechangers | Dünya Standartlar Günü önerisi"
 
 
@@ -289,7 +289,7 @@ class Draft(MentionBase):
     def test_corrected_text_under_the_command_is_what_goes(self):
         self.drafted()
         self.now += timedelta(minutes=5)
-        fixed = "Merhaba Ayşe Hanım,\n\nKısa bir story önerimiz var.\n\nSevgiler,\nHamle\nGamechangers"
+        fixed = "Merhaba Ayşe Hanım,\n\nKısa bir story önerimiz var.\n\nSevgiler,\nHamle AI\nGamechangers"
         self.bc.add(TODO, CANSU_BC, "<div>Hamle gönder</div><div>" + fixed.replace("\n", "<br>") + "</div>")
         self.watch().run()
         self.assertEqual(self.mail.sent[0]["body"], fixed)

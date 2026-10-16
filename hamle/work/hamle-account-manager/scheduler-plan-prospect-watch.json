@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "plan_id": "hamle-scheduler-prospect-watch-v1",
+  "status": "local_plan_only_not_applied",
+  "prepared_at": "2026-10-16",
+  "project_id": "gamechangers-hamle",
+  "region": "europe-west1",
+  "timezone": "Europe/Istanbul",
+  "windows": {
+    "prospect_watch": "every day 08:00-22:00 Istanbul, every 15 minutes (v11_prospect_watch.in_window, config window; a run that starts up to 5 minutes after 22:00 still works; the client chain hours are unchanged)"
+  },
+  "cloud_run_jobs": [
+    {
+      "name": "hamle-prospect-watch",
+      "args": [
+        "worker.py",
+        "--mode",
+        "prospect_watch"
+      ],
+      "image": "<image built from publish HEAD via package_chain_source.py>",
+      "new_job": true,
+      "same_runtime_service_account_env_and_limits_as": "hamle-account-manager",
+      "gcloud": "gcloud run jobs create hamle-prospect-watch --project=gamechangers-hamle --region=europe-west1 --image=<IMAGE> --service-account=hamle-runtime@gamechangers-hamle.iam.gserviceaccount.com --set-env-vars=<same HAMLE_* env as hamle-account-manager> --command=python --args=worker.py,--mode,prospect_watch --tasks=1 --parallelism=1 --max-retries=0 --task-timeout=840s",
+      "why_separate_job": "scheduler calls :run without overrides; one job per mode keeps default args explicit"
+    }
+  ],
+  "scheduler_jobs": [
+    {
+      "name": "hamle-prospect-watch-day",
+      "schedule": "*/15 8-21 * * *",
+      "time_zone": "Europe/Istanbul",
+      "cloud_run_job": "hamle-prospect-watch",
+      "http_target": {
+        "uri": "https://run.googleapis.com/v2/projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-prospect-watch:run",
+        "httpMethod": "POST",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": "e30=",
+        "oauthToken": {
+          "serviceAccountEmail": "hamle-scheduler@gamechangers-hamle.iam.gserviceaccount.com",
+          "scope": "https://www.googleapis.com/auth/cloud-platform"
+        }
+      },
+      "note": "08:00-21:45 every day"
+    },
+    {
+      "name": "hamle-prospect-watch-close",
+      "schedule": "0 22 * * *",
+      "time_zone": "Europe/Istanbul",
+      "cloud_run_job": "hamle-prospect-watch",
+      "http_target": {
+        "uri": "https://run.googleapis.com/v2/projects/gamechangers-hamle/locations/europe-west1/jobs/hamle-prospect-watch:run",
+        "httpMethod": "POST",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": "e30=",
+        "oauthToken": {
+          "serviceAccountEmail": "hamle-scheduler@gamechangers-hamle.iam.gserviceaccount.com",
+          "scope": "https://www.googleapis.com/auth/cloud-platform"
+        }
+      },
+      "note": "22:00 last run of the day"
+    }
+  ],
+  "retry_config": {
+    "retryCount": 0,
+    "maxRetryDuration": "0s"
+  },
+  "attempt_deadline": "30s",
+  "iam": {
+    "scheduler_invoker": "roles/run.invoker for hamle-scheduler@ on hamle-prospect-watch (same condition as the other jobs)"
+  },
+  "apply_sequence": [
+    "rebuild the image with package_chain_source.py (adds v11_prospect_watch.py, the four prospect prompts and chain-profile/prospect-watch-config.json)",
+    "create the hamle-prospect-watch job; describe and compare",
+    "grant invoker IAM for hamle-scheduler@ on the new job",
+    "create both scheduler jobs with inert schedule '0 0 1 1 *', pause, patch the final schedule, describe PAUSED",
+    "Basecamp: lists 'Hamle İşleri' and 'Hamle Araştırma İstekleri' exist in project 40704547 and are hidden from clients",
+    "import the owner's known-people list (python3 v11_prospect_watch.py people import ...), optional",
+    "set enabled=true in prospect-watch-config.json, rebuild, and resume only after the owner's word"
+  ],
+  "gcloud_scheduler_reference": [
+    "gcloud scheduler jobs create http <name> --project=gamechangers-hamle --location=europe-west1 --schedule='0 0 1 1 *' --time-zone=Europe/Istanbul --uri=<http_target.uri> --http-method=POST --message-body='{}' --headers=Content-Type=application/json --oauth-service-account-email=hamle-scheduler@gamechangers-hamle.iam.gserviceaccount.com --oauth-token-scope=https://www.googleapis.com/auth/cloud-platform --max-retry-attempts=0 --attempt-deadline=30s",
+    "gcloud scheduler jobs pause <name> --project=gamechangers-hamle --location=europe-west1",
+    "gcloud scheduler jobs update http <name> --project=gamechangers-hamle --location=europe-west1 --schedule='<final schedule>'",
+    "gcloud scheduler jobs describe <name> --project=gamechangers-hamle --location=europe-west1  (require state PAUSED + exact config)",
+    "gcloud scheduler jobs resume <name> --project=gamechangers-hamle --location=europe-west1  (activation; costs money per run)"
+  ],
+  "cost": "57 billed Cloud Run executions a day; an empty run makes 0 model calls; per new prospect mail about 0.15-0.25 USD (Haiku classification + one Opus research call with at most 2 searches + one Opus reply); an owner-approved research report about 0.5-1.5 USD",
+  "stop": [
+    "global control stop ('dur')",
+    "gcloud scheduler jobs pause hamle-prospect-watch-day hamle-prospect-watch-close --location=europe-west1",
+    "enabled=false in prospect-watch-config.json + rebuild"
+  ]
+}

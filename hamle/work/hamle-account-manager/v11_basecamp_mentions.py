@@ -72,7 +72,7 @@ SEND_FIELDS = {"from", "brand_key", "to", "cc", "subject", "body"}
 # A failed check before the POST: nothing went out.
 NOT_SENT = ("mention_mail_payload_invalid", "mention_mail_recipient_unverified", "gmail_endpoint_forbidden",
             "mail_payload_too_large")
-SIGNATURE_END = "Hamle\nGamechangers"
+SIGNATURE_END = "Hamle AI\nGamechangers"
 
 
 class MentionError(ValueError):

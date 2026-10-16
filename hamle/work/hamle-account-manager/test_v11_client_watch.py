@@ -349,7 +349,7 @@ class AhmetsStyle(Base):
                      "Müşterinin kendi koyduğu kesin tarihi teyit edebilirsin",
                      "Mailde olmayan bir tarihi asla yazma."):
             self.assertIn(line, text)
-        self.assertEqual(text.count("Sevgiler,\nHamle\nGamechangers"), 3)  # the three examples
+        self.assertEqual(text.count("Sevgiler,\nHamle AI\nGamechangers"), 3)  # the three examples
         self.assertNotIn("Sevgiler,\nAhmet", text)
 
     def test_internal_terms(self):
@@ -364,7 +364,7 @@ class AhmetsStyle(Base):
 
     def test_internal_words_are_flagged_for_the_team_and_cap_confidence(self):
         self.mails = [source(1)]
-        leaked = "Merhaba Ayşe,\nTalebinizi Basecamp'te görev olarak açtık.\nSevgiler,\nHamle\nGamechangers"
+        leaked = "Merhaba Ayşe,\nTalebinizi Basecamp'te görev olarak açtık.\nSevgiler,\nHamle AI\nGamechangers"
         self.client.outputs = [message(draft_out(reply=leaked))]
         self.watch().run()
         body = self.todos.calls[0]["description"]
@@ -374,7 +374,7 @@ class AhmetsStyle(Base):
 
     def test_clean_draft_keeps_its_confidence_and_fixed_sentence_is_never_flagged(self):
         self.mails = [source(1), source(2, thread="t9", subject="Kasım teklifi", text="Fiyat teklifinizi bekliyoruz.")]
-        leaked = "Merhaba,\nBasecamp'e aldık.\nSevgiler,\nHamle\nGamechangers"
+        leaked = "Merhaba,\nBasecamp'e aldık.\nSevgiler,\nHamle AI\nGamechangers"
         self.client.outputs = [message(draft_out()), message(draft_out(reply=leaked))]
         self.watch().run()
         self.assertIn("Güven: 82/100", self.todos.calls[0]["description"])
