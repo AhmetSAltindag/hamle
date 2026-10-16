@@ -941,10 +941,22 @@ class ResearchRequests(Base):
         self.bc.human(todo["id"], OWNER_ID, "Ok - go!")
         r = self.run_once()
         self.assertEqual((r["requests"]["approved"], r["requests"]["reports"]), (1, 1))
-        for text in ("go go", "OK, gidelim", "goo"):
+        for text in ("go go", "OK, gidelim", "goo", "OK GO?", "onaylıyor musun", "Ok go canım"):
             self.assertFalse(pw.is_approval(_html(text)), text)
-        for text in ("OK GO", "ok go.", "GO", "Onaylıyorum!"):
+        for text in ("OK GO", "ok go.", "GO", "Onaylıyorum!", "OK GO 🚀", "Onayladım 👍", "onaylandı"):
             self.assertTrue(pw.is_approval(_html(text)), text)
+
+    def test_an_unclear_owner_approval_gets_one_hint_and_no_research(self):
+        todo = self.opened()
+        self.bc.human(todo["id"], OWNER_ID, "Ok go canım")
+        r = self.run_once()
+        self.assertEqual((r["requests"]["approved"], r["requests"]["unclear"]), (0, 1))
+        self.assertNotIn("report", self.models.kinds())
+        last = max(c["id"] for c in self.bc.comments.values() if c["creator"]["id"] == HAMLE_ID)
+        self.assertIn('yalnız "OK GO"', self.bc.comment_text(last))
+        self.assertNotIn("unclear", self.run_once()["requests"])  # once per comment
+        self.bc.human(todo["id"], OWNER_ID, "Bu kurumu ben tanıyorum, iyi bakalım.")  # ordinary talk: no hint
+        self.assertNotIn("unclear", self.run_once()["requests"])
 
     def test_research_is_kept_and_written_next_run_when_the_writer_waits(self):
         todo = self.opened()
