@@ -74,14 +74,18 @@ PROMPTS = {"classify": HERE / "prospect_classifier_prompt.txt", "research": HERE
            "writer": HERE / "prospect_writer_prompt.txt"}
 ROLES = {"classify": "prospect_classifier", "research": "prospect_research", "reply": "customer_text",
          "report": "prospect_report", "writer": "prospect_writer"}
-SCORE_PARTS = ("Kanal varlığı ve aktiflik", "Frekans ve süreklilik", "Kanallar arası denge",
-               "Mesaj ve anahtar kelime tutarlılığı", "Algoritmaya uygunluk ve etkileşim", "Web ve Google görünürlüğü")
-SECTIONS = (("channels", "Kanal karnesi ve frekans trendi · son 6 ay"),
-            ("balance", "Çatı iletişim ve kanallar arası tutarlılık"),
-            ("message", "Ana mesaj ve anahtar kelime uyumu"), ("algorithm", "Doğru içerik doğru mecrada mı"),
-            ("web", "Web sitesi"), ("google", "Google görünürlüğü"), ("competitors", "Rakiplerle kıyas"),
-            ("audience", "Hedef kitle tahmini"), ("sector", "Sektör dinamikleri ve beklentiler"),
-            ("company", "Kurum künyesi ve son 12 ay"), ("risks", "Fırsatlar ve riskler"))
+# Owner 2026-10-16 (Rapor v1, 14:59Z): the report is the owner's 8 review areas, each with its own score and one
+# recommendation. Social media counts (followers, likes, comments, frequency) appear only when measured officially.
+SECTIONS = (("positioning", "1 · Konumlandırma ve çatı mesaj"),
+            ("channels", "2 · Kanal yönetimi ve senkronizasyon"),
+            ("frequency", "3 · Yayın frekansı ve süreklilik"),
+            ("message", "4 · İçerik dili, anahtar kelimeler ve anlam bütünlüğü"),
+            ("community", "5 · Topluluk ve iletişim kalitesi"),
+            ("web", "6 · Web sitesi ve ziyaretçi yolculuğu"),
+            ("google", "7 · Google görünürlüğü"),
+            ("competitors", "8 · İtibar, rakipler ve iletişim fırsatları"))
+SCORE_PARTS = ("Konumlandırma", "Kanal yönetimi", "Frekans", "İçerik dili", "Topluluk", "Web sitesi", "Google",
+               "İtibar ve rakipler")
 # Owner 2026-10-16: the research runs part by part (small calls, 3 searches each), then one strategist merges them;
 # one big call with 10 searches outgrew the input limit (usage_limit_exceeded). A failed part leaves a gap, not a void.
 REPORT_PARTS = (("channels", ("channels", "message")), ("google", ("google",)), ("audience", ("audience",)),
@@ -626,10 +630,12 @@ def _schemas():
     writer = _obj({"score": _obj({"total": {"type": "integer", "minimum": 0, "maximum": 100},
                                   "parts": _arr(_obj({"name": enum(SCORE_PARTS),
                                                       "score": {"type": "integer", "minimum": 0, "maximum": 100},
-                                                      "note": _str(300)}), 6)}),
+                                                      "note": _str(300)}), len(SCORE_PARTS))}),
                    "headline": _str(300), "summary": _arr(_str(400), 3),
                    "sections": _arr(_obj({"key": enum(k for k, _ in SECTIONS), "rag": rag,
-                                          "paragraphs": _arr(_str(900), 2), "bullets": _arr(_str(400), 6)}),
+                                          "score": {"type": "integer", "minimum": 0, "maximum": 100},
+                                          "paragraphs": _arr(_str(900), 2), "bullets": _arr(_str(400), 6),
+                                          "recommendation": _str(400)}),
                                     len(SECTIONS)),
                    "competitor_rows": _arr(_obj({"metric": _str(120), "us": _str(200),
                                                  "them": _arr(_str(200), 3)}), 6),

@@ -124,9 +124,11 @@ def written(mail_text=None):
                                              for i, n in enumerate(pw.SCORE_PARTS)]},
             "headline": "Acme Yapı dijitalde katalog gibi duruyor [1].",
             "summary": ["Instagram ölçülemedi [Ö].", "LinkedIn zayıf [2].", "Rakip A ayda 8 video yayınlıyor [3]."],
-            "sections": [{"key": "risks", "rag": "amber", "paragraphs": ["Fırsat büyük [9]."], "bullets": []},
-                         {"key": "channels", "rag": "red", "paragraphs": ["Sitede 1 sosyal kanal bağlantısı var [Ö]."],
-                          "bullets": ["YouTube: kanal yok."]}],
+            "sections": [{"key": "competitors", "rag": "amber", "score": 55, "paragraphs": ["Fırsat büyük [9]."],
+                          "bullets": [], "recommendation": "Rakibin boş bıraktığı ihtiyacı sahiplenin [9]."},
+                         {"key": "channels", "rag": "red", "score": 30,
+                          "paragraphs": ["Sitede 1 sosyal kanal bağlantısı var [Ö]."],
+                          "bullets": ["YouTube: kanal yok."], "recommendation": "Kanalları siteye bağlayın [Ö]."}],
             "competitor_rows": [{"metric": "YouTube video/ay", "us": "0 [Ö]", "them": ["Rakip A: 8 [3]"]}],
             "moves": [{"title": f"Hamle {i}", "why": "Rakip A ayda 8 video [3].", "what": "Katalogu kısa videolara bölmek.",
                        "measure": "Ayda 8 video.", "first_30_days": "İlk 8 video."} for i in (1, 2, 3)],
@@ -942,7 +944,7 @@ class ResearchRequests(Base):
                      "Son söz · yönetici özeti",
                      "Biz olsak ilk 3 hamlemiz", "Katalogu kısa videolara bölmek.", "Kaynaklar", "Hamle gönder"):
             self.assertIn(part, text)
-        self.assertLess(text.index("Kanal karnesi"), text.index("Fırsatlar ve riskler"))  # fixed order, digital first
+        self.assertLess(text.index("Kanal yönetimi"), text.index("İtibar, rakipler"))  # fixed order, digital first
         html = self.bc.comments[comment]["content"]
         for tag in ("<h1>Dijital Ayak İzi Raporu · Acme Yapı (acmeyapi.com.tr)</h1>", '<a href="https://rakipa.com.tr/video">[3]</a>',
                     "<em>[Hamle ölçümü]</em>", "<blockquote>Merhaba Deniz,"):
@@ -1224,6 +1226,18 @@ class Models_(Base):
         rendered = pw.render_prompt("reply", self.settings)
         self.assertNotIn("{{", rendered)
         self.assertIn("Sevgiler,\nHamle AI\nGamechangers", rendered)
+
+    def test_report_v1_never_scores_unread_social_counts(self):
+        # owner 2026-10-16: no follower/like/comment/frequency figures unless measured officially
+        self.assertNotIn("Frekans ve süreklilik", pw.SCORE_PARTS)
+        self.assertNotIn("Algoritmaya uygunluk ve etkileşim", pw.SCORE_PARTS)
+        writer = pw.PROMPTS["writer"].read_text(encoding="utf-8")
+        self.assertIn("SOSYAL MEDYA RAKAMLARI", writer)
+        for name in pw.SCORE_PARTS:
+            self.assertIn(f'"{name}"', writer)
+        self.assertEqual([k for k, _ in pw.SECTIONS], ["positioning", "channels", "frequency", "message", "community",
+                                                       "web", "google", "competitors"])  # the owner's 8 areas
+        self.assertEqual(len(pw.SCORE_PARTS), len(pw.SECTIONS))
 
 
 # ------------------------------------------------------------------ Gmail adapters (no network)
