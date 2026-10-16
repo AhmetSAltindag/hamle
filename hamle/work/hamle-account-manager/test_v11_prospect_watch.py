@@ -1179,6 +1179,10 @@ class TestRequests(Base):
         r = self.watch().run_test_requests()
         self.assertEqual((r["requests"]["checked"], r["requests"]["approved"]), (0, 0))
 
+    def test_test_request_needs_only_the_research_list(self):
+        self.bc.lists = [l for l in self.bc.lists if l["id"] != NOTES]
+        self.opened()
+
     def test_stopped_control_opens_nothing(self):
         self.ops.stop("offline-test")
         with self.assertRaises(pw.ProspectError):
