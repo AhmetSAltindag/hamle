@@ -81,8 +81,9 @@ def build_live_desk(run_later):
         if jobs is not None:
             todo_writer = cj.JobTodoWriter(catalog, jobs, token_provider=token)
 
-    def core_reader():
-        """Read-only Basecamp listing for Hamle's core context (the daily digest's GET-only reader)."""
+    def core_reader(live=False):
+        """Read-only Basecamp listing for Hamle's core context (the daily digest's GET-only reader); live=True: one
+        brand's recently touched to-dos and comments (the brand memory's GET-only reader, 2 pages per kind)."""
         import v11_daily_digest as dd
         valid = dd.validate_config(dd.load_config())
 
@@ -110,6 +111,9 @@ def build_live_desk(run_later):
                 if r is not None:
                     r.close()
                 session.close()
+        if live:
+            from v11_brand_memory import BasecampMemoryReader
+            return BasecampMemoryReader(valid["account_id"], get=get, max_pages=2, max_reads=8)
         return dd.BasecampDigestReader(valid["account_id"], get=get, excluded=valid["excluded"])
 
     def basecamp_get(url, conditional):
@@ -125,7 +129,8 @@ def build_live_desk(run_later):
         sender=teams.ConnectorSender(settings, secret_loader=lambda: provider.teams_bot_secret(secrets)),
         jobs=jobs, todo_writer=todo_writer, comment_writer=BasecampCommentWriter(catalog, token_provider=token),
         basecamp_get=basecamp_get, brands=cw.brand_index(catalog, load_brand_cards()), run_later=run_later,
-        core=teams.CoreContext(ops, reader_factory=core_reader, clock=lambda: datetime.now(timezone.utc)))
+        core=teams.CoreContext(ops, reader_factory=core_reader, clock=lambda: datetime.now(timezone.utc),
+                               live_reader_factory=lambda: core_reader(live=True)))
 
 
 def create_app(desk_factory=None):

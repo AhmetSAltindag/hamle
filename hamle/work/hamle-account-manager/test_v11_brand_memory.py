@@ -403,6 +403,88 @@ class TeamsSeesMemory(TeamsBase):
         self.assertNotIn("brand_memory", json.loads(self.client.calls[1]["messages"][0]["content"])["core"])
 
 
+class LiveReader:
+    account = ACC
+
+    def __init__(self, rows=None, fail=False):
+        self.rows, self.fail, self.calls = rows or {}, fail, []
+
+    def recent(self, project_id, kind, since):
+        self.calls.append((project_id, kind, since))
+        if self.fail:
+            raise RuntimeError("basecamp down")
+        return copy.deepcopy(self.rows.get(kind, [])), since
+
+
+class TeamsKnowsTodayAndTheBrandInPlay(TeamsBase):
+    def seed(self, brand="wat_mobilite", through="2026-10-12"):
+        self.ops._run(lambda tx, _: tx.put(f"brand-memory-{brand}-202610", {"days_done": [through], "events": [
+            {"date": through, "source": "mail", "kind": "onay", "title": f"{brand} takvimi onaylandı", "detail": "",
+             "people": [], "url": None}]}), allow_expired=True)
+
+    def core(self, live):
+        return teams.CoreContext(self.ops, reader_factory=CoreReader([]), clock=lambda: self.now,
+                                 live_reader_factory=lambda: live)
+
+    def request(self, n=0):
+        return json.loads(self.client.calls[n]["messages"][0]["content"])["core"]
+
+    def test_without_a_brand_name_the_conversation_s_last_brand_is_used(self):
+        self.seed()
+        desk = self.desk(core=self.core(LiveReader()))
+        self.post(desk, self.activity("WAT story'si müşteriye gitti.", conv=AGENCY_CHAT, kind="groupChat"))
+        self.client.outputs = [message(out())]
+        self.post(desk, self.activity("Dünkü işi ne yaptık?", mention=True, conv=AGENCY_CHAT, kind="groupChat"))
+        core = self.request()
+        self.assertEqual((core["brand_memory"]["brand"], core["brand_memory"]["memory_through"]),
+                         ("wat_mobilite", "2026-10-12"))
+        self.assertNotIn("second_brand_memory", core)
+
+    def test_two_named_brands_get_two_memories(self):
+        self.seed()
+        self.seed("rabam")
+        desk = self.desk(core=self.core(LiveReader()))
+        self.client.outputs = [message(out())]
+        self.post(desk, self.activity("Rabam ve WAT özetini ver", mention=True, conv=AGENCY_CHAT, kind="groupChat"))
+        core = self.request()
+        self.assertEqual((core["brand_memory"]["brand"], core["second_brand_memory"]["brand"]),
+                         ("rabam", "wat_mobilite"))
+
+    def test_days_the_memory_has_not_done_are_read_live_and_cached(self):
+        today = self.now.astimezone(teams.ISTANBUL).date()
+        self.seed(through=(today - timedelta(days=1)).isoformat())
+        at = self.now.strftime("%Y-%m-%dT%H:%M:%SZ")
+        live = LiveReader({"Todo": [todo(5, "Bugünkü reels", at)], "Comment": [comment(6, "Müşteri onayladı", at)]})
+        desk = self.desk(core=self.core(live))
+        self.client.outputs = [message(out()), message(out())]
+        self.post(desk, self.activity("Bugün ne oldu?", mention=True))
+        since = self.request()["brand_memory"]["since_memory"]
+        self.assertEqual(since["from"], today.isoformat())
+        self.assertEqual({i.get("title") or i.get("text") for i in since["items"]}, {"Bugünkü reels", "Müşteri onayladı"})
+        self.assertEqual({(p, k) for p, k, _ in live.calls}, {(WAT, "Todo"), (WAT, "Comment")})
+        self.assertEqual(live.calls[0][2], bm.day_start(today))
+        self.post(desk, self.activity("Bir daha?", mention=True))
+        self.assertEqual(len(live.calls), 2)  # cached for 15 minutes
+
+    def test_an_old_memory_reads_at_most_three_days_and_a_failure_is_reported(self):
+        today = self.now.astimezone(teams.ISTANBUL).date()
+        self.seed(through="2026-09-01")
+        desk = self.desk(core=self.core(LiveReader(fail=True)))
+        self.client.outputs = [message(out())]
+        self.post(desk, self.activity("Durum?", mention=True))
+        since = self.request()["brand_memory"]["since_memory"]
+        self.assertEqual(since, {"from": (today - timedelta(days=2)).isoformat(), "unavailable": "RuntimeError"})
+
+    def test_named_brands_keeps_the_order_of_mention(self):
+        brands = {k: {"name": n} for k, n in (("wat_mobilite", "WAT Mobilite"), ("rabam", "Rabam"),
+                                               ("gamechangers", "Gamechangers"))}
+        self.assertEqual(teams.named_brands("WAT sonra Rabam, Gamechangers", brands), ["wat_mobilite", "rabam"])
+        self.assertEqual(teams.memory_brands("ne oldu?", ["Rabam dedi", "WAT ve Rabam"], brands),
+                         ["wat_mobilite", "rabam"])
+        self.assertEqual(teams.memory_brands("ne oldu?", ["selam"], brands), [])
+        self.assertEqual(teams.memory_brands("Rabam?", [], brands, "wat_mobilite"), ["wat_mobilite"])
+
+
 class ReaderLimitsTest(unittest.TestCase):
     def test_a_backfill_reads_further_back_than_the_daily_run(self):
         self.assertEqual(bm.reader_limits(None), {})

@@ -83,9 +83,15 @@ CORE_TTL_SECONDS = 15 * 60
 CORE_MAX_ITEMS = 200               # the cached record must stay under the store's 60 KB record limit
 CORE_FOR_MODEL = 45
 CORE_JOBS_FOR_MODEL = 20
-CORE_MEMORY_EVENTS = 25            # v11_brand_memory: the brand's last 30 days, only in a brand's conversation
+CORE_MEMORY_EVENTS = 25            # v11_brand_memory: the brand's last 30 days
 CORE_MEMORY_MIN_EVENTS = 10        # kept before the open Basecamp items are trimmed
-# Brand memory in an agency chat: only when the message names exactly one brand. "ya da" alone is everyday Turkish.
+CORE_MEMORY_BRANDS = 2             # a message naming two brands gets both memories
+CORE_MEMORY_LOOKBACK = 10          # no brand named: the newest brand named in the conversation's last messages
+CORE_LIVE_DAYS = 3                 # live Basecamp reading covers at most the last 3 days the memory has not done
+CORE_LIVE_ITEMS = 15
+CORE_LIVE_KEY = "teams-core-live-"  # + brand key: cached live reading, CORE_TTL_SECONDS
+# Brand memory in an agency chat: the brands the message (or, failing that, the conversation) names; never Heads ->
+# elsewhere, since only this conversation's own messages are read. "ya da" alone is everyday Turkish.
 MEMORY_NAMES = {"wat_mobilite": ("wat mobilite", "wat"), "han_spaces": ("han spaces",),
                 "ya_da": ("ya da multicosmetics", "multicosmetics", "yada")}
 MEMORY_SKIP = ("gamechangers", "new_biz")
@@ -439,18 +445,39 @@ def teams_context(ops, brand_key=None, limit=30):
     return sorted(rows, key=lambda m: m.get("received_at") or 0)[-limit:]
 
 
-def named_brand(text, brands):
-    """The one brand a message names (whole words, Turkish-safe), else None; never Gamechangers or New Biz."""
+def named_brands(text, brands):
+    """The brands a text names (whole words, Turkish-safe), in order of first mention; never Gamechangers/New Biz."""
     from v11_brand_memory import _fold
     folded = _fold(text)
-    hits = set()
+    first = {}
     for key, brand in brands.items():
         if key in MEMORY_SKIP:
             continue
         for name in MEMORY_NAMES.get(key, (brand.get("name") or key,)):
-            if re.search(r"(?<!\w)" + re.escape(_fold(name)) + r"(?!\w)", folded):
-                hits.add(key)
-    return hits.pop() if len(hits) == 1 else None
+            m = re.search(r"(?<!\w)" + re.escape(_fold(name)) + r"(?!\w)", folded)
+            if m:
+                first[key] = min(first.get(key, m.start()), m.start())
+    return sorted(first, key=lambda k: (first[k], k))
+
+
+def named_brand(text, brands):
+    """The one brand a message names, else None."""
+    hits = named_brands(text, brands)
+    return hits[0] if len(hits) == 1 else None
+
+
+def memory_brands(text, history, brands, brand_key=None):
+    """Whose memory a Teams answer gets: the conversation's brand; else up to CORE_MEMORY_BRANDS brands the message
+    names; else the brands of the newest of the conversation's last CORE_MEMORY_LOOKBACK messages that names any
+    ("dünkü işi ne yaptık?" after a WAT talk is about WAT)."""
+    if brand_key:
+        return [brand_key]
+    hits = named_brands(text, brands)
+    for old in reversed(list(history or [])[-CORE_MEMORY_LOOKBACK:]):
+        if hits:
+            break
+        hits = named_brands(old, brands)
+    return hits[:CORE_MEMORY_BRANDS]
 
 
 # ------------------------------------------------------------------ Hamle's core (read only)
@@ -462,8 +489,9 @@ class CoreContext:
     in the operations store for CORE_TTL_SECONDS so a Teams answer usually costs no Basecamp reads. Nothing here
     writes to Basecamp or mail. __call__ never raises: a missing part is reported as {"unavailable": code}.
     """
-    def __init__(self, ops, *, reader_factory, clock, ttl=CORE_TTL_SECONDS):
+    def __init__(self, ops, *, reader_factory, clock, ttl=CORE_TTL_SECONDS, live_reader_factory=None):
         self.ops, self.reader_factory, self.clock, self.ttl = ops, reader_factory, clock, ttl
+        self.live_reader_factory = live_reader_factory  # () -> v11_brand_memory.BasecampMemoryReader, or None
 
     @staticmethod
     def _compact(items, today):
@@ -523,15 +551,57 @@ class CoreContext:
             return None
         return self.ops._run(read, allow_expired=True)
 
-    def brand_memory(self, today, brand_key):
+    def brand_memory(self, today, brand_key, project_id=None):
+        """The brand's memory plus, read live, its Basecamp to-dos and comments of the days the memory has not done
+        yet (always today: the memory is written each morning). Teams never answers from yesterday's picture."""
         from v11_brand_memory import brand_memory_context
-        return brand_memory_context(self.ops, brand_key, today, days=30, limit=CORE_MEMORY_EVENTS, detail=200)
+        ctx = brand_memory_context(self.ops, brand_key, today, days=30, limit=CORE_MEMORY_EVENTS, detail=200,
+                                   coverage=True)
+        ctx = dict(ctx, brand=brand_key)
+        through = ctx.get("memory_through")
+        start = today - timedelta(days=CORE_LIVE_DAYS - 1)
+        if through:
+            start = max(start, date.fromisoformat(through) + timedelta(days=1))
+        if project_id is not None and self.live_reader_factory is not None and start <= today:
+            ctx["since_memory"] = self.live(today, brand_key, project_id, start)
+        return ctx
 
-    def __call__(self, today, project_id=None, brand_key=None):
+    def live(self, today, brand_key, project_id, start):
+        from v11_brand_memory import basecamp_items, day_start
+        key = CORE_LIVE_KEY + brand_key
+        row = self.ops._run(lambda tx, _: tx.get(key), allow_expired=True)
+        now = self.clock().timestamp()
+        if isinstance(row, dict) and row.get("from") == start.isoformat() and now - float(row.get("at") or 0) <= self.ttl:
+            return {k: row[k] for k in ("from", "as_of", "items")}
+        try:
+            reader = self.live_reader_factory()
+            since = day_start(start)
+            todos, _ = reader.recent(project_id, "Todo", since)
+            comments, _ = reader.recent(project_id, "Comment", since)
+            items = basecamp_items(todos, comments, reader.account, project_id)
+            items.sort(key=lambda i: max([t for t in i.get("_t") or [] if t] or [0]), reverse=True)
+            items = [{k: v for k, v in i.items() if k != "_t" and v not in (None, [], "")}
+                     for i in items[:CORE_LIVE_ITEMS]]
+            fresh = {"key": key, "kind": "teams_core_live", "at": now, "from": start.isoformat(),
+                     "as_of": datetime.fromtimestamp(now, ISTANBUL).strftime("%d.%m.%Y %H:%M"), "items": items}
+            while len(json.dumps(fresh, ensure_ascii=False).encode("utf-8")) > MAX_RECORD_BYTES and fresh["items"]:
+                fresh["items"].pop()
+            self.ops._run(lambda tx, _: tx.put(key, fresh), allow_expired=True)
+            return {k: fresh[k] for k in ("from", "as_of", "items")}
+        except Exception as exc:
+            if isinstance(row, dict) and row.get("from") == start.isoformat():
+                return dict({k: row[k] for k in ("from", "as_of", "items")}, stale=True)
+            return {"from": start.isoformat(), "unavailable": _code(exc)}
+
+    def __call__(self, today, project_id=None, brand_key=None, memory=None):
+        """memory: [(brand_key, project_id)] whose memories to add (default: the conversation's brand)."""
         out = {}
+        if memory is None:
+            memory = [(brand_key, project_id)] if brand_key else []
+        memory = list(memory)[:CORE_MEMORY_BRANDS]
         parts = [("basecamp", lambda: self.basecamp(today)), ("jobs", self.jobs), ("digest", lambda: self.digest(today))]
-        if brand_key:
-            parts.append(("brand_memory", lambda: self.brand_memory(today, brand_key)))
+        for name, (key, pid) in zip(("brand_memory", "second_brand_memory"), memory):
+            parts.append((name, lambda key=key, pid=pid: self.brand_memory(today, key, pid)))
         for name, fn in parts:
             try:
                 out[name] = fn()
@@ -544,7 +614,8 @@ class CoreContext:
             items = bc["items"]
             overdue = [r for r in items if r["due_on"] and r["due_on"] < day]
             soon = [r for r in items if r["due_on"] and day <= r["due_on"] <= week]
-            brand = [r for r in items if project_id is not None and r["project_id"] == project_id]
+            pids = {p for p in [project_id] + [p for _, p in memory] if p is not None}
+            brand = [r for r in items if r["project_id"] in pids]
             picked = list({r["url"] or id(r): r for r in brand[:20] + overdue + soon}.values())[:CORE_FOR_MODEL]
             out["basecamp"] = {"as_of": datetime.fromtimestamp(float(bc.get("at") or 0), ISTANBUL)
                                .strftime("%d.%m.%Y %H:%M"), "stale": bool(bc.get("stale")),
@@ -838,8 +909,10 @@ class TeamsDesk:
         if self.core is not None:
             pid = self.s["brands"][brand_key]["project_id"] if brand_key else None
             try:
-                memory_key = brand_key or named_brand(msg["text"], self.s["brands"])
-                request["core"] = self.core(local.date(), pid, memory_key)
+                history = [m.get("text") for m in (conv.get("messages") or []) if m.get("id") != msg["activity_id"]]
+                keys = memory_brands(msg["text"], history, self.s["brands"], brand_key)
+                request["core"] = self.core(local.date(), pid, memory=[(k, self.s["brands"][k].get("project_id"))
+                                                                     for k in keys])
             except Exception as exc:
                 request["core"] = {"unavailable": _code(exc)}
             try:
@@ -857,14 +930,22 @@ class TeamsDesk:
             request["teams_elsewhere"].pop(0)
         while size() > MAX_REQUEST_BYTES and len(request["context"]) > 5:
             request["context"].pop(0)
-        memory = ((request.get("core") or {}).get("brand_memory") or {}).get("events")
-        while size() > MAX_REQUEST_BYTES and memory and len(memory) > CORE_MEMORY_MIN_EVENTS:
-            memory.pop(0)  # oldest first
-        core_items = ((request.get("core") or {}).get("basecamp") or {}).get("items")
+        core = request.get("core") or {}
+        mems = [m for m in (core.get("second_brand_memory"), core.get("brand_memory")) if isinstance(m, dict)]
+        lives = [(m.get("since_memory") or {}).get("items") for m in mems]
+        events = [m.get("events") for m in mems]
+        for memory in events:
+            while size() > MAX_REQUEST_BYTES and memory and len(memory) > CORE_MEMORY_MIN_EVENTS:
+                memory.pop(0)  # oldest first
+        core_items = (core.get("basecamp") or {}).get("items")
         while size() > MAX_REQUEST_BYTES and core_items:
             core_items.pop()
-        while size() > MAX_REQUEST_BYTES and memory:
-            memory.pop(0)
+        for memory in events:
+            while size() > MAX_REQUEST_BYTES and memory:
+                memory.pop(0)
+        for live in lives:  # today's live picture goes last
+            while size() > MAX_REQUEST_BYTES and live:
+                live.pop()
         while size() > MAX_REQUEST_BYTES and request["context"]:
             request["context"].pop(0)
         return request, {"link": link}
