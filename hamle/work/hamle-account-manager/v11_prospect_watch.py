@@ -898,10 +898,13 @@ class ProspectWatch:
         except Exception:
             pass
 
-    def _lists(self, today):
-        """The notes and research lists of the project, found by name, hidden from clients (checked daily)."""
+    def _lists(self, today, only=None):
+        """The notes and research lists of the project, found by name, hidden from clients (checked daily).
+        `only` (operator test runs): just those lists, not cached."""
         names = {"notes": self.cfg["basecamp"]["notes_list"], "research": self.cfg["basecamp"]["research_list"]}
-        st = self._get(LISTS_KEY) or {}
+        if only:
+            names = {k: v for k, v in names.items() if k in only}
+        st = {} if only else (self._get(LISTS_KEY) or {})
         if (st.get("checked_on") == today.isoformat() and st.get("project_id") == self.s["project_id"]
                 and st.get("names") == names and set(st.get("ids") or {}) == set(names)):
             return st["ids"]
@@ -921,6 +924,8 @@ class ProspectWatch:
             _need(type(row.get("id")) is int and row.get("visible_to_clients") is False
                   and row.get("status") in (None, "active"), "prospect_list_unusable:" + role)
             ids[role] = row["id"]
+        if only:
+            return ids
         self.ops._run(lambda tx, now: tx.put(LISTS_KEY, {"kind": "prospect_lists", "project_id": p, "names": names,
                                                          "ids": ids, "checked_on": today.isoformat(),
                                                          "checked_at": now}), allow_expired=True)
@@ -1708,7 +1713,7 @@ class ProspectWatch:
         if not self._lease(token):
             raise ProspectError("prospect_run_in_progress")
         try:
-            self.lists = self._lists(now.astimezone(ISTANBUL).date())
+            self.lists = self._lists(now.astimezone(ISTANBUL).date(), only=("research",))
         except Exception:
             self._release(token)
             raise
