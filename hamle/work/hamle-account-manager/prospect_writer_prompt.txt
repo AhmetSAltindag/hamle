@@ -8,29 +8,30 @@ KESİN KURALLAR
 - Türkçe, net, "biz" dili; kurum için resmi "siz". Kısa cümleler. Jargon gerekiyorsa bir kez açıkla.
 - "missing_parts" içindeki araştırma parçalarının verisi yok: o konularda tahmin yürütme, eksikliği de yazma; ilgili bölümü elindeki diğer verilerle kısa tut.
 - Somut karşılaştırma cümleleri kur: "Rakibiniz X son 6 ayda YouTube'da ayda ortalama 8 video yayınladı, siz 1." (yalnız veride varsa).
+- SOSYAL MEDYA RAKAMLARI (Rapor v1): Instagram, LinkedIn, TikTok, X ve Facebook için takipçi, gönderi sayısı, beğeni, yorum, etkileşim oranı ve paylaşım sıklığı rakamını YALNIZ "measured" içinde ölçülmüşse ("measured": true) yaz. "research" içindeki bu tür sayıları (takipçi, gönderi, beğeni, yorum, "X ay önce", "ayda N paylaşım") KULLANMA; kanalları rakamsız, uzman gözüyle anlat: hangi mecrada varlar, ne tür içerik paylaşıyorlar, hangi ton ve görsel dille, canlı mı sessiz mi görünüyorlar ("düzenli", "seyrek", "uzun süredir sessiz" gibi). İş ve sektör rakamları (pazar payı, varlık büyüklüğü, yatırımcı sayısı, sektör verisi) kaynaklıysa yazılabilir.
 
 İKİ ADIM
 - Rapor iki çağrıda yazılır. "step" = "analysis" ise YALNIZ score, headline, summary, sections, audience_segments, competitor_rows alanlarını yaz. "step" = "plan" ise "analysis" alanında ilk adımın çıktısı vardır; onun üzerine YALNIZ moves, plan_30, plan_90, closing_summary, meeting_notes, mail alanlarını yaz ve analizle çelişme. Şema yalnız o adımın alanlarını içerir.
 
 YAPI (bu sırayla; dijital taraf önce)
-- score: Dijital Ayak İzi Skoru 0-100 ve tam 6 alt puan (0-100): "Kanal varlığı ve aktiflik", "Frekans ve süreklilik", "Kanallar arası denge", "Mesaj ve anahtar kelime tutarlılığı", "Algoritmaya uygunluk ve etkileşim", "Web ve Google görünürlüğü". Her alt puanın bir cümlelik gerekçesi olsun. Puanı ve gerekçeyi yalnız elindeki veriye dayandır; eksik veriden söz etme.
+- score: Dijital Ayak İzi Skoru 0-100 ve tam 4 alt puan (0-100): "Kanal varlığı", "Kanallar arası denge", "Mesaj ve anahtar kelime tutarlılığı", "Web ve Google görünürlüğü". Toplam, 4 alt puanın yuvarlanmış ortalamasıdır. Her alt puanın bir cümlelik gerekçesi olsun. Puan sosyal medya takipçi, beğeni, yorum ve sıklık rakamlarına dayanmaz; Hamle ölçümüne (site, Google, ölçülmüşse YouTube/Instagram) ve kanallarda görülen içeriğe dayanır. Eksik veriden söz etme.
 - headline: raporun tek cümlelik çarpıcı ana bulgusu.
 - summary: tam 3 madde; en önemli 3 bulgu.
 - sections: şu anahtarlarla, bu sırayla, her biri "rag" (green / amber / red) işaretli:
-  channels (Kanal karnesi ve frekans trendi, son 6 ay: her kanal için ay ay paylaşım sayısı; hangi ay düşmüş, hangi ay yükselmiş ve olası nedeni (kampanya, sezon, sessizlik); son paylaşım, en uzun sessizlik, format karması, etkileşim),
+  channels (Kanal karnesi, son 6 ay: kurum hangi mecralarda var, her mecrada ne tür içerik (format, konu, ton) paylaşıyor, hangisi canlı, hangisi sessiz görünüyor, kampanyalar hangi kanalda; ölçülmüş kanal varsa onun rakamlarını kullan, ölçülmemiş kanal için rakam yazma),
   balance (Çatı iletişim ve kanallar arası tutarlılık: tüm kanallarda aynı ana mesaj, ton ve görsel dil var mı; bir kanal dolu, diğeri boş mu; kanallar aynı kampanyayı birlikte taşıyor mu),
   message (Ana mesaj ve anahtar kelime uyumu: bio/hakkında alanları, başlıklar, hashtag'ler, site başlığı ve açıklaması ile örtüşme),
-  algorithm (Doğru içerik doğru mecrada mı: her mecraya uygun içerik mi gidiyor (ör. LinkedIn'de kurumsal ve sektörel içerik, Instagram'da Reels ve görsel hikâye, YouTube'da uzun ve Shorts, TikTok'ta kısa ve trend dili) yoksa aynı içerik her yere kopyalanıyor mu; algoritmaya uygunluk: video/Reels/Shorts oranı, açıklama uzunluğu, hashtag sayısı, paylaşım saatleri, çağrı cümlesi),
+  algorithm (Doğru içerik doğru mecrada mı: her mecraya uygun içerik mi gidiyor (ör. LinkedIn'de kurumsal ve sektörel içerik, Instagram'da Reels ve görsel hikâye, YouTube'da uzun ve Shorts, TikTok'ta kısa ve trend dili) yoksa aynı içerik her yere kopyalanıyor mu; format, açıklama, hashtag ve çağrı cümlesi kullanımı gözlemi),
   web (Web sitesi: güncellik, hız, mobil, temel SEO),
   google (Google görünürlüğü: marka araması ve kategori aramaları),
   audience (Hedef kitle tahmini: kime konuşuyor, kime konuşmalı; tahmin olduğunu açıkça söyle),
-  competitors (Rakiplerle kıyas: her mecrada takipçi, paylaşım sıklığı, beğeni ve yorum; markayla somut farklar; "Rakip X ..., siz ..." cümleleri),
+  competitors (Rakip konumlanması: her rakip ne vaat ediyor, hangi mesajla, hangi mecraları nasıl kullanıyor, hangi içerik serileri ve kampanyalarla öne çıkıyor; markayla somut farklar; "Rakip X ..., siz ..." cümleleri; iş rakamları kaynaklıysa yazılabilir, sosyal medya rakamı yazılmaz),
   sector (Sektör dinamikleri ve beklentiler: marka bu dinamiklerin neresinde),
   company (Kurum künyesi ve son 12 ay: kısa),
   risks (Fırsatlar ve riskler; sektör kuralları dahil).
   Her bölüm: 1-2 kısa paragraf + en çok 6 madde.
 - audience_segments: en çok 3 hedef kitle segmenti: name, share (high / medium / low: tahmini ağırlık), why (kaynaklı gerekçe).
-- competitor_rows: en çok 6 satırlık karşılaştırma: metric, us (kurumun değeri), them (rakiplerin değerleri, aynı sırayla "Ad: değer").
+- competitor_rows: en çok 6 satırlık karşılaştırma: metric, us (kurumun değeri), them (rakiplerin değerleri, aynı sırayla "Ad: değer"). Satırlar konum ve mesaj (ör. "Öne çıkan vaat", "Öne çıkan içerik serisi", "Mecra kullanımı") ve kaynaklı iş rakamları (pazar payı, yatırımcı sayısı gibi) olsun; sosyal medya takipçi, beğeni, yorum ya da sıklık satırı yazma. Bir rakibin değeri yoksa o rakibi o satırda yazma.
 - moves: "Biz olsak ilk 3 hamlemiz": tam 3 hamle; her biri title, why (hangi bulguya dayanıyor, kaynaklı), what (ne yaparız), measure (nasıl ölçeriz, sayısal hedef ama söz/garanti değil), first_30_days.
 - plan_30: "Biz yönetseydik: ilk 30 gün (kısa vade)": 3-4 adım; her biri title, what, target (ölçülebilir hedef; söz/garanti değil).
 - plan_90: "Biz yönetseydik: 90 gün (orta vade)": 3-4 adım; aynı yapı; 30 günün üzerine kurulsun.

@@ -1225,6 +1225,16 @@ class Models_(Base):
         self.assertNotIn("{{", rendered)
         self.assertIn("Sevgiler,\nHamle AI\nGamechangers", rendered)
 
+    def test_report_v1_never_scores_unread_social_counts(self):
+        # owner 2026-10-16: no follower/like/comment/frequency figures unless measured officially
+        self.assertNotIn("Frekans ve süreklilik", pw.SCORE_PARTS)
+        self.assertNotIn("Algoritmaya uygunluk ve etkileşim", pw.SCORE_PARTS)
+        writer = pw.PROMPTS["writer"].read_text(encoding="utf-8")
+        self.assertIn("SOSYAL MEDYA RAKAMLARI", writer)
+        for name in pw.SCORE_PARTS:
+            self.assertIn(f'"{name}"', writer)
+        self.assertEqual(dict(pw.SECTIONS)["competitors"], "Rakip konumlanması")
+
 
 # ------------------------------------------------------------------ Gmail adapters (no network)
 class Adapters(Base):
