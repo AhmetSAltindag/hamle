@@ -131,6 +131,39 @@ class Build(Plan):
         self.assertIn("05.12 Cmt · öneri yok", text)
         self.assertEqual(r["score"], 100 - 2 * 15 - 3 * 3)
 
+    def test_new_standard_sections(self):
+        extra = {"brand_asks": [{"what": "Aralık kampanya detayları", "who": "WAT pazarlama ekibi", "by": "1 Aralık"}],
+                 "algorithm_moves": ["Reels'te ilk 3 saniyeye kanca koyuyoruz."],
+                 "shoots": [{"title": "Kış şarjı çekimi", "dates": ["2026-12-04", "2026-12-40"], "place": "Maslak istasyonu",
+                             "cast": "[ekip doldurur]", "scenes": ["İstasyona geliş", "Soketi takma"]}]}
+        sk = skeleton(extra=extra)
+        sk["days"][3]["series"] = "EV 101"
+        r = self.plan(model=Fake(sk))
+        t = r["text"]
+        self.assertEqual(r["score"], 100, t[:400])
+        for line in ("KAMPANYA TAKVİMİ", "- Her Salı WAT'la: 13.10 - 31.12 · Her salı %10", "MARKADAN BEKLEDİKLERİMİZ",
+                     "- Aralık kampanya detayları · kimden: WAT pazarlama ekibi · ne zamana: 1 Aralık",
+                     "BU AY ALGORİTMADA NE DEĞİŞTİ, BİZ NE YAPIYORUZ", "→ Reels'te ilk 3 saniyeye kanca koyuyoruz.",
+                     "ÇEKİM PLANI", "- Kış şarjı çekimi · 04.12 · yer: Maslak istasyonu", "Seri: EV 101",
+                     "Durum: Taslak"):
+            self.assertIn(line, t)
+        self.assertNotIn("YKB World", t)  # ended in November: not in December's campaign calendar
+        sk_in = self.model.calls[0][1]["material"]["brand"]
+        self.assertEqual(sk_in["ended_campaigns"], ["YKB World"])
+        self.assertIn("provizyon", sk_in["banned_terms"])
+        self.assertTrue(self.model.calls[1][1]["brand"]["facts"])  # facts reach the detail calls too
+
+    def test_stale_facts_and_campaign_dates_turn_red(self):
+        r = self.plan(model=Fake(caption="Provizyon nedir? YKB World ile şarj avantajı. #wat"))
+        self.assertIn("🔴 Güncel olmayan bilgi: \"provizyon\" geçiyor (01, 02,", r["text"])
+        self.assertIn("🔴 YKB World kampanyası bu aydan önce bitiyor ama planda geçiyor (01,", r["text"])
+        cfg = cp.load_config()
+        cfg["brands"]["wat_mobilite"]["campaigns"] = [{"name": "Kış Kampanyası", "start": "2026-12-10",
+                                                        "end": "2026-12-20"}]
+        r = self.plan(model=Fake(caption="Kış Kampanyası başladı! #wat"), cfg={"brands": cfg["brands"]})
+        self.assertIn("🔴 Kış Kampanyası kampanya tarihleri dışında (01, 02,", r["text"])
+        self.assertNotIn(" 10, ", r["text"].split("kampanya tarihleri dışında")[1].split(")")[0])
+
     def test_denied_ad_word_is_a_style_note(self):
         r = self.plan(model=Fake(caption="Doğal ışık, cilalı reklam estetiği yok. #wat"))
         self.assertNotIn("Reklam / sponsorlu", r["text"])

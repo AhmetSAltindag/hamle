@@ -2,10 +2,63 @@
   "schema_version": 1,
   "enabled": false,
   "basecamp_write": false,
-  "decision_ref": "Ahmet in project thread 2026-10-17 (SM & MT plan step 2): Aylık İçerik Planı internal first draft, pilot WAT; one content idea for every day of the month (the SM lead picks; WAT contract 18-20 posts); plan lives in Basecamp; strategy derived from history until an approved strategy document is in Basecamp. Hamle never sends a plan to a client. 11:52Z: WAT is managed on Instagram and LinkedIn; important news mostly goes to both (little platform-specific content); TikTok only when a TikTok shoot is planned, so it is not in the plan by default. Preview first; Basecamp writing comes in its own change.",
+  "decision_ref": "Ahmet in project thread 2026-10-17 (SM & MT plan step 2): Aylık İçerik Planı internal first draft, pilot WAT; one content idea for every day of the month (the SM lead picks; WAT contract 18-20 posts); plan lives in Basecamp; strategy derived from history until an approved strategy document is in Basecamp. Hamle never sends a plan to a client. 11:52Z: WAT is managed on Instagram and LinkedIn; important news mostly goes to both (little platform-specific content); TikTok only when a TikTok shoot is planned, so it is not in the plan by default. Preview first; Basecamp writing comes in its own change. 13:30Z GO: Hamle's plan structure is the new standard (brand asks, campaign calendar with dates, shoot plan, series, status, success metric, algorithm box, PDF+DOCX); facts/campaigns/series for WAT from the approved October 2026 plan (Özge's deck, shared by Ahmet), brand name WAT vs WAT Mobilite awaiting Ahmet.",
   "brands": {
-    "wat_mobilite": {"posts_per_month": [18, 20], "platforms": ["instagram", "linkedin"], "designers": [47658175]}
+    "wat_mobilite": {
+      "posts_per_month": [
+        18,
+        20
+      ],
+      "platforms": [
+        "instagram",
+        "linkedin"
+      ],
+      "designers": [
+        47658175
+      ],
+      "facts": [
+        "Provizyon 30 Eylül 2026 itibarıyla kaldırıldı; yeni ödeme deneyiminde şarj öncesi provizyon yok."
+      ],
+      "banned_terms": [
+        "provizyon"
+      ],
+      "campaigns": [
+        {
+          "name": "YKB World",
+          "start": "2026-10-15",
+          "end": "2026-11-30",
+          "note": "Ekim planına göre"
+        },
+        {
+          "name": "Her Salı WAT'la",
+          "start": "2026-10-13",
+          "end": "2026-12-31",
+          "note": "Her salı %10 tarife avantajı (Ekim planına göre)"
+        },
+        {
+          "name": "Opet Ultraşarj",
+          "start": "2026-10-01",
+          "end": "2026-12-31",
+          "note": "Ultramarket 200 TL, ayda bir kez (Ekim planına göre)"
+        }
+      ],
+      "series": [
+        "EV 101",
+        "Doğru mu Yanlış mı",
+        "Taş Kâğıt Makas",
+        "Giydirilmiş Cihazlar",
+        "Rota Bazlı",
+        "Ürün İletişimi",
+        "Lifestyle"
+      ]
+    }
   },
-  "model": {"model": "claude-opus-5-5", "effort": "medium", "max_tokens": 16000, "timeout_seconds": 420, "prompt_cache": true},
+  "model": {
+    "model": "claude-opus-5-5",
+    "effort": "medium",
+    "max_tokens": 16000,
+    "timeout_seconds": 420,
+    "prompt_cache": true
+  },
   "rules": "Edit only via a reviewed commit and rebuild (package_chain_source.py). A new brand needs Ahmet's word (budget: ~1-2 USD per brand per month)."
 }
