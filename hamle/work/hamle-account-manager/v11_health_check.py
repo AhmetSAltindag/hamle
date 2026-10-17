@@ -24,6 +24,7 @@ Checks (each one independent; a failing check is itself a finding, the others st
   jobs:     client jobs stuck in 'creating' / 'binding' over an hour
   control:  Hamle stopped ('dur')
   budget:   overrun hold, month-to-date committed over the warn line, unsettled holds
+  algorithm: Sunday's Algoritma Nöbeti record (only while its flag is on)
   teams:    yesterday's model calls (an information line)
 
 Tenant independence: recipients, timezone, windows and budget lines come from health-check-config.json; no names.
@@ -267,12 +268,36 @@ def check_control(ops):
                     cause="Biri 'dur' dedi ya da kontrol elle değişti.", confidence="doğrulandı")]
 
 
+def check_algorithm(ops, day):
+    """Sunday's Algoritma Nöbeti (v11_algorithm_watch) left its done record; silent while its flag is off."""
+    if day.weekday() != 6:
+        return []
+    import v11_algorithm_watch as aw
+    try:
+        cfg = aw.validate_config(aw.load_config())
+    except Exception:
+        return []  # no config in this image: the feature is not installed
+    if not cfg["enabled"] or cfg["weekday"] != 6:
+        return []
+    key = aw.KEYS["week"](aw.card_monday(day))
+    row = _read(ops, [key]).get(key)
+    if isinstance(row, dict) and row.get("state") == "done":
+        return []
+    return [finding("runs.algorithm_watch", "amber", "Algoritma Nöbeti çalışmadı",
+                    expected=f"Pazar {cfg['window'][0]}-{cfg['window'][1]} arası haftalık tarama (state=done).",
+                    actual="kayıt yok" if row is None else f"state={row.get('state')}"
+                    + (f", sebep={row.get('last_failure')}" if row.get("last_failure") else ""),
+                    evidence=[key], affected="Pazartesi özetinde 'Bu hafta algoritmada ne değişti' kartı olmaz.",
+                    cause=None if row is None else "Tarama yarım kaldı.",
+                    confidence="düşük" if row is None else "orta")]
+
+
 def check_teams(ops, day):
     row = _read(ops, [KEYS["teams_day"](day)]).get(KEYS["teams_day"](day))
     return {"model_calls": int((row or {}).get("model_calls") or 0)}
 
 
-CHECKS = ("control", "runs", "sends", "jobs", "budget", "teams")
+CHECKS = ("control", "runs", "sends", "jobs", "budget", "algorithm", "teams")
 
 
 def gather(ops, day, cfg, now):
@@ -290,6 +315,8 @@ def gather(ops, day, cfg, now):
             elif name == "budget":
                 more, facts["budget"] = check_budget(ops, cfg)
                 findings += more
+            elif name == "algorithm":
+                findings += check_algorithm(ops, day)
             else:
                 facts["teams"] = check_teams(ops, day)
         except Exception as exc:  # one broken check never stops the others
