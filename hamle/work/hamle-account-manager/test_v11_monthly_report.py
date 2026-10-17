@@ -506,7 +506,7 @@ class Wiring(unittest.TestCase):
             self.assertIn(status, worker.OK_STATUSES)
         with open(worker.__file__, encoding="utf-8") as f:
             src = f.read()
-        self.assertIn('"weekly_summary", "monthly_report", "hamle_karne", "algorithm_watch"):\n            # Monthly budget renewal', src)
+        self.assertIn('"weekly_summary", "monthly_report", "hamle_karne", "algorithm_watch", "content_plan"):\n            # Monthly budget renewal', src)
         for name in ("v11_monthly_report.py", "monthly_report_prompt.txt"):
             self.assertIn(name, pkg.CHAIN_FILES)
 
