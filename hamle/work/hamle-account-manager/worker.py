@@ -522,7 +522,7 @@ OK_STATUSES = ("budget_overrun_report", "overrun_hold_released", "overrun_hold_a
                "monthly_report_completed", "monthly_report_partial", "monthly_report_preview",
                "hamle_karne_sent", "hamle_karne_preview", "prospect_watch_completed", "prospect_watch_preview",
                "prospect_test_requests_completed", "health_check_completed", "health_check_preview",
-               "algorithm_watch_completed", "algorithm_watch_preview")
+               "algorithm_watch_completed", "algorithm_watch_preview", "content_plan_preview")
 
 
 def main(argv=None):
@@ -535,7 +535,8 @@ def main(argv=None):
                                            "research_probe", "settle_model_actual", "settle_billed_total",
                                            "digital_karne", "brand_memory", "weekly_summary", "monthly_report",
                                            "hamle_karne", "prospect_watch", "budget_overrun_report",
-                                           "release_overrun_hold", "health_check", "algorithm_watch"),
+                                           "release_overrun_hold", "health_check", "algorithm_watch",
+                                           "content_plan"),
                         required=True)
     parser.add_argument("--proposal-id")
     parser.add_argument("--work-id")
@@ -575,6 +576,9 @@ def main(argv=None):
     parser.add_argument("--hamle-karne-preview", action="store_true")
     parser.add_argument("--health-preview", action="store_true")
     parser.add_argument("--algorithm-preview", action="store_true")
+    parser.add_argument("--plan-preview", action="store_true")
+    parser.add_argument("--plan-brand")
+    parser.add_argument("--plan-month")
     # prospect_watch operator preview: one imagined mail through the real classify / research / reply / check steps;
     # no mail read or sent, no Basecamp, no prospect record
     parser.add_argument("--prospect-preview", action="store_true")
@@ -630,6 +634,10 @@ def main(argv=None):
         _require(not args.health_preview or args.mode == "health_check", "health_preview_requires_health_check")
         _require(not args.algorithm_preview or args.mode == "algorithm_watch",
                  "algorithm_preview_requires_algorithm_watch")
+        # İçerik Planı: preview only until its Basecamp change is built.
+        _require((args.mode == "content_plan") == args.plan_preview, "content_plan_requires_plan_preview")
+        _require((args.plan_brand is None and args.plan_month is None) or args.mode == "content_plan",
+                 "plan_flags_require_content_plan")
         preview_fields = (args.preview_from, args.preview_subject, args.preview_text)
         _require((not args.prospect_preview and all(v is None for v in preview_fields)) or
                  (args.prospect_preview and args.mode == "prospect_watch"
@@ -657,7 +665,7 @@ def main(argv=None):
             return providers.verify_basecamp_internal(token)
         if args.mode in ("chain_tick", "prospect_watch", "daily_digest", "research_probe", "digital_karne",
                          "brand_memory",
-                         "weekly_summary", "monthly_report", "hamle_karne", "algorithm_watch"):
+                         "weekly_summary", "monthly_report", "hamle_karne", "algorithm_watch", "content_plan"):
             # Monthly budget renewal + ledger compaction before any budget gate reads the totals.
             try:
                 roll = store.roll_budget_period()
@@ -797,6 +805,11 @@ def main(argv=None):
             # read by Monday's digest. --algorithm-preview: the call runs, nothing is written, no mail.
             from v11_algorithm_watch import run_worker_algorithm_watch
             result = run_worker_algorithm_watch(store, secrets, preview=args.algorithm_preview)
+        elif args.mode == "content_plan":
+            # Aylık İçerik Planı taslağı (Ahmet 2026-10-17, pilot WAT): preview only; one brand's next-month plan from
+            # its brand memory, Basecamp (GET), special days and the rule book; writes nothing, sends nothing.
+            from v11_content_plan import run_worker_content_plan
+            result = run_worker_content_plan(store, secrets, brand=args.plan_brand, month=args.plan_month)
         elif args.mode == "hamle_karne":
             # Operator preview of Hamle's own karne (the live mail goes out from --mode monthly_report).
             from v11_hamle_karne import run_worker_hamle_karne
