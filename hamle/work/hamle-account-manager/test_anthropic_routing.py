@@ -176,6 +176,18 @@ class Request(NoNetwork):
         self.assertEqual(title["anyOf"][1], {"type": "null"})
         self.assertFalse(schema["additionalProperties"])
 
+    def test_prompt_cache_is_opt_in_and_off_for_every_shared_route(self):
+        import dataclasses
+        for role, route in self.routing.routes.items():
+            if route.provider == "anthropic":
+                self.assertIs(route.prompt_cache, False, role)
+                self.assertEqual(model.anthropic_request(route, "sys", "{}")["system"], "sys", role)  # unchanged body
+        cached = dataclasses.replace(self.routing.route("chain_interpreter"), prompt_cache=True)
+        kw = model.anthropic_request(cached, "sys", "{}")
+        self.assertEqual(kw["system"], [{"type": "text", "text": "sys", "cache_control": {"type": "ephemeral"}}])
+        self.assertEqual(kw["messages"], model.anthropic_request(self.routing.route("chain_interpreter"), "sys",
+                                                                  "{}")["messages"])
+
     def test_web_search_tool_only_on_research_roles(self):
         kw = model.anthropic_request(self.routing.route("trend_radar"), "sys", "{}")
         self.assertEqual(kw["tools"], [{"type": "web_search_20260209", "name": "web_search", "max_uses": 4}])

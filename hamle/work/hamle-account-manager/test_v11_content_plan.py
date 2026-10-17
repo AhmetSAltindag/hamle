@@ -75,6 +75,7 @@ class Config(Plan):
         self.assertIs(cfg["enabled"], False)
         self.assertEqual(list(cfg["brands"]), ["wat_mobilite"])
         self.assertEqual(cfg["brands"]["wat_mobilite"]["platforms"], ["instagram", "linkedin"])
+        self.assertIs(cfg["route"].prompt_cache, True)  # the first and only feature with the cache on (17 Oct)
         self.assertEqual(cfg["brands"]["wat_mobilite"]["posts"], (18, 20))
         import model_routing
         self.assertNotIn(cp.ROLE, model_routing.ROLES)
@@ -163,9 +164,48 @@ class Model(Plan):
         self.assertEqual((r["status"], r["days"]), ("content_plan_preview", 31), r)
         self.assertEqual(len(client.calls), 5)
         self.assertEqual(client.calls[0]["model"], "claude-opus-5-5")
-        self.assertIn("KAPSAM DIŞI", client.calls[0]["system"])
+        system = client.calls[0]["system"]
+        self.assertEqual(system[0]["cache_control"], {"type": "ephemeral"})  # cached system prompt
+        self.assertIn("KAPSAM DIŞI", system[0]["text"])
+        self.assertIsInstance(client.calls[0]["messages"][0]["content"], str)  # skeleton: one plain input
+        for c in client.calls[1:]:
+            self.assertEqual(c["system"], system)
+            shared, days = c["messages"][0]["content"]
+            self.assertEqual(shared["cache_control"], {"type": "ephemeral"})
+            self.assertTrue(shared["text"].startswith("Ortak girdi: "))
+            self.assertIn("strategy", shared["text"])
+            self.assertNotIn('"days"', shared["text"])
+            self.assertEqual(sorted(json.loads(days["text"])), ["days", "material", "task"])
+        self.assertEqual(len({c["messages"][0]["content"][0]["text"] for c in client.calls[1:]}), 1)  # same prefix
+        self.assertEqual(r["usage"]["paid_calls"], 5)
+        self.assertGreater(r["usage"]["cost_usd"], 0)
+        self.assertEqual(r["usage"]["cost_without_cache_usd"], r["usage"]["cost_usd"])  # fake usage has no cache tokens
         self.assertEqual(self.plan(model=call)["text"], r["text"])  # same requests: cached, no second paid call
         self.assertEqual(len(client.calls), 5)
+
+    def test_usage_totals_show_the_saving(self):
+        use = {"input_tokens": 1000, "cache_read_input_tokens": 5000, "cache_creation_input_tokens": 0,
+               "output_tokens": 2000, "web_search_requests": 0}
+        import model
+        rec = {"model": "claude-opus-5-5", "usage": use,
+               "cost_microdollars": model.anthropic_cost_microdollars("claude-opus-5-5", use)}
+        t = cp.usage_totals([rec])
+        self.assertEqual((t["cost_usd"], t["cost_without_cache_usd"]), (0.045, 0.064))
+
+    def test_cache_off_sends_todays_request(self):
+        outputs = [message(skeleton())] + [message(details({"days": [{"date": d.isoformat()}
+                                                                      for d in cp.month_days(DEC)[n * 8:(n + 1) * 8]]}))
+                                           for n in range(4)]
+        client = FakeClient(*outputs)
+        cfg = config()
+        cfg["model"] = dict(cfg["model"], prompt_cache=False)
+        call = cp.model_source(self.ops, {"anthropic": lambda: KEY}, load_catalog(), cp.validate_config(cfg),
+                               client=client)
+        self.assertEqual(self.plan(model=call)["status"], "content_plan_preview")
+        for c in client.calls:
+            self.assertIsInstance(c["system"], str)
+            self.assertIsInstance(c["messages"][0]["content"], str)
+        self.assertIn('"strategy"', client.calls[1]["messages"][0]["content"])
 
 
 class Wiring(unittest.TestCase):
