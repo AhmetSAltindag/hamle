@@ -171,6 +171,8 @@ class Build(Plan):
         self.assertEqual(r["score"], 100)
         self.assertTrue(cp.out_of_scope("Reklam yok ama sponsorlu gönderi var"))
         self.assertTrue(cp.out_of_scope("Boost edelim"))
+        # Y7 17 Oct, 25.12 visual brief
+        self.assertFalse(cp.out_of_scope("İstasyon ve araç kadrajın içinde, cilalı reklam estetiği yerine samimi an."))
 
     def test_the_same_news_on_instagram_and_linkedin(self):
         both = lambda d: cp.BOTH if d.day % 3 == 0 else "linkedin" if d.day == 1 else "instagram"
@@ -413,6 +415,19 @@ class Files(Plan):
         import package_chain_source as pkg
         self.assertIn(pkg.APP + "content_plan_files_smoke.py", pkg.ALLOWLIST)
         self.assertIn("python content_plan_files_smoke.py", open("Dockerfile", encoding="utf-8").read())
+
+    def test_worker_splits_a_big_preview_into_log_sized_lines(self):
+        result = {"status": "content_plan_preview", "score": 85, "usage": {"cost_usd": 0.9},
+                  "plan_data": {"plan": {"days": ["x" * 50000]}}, "text": "ş" * 130000}
+        buf = io.StringIO()
+        with redirect_stdout(buf):
+            worker._emit(result)
+        lines = buf.getvalue().splitlines()
+        self.assertTrue(all(len(line.encode("utf-8")) < 100000 for line in lines))
+        head = json.loads(lines[0])
+        self.assertEqual((head["usage"], head["text_parts"], "text" in head), ({"cost_usd": 0.9}, 7, False))
+        self.assertEqual(json.loads(lines[1])["plan_data"], result["plan_data"])
+        self.assertEqual("".join(json.loads(x)["text"] for x in lines[2:]), result["text"])
 
     def test_file_names_are_ascii(self):
         import v11_content_plan_files as pf

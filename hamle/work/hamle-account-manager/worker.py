@@ -526,6 +526,24 @@ OK_STATUSES = ("budget_overrun_report", "overrun_hold_released", "overrun_hold_a
                "weekly_checks_preview")
 
 
+LOG_PART = 20000  # characters (up to 4 bytes each); Cloud Logging cuts a line at ~100 KB
+
+
+def _emit(result):
+    """One JSON line; a content plan preview goes as summary, then plan_data, then the text in parts."""
+    if result.get("status") != "content_plan_preview":
+        print(json.dumps(result, ensure_ascii=False, sort_keys=True))
+        return
+    text = result.get("text") or ""
+    parts = [text[i:i + LOG_PART] for i in range(0, len(text), LOG_PART)] or [""]
+    summary = {k: v for k, v in result.items() if k not in ("text", "plan_data")}
+    print(json.dumps(dict(summary, text_parts=len(parts)), ensure_ascii=False, sort_keys=True))
+    if "plan_data" in result:
+        print(json.dumps({"plan_data": result["plan_data"]}, ensure_ascii=False, sort_keys=True))
+    for n, part in enumerate(parts, 1):
+        print(json.dumps({"text_part": n, "of": len(parts), "text": part}, ensure_ascii=False))
+
+
 def main(argv=None):
     import time
     job_started = time.monotonic()
@@ -880,7 +898,7 @@ def main(argv=None):
                 read_task=writers.read_task, send_reply=writers.send_reply,
                 read_reply=writers.read_reply, create_comment=writers.create_comment,
                 read_comment=writers.read_comment, read_task_status=writers.read_task_status)
-        print(json.dumps(result, ensure_ascii=False, sort_keys=True))
+        _emit(result)
         return 0 if result["status"] in OK_STATUSES else 2
     except Exception as exc:
         try:
