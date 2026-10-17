@@ -131,6 +131,13 @@ class Build(Plan):
         self.assertIn("05.12 Cmt · öneri yok", text)
         self.assertEqual(r["score"], 100 - 2 * 15 - 3 * 3)
 
+    def test_denied_ad_word_is_a_style_note(self):
+        r = self.plan(model=Fake(caption="Doğal ışık, cilalı reklam estetiği yok. #wat"))
+        self.assertNotIn("Reklam / sponsorlu", r["text"])
+        self.assertEqual(r["score"], 100)
+        self.assertTrue(cp.out_of_scope("Reklam yok ama sponsorlu gönderi var"))
+        self.assertTrue(cp.out_of_scope("Boost edelim"))
+
     def test_the_same_news_on_instagram_and_linkedin(self):
         both = lambda d: cp.BOTH if d.day % 3 == 0 else "linkedin" if d.day == 1 else "instagram"
         r = self.plan(model=Fake(skeleton(platform=both), linkedin="Ağımız büyüyor: detaylar https://wat.com.tr"))

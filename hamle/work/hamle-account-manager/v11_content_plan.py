@@ -55,6 +55,9 @@ MONTHS = ("Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağ
 STRATEGY_NOTE = "Bu strateji hatırlatması markanın son 90 günlük yazışmalarından çıkarımdır; onaylı strateji dokümanı Basecamp'e gelince ona göre güncellenir."
 OUT_OF_SCOPE = re.compile(r"\b(reklam\w*|sponsorlu\w*|sponsored|ads? manager|ücretli tanıtım\w*|medya planı\w*|"
                           r"media plan\w*|boost\w*|öne çıkarılmış gönderi\w*)\b", re.I)
+# "cilalı reklam estetiği yok", "reklam dili değil": a word from OUT_OF_SCOPE that the next few words deny is a
+# style note, not ad content (WAT Dec preview 17 Oct, days 12 and 26).
+DENIED = re.compile(r"^(\s+[^\W\d_]+){0,2}?\s+(yok|değil|olmadan|kullanılmaz|olmasın|olmayan)\b", re.I)
 URL = re.compile(r"https?://|www\.", re.I)
 
 
@@ -369,7 +372,7 @@ def check(plan, material, first):
                    and not 3 <= len(r.get("hashtags") or []) <= 5)
     if tags:
         out.append(("sarı", f"Instagram'da 3-5 niş hashtag önerilir; uymayan günler: {listed(tags)}."))
-    scope = days_of(lambda r: OUT_OF_SCOPE.search(" ".join(str(r.get(k) or "") for k in ("topic", "caption",
+    scope = days_of(lambda r: out_of_scope(" ".join(str(r.get(k) or "") for k in ("topic", "caption",
                                                                                          "visual_brief"))))
     if scope:
         out.append(("kırmızı", f"Reklam / sponsorlu içerik geçiyor ({listed(scope)}); ajansın kapsamı dışında."))
@@ -378,6 +381,10 @@ def check(plan, material, first):
 
 
 # ------------------------------------------------------------------ text
+def out_of_scope(text):
+    return any(not DENIED.match(text[m.end():]) for m in OUT_OF_SCOPE.finditer(text))
+
+
 def platform_label(p):
     return {"linkedin": "LinkedIn", "tiktok": "TikTok", "youtube": "YouTube", BOTH: "Instagram + LinkedIn"}.get(
         p, str(p).capitalize())
