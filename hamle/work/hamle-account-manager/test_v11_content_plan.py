@@ -6,8 +6,11 @@ import json
 from contextlib import redirect_stdout
 import unittest
 
+from urllib.parse import urlsplit
+
 import v11_algorithm_watch as aw
 import v11_content_plan as cp
+import v11_content_plan_basecamp as pb
 import v11_daily_digest as dd
 import worker
 from test_anthropic_routing import FakeClient, KEY, message
@@ -16,6 +19,7 @@ from v11_chain_live import load_catalog
 
 DEC = date(2026, 12, 1)
 NOW = datetime.fromisoformat("2026-10-17T15:00:00+03:00")
+AHMET, CANSU, OZGE, BERKAY = 47470759, 48793256, 52096503, 47658175
 
 
 def config(**kw):
@@ -59,10 +63,10 @@ class Fake:
 class Plan(Base):
     START = NOW
 
-    def plan(self, model=None, **kw):
+    def plan(self, model=None, cfg=None, **kw):
         kw.setdefault("month", "2026-12")
         self.model = model or Fake()
-        return cp.run_content_plan(self.ops, config=config(), catalog=load_catalog(), cards=self.cards,
+        return cp.run_content_plan(self.ops, config=config(**(cfg or {})), catalog=load_catalog(), cards=self.cards,
                                    cal=dd.load_calendar(), book_reader=lambda: aw.new_book(aw.load_seed()),
                                    upcoming_reader=lambda pid: [{"title": "Yılbaşı kampanyası görselleri",
                                                                  "due_on": "2026-12-20", "project_id": pid}],
@@ -146,8 +150,102 @@ class Build(Plan):
         self.assertEqual((r["status"], r["reason"]), ("held", "RuntimeError"))
         self.assertEqual(set(self.ops.backend.data), before)
 
-    def test_live_runs_are_not_built_yet(self):
-        self.assertEqual(self.plan(preview=False)["reason"], "content_plan_live_not_built")
+    def test_live_runs_need_both_switches_and_preview_shows_the_target(self):
+        self.assertEqual(self.plan(preview=False)["reason"], "content_plan_disabled")
+        r = self.plan(preview=False, cfg=dict(enabled=True))
+        self.assertEqual(r["reason"], "content_plan_basecamp_write_off")
+        self.assertEqual(self.model.calls, [])
+        bc = self.plan()["basecamp"]
+        self.assertEqual((bc["project_id"], bc["list_id"], bc["assignee_ids"], bc["subscriber_ids"]),
+                         (40694338, 8231779952, [OZGE], [AHMET, BERKAY, CANSU]))
+        self.assertEqual(bc["document"], "WAT Mobilite · Aralık 2026 İçerik Planı (Hamle taslağı)")
+
+
+class FakeBasecamp:
+    """Basecamp for project 40694338 only; records every call."""
+    def __init__(self, doc_visible=False):
+        self.calls, self.doc_visible = [], doc_visible
+
+    def send(self, method, url, body, expected):
+        path = urlsplit(url).path
+        self.calls.append((method, path, body))
+        b = "/5898865/buckets/40694338"
+        if path == "/5898865/projects/40694338.json":
+            return {"id": 40694338, "dock": [{"name": "message_board", "id": 1, "enabled": True},
+                                             {"name": "vault", "id": 777, "enabled": True}]}, {}
+        if path == f"{b}/vaults/777.json":
+            return {"id": 777, "bucket": {"id": 40694338}, "status": "active"}, {}
+        if path == f"{b}/todolists/8231779952.json":
+            return {"id": 8231779952, "bucket": {"id": 40694338}, "visible_to_clients": False, "status": "active"}, {}
+        if method == "POST" and path == f"{b}/vaults/777/documents.json":
+            self.doc = body
+            return {"id": 9001}, {}
+        if path == f"{b}/documents/9001.json":
+            return {"id": 9001, "title": self.doc["title"], "bucket": {"id": 40694338}, "parent": {"id": 777},
+                    "creator": {"id": 53358100}, "visible_to_clients": self.doc_visible,
+                    "app_url": "https://3.basecamp.com/5898865/buckets/40694338/documents/9001"}, {}
+        if method == "POST" and path == f"{b}/todolists/8231779952/todos.json":
+            self.todo = body
+            return {"id": 9002}, {}
+        if path == f"{b}/todos/9002.json":
+            t = self.todo
+            return {"id": 9002, "content": t["content"], "parent": {"id": 8231779952}, "bucket": {"id": 40694338},
+                    "creator": {"id": 53358100}, "visible_to_clients": False,
+                    "assignees": [{"id": i} for i in t["assignee_ids"]],
+                    "completion_subscribers": [{"id": i} for i in t["completion_subscriber_ids"]],
+                    "app_url": "https://3.basecamp.com/5898865/buckets/40694338/todos/9002"}, {}
+        raise AssertionError(f"unexpected {method} {path}")
+
+
+class Write(Plan):
+    def live(self, bc, model=None):
+        def factory(dest):
+            return pb.PlanBasecamp(5898865, dest["project_id"], dest["list_id"], send=bc.send)
+        return self.plan(model=model, preview=False, cfg=dict(enabled=True, basecamp_write=True),
+                         http_factory=factory)
+
+    def test_one_document_and_one_todo_then_never_again(self):
+        bc = FakeBasecamp()
+        r = self.live(bc)
+        self.assertEqual((r["status"], r["business_writes"]), ("content_plan_written", 2), r.get("reason"))
+        posts = [(m, p) for m, p, _ in bc.calls if m == "POST"]
+        self.assertEqual([p.rsplit("/", 1)[-1] for _, p in posts], ["documents.json", "todos.json"])
+        self.assertIn("<h1>Takvim</h1>", bc.doc["content"])
+        self.assertIn("<strong>31.12 Per · Karusel · Instagram</strong>", bc.doc["content"])
+        self.assertEqual((bc.todo["assignee_ids"], bc.todo["completion_subscriber_ids"], bc.todo["notify"]),
+                         ([OZGE], [AHMET, BERKAY, CANSU], True))
+        self.assertIn("documents/9001", bc.todo["description"])
+        self.assertIn("linki bu göreve yorum olarak yazsın", bc.todo["description"])
+        row = self.ops.backend.data["content-plan-wat_mobilite-202612"]
+        self.assertEqual((row["state"], row["doc_id"], row["todo_id"]), ("ready", 9001, 9002))
+        self.assertEqual(len(row["plan"]["days"]), 31)
+        again = self.live(FakeBasecamp(), model=Fake())
+        self.assertEqual((again["status"], again["reason"], self.model.calls), ("no_new_work",
+                                                                                 "content_plan_already_recorded", []))
+
+    def test_a_document_clients_could_see_stops_before_the_todo(self):
+        bc = FakeBasecamp(doc_visible=True)
+        r = self.live(bc)
+        self.assertEqual((r["status"], r["reason"]), ("held", "document:content_plan_doc_readback_mismatch"))
+        self.assertFalse([p for m, p, _ in bc.calls if p.endswith("todos.json")])
+        self.assertEqual(self.ops.backend.data["content-plan-wat_mobilite-202612"]["state"], "unknown")
+
+    def test_a_failed_model_writes_nothing_and_blocks_the_month(self):
+        def broken(task, request):
+            raise RuntimeError("model down")
+        bc = FakeBasecamp()
+        r = self.live(bc, model=broken)
+        self.assertEqual(r["status"], "held")
+        self.assertEqual(bc.calls, [])
+        self.assertEqual(self.ops.backend.data["content-plan-wat_mobilite-202612"]["state"], "failed")
+
+    def test_calls_outside_the_brand_project_are_refused(self):
+        http = pb.PlanBasecamp(5898865, 40694338, 8231779952, send=FakeBasecamp().send)
+        for method, url in (("POST", "https://3.basecampapi.com/5898865/buckets/48639990/todolists/1/todos.json"),
+                            ("PUT", "https://3.basecampapi.com/5898865/buckets/40694338/todos/5.json"),
+                            ("POST", "https://3.basecampapi.com/5898865/buckets/40694338/todolists/1/todos.json")):
+            with self.assertRaises(Exception):
+                http.call(method, url, {}, 201)
 
 
 class Model(Plan):
