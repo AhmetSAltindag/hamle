@@ -2,7 +2,7 @@
   "schema_version": 1,
   "enabled": false,
   "basecamp_write": false,
-  "decision_ref": "Ahmet in project thread 2026-10-17 (SM & MT plan step 2): Aylık İçerik Planı internal first draft, pilot WAT; one content idea for every day of the month (the SM lead picks; WAT contract 18-20 posts); plan lives in Basecamp; strategy derived from history until an approved strategy document is in Basecamp. Hamle never sends a plan to a client. 11:52Z: WAT is managed on Instagram and LinkedIn; important news mostly goes to both (little platform-specific content); TikTok only when a TikTok shoot is planned, so it is not in the plan by default. Preview first; Basecamp writing comes in its own change. 13:30Z GO: Hamle's plan structure is the new standard (brand asks, campaign calendar with dates, shoot plan, series, status, success metric, algorithm box, PDF+DOCX); facts/campaigns/series for WAT from the approved October 2026 plan (Özge's deck, shared by Ahmet), brand name WAT vs WAT Mobilite awaiting Ahmet.",
+  "decision_ref": "Ahmet in project thread 2026-10-17 (SM & MT plan step 2): Aylık İçerik Planı internal first draft, pilot WAT; one content idea for every day of the month (the SM lead picks; WAT contract 18-20 posts); plan lives in Basecamp; strategy derived from history until an approved strategy document is in Basecamp. Hamle never sends a plan to a client. 11:52Z: WAT is managed on Instagram and LinkedIn; important news mostly goes to both (little platform-specific content); TikTok only when a TikTok shoot is planned, so it is not in the plan by default. Preview first; Basecamp writing comes in its own change. 13:30Z GO: Hamle's plan structure is the new standard (brand asks, campaign calendar with dates, shoot plan, series, status, success metric, algorithm box, PDF+DOCX); facts/campaigns/series for WAT from the approved October 2026 plan (Özge's deck, shared by Ahmet), 14:12Z: brand name is \"WAT Mobilite\" everywhere official.",
   "brands": {
     "wat_mobilite": {
       "posts_per_month": [
@@ -17,7 +17,8 @@
         47658175
       ],
       "facts": [
-        "Provizyon 30 Eylül 2026 itibarıyla kaldırıldı; yeni ödeme deneyiminde şarj öncesi provizyon yok."
+        "Provizyon 30 Eylül 2026 itibarıyla kaldırıldı; yeni ödeme deneyiminde şarj öncesi provizyon yok.",
+        "Resmi her yerde (plan başlığı, paylaşım metni, LinkedIn metni, görsel metni) marka adı \"WAT Mobilite\" yazılır; yalnız \"WAT\" yazılmaz."
       ],
       "banned_terms": [
         "provizyon"
