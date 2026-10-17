@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import html
 import re
+from urllib.parse import quote, urlsplit
 
 import v11_content_plan as cp
 from v11_nb_tracking import NbBasecamp
@@ -139,14 +140,55 @@ def todo_html(doc_url, rec, lo, hi):
 # ------------------------------------------------------------------ Basecamp (one brand project only)
 class PlanBasecamp(NbBasecamp):
     """Allow-listed calls only: the project dock, its Docs & Files vault, documents in it, the social list and
-    its to-dos, comments on a recording."""
-    def __init__(self, account_id, project_id, list_id, *, send):
+    its to-dos, comments on a recording; plus the plan's own PDF/DOCX upload (send_raw) for the document."""
+    def __init__(self, account_id, project_id, list_id, *, send, send_raw=None):
         super().__init__(account_id, send=send)
+        self.send_raw = send_raw
         b = rf"/{account_id}/buckets/{project_id}"
         self.allowed = {"GET": (rf"/{account_id}/projects/{project_id}", rf"{b}/vaults/[1-9][0-9]*",
                                 rf"{b}/documents/[1-9][0-9]*", rf"{b}/todolists/{list_id}", rf"{b}/todos/[1-9][0-9]*",
                                 rf"{b}/recordings/[1-9][0-9]*/comments"),
                         "POST": (rf"{b}/vaults/[1-9][0-9]*/documents", rf"{b}/todolists/{list_id}/todos")}
+
+
+    def upload(self, name, data, mime):
+        """One file -> attachable_sgid (POST /attachments.json, binary body)."""
+        _need(self.send_raw is not None, "content_plan_upload_unavailable")
+        _need(re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9.-]{0,120}\.(pdf|docx)", name) is not None and isinstance(data, bytes)
+              and 0 < len(data) <= 10 * 1024 * 1024, "content_plan_upload_invalid")
+        row = self.send_raw("POST", f"{API}/{self.account}/attachments.json?name={quote(name, safe='')}", data, mime, 201)
+        sgid = row.get("attachable_sgid") if isinstance(row, dict) else None
+        _need(isinstance(sgid, str) and re.fullmatch(r"[A-Za-z0-9+/=_-]{10,600}", sgid) is not None,
+              "content_plan_upload_receipt_invalid")
+        return sgid
+
+
+def raw_send(token_provider, session_factory):
+    """Production binary transport for PlanBasecamp.upload (existing Basecamp OAuth token, no redirects)."""
+    import cloud_providers as provider
+
+    def send(method, url, data, mime, expected):
+        p = urlsplit(url)
+        _need(method == "POST" and p.scheme == "https" and p.netloc == "3.basecampapi.com"
+              and re.fullmatch(r"/[1-9][0-9]*/attachments\.json", p.path) is not None, "content_plan_upload_scope")
+        session, r = session_factory(), None
+        try:
+            r = session.request(method, url, headers={
+                "Authorization": "Bearer " + provider._token(token_provider()), "Content-Type": mime,
+                "Content-Length": str(len(data)), "User-Agent": "Hamle Content Plan (ahmet@gamechangers.com.tr)"},
+                data=data, timeout=(10, 60), allow_redirects=False, stream=True)
+            _need(r.status_code == expected, "content_plan_upload_unconfirmed")
+            chunks, size = [], 0
+            for chunk in r.iter_content(chunk_size=16384):
+                size += len(chunk)
+                _need(size <= 65536, "content_plan_upload_response_too_large")
+                chunks.append(chunk)
+            return provider._json(b"".join(chunks))
+        finally:
+            if r is not None:
+                r.close()
+            session.close()
+    return send
 
 
 def _clean_url(value, prefix, fallback):
@@ -190,7 +232,7 @@ class PlanWriter:
     def mark(self, **fields):
         self._write(lambda row, now: row.update(fields, at=now), fenced=False)
 
-    def write(self, dest, title, body, todo_name, todo_body):
+    def write(self, dest, title, body, todo_name, todo_body, files=()):
         """Document, then the to-do pointing at it. Returns the receipts; any doubt -> state unknown, no retry."""
         pid, lid, acct = dest["project_id"], dest["list_id"], self.http.account
         base = f"{API}/{acct}/buckets/{pid}"
@@ -213,6 +255,12 @@ class PlanWriter:
             _need(lst.get("id") == lid and (lst.get("bucket") or {}).get("id") == pid
                   and lst.get("visible_to_clients") is False and lst.get("status") in (None, "active"),
                   "content_plan_list_unusable")
+            step = "attachment"
+            sgids = [self.http.upload(n, data, mime) for n, data, mime in files]
+            if sgids:
+                self.mark(attachments=[n for n, _, _ in files])
+                body += "<div><strong>Ekler:</strong> PDF sunum için, DOCX ekibin düzenlemesi için.</div>" + "".join(
+                    f'<bc-attachment sgid="{html.escape(x, quote=True)}"></bc-attachment>' for x in sgids)
             step = "document"
             row, _ = self.http.call("POST", f"{base}/vaults/{vid}/documents.json",
                                     {"title": title, "content": body, "status": "active"}, 201)

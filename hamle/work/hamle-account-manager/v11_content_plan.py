@@ -587,12 +587,18 @@ def run_content_plan(ops, *, config, catalog, cards, cal, book_reader, upcoming_
         rec = sum(1 for r in plan["days"] if r.get("recommended"))
         out = dict(report, score=score, findings=len(findings), days=len(plan["days"]), recommended=rec, text=text)
         if preview:
-            return dict(out, status="content_plan_preview")
+            # plan_data: the structured plan, so the PDF/DOCX can be made from the preview (v11_content_plan_files).
+            data = {"name": info["name"], "plan": {k: v for k, v in plan.items() if k != "model_calls"},
+                    "findings": [list(f) for f in findings], "score": score,
+                    "material": {k: material[k] for k in ("brand", "special_days", "algorithm")}}
+            return dict(out, status="content_plan_preview", plan_data=data)
         lo, hi = material["brand"]["posts_per_month"]
         writer.mark(plan=pb.summary(plan), score=score)
+        import v11_content_plan_files as pf
+        files = pf.plan_files(info["name"], first, plan, findings, score, material)
         w = writer.write(dest, pb.doc_title(info["name"], first),
                          pb.doc_html(info["name"], first, plan, findings, score, material), pb.todo_title(first),
-                         lambda url: pb.todo_html(url, rec, lo, hi))
+                         lambda url: pb.todo_html(url, rec, lo, hi), files=files)
         writer = None
         if w["status"] != "written":
             return dict(out, status="held", reason=w["reason"], business_writes=1, automatic_retry_allowed=False)
