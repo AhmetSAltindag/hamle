@@ -238,9 +238,15 @@ class FakeBasecamp:
 
 
 class Write(Plan):
+    def raw(self, method, url, data, mime, expected):
+        self.uploads.append((method, url, mime, data[:4]))
+        return {"attachable_sgid": f"BAh7CEkiCGdpZAY6BkVU{len(self.uploads)}"}
+
     def live(self, bc, model=None):
         def factory(dest):
-            return pb.PlanBasecamp(5898865, dest["project_id"], dest["list_id"], send=bc.send)
+            return pb.PlanBasecamp(5898865, dest["project_id"], dest["list_id"], send=bc.send,
+                                   send_raw=self.raw)
+        self.uploads = []
         return self.plan(model=model, preview=False, cfg=dict(enabled=True, basecamp_write=True),
                          http_factory=factory)
 
@@ -251,6 +257,11 @@ class Write(Plan):
         posts = [(m, p) for m, p, _ in bc.calls if m == "POST"]
         self.assertEqual([p.rsplit("/", 1)[-1] for _, p in posts], ["documents.json", "todos.json"])
         self.assertIn("<h1>Takvim</h1>", bc.doc["content"])
+        self.assertEqual([(m, u.split("?")[0].rsplit("/", 1)[-1], d) for m, u, _, d in self.uploads],
+                         [("POST", "attachments.json", b"%PDF"), ("POST", "attachments.json", b"PK\x03\x04")])
+        self.assertIn("Icerik-Plani-Hamle-taslagi.pdf", self.uploads[0][1])
+        self.assertIn('<bc-attachment sgid="BAh7CEkiCGdpZAY6BkVU1"></bc-attachment>', bc.doc["content"])
+        self.assertIn('<bc-attachment sgid="BAh7CEkiCGdpZAY6BkVU2"></bc-attachment>', bc.doc["content"])
         self.assertIn("<strong>31.12 Per · Karusel · Instagram</strong>", bc.doc["content"])
         self.assertEqual((bc.todo["assignee_ids"], bc.todo["completion_subscriber_ids"], bc.todo["notify"]),
                          ([OZGE], [AHMET, BERKAY, CANSU], True))
@@ -356,6 +367,35 @@ class Wiring(unittest.TestCase):
                 self.assertEqual(worker.main(argv), 2)
             self.assertEqual(json.loads(buf.getvalue())["reason"], reason, argv)
         self.assertIn("content_plan_preview", worker.OK_STATUSES)
+
+
+class Files(Plan):
+    def test_preview_carries_the_plan_and_makes_pdf_and_docx(self):
+        import tempfile
+        import zipfile
+        from pathlib import Path
+        import v11_content_plan_files as pf
+        r = self.plan()
+        p = r["plan_data"]
+        self.assertEqual((p["name"], len(p["plan"]["days"])), ("WAT Mobilite", 31))
+        self.assertNotIn("model_calls", p["plan"])
+        json.dumps(r)
+        with tempfile.TemporaryDirectory() as tmp:
+            Path(tmp, "r.json").write_text(json.dumps(r), encoding="utf-8")
+            with redirect_stdout(io.StringIO()):
+                pf.main([str(Path(tmp, "r.json")), tmp])
+            pdf = Path(tmp, "WAT-Mobilite-2026-12-Icerik-Plani-Hamle-taslagi.pdf").read_bytes()
+            docx = Path(tmp, "WAT-Mobilite-2026-12-Icerik-Plani-Hamle-taslagi.docx")
+            self.assertTrue(pdf.startswith(b"%PDF-"))
+            with zipfile.ZipFile(docx) as z:
+                xml = z.read("word/document.xml").decode("utf-8")
+            self.assertIn("Takvim", xml)
+            self.assertIn("Aralık 2026", xml)
+
+    def test_file_names_are_ascii(self):
+        import v11_content_plan_files as pf
+        self.assertEqual(pf.file_name("Yâ Da Kozmetik", DEC, "docx"),
+                         "Ya-Da-Kozmetik-2026-12-Icerik-Plani-Hamle-taslagi.docx")
 
 
 if __name__ == "__main__":
