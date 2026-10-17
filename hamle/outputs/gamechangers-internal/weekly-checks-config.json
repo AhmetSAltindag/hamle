@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "enabled": false,
+  "decision_ref": "SM & MT step 3 (items 5, 10, 11), GO 17 Oct 2026; Ahmet 12:51Z: read Basecamp tasks AND Hamle's monthly plan ('ikisi birden'). Code only, preview only, no writes, no mail.",
+  "shoot_words": ["çekim", "shoot"],
+  "brands": {
+    "wat_mobilite": {"lists": ["social", "motion"]}
+  }
+}
