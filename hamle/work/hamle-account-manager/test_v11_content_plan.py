@@ -24,13 +24,13 @@ def config(**kw):
     return c
 
 
-def skeleton(first=DEC, skip=(), dup=False, recommended=19, extra=None):
+def skeleton(first=DEC, skip=(), dup=False, recommended=19, extra=None, platform=lambda d: "instagram"):
     days = []
     for n, d in enumerate(cp.month_days(first)):
         if d.day in skip:
             continue
         days.append({"date": d.isoformat(), "pillar": "Şarj alışkanlığı", "topic": f"Konu {d.day}" if not (dup and d.day == 2)
-                     else "Konu 1", "format": "reels" if n % 2 else "karusel", "platform": "instagram",
+                     else "Konu 1", "format": "reels" if n % 2 else "karusel", "platform": platform(d),
                      "special_day": {3: "Dünya Engelliler Günü", 31: "Yılbaşı"}.get(d.day), "why": "Kış yolculukları başlıyor.",
                      "recommended": n < recommended})
     out = {"strategy": ["Çatı mesaj: şarj her yerde, kolay."], "last_month": [],
@@ -40,9 +40,9 @@ def skeleton(first=DEC, skip=(), dup=False, recommended=19, extra=None):
     return out
 
 
-def details(request, tags=4, caption="Kışın şarj süresi uzar mı? Kısa cevap: biraz. #wat"):
+def details(request, tags=4, caption="Kışın şarj süresi uzar mı? Kısa cevap: biraz. #wat", linkedin=None):
     return {"items": [{"date": d["date"], "hook": "Kışın şarj neden yavaşlar?", "caption": caption,
-                       "hashtags": [f"#etiket{i}" for i in range(tags)], "cta": "Uygulamayı indir.",
+                       "linkedin_caption": linkedin, "hashtags": [f"#etiket{i}" for i in range(tags)], "cta": "Uygulamayı indir.",
                        "visual_brief": "Karlı otoparkta WAT istasyonu, yakın plan konnektör.",
                        "on_screen_text": "Kış şarjı 101", "size": "9:16, 20-30 sn"} for d in request["days"]]}
 
@@ -74,6 +74,7 @@ class Config(Plan):
         cfg = cp.validate_config(cp.load_config())
         self.assertIs(cfg["enabled"], False)
         self.assertEqual(list(cfg["brands"]), ["wat_mobilite"])
+        self.assertEqual(cfg["brands"]["wat_mobilite"]["platforms"], ["instagram", "linkedin"])
         self.assertEqual(cfg["brands"]["wat_mobilite"]["posts"], (18, 20))
         import model_routing
         self.assertNotIn(cp.ROLE, model_routing.ROLES)
@@ -124,6 +125,17 @@ class Build(Plan):
         self.assertEqual(r["findings"], 5)
         self.assertIn("05.12 Cmt · öneri yok", text)
         self.assertEqual(r["score"], 100 - 2 * 15 - 3 * 3)
+
+    def test_the_same_news_on_instagram_and_linkedin(self):
+        both = lambda d: cp.BOTH if d.day % 3 == 0 else "linkedin" if d.day == 1 else "instagram"
+        r = self.plan(model=Fake(skeleton(platform=both), linkedin="Ağımız büyüyor: detaylar https://wat.com.tr"))
+        text = r["text"]
+        self.assertIn("03.12 Per · Karusel · Instagram + LinkedIn · ", text)
+        self.assertIn("01.12 Sal · Karusel · LinkedIn · ", text)
+        self.assertIn("LinkedIn metni:\nAğımız büyüyor", text)
+        self.assertEqual(text.count("LinkedIn metni:"), 10)  # only on the shared days
+        self.assertIn("LinkedIn caption'ında link var (03, 06, 09,", text)
+        self.assertEqual(self.model.calls[0][1]["material"]["brand"]["platforms"], ["instagram", "linkedin"])
 
     def test_a_failed_model_holds_and_writes_nothing(self):
         def broken(task, request):

@@ -43,6 +43,8 @@ ISTANBUL = ZoneInfo("Europe/Istanbul")
 MEMORY_DAYS = 90
 MAX_INPUT_BYTES = 15_000            # model.MAX_INPUT_BYTES is 16 000
 DETAIL_DAYS = 8
+PLATFORMS = ("instagram", "tiktok", "linkedin", "youtube", "facebook")
+BOTH = "instagram+linkedin"  # the same news on both (WAT, Ahmet 17 Oct)
 FORMATS = ("reels", "karusel", "tekil", "story", "video", "linkedin_belge", "linkedin_metin")
 FORMAT_LABELS = {"reels": "Reels", "karusel": "Karusel", "tekil": "Tekil görsel", "story": "Story", "video": "Video",
                  "linkedin_belge": "LinkedIn belge", "linkedin_metin": "LinkedIn metin"}
@@ -90,8 +92,7 @@ def validate_config(cfg):
         _need(isinstance(posts, list) and len(posts) == 2 and all(type(n) is int for n in posts)
               and 1 <= posts[0] <= posts[1] <= 31, "content_plan_posts_invalid")
         platforms = b.get("platforms")
-        _need(isinstance(platforms, list) and platforms and all(p in ("instagram", "tiktok", "linkedin", "youtube",
-                                                                        "facebook") for p in platforms),
+        _need(isinstance(platforms, list) and platforms and all(p in PLATFORMS for p in platforms),
               "content_plan_platforms_invalid")
         out[key] = {"posts": tuple(posts), "platforms": list(platforms)}
     m = cfg.get("model") or {}
@@ -216,9 +217,9 @@ SKELETON_SCHEMA = _o({
     "last_month": _a(_s(240), 4),
     "pillars": _a(_o({"name": _s(60), "why": _s(200)}), 6, 2),
     "days": _a(_o({"date": _s(10), "pillar": _s(60), "topic": _s(160), "format": {"type": "string", "enum": list(FORMATS)},
-                   "platform": {"type": "string", "enum": ["instagram", "tiktok", "linkedin", "youtube", "facebook"]},
+                   "platform": {"type": "string", "enum": list(PLATFORMS) + [BOTH]},
                    "special_day": _ns(80), "why": _s(200), "recommended": {"type": "boolean"}}), 31, 28)})
-DETAIL_SCHEMA = _o({"items": _a(_o({"date": _s(10), "hook": _s(160), "caption": _s(900), "hashtags": _a(_s(40), 8),
+DETAIL_SCHEMA = _o({"items": _a(_o({"date": _s(10), "hook": _s(160), "caption": _s(900), "linkedin_caption": _ns(900), "hashtags": _a(_s(40), 8),
                                     "cta": _ns(120), "visual_brief": _s(500), "on_screen_text": _ns(200),
                                     "size": _s(80)}), DETAIL_DAYS, 1)})
 
@@ -276,6 +277,8 @@ def build_plan(material, first, call):
             i = by.get(r["date"])
             if i:
                 r.update(hook=_line(i["hook"], 160), caption=str(i["caption"]).strip()[:900],
+                         linkedin_caption=(str(i.get("linkedin_caption") or "").strip()[:900] or None
+                                           if r.get("platform") == BOTH else None),
                          hashtags=[h if h.startswith("#") else "#" + h for h in (_line(x, 40).replace(" ", "")
                                                                                  for x in i.get("hashtags") or []) if h],
                          cta=_line(i.get("cta"), 120) or None, visual_brief=_line(i["visual_brief"], 500),
@@ -317,10 +320,11 @@ def check(plan, material, first):
 
     def listed(ds):
         return ", ".join(ds[:10]) + (" …" if len(ds) > 10 else "")
-    link = days_of(lambda r: r.get("platform") == "linkedin" and URL.search(r.get("caption") or ""))
+    link = days_of(lambda r: URL.search((r.get("caption") if r.get("platform") == "linkedin" else
+                                         r.get("linkedin_caption") if r.get("platform") == BOTH else "") or ""))
     if link:
         out.append(("sarı", f"LinkedIn caption'ında link var ({listed(link)}); kural defterine göre erişim düşer."))
-    tags = days_of(lambda r: r.get("platform") == "instagram" and r.get("caption")
+    tags = days_of(lambda r: r.get("platform") in ("instagram", BOTH) and r.get("caption")
                    and not 3 <= len(r.get("hashtags") or []) <= 5)
     if tags:
         out.append(("sarı", f"Instagram'da 3-5 niş hashtag önerilir; uymayan günler: {listed(tags)}."))
@@ -333,6 +337,11 @@ def check(plan, material, first):
 
 
 # ------------------------------------------------------------------ text
+def platform_label(p):
+    return {"linkedin": "LinkedIn", "tiktok": "TikTok", "youtube": "YouTube", BOTH: "Instagram + LinkedIn"}.get(
+        p, str(p).capitalize())
+
+
 def _day(r):
     d = date.fromisoformat(r["date"])
     return f"{d.day:02d}.{d.month:02d} {DAY_NAMES[d.weekday()]}"
@@ -364,7 +373,7 @@ def render(name, first, plan, findings, score, material):
             lines.append(f"{_day(r)} · öneri yok")
             continue
         lines.append(f"{'⭐ ' if r.get('recommended') else ''}{_day(r)} · {FORMAT_LABELS.get(r['format'], r['format'])} · "
-                     f"{r['platform'].capitalize()} · {r['pillar']} · {r['topic']}"
+                     f"{platform_label(r['platform'])} · {r['pillar']} · {r['topic']}"
                      + (f" · Özel gün: {r['special_day']}" if r.get("special_day") else ""))
     lines += ["", head("İÇERİK DETAYLARI")]
     for r in plan["days"]:
@@ -372,6 +381,8 @@ def render(name, first, plan, findings, score, material):
             continue
         lines += ["", f"{'⭐ ' if r.get('recommended') else ''}{_day(r)} · {r['topic']}",
                   f"Neden: {r['why']}", f"Kanca: {r['hook']}", "Caption:", r["caption"]]
+        if r.get("linkedin_caption"):
+            lines += ["LinkedIn metni:", r["linkedin_caption"]]
         if r.get("hashtags"):
             lines.append("Hashtag: " + " ".join(r["hashtags"]))
         if r.get("cta"):
