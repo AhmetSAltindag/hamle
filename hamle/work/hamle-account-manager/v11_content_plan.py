@@ -18,7 +18,8 @@ Model: own settings in content-plan-config.json (Claude Opus, no web search), th
 ModelGate (one chance per exact request, never retried):
   1. skeleton: strategy reminder, last-month notes, content pillars and the calendar (one row per day: pillar,
      topic, format, platform, special day, why, recommended);
-  2. details, in parts of DETAIL_DAYS days: hook, caption, hashtags, CTA, visual brief, on-screen text, size/length.
+  2. details, in parts of DETAIL_DAYS days: hook, caption, hashtags, CTA, short designer brief, visual brief,
+     on-screen text, size/length.
 The code then checks the plan: every day present once, special days covered, no repeated topic, the recommended
 count against the contract, rule book checks (no link in a LinkedIn caption, 3-5 hashtags on Instagram) and the
 agency scope (no media buying / ads / sponsored content). The findings and a code score go on top of the plan.
@@ -59,6 +60,9 @@ OUT_OF_SCOPE = re.compile(r"\b(reklam\w*|sponsorlu\w*|sponsored|ads? manager|üc
 # style note, not ad content (WAT Dec preview 17 Oct, days 12 and 26).
 DENIED = re.compile(r"^(\s+[^\W\d_]+){0,2}?\s+(yok|değil|olmadan|yerine|kullanılmaz|olmasın|olmayan)\b", re.I)
 URL = re.compile(r"https?://|www\.", re.I)
+
+
+APPROVED_MIN = 90  # an approved plan is written only if the code checks still give it this score, no red finding
 
 
 class ContentPlanError(ValueError):
@@ -272,7 +276,7 @@ SKELETON_SCHEMA = _o({
                    "series": _ns(60), "special_day": _ns(80), "why": _s(200),
                    "recommended": {"type": "boolean"}}), 31, 28)})
 DETAIL_SCHEMA = _o({"items": _a(_o({"date": _s(10), "hook": _s(160), "caption": _s(900), "linkedin_caption": _ns(900), "hashtags": _a(_s(40), 8),
-                                    "cta": _ns(120), "visual_brief": _s(500), "on_screen_text": _ns(200),
+                                    "cta": _ns(120), "short_brief": _s(420), "visual_brief": _s(500), "on_screen_text": _ns(200),
                                     "size": _s(80), "success_metric": _s(140)}), DETAIL_DAYS, 1)})
 
 
@@ -365,7 +369,8 @@ def build_plan(material, first, call):
                                            if r.get("platform") == BOTH else None),
                          hashtags=[h if h.startswith("#") else "#" + h for h in (_line(x, 40).replace(" ", "")
                                                                                  for x in i.get("hashtags") or []) if h],
-                         cta=_line(i.get("cta"), 120) or None, visual_brief=_line(i["visual_brief"], 500),
+                         cta=_line(i.get("cta"), 120) or None, short_brief=_line(i.get("short_brief"), 420) or None,
+                         visual_brief=_line(i["visual_brief"], 500),
                          on_screen_text=_line(i.get("on_screen_text"), 200) or None, size=_line(i["size"], 80),
                          success_metric=_line(i.get("success_metric"), 140) or None)
     return {"strategy": [_line(x, 240) for x in sk.get("strategy") or []],
@@ -473,6 +478,8 @@ def render(name, first, plan, findings, score, material):
              f"Her gün için bir öneri ({len(plan['days'])} gün); ⭐ {rec} öneri sözleşmedeki {lo}-{hi} paylaşım için "
              "önerilen seçim. Seçim, eleme ve ekleme sosyal medya sorumlusunda. Müşteriye Hamle göndermez.",
              f"Hamle kontrolü: {score}/100" + (" · " + str(len(findings)) + " not" if findings else " · not yok")]
+    if plan.get("team_notes"):
+        lines += ["", "EKİBİN BAKMASI GEREKENLER"] + [f"- {str(t).upper()}: {x}" for t, x in plan["team_notes"]]
     if findings:
         lines += [""] + [("🔴 " if lv == "kırmızı" else "🟡 ") + text for lv, text in findings]
     number = iter(range(1, 20))
@@ -519,9 +526,11 @@ def render(name, first, plan, findings, score, material):
         if r.get("missing") or not r.get("caption"):
             continue
         lines += ["", f"{'⭐ ' if r.get('recommended') else ''}{_day(r)} · {r['topic']}",
-                  f"Neden: {r['why']}", f"Kanca: {r['hook']}", "Caption:", r["caption"]]
+                  f"Neden: {r['why']}", f"Kanca: {r['hook']}", "Paylaşım metni:", r["caption"]]
         if r.get("linkedin_caption"):
-            lines += ["LinkedIn metni:", r["linkedin_caption"]]
+            lines += ["Paylaşım metni (LinkedIn):", r["linkedin_caption"]]
+        if r.get("short_brief"):
+            lines.append("Tasarımcıya kısa brief: " + r["short_brief"])
         if r.get("hashtags"):
             lines.append("Hashtag: " + " ".join(r["hashtags"]))
         if r.get("cta"):
@@ -540,10 +549,12 @@ def render(name, first, plan, findings, score, material):
 
 # ------------------------------------------------------------------ run
 def run_content_plan(ops, *, config, catalog, cards, cal, book_reader, upcoming_reader, model, clock, preview=True,
-                     brand=None, month=None, http_factory=None, notify=True):
+                     brand=None, month=None, http_factory=None, notify=True, approved=None):
     """preview=True: builds one brand's plan and returns its text plus where it would go; writes nothing.
     preview=False (only with enabled and basecamp_write on): the same plan, written once to Basecamp
-    (v11_content_plan_basecamp: document + to-do) under record content-plan-<brand>-<YYYYMM>."""
+    (v11_content_plan_basecamp: document + to-do) under record content-plan-<brand>-<YYYYMM>.
+    approved (with preview=False): the plan Ahmet reviewed (content-plan-approved-<brand>-<YYYYMM>.json), written
+    as it is with 0 model calls; the code checks run again and a score under APPROVED_MIN writes nothing."""
     import uuid
     import v11_content_plan_basecamp as pb
     report = {"status": None, "model_calls": 0, "business_writes": 0}
@@ -569,6 +580,15 @@ def run_content_plan(ops, *, config, catalog, cards, cal, book_reader, upcoming_
         report["basecamp"] = {"project_id": dest["project_id"], "list_id": dest["list_id"],
                               "assignee_ids": dest["assignee_ids"], "subscriber_ids": dest["subscriber_ids"],
                               "document": pb.doc_title(info["name"], first), "todo": pb.todo_title(first)}
+        if approved is not None:
+            _need(not preview and isinstance(approved, dict) and approved.get("schema_version") == 1
+                  and approved.get("brand") == key and approved.get("month") == f"{first:%Y-%m}"
+                  and approved.get("name") == info["name"] and isinstance(approved.get("plan"), dict)
+                  and isinstance(approved.get("material"), dict), "content_plan_approved_mismatch")
+            fixed = dict(approved["plan"], model_calls=0)
+            fixed_findings, fixed_score = check(fixed, approved["material"], first)
+            _need(fixed_score >= APPROVED_MIN and not any(f[0] == "kırmızı" for f in fixed_findings),
+                  "content_plan_approved_below_bar")
         if not preview:
             writer = pb.PlanWriter(ops, http_factory(dest), key, first)
             if not writer.claim(uuid.uuid4().hex):
@@ -576,9 +596,13 @@ def run_content_plan(ops, *, config, catalog, cards, cal, book_reader, upcoming_
                 return dict(report, status="no_new_work", reason="content_plan_already_recorded")
         previous = ops._run(lambda tx, _: tx.get(record_key(key, (first - timedelta(days=1)).replace(day=1))),
                             allow_expired=True)
-        material = gather(ops, key, info["name"], card, cfg["brands"][key], first, today,
-                          upcoming=upcoming_reader(info["project_id"]), cal=cal, book=book_reader(), previous=previous)
-        plan = build_plan(material, first, model)
+        if approved is not None:
+            material, plan = approved["material"], fixed
+        else:
+            material = gather(ops, key, info["name"], card, cfg["brands"][key], first, today,
+                              upcoming=upcoming_reader(info["project_id"]), cal=cal, book=book_reader(),
+                              previous=previous)
+            plan = build_plan(material, first, model)
         report["model_calls"] = plan["model_calls"]
         if hasattr(model, "usages"):
             report["usage"] = usage_totals(model.usages)
@@ -610,7 +634,8 @@ def run_content_plan(ops, *, config, catalog, cards, cal, book_reader, upcoming_
         return dict(report, status="held", reason=_code(exc), automatic_retry_allowed=False)
 
 
-def run_worker_content_plan(ops, secrets, *, clock=None, brand=None, month=None, preview=True, notify=True):
+def run_worker_content_plan(ops, secrets, *, clock=None, brand=None, month=None, preview=True, notify=True,
+                            approved=False):
     """Entry for worker.py --mode content_plan --plan-preview [--plan-brand KEY] [--plan-month YYYY-MM], or
     --plan-write --plan-brand KEY --plan-month YYYY-MM [--plan-quiet]."""
     import basecamp_cloud_auth
@@ -641,10 +666,15 @@ def run_worker_content_plan(ops, secrets, *, clock=None, brand=None, month=None,
                                send=session_send(token, provider._session),
                                send_raw=pb.raw_send(token, provider._session))
     try:
-        model = model_source(ops, {"anthropic": lambda: provider.anthropic_key(secrets)}, catalog,
-                             validate_config(config))
+        plan_file = None
+        if approved:
+            _need(not preview and brand and month, "content_plan_approved_requires_write")
+            plan_file = dd._load(f"content-plan-approved-{brand}-{month.replace('-', '')}.json")
+        model = None if approved else model_source(ops, {"anthropic": lambda: provider.anthropic_key(secrets)},
+                                                     catalog, validate_config(config))
         return run_content_plan(ops, config=config, catalog=catalog, cards=dd.load_brand_cards(), cal=dd.load_calendar(),
                                 book_reader=book, upcoming_reader=upcoming, model=model, clock=clock, preview=preview,
-                                brand=brand, month=month, http_factory=None if preview else http, notify=notify)
+                                brand=brand, month=month, http_factory=None if preview else http, notify=notify,
+                                approved=plan_file)
     finally:
         session.close()

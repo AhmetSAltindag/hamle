@@ -1,4 +1,7 @@
-"""Linux image build gate: the monthly content plan renders as PDF (WeasyPrint) and DOCX (stdlib zip)."""
+"""Linux image build gate: the monthly content plan renders as PDF (WeasyPrint) and DOCX (stdlib zip).
+
+A whole month (31 days, many pages): plan_pdf itself refuses a PDF in which a day, or the last day's last field, is
+missing (v11_content_plan_files.complete), so a print that loses its end fails the build."""
 from datetime import date
 
 import v11_content_plan_files as pf
@@ -10,8 +13,11 @@ def smoke():
            "hook": "Kışın şarj neden yavaşlar?", "caption": "Kısa cevap: biraz.", "linkedin_caption": None,
            "hashtags": ["#kis"], "cta": "Uygulamayı indir.", "visual_brief": "Karlı otopark.",
            "on_screen_text": "Kış şarjı 101", "size": "4:5", "success_metric": "Kaydetme sayısı"}
+    days = [dict(day, date=f"2026-12-{n:02d}", topic=f"{day['topic']} {n}", short_brief="Fikir: karlı sabah, sıcak ışık.",
+                 caption=" ".join([day["caption"]] * 12)) for n in range(1, 32)]
     plan = {"strategy": ["Çatı mesaj: şarj her yerde, kolay."], "last_month": [], "pillars": [], "brand_asks": [],
-            "algorithm_moves": [], "shoots": [], "days": [day]}
+            "algorithm_moves": [], "shoots": [], "days": days,
+            "team_notes": [["Teyit", "Smoke notu."]]}
     files = pf.plan_files("Hamle Smoke", date(2026, 12, 1), plan, [], 100,
                           {"brand": {"name": "Hamle Smoke", "platforms": ["instagram"], "posts_per_month": [18, 20]},
                            "special_days": [], "algorithm": []})

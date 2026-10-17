@@ -601,6 +601,8 @@ def main(argv=None):
     # One brand's month written to Basecamp (Ahmet's GO per run); --plan-quiet: nobody is notified now.
     parser.add_argument("--plan-write", action="store_true")
     parser.add_argument("--plan-quiet", action="store_true")
+    # --plan-approved: write the reviewed plan file (content-plan-approved-<brand>-<YYYYMM>.json), 0 model calls.
+    parser.add_argument("--plan-approved", action="store_true")
     parser.add_argument("--plan-brand")
     parser.add_argument("--plan-month")
     parser.add_argument("--checks-preview", action="store_true")
@@ -669,6 +671,7 @@ def main(argv=None):
         _require(not args.plan_write or (args.plan_brand is not None and args.plan_month is not None),
                  "plan_write_requires_brand_and_month")
         _require(not args.plan_quiet or args.plan_write, "plan_quiet_requires_plan_write")
+        _require(not args.plan_approved or args.plan_write, "plan_approved_requires_plan_write")
         # Haftalık ve günlük kontroller: preview only, code only.
         _require((args.mode == "weekly_checks") == args.checks_preview, "weekly_checks_requires_checks_preview")
         _require((args.checks_brand is None or re.fullmatch(r"[a-z_]{2,40}", args.checks_brand))
@@ -848,7 +851,8 @@ def main(argv=None):
             # enabled + basecamp_write) writes the document with PDF + DOCX and one to-do, once. Sends no mail.
             from v11_content_plan import run_worker_content_plan
             result = run_worker_content_plan(store, secrets, brand=args.plan_brand, month=args.plan_month,
-                                             preview=not args.plan_write, notify=not args.plan_quiet)
+                                             preview=not args.plan_write, notify=not args.plan_quiet,
+                                             approved=args.plan_approved)
         elif args.mode == "weekly_checks":
             # Haftalık ve günlük kontroller (SM & MT step 3, Ahmet 2026-10-17): next week's empty days, repeats, special
             # days and shoots, tomorrow's tasks against the rule book; Basecamp GET + plan record only, no model call,

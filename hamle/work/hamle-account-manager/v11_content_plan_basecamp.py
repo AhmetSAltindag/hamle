@@ -55,45 +55,27 @@ def doc_title(name, first):
 
 
 def doc_html(name, first, plan, findings, score, material):
-    """The plan in Basecamp rich text (div, h1, strong, em, br, ul/li only)."""
+    """The plan in Basecamp rich text (div, h1, strong, em, br, ul/li only), in the PDF's order (v11_content_plan_files)."""
+    import v11_content_plan_files as pf
     lo, hi = material["brand"]["posts_per_month"]
-    rec = sum(1 for r in plan["days"] if r.get("recommended"))
-    out = [f"<div><em>Hamle AI iç taslağı. Her gün için bir öneri var; ⭐ {rec} gün sözleşmedeki {lo}-{hi} paylaşım "
-           "için önerilen seçim. Seçim, eleme ve ekleme sosyal medya sorumlusunda. Müşteriye Hamle göndermez.</em></div>",
-           f"<div>Hamle kontrolü: {score}/100</div>"]
-    if findings:
-        out.append("<ul>" + "".join(f"<li>{'🔴' if lv == 'kırmızı' else '🟡'} {_e(t)}</li>" for lv, t in findings)
-                   + "</ul>")
-    out += ["<h1>Strateji hatırlatması</h1>", "<ul>" + "".join(f"<li>{_e(x)}</li>" for x in plan["strategy"])
-            + "</ul>", f"<div><em>{_e(cp.STRATEGY_NOTE)}</em></div>"]
-    if plan["last_month"]:
-        out += ["<h1>Geçen ay</h1>", "<ul>" + "".join(f"<li>{_e(x)}</li>" for x in plan["last_month"]) + "</ul>"]
-    out += ["<h1>İçerik sütunları</h1>",
-            "<ul>" + "".join(f"<li><strong>{_e(p['name'])}</strong>: {_e(p['why'])}</li>" for p in plan["pillars"])
-            + "</ul>"]
-    camps = material["brand"].get("campaigns") or []
-    if camps:
-        out += ["<h1>Kampanya takvimi</h1>", "<ul>" + "".join(
-            f"<li><strong>{_e(c['name'])}</strong>: {cp._dm(c['start'])} - {cp._dm(c['end'])}"
-            + (f" · {_e(c['note'])}" if c.get("note") else "") + "</li>" for c in camps) + "</ul>"]
-    if plan.get("brand_asks"):
-        out += ["<h1>Markadan beklediklerimiz</h1>", "<ul>" + "".join(
-            f"<li>{_e(a['what'])} · kimden: {_e(a['who'])} · ne zamana: {_e(a['by'])}</li>"
-            for a in plan["brand_asks"]) + "</ul>"]
-    algo = material.get("algorithm") or {}
-    if algo.get("rules") or plan.get("algorithm_moves"):
-        out += ["<h1>Bu ay algoritmada ne değişti, biz ne yapıyoruz</h1>", "<ul>" + "".join(
-            f"<li>{r['güven']} {_e(cp.platform_label(r['platform']))}: {_e(r['rule'])}</li>" for r in algo.get("rules") or [])
-            + "".join(f"<li><strong>{_e(x)}</strong></li>" for x in plan.get("algorithm_moves") or []) + "</ul>"]
-    if material["special_days"]:
-        out += ["<h1>Özel günler</h1>", "<ul>" + "".join(
-            f"<li>{s['date'][8:]}.{s['date'][5:7]} {_e(s['name'])}</li>" for s in material["special_days"]) + "</ul>"]
-    if plan.get("shoots"):
-        out.append("<h1>Çekim planı</h1>")
-        out.append("<ul>" + "".join(
-            f"<li><strong>{_e(x['title'])}</strong>" + (f" · {', '.join(cp._dm(d) for d in x['dates'])}" if x["dates"] else "")
-            + f" · yer: {_e(x['place'])} · oyuncu: {_e(x['cast'])}<br>" + "<br>".join(_e(y) for y in x["scenes"]) + "</li>"
-            for x in plan["shoots"]) + "</ul>")
+    n = pf.counts(plan)
+    br = lambda t: _e(t).replace(chr(10), "<br>")
+    out = [f"<div><em>Hamle AI iç taslağı · müşteriye gönderilmez. Ayın her günü için bir öneri var; ⭐ {n['rec']} gün "
+           f"sözleşmedeki {lo}-{hi} paylaşım için önerilen seçim. Seçim, eleme ve ekleme sosyal medya ekibinde.</em></div>",
+           f"<div>{n['days']} gün · ⭐ {n['rec']} önerilen · Instagram {n['ig']} · LinkedIn {n['li']} · ikisi birden "
+           f"{n['both']} · Hamle kontrolü {score}/100</div>"]
+    notes = pf.notes(plan, findings)
+    if notes:
+        out += ["<h1>Ekibin bakması gerekenler</h1>",
+                "<ul>" + "".join(f"<li><strong>{_e(t.upper())}</strong> {_e(x)}</li>" for t, x in notes) + "</ul>"]
+    out += ["<h1>Strateji ve içerik sütunları</h1>",
+            "<ul>" + "".join(f"<li>{_e(x)}</li>" for x in plan["strategy"]) + "</ul>",
+            f"<div><em>{_e(cp.STRATEGY_NOTE)}</em></div>",
+            "<ul>" + "".join(f"<li><strong>{_e(p['name'])}</strong>: {_e(p['why'])}</li>" for p in plan["pillars"]) + "</ul>"]
+    specials = " · ".join(f"{cp._dm(s['date'])} {_e(s['name'])}" for s in material.get("special_days") or [])
+    out.append("<div>" + (f"Özel günler: {specials}<br>" if specials else "") + f"Format dağılımı: {_e(n['formats'])}</div>")
+    for title, lines in pf.extras(plan, material):
+        out += [f"<h1>{_e(title)}</h1>", "<ul>" + "".join(f"<li>{br(x)}</li>" for x in lines) + "</ul>"]
     out.append("<h1>Takvim</h1>")
     rows = []
     for r in plan["days"]:
@@ -106,22 +88,18 @@ def doc_html(name, first, plan, findings, score, material):
                     + (f" · Seri: {_e(r['series'])}" if r.get("series") else "") + f" · {_e(r['topic'])}"
                     + (f" · Özel gün: {_e(r['special_day'])}" if r.get("special_day") else "") + "</li>")
     out.append("<ul>" + "".join(rows) + "</ul>")
-    out.append("<h1>İçerik detayları</h1>")
+    out.append("<h1>Günlerin detayı</h1>")
     for r in plan["days"]:
         if r.get("missing") or not r.get("caption"):
             continue
-        out.append(f"<div><strong>{'⭐ ' if r.get('recommended') else ''}{cp._day(r)} · {_e(r['topic'])}</strong></div>")
-        items = [("Neden", r["why"]), ("Kanca", r["hook"]),
-                 ("Instagram metni" if r.get("linkedin_caption") else "Metin", r["caption"])]
-        if r.get("linkedin_caption"):
-            items.append(("LinkedIn metni", r["linkedin_caption"]))
-        items += [("Hashtag", " ".join(r.get("hashtags") or [])), ("Çağrı", r.get("cta")),
-                  ("Görsel brief", r["visual_brief"]), ("Ekran yazısı", r.get("on_screen_text")),
-                  ("Ölçü / süre", r["size"]), ("Başarı ölçüsü", r.get("success_metric")), ("Durum", "Taslak")]
-        out.append("<ul>" + "".join(f"<li><strong>{k}:</strong> {_e(v).replace(chr(10), '<br>')}</li>"
-                                     for k, v in items if v) + "</ul>")
-    out.append("<div><em>Kaynak: marka hafızası (son 90 gün), Basecamp, özel günler takvimi, Platform Kural "
-               "Defteri.</em></div>")
+        out.append(f"<div><strong>{'⭐ ' if r.get('recommended') else ''}{cp._day(r)} · "
+                   f"{_e(cp.platform_label(r['platform']))} · {_e(cp.FORMAT_LABELS.get(r['format'], r['format']))} · "
+                   f"{_e(r['topic'])}</strong></div>")
+        out.append("<ul>" + "".join(f"<li><strong>{_e(k)}:</strong><br>{br(v)}</li>" if kind != "kv" else
+                                     f"<li><strong>{_e(k)}:</strong> {br(v)}</li>"
+                                     for k, v, kind in pf.detail_fields(r)) + "<li><strong>Durum:</strong> Taslak</li></ul>")
+    out.append("<div><em>Hamle AI · Gamechangers iç taslak · Kaynak: marka hafızası (son 90 gün), Basecamp, özel günler "
+               "takvimi, Platform Kural Defteri. PDF (sunum) ve DOCX (düzenleme) ekte.</em></div>")
     return "".join(out)
 
 
