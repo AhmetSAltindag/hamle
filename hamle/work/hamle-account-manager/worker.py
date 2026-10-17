@@ -522,7 +522,7 @@ OK_STATUSES = ("budget_overrun_report", "overrun_hold_released", "overrun_hold_a
                "monthly_report_completed", "monthly_report_partial", "monthly_report_preview",
                "hamle_karne_sent", "hamle_karne_preview", "prospect_watch_completed", "prospect_watch_preview",
                "prospect_test_requests_completed", "health_check_completed", "health_check_preview",
-               "algorithm_watch_completed", "algorithm_watch_preview", "content_plan_preview",
+               "algorithm_watch_completed", "algorithm_watch_preview", "content_plan_preview", "content_plan_written",
                "weekly_checks_preview")
 
 
@@ -530,9 +530,11 @@ LOG_PART = 20000  # characters (up to 4 bytes each); Cloud Logging cuts a line a
 
 
 def _emit(result):
-    """One JSON line; a content plan preview goes as summary, then plan_data, then the text in parts."""
-    if result.get("status") != "content_plan_preview":
-        print(json.dumps(result, ensure_ascii=False, sort_keys=True))
+    """One JSON line; one too big for a log line (a content plan) goes as summary, then plan_data, then the text in
+    parts."""
+    line = json.dumps(result, ensure_ascii=False, sort_keys=True)
+    if len(line.encode("utf-8")) <= 90000:
+        print(line)
         return
     text = result.get("text") or ""
     parts = [text[i:i + LOG_PART] for i in range(0, len(text), LOG_PART)] or [""]
@@ -596,6 +598,9 @@ def main(argv=None):
     parser.add_argument("--health-preview", action="store_true")
     parser.add_argument("--algorithm-preview", action="store_true")
     parser.add_argument("--plan-preview", action="store_true")
+    # One brand's month written to Basecamp (Ahmet's GO per run); --plan-quiet: nobody is notified now.
+    parser.add_argument("--plan-write", action="store_true")
+    parser.add_argument("--plan-quiet", action="store_true")
     parser.add_argument("--plan-brand")
     parser.add_argument("--plan-month")
     parser.add_argument("--checks-preview", action="store_true")
@@ -656,10 +661,14 @@ def main(argv=None):
         _require(not args.health_preview or args.mode == "health_check", "health_preview_requires_health_check")
         _require(not args.algorithm_preview or args.mode == "algorithm_watch",
                  "algorithm_preview_requires_algorithm_watch")
-        # İçerik Planı: preview only until its Basecamp change is built.
-        _require((args.mode == "content_plan") == args.plan_preview, "content_plan_requires_plan_preview")
-        _require((args.plan_brand is None and args.plan_month is None) or args.mode == "content_plan",
-                 "plan_flags_require_content_plan")
+        # İçerik Planı: a preview, or one named brand and month written to Basecamp (Ahmet 2026-10-17 "Basecamp'e yaz").
+        _require((args.mode == "content_plan") == (args.plan_preview != args.plan_write),
+                 "content_plan_requires_plan_preview_or_write")
+        _require((args.plan_brand is None and args.plan_month is None and not args.plan_quiet)
+                 or args.mode == "content_plan", "plan_flags_require_content_plan")
+        _require(not args.plan_write or (args.plan_brand is not None and args.plan_month is not None),
+                 "plan_write_requires_brand_and_month")
+        _require(not args.plan_quiet or args.plan_write, "plan_quiet_requires_plan_write")
         # Haftalık ve günlük kontroller: preview only, code only.
         _require((args.mode == "weekly_checks") == args.checks_preview, "weekly_checks_requires_checks_preview")
         _require((args.checks_brand is None or re.fullmatch(r"[a-z_]{2,40}", args.checks_brand))
@@ -834,10 +843,12 @@ def main(argv=None):
             from v11_algorithm_watch import run_worker_algorithm_watch
             result = run_worker_algorithm_watch(store, secrets, preview=args.algorithm_preview)
         elif args.mode == "content_plan":
-            # Aylık İçerik Planı taslağı (Ahmet 2026-10-17, pilot WAT): preview only; one brand's next-month plan from
-            # its brand memory, Basecamp (GET), special days and the rule book; writes nothing, sends nothing.
+            # Aylık İçerik Planı taslağı (Ahmet 2026-10-17, pilot WAT): one brand's next-month plan from its brand
+            # memory, Basecamp (GET), special days and the rule book. Preview writes nothing; --plan-write (config
+            # enabled + basecamp_write) writes the document with PDF + DOCX and one to-do, once. Sends no mail.
             from v11_content_plan import run_worker_content_plan
-            result = run_worker_content_plan(store, secrets, brand=args.plan_brand, month=args.plan_month)
+            result = run_worker_content_plan(store, secrets, brand=args.plan_brand, month=args.plan_month,
+                                             preview=not args.plan_write, notify=not args.plan_quiet)
         elif args.mode == "weekly_checks":
             # Haftalık ve günlük kontroller (SM & MT step 3, Ahmet 2026-10-17): next week's empty days, repeats, special
             # days and shoots, tomorrow's tasks against the rule book; Basecamp GET + plan record only, no model call,

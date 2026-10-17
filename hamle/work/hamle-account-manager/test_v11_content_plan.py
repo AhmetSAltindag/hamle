@@ -25,6 +25,7 @@ AHMET, CANSU, OZGE, BERKAY = 47470759, 48793256, 52096503, 47658175
 
 def config(**kw):
     c = copy.deepcopy(cp.load_config())
+    c.update(enabled=False, basecamp_write=False)  # each test turns the switches on itself
     c.update(kw)
     return c
 
@@ -75,9 +76,10 @@ class Plan(Base):
 
 
 class Config(Plan):
-    def test_disk_config_is_off_wat_only_and_own_model(self):
+    def test_disk_config_is_wat_only_and_own_model(self):
         cfg = cp.validate_config(cp.load_config())
-        self.assertIs(cfg["enabled"], False)
+        # Ahmet 17 Oct 15:25Z "Basecamp'e yaz": on for WAT only; a write still needs --plan-write with brand + month.
+        self.assertEqual((cfg["enabled"], cfg["basecamp_write"]), (True, True))
         self.assertEqual(list(cfg["brands"]), ["wat_mobilite"])
         self.assertEqual(cfg["brands"]["wat_mobilite"]["platforms"], ["instagram", "linkedin"])
         self.assertIs(cfg["route"].prompt_cache, True)  # the first and only feature with the cache on (17 Oct)
@@ -260,13 +262,25 @@ class Write(Plan):
         self.uploads.append((method, url, mime, data[:4]))
         return {"attachable_sgid": f"BAh7CEkiCGdpZAY6BkVU{len(self.uploads)}"}
 
-    def live(self, bc, model=None):
+    def live(self, bc, model=None, notify=True):
         def factory(dest):
             return pb.PlanBasecamp(5898865, dest["project_id"], dest["list_id"], send=bc.send,
                                    send_raw=self.raw)
         self.uploads = []
         return self.plan(model=model, preview=False, cfg=dict(enabled=True, basecamp_write=True),
-                         http_factory=factory)
+                         http_factory=factory, notify=notify)
+
+    def test_a_quiet_write_notifies_only_ahmet(self):
+        bc = FakeBasecamp()
+        r = self.live(bc, notify=False)
+        self.assertEqual(r["status"], "content_plan_written", r.get("reason"))
+        self.assertEqual((bc.doc["subscriptions"], bc.todo["notify"]), ([AHMET], False))
+        self.assertEqual(bc.todo["assignee_ids"], [OZGE])
+        loud = FakeBasecamp()
+        self.ops.backend.data.pop("content-plan-wat_mobilite-202612")
+        self.live(loud)
+        self.assertNotIn("subscriptions", loud.doc)
+        self.assertIs(loud.todo["notify"], True)
 
     def test_one_document_and_one_todo_then_never_again(self):
         bc = FakeBasecamp()
@@ -376,15 +390,38 @@ class Model(Plan):
 
 
 class Wiring(unittest.TestCase):
+    def test_worker_entry_builds_the_basecamp_writer_only_for_a_write(self):
+        import cloud_providers
+        seen = []
+        fake_session = type("S", (), {"close": lambda self: None})
+        with mock.patch.object(cp, "run_content_plan", lambda ops, **kw: seen.append(kw) or {"status": "x"}), \
+                mock.patch.object(cp, "model_source", lambda *a, **k: None), \
+                mock.patch.object(cloud_providers, "_session", lambda: fake_session()):
+            cp.run_worker_content_plan(None, {}, brand="wat_mobilite", month="2026-12")
+            cp.run_worker_content_plan(None, {}, brand="wat_mobilite", month="2026-12", preview=False, notify=False)
+        self.assertEqual((seen[0]["preview"], seen[0]["http_factory"], seen[0]["notify"]), (True, None, True))
+        self.assertEqual((seen[1]["preview"], seen[1]["notify"]), (False, False))
+        dest = pb.target(load_catalog(), cp.validate_config(cp.load_config()), "wat_mobilite")
+        http = seen[1]["http_factory"](dest)
+        self.assertIsInstance(http, pb.PlanBasecamp)
+        self.assertIsNotNone(http.send_raw)
+        self.assertEqual(dest["principal_id"], AHMET)
+
     def test_worker_flags(self):
-        for argv, reason in ((["--mode", "content_plan"], "content_plan_requires_plan_preview"),
-                             (["--mode", "daily_digest", "--plan-preview"], "content_plan_requires_plan_preview"),
-                             (["--mode", "daily_digest", "--plan-brand", "wat_mobilite"], "plan_flags_require_content_plan")):
+        need = "content_plan_requires_plan_preview_or_write"
+        for argv, reason in ((["--mode", "content_plan"], need),
+                             (["--mode", "daily_digest", "--plan-preview"], need),
+                             (["--mode", "content_plan", "--plan-preview", "--plan-write"], need),
+                             (["--mode", "daily_digest", "--plan-brand", "wat_mobilite"], "plan_flags_require_content_plan"),
+                             (["--mode", "content_plan", "--plan-write", "--plan-brand", "wat_mobilite"],
+                              "plan_write_requires_brand_and_month"),
+                             (["--mode", "content_plan", "--plan-preview", "--plan-quiet"], "plan_quiet_requires_plan_write")):
             buf = io.StringIO()
             with redirect_stdout(buf):
                 self.assertEqual(worker.main(argv), 2)
             self.assertEqual(json.loads(buf.getvalue())["reason"], reason, argv)
         self.assertIn("content_plan_preview", worker.OK_STATUSES)
+        self.assertIn("content_plan_written", worker.OK_STATUSES)
 
 
 class Files(Plan):
