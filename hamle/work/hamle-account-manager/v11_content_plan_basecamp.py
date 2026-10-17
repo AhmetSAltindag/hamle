@@ -70,9 +70,29 @@ def doc_html(name, first, plan, findings, score, material):
     out += ["<h1>İçerik sütunları</h1>",
             "<ul>" + "".join(f"<li><strong>{_e(p['name'])}</strong>: {_e(p['why'])}</li>" for p in plan["pillars"])
             + "</ul>"]
+    camps = material["brand"].get("campaigns") or []
+    if camps:
+        out += ["<h1>Kampanya takvimi</h1>", "<ul>" + "".join(
+            f"<li><strong>{_e(c['name'])}</strong>: {cp._dm(c['start'])} - {cp._dm(c['end'])}"
+            + (f" · {_e(c['note'])}" if c.get("note") else "") + "</li>" for c in camps) + "</ul>"]
+    if plan.get("brand_asks"):
+        out += ["<h1>Markadan beklediklerimiz</h1>", "<ul>" + "".join(
+            f"<li>{_e(a['what'])} · kimden: {_e(a['who'])} · ne zamana: {_e(a['by'])}</li>"
+            for a in plan["brand_asks"]) + "</ul>"]
+    algo = material.get("algorithm") or {}
+    if algo.get("rules") or plan.get("algorithm_moves"):
+        out += ["<h1>Bu ay algoritmada ne değişti, biz ne yapıyoruz</h1>", "<ul>" + "".join(
+            f"<li>{r['güven']} {_e(cp.platform_label(r['platform']))}: {_e(r['rule'])}</li>" for r in algo.get("rules") or [])
+            + "".join(f"<li><strong>{_e(x)}</strong></li>" for x in plan.get("algorithm_moves") or []) + "</ul>"]
     if material["special_days"]:
         out += ["<h1>Özel günler</h1>", "<ul>" + "".join(
             f"<li>{s['date'][8:]}.{s['date'][5:7]} {_e(s['name'])}</li>" for s in material["special_days"]) + "</ul>"]
+    if plan.get("shoots"):
+        out.append("<h1>Çekim planı</h1>")
+        out.append("<ul>" + "".join(
+            f"<li><strong>{_e(x['title'])}</strong>" + (f" · {', '.join(cp._dm(d) for d in x['dates'])}" if x["dates"] else "")
+            + f" · yer: {_e(x['place'])} · oyuncu: {_e(x['cast'])}<br>" + "<br>".join(_e(y) for y in x["scenes"]) + "</li>"
+            for x in plan["shoots"]) + "</ul>")
     out.append("<h1>Takvim</h1>")
     rows = []
     for r in plan["days"]:
@@ -81,7 +101,8 @@ def doc_html(name, first, plan, findings, score, material):
             continue
         head = (f"{'⭐ ' if r.get('recommended') else ''}{cp._day(r)} · {_e(cp.FORMAT_LABELS.get(r['format'], r['format']))}"
                 f" · {_e(cp.platform_label(r['platform']))}")
-        rows.append(f"<li><strong>{head}</strong> · {_e(r['pillar'])} · {_e(r['topic'])}"
+        rows.append(f"<li><strong>{head}</strong> · {_e(r['pillar'])}"
+                    + (f" · Seri: {_e(r['series'])}" if r.get("series") else "") + f" · {_e(r['topic'])}"
                     + (f" · Özel gün: {_e(r['special_day'])}" if r.get("special_day") else "") + "</li>")
     out.append("<ul>" + "".join(rows) + "</ul>")
     out.append("<h1>İçerik detayları</h1>")
@@ -95,7 +116,7 @@ def doc_html(name, first, plan, findings, score, material):
             items.append(("LinkedIn metni", r["linkedin_caption"]))
         items += [("Hashtag", " ".join(r.get("hashtags") or [])), ("Çağrı", r.get("cta")),
                   ("Görsel brief", r["visual_brief"]), ("Ekran yazısı", r.get("on_screen_text")),
-                  ("Ölçü / süre", r["size"])]
+                  ("Ölçü / süre", r["size"]), ("Başarı ölçüsü", r.get("success_metric")), ("Durum", "Taslak")]
         out.append("<ul>" + "".join(f"<li><strong>{k}:</strong> {_e(v).replace(chr(10), '<br>')}</li>"
                                      for k, v in items if v) + "</ul>")
     out.append("<div><em>Kaynak: marka hafızası (son 90 gün), Basecamp, özel günler takvimi, Platform Kural "
