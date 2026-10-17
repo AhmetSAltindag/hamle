@@ -41,7 +41,7 @@ def target(catalog, cfg, key):
     follow = [owner, principal] + list(cfg["brands"][key]["designers"])
     _need(all(type(x) is int and str(x) in people for x in [sm] + follow), "content_plan_person_unknown")
     subs = sorted({x for x in follow if x != sm})
-    return {"project_id": pid, "list_id": lid, "assignee_ids": [sm], "subscriber_ids": subs,
+    return {"project_id": pid, "list_id": lid, "assignee_ids": [sm], "subscriber_ids": subs, "principal_id": principal,
             "account_id": (catalog.get("basecamp") or {}).get("account_id")}
 
 
@@ -232,8 +232,10 @@ class PlanWriter:
     def mark(self, **fields):
         self._write(lambda row, now: row.update(fields, at=now), fenced=False)
 
-    def write(self, dest, title, body, todo_name, todo_body, files=()):
-        """Document, then the to-do pointing at it. Returns the receipts; any doubt -> state unknown, no retry."""
+    def write(self, dest, title, body, todo_name, todo_body, files=(), notify=True):
+        """Document, then the to-do pointing at it. Returns the receipts; any doubt -> state unknown, no retry.
+        notify=False (a weekend write): only the principal is subscribed to the document and the to-do is assigned
+        without a notification; the team sees it in Basecamp and the morning digest."""
         pid, lid, acct = dest["project_id"], dest["list_id"], self.http.account
         base = f"{API}/{acct}/buckets/{pid}"
 
@@ -263,7 +265,8 @@ class PlanWriter:
                     f'<bc-attachment sgid="{html.escape(x, quote=True)}"></bc-attachment>' for x in sgids)
             step = "document"
             row, _ = self.http.call("POST", f"{base}/vaults/{vid}/documents.json",
-                                    {"title": title, "content": body, "status": "active"}, 201)
+                                    dict({"title": title, "content": body, "status": "active"},
+                                         **({} if notify else {"subscriptions": [dest["principal_id"]]})), 201)
             did = row.get("id") if isinstance(row, dict) else None
             _need(type(did) is int and did > 0, "content_plan_doc_receipt_invalid")
             self.mark(doc_id=did)
@@ -278,7 +281,7 @@ class PlanWriter:
             note = todo_body(doc_url)
             row, _ = self.http.call("POST", f"{base}/todolists/{lid}/todos.json",
                                     {"content": todo_name, "description": note, "assignee_ids": dest["assignee_ids"],
-                                     "completion_subscriber_ids": dest["subscriber_ids"], "notify": True}, 201)
+                                     "completion_subscriber_ids": dest["subscriber_ids"], "notify": bool(notify)}, 201)
             tid = row.get("id") if isinstance(row, dict) else None
             _need(type(tid) is int and tid > 0, "content_plan_todo_receipt_invalid")
             self.mark(todo_id=tid)

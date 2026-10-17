@@ -540,7 +540,7 @@ def render(name, first, plan, findings, score, material):
 
 # ------------------------------------------------------------------ run
 def run_content_plan(ops, *, config, catalog, cards, cal, book_reader, upcoming_reader, model, clock, preview=True,
-                     brand=None, month=None, http_factory=None):
+                     brand=None, month=None, http_factory=None, notify=True):
     """preview=True: builds one brand's plan and returns its text plus where it would go; writes nothing.
     preview=False (only with enabled and basecamp_write on): the same plan, written once to Basecamp
     (v11_content_plan_basecamp: document + to-do) under record content-plan-<brand>-<YYYYMM>."""
@@ -598,7 +598,7 @@ def run_content_plan(ops, *, config, catalog, cards, cal, book_reader, upcoming_
         files = pf.plan_files(info["name"], first, plan, findings, score, material)
         w = writer.write(dest, pb.doc_title(info["name"], first),
                          pb.doc_html(info["name"], first, plan, findings, score, material), pb.todo_title(first),
-                         lambda url: pb.todo_html(url, rec, lo, hi), files=files)
+                         lambda url: pb.todo_html(url, rec, lo, hi), files=files, notify=notify)
         writer = None
         if w["status"] != "written":
             return dict(out, status="held", reason=w["reason"], business_writes=1, automatic_retry_allowed=False)
@@ -610,8 +610,9 @@ def run_content_plan(ops, *, config, catalog, cards, cal, book_reader, upcoming_
         return dict(report, status="held", reason=_code(exc), automatic_retry_allowed=False)
 
 
-def run_worker_content_plan(ops, secrets, *, clock=None, brand=None, month=None):
-    """Entry for worker.py --mode content_plan --plan-preview [--plan-brand KEY] [--plan-month YYYY-MM]."""
+def run_worker_content_plan(ops, secrets, *, clock=None, brand=None, month=None, preview=True, notify=True):
+    """Entry for worker.py --mode content_plan --plan-preview [--plan-brand KEY] [--plan-month YYYY-MM], or
+    --plan-write --plan-brand KEY --plan-month YYYY-MM [--plan-quiet]."""
     import basecamp_cloud_auth
     import cloud_providers as provider
     import v11_algorithm_watch as aw
@@ -633,11 +634,17 @@ def run_worker_content_plan(ops, secrets, *, clock=None, brand=None, month=None)
     def book():
         row = ops._run(lambda tx, _: tx.get(aw.RULES_KEY), allow_expired=True)
         return row if isinstance(row, dict) and row.get("kind") == "platform_rules" else aw.new_book(aw.load_seed())
+    def http(dest):
+        import v11_content_plan_basecamp as pb
+        from v11_nb_tracking import session_send
+        return pb.PlanBasecamp(dest["account_id"], dest["project_id"], dest["list_id"],
+                               send=session_send(token, provider._session),
+                               send_raw=pb.raw_send(token, provider._session))
     try:
         model = model_source(ops, {"anthropic": lambda: provider.anthropic_key(secrets)}, catalog,
                              validate_config(config))
         return run_content_plan(ops, config=config, catalog=catalog, cards=dd.load_brand_cards(), cal=dd.load_calendar(),
-                                book_reader=book, upcoming_reader=upcoming, model=model, clock=clock, preview=True,
-                                brand=brand, month=month)
+                                book_reader=book, upcoming_reader=upcoming, model=model, clock=clock, preview=preview,
+                                brand=brand, month=month, http_factory=None if preview else http, notify=notify)
     finally:
         session.close()
