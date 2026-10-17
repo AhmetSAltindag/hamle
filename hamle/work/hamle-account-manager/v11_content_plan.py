@@ -6,7 +6,8 @@ client approves it. Hamle never sends a plan to a client and never publishes any
 contract count, e.g. WAT 18-20 posts, is marked as "önerilen"), the plan lives in Basecamp, and the strategy
 reminder is derived from the brand's history until an approved strategy document is in Basecamp.
 
-This first version builds the plan and shows it (preview); writing it to Basecamp comes in its own later change.
+The preview builds the plan and shows it, plus where it would go. Writing it to Basecamp (one document + one to-do,
+v11_content_plan_basecamp) runs only with enabled AND basecamp_write on; both are off.
 
 Material (read only): brand card (sector, audience, main platform), the brand memory of the last 90 days
 (v11_brand_memory: profile + dated events from mail and Basecamp), the brand project's open to-dos due in the month
@@ -23,7 +24,7 @@ count against the contract, rule book checks (no link in a LinkedIn caption, 3-5
 agency scope (no media buying / ads / sponsored content). The findings and a code score go on top of the plan.
 
 Non-collision (Ahmet 2026-10-17): own module, mode (worker.py --mode content_plan), config (OFF), records
-(content-plan-<brand>-<YYYYMM>, written only by the later Basecamp change); the preview writes nothing.
+(content-plan-<brand>-<YYYYMM>, written only by the Basecamp write); the preview writes nothing.
 """
 from __future__ import annotations
 
@@ -95,7 +96,10 @@ def validate_config(cfg):
         platforms = b.get("platforms")
         _need(isinstance(platforms, list) and platforms and all(p in PLATFORMS for p in platforms),
               "content_plan_platforms_invalid")
-        out[key] = {"posts": tuple(posts), "platforms": list(platforms)}
+        designers = b.get("designers", [])
+        _need(isinstance(designers, list) and all(type(x) is int and x > 0 for x in designers),
+              "content_plan_designers_invalid")
+        out[key] = {"posts": tuple(posts), "platforms": list(platforms), "designers": list(designers)}
     m = cfg.get("model") or {}
     _need(set(m) - {"prompt_cache"} == {"model", "effort", "max_tokens", "timeout_seconds"}
           and type(m.get("prompt_cache", False)) is bool and m["model"] in mr.ANTHROPIC_MODELS
@@ -103,7 +107,9 @@ def validate_config(cfg):
           and type(m["timeout_seconds"]) is int and 30 <= m["timeout_seconds"] <= 540, "content_plan_model_invalid")
     route = mr.Route(ROLE, "anthropic", m["model"], m["effort"], m["max_tokens"], m["timeout_seconds"],
                      prompt_cache=m.get("prompt_cache", False))
-    return {"enabled": cfg["enabled"], "brands": out, "route": route}
+    _need(type(cfg.get("basecamp_write", False)) is bool, "content_plan_config_invalid")
+    return {"enabled": cfg["enabled"], "basecamp_write": cfg.get("basecamp_write", False), "brands": out,
+            "route": route}
 
 
 def target_month(today, value=None):
@@ -433,14 +439,22 @@ def render(name, first, plan, findings, score, material):
 
 # ------------------------------------------------------------------ run
 def run_content_plan(ops, *, config, catalog, cards, cal, book_reader, upcoming_reader, model, clock, preview=True,
-                     brand=None, month=None):
-    """Preview only in this version: builds one brand's plan and returns its text; writes nothing."""
+                     brand=None, month=None, http_factory=None):
+    """preview=True: builds one brand's plan and returns its text plus where it would go; writes nothing.
+    preview=False (only with enabled and basecamp_write on): the same plan, written once to Basecamp
+    (v11_content_plan_basecamp: document + to-do) under record content-plan-<brand>-<YYYYMM>."""
+    import uuid
+    import v11_content_plan_basecamp as pb
     report = {"status": None, "model_calls": 0, "business_writes": 0}
+    writer = None
     try:
         now = clock()
         _need(isinstance(now, datetime) and now.tzinfo is not None, "aware_clock_required")
         cfg = validate_config(config)
-        _need(preview, "content_plan_live_not_built")
+        if not preview:
+            _need(cfg["enabled"], "content_plan_disabled")
+            _need(cfg["basecamp_write"], "content_plan_basecamp_write_off")
+            _need(http_factory is not None, "content_plan_basecamp_missing")
         today = now.astimezone(ISTANBUL).date()
         first = target_month(today, month)
         key = brand or next(iter(cfg["brands"]))
@@ -450,6 +464,15 @@ def run_content_plan(ops, *, config, catalog, cards, cal, book_reader, upcoming_
         info = brands[key]
         card = next((b for b in (cards or {}).get("brands") or [] if b.get("project_id") == info["project_id"]), None)
         report.update(brand=key, month=f"{first:%Y-%m}")
+        dest = pb.target(catalog, cfg, key)
+        report["basecamp"] = {"project_id": dest["project_id"], "list_id": dest["list_id"],
+                              "assignee_ids": dest["assignee_ids"], "subscriber_ids": dest["subscriber_ids"],
+                              "document": pb.doc_title(info["name"], first), "todo": pb.todo_title(first)}
+        if not preview:
+            writer = pb.PlanWriter(ops, http_factory(dest), key, first)
+            if not writer.claim(uuid.uuid4().hex):
+                writer = None
+                return dict(report, status="no_new_work", reason="content_plan_already_recorded")
         previous = ops._run(lambda tx, _: tx.get(record_key(key, (first - timedelta(days=1)).replace(day=1))),
                             allow_expired=True)
         material = gather(ops, key, info["name"], card, cfg["brands"][key], first, today,
@@ -460,10 +483,23 @@ def run_content_plan(ops, *, config, catalog, cards, cal, book_reader, upcoming_
             report["usage"] = usage_totals(model.usages)
         findings, score = check(plan, material, first)
         text = render(info["name"], first, plan, findings, score, material)
-        return dict(report, status="content_plan_preview", score=score, findings=len(findings),
-                    days=len(plan["days"]), recommended=sum(1 for r in plan["days"] if r.get("recommended")),
-                    text=text)
+        rec = sum(1 for r in plan["days"] if r.get("recommended"))
+        out = dict(report, score=score, findings=len(findings), days=len(plan["days"]), recommended=rec, text=text)
+        if preview:
+            return dict(out, status="content_plan_preview")
+        lo, hi = material["brand"]["posts_per_month"]
+        writer.mark(plan=pb.summary(plan), score=score)
+        w = writer.write(dest, pb.doc_title(info["name"], first),
+                         pb.doc_html(info["name"], first, plan, findings, score, material), pb.todo_title(first),
+                         lambda url: pb.todo_html(url, rec, lo, hi))
+        writer = None
+        if w["status"] != "written":
+            return dict(out, status="held", reason=w["reason"], business_writes=1, automatic_retry_allowed=False)
+        return dict(out, status="content_plan_written", business_writes=2, **{k: w[k] for k in
+                                                                              ("doc_url", "todo_url")})
     except Exception as exc:
+        if writer is not None:  # nothing was written yet: the month stays blocked until a person looks
+            writer.mark(state="failed", reason=_code(exc), lease_until=0)
         return dict(report, status="held", reason=_code(exc), automatic_retry_allowed=False)
 
 
