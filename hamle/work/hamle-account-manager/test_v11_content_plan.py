@@ -182,8 +182,8 @@ class Build(Plan):
         text = r["text"]
         self.assertIn("03.12 Per · Karusel · Instagram + LinkedIn · ", text)
         self.assertIn("01.12 Sal · Karusel · LinkedIn · ", text)
-        self.assertIn("LinkedIn metni:\nAğımız büyüyor", text)
-        self.assertEqual(text.count("LinkedIn metni:"), 10)  # only on the shared days
+        self.assertIn("Paylaşım metni (LinkedIn):\nAğımız büyüyor", text)
+        self.assertEqual(text.count("Paylaşım metni (LinkedIn):"), 10)  # only on the shared days
         self.assertIn("LinkedIn caption'ında link var (03, 06, 09,", text)
         self.assertEqual(self.model.calls[0][1]["material"]["brand"]["platforms"], ["instagram", "linkedin"])
 
@@ -254,7 +254,7 @@ class Write(Plan):
         super().setUp()
         # The real PDF is checked in Files and by the image's content_plan_files_smoke; here only the upload path.
         import v11_content_plan_files as pf
-        patcher = mock.patch.object(pf, "plan_pdf", lambda items: b"%PDF-1.7 fake plan")
+        patcher = mock.patch.object(pf, "plan_pdf", lambda *a: b"%PDF-1.7 fake plan")
         patcher.start()
         self.addCleanup(patcher.stop)
 
@@ -262,13 +262,44 @@ class Write(Plan):
         self.uploads.append((method, url, mime, data[:4]))
         return {"attachable_sgid": f"BAh7CEkiCGdpZAY6BkVU{len(self.uploads)}"}
 
-    def live(self, bc, model=None, notify=True):
+    def live(self, bc, model=None, notify=True, approved=None):
         def factory(dest):
             return pb.PlanBasecamp(5898865, dest["project_id"], dest["list_id"], send=bc.send,
                                    send_raw=self.raw)
         self.uploads = []
         return self.plan(model=model, preview=False, cfg=dict(enabled=True, basecamp_write=True),
-                         http_factory=factory, notify=notify)
+                         http_factory=factory, notify=notify, approved=approved)
+
+    def test_the_approved_plan_is_written_as_it_is_with_no_model_call(self):
+        import v11_daily_digest
+        approved = v11_daily_digest._load("content-plan-approved-wat_mobilite-202612.json")
+        bc = FakeBasecamp()
+        r = self.live(bc, model=Fake(), approved=approved)
+        self.assertEqual((r["status"], r["model_calls"], r["score"], r["findings"]), ("content_plan_written", 0, 100, 0),
+                         r.get("reason"))
+        self.assertEqual(self.model.calls, [])
+        doc = bc.doc["content"]
+        # Ahmet 17 Oct 15:32Z: the first plan, as it was; its team notes on top, nothing from today's material added
+        self.assertIn("<h1>Ekibin bakması gerekenler</h1>", doc)
+        self.assertIn("Avantajı Katla: aralığın ilk salısında kampanya hatırlatması", doc)
+        self.assertIn("<strong>Tasarımcıya kısa brief:</strong><br>Fikir: salı = şarj günü.", doc)
+        self.assertIn("<strong>Paylaşım metni (Instagram):</strong>", doc)
+        self.assertNotIn("Kampanya takvimi", doc)
+        self.assertNotIn("Bu ay algoritmada ne değişti", doc)
+        self.assertEqual(len(self.uploads), 2)
+
+    def test_an_approved_plan_that_fails_the_checks_writes_nothing(self):
+        import v11_daily_digest
+        good = v11_daily_digest._load("content-plan-approved-wat_mobilite-202612.json")
+        bad = copy.deepcopy(good)
+        bad["plan"]["days"][16]["caption"] += " Provizyon nedir?"
+        wrong = dict(copy.deepcopy(good), month="2027-01")
+        for plan, reason in ((bad, "content_plan_approved_below_bar"), (wrong, "content_plan_approved_mismatch")):
+            bc = FakeBasecamp()
+            r = self.live(bc, model=Fake(), approved=plan)
+            self.assertEqual((r["status"], r["reason"]), ("held", reason))
+            self.assertEqual(bc.calls, [])
+            self.assertNotIn("content-plan-wat_mobilite-202612", self.ops.backend.data)
 
     def test_a_quiet_write_notifies_only_ahmet(self):
         bc = FakeBasecamp()
@@ -406,6 +437,12 @@ class Wiring(unittest.TestCase):
         self.assertIsInstance(http, pb.PlanBasecamp)
         self.assertIsNotNone(http.send_raw)
         self.assertEqual(dest["principal_id"], AHMET)
+        seen.clear()
+        with mock.patch.object(cp, "run_content_plan", lambda ops, **kw: seen.append(kw) or {"status": "x"}), \
+                mock.patch.object(cp, "model_source", lambda *a, **k: self.fail("no model for an approved plan")), \
+                mock.patch.object(cloud_providers, "_session", lambda: fake_session()):
+            cp.run_worker_content_plan(None, {}, brand="wat_mobilite", month="2026-12", preview=False, approved=True)
+        self.assertEqual((seen[0]["approved"]["month"], len(seen[0]["approved"]["plan"]["days"])), ("2026-12", 31))
 
     def test_worker_flags(self):
         need = "content_plan_requires_plan_preview_or_write"
@@ -415,7 +452,9 @@ class Wiring(unittest.TestCase):
                              (["--mode", "daily_digest", "--plan-brand", "wat_mobilite"], "plan_flags_require_content_plan"),
                              (["--mode", "content_plan", "--plan-write", "--plan-brand", "wat_mobilite"],
                               "plan_write_requires_brand_and_month"),
-                             (["--mode", "content_plan", "--plan-preview", "--plan-quiet"], "plan_quiet_requires_plan_write")):
+                             (["--mode", "content_plan", "--plan-preview", "--plan-quiet"], "plan_quiet_requires_plan_write"),
+                             (["--mode", "content_plan", "--plan-preview", "--plan-approved"],
+                              "plan_approved_requires_plan_write")):
             buf = io.StringIO()
             with redirect_stdout(buf):
                 self.assertEqual(worker.main(argv), 2)
@@ -447,6 +486,27 @@ class Files(Plan):
                 xml = z.read("word/document.xml").decode("utf-8")
             self.assertIn("Takvim", xml)
             self.assertIn("Aralık 2026", xml)
+
+    @unittest.skipUnless(HAVE_PDF, "WeasyPrint is installed in the cloud image")
+    def test_the_approved_plan_prints_every_day_whole(self):
+        import v11_content_plan_files as pf
+        import v11_daily_digest
+        a = v11_daily_digest._load("content-plan-approved-wat_mobilite-202612.json")
+        pdf = pf.plan_pdf(a["name"], DEC, a["plan"], [], 100, a["material"])
+        self.assertTrue(pdf.startswith(b"%PDF-"))
+
+    def test_a_pdf_missing_the_last_day_is_refused(self):
+        import v11_content_plan_files as pf
+        import v11_daily_digest
+        plan = v11_daily_digest._load("content-plan-approved-wat_mobilite-202612.json")["plan"]
+        whole = " ".join(f"{cp._day(r)} " + " ".join(v for _, v, _ in pf.detail_fields(r)) for r in plan["days"])
+        self.assertTrue(pf.complete([whole], plan))
+        cut = whole[:whole.rindex("31.12")]
+        self.assertFalse(pf.complete([cut], plan))
+        self.assertFalse(pf.complete([whole[:-40]], plan))
+        self.assertEqual([k for k, _, _ in pf.detail_fields(plan["days"][2])][:5],
+                         ["Neden", "Kanca", "Paylaşım metni (Instagram)", "Paylaşım metni (LinkedIn)",
+                          "Tasarımcıya kısa brief"])
 
     def test_smoke_is_packaged_and_run_by_the_image(self):
         import package_chain_source as pkg

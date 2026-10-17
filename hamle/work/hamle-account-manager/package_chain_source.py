@@ -47,7 +47,7 @@ ALLOWLIST.update({APP + "chain-profile/" + name: PROFILE + name for name in (
     "brand-cards.json", "tr-special-days-2026.json", "model-routing.json", "client-watch-config.json",
     "digital-karne-config.json", "hamle-karne-config.json", "prospect-watch-config.json",
     "health-check-config.json", "algorithm-watch-config.json", "platform-rules-seed.json",
-    "content-plan-config.json", "weekly-checks-config.json")})
+    "content-plan-config.json", "weekly-checks-config.json", "content-plan-approved-wat_mobilite-202612.json")})
 
 
 def package(root=base.ROOT):

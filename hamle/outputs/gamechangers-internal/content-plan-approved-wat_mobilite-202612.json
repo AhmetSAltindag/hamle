@@ -1,0 +1,969 @@
+{
+ "schema_version": 1,
+ "brand": "wat_mobilite",
+ "month": "2026-12",
+ "name": "WAT Mobilite",
+ "approved": "Ahmet 2026-10-17 15:32Z: ilk plana (v1) birebir sadık kal; 3 olgu düzeltmesiyle",
+ "plan": {
+  "exact": true,
+  "team_notes": [
+   [
+    "Teyit",
+    "04.12 ve sonrası: “360 kW'a kadar” hız iddiası. Opet Ultraşarj'ın resmi rakamı ekipçe teyit edilsin."
+   ],
+   [
+    "Teyit",
+    "Ortaklık cümlesi “WAT Mobilite, Opet, Otokoç, Entek ortaklığıyla” birkaç günde geçiyor; markayı kendi ortağı gibi yazıyor. Doğru kurumsal ifade WAT Mobilite'den alınsın."
+   ],
+   [
+    "Teyit",
+    "01 ve 15.12: Her Salı WAT'la Aralık'ta da sürüyor (Ekim planına göre 31 Aralık'a kadar); güncel koşullar ekipçe teyit edilsin. 08.12: Opet Ultraşarj kampanyasının Aralık koşulları teyit edilsin."
+   ],
+   [
+    "Düzeltme",
+    "14.12 formatı “LinkedIn belge” yazıyor ama iki mecralık gün; Instagram tarafı karusel olacak (brief bunu söylüyor)."
+   ],
+   [
+    "Düzeltme",
+    "Marka adı: Ahmet'in 17 Ekim kararıyla metinlerin tamamında “WAT Mobilite” ve #WATMobilite yazıldı; yaka kartında marka adını yasaklayan notlar kaldırıldı."
+   ],
+   [
+    "Düzeltme",
+    "08.12: YKB World 30 Kasım'da bittiği için yerine Opet Ultraşarj kampanya hatırlatması kondu."
+   ],
+   [
+    "Düzeltme",
+    "17.12: Provizyon 30 Eylül'de kaldırıldığı için konu “Uygulamada şarj ödemesi adım adım” oldu."
+   ],
+   [
+    "Bilgi",
+    "Kampanya koşulları ve 2026 rakamları gibi bilinmeyen yerler uydurulmadı, [ekip doldurur] olarak bırakıldı."
+   ],
+   [
+    "Bilgi",
+    "Her günün detayına “Tasarımcıya kısa brief” eklendi; uzun görsel brief'in özetidir, anlamı değişmez."
+   ]
+  ],
+  "strategy": [
+   "Çatı mesaj önerisi: Koç Topluluğu ortaklığıyla (WAT Mobilite, Opet, Otokoç, Entek) güvenilir ve hızlı şarj. Resmi her yerde marka adı WAT Mobilite yazılır; ana hashtag #WATMobilite.",
+   "Hedef kitle: elektrikli araç sahipleri (Instagram ana mecra), filolar ve işletmeler (LinkedIn).",
+   "Aralık odağı: kış koşullarında şarj ve menzil rehberliği, yılbaşı yolculuğu planlaması, Opet Ultraşarj hızlı şarj vurgusu ve yıl sonu kurumsal kapanış.",
+   "Kampanyalar (Her Salı WAT'la Avantajı Katla, Opet Ultraşarj) aralıkta sürüyorsa takvime girer; geçerlilik ve koşulları ekip müşteriden teyit eder.",
+   "Bekleyen işler: WAT Flex KV cihaz giydirmesi netleşene, TikTok içerikleri hold kalkana kadar plana alınmadı. Görsel onaylar Özge Yağmur üzerinden alınır."
+  ],
+  "last_month": [],
+  "pillars": [
+   {
+    "name": "Hızlı Şarj ve Ağ",
+    "why": "Opet Ultraşarj KV onaylandı ve post versiyonu bekleniyor; hız ve ağ güveni markanın temel vaadi."
+   },
+   {
+    "name": "Kampanya ve Avantaj",
+    "why": "Her Salı ve Opet Ultraşarj gibi süren kampanyalar kullanıcıyı uygulamaya ve istasyona yönlendiriyor."
+   },
+   {
+    "name": "Kullanım Rehberi ve Uygulama",
+    "why": "Uygulama, ödeme ve AC/DC gibi konular sık sorulan sorular; kaydedilen ve DM ile paylaşılan içerik üretir."
+   },
+   {
+    "name": "Kış ve EV Bilgisi",
+    "why": "Aralıkta soğuk havada menzil ve şarj soruları artar; mevsime uygun eğitici içerik etkileşim getirir."
+   },
+   {
+    "name": "Kurumsal, Filo ve İşletme",
+    "why": "LinkedIn'de filo ve işletme kitlesine B2B çözümler, ortaklık yapısı ve yıl sonu değerlendirmesiyle ulaşılır."
+   },
+   {
+    "name": "Topluluk ve Özel Gün",
+    "why": "Samimi, insan yüzlü içerik algoritmada öne çıkar; yılbaşı ve anlamlı günler markayı kitlesine yakınlaştırır."
+   }
+  ],
+  "days": [
+   {
+    "date": "2026-12-01",
+    "recommended": true,
+    "format": "reels",
+    "platform": "instagram",
+    "pillar": "Kampanya ve Avantaj",
+    "series": null,
+    "topic": "Her Salı WAT'la Avantajı Katla: aralığın ilk salısında kampanya hatırlatması (aralıkta sürüyorsa, koşullar teyit edilir)",
+    "special_day": null,
+    "why": "Ay salı günü açılıyor, kampanya ritmi tam bu güne denk geliyor. Reels takipçi dışına da erişir.",
+    "hook": "Salı geldi, şarj avantajı da geldi! Aralığın ilk salısını boş geçme.",
+    "caption": "Her Salı WAT'la Avantajı Katla aralıkta da yolda! ⚡ Elektrikli aracını salı günü WAT Mobilite istasyonlarında şarj et, avantajını katla. Kampanya koşulları: [ekip doldurur]. Geçerlilik tarihleri: [ekip doldurur]. Detaylar WAT Mobilite uygulamasında. Elektrikli araç şarjı artık hem hızlı hem avantajlı. Bu videoyu salıları şarj eden arkadaşına gönder, avantajı birlikte katlayın.",
+    "linkedin_caption": null,
+    "hashtags": [
+     "#WATMobilite",
+     "#HerSalıWAT",
+     "#ElektrikliAraçŞarjı",
+     "#ŞarjKampanyası",
+     "#ElektrikliAraç"
+    ],
+    "cta": "Kampanya detayları için WAT Mobilite uygulamasını aç.",
+    "short_brief": "Fikir: salı = şarj günü. Telefonda takvimde 'Salı' yakın planla açılıyoruz, sürücü WAT Mobilite istasyonunda kabloyu takıyor, uygulama ekranı Dark Post stilinde beliriyor, sürücü kahvesini alıp gülümsüyor. Gerçek mekân, doğal gün ışığı, mavi ton yok. Ekran yazısı: Her Salı WAT'la Avantajı Katla. 9:16, 15-20 sn.",
+    "visual_brief": "Samimi, insan yüzlü Reels. Sahne 1: telefonda takvim, 'Salı' günü yakın plan. Sahne 2: sürücü aracından inip WAT Mobilite istasyonuna kabloyu takıyor (gerçek mekân, doğal gün ışığı). Sahne 3: uygulama ekranı (Dark Post onaylı stil, kelimelerin baş harfi büyük). Sahne 4: sürücü gülümseyerek kahvesini alıyor. Gereksiz mavi tonlardan kaçın, native ve net görüntü.",
+    "on_screen_text": "Her Salı WAT'la Avantajı Katla | Koşullar: [ekip doldurur]",
+    "size": "9:16, 15-20 sn",
+    "success_metric": null
+   },
+   {
+    "date": "2026-12-02",
+    "recommended": true,
+    "format": "karusel",
+    "platform": "instagram",
+    "pillar": "Kış ve EV Bilgisi",
+    "series": null,
+    "topic": "Soğuk havada menzil neden düşer, batarya nasıl korunur: 5 pratik ipucu",
+    "special_day": null,
+    "why": "Kışın başında en çok sorulan konu bu. Karusel kaydedilme ve paylaşılma sinyalini güçlendirir.",
+    "hook": "Kışın menzilin düşüyorsa yalnız değilsin. İşte 5 pratik ipucu 👇",
+    "caption": "Soğuk havada elektrikli aracının menzili neden düşer? Düşük sıcaklık bataryanın verimini ve şarj hızını etkiler, ısıtma da enerji tüketir. Kışın menzilini korumak için: 1) Aracı şarjdayken ön ısıt. 2) Mümkünse kapalı ve korunaklı alanda park et. 3) Koltuk ve direksiyon ısıtmasını tercih et. 4) Bataryayı çok düşük seviyede bekletme. 5) Uzun yolda şarj duraklarını önceden WAT Mobilite uygulamasından planla. Kış menzili ve batarya bakımı için bu karuseli kaydet, elektrikli araç kullanan arkadaşına gönder.",
+    "linkedin_caption": null,
+    "hashtags": [
+     "#ElektrikliAraç",
+     "#KışınMenzil",
+     "#BataryaBakımı",
+     "#EVİpuçları",
+     "#WATMobilite"
+    ],
+    "cta": "Kaydet ve kışın tekrar bak.",
+    "short_brief": "Fikir: kışın menzil kaygısını 5 ipucuyla rahatlatmak. Kapakta karlı bir sabah, camı hafif buğulu elektrikli araç ve sıcak bir gün ışığı. İçeride her ipucu bir kart: sade ikon, kısa başlık, açık zemin. Son kartta uygulamada rota planlama ekranı. Soğuk mavi yok. 4:5, 6 kart.",
+    "visual_brief": "Kış atmosferinde 6 kartlık eğitici karusel. Kapak: karlı/soğuk sabahta elektrikli araç, camda hafif buğu, sıcak gün ışığı. Her ipucu için sade ikon + kısa başlık, beyaz/kırık beyaz zemin, marka renkleri; gereksiz mavi soğuk tonlardan kaçın. Son kart: WAT Mobilite uygulamasında rota planlama ekranı, kelimelerin baş harfi büyük.",
+    "on_screen_text": "Kışın Menzil Neden Düşer? 5 Pratik İpucu",
+    "size": "4:5, 6 kart",
+    "success_metric": null
+   },
+   {
+    "date": "2026-12-03",
+    "recommended": true,
+    "format": "tekil",
+    "platform": "instagram+linkedin",
+    "pillar": "Topluluk ve Özel Gün",
+    "series": null,
+    "topic": "Dünya Engelliler Günü: herkes için eşit ve engelsiz yolculuk dileğini taşıyan sade bir farkındalık mesajı",
+    "special_day": "Dünya Engelliler Günü",
+    "why": "Mobilite markası için anlamlı bir gün. Kutlama değil saygı ve farkındalık dili kullanılır, olmayan bir özellik iddia edilmez.",
+    "hook": "Yol herkes için eşit olduğunda gerçekten ilerleriz.",
+    "caption": "3 Aralık Dünya Engelliler Günü. Herkesin eşit, erişilebilir ve engelsiz yolculuk yapabildiği bir gelecek dileğiyle. WAT Mobilite olarak erişilebilirliğin hepimizin ortak sorumluluğu olduğunu hatırlıyoruz. #DünyaEngellilerGünü",
+    "linkedin_caption": "3 Aralık Dünya Engelliler Günü. Erişilebilirlik, mobilitenin geleceğinin ayrılmaz bir parçası. WAT Mobilite olarak herkes için eşit ve engelsiz bir yolculuk dileğimizi paylaşıyoruz. Sizce şarj altyapısında erişilebilirlik için en öncelikli adım ne olmalı? #Erişilebilirlik #DünyaEngellilerGünü #Mobilite",
+    "hashtags": [
+     "#DünyaEngellilerGünü",
+     "#Erişilebilirlik",
+     "#EngelsizYaşam",
+     "#WATMobilite"
+    ],
+    "cta": null,
+    "short_brief": "Fikir: kutlama değil, saygı. Gün ışığında geniş bir yol ya da şarj alanında, tekerlekli sandalye kullanan biri aracının yanında; doğal, saygılı ve stereotipsiz bir an. Konfeti, parlak efekt yok; yumuşak sıcak tonlar, köşede küçük logo. Ekran yazısı: Herkes için eşit, engelsiz yolculuk. 4:5 ve 1:1.",
+    "visual_brief": "Sade, ağırbaşlı tekil görsel; kutlama dili ve konfeti yok. Gün ışığında, geniş bir yol ya da şarj alanında erişilebilir yaşamı temsil eden doğal bir an (ör. tekerlekli sandalye kullanan bir kişi aracının yanında, saygılı ve stereotipten uzak kadraj). Yumuşak, sıcak tonlar; gereksiz mavi yok. Küçük WAT Mobilite logosu.",
+    "on_screen_text": "Herkes için eşit, engelsiz yolculuk. 3 Aralık Dünya Engelliler Günü",
+    "size": "4:5 (Instagram), 1:1 (LinkedIn)",
+    "success_metric": null
+   },
+   {
+    "date": "2026-12-04",
+    "recommended": true,
+    "format": "reels",
+    "platform": "instagram+linkedin",
+    "pillar": "Hızlı Şarj ve Ağ",
+    "series": null,
+    "topic": "Opet Ultraşarj istasyonlarında 360 kW'a kadar hızlı şarj deneyimi",
+    "special_day": null,
+    "why": "KV onaylandı, post versiyonu alınacak. Cuma, hafta sonu yolculuğu öncesi hız mesajı için doğru gün.",
+    "hook": "Kahveni bitirmeden yola dön: Opet Ultraşarj'da hızlı şarj ⚡",
+    "caption": "Opet Ultraşarj istasyonlarında 360 kW'a kadar hızlı şarj seni bekliyor. Uzun yolda mola kısalıyor, yolculuk hızlanıyor. WAT Mobilite ve Opet iş birliğiyle güvenilir ve hızlı şarj, Türkiye yollarında. Yakındaki Opet Ultraşarj istasyonunu WAT Mobilite uygulamasından bul. Hızlı şarjı merak eden arkadaşına bu videoyu gönder.",
+    "linkedin_caption": "Hız, elektrikli mobilitede güvenin temelidir. WAT Mobilite ve Opet iş birliğiyle Opet Ultraşarj istasyonlarında 360 kW'a kadar hızlı şarj imkânı sunuyoruz. Koç Topluluğu ortaklığının (WAT Mobilite, Opet, Otokoç, Entek) gücüyle şarj ağımızı büyütmeye devam ediyoruz. Filonuz için hızlı şarj, operasyonel planlamayı nasıl değiştiriyor? Deneyimlerinizi yorumlarda paylaşın. #HızlıŞarj #ElektrikliMobilite #Filo",
+    "hashtags": [
+     "#OpetUltraşarj",
+     "#HızlıŞarj",
+     "#ElektrikliAraçŞarjı",
+     "#WATMobilite",
+     "#ElektrikliAraç"
+    ],
+    "cta": "En yakın Opet Ultraşarj istasyonunu WAT Mobilite uygulamasında bul.",
+    "short_brief": "Fikir: kahve bitmeden şarj biter. Onaylı Opet Ultraşarj KV'sinden hareketle sürücü istasyona yanaşıyor, kabloyu takıyor, şarj yüzdesi ekranda hızla yükseliyor, kahvesiyle döndüğünde araç hazır. Opet logosu net ve büyük, görüntü native, mavi yok. 9:16, 20-30 sn. Onay: Özge Yağmur.",
+    "visual_brief": "Onaylı Opet Ultraşarj KV'nin post/video versiyonuna dayanır; Opet logosu net ve büyük görünmeli. Sahne 1: sürücü istasyona yanaşıyor. Sahne 2: kabloyu takma yakın planı. Sahne 3: şarj yüzdesinin hızla yükseldiği ekran (gerçek çekim). Sahne 4: sürücü kahveyle dönüyor, araç hazır. Native, net görüntü; gereksiz mavi tonları kaldır. Onay: Özge Yağmur.",
+    "on_screen_text": "Opet Ultraşarj'da 360 kW'a Kadar Hızlı Şarj",
+    "size": "9:16, 20-30 sn (LinkedIn için 1:1 veya 4:5 kesim, 3 dk altı)",
+    "success_metric": null
+   },
+   {
+    "date": "2026-12-05",
+    "recommended": false,
+    "format": "story",
+    "platform": "instagram",
+    "pillar": "Kullanım Rehberi ve Uygulama",
+    "series": null,
+    "topic": "Hafta sonu yolculuğu öncesi uygulamadan en yakın istasyonu bulma",
+    "special_day": null,
+    "why": "Cumartesi sabahı yola çıkanlara anlık hatırlatma. Story hafif ve hızlı bir format.",
+    "hook": "Hafta sonu yola mı çıkıyorsun? Önce en yakın istasyonu bul 📍",
+    "caption": "Hafta sonu planın hazır mı? WAT Mobilite uygulamasını aç, haritadan en yakın şarj istasyonunu bul, uygun soketi gör ve yola gönül rahatlığıyla çık. Elektrikli araçla yolculuk, doğru planla daha keyifli.",
+    "linkedin_caption": null,
+    "hashtags": [
+     "#WATMobilite",
+     "#ŞarjİstasyonuBul",
+     "#ElektrikliAraç"
+    ],
+    "cta": "WAT Mobilite uygulamasını aç, rotanı planla.",
+    "short_brief": "Fikir: yola çıkmadan önce tek dokunuş. Kare 1: kapının önünde hafta sonu çantası ve araç anahtarı, samimi ev hâli. Kare 2: Dark Post stilinde uygulama haritası. Kare 3: 'En Yakın İstasyonu Bul' adımı ve 'Hafta sonu nereye?' soru çıkartması. 9:16, 3 kare.",
+    "visual_brief": "3 karelik story serisi. Kare 1: hafta sonu çantası ve araç anahtarı, samimi ev ortamı. Kare 2: WAT Mobilite uygulama harita ekranı (Dark Post onaylı görsel stili, istasyon arka planla bütünleşik ve aynı bulanıklıkta; tüm kelimelerin baş harfi büyük). Kare 3: 'En Yakın İstasyonu Bul' adımı + soru çıkartması ('Hafta sonu nereye?'). Gereksiz mavi yok.",
+    "on_screen_text": "Hafta Sonu Yolculuğu Öncesi En Yakın İstasyonu Bul",
+    "size": "9:16, 3 kare story",
+    "success_metric": null
+   },
+   {
+    "date": "2026-12-06",
+    "recommended": true,
+    "format": "karusel",
+    "platform": "instagram",
+    "pillar": "Kullanım Rehberi ve Uygulama",
+    "series": null,
+    "topic": "AC ve DC şarj arasındaki fark: ne zaman hangisi tercih edilmeli",
+    "special_day": null,
+    "why": "Pazar günü okuma süresi yüksek. Eğitici karusel kaydedilir ve DM ile paylaşılır.",
+    "hook": "AC mi DC mi? Yanlış seçim zaman kaybettirir.",
+    "caption": "AC ve DC şarj arasındaki fark ne? AC şarj genellikle evde, iş yerinde ya da aracın uzun süre park ettiği yerlerde tercih edilir. DC hızlı şarj ise yolculukta kısa molalarla bataryayı hızla doldurmak içindir. Hangisini ne zaman seçeceğini bu karuselde anlattık. WAT Mobilite uygulamasında istasyonların soket tipini görebilirsin. Elektrikli araç şarjı rehberini kaydet, yeni EV sahibi arkadaşına gönder.",
+    "linkedin_caption": null,
+    "hashtags": [
+     "#ACDCŞarj",
+     "#ElektrikliAraçŞarjı",
+     "#HızlıŞarj",
+     "#EVRehberi",
+     "#WATMobilite"
+    ],
+    "cta": "Kaydet, ihtiyaç anında bak.",
+    "short_brief": "Fikir: AC mi DC mi, tek bakışta anlaşılsın. Kapakta iki soket yan yana yakın plan; içeride ikonlu karşılaştırma ve ev/iş, uzun yol senaryoları. Temiz zemin, marka renkleri; tabloda BİREYSEL – TİCARİ yazımı. Son kartta uygulamadaki soket filtresi. 4:5, 5 kart.",
+    "visual_brief": "5 kartlık sade bilgi karuseli. Kapak: iki soket yakın planı yan yana (AC / DC). Kartlar: karşılaştırma tablosu, kullanım senaryoları (ev/iş - uzun yol), ikonlarla. Teknik tablo gerekirse BİREYSEL – TİCARİ yazımı kullanılır. Temiz zemin, marka renkleri, gereksiz mavi tonlar yok. Son kart: uygulamada soket filtresi.",
+    "on_screen_text": "AC mi DC mi? Ne Zaman Hangisi?",
+    "size": "4:5, 5 kart",
+    "success_metric": null
+   },
+   {
+    "date": "2026-12-07",
+    "recommended": true,
+    "format": "linkedin_belge",
+    "platform": "linkedin",
+    "pillar": "Kurumsal, Filo ve İşletme",
+    "series": null,
+    "topic": "Filolar için şarj yönetimi: planlama, raporlama ve maliyet kontrolü adımları",
+    "special_day": null,
+    "why": "Pazartesi iş gündemiyle örtüşüyor. Belge karuseli LinkedIn'de iyi çalışıyor.",
+    "hook": "Filonuzda şarj maliyeti kontrol altında mı? 4 adımda şarj yönetimi.",
+    "caption": "Elektrikli filoya geçişte asıl fark şarj yönetiminde ortaya çıkıyor. Doğru planlama; araç kullanılabilirliğini artırır, maliyeti öngörülebilir kılar. Belgede 4 adımı özetledik: 1) Rota ve kullanım profiline göre şarj planlaması 2) Depo/ofis ve yol üstü şarj dengesinin kurulması 3) Şarj verisinin raporlanması 4) Maliyet kontrolü ve iyileştirme. WAT Mobilite, Koç Topluluğu ortaklığıyla (WAT Mobilite, Opet, Otokoç, Entek) filolara ve işletmelere uçtan uca şarj çözümleri sunuyor. Filonuzda şarj yönetimiyle ilgili en çok hangi adımda zorlanıyorsunuz? Yorumlarda konuşalım. #FiloYönetimi #ElektrikliFilo #ŞarjÇözümleri",
+    "linkedin_caption": null,
+    "hashtags": [
+     "#FiloYönetimi",
+     "#ElektrikliFilo",
+     "#ŞarjÇözümleri"
+    ],
+    "cta": "Filonuz için en zorlu adımı yorumlarda paylaşın.",
+    "short_brief": "Fikir: filo yöneticisine 4 adımlık net bir yol haritası. Kapakta depo ya da ofis otoparkında şarjdaki ticari araçlar, gerçek çekim ve doğal ışık. Her sayfa bir adım: büyük numara, kısa başlık, 2-3 madde, ikon. Son sayfa logo ve ortaklık yapısı. LinkedIn belge, 1080x1350, 6-7 sayfa.",
+    "visual_brief": "LinkedIn belge karuseli (PDF), kurumsal ve sade. Kapak: depo/ofis otoparkında şarjdaki ticari araç filosu, gerçek çekim, doğal ışık. Her adım için bir sayfa: büyük numara, kısa başlık, 2-3 madde, ikon. Teknik tablolarda BİREYSEL – TİCARİ yazımı. Son sayfa: WAT Mobilite logosu ve ortaklık yapısı. Gereksiz mavi tonlar yok.",
+    "on_screen_text": "Filolar İçin Şarj Yönetimi: 4 Adım",
+    "size": "1080x1350 PDF, 6-7 sayfa",
+    "success_metric": null
+   },
+   {
+    "date": "2026-12-08",
+    "recommended": true,
+    "format": "tekil",
+    "platform": "instagram",
+    "pillar": "Kampanya ve Avantaj",
+    "series": null,
+    "topic": "Opet Ultraşarj kampanyası hatırlatması: şarj molasında Ultramarket avantajı (koşullar ekipçe teyit edilir)",
+    "special_day": null,
+    "why": "YKB World 30 Kasım'da bitti; Aralık'ta süren Opet Ultraşarj kampanyası salı gününe hatırlatma olarak girer.",
+    "hook": "Opet Ultraşarj'da şarj ederken markette de kazan ⚡",
+    "caption": "Opet Ultraşarj istasyonlarında WAT Mobilite ile şarj ederken Ultramarket avantajı da seni bekliyor. Kampanya detayı: [ekip doldurur]. Geçerlilik ve katılım koşulları: [ekip doldurur]. Yolda mola verirken avantajı kaçırma; bu gönderiyi elektrikli araç kullanan arkadaşına gönder.",
+    "linkedin_caption": null,
+    "hashtags": [
+     "#WATMobilite",
+     "#OpetUltraşarj",
+     "#ŞarjKampanyası",
+     "#ElektrikliAraçŞarjı"
+    ],
+    "cta": "En yakın Opet Ultraşarj istasyonunu WAT Mobilite uygulamasında bul.",
+    "short_brief": "Fikir: şarj molasında market avantajı. Onaylı Opet Ultraşarj KV'sinin tekil post uyarlaması; tasarım dili korunur, Opet logosu net ve büyük, istasyon arka planla bütünleşik. Kampanya metni büyük, koşullar küçük puntoyla altta, mavi yok. 4:5. Onay: Özge Yağmur.",
+    "visual_brief": "Onaylı Opet Ultraşarj KV'sinin tekil post uyarlaması; tasarım dili korunur, Opet logosu net ve büyük. Net ve native görünüm, gereksiz mavi tonlar kaldırılır. Şarj istasyonu arka planla bütünleşik. Kampanya metni okunaklı, koşullar küçük puntoyla altta. Onay: Özge Yağmur.",
+    "on_screen_text": "Opet Ultraşarj'da Şarj Et, Ultramarket'te Avantajı Kullan | Detay: [ekip doldurur]",
+    "size": "4:5, tekil görsel",
+    "success_metric": null
+   },
+   {
+    "date": "2026-12-09",
+    "recommended": true,
+    "format": "reels",
+    "platform": "instagram",
+    "pillar": "Kullanım Rehberi ve Uygulama",
+    "series": null,
+    "topic": "Mobil uygulamada şarjı adım adım başlatma (onaylı Dark Post görsel diliyle)",
+    "special_day": null,
+    "why": "Onaylı uygulama görselleri ve videosu yeniden değerlendirilebilir. Kısa ekran kaydı tekrar izlenir.",
+    "hook": "WAT Mobilite uygulamasıyla şarjı başlatmak kaç adım sürer? Birlikte deneyelim.",
+    "caption": "Elektrikli aracınızı şarj etmek düşündüğünüzden kolay. WAT Mobilite mobil uygulamasıyla şarjı adım adım başlatın:\n\n1. Uygulamayı açın, haritadan size en yakın WAT Mobilite şarj istasyonunu seçin.\n2. İstasyondaki QR kodu okutun ya da soket numarasını seçin.\n3. Kabloyu aracınıza takın ve şarjı başlatın.\n4. Şarj durumunu uygulamadan anlık takip edin, işiniz bitince tek dokunuşla sonlandırın.\n\nElektrikli araç şarjı artık birkaç dokunuş kadar yakın. Bu videoyu ilk kez şarj edecek bir arkadaşınıza gönderin.",
+    "linkedin_caption": null,
+    "hashtags": [
+     "#WATMobilite",
+     "#ElektrikliAraç",
+     "#EVŞarj",
+     "#ŞarjİstasyonuTürkiye",
+     "#ElektrikliAraçŞarjı"
+    ],
+    "cta": "Videoyu ilk kez şarj edecek bir arkadaşına gönder, uygulamayı şimdi indir.",
+    "short_brief": "Fikir: 'bu kadar kolay' hissi. POV ile elinde telefonla istasyona yaklaşan kullanıcı; uygulamada istasyon seçimi, QR okutma yakın planı, kablo takma ve şarj ilerlemesi. Ekran kaydı ile gerçek çekim karışık, Dark Post dili, doğal ışık. Ekran yazısı adım adım akıyor. 9:16, 20-30 sn.",
+    "visual_brief": "Onaylı Dark Post mobil uygulama görsel dilinde, ekran kaydı + gerçek çekim karışımı. Sahne akışı: 1) Elinde telefonla istasyona yaklaşan kullanıcı (POV), 2) uygulamada harita ve istasyon seçimi ekranı, 3) QR okutma yakın plan, 4) kablo takma, 5) uygulamada şarj ilerlemesi. İstasyon arka planla bütünleşik, aynı bulanıklıkta; gereksiz mavi tonlar ayıklanmış, doğal gün ışığı. Native, net, samimi.",
+    "on_screen_text": "Uygulamayı Aç → İstasyonu Seç → QR Kodu Okut → Şarjı Başlat",
+    "size": "9:16, 20-30 sn",
+    "success_metric": null
+   },
+   {
+    "date": "2026-12-10",
+    "recommended": false,
+    "format": "linkedin_metin",
+    "platform": "linkedin",
+    "pillar": "Kurumsal, Filo ve İşletme",
+    "series": null,
+    "topic": "İşletmeler için şarj çözümleri: otel, AVM ve ofis otoparkına istasyon kurmanın faydaları",
+    "special_day": null,
+    "why": "İşletme kitlesine yönelik. Sohbet açan bir soruyla biten metin yorum sinyali toplar.",
+    "hook": "Otoparkınız, müşterilerinizin işletmenizde geçirdiği süreyi uzatabilir mi?",
+    "caption": "Elektrikli araç kullanıcıları şarj edebilecekleri yerleri tercih ediyor. Otel, AVM ve ofis otoparklarına kurulan şarj istasyonları bu tercihi işletmenize çeviriyor.\n\nİşletmeler için şarj çözümlerinin öne çıkan faydaları:\n• Misafir ve müşteriler için ek hizmet ve tercih sebebi\n• Çalışanlar için kurum içi şarj imkânı\n• Sürdürülebilirlik hedeflerine somut katkı\n• Koç Topluluğu güvencesinde kurulum ve işletme desteği\n\nWAT Mobilite, işletmenizin ihtiyacına göre şarj çözümünü planlıyor. Sizin otoparkınızda en çok hangi ihtiyaç öne çıkıyor: misafir mi, çalışan mı, filo mu? Yorumlarda paylaşın.\n\n#ElektrikliAraç #ŞarjÇözümleri #Sürdürülebilirlik",
+    "linkedin_caption": null,
+    "hashtags": [
+     "#ElektrikliAraç",
+     "#ŞarjÇözümleri",
+     "#Sürdürülebilirlik"
+    ],
+    "cta": "Otoparkınızdaki öncelikli ihtiyacı yorumlarda paylaşın.",
+    "short_brief": "Fikir: istasyon işletmeye değer katıyor. Modern bir otel ya da ofis otoparkında WAT Mobilite istasyonuna bağlı araç, arkada bina girişi; yanında telefonuna bakan iş kıyafetli bir kullanıcı. Kurumsal ama cilasız, gerçek mekân, sıcak nötr tonlar. Tek görsel, 1200x1200 ya da 4:5.",
+    "visual_brief": "Tek görsel: modern bir otel ya da ofis otoparkında WAT Mobilite şarj istasyonuna bağlı araç, arka planda bina girişi. Doğal ışık, sıcak ve nötr tonlar, gereksiz mavi yok. İnsan kullanımı: istasyonun yanında telefonuna bakan iş kıyafetli bir kullanıcı. Kurumsal ama cilasız, gerçek mekân hissi.",
+    "on_screen_text": null,
+    "size": "1200x1200 ya da 4:5 tek görsel",
+    "success_metric": null
+   },
+   {
+    "date": "2026-12-11",
+    "recommended": true,
+    "format": "reels",
+    "platform": "instagram",
+    "pillar": "Topluluk ve Özel Gün",
+    "series": null,
+    "topic": "İstasyonda kullanıcılara soruyoruz: neden elektrikliye geçtiniz?",
+    "special_day": null,
+    "why": "Samimi, insan yüzlü içerik öne çıkar. Trial Reels ile test etmek için uygun.",
+    "hook": "\"Neden elektrikliye geçtiniz?\" diye sorduk, cevaplar şaşırttı.",
+    "caption": "WAT Mobilite şarj istasyonunda karşılaştığımız elektrikli araç sahiplerine tek bir soru sorduk: Neden elektrikliye geçtiniz?\n\nKimi sessiz sürüşü, kimi çevreyi, kimi günlük kullanım konforunu anlattı. Her hikâye farklı ama hepsinin ortak noktası aynı: şarj etmeye güvendikleri bir ağ.\n\nSiz neden elektrikli araç kullanıyorsunuz ya da geçmeyi düşünüyorsunuz? Yorumlarda anlatın, bir sonraki videoda sizin cevabınız olabilir.",
+    "linkedin_caption": null,
+    "hashtags": [
+     "#WATMobilite",
+     "#ElektrikliAraç",
+     "#ElektrikliAraçSahipleri",
+     "#EVTopluluğu"
+    ],
+    "cta": "Senin sebebin ne? Yorumlarda anlat.",
+    "short_brief": "Fikir: gerçek insanlar, gerçek sebepler. Sokak röportajı: muhabir soruyu soruyor, aracı şarjdaki 3-4 farklı kullanıcı tek cümleyle cevaplıyor, kapanışta gülümseyerek kameraya bakıyorlar. El kamerası, samimi ve cilasız; katılımcı izni alınır. Ekran yazısı: Neden elektrikliye geçtiniz? 9:16, 30-45 sn.",
+    "visual_brief": "Sokak röportajı formatında, el kamerası, samimi ve cilasız. Sahne akışı: 1) Açılışta muhabirin soruyu sorduğu kısa an, 2) farklı yaş ve profilden 3-4 kullanıcının tek cümlelik cevapları, aracı şarjdayken, 3) kapanışta kullanıcıların gülümseyerek kameraya baktığı kesitler. İstasyon arka planda doğal, mavi tonlar ayıklanmış. Çekim öncesi katılımcılardan izin alınır.",
+    "on_screen_text": "Neden elektrikliye geçtiniz?",
+    "size": "9:16, 30-45 sn",
+    "success_metric": null
+   },
+   {
+    "date": "2026-12-12",
+    "recommended": false,
+    "format": "karusel",
+    "platform": "instagram",
+    "pillar": "Kullanım Rehberi ve Uygulama",
+    "series": null,
+    "topic": "Şarj istasyonu görgü kuralları: şarj bitince aracı çekmek ve kabloyu toplamak",
+    "special_day": null,
+    "why": "Hafta sonu istasyon yoğunluğu artar. Paylaşılabilir, hafif tonlu bir konu.",
+    "hook": "Şarj istasyonunda herkesin bilmesi gereken 5 kural.",
+    "caption": "Şarj istasyonu görgü kuralları, herkesin şarj deneyimini kolaylaştırır:\n\n1. Şarj bitince aracınızı istasyondan çekin, sıradaki kullanıcıya yer açın.\n2. Kabloyu yere bırakmayın, yerine düzgünce asın.\n3. Şarj noktasını park yeri olarak kullanmayın.\n4. Şarj süresini uygulamadan takip edin, gerektiğinde zamanında dönün.\n5. Bir arıza fark ederseniz WAT Mobilite'ye bildirin.\n\nKüçük alışkanlıklar, elektrikli araç şarjını herkes için daha hızlı ve keyifli hale getirir. Kaydedin, istasyonda yanınızdaki kullanıcıya hatırlatın.",
+    "linkedin_caption": null,
+    "hashtags": [
+     "#WATMobilite",
+     "#ŞarjİstasyonuTürkiye",
+     "#ElektrikliAraç",
+     "#EVŞarj"
+    ],
+    "cta": "Kaydet ve bu kuralları bilmesi gereken birine gönder.",
+    "short_brief": "Fikir: istasyonda nezaket kuralları, gülümseten bir dille. Kapakta kabloyu yerine asan bir el; her kartta bir kural ve ona eşlik eden gerçek fotoğraf (araç çekme, kablo asma, boş şarj noktası, bildirim). Büyük okunaklı yazı, sıcak nötr tonlar. Son kart: kaydet. 4:5, 7 kart.",
+    "visual_brief": "Karusel, illüstrasyon yerine gerçek fotoğraf temelli. Kapak: istasyonda kabloyu yerine asan el, yakın plan. Her kartta bir kural ve ona eşlik eden doğal kadraj (araç çekme, kablo asma, boş şarj noktası, telefon ekranı, bildirim). Nötr ve sıcak tonlar, gereksiz mavi yok; yazılar büyük ve okunaklı. Son kart: kaydet çağrısı.",
+    "on_screen_text": "Şarj İstasyonu Görgü Kuralları: 5 Madde",
+    "size": "4:5, 7 kart",
+    "success_metric": null
+   },
+   {
+    "date": "2026-12-13",
+    "recommended": false,
+    "format": "story",
+    "platform": "instagram",
+    "pillar": "Topluluk ve Özel Gün",
+    "series": null,
+    "topic": "Anket: şarj beklerken en çok ne yapıyorsunuz?",
+    "special_day": null,
+    "why": "İki yönlü etkileşim bir sinyal. Pazar günü hafif bir story anketi.",
+    "hook": "Şarj beklerken siz ne yapıyorsunuz?",
+    "caption": "Story anketi: Şarj beklerken en çok ne yapıyorsunuz?\n\nSeçenekler: Kahve molası / Telefonda vakit / Kısa yürüyüş / Araçta dinlenme\n\nSonuçları bir sonraki story'de paylaşıyoruz.",
+    "linkedin_caption": null,
+    "hashtags": [
+     "#WATMobilite",
+     "#ElektrikliAraç",
+     "#EVŞarj"
+    ],
+    "cta": "Ankete katıl, sonuçları birlikte görelim.",
+    "short_brief": "Fikir: şarj beklerken ne yapıyorsun? Kart 1: bulanık arka planda şarjdaki araç, ön planda anket çıkartması için temiz alan, sıcak akşam ışığı ve kış havası. Kart 2: elinde kahveyle istasyonda bekleyen kullanıcı, doğal ve samimi. 9:16, 2 kart.",
+    "visual_brief": "Arka planda şarjdaki bir araç, istasyon ve çevre aynı bulanıklıkta; ön planda anket çıkartması için temiz alan. Sıcak akşam ışığı, kış atmosferi, gereksiz mavi tonlar yok. İkinci story kartında elinde kahveyle istasyonda bekleyen kullanıcı, doğal ve samimi.",
+    "on_screen_text": "Şarj Beklerken En Çok Ne Yapıyorsun?",
+    "size": "9:16, 2 kart story",
+    "success_metric": null
+   },
+   {
+    "date": "2026-12-14",
+    "recommended": true,
+    "format": "linkedin_belge",
+    "platform": "instagram+linkedin",
+    "pillar": "Kurumsal, Filo ve İşletme",
+    "series": null,
+    "topic": "WAT Mobilite, Opet, Otokoç ve Entek ortaklığıyla Koç Topluluğu güvencesinde şarj ağı",
+    "special_day": null,
+    "why": "Kurumsal güven mesajı iki mecraya birden girer. LinkedIn'de belge, Instagram'da karusel uyarlaması.",
+    "hook": "Tek bir şarj ağı, dört güçlü ortak: WAT Mobilite'nin arkasındaki güç.",
+    "caption": "WAT Mobilite, Koç Topluluğu'nun güçlü şirketleri WAT Mobilite, Opet, Otokoç ve Entek ortaklığıyla kuruldu. Her ortak, elektrikli araç şarj ağımıza kendi uzmanlığını katıyor:\n\n• Enerji ve istasyon deneyimi\n• Mobilite ve araç bilgisi\n• Teknoloji ve altyapı gücü\n\nSonuç: güvenle şarj edebileceğiniz, hızlı ve yaygınlaşan bir şarj ağı. Kartları kaydırın, WAT Mobilite'yi birlikte tanıyın.",
+    "linkedin_caption": "Elektrikli mobilitede güven, arkasındaki yapıdan gelir.\n\nWAT Mobilite; Koç Topluluğu şirketleri WAT Mobilite, Opet, Otokoç ve Entek ortaklığıyla elektrikli araç şarj ağını işletiyor. Bu yapı; enerji, mobilite ve teknoloji uzmanlığını tek bir şarj altyapısında bir araya getiriyor.\n\nFilolar ve işletmeler için bunun anlamı:\n• Uzun vadeli ve güvenilir bir iş ortağı\n• Ölçeklenebilir şarj çözümleri\n• Koç Topluluğu güvencesinde kurulum ve işletme\n\nBelgede ortaklık yapısını ve her ortağın katkısını özetledik. Sizce elektrikli filoya geçişte iş ortağı seçerken en kritik kriter nedir?\n\n#ElektrikliMobilite #FiloYönetimi #ŞarjAltyapısı",
+    "hashtags": [
+     "#WATMobilite",
+     "#ElektrikliAraç",
+     "#ŞarjAğı",
+     "#KoçTopluluğu",
+     "#ElektrikliMobilite"
+    ],
+    "cta": "Kartları kaydır ve kaydet; LinkedIn'de görüşünü yorumlarda paylaş.",
+    "short_brief": "Fikir: dört güçlü ortak, tek güvenilir ağ. Kapakta net bir WAT Mobilite istasyonu; ara kartlarda dört ortağın logosu eşit ve net, her birinin altında bir katkı başlığı, Opet logosu okunaklı. Kurumsal ama sıcak palet. Son kart logo ve çatı mesaj. Instagram 4:5 karusel ve LinkedIn belge. Logo onayı: Özge Yağmur.",
+    "visual_brief": "Aynı içerik iki versiyon: Instagram 4:5 karusel, LinkedIn belge karuseli. Kapak: WAT Mobilite istasyonu net, arka planla bütünleşik. Ara kartlar: dört ortağın logoları eşit ve net yerleşimde, her biri için bir katkı başlığı; Opet logosu net ve okunaklı. Kurumsal ama sıcak renk paleti, gereksiz mavi tonlar ayıklanmış. Son kart: WAT Mobilite logosu ve çatı mesaj. Logo kullanımı Özge Yağmur onayından geçer.",
+    "on_screen_text": "WAT Mobilite: Opet, Otokoç ve Entek Ortaklığıyla Koç Topluluğu Güvencesinde",
+    "size": "Instagram 4:5, 6 kart; LinkedIn belge 1080x1350, 6 sayfa",
+    "success_metric": null
+   },
+   {
+    "date": "2026-12-15",
+    "recommended": false,
+    "format": "story",
+    "platform": "instagram",
+    "pillar": "Kampanya ve Avantaj",
+    "series": null,
+    "topic": "Her Salı avantajından nasıl yararlanılır: uygulama içi kısa adımlar (kampanya sürüyorsa)",
+    "special_day": null,
+    "why": "İlk hatırlatmadan farklı olarak nasıl yapılır açısı. Onaylı story KV'si kullanılabilir.",
+    "hook": "Bugün Salı! Avantajı katlamak için 3 adım yeter.",
+    "caption": "Her Salı WAT'la Avantajı Katla! Uygulamada avantajdan yararlanmak için:\n\n1. WAT Mobilite uygulamasını açın.\n2. [ekip doldurur: kampanya adımı]\n3. [ekip doldurur: kampanya adımı]\n\nKampanya koşulları ve geçerlilik: [ekip doldurur]",
+    "linkedin_caption": null,
+    "hashtags": [
+     "#WATMobilite",
+     "#HerSalıWAT",
+     "#ElektrikliAraç",
+     "#EVŞarj"
+    ],
+    "cta": "Uygulamayı aç, bugünün avantajını kaçırma.",
+    "short_brief": "Fikir: salı avantajını 3 adımda kullanmak. Kart 1: büyük 'Bugün Salı' ve şarjdaki araç. Kart 2-3: Dark Post dilinde uygulama ekranları, adım numaraları büyük. Son kartta link çıkartması, sıcak tonlar. Kampanya ve koşullar teyit edilince yayına girer. 9:16, 3 kart.",
+    "visual_brief": "3 kartlık story serisi. Kart 1: 'Bugün Salı' vurgusu, şarjdaki araç, istasyon arka planla aynı bulanıklıkta. Kart 2-3: uygulama ekran görüntüleri, Dark Post görsel dilinde, adım numaraları büyük. Sıcak tonlar, gereksiz mavi yok. Son kartta link çıkartması. Kampanya sürdüğü ve koşullar müşteriden teyit edildikten sonra yayınlanır.",
+    "on_screen_text": "Her Salı WAT'la Avantajı Katla",
+    "size": "9:16, 3 kart story",
+    "success_metric": null
+   },
+   {
+    "date": "2026-12-16",
+    "recommended": true,
+    "format": "reels",
+    "platform": "instagram",
+    "pillar": "Kış ve EV Bilgisi",
+    "series": null,
+    "topic": "Şarjdayken kabini ön ısıtma: soğuk sabahlarda menzili korumanın yolu",
+    "special_day": null,
+    "why": "Aralık ortasında soğuklar artar. Kısa ve pratik bir ipucu, tekrar izlemeye uygun.",
+    "hook": "Soğuk sabahlarda menzilinizi korumanın en kolay yolu: şarjdayken ön ısıtma.",
+    "caption": "Kışın elektrikli araçta menzil neden düşer? Soğuk hava bataryayı ve kabini ısıtmak için ek enerji ister.\n\nİpucu: Aracınız şarjdayken kabini önceden ısıtın. Böylece ısınma için gereken enerjiyi bataryadan değil, şarj kaynağından kullanırsınız; yola sıcak bir kabin ve korunmuş menzille çıkarsınız.\n\nAracınızın uygulamasından ön ısıtma zamanlayıcısını kurmayı unutmayın. Kış şarj ipuçları için kaydedin, kışın elektrikli araç kullanan bir arkadaşınıza gönderin.",
+    "linkedin_caption": null,
+    "hashtags": [
+     "#WATMobilite",
+     "#KışınElektrikliAraç",
+     "#ElektrikliAraçMenzil",
+     "#EVŞarj",
+     "#ElektrikliAraç"
+    ],
+    "cta": "Kaydet ve kışın elektrikli araç kullanan birine gönder.",
+    "short_brief": "Fikir: buzlu sabahtan sıcak kabine. Buzlu cam önünde üşüyen kullanıcı, telefondan ön ısıtmayı açıyor, içeride kabin ısınıyor, camın buğusu çözülüyor, rahatça yola çıkıyor. Sıcak sarı ışık; soğukluk mavi değil beyaz-gri ile verilir. Ekran yazısı: Şarjdayken Kabini Isıt, Menzilini Koru. 9:16, 20-30 sn.",
+    "visual_brief": "Kış sabahı, buğulu hava, sıcak sarı ışık. Sahne akışı: 1) Buzlu cam ve soğuktan üşüyen kullanıcı (hook), 2) şarjdaki araç, kullanıcı telefondan ön ısıtmayı açıyor, 3) içeride ısınan kabin, buğusu çözülen cam, 4) sıcak kabinde rahatça yola çıkış. İstasyon arka planla bütünleşik; gereksiz mavi tonlar ayıklanmış, soğukluk mavi yerine beyaz ve gri ile verilir. Samimi, insan yüzlü.",
+    "on_screen_text": "Şarjdayken Kabini Isıt, Menzilini Koru",
+    "size": "9:16, 20-30 sn",
+    "success_metric": null
+   },
+   {
+    "date": "2026-12-17",
+    "recommended": true,
+    "format": "karusel",
+    "platform": "instagram",
+    "pillar": "Kullanım Rehberi ve Uygulama",
+    "series": null,
+    "topic": "Uygulamada şarj ödemesi adım adım: kartını ekle, şarjı başlat, şarj bitince ödemen tamamlansın",
+    "special_day": null,
+    "why": "Ödeme deneyimi yenilendi; sık sorulan soruyu netleştiren karusel kaydedilir ve DM ile paylaşılır.",
+    "hook": "Şarj ödemesi nasıl işliyor? 4 adımda anlattık 👇",
+    "caption": "WAT Mobilite uygulamasında şarj ödemesi 4 adım: 1) Kartını uygulamaya ekle. 2) İstasyonu seç, QR kodu okut. 3) Şarjı başlat, ilerlemeyi uygulamadan izle. 4) Şarj bitince ödemen tamamlanır. Yeni ödeme deneyiminin detayları: [ekip doldurur]. Elektrikli araçla yeni tanışan arkadaşına bu karuseli gönder, kaydet, ilk şarjında elinin altında olsun.",
+    "linkedin_caption": null,
+    "hashtags": [
+     "#WATMobilite",
+     "#ŞarjRehberi",
+     "#ElektrikliAraç",
+     "#EVŞarj"
+    ],
+    "cta": "Kaydet, ilk şarjında elinin altında olsun.",
+    "short_brief": "Fikir: ödemeyi 4 adımda netleştirmek. Kapakta telefonda uygulamanın ödeme adımı, yanında kablosu takılı araç, doğal gün ışığı. Ara kartlarda ikonlu akış; uygulama ekranları güncel sürümden alınır. Son kart soru daveti. Marka renkleri, mavi yok. 4:5, 6 kart.",
+    "visual_brief": "Sade, net bilgi karuseli. Kapak: telefon ekranında WAT Mobilite uygulamasının ödeme adımı, yanında şarj kablosu takılı araç, doğal gün ışığı. Ara kartlarda ikonlu adım akışı (kart ekle → QR okut → şarjı başlat → şarj biter, ödeme tamamlanır). Uygulama ekranları ekipçe güncel sürümden alınır. Marka renkleri; gereksiz mavi tonlardan kaçının. Son kart: soru davetli kapanış.",
+    "on_screen_text": "Şarj Ödemesi 4 Adımda",
+    "size": "4:5, 6 kart",
+    "success_metric": null
+   },
+   {
+    "date": "2026-12-18",
+    "recommended": true,
+    "format": "reels",
+    "platform": "instagram",
+    "pillar": "Hızlı Şarj ve Ağ",
+    "series": null,
+    "topic": "Yılbaşı tatili için rota planlama: güzergâhtaki istasyonları uygulamadan belirleme",
+    "special_day": null,
+    "why": "Tatil planları bu hafta yapılır. Cuma günü yolculuk temalı Reels erişim alır.",
+    "hook": "Yılbaşı yolculuğuna çıkmadan önce bu 3 adımı yap, şarj stresini yolda bırak.",
+    "caption": "Yılbaşı tatili rotan hazır mı? 🎄🚗⚡\n\nElektrikli araçla uzun yola çıkmadan önce şarj noktalarını planlamak yolculuğu çok daha keyifli hale getirir. WAT Mobilite uygulamasıyla:\n\n1️⃣ Varış noktanı belirle\n2️⃣ Güzergâhındaki WAT Mobilite şarj istasyonlarını haritada gör\n3️⃣ Mola noktalarını önceden seç, yolda sürpriz yaşama\n\nKış aylarında menzilin değişebileceğini unutma, molalarını biraz daha sık planla. Hızlı şarj için güzergâhındaki Opet Ultraşarj noktalarına da göz at.\n\nTatil rotanı yorumlara yaz, birlikte planlayalım.",
+    "linkedin_caption": null,
+    "hashtags": [
+     "#WATMobilite",
+     "#elektrikliaraç",
+     "#rotaplanlama",
+     "#şarjistasyonu",
+     "#yılbaşıtatili"
+    ],
+    "cta": "Rotanı yorumlara yaz, WAT Mobilite uygulamasında istasyonları şimdi planla.",
+    "short_brief": "Fikir: yılbaşı yolculuğunu şarj kaygısız planlamak. Montlu biri bagaja hediye paketlerini yerleştiriyor, telefonda WAT Mobilite uygulamasında rota ve istasyon haritası, kış manzarasında yol, istasyonda sıcak içecekle mola. Doğal kış ışığı, sıcak tonlar. Ekran yazısı: Yılbaşı Rotanı 3 Adımda Planla. 9:16, 20-30 sn.",
+    "visual_brief": "Samimi, insan yüzlü Reels. Sahne 1 (0-3 sn): kışlık montlu biri bagaja hediye paketleri yerleştiriyor, ekran yazısı hook. Sahne 2: elinde telefon, WAT Mobilite uygulamasında rota ve istasyon haritası (gerçek ekran kaydı). Sahne 3: yolda araç, kış manzarası. Sahne 4: WAT Mobilite istasyonunda şarj molası, sıcak içecek. Doğal kış ışığı, sıcak tonlar; gereksiz mavi tonları kaldırın.",
+    "on_screen_text": "Yılbaşı Rotanı WAT Mobilite Uygulamasıyla 3 Adımda Planla",
+    "size": "9:16, 20-30 sn",
+    "success_metric": null
+   },
+   {
+    "date": "2026-12-19",
+    "recommended": true,
+    "format": "reels",
+    "platform": "instagram",
+    "pillar": "Kış ve EV Bilgisi",
+    "series": null,
+    "topic": "Mit mi gerçek mi: yağmurda ve karda şarj etmek güvenli mi?",
+    "special_day": null,
+    "why": "Mevsimsel bir merak konusu. Mit kırma formatı izlenme süresini artırır.",
+    "hook": "Yağmurda şarj etmek tehlikeli mi? Mit mi, gerçek mi?",
+    "caption": "Mit mi gerçek mi? 🌧️❄️⚡\n\n\"Yağmurda ya da karda elektrikli araç şarj edilmez.\" Bunu sen de duydun mu?\n\nGerçek şu: Halka açık şarj istasyonları ve araçların şarj soketleri dış ortam koşullarında kullanılmak üzere tasarlanır. Yani yağmurda ya da karda şarj etmek normal kullanımın bir parçasıdır.\n\nYine de dikkat etmen gerekenler:\n✅ Soket ve kablo ucunun gözle görülür hasarı olmasın\n✅ Kabloyu yerdeki su birikintisinden uzak tut\n✅ Bir sorun görürsen şarjı başlatma, destek hattına ulaş\n\nKışın şarjla ilgili duyduğun başka bir mit var mı? Yorumlara yaz, sıradaki videoda cevaplayalım.",
+    "linkedin_caption": null,
+    "hashtags": [
+     "#WATMobilite",
+     "#elektrikliaraç",
+     "#kışınşarj",
+     "#EVbilgisi",
+     "#mitmigerçekmi"
+    ],
+    "cta": "Duyduğun bir şarj mitini yorumlara yaz.",
+    "short_brief": "Fikir: korkuyu bilgiyle yenmek. Yağmurlu ya da karlı havada istasyon, ekranda büyük 'MİT?' yazısı; ekipten biri kameraya samimi bir dille anlatıyor, kablo takılıyor, kontrol listesi madde madde ekrana geliyor. Islak zemin yansımaları, doğal ışık, istasyon net. 9:16, 15-25 sn.",
+    "visual_brief": "Mit/gerçek formatında kısa Reels. Açılış: yağmurlu ya da karlı havada WAT Mobilite istasyonu, ekranda büyük 'MİT?' yazısı. Ardından WAT Mobilite ekibinden bir kişi kameraya samimi şekilde açıklama yapar, araca kablo takılır. Kontrol listesi madde madde ekrana gelir. Islak zemin yansımaları, doğal ışık; gereksiz mavi tonları kaldırın, istasyon net görünsün.",
+    "on_screen_text": "Yağmurda ve Karda Şarj: Mit mi Gerçek mi?",
+    "size": "9:16, 15-25 sn",
+    "success_metric": null
+   },
+   {
+    "date": "2026-12-20",
+    "recommended": false,
+    "format": "story",
+    "platform": "instagram",
+    "pillar": "Topluluk ve Özel Gün",
+    "series": null,
+    "topic": "Takipçi sorularını yanıtlıyoruz: soru kutusu",
+    "special_day": null,
+    "why": "Gelen sorular sonraki içeriklere kaynak olur. Pazar günü düşük üretim yükü.",
+    "hook": "Şarj, uygulama, kış menzili… Ne merak ediyorsan sor, WAT Mobilite cevaplasın!",
+    "caption": "Soru kutusu açıldı! 💬⚡\n\nElektrikli araç şarjı, WAT Mobilite uygulaması, kampanyalar ya da kışın menzil hakkında aklına ne takılıyorsa sor. Gelen soruları önümüzdeki günlerde story'lerde tek tek yanıtlıyoruz.",
+    "linkedin_caption": null,
+    "hashtags": [
+     "#WATMobilite",
+     "#elektrikliaraç",
+     "#şarjistasyonu"
+    ],
+    "cta": "Sorunu soru kutusuna yaz.",
+    "short_brief": "Fikir: takipçinin sorusu, markanın cevabı. İlk kare istasyonda şarj olan araç önünde sıcak, samimi bir kadraj ve soru kutusu. Sonraki günlerde gelen soruların ekran görüntüleri ve kısa yanıt kartları ya da ekipten birinin selfie video yanıtı. Story estetiği, marka renkleri. 9:16, 3-5 kare.",
+    "visual_brief": "Story serisi. 1. kare: WAT Mobilite istasyonunda şarj olan araç önünde sıcak, samimi kadraj, soru kutusu sticker'ı. 2-3. kareler (sonraki günler): gelen soruların ekran görüntüsü ve kısa yanıt kartları ya da ekipten birinin selfie video yanıtı. Native, story estetiği; marka renkleri, gereksiz mavi tonlar yok.",
+    "on_screen_text": "WAT Mobilite'ye Sor: Şarjla İlgili Merak Ettiklerin",
+    "size": "9:16, 3-5 story karesi",
+    "success_metric": null
+   },
+   {
+    "date": "2026-12-21",
+    "recommended": true,
+    "format": "linkedin_metin",
+    "platform": "linkedin",
+    "pillar": "Kurumsal, Filo ve İşletme",
+    "series": null,
+    "topic": "Yıl sonunda şarj altyapısı ve elektrifikasyon üzerine kurumsal bakış",
+    "special_day": null,
+    "why": "Yıl sonu düşünce liderliği için uygun. Yöneticinin kişisel profilinde de paylaşılabilir.",
+    "hook": "Elektrikli araç dönüşümünde asıl soru artık 'ne zaman' değil, 'altyapı ne kadar hazır'.",
+    "caption": "Yıl sonuna yaklaşırken elektrifikasyon üzerine kısa bir değerlendirme.\n\nElektrikli araç sayısı arttıkça kullanıcının beklentisi de değişiyor: Erişilebilir, hızlı ve güvenilir şarj. WAT Mobilite olarak bu beklentiyi Koç Topluluğu'nun güçlü ortaklık yapısıyla (WAT Mobilite, Opet, Otokoç, Entek) karşılamaya odaklanıyoruz.\n\nBu yıl öne çıkanlar:\n• Ağ büyümesi: [ekip doldurur]\n• Hızlı şarj tarafında Opet Ultraşarj noktaları: [ekip doldurur]\n• Bireysel ve ticari kullanıcılara yönelik çözümler: [ekip doldurur]\n\nÖnümüzdeki dönemde işletmeler ve filolar için şarj altyapısı, operasyon planlamasının ayrılmaz bir parçası olacak.\n\nSizce 2027'de elektrifikasyonun önündeki en büyük gündem ne olacak: altyapı, maliyet mi, kullanıcı alışkanlıkları mı? Görüşlerinizi yorumlarda bekliyoruz.",
+    "linkedin_caption": null,
+    "hashtags": [
+     "#WATMobilite",
+     "#Elektrifikasyon",
+     "#ŞarjAltyapısı"
+    ],
+    "cta": "Görüşünüzü yorumlarda paylaşın.",
+    "short_brief": "Fikir: yıl sonunda kurumsal bir bakış. Gün batımında WAT Mobilite ve Opet Ultraşarj istasyonunda şarjdaki araç; sade, kurumsal kadraj, Opet logosu net. Sıcak tonlar, mavi yok. Metin gönderisinin yanında tek görsel, 1200x1200.",
+    "visual_brief": "Tek görselli LinkedIn metin gönderisi. Gün batımında WAT Mobilite ve Opet Ultraşarj istasyonu, araç şarjda; kurumsal ve sade kadraj, Opet logosu net. Sıcak tonlar, gereksiz mavi yok. İsteğe bağlı: aynı metnin bir yöneticinin kişisel profilinden de paylaşılması ekip tarafından değerlendirilebilir.",
+    "on_screen_text": null,
+    "size": "1200x1200 px, tek görsel",
+    "success_metric": null
+   },
+   {
+    "date": "2026-12-22",
+    "recommended": true,
+    "format": "reels",
+    "platform": "instagram+linkedin",
+    "pillar": "Hızlı Şarj ve Ağ",
+    "series": null,
+    "topic": "Saha ekibiyle bir gün: istasyonların kış bakımı ve kesintisiz hizmet",
+    "special_day": null,
+    "why": "Kamera arkası, insan yüzlü içerik iki mecrada da güven yaratır.",
+    "hook": "Sen yola çıkmadan önce biz sahadayız. Kış sabahı WAT Mobilite saha ekibiyle bir gün.",
+    "caption": "Kesintisiz şarjın arkasındaki ekip 👷‍♂️❄️⚡\n\nSoğuk bir kış sabahı, WAT Mobilite saha ekibiyle istasyonları dolaştık. Kontroller, bakım ve temizlik… Hepsi sen istasyona geldiğinde şarjını sorunsuz başlatabilmen için.\n\nKışın şarj istasyonu bakımında neler yapılıyor?\n🔧 Kablo ve soket kontrolleri\n🧹 Ekran ve istasyon temizliği\n📡 Bağlantı ve çalışma testleri\n\nKoç Topluluğu güvencesiyle WAT Mobilite, kış boyunca güvenilir ve hızlı şarj için sahada. Ekibimize teşekkür etmek istersen yorumlara bir ⚡ bırak.",
+    "linkedin_caption": "Güvenilir şarj deneyimi sahada başlar.\n\nKış aylarında şarj istasyonlarının kesintisiz hizmet vermesi düzenli bakım, kontrol ve hızlı müdahale gerektiriyor. WAT Mobilite saha ekibi, istasyonlarda kablo ve soket kontrollerinden bağlantı testlerine kadar pek çok adımı rutin olarak yürütüyor.\n\nFilolar ve işletmeler için bu, operasyonların hava koşullarından bağımsız sürmesi anlamına geliyor. Koç Topluluğu'nun ortaklık gücüyle (WAT Mobilite, Opet, Otokoç, Entek) bireysel ve ticari kullanıcılara güvenilir bir şarj ağı sunmaya devam ediyoruz.\n\nSaha ekibimize emekleri için teşekkür ediyoruz.\n\n#WATMobilite #ŞarjAltyapısı #Elektrifikasyon",
+    "hashtags": [
+     "#WATMobilite",
+     "#şarjistasyonu",
+     "#elektrikliaraç",
+     "#kışınşarj",
+     "#sahaekibi"
+    ],
+    "cta": "Ekibimize bir ⚡ bırak.",
+    "short_brief": "Fikir: kesintisiz şarjın arkasındaki insanlar. Belgesel tonda sabah erken ekip araca biniyor, istasyonda soket ve kablo kontrolü, ekran temizliği, test şarjı; ekipten biri kameraya kısa bir cümle söylüyor, kapanışta şarj olan bir kullanıcı aracı. Doğal kış ışığı. 9:16, 30-45 sn; LinkedIn için 1:1.",
+    "visual_brief": "Belgesel tonlu, insan yüzlü Reels. Akış: sabah erken saat, ekip araca biniyor (kış kıyafetleri) → istasyona varış, soket ve kablo kontrolü yakın plan → ekran temizliği → test şarjı, çalışan ekran → ekip üyesi kameraya kısa bir cümle söylüyor → kapanışta istasyonda şarj olan kullanıcı aracı. Doğal kış ışığı, gereksiz mavi tonları kaldırın. LinkedIn için aynı videonun 1:1 versiyonu.",
+    "on_screen_text": "Kesintisiz Şarjın Arkasındaki Ekip: WAT Mobilite Sahada",
+    "size": "9:16, 30-45 sn (LinkedIn için 1:1 kesim)",
+    "success_metric": null
+   },
+   {
+    "date": "2026-12-23",
+    "recommended": false,
+    "format": "karusel",
+    "platform": "instagram",
+    "pillar": "Kullanım Rehberi ve Uygulama",
+    "series": null,
+    "topic": "Evde mi istasyonda mı: şarj alışkanlığını kullanım senaryosuna göre seçmek",
+    "special_day": null,
+    "why": "Karşılaştırmalı içerik kaydedilir. Ara gün için eğitici bir konu.",
+    "hook": "Evde mi şarj etmeli, istasyonda mı? Cevap senin günlük rutininde.",
+    "caption": "Evde mi, istasyonda mı? 🏠⚡🛣️\n\nElektrikli araç şarjında tek doğru yok, kullanım senaryon belirler. Kaydır, kendini bul:\n\n🏡 Günlük kısa mesafe sürüyorsan: Gece evde AC şarj çoğu zaman yeterli.\n🏢 Evde şarj imkânın yoksa: İş yeri, AVM ve yakın çevredeki WAT Mobilite istasyonları rutinin parçası olabilir.\n🛣️ Uzun yoldaysan: Güzergâhtaki DC hızlı şarj ve Opet Ultraşarj noktaları molanı kısaltır.\n🚚 Ticari kullanıcıysan: Gün içi yoğun kullanımda hızlı şarj planı fark yaratır.\n\nSen hangi senaryodasın? Yorumlara yaz, bu kartları şarj alışkanlığını merak eden birine gönder.",
+    "linkedin_caption": null,
+    "hashtags": [
+     "#WATMobilite",
+     "#elektrikliaraç",
+     "#evdeşarj",
+     "#hızlışarj",
+     "#EVrehberi"
+    ],
+    "cta": "Senaryonu yorumlara yaz ve kaydet.",
+    "short_brief": "Fikir: herkesin şarj alışkanlığı farklı. Kapak ikiye bölünmüş kadraj: solda ev garajında şarj, sağda WAT Mobilite istasyonunda şarj. Her senaryo bir kart (ev, iş yeri/AVM, otoyol Opet Ultraşarj, ticari araç), gerçekçi fotoğraf ya da sade illüstrasyon. Son kart: 'Sen Hangisisin?'. 4:5, 6 kart.",
+    "visual_brief": "Senaryo bazlı karusel. Kapak: ikiye bölünmüş kadraj, solda ev garajında şarj, sağda WAT Mobilite istasyonunda şarj. Her senaryo kartı için gerçekçi fotoğraf ya da sade illüstrasyon + kısa metin (ev, iş yeri/AVM, otoyol Opet Ultraşarj, ticari araç). Opet logosu görünen karede net ve büyük olsun. Native, sıcak tonlar, gereksiz mavi yok. Son kart: 'Sen Hangisisin?' sorusu.",
+    "on_screen_text": "Evde mi İstasyonda mı? Şarj Alışkanlığını Senaryona Göre Seç",
+    "size": "4:5, 6 kart",
+    "success_metric": null
+   },
+   {
+    "date": "2026-12-24",
+    "recommended": false,
+    "format": "linkedin_belge",
+    "platform": "linkedin",
+    "pillar": "Kurumsal, Filo ve İşletme",
+    "series": null,
+    "topic": "Filolar için 2027 elektrifikasyon yol haritası: geçiş öncesi kontrol listesi",
+    "special_day": null,
+    "why": "Bütçe ve planlama dönemine denk geliyor. Belge formatı kaydedilir.",
+    "hook": "2027'de filonuzu elektrifiye etmeyi planlıyorsanız, geçişten önce bu listeyi kontrol edin.",
+    "caption": "Filo elektrifikasyonu bir araç değişiminden fazlası: operasyon, altyapı ve planlama birlikte düşünülmeli.\n\n2027 öncesi hazırladığımız kontrol listesinde şu başlıklar var:\n\n1. Mevcut rota ve günlük kilometre analizi\n2. Araçların park ettiği noktalarda şarj ihtiyacı\n3. Depo/iş yeri içi şarj altyapısı ile halka açık ağın birlikte kullanımı\n4. Hızlı şarj gerektiren operasyon senaryoları\n5. Bireysel ve ticari kullanım ayrımına göre raporlama ve ödeme yönetimi\n6. Kış koşullarında menzil planlaması\n\nWAT Mobilite, Koç Topluluğu ortaklığıyla filolar ve işletmeler için şarj çözümlerinde yanınızda.\n\nKontrol listesini kaydedin; sizin filonuz için en kritik madde hangisi, yorumlarda paylaşın.",
+    "linkedin_caption": null,
+    "hashtags": [
+     "#FiloYönetimi",
+     "#Elektrifikasyon",
+     "#WATMobilite"
+    ],
+    "cta": "Belgeyi kaydedin, en kritik maddeyi yorumlarda paylaşın.",
+    "short_brief": "Fikir: 2027'ye hazırlanan filoya kontrol listesi. Kapakta WAT Mobilite istasyonlarında şarjdaki ticari filo, kurumsal ve sade. Her sayfada bir kontrol maddesi, ikon ve kısa açıklama, bol beyaz alan; tablolarda BİREYSEL – TİCARİ yazımı. Son sayfada logo ve iletişim yönlendirmesi, link yok. Belge, 8 sayfa.",
+    "visual_brief": "LinkedIn belge karuseli (PDF). Kapak: ticari araç filosu WAT Mobilite istasyonlarında şarjda, kurumsal ve sade. Her sayfada bir kontrol maddesi, ikon ve kısa açıklama; tablo içeren sayfalarda 'BİREYSEL – TİCARİ' yazımı kullanılmalı. Marka renkleri, bol beyaz alan, gereksiz mavi tonlar yok. Son sayfa: WAT Mobilite logosu ve iletişim yönlendirmesi (link yok).",
+    "on_screen_text": "Filolar İçin 2027 Elektrifikasyon Kontrol Listesi",
+    "size": "4:5 PDF belge, 8 sayfa",
+    "success_metric": null
+   },
+   {
+    "date": "2026-12-25",
+    "recommended": false,
+    "format": "reels",
+    "platform": "instagram",
+    "pillar": "Topluluk ve Özel Gün",
+    "series": null,
+    "topic": "Şarj beklerken yapılabilecek 5 şey: kahve, kısa yürüyüş, podcast",
+    "special_day": null,
+    "why": "13 Aralık anket sonuçlarından beslenebilir. Hafif ve eğlenceli bir Reels.",
+    "hook": "Aracın şarjda, sen ne yapıyorsun? İşte 5 fikir.",
+    "caption": "Elektrikli aracın şarj olurken o dakikaları değerlendirmenin 5 yolu:\n\n1. Sıcak bir kahve al ☕\n2. Kısa bir yürüyüşle bacaklarını aç\n3. Yarım kalan podcast bölümünü bitir\n4. Yolun geri kalanını planla\n5. Uzun zamandır aramadığın birini ara\n\nWAT Mobilite istasyonlarında şarj molası, yolculuğun keyifli bir parçası olabilir. Sen şarj beklerken ne yapıyorsun? Yorumlarda paylaş, şarj arkadaşına da gönder.",
+    "linkedin_caption": null,
+    "hashtags": [
+     "#elektrikliaraç",
+     "#şarjistasyonu",
+     "#evşarj",
+     "#elektrikliaraçşarj",
+     "#WATMobilite"
+    ],
+    "cta": "Şarj molası rutinini yorumlarda paylaş, yol arkadaşına gönder.",
+    "short_brief": "Fikir: şarj molası boşa geçen zaman değil. Telefonla çekilmiş hissinde hızlı geçişler: araç istasyona yanaşıyor, kablo takılıyor, kahve, kısa yürüyüş, kulaklıkta podcast, telefonda rota, gülümseyerek bir telefon, kablo çıkıyor ve yola. Tekrar izlenen bir döngü gibi biter. Doğal kış ışığı. 9:16, 15-20 sn.",
+    "visual_brief": "Samimi, insan yüzlü, telefonla çekilmiş hissi veren Reels. Akış: 1) Araç WAT Mobilite istasyonuna yanaşır, şarj kablosu takılır (yakın plan). 2) Sürücü kahve alır. 3) Kısa yürüyüş. 4) Kulaklıkla podcast. 5) Telefonda rota bakar. 6) Birini arayıp gülümser. 7) Kabloyu çıkarıp yola çıkar. Doğal kış gün ışığı, sıcak tonlar; gereksiz mavi ton yok. Hızlı geçişler, tekrar izlemeye uygun döngü.",
+    "on_screen_text": "Şarj beklerken yapılacak 5 şey | 1 Kahve 2 Yürüyüş 3 Podcast 4 Rota 5 Bir telefon",
+    "size": "9:16, 15-20 sn",
+    "success_metric": null
+   },
+   {
+    "date": "2026-12-26",
+    "recommended": false,
+    "format": "story",
+    "platform": "instagram",
+    "pillar": "Kış ve EV Bilgisi",
+    "series": null,
+    "topic": "Kışın verimli sürüş: eko mod, rejenerasyon ve lastik basıncı",
+    "special_day": null,
+    "why": "Kış serisinin tamamlayıcı parçası. Hafta sonu için kısa story.",
+    "hook": "Kışın menzil mi düştü? 3 küçük ayarla fark yarat.",
+    "caption": "Story 1: Kışın elektrikli araçla daha verimli sürüş için 3 ipucu ❄️\nStory 2: Eko mod: Enerji tüketimini dengeler, menzili korumaya yardımcı olur.\nStory 3: Rejenerasyon: Frenleme enerjisini geri kazan, şehir içinde fark et.\nStory 4: Lastik basıncı: Soğukta basınç düşer; düzenli kontrol et.\nStory 5 (anket): Sen hangisini kullanıyorsun? Eko mod / Rejenerasyon / İkisi de",
+    "linkedin_caption": null,
+    "hashtags": [
+     "#elektrikliaraç",
+     "#kışsürüşü",
+     "#menzil",
+     "#WATMobilite"
+    ],
+    "cta": "Ankete katıl: Sen hangisini kullanıyorsun?",
+    "short_brief": "Fikir: kışın verimli sürüşün 3 küçük sırrı. Hafif karlı yol ve buğulu cam; araç içinden gösterge paneli yakın planları (eko mod, rejenerasyon), lastik basıncını ölçen bir el. Doğal beyaz-gri kış ışığı, mavi filtre yok. Son karede anket. 9:16, 5 kare.",
+    "visual_brief": "5 karelik story serisi. Kış atmosferi: hafif karlı yol, buğulu cam, araç içinden gösterge paneli yakın planları (eko mod simgesi, rejenerasyon göstergesi), lastik basıncı ölçümü yapan el. Net, native görünüm; soğuk mavi filtre kullanılmayacak, doğal beyaz-gri kış ışığı. Son karede anket çıkartması.",
+    "on_screen_text": "Kışın verimli sürüş: Eko Mod • Rejenerasyon • Lastik Basıncı",
+    "size": "9:16, 5 kare story",
+    "success_metric": null
+   },
+   {
+    "date": "2026-12-27",
+    "recommended": false,
+    "format": "story",
+    "platform": "instagram",
+    "pillar": "Kullanım Rehberi ve Uygulama",
+    "series": null,
+    "topic": "Uygulamada istasyon filtreleme ve favori istasyon kaydetme",
+    "special_day": null,
+    "why": "Yılbaşı yolculuğu öncesi pratik bir hatırlatma. Düşük üretim yükü.",
+    "hook": "Favori istasyonunu her seferinde aramaktan sıkıldın mı?",
+    "caption": "Story 1: WAT Mobilite uygulamasında istasyonu saniyeler içinde bul 📍\nStory 2: Filtreler ile şarj tipine (AC/DC) ve uygunluğa göre listele.\nStory 3: Sık kullandığın istasyonu kalp simgesiyle favorilere ekle.\nStory 4: Favoriler sekmesinden tek dokunuşla ulaş.\nStory 5: Sen en çok hangi istasyonu kullanıyorsun? Soru kutusuna yaz.",
+    "linkedin_caption": null,
+    "hashtags": [
+     "#WATMobilite",
+     "#şarjuygulaması",
+     "#elektrikliaraçşarj",
+     "#şarjistasyonu"
+    ],
+    "cta": "Soru kutusuna favori istasyonunu yaz.",
+    "short_brief": "Fikir: favori istasyonuna tek dokunuşla ulaş. Telefonu tutan elle gerçek kullanım hissi veren ekran kaydı; filtre menüsü ve favori kalbi yumuşak bir daire ya da okla vurgulanıyor. Arayüz net, butonlarda baş harfler büyük, ekranlar güncel sürümden. 9:16, 5 kare.",
+    "visual_brief": "Uygulama ekran kaydı tabanlı story serisi; telefonu tutan el ile gerçek kullanım hissi. Filtre menüsü ve favori kalp simgesi vurgulu (yumuşak daire/ok animasyonu). Arayüz net ve okunaklı; ek mavi efekt yok. Butonlardaki metinlerde kelimelerin baş harfi büyük (onaylı Dark Post uygulama görseli diline uygun). Uygulama ekranları ekip tarafından güncel versiyondan alınır.",
+    "on_screen_text": "İstasyon Filtrele • Favorilere Ekle • Tek Dokunuşla Ulaş",
+    "size": "9:16, 5 kare story",
+    "success_metric": null
+   },
+   {
+    "date": "2026-12-28",
+    "recommended": true,
+    "format": "karusel",
+    "platform": "instagram+linkedin",
+    "pillar": "Kurumsal, Filo ve İşletme",
+    "series": null,
+    "topic": "2026'da WAT Mobilite: yılın öne çıkanları (rakam ve kilometre taşları [ekip doldurur])",
+    "special_day": null,
+    "why": "Yıl sonu özeti iki mecrada da güçlü. Pazartesi LinkedIn etkileşimi için uygun. Veriler müşteriden alınır.",
+    "hook": "2026'yı WAT Mobilite ile nasıl geçirdik? Yılın öne çıkanları.",
+    "caption": "2026, WAT Mobilite için hızlı şarj ağında güçlü adımların yılı oldu. ⚡\n\nKoç Topluluğu ortaklığıyla (WAT Mobilite, Opet, Otokoç, Entek) bu yıl:\n• [ekip doldurur: istasyon/soket sayısı]\n• [ekip doldurur: şarj seansı veya kWh]\n• [ekip doldurur: yeni şehir/lokasyon]\n• Opet Ultraşarj ile hızlı şarj deneyimi\n• [ekip doldurur: kampanya/kilometre taşı]\n\nElektrikli araç şarjında bizimle yol alan herkese teşekkürler. 2027'de daha fazla nokta, daha hızlı şarj için yoldayız. Senin 2026'da en çok şarj ettiğin şehir hangisiydi?",
+    "linkedin_caption": "2026, WAT Mobilite için elektrikli araç şarj altyapısında önemli bir yıl oldu.\n\nKoç Topluluğu bünyesinde WAT Mobilite, Opet, Otokoç ve Entek ortaklığıyla bu yıl:\n• [ekip doldurur: istasyon/soket sayısı]\n• [ekip doldurur: şarj seansı veya enerji miktarı]\n• [ekip doldurur: filo/işletme çözümleri kilometre taşı]\n• Opet Ultraşarj ile hızlı şarj ağının güçlenmesi\n\nFilolar ve işletmeler için güvenilir şarj altyapısı sunma hedefimizle 2027'ye hazırlanıyoruz. Sizce önümüzdeki yıl şarj altyapısında en kritik gelişme ne olacak?\n\n#ElektrikliAraç #ŞarjAltyapısı #WATMobilite",
+    "hashtags": [
+     "#WATMobilite",
+     "#elektrikliaraçşarj",
+     "#hızlışarj",
+     "#şarjistasyonu",
+     "#2026"
+    ],
+    "cta": "2026'da en çok şarj ettiğin şehri yorumlarda yaz.",
+    "short_brief": "Fikir: 2026'yı rakamlarla kutlamak. Kapakta istasyon önünde şarjdaki araç ve büyük '2026' tipografisi; her kartta tek bir büyük rakam ya da kilometre taşı ve kısa açıklama. Opet Ultraşarj kartında Opet logosu net. Son kart teşekkür ve 2027 mesajı. Rakamlar ekipten gelir. 4:5, 7 kart; LinkedIn belge.",
+    "visual_brief": "Instagram 4:5 karusel, LinkedIn belge karuseli olarak uyarlanır. Kapak: WAT Mobilite istasyonu önünde şarj olan araç, net ve native görsel, '2026' büyük tipografi. İç kartlar: her kartta tek rakam/kilometre taşı, büyük sayı + kısa açıklama, sade marka renkleri, gereksiz mavi yok. Opet Ultraşarj kartında Opet logosu net ve büyük. Son kart: teşekkür ve 2027 mesajı. Rakamlar ekipçe teyit edilir.",
+    "on_screen_text": "2026'da WAT Mobilite | Yılın Öne Çıkanları",
+    "size": "4:5, 7 kart (LinkedIn: 1:1 belge karuseli, 7 sayfa)",
+    "success_metric": null
+   },
+   {
+    "date": "2026-12-29",
+    "recommended": true,
+    "format": "karusel",
+    "platform": "instagram",
+    "pillar": "Hızlı Şarj ve Ağ",
+    "series": null,
+    "topic": "Yılbaşı yolculuğu öncesi şarj kontrol listesi: doluluk, rota, yedek istasyon",
+    "special_day": null,
+    "why": "Yola çıkışın son günleri. Kaydedilip DM ile paylaşılacak pratik bir liste.",
+    "hook": "Yılbaşı yolculuğuna çıkmadan önce bu listeyi kaydet.",
+    "caption": "Yılbaşı yolculuğuna elektrikli aracınla çıkıyorsan şarj kontrol listen hazır ✅\n\n1. Yola çıkmadan şarj seviyeni kontrol et\n2. Rotanı WAT Mobilite uygulamasında planla\n3. Güzergâhtaki hızlı şarj istasyonlarını not al\n4. Yoğunluğa karşı yedek istasyon belirle\n5. Kışın menzilin değişebileceğini hesaba kat\n6. Kabloların ve uygulama hesabının hazır olduğundan emin ol\n\nOpet Ultraşarj noktalarıyla uzun yolda hızlı şarj molası ver. Listeyi kaydet, birlikte yola çıkacağın kişiye gönder.",
+    "linkedin_caption": null,
+    "hashtags": [
+     "#elektrikliaraç",
+     "#uzunyol",
+     "#hızlışarj",
+     "#yılbaşıtatili",
+     "#WATMobilite"
+    ],
+    "cta": "Listeyi kaydet ve yol arkadaşına gönder.",
+    "short_brief": "Fikir: yola çıkmadan son kontrol. Kapakta kış yolunda ilerleyen elektrikli araç, arkada yılbaşı ışıklarının bokehi. Her kartta onay kutulu tek madde, büyük okunaklı yazı; rota kartında uygulama ekranı, hızlı şarj kartında Opet Ultraşarj istasyonu ve net Opet logosu. Kaydedilmeye uygun. 4:5, 7 kart.",
+    "visual_brief": "4:5 karusel, kaydedilmeye uygun kontrol listesi tasarımı. Kapak: kış yolunda ilerleyen elektrikli araç, yılbaşı ışıkları bokeh arka planda; net, native görsel. Her kartta tek madde, onay kutusu ikonu, büyük okunaklı tipografi. Rota kartında uygulama ekranı. Hızlı şarj kartında Opet Ultraşarj istasyonu, Opet logosu net ve büyük. Sıcak tonlar, gereksiz mavi yok.",
+    "on_screen_text": "Yılbaşı Yolculuğu Öncesi Şarj Kontrol Listesi",
+    "size": "4:5, 7 kart",
+    "success_metric": null
+   },
+   {
+    "date": "2026-12-30",
+    "recommended": false,
+    "format": "linkedin_metin",
+    "platform": "linkedin",
+    "pillar": "Kurumsal, Filo ve İşletme",
+    "series": null,
+    "topic": "Yıl boyunca birlikte çalıştığımız iş ortaklarına ve ekibe teşekkür",
+    "special_day": null,
+    "why": "Kurumsal kapanış mesajı. LinkedIn'de sohbet ve yorum çeker.",
+    "hook": "Bir şarj ağı tek başına büyümez. Teşekkürler 2026.",
+    "caption": "Bir şarj ağı tek başına büyümez.\n\n2026'da WAT Mobilite olarak attığımız her adımın arkasında Koç Topluluğu ortaklarımız Opet, Otokoç ve Entek'in desteği; lokasyon ve iş ortaklarımızın güveni; sahada ve ofiste emek veren ekibimizin özverisi var.\n\nİstasyon kurulumundan teknik desteğe, filo çözümlerinden kullanıcı deneyimine kadar birlikte çalıştığımız herkese teşekkür ederiz.\n\n2027'de elektrikli mobiliteyi daha erişilebilir kılmak için aynı kararlılıkla yola devam ediyoruz.\n\nBu yıl birlikte çalıştığınız ve teşekkür etmek istediğiniz ekip arkadaşlarınızı yorumlarda etiketleyin.\n\n#ElektrikliMobilite #İşOrtaklığı #WATMobilite",
+    "linkedin_caption": null,
+    "hashtags": [
+     "#ElektrikliMobilite",
+     "#İşOrtaklığı",
+     "#WATMobilite"
+    ],
+    "cta": "Teşekkür etmek istediğiniz ekip arkadaşlarınızı yorumlarda etiketleyin.",
+    "short_brief": "Fikir: yılı yapan ekibe teşekkür. Saha ve ofis ekibinin doğal ışıkta, poz verilmemiş bir grup fotoğrafı ya da istasyon kurulumunda çalışan ekip anı; gerçek ve sıcak. Köşede küçük 'Teşekkürler 2026'. Fotoğraf ekipten temin edilir. 1:1 ya da 4:5 tek görsel.",
+    "visual_brief": "Tek görsel eşliğinde LinkedIn metin gönderisi. Saha ve ofis ekibinin samimi, doğal ışıkta çekilmiş grup fotoğrafı ya da istasyon kurulumunda çalışan ekip anı; poz verilmiş değil, gerçek his. Alt köşede küçük 'Teşekkürler 2026' yazısı. Gereksiz mavi ton yok; fotoğraf ekipten temin edilir.",
+    "on_screen_text": "Teşekkürler 2026",
+    "size": "1:1 veya 4:5 tek görsel + metin",
+    "success_metric": null
+   },
+   {
+    "date": "2026-12-31",
+    "recommended": true,
+    "format": "reels",
+    "platform": "instagram+linkedin",
+    "pillar": "Topluluk ve Özel Gün",
+    "series": null,
+    "topic": "Yılbaşı gecesi: yeni yıl kutlaması ve yolda olanlara iyi yolculuk dileği",
+    "special_day": "Yılbaşı gecesi",
+    "why": "Marka için doğal bir kapanış. Sıcak, kısa bir Reels iki mecraya uyarlanır.",
+    "hook": "Yeni yıla tam şarjla giriyoruz. ⚡",
+    "caption": "Yeni yıla tam şarjla giriyoruz! 🎉\n\nBu gece yolda olan, sevdiklerine kavuşmak için şarj molası veren herkese iyi yolculuklar. WAT Mobilite istasyonlarında elektrikli aracın şarj olurken, biz de 2027'nin tüm yolculuklarına hazırız.\n\nYeni yılın sağlık, mutluluk ve güvenli yollarla dolu olsun. Yeni yıl dileğini yorumlarda bırak, yılbaşını yolda geçirecek bir arkadaşına gönder.",
+    "linkedin_caption": "2026'yı geride bırakırken elektrikli mobilite yolculuğumuzda bizimle birlikte olan tüm kullanıcılarımıza, filo ve iş ortaklarımıza teşekkür ederiz.\n\nKoç Topluluğu bünyesinde WAT Mobilite, Opet, Otokoç ve Entek ortaklığıyla 2027'de de güvenilir ve hızlı şarj altyapısı sunmaya devam edeceğiz.\n\nBu gece yolda olanlara iyi yolculuklar; herkese sağlıklı ve başarılı bir yeni yıl dileriz.\n\n#YeniYıl #ElektrikliMobilite #WATMobilite",
+    "hashtags": [
+     "#WATMobilite",
+     "#yeniyıl",
+     "#elektrikliaraç",
+     "#şarjistasyonu"
+    ],
+    "cta": "Yeni yıl dileğini yorumlarda bırak, yolda olan bir arkadaşına gönder.",
+    "short_brief": "Fikir: yeni yıla tam şarjla. Gece, arkada yılbaşı ışıkları, WAT Mobilite istasyonunda şarj olan araç; gösterge %100'e ulaşıyor, sürücü ve ailesi gülümseyerek biniyor, araç ışıklı yola çıkıyor. Kapanış 'Mutlu Yıllar' ve logo. Altın-sıcak tonlar. 9:16, 10-15 sn; LinkedIn için kısa kurgu.",
+    "visual_brief": "Sıcak ve samimi Reels. Akış: 1) Gece, WAT Mobilite istasyonunda şarj olan araç, arkada yılbaşı ışıkları (net, native; istasyon arka planla aynı netlikte bütünleşik). 2) Şarj göstergesi %100'e ulaşır. 3) Sürücü ve ailesi arabaya biner, gülümser. 4) Araç ışıklı yola çıkar. 5) Kapanış: 'Mutlu Yıllar' + WAT Mobilite logosu. Altın-sıcak tonlar, gereksiz mavi yok. LinkedIn için aynı videonun kısa kurgusu.",
+    "on_screen_text": "Yeni Yıla Tam Şarjla ⚡ Mutlu Yıllar!",
+    "size": "9:16, 10-15 sn (LinkedIn: 1:1 veya 4:5, 15 sn)",
+    "success_metric": null
+   }
+  ]
+ },
+ "material": {
+  "brand": {
+   "audience": "elektrikli araç sahipleri, filolar, işletmeler",
+   "banned_terms": [
+    "provizyon"
+   ],
+   "campaigns": [
+    {
+     "end": "2026-12-31",
+     "name": "Her Salı WAT'la",
+     "note": "Her salı %10 tarife avantajı (Ekim planına göre)",
+     "start": "2026-10-13"
+    },
+    {
+     "end": "2026-12-31",
+     "name": "Opet Ultraşarj",
+     "note": "Ultramarket 200 TL, ayda bir kez (Ekim planına göre)",
+     "start": "2026-10-01"
+    }
+   ],
+   "ended_campaigns": [
+    "YKB World"
+   ],
+   "facts": [
+    "Provizyon 30 Eylül 2026 itibarıyla kaldırıldı; yeni ödeme deneyiminde şarj öncesi provizyon yok.",
+    "Resmi her yerde (plan başlığı, paylaşım metni, LinkedIn metni, görsel metni) marka adı \"WAT Mobilite\" yazılır; yalnız \"WAT\" yazılmaz; ana hashtag #WATMobilite."
+   ],
+   "key": "wat_mobilite",
+   "main_platform": "Instagram",
+   "name": "WAT Mobilite",
+   "platforms": [
+    "instagram",
+    "linkedin"
+   ],
+   "posts_per_month": [
+    18,
+    20
+   ],
+   "sector": "elektrikli araç şarj ağı işletmeciliği ve şarj çözümleri (Koç Topluluğu; WAT, Opet, Otokoç, Entek ortaklığı)",
+   "series": [
+    "EV 101",
+    "Doğru mu Yanlış mı",
+    "Taş Kâğıt Makas",
+    "Giydirilmiş Cihazlar",
+    "Rota Bazlı",
+    "Ürün İletişimi",
+    "Lifestyle"
+   ]
+  },
+  "special_days": [
+   {
+    "date": "2026-12-03",
+    "name": "Dünya Engelliler Günü",
+    "tags": [
+     "genel"
+    ],
+    "verified": true
+   },
+   {
+    "date": "2026-12-31",
+    "name": "Yılbaşı gecesi",
+    "tags": [
+     "genel",
+     "hediye",
+     "perakende",
+     "gida",
+     "kozmetik"
+    ],
+    "verified": true
+   }
+  ],
+  "algorithm": {}
+ }
+}

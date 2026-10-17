@@ -18,6 +18,7 @@ Kurallar: brand.facts kesin ve günceldir; onlarla çelişen hiçbir içerik yaz
 - linkedin_caption: yalnız platform "instagram+linkedin" ise aynı haberin LinkedIn'e uyarlanmış metni (daha kurumsal, linksiz, en fazla 3 hashtag gövdenin sonunda); diğer günlerde null.
 - hashtags: Instagram için 3-5 niş hashtag (instagram+linkedin günlerinde de Instagram'ınkiler); LinkedIn için en fazla 3.
 - cta: net çağrı ya da null.
+- short_brief: Tasarımcıya kısa brief, 3-4 satır: tasarımcı ne tasarlayacak, ne hayal edecek? "Fikir: ..." ile başla; ana sahne ve kadraj, ruh hâli ve ışık, ekran yazısı, ölçü/süre ve varsa onay notu. visual_brief'in özü, onunla çelişmesin.
 - visual_brief: art direktör için konsept, kadraj, renk/ışık, ürün ve insan kullanımı; video ise sahne akışı.
 - on_screen_text: ekran yazısı ya da null.
 - size: ölçü ve süre (ör. "9:16, 20-30 sn" ya da "4:5, 6 kart").
