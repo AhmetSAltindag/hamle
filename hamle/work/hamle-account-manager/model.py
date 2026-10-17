@@ -377,7 +377,8 @@ ANTHROPIC_MAX_RESPONSE_BYTES = 1_048_576  # web search results make messages lar
 ANTHROPIC_MAX_INPUT_TOKENS = 400_000
 HAIKU_LONG_PROMPT_TOKENS = 100_000
 # USD per 1M tokens == microdollars per token: (input, output, cache read, cache write 5m).
-# Cache writes are priced at 1.25x input; this adapter sends no cache_control, so they stay 0.
+# Cache writes are priced at 1.25x input (5-minute TTL). cache_control is sent only for a route with
+# prompt_cache=True (or a caller block that carries it); every other request is unchanged.
 _P = Fraction
 ANTHROPIC_PRICES = {
     "claude-opus-5-5": {"standard": (_P(4), _P(20), _P(1, 5), _P(5))},
@@ -446,6 +447,8 @@ def anthropic_request(route, system, user_text, *, schema=None):
     output_config = {"effort": route.effort}
     if schema is not None:
         output_config["format"] = {"type": "json_schema", "schema": anthropic_schema(schema)}
+    if getattr(route, "prompt_cache", False):
+        system = [{"type": "text", "text": system, "cache_control": {"type": "ephemeral"}}]
     kwargs = {"model": route.model, "max_tokens": route.max_tokens, "system": system,
               "messages": [{"role": "user", "content": user_text}], "output_config": output_config}
     if route.web_search:

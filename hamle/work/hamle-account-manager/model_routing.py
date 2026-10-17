@@ -53,6 +53,7 @@ class Route:
     timeout_seconds: int | None = None  # anthropic only
     profile_id: str | None = None      # openai only (model_profiles allowlist)
     web_search: dict | None = None     # anthropic research roles only: {"type", "max_uses", "fee_microdollars"}
+    prompt_cache: bool = False         # anthropic only: 5-minute cache on the system prompt (feature configs opt in)
 
     def reservation_extra(self):
         """Hold added on top of the token hold for the worst-case number of searches."""

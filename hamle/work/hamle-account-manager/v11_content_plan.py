@@ -28,6 +28,7 @@ Non-collision (Ahmet 2026-10-17): own module, mode (worker.py --mode content_pla
 from __future__ import annotations
 
 import calendar
+import json
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 import re
@@ -96,10 +97,12 @@ def validate_config(cfg):
               "content_plan_platforms_invalid")
         out[key] = {"posts": tuple(posts), "platforms": list(platforms)}
     m = cfg.get("model") or {}
-    _need(set(m) == {"model", "effort", "max_tokens", "timeout_seconds"} and m["model"] in mr.ANTHROPIC_MODELS
+    _need(set(m) - {"prompt_cache"} == {"model", "effort", "max_tokens", "timeout_seconds"}
+          and type(m.get("prompt_cache", False)) is bool and m["model"] in mr.ANTHROPIC_MODELS
           and m["effort"] in mr.EFFORTS and type(m["max_tokens"]) is int and 1024 <= m["max_tokens"] <= 16_000
           and type(m["timeout_seconds"]) is int and 30 <= m["timeout_seconds"] <= 540, "content_plan_model_invalid")
-    route = mr.Route(ROLE, "anthropic", m["model"], m["effort"], m["max_tokens"], m["timeout_seconds"])
+    route = mr.Route(ROLE, "anthropic", m["model"], m["effort"], m["max_tokens"], m["timeout_seconds"],
+                     prompt_cache=m.get("prompt_cache", False))
     return {"enabled": cfg["enabled"], "brands": out, "route": route}
 
 
@@ -245,15 +248,47 @@ def model_source(ops, load_key, catalog, cfg, *, client=None):
                 system = PROMPT.read_text(encoding="utf-8")
             except (OSError, UnicodeError):
                 raise ContentPlanError("content_plan_prompt_unavailable") from None
+            send, blocks = request, ()
+            if route.prompt_cache and task == "details":
+                # The parts every detail call shares go first in their own cached block; only the days differ.
+                send = {k: v for k, v in request.items() if k not in SHARED_DETAIL_KEYS}
+                shared = {k: request[k] for k in SHARED_DETAIL_KEYS if k in request}
+                blocks = ({"type": "text", "text": "Ortak girdi: " + json.dumps(shared, ensure_ascii=False, sort_keys=True),
+                           "cache_control": {"type": "ephemeral"}},)
             key = key_for(load_key, "anthropic")
             try:
-                return base.anthropic_json(route, system, request, schema, api_key=key, client=client)
+                out = base.anthropic_json(route, system, send, schema, api_key=key, client=client, blocks=blocks)
             finally:
                 del key
+            call.usages.append(out["receipt"])
+            return out
         return gate.once(ROLE, source_digest(ROLE, request, route_fingerprint(route, PROMPT)), once,
                          provider="anthropic", hold=hold)
     call.hold = hold
+    call.usages = []
     return call
+
+
+def usage_totals(receipts):
+    """Paid calls of this run -> token and cost totals (cache read/write shown so the saving can be measured)."""
+    keys = ("input_tokens", "cache_read_input_tokens", "cache_creation_input_tokens", "output_tokens")
+    out = {k: sum((r.get("usage") or {}).get(k, 0) for r in receipts) for k in keys}
+    out["paid_calls"] = len(receipts)
+    out["cost_usd"] = round(sum(r.get("cost_microdollars") or 0 for r in receipts) / 1_000_000, 4)
+    import model as base
+    plain = 0
+    for r in receipts:  # the same tokens with no cache: every prompt token at the input price
+        u = r.get("usage") or {}
+        tiers = base.ANTHROPIC_PRICES.get(r.get("model") or "") or {}
+        if "standard" in tiers and u:
+            p_in, p_out = tiers["standard"][:2]
+            plain += (u.get("input_tokens", 0) + u.get("cache_read_input_tokens", 0)
+                      + u.get("cache_creation_input_tokens", 0)) * p_in + u.get("output_tokens", 0) * p_out
+    out["cost_without_cache_usd"] = round(float(plain) / 1_000_000, 4)
+    return out
+
+
+SHARED_DETAIL_KEYS = ("brand", "profile", "rules", "strategy", "pillars")
 
 
 # ------------------------------------------------------------------ the plan
@@ -421,6 +456,8 @@ def run_content_plan(ops, *, config, catalog, cards, cal, book_reader, upcoming_
                           upcoming=upcoming_reader(info["project_id"]), cal=cal, book=book_reader(), previous=previous)
         plan = build_plan(material, first, model)
         report["model_calls"] = plan["model_calls"]
+        if hasattr(model, "usages"):
+            report["usage"] = usage_totals(model.usages)
         findings, score = check(plan, material, first)
         text = render(info["name"], first, plan, findings, score, material)
         return dict(report, status="content_plan_preview", score=score, findings=len(findings),
