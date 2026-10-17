@@ -57,7 +57,7 @@ OUT_OF_SCOPE = re.compile(r"\b(reklam\w*|sponsorlu\w*|sponsored|ads? manager|üc
                           r"media plan\w*|boost\w*|öne çıkarılmış gönderi\w*)\b", re.I)
 # "cilalı reklam estetiği yok", "reklam dili değil": a word from OUT_OF_SCOPE that the next few words deny is a
 # style note, not ad content (WAT Dec preview 17 Oct, days 12 and 26).
-DENIED = re.compile(r"^(\s+[^\W\d_]+){0,2}?\s+(yok|değil|olmadan|kullanılmaz|olmasın|olmayan)\b", re.I)
+DENIED = re.compile(r"^(\s+[^\W\d_]+){0,2}?\s+(yok|değil|olmadan|yerine|kullanılmaz|olmasın|olmayan)\b", re.I)
 URL = re.compile(r"https?://|www\.", re.I)
 
 
