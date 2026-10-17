@@ -58,9 +58,9 @@ class Watch(Base):
 
 
 class Config(Watch):
-    def test_disk_config_starts_off_and_does_nothing(self):
-        cfg = aw.load_config()
-        self.assertIs(cfg["enabled"], False)
+    def test_disk_config_is_on_since_ahmets_go_and_a_closed_flag_does_nothing(self):
+        self.assertIs(aw.load_config()["enabled"], True)
+        cfg = dict(aw.load_config(), enabled=False)
         r = aw.run_algorithm_watch(self.ops, config=cfg, seed=aw.load_seed(), cards=self.cards,
                                    research_factory=self.factory, clock=lambda: self.now)
         self.assertEqual((r["status"], r["reason"], self.calls), ("no_new_work", "algorithm_watch_disabled", []))
@@ -202,7 +202,9 @@ class Health(Watch):
             self.data()["algorithm-watch-20261019"] = {"state": "done"}
             self.assertEqual(hc.check_algorithm(self.ops, date(2026, 10, 18)), [])
         del self.data()["algorithm-watch-20261019"]
-        self.assertEqual(hc.check_algorithm(self.ops, date(2026, 10, 18)), [])  # disk config: off
+        off = config(enabled=False)
+        with patch.object(aw, "load_config", lambda path=None: off):
+            self.assertEqual(hc.check_algorithm(self.ops, date(2026, 10, 18)), [])
 
 
 if __name__ == "__main__":

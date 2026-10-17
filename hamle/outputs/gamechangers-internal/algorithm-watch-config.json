@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "enabled": false,
-  "decision_ref": "Ahmet in project thread 2026-10-17 10:01Z (SM & MT plan step 1): Platform Kural Defteri + Algoritma Nöbeti, weekly on Sunday night, ~2 USD/month; Monday digest card 'Bu hafta algoritmada ne değişti', team only; 'Bunu müşteriye de göndermelisiniz!' when critical. Own module, mode and config, OFF until Ahmet's deploy line. No media planning, ad buying or sponsored content.",
+  "enabled": true,
+  "decision_ref": "Ahmet in project thread 2026-10-17 10:01Z (SM & MT plan step 1): Platform Kural Defteri + Algoritma Nöbeti, weekly on Sunday night, ~2 USD/month; Monday digest card 'Bu hafta algoritmada ne değişti', team only; 'Bunu müşteriye de göndermelisiniz!' when critical. Own module, mode and config, Switched ON by Ahmet 2026-10-17 11:35Z (\"Algoritma nöbetini açabilirsin\") after a clean preview. No media planning, ad buying or sponsored content.",
   "timezone": "Europe/Istanbul",
   "run_window": {"weekday": 6, "start": "21:00", "end": "23:30"},
   "reverify_days": 90,
