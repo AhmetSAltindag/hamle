@@ -1,0 +1,179 @@
+{
+  "schema_version": 1,
+  "decision_ref": "SM & MT list (Ahmet's edit, 17 Oct 2026), section 1: rules from official statements combined with research firms' reports; all start 🟡 (several reliable sources) until an official source confirms them.",
+  "rules": [
+    {
+      "id": "ig-seed-1",
+      "platform": "instagram",
+      "rule": "İzlenme süresi ve tekrar izleme öne çıkan sinyal; Reels önce takipçi olmayan küçük bir kitlede test ediliyor.",
+      "source_kind": "multi",
+      "first_seen": "2026-10-17",
+      "last_verified": "2026-10-17",
+      "source_urls": [
+        "https://www.dataslayer.ai/blog/instagram-algorithm-2025-complete-guide-for-marketers",
+        "https://keywordseverywhere.com/news/instagram-algorithm-updates/how-the-instagram-algorithm-works/",
+        "https://later.com/blog/how-instagram-algorithm-works/"
+      ]
+    },
+    {
+      "id": "ig-seed-2",
+      "platform": "instagram",
+      "rule": "DM ile paylaşım (sends) güçlü sinyal; Mart 2026'dan beri iki yönlü sohbet de sinyal.",
+      "source_kind": "multi",
+      "first_seen": "2026-10-17",
+      "last_verified": "2026-10-17",
+      "source_urls": [
+        "https://www.dataslayer.ai/blog/instagram-algorithm-2025-complete-guide-for-marketers",
+        "https://keywordseverywhere.com/news/instagram-algorithm-updates/how-the-instagram-algorithm-works/",
+        "https://later.com/blog/how-instagram-algorithm-works/"
+      ]
+    },
+    {
+      "id": "ig-seed-3",
+      "platform": "instagram",
+      "rule": "Özgün içerik: 30 günde 10'dan fazla repost hesabı önerilerden düşürür.",
+      "source_kind": "multi",
+      "first_seen": "2026-10-17",
+      "last_verified": "2026-10-17",
+      "source_urls": [
+        "https://www.dataslayer.ai/blog/instagram-algorithm-2025-complete-guide-for-marketers",
+        "https://keywordseverywhere.com/news/instagram-algorithm-updates/how-the-instagram-algorithm-works/",
+        "https://later.com/blog/how-instagram-algorithm-works/"
+      ]
+    },
+    {
+      "id": "ig-seed-4",
+      "platform": "instagram",
+      "rule": "Caption ve ekran yazısında anahtar kelime; 3-5 niş hashtag.",
+      "source_kind": "multi",
+      "first_seen": "2026-10-17",
+      "last_verified": "2026-10-17",
+      "source_urls": [
+        "https://www.dataslayer.ai/blog/instagram-algorithm-2025-complete-guide-for-marketers",
+        "https://keywordseverywhere.com/news/instagram-algorithm-updates/how-the-instagram-algorithm-works/",
+        "https://later.com/blog/how-instagram-algorithm-works/"
+      ]
+    },
+    {
+      "id": "ig-seed-5",
+      "platform": "instagram",
+      "rule": "Kusursuz, cilalı estetik yerine samimi ve insan yüzlü içerik; yeni fikirleri Trial Reels ile test edin.",
+      "source_kind": "multi",
+      "first_seen": "2026-10-17",
+      "last_verified": "2026-10-17",
+      "source_urls": [
+        "https://www.dataslayer.ai/blog/instagram-algorithm-2025-complete-guide-for-marketers",
+        "https://keywordseverywhere.com/news/instagram-algorithm-updates/how-the-instagram-algorithm-works/",
+        "https://later.com/blog/how-instagram-algorithm-works/"
+      ]
+    },
+    {
+      "id": "tt-seed-1",
+      "platform": "tiktok",
+      "rule": "İzlenme oranı ve süresi en üst sinyal; anlamlı yorumlar ve arama sorgularıyla eşleşme önemli.",
+      "source_kind": "multi",
+      "first_seen": "2026-10-17",
+      "last_verified": "2026-10-17",
+      "source_urls": [
+        "https://ttcalculator.net/blog/tiktok-algorithm-changes-2026/",
+        "https://blog.hootsuite.com/tikTok-algorithm/"
+      ]
+    },
+    {
+      "id": "tt-seed-2",
+      "platform": "tiktok",
+      "rule": "60-180 sn videolar daha iyi dağılıyor, 30 sn altı zayıf.",
+      "source_kind": "multi",
+      "first_seen": "2026-10-17",
+      "last_verified": "2026-10-17",
+      "source_urls": [
+        "https://ttcalculator.net/blog/tiktok-algorithm-changes-2026/",
+        "https://blog.hootsuite.com/tikTok-algorithm/"
+      ]
+    },
+    {
+      "id": "tt-seed-3",
+      "platform": "tiktok",
+      "rule": "Aramaya uygun başlık ve ekran yazısı kullanın.",
+      "source_kind": "multi",
+      "first_seen": "2026-10-17",
+      "last_verified": "2026-10-17",
+      "source_urls": [
+        "https://ttcalculator.net/blog/tiktok-algorithm-changes-2026/",
+        "https://blog.hootsuite.com/tikTok-algorithm/"
+      ]
+    },
+    {
+      "id": "tt-seed-4",
+      "platform": "tiktok",
+      "rule": "Yeniden paylaşılan ve düşük emekli yapay zekâ içeriği geri planda.",
+      "source_kind": "multi",
+      "first_seen": "2026-10-17",
+      "last_verified": "2026-10-17",
+      "source_urls": [
+        "https://ttcalculator.net/blog/tiktok-algorithm-changes-2026/",
+        "https://blog.hootsuite.com/tikTok-algorithm/"
+      ]
+    },
+    {
+      "id": "li-seed-1",
+      "platform": "linkedin",
+      "rule": "Gövdede link yok; ilk yorumdaki link hilesi de 2026'da kapandı.",
+      "source_kind": "multi",
+      "first_seen": "2026-10-17",
+      "last_verified": "2026-10-17",
+      "source_urls": [
+        "https://www.socialpilot.co/?p=694640",
+        "https://www.eclincher.com/articles/how-the-linkedin-algorithm-works-in-2026-a-guide-for-b2b-growth"
+      ]
+    },
+    {
+      "id": "li-seed-2",
+      "platform": "linkedin",
+      "rule": "Yorumlar (özellikle sohbet), kaydetme, 30 sn+ okuma süresi ve ilk 30-60 dakikadaki etkileşim öne çıkıyor; 360Brew akışı Mart 2026'dan beri tam devrede.",
+      "source_kind": "multi",
+      "first_seen": "2026-10-17",
+      "last_verified": "2026-10-17",
+      "source_urls": [
+        "https://www.socialpilot.co/?p=694640",
+        "https://www.eclincher.com/articles/how-the-linkedin-algorithm-works-in-2026-a-guide-for-b2b-growth"
+      ]
+    },
+    {
+      "id": "li-seed-3",
+      "platform": "linkedin",
+      "rule": "Belge karuseli iyi çalışıyor; video 3 dakikanın altında olsun.",
+      "source_kind": "multi",
+      "first_seen": "2026-10-17",
+      "last_verified": "2026-10-17",
+      "source_urls": [
+        "https://www.socialpilot.co/?p=694640",
+        "https://www.eclincher.com/articles/how-the-linkedin-algorithm-works-in-2026-a-guide-for-b2b-growth"
+      ]
+    },
+    {
+      "id": "li-seed-4",
+      "platform": "linkedin",
+      "rule": "Şirket sayfası günde en fazla 1 paylaşım; kişisel profil haftada 2-5 paylaşım.",
+      "source_kind": "multi",
+      "first_seen": "2026-10-17",
+      "last_verified": "2026-10-17",
+      "source_urls": [
+        "https://www.socialpilot.co/?p=694640",
+        "https://www.eclincher.com/articles/how-the-linkedin-algorithm-works-in-2026-a-guide-for-b2b-growth"
+      ]
+    },
+    {
+      "id": "li-seed-5",
+      "platform": "linkedin",
+      "rule": "Yöneticilerin kişisel profili şirket sayfasından çok daha fazla erişim alıyor; konu tutarlılığı önemli.",
+      "source_kind": "multi",
+      "first_seen": "2026-10-17",
+      "last_verified": "2026-10-17",
+      "source_urls": [
+        "https://www.socialpilot.co/?p=694640",
+        "https://www.eclincher.com/articles/how-the-linkedin-algorithm-works-in-2026-a-guide-for-b2b-growth"
+      ]
+    }
+  ]
+}

@@ -521,7 +521,8 @@ OK_STATUSES = ("budget_overrun_report", "overrun_hold_released", "overrun_hold_a
                "brand_memory_completed", "brand_memory_partial", "weekly_summary_sent", "weekly_summary_preview",
                "monthly_report_completed", "monthly_report_partial", "monthly_report_preview",
                "hamle_karne_sent", "hamle_karne_preview", "prospect_watch_completed", "prospect_watch_preview",
-               "prospect_test_requests_completed", "health_check_completed", "health_check_preview")
+               "prospect_test_requests_completed", "health_check_completed", "health_check_preview",
+               "algorithm_watch_completed", "algorithm_watch_preview")
 
 
 def main(argv=None):
@@ -534,7 +535,7 @@ def main(argv=None):
                                            "research_probe", "settle_model_actual", "settle_billed_total",
                                            "digital_karne", "brand_memory", "weekly_summary", "monthly_report",
                                            "hamle_karne", "prospect_watch", "budget_overrun_report",
-                                           "release_overrun_hold", "health_check"),
+                                           "release_overrun_hold", "health_check", "algorithm_watch"),
                         required=True)
     parser.add_argument("--proposal-id")
     parser.add_argument("--work-id")
@@ -573,6 +574,7 @@ def main(argv=None):
     # hamle_karne operator preview: Hamle's own karne of the previous month on any day; no mail, no record
     parser.add_argument("--hamle-karne-preview", action="store_true")
     parser.add_argument("--health-preview", action="store_true")
+    parser.add_argument("--algorithm-preview", action="store_true")
     # prospect_watch operator preview: one imagined mail through the real classify / research / reply / check steps;
     # no mail read or sent, no Basecamp, no prospect record
     parser.add_argument("--prospect-preview", action="store_true")
@@ -626,6 +628,8 @@ def main(argv=None):
         _require(args.mode != "hamle_karne" or args.hamle_karne_preview, "hamle_karne_runs_inside_monthly_report")
         _require(not args.hamle_karne_preview or args.mode == "hamle_karne", "hamle_karne_preview_requires_hamle_karne")
         _require(not args.health_preview or args.mode == "health_check", "health_preview_requires_health_check")
+        _require(not args.algorithm_preview or args.mode == "algorithm_watch",
+                 "algorithm_preview_requires_algorithm_watch")
         preview_fields = (args.preview_from, args.preview_subject, args.preview_text)
         _require((not args.prospect_preview and all(v is None for v in preview_fields)) or
                  (args.prospect_preview and args.mode == "prospect_watch"
@@ -653,7 +657,7 @@ def main(argv=None):
             return providers.verify_basecamp_internal(token)
         if args.mode in ("chain_tick", "prospect_watch", "daily_digest", "research_probe", "digital_karne",
                          "brand_memory",
-                         "weekly_summary", "monthly_report", "hamle_karne"):
+                         "weekly_summary", "monthly_report", "hamle_karne", "algorithm_watch"):
             # Monthly budget renewal + ledger compaction before any budget gate reads the totals.
             try:
                 roll = store.roll_budget_period()
@@ -787,6 +791,12 @@ def main(argv=None):
             # operations store; one record per night, one alert mail only for urgent findings. Never changes work.
             from v11_health_check import run_worker_health_check
             result = run_worker_health_check(store, secrets, preview=args.health_preview)
+        elif args.mode == "algorithm_watch":
+            # Platform Kural Defteri + Algoritma Nöbeti (Ahmet 2026-10-17): Sunday night, one Opus web-search call
+            # (algorithm-watch-config.json, OFF by default); writes only platform-rules + algorithm-watch-<Monday>,
+            # read by Monday's digest. --algorithm-preview: the call runs, nothing is written, no mail.
+            from v11_algorithm_watch import run_worker_algorithm_watch
+            result = run_worker_algorithm_watch(store, secrets, preview=args.algorithm_preview)
         elif args.mode == "hamle_karne":
             # Operator preview of Hamle's own karne (the live mail goes out from --mode monthly_report).
             from v11_hamle_karne import run_worker_hamle_karne

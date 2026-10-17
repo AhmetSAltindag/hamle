@@ -34,7 +34,8 @@ CHAIN_FILES = ("v11_chain.py", "v11_brand_task.py", "v11_intake_plan.py", "v11_b
                "v11_prospect_watch.py", "prospect_classifier_prompt.txt", "prospect_research_prompt.txt",
                "prospect_reply_prompt.txt", "prospect_report_prompt.txt",
                "prospect_writer_prompt.txt", "v11_footprint.py", "v11_report_mail.py",
-               "v11_report_pdf.py", "v11_health_check.py")
+               "v11_report_pdf.py", "v11_health_check.py",
+               "v11_algorithm_watch.py", "algorithm_watch_prompt.txt")
 ALLOWLIST = dict(base.ALLOWLIST)
 ALLOWLIST["cloudbuild.yaml"] = APP + "cloudbuild-v11-chain.yaml"
 ALLOWLIST.update({APP + name: APP + name for name in CHAIN_FILES})
@@ -43,7 +44,7 @@ ALLOWLIST.update({APP + "chain-profile/" + name: PROFILE + name for name in (
     "gamechangers-internal-work-authority-policy.json", "daily-digest-config.json",
     "brand-cards.json", "tr-special-days-2026.json", "model-routing.json", "client-watch-config.json",
     "digital-karne-config.json", "hamle-karne-config.json", "prospect-watch-config.json",
-    "health-check-config.json")})
+    "health-check-config.json", "algorithm-watch-config.json", "platform-rules-seed.json")})
 
 
 def package(root=base.ROOT):
