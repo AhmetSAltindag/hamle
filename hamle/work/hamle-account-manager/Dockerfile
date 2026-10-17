@@ -20,6 +20,8 @@ COPY SOURCE_MANIFEST.json /app/SOURCE_MANIFEST.json
 RUN cd /app/work/hamle-account-manager && python internal_ocr_smoke.py
 RUN cd /app/work/hamle-account-manager && python wat_media_smoke.py
 RUN cd /app/work/hamle-account-manager && python report_pdf_smoke.py
+# Chain images only (the module ships with package_chain_source): the content plan's PDF + DOCX must render.
+RUN cd /app/work/hamle-account-manager && if [ -f v11_content_plan_files.py ]; then python content_plan_files_smoke.py; fi
 RUN chmod -R a-w /app
 USER 65532:65532
 WORKDIR /app/work/hamle-account-manager

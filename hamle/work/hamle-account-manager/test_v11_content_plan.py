@@ -5,6 +5,7 @@ import io
 import json
 from contextlib import redirect_stdout
 import unittest
+from unittest import mock
 
 from urllib.parse import urlsplit
 
@@ -237,7 +238,22 @@ class FakeBasecamp:
         raise AssertionError(f"unexpected {method} {path}")
 
 
+try:
+    import weasyprint  # noqa: F401  (in the cloud image; optional on a laptop)
+    HAVE_PDF = True
+except Exception:
+    HAVE_PDF = False
+
+
 class Write(Plan):
+    def setUp(self):
+        super().setUp()
+        # The real PDF is checked in Files and by the image's content_plan_files_smoke; here only the upload path.
+        import v11_content_plan_files as pf
+        patcher = mock.patch.object(pf, "plan_pdf", lambda items: b"%PDF-1.7 fake plan")
+        patcher.start()
+        self.addCleanup(patcher.stop)
+
     def raw(self, method, url, data, mime, expected):
         self.uploads.append((method, url, mime, data[:4]))
         return {"attachable_sgid": f"BAh7CEkiCGdpZAY6BkVU{len(self.uploads)}"}
@@ -370,6 +386,7 @@ class Wiring(unittest.TestCase):
 
 
 class Files(Plan):
+    @unittest.skipUnless(HAVE_PDF, "WeasyPrint is installed in the cloud image")
     def test_preview_carries_the_plan_and_makes_pdf_and_docx(self):
         import tempfile
         import zipfile
@@ -391,6 +408,11 @@ class Files(Plan):
                 xml = z.read("word/document.xml").decode("utf-8")
             self.assertIn("Takvim", xml)
             self.assertIn("Aralık 2026", xml)
+
+    def test_smoke_is_packaged_and_run_by_the_image(self):
+        import package_chain_source as pkg
+        self.assertIn(pkg.APP + "content_plan_files_smoke.py", pkg.ALLOWLIST)
+        self.assertIn("python content_plan_files_smoke.py", open("Dockerfile", encoding="utf-8").read())
 
     def test_file_names_are_ascii(self):
         import v11_content_plan_files as pf
