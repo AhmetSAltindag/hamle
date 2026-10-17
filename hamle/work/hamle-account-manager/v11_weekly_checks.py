@@ -27,6 +27,7 @@ ISTANBUL = ZoneInfo("Europe/Istanbul")
 CONFIG = Path(__file__).with_name("chain-profile") / "weekly-checks-config.json"
 FALLBACK_CONFIG = Path(__file__).resolve().parents[2] / "outputs/gamechangers-internal/weekly-checks-config.json"
 DAYS = ("Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi", "Pazar")
+MIN_DATED_DAYS = 3
 PLATFORM_WORDS = {"instagram": ("instagram", "ig", "reels", "reel", "story", "karusel", "carousel", "post"),
                   "linkedin": ("linkedin",), "tiktok": ("tiktok",)}
 _need, _code = cp._need, cp._code
@@ -134,7 +135,11 @@ def is_shoot(task, words):
 def week_check(tasks, days, ideas, cal, words):
     by_day = {d.isoformat(): [t for t in tasks if t["due_on"] == d.isoformat()] for d in days}
     posts = {k: [t for t in v if not is_shoot(t, words)] for k, v in by_day.items()}
-    empty = [{"date": k, "idea": ideas.get(k)} for k, v in posts.items() if not v]
+    # Teams that keep the month plan in their own document (WAT Oct '26: "WM // Ekim '26 SM Planı", a Google Doc)
+    # have few dated tasks; empty days are only reported once the calendar is known: Hamle's monthly plan covers
+    # the week, or dated post tasks fill at least MIN_DATED_DAYS of it.
+    known = bool(ideas) or sum(1 for v in posts.values() if v) >= MIN_DATED_DAYS
+    empty = [{"date": k, "idea": ideas.get(k)} for k, v in posts.items() if not v] if known else []
     seen, repeats = {}, []
     for k in sorted(posts):
         for t in posts[k]:
@@ -142,12 +147,12 @@ def week_check(tasks, days, ideas, cal, words):
             if n and n in seen:
                 repeats.append({"title": t["title"], "dates": [seen[n], k]})
             seen.setdefault(n, k)
-    specials = [{"date": s["date"], "name": s["name"], "has_task": bool(posts.get(s["date"]))}
+    specials = [{"date": s["date"], "name": s["name"], "has_task": bool(posts.get(s["date"])) or not known}
                 for s in cp.special_days(cal, days[0]) + (cp.special_days(cal, days[-1]) if days[-1].month != days[0].month
                                                            else []) if s["date"] in by_day]
     shoots = [{"date": k, "title": t["title"], "assignees": t["assignees"]}
               for k, v in by_day.items() for t in v if is_shoot(t, words)]
-    return {"empty": empty, "repeats": repeats, "specials": specials, "shoots": shoots,
+    return {"known": known, "empty": empty, "repeats": repeats, "specials": specials, "shoots": shoots,
             "posts": sum(len(v) for v in posts.values())}
 
 
@@ -169,7 +174,10 @@ def tomorrow_check(tasks, day, book, words):
 def render(name, today, days, week, tomorrow):
     lines = [f"Hamle AI: {name} · haftalık ve günlük kontrol ({_d(today)})", "",
              f"GELECEK HAFTA ({_d(days[0])} - {_d(days[-1])}): {week['posts']} paylaşım işi"]
-    if week["empty"]:
+    if not week["known"]:
+        lines.append("Bu haftanın paylaşımları ekibin aylık plan dokümanında; boş gün kontrolü Hamle'nin aylık planı "
+                     "Basecamp'e geçince başlar.")
+    elif week["empty"]:
         lines.append("Boş günler:")
         for e in week["empty"]:
             i = e["idea"]
@@ -219,6 +227,7 @@ def run_weekly_checks(ops, *, config, catalog, cal, book_reader, http_factory, c
         week = week_check(tasks, days, plan_ideas(records, days), cal, cfg["shoot_words"])
         tomorrow = tomorrow_check(tasks, today + timedelta(days=1), book_reader(), cfg["shoot_words"])
         return dict(report, status="weekly_checks_preview", brand=key, week=f"{days[0]}", tasks=len(tasks),
+                    calendar_known=week["known"],
                     empty_days=len(week["empty"]), repeats=len(week["repeats"]), special_days=len(week["specials"]),
                     shoots=len(week["shoots"]), tomorrow=len(tomorrow),
                     text=render(name, today, days, week, tomorrow))

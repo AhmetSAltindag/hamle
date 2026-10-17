@@ -90,8 +90,18 @@ class WeeklyChecks(Base):
     def test_no_tasks_and_day_override(self):
         r = self.run_checks(pages_={f"{API}/{SOCIAL}/todos.json": [], f"{API}/{MOTION}/todos.json": []},
                             day="2026-10-17")
-        self.assertEqual((r["week"], r["empty_days"], r["tomorrow"]), ("2026-10-19", 7, 0), r)
+        self.assertEqual((r["week"], r["empty_days"], r["tomorrow"], r["calendar_known"]),
+                         ("2026-10-19", 0, 0, False), r)
+        self.assertIn("Bu haftanın paylaşımları ekibin aylık plan dokümanında", r["text"])
         self.assertIn("Yarın için tarihli iş yok.", r["text"])
+
+    def test_plan_in_team_document_is_not_reported_as_empty(self):
+        # WAT 17 Oct (Y6): one dated task, the month plan lives in "WM // Ekim '26 SM Planı" (Google Doc)
+        r = self.run_checks(pages_={f"{API}/{SOCIAL}/todos.json": [todo(1, "WM // Ekim '26 SM Planı", "2026-10-26")],
+                                    f"{API}/{MOTION}/todos.json": []})
+        self.assertEqual((r["empty_days"], r["calendar_known"]), (0, False), r)
+        self.assertNotIn("Boş günler", r["text"])
+        self.assertNotIn("o gün için iş yok", r["text"])
 
     def test_fails_closed(self):
         self.assertEqual(self.run_checks(brand="rabam")["reason"], "weekly_checks_brand_not_configured")
