@@ -522,7 +522,8 @@ OK_STATUSES = ("budget_overrun_report", "overrun_hold_released", "overrun_hold_a
                "monthly_report_completed", "monthly_report_partial", "monthly_report_preview",
                "hamle_karne_sent", "hamle_karne_preview", "prospect_watch_completed", "prospect_watch_preview",
                "prospect_test_requests_completed", "health_check_completed", "health_check_preview",
-               "algorithm_watch_completed", "algorithm_watch_preview", "content_plan_preview")
+               "algorithm_watch_completed", "algorithm_watch_preview", "content_plan_preview",
+               "weekly_checks_preview")
 
 
 def main(argv=None):
@@ -536,7 +537,7 @@ def main(argv=None):
                                            "digital_karne", "brand_memory", "weekly_summary", "monthly_report",
                                            "hamle_karne", "prospect_watch", "budget_overrun_report",
                                            "release_overrun_hold", "health_check", "algorithm_watch",
-                                           "content_plan"),
+                                           "content_plan", "weekly_checks"),
                         required=True)
     parser.add_argument("--proposal-id")
     parser.add_argument("--work-id")
@@ -579,6 +580,9 @@ def main(argv=None):
     parser.add_argument("--plan-preview", action="store_true")
     parser.add_argument("--plan-brand")
     parser.add_argument("--plan-month")
+    parser.add_argument("--checks-preview", action="store_true")
+    parser.add_argument("--checks-brand")
+    parser.add_argument("--checks-day")
     # prospect_watch operator preview: one imagined mail through the real classify / research / reply / check steps;
     # no mail read or sent, no Basecamp, no prospect record
     parser.add_argument("--prospect-preview", action="store_true")
@@ -638,6 +642,12 @@ def main(argv=None):
         _require((args.mode == "content_plan") == args.plan_preview, "content_plan_requires_plan_preview")
         _require((args.plan_brand is None and args.plan_month is None) or args.mode == "content_plan",
                  "plan_flags_require_content_plan")
+        # Haftalık ve günlük kontroller: preview only, code only.
+        _require((args.mode == "weekly_checks") == args.checks_preview, "weekly_checks_requires_checks_preview")
+        _require((args.checks_brand is None or re.fullmatch(r"[a-z_]{2,40}", args.checks_brand))
+                 and (args.checks_day is None or re.fullmatch(r"\d{4}-\d{2}-\d{2}", args.checks_day))
+                 and ((args.checks_brand is None and args.checks_day is None) or args.mode == "weekly_checks"),
+                 "checks_flags_require_weekly_checks")
         preview_fields = (args.preview_from, args.preview_subject, args.preview_text)
         _require((not args.prospect_preview and all(v is None for v in preview_fields)) or
                  (args.prospect_preview and args.mode == "prospect_watch"
@@ -810,6 +820,12 @@ def main(argv=None):
             # its brand memory, Basecamp (GET), special days and the rule book; writes nothing, sends nothing.
             from v11_content_plan import run_worker_content_plan
             result = run_worker_content_plan(store, secrets, brand=args.plan_brand, month=args.plan_month)
+        elif args.mode == "weekly_checks":
+            # Haftalık ve günlük kontroller (SM & MT step 3, Ahmet 2026-10-17): next week's empty days, repeats, special
+            # days and shoots, tomorrow's tasks against the rule book; Basecamp GET + plan record only, no model call,
+            # nothing written, nothing sent.
+            from v11_weekly_checks import run_worker_weekly_checks
+            result = run_worker_weekly_checks(store, secrets, brand=args.checks_brand, day=args.checks_day)
         elif args.mode == "hamle_karne":
             # Operator preview of Hamle's own karne (the live mail goes out from --mode monthly_report).
             from v11_hamle_karne import run_worker_hamle_karne
